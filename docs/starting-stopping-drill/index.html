@@ -215,26 +215,33 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/deploying-drill-in-a-cluster/">Deploying Drill in a Cluster</a></li>
-            
-          
-            
               <li class="toctree-l2"><a href="javascript: void(0);">Installing Drill in Embedded Mode</a></li>
               <ul style="display: none">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux/">Installing Drill on Linux</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-mac-os-x/">Installing Drill on Mac OS X</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-windows/">Installing Drill on Windows</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-windows/">Starting Drill on Windows</a></li>
               
             </ul>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/installing-drill-in-distributed-mode/">Installing Drill in Distributed Mode</a></li>
+              <li class="toctree-l2"><a href="javascript: void(0);">Installing Drill in Distributed Mode</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/distributed-mode-prerequisites/">Distributed Mode Prerequisites</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-the-cluster/">Installing Drill on the Cluster</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-in-distributed-mode/">Starting Drill in Distributed Mode</a></li>
+              
+            </ul>
             
           
           </ul>
@@ -805,54 +812,15 @@
 
       <div class="int_text" align="left">
         
-          <p>How you start Drill depends on the installation method you followed. If you installed Drill in embedded mode, invoking SQLLine automatically starts a Drillbit locally. </p>
-
-<p>On a MapR cluster, Drill runs as a service and the installation process starts the Drillbit service automatically. If you installed Drill in distributed mode, and the Drillbit on a node did not start, start the Drillbit before attempting to run queries.</p>
-
-<h2 id="controlling-a-drillbit">Controlling a Drillbit</h2>
-
-<p>The Drillbit service accepts requests from the client, processing the queries, and returning results to the client. You install Drill as a service and run the Drillbit on all of the required nodes in a Hadoop cluster to form a distributed cluster environment. When a Drillbit runs on each data node in the cluster, Drill maximizes data locality during query execution. Movement of data over the network or between nodes is minimized or eliminated when possible.</p>
-
-<p>If you use Drill in distributed mode, you need to understand how to control a Drillbit. If you use Drill in embedded mode, you do not use the <strong>drillbit</strong> command. Windows and Mac OS X run Drill only in embedded mode, and therefore do not use the Drillbit command.</p>
-
-<p>Using the <strong>drillbit command</strong>, located in the <code>bin</code> directory, you check the status of the Drillbit, start, stop, and restart a DrillBit. You can use a configuration file to start Drill. Using such a file is handy for controlling Drillbits on multiple nodes.</p>
-
-<h3 id="drillbit-command-syntax">drillbit Command Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">drillbit.sh [--config &lt;conf-dir&gt;] (start|stop|status|restart|autorestart)
-</code></pre></div>
-<p>For example, to restart a Drillbit, navigate to the Drill installation directory, and issue the following command:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">bin/drillbit.sh restart
-</code></pre></div>
-<h2 id="invoking-sqlline">Invoking SQLLine</h2>
-
-<p>SQLLine is used as the Drill shell. SQLLine connects to relational databases and executes SQL commands. You invoke SQLLine for Drill in embedded or distributed mode. If you want to use a particular storage plugin, you specify the plugin as a schema when you invoke SQLLine.</p>
-
-<h3 id="sqlline-command-syntax-on-linux-and-mac-os-x">SQLLine Command Syntax on Linux and Mac OS X</h3>
-
-<p>To start SQLLine, use the following <strong>sqlline command</strong> syntax:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">sqlline –u jdbc:drill:[schema=&lt;storage plugin&gt;;]zk=&lt;zk name&gt;[:&lt;port&gt;][,&lt;zk name2&gt;[:&lt;port&gt;]... ]
-</code></pre></div>
-<h4 id="sqlline-arguments">sqlline Arguments</h4>
-
-<ul>
-<li><code>-u</code> is the option that precedes a connection string. Required.<br></li>
-<li><code>jdbc</code> is the connection protocol. Required.<br></li>
-<li><code>schema</code> is the name of a <a href="/docs/storage-plugin-registration">storage plugin</a> to use for queries. Optional.<br></li>
-<li><code>Zk=zkname</code> is one or more zookeeper host names or IP addresses, or the keyword <code>local</code>, which is an alias for localhost. Required.<br></li>
-<li><code>port</code> is the zookeeper port number. Optional. Port 2181 is the default.<br></li>
-</ul>
-
-<h3 id="sqlline-command-syntax-on-windows">SQLLine Command Syntax on Windows</h3>
-
-<p>To start SQLLine on Windows, use the same syntax as Linux and Mac OS X, except enter the default user name and password (admin/admin) when prompted to do so.</p>
+          <p>How you start Drill depends on the installation method you followed. If you installed Drill in embedded mode, invoking SQLLine automatically starts a Drillbit locally. If you installed Drill in distributed mode, and the Drillbit on a node did not start, start the Drillbit before attempting to run queries. How to start Drill is covered in detail the section, <a href="/docs/install-drill/">&quot;Install Drill&quot;</a>.</p>
 
 <h2 id="examples-of-starting-drill">Examples of Starting Drill</h2>
 
 <p>Issue the <strong>sqlline</strong> command from the Drill installation directory. The simplest example of how to start SQLLine is to identify the protocol, JDBC, and zookeeper node or nodes in the <strong>sqlline</strong> command. This example starts SQLLine on a node in an embedded, single-node cluster:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">sqlline -u jdbc:drill:zk=local
 </code></pre></div>
-<p>This example also starts SQLLine in embedded mode using the <code>dfs</code> storage plugin. Specifying the storage plugin when you start up eliminates the need to specify the storage plugin in the query:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">bin/sqlline –u jdbc:drill:schema=dfs;zk=localhost
+<p>This example also starts SQLLine using the <code>dfs</code> storage plugin. Specifying the storage plugin when you start up eliminates the need to specify the storage plugin in the query:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">bin/sqlline –u jdbc:drill:schema=dfs;zk=centos26
 </code></pre></div>
 <p>This command starts SQLLine in distributed, (multi-node) mode in a cluster configured to run zookeeper on three nodes:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">bin/sqlline –u jdbc:drill:zk=cento23,zk=centos24,zk=centos26:5181

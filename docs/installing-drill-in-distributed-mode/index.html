@@ -215,26 +215,33 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/deploying-drill-in-a-cluster/">Deploying Drill in a Cluster</a></li>
-            
-          
-            
               <li class="toctree-l2"><a href="javascript: void(0);">Installing Drill in Embedded Mode</a></li>
               <ul style="display: none">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux/">Installing Drill on Linux</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-mac-os-x/">Installing Drill on Mac OS X</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-windows/">Installing Drill on Windows</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-windows/">Starting Drill on Windows</a></li>
               
             </ul>
             
           
             
-              <li class="toctree-l2 current"><a class="reference internal" href="/docs/installing-drill-in-distributed-mode/">Installing Drill in Distributed Mode</a></li>
+              <li class="toctree-l2 current"><a href="javascript: void(0);">Installing Drill in Distributed Mode</a></li>
+              <ul style="">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/distributed-mode-prerequisites/">Distributed Mode Prerequisites</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-the-cluster/">Installing Drill on the Cluster</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-in-distributed-mode/">Starting Drill in Distributed Mode</a></li>
+              
+            </ul>
             
           
           </ul>
@@ -805,72 +812,23 @@
 
       <div class="int_text" align="left">
         
-          <p>You can install Apache Drill in distributed mode on one or multiple nodes to
-run it in a clustered environment.</p>
-
-<p>To install Apache Drill in distributed mode, complete the following steps:</p>
-
-<ol>
-<li>Install Drill on each designated node in the cluster.</li>
-<li>Configure a cluster ID and add Zookeeper information.</li>
-<li>Connect Drill to your data sources. </li>
-<li>Start Drill.</li>
-</ol>
-
-<p><strong>Prerequisites</strong></p>
-
-<p>Before you install Apache Drill on nodes in your cluster, you must have the
-following software and services installed:</p>
-
-<ul>
-<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html">Oracle JDK version 7</a></li>
-<li>Configured and running ZooKeeper quorum</li>
-<li>Configured and running Hadoop cluster (Recommended)</li>
-<li>DNS (Recommended)</li>
-</ul>
-
-<h2 id="installing-drill">Installing Drill</h2>
-
-<p>Complete the following steps to install Drill on designated nodes:</p>
-
-<ol>
-<li><p>Download the Drill tarball.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">curl http://getdrill.org/drill/download/apache-drill-0.8.0.tar.gz
-</code></pre></div></li>
-<li><p>Issue the following command to create a Drill installation directory and then explode the tarball to the directory:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">mkdir /opt/drill
-tar xzf apache-drill-&lt;version&gt;.tar.gz --strip=1 -C /opt/drill
-</code></pre></div></li>
-<li><p>If you are using external JAR files, edit <code>drill-env.sh,</code>located in <code>/opt/drill/conf/</code>, and define <code>HADOOP_HOME:</code></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">export HADOOP_HOME=&quot;~/hadoop/hadoop-0.20.2/&quot;
-</code></pre></div></li>
-<li><p>In <code>drill-override.conf,</code> create a unique Drill <code>cluster ID</code>, and provide Zookeeper host names and port numbers to configure a connection to your Zookeeper quorum.</p>
-
-<ol>
-<li>Edit <code>drill-override.conf</code>located in <code>~/drill/drill-&lt;version&gt;/conf/</code>.</li>
-<li>Provide a unique <code>cluster-id</code> and the Zookeeper host names and port numbers in <code>zk.connect</code>. If you install Drill on multiple nodes, assign the same <code>cluster ID</code> to each Drill node so that all Drill nodes share the same ID. The default Zookeeper port is 2181.</li>
-</ol>
-
-<p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> drill.exec:{
-  cluster-id: &quot;&lt;mydrillcluster&gt;&quot;,
-  zk.connect: &quot;&lt;zkhostname1&gt;:&lt;port&gt;,&lt;zkhostname2&gt;:&lt;port&gt;,&lt;zkhostname3&gt;:&lt;port&gt;&quot;,
-  debug.error_on_leak: false,
-  buffer.size: 6,
- functions: [&quot;org.apache.drill.expr.fn.impl&quot;, &quot;org.apache.drill.udfs&quot;]
- }
-</code></pre></div></li>
-</ol>
-
-<p>You can connect Drill to various types of data sources. Refer to <a href="/docs/connect-a-data-source-introduction">Connect
-Apache Drill to Data Sources</a> to get configuration instructions for the
-particular type of data source that you want to connect to Drill.</p>
-
+          <ul>
+          
+            <li><a href="/docs/distributed-mode-prerequisites/">Distributed Mode Prerequisites</a></li>
+          
+        
+            <li><a href="/docs/installing-drill-on-the-cluster/">Installing Drill on the Cluster</a></li>
+          
+        
+            <li><a href="/docs/starting-drill-in-distributed-mode/">Starting Drill in Distributed Mode</a></li>
+          
+        
+        </ul>
       
         
           <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/installing-drill-on-windows/">← Installing Drill on Windows</a></span><span class="next-toc"><a href="/docs/connect-a-data-source/">Connect a Data Source →</a></span>
+  <span class="previous-toc"><a href="/docs/starting-drill-on-windows/">← Starting Drill on Windows</a></span><span class="next-toc"><a href="/docs/distributed-mode-prerequisites/">Distributed Mode Prerequisites →</a></span>
 </div>
 
       
