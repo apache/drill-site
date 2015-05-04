@@ -32,9 +32,13 @@ Apache project websites use a system called svnpubsub for publishing. Basically,
 git clone -b asf-site https://git-wip-us.apache.org/repos/asf/drill-site.git ../drill-site
 cp -R _site/* ../drill-site/
 cd ../drill-site
+git status
+git add *
+git commit -m "Website update"
+git push
 ```
 
-Then `svn add` and `svn rm` as needed, and commit the changes via `svn commit -m "Website update"`. Note that once changes are committed via `svn commit`, they will immediately be visible on the live site: <http://drill.apache.org>.
+The updates should then be live: <http://drill.apache.org>.
 
 # Documentation Guidelines
 
