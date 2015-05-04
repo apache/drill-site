@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Apache Drill - Self-Service Data Exploration</title>
+    <description>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+</description>
+    <link>/</link>
+    <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 04 May 2015 10:45:10 -0700</pubDate>
+    <lastBuildDate>Mon, 04 May 2015 10:45:10 -0700</lastBuildDate>
+    <generator>Jekyll v2.5.1</generator>
+    
+      <item>
+        <title>Drill 0.9 Released</title>
+        <description>&lt;p&gt;It has been about a month since the release of Drill 0.8, which included &lt;a href=&quot;/blog/drill-0.8-released/&quot;&gt;more than 240 improvements&lt;/a&gt;. Today we&amp;#39;re happy to announce the availability of Drill 0.9, providing additional enhancements and bug fixes. In fact, this release includes &lt;a href=&quot;https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12313820&amp;amp;version=12328813&quot;&gt;200 resolved JIRAs&lt;/a&gt;. Some of the noteworthy features in Drill 0.9 are:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Authentication&lt;/strong&gt; (&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-2674&quot;&gt;DRILL-2674&lt;/a&gt;). Drill now supports username/password authentication through the Java and C++ clients, as well as JDBC and ODBC. On the server-side, Drill leverages Linux PAM to securely validate the credentials. Users can choose to use an external user directory such as Active Directory or LDAP. To enable authentication, set the &lt;code&gt;security.user.auth&lt;/code&gt; option in &lt;code&gt;drill-override.conf&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Impersonation&lt;/strong&gt; (&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-2363&quot;&gt;DRILL-2363&lt;/a&gt;). Queries now execute and access resources using the identity of the user who submitted the query. Previously, all queries would run as the same user (eg, &lt;code&gt;drill&lt;/code&gt;). With the new impersonation capability, the query will fail if the submitting user does not have permission to read the requested file(s) in the distributed file system. To enable impersonation, set the &lt;code&gt;drill.exec.impersonation&lt;/code&gt; option in &lt;code&gt;drill-override.conf&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Ownership chaining&lt;/strong&gt;. Drill now allows views with different owners to be chained. This represents a very flexible access control solution. For example, an administrator with access to raw, sensitive data could create a view called &lt;code&gt;masked&lt;/code&gt; which would expose only a subset of the data to other users. The administrator would enable users to read the &lt;code&gt;masked&lt;/code&gt; view but not the raw data. Note that Drill provides an option &lt;code&gt;max_chained_user_hops&lt;/code&gt; that specifies how many ownership changed are allowed in a chain, thereby providing administrators (or data stewards) more control over sharing of data.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;MongoDB authentication&lt;/strong&gt; (&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-1502&quot;&gt;DRILL-1502&lt;/a&gt;). Drill can now connect to a MongoDB cluster that requires authentication.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Extended JSON datatypes&lt;/strong&gt;. Our friends at MongoDB invented &lt;a href=&quot;http://docs.mongodb.org/manual/reference/mongodb-extended-json/&quot;&gt;extended JSON&lt;/a&gt; - a set of extensions to the JSON format for supporting additional data types. We decided to embrace extended JSON in Drill. For example, standard JSON doesn&amp;#39;t have a time type, so a time could be represented as either a string or a number: &lt;code&gt;{&amp;quot;foo&amp;quot;: &amp;quot;19:20:30.450Z&amp;quot;}&lt;/code&gt; is just a string. With extended JSON, the &lt;code&gt;$time&lt;/code&gt; qualifier can be used to specify that &lt;code&gt;foo&lt;/code&gt; is a time &lt;code&gt;{&amp;quot;foo&amp;quot;: {&amp;quot;$time&amp;quot;: &amp;quot;19:20:30.450Z&amp;quot;}}&lt;/code&gt;.
+We now support a number of qualifiers including &lt;code&gt;$bin&lt;/code&gt;, &lt;code&gt;$date&lt;/code&gt;, &lt;code&gt;$time&lt;/code&gt;, &lt;code&gt;$interval&lt;/code&gt;, &lt;code&gt;$numberLong&lt;/code&gt; and &lt;code&gt;$dateDay&lt;/code&gt; (see &lt;a href=&quot;https://github.com/apache/drill/blob/master/exec/java-exec/src/test/resources/vector/complex/extended.json&quot;&gt;the example&lt;/a&gt;). We&amp;#39;re in the process of adding some additional qualifiers to make sure that all of MongoDB&amp;#39;s extended types are supported (this is particularly important when querying data in MongoDB).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Avro support&lt;/strong&gt; (&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-1512&quot;&gt;DRILL-1512&lt;/a&gt;). Drill can now read Avro files. This patch was contributed by Andrew Selden at Elastic.co (formerly known as Elasticsearch).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Improved error messages&lt;/strong&gt; (&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-2675&quot;&gt;DRILL-2675&lt;/a&gt; and more). It can be challenging for a complex distributed system like Drill to translate low-level internal conditions into actionable messages to the user. This release includes several enhancements that enable Drill to accomplish just that in a variety of cases.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Parquet and Calcite enhancements&lt;/strong&gt; (&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-1410&quot;&gt;DRILL-1410&lt;/a&gt; and &lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-1384&quot;&gt;DRILL-1384&lt;/a&gt;). Drill isn&amp;#39;t a traditional query engine - it&amp;#39;s the first analytical query engine with a JSON data model. This has required us to enhance Parquet (our columnar format) and Calcite (our SQL parser). These enhancements have now been contributed back to those projects, and Drill is using the latest versions which include these enhancements.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;New sys tables for memory and thread information&lt;/strong&gt; (&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-2275&quot;&gt;DRILL-2275&lt;/a&gt;). Drill includes two new &lt;code&gt;sys&lt;/code&gt; tables that provide real-time metrics about memory utilization and threads on each of the nodes in the cluster. You can run a simple &lt;code&gt;SELECT *&lt;/code&gt; to see what information is available:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sql&quot; data-lang=&quot;sql&quot;&gt;&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;drillmemory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;drillbitthreads&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Support for very wide tables&lt;/strong&gt; (&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-2739&quot;&gt;DRILL-2739&lt;/a&gt;). Drill previously had some issues with tables that had more than 4095 colums. This limitation has been addressed.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You can now &lt;a href=&quot;/download/&quot;&gt;download Drill 0.9&lt;/a&gt;. As always, you can check out the official &lt;a href=&quot;/docs/release-notes/&quot;&gt;release notes&lt;/a&gt; for more details.&lt;/p&gt;
+
+&lt;p&gt;We&amp;#39;re gearing up for Drill&amp;#39;s 1.0 release later this month. Stay tuned!&lt;/p&gt;
+
+&lt;p&gt;Happy Drilling!&lt;br&gt;
+Tomer Shiran and Jacques Nadeau&lt;/p&gt;
+</description>
+        <pubDate>Mon, 04 May 2015 00:00:00 -0700</pubDate>
+        <link>/blog/2015/05/04/drill-0.9-released/</link>
+        <guid isPermaLink="true">/blog/2015/05/04/drill-0.9-released/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Apache Parquet Graduates to a Top-Level Project</title>
+        <description>&lt;p&gt;It&amp;#39;s an exciting day. Apache Parquet, the de-facto standard columnar format for Hadoop, has graduated to an Apache top-level project.&lt;/p&gt;
+
+&lt;p&gt;The Drill project supports a variety of file formats, but Parquet is the highest performing format, and it&amp;#39;s the one we recommend to anyone who wants to maximize the performance of their queries. We&amp;#39;ve had the pleasure of working closely with the Parquet community for over two years, and it&amp;#39;s exciting to see how much the project has evolved.&lt;/p&gt;
+
+&lt;p&gt;We&amp;#39;ve made a number of contributions to the project, including support for self-describing data. We just implemented off-heap memory management for the Parquet readers and writers, which will improve Parquet&amp;#39;s memory handling. (This enhancement will be available in Parquet 1.8.)&lt;/p&gt;
+
+&lt;p&gt;I wanted to congratulate Twitter&amp;#39;s Julien Le Dem (&lt;a href=&quot;https://twitter.com/j_&quot;&gt;@j_&lt;/a&gt;), VP of Apache Parquet, and the entire Parquet community on the graduation milestone. Oh, and how can I get a two-letter Twitter handle?&lt;/p&gt;
+
+&lt;p&gt;Happy Drilling!&lt;br&gt;
+Tomer Shiran&lt;/p&gt;
+</description>
+        <pubDate>Thu, 30 Apr 2015 00:00:00 -0700</pubDate>
+        <link>/blog/2015/04/30/apache-parquet-graudates-to-a-top-level-project/</link>
+        <guid isPermaLink="true">/blog/2015/04/30/apache-parquet-graudates-to-a-top-level-project/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Drill 0.8 Released</title>
+        <description>&lt;p&gt;We&amp;#39;re excited to announce that the community has just released Drill 0.8, which includes &lt;a href=&quot;https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12313820&amp;amp;version=12328812&quot;&gt;243 resolved JIRAs&lt;/a&gt; and numerous enhancements such as: &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Bytecode rewriting&lt;/strong&gt;. Drill now leverages code optimization techniques such as bytecode rewriting and inlining to enhance the speed of many queries by reducing overall memory usage and CPU instructions.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Advanced partition pruning&lt;/strong&gt;. Drill can now prune partitions based on arbitrarily complex expressions. For example, specify &lt;code&gt;WHERE dir0 LIKE &amp;#39;2015-%&amp;#39;&lt;/code&gt; and your query will look inside the directory &amp;quot;2015-01&amp;quot; but not inside &amp;quot;2014-12&amp;quot;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Real-time query diagnostics&lt;/strong&gt;. You can now see exactly what your queries are doing in real-time, making it easy to troubleshoot, optimize and manage execution.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Large records, large # of files&lt;/strong&gt;. Drill was previously limited to small records of up to 128KB. It now supports records of any size. In addition, query performance has been improved when dealing with large numbers of files thanks to a variety of optimizations such as parallel metadata reads.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;More SQL&lt;/strong&gt;. Drill now features complete support for &lt;code&gt;UNION ALL&lt;/code&gt; and &lt;code&gt;COUNT(DISTINCT)&lt;/code&gt;. Drill 0.8 also includes new functions such as &lt;code&gt;unix_timestamp&lt;/code&gt; and the window functions &lt;code&gt;sum&lt;/code&gt;, &lt;code&gt;count&lt;/code&gt; and &lt;code&gt;rank&lt;/code&gt;. Note that these window functions should be considered beta.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Better compression&lt;/strong&gt;. Drill can now query compressed JSON files. In addition, the user can control Parquet compression in CTAS (&lt;code&gt;CREATE TABLE AS&lt;/code&gt;) statements.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Performance&lt;/strong&gt;. Drill 0.8 includes broadcast joins, disk-based joins, parallel metadata reads and many other performance-related enhancements.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Reliability&lt;/strong&gt;. Drill 0.8 includes a variety of fixes that improve the stability of the drillbit daemon, the sqlline shell and the ODBC and JDBC drivers.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;HBase 0.98 support&lt;/strong&gt;. You can now run SQL queries on any HBase 0.98 table.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You can now &lt;a href=&quot;/download/&quot;&gt;download Drill 0.8&lt;/a&gt;. As always, you may check out the official &lt;a href=&quot;https://cwiki.apache.org/confluence/display/DRILL/Release+Notes&quot;&gt;release notes&lt;/a&gt; for more details.&lt;/p&gt;
+
+&lt;p&gt;Happy Drilling!&lt;br&gt;
+Tomer Shiran and Jacques Nadeau&lt;/p&gt;
+</description>
+        <pubDate>Tue, 31 Mar 2015 00:00:00 -0700</pubDate>
+        <link>/blog/2015/03/31/drill-0.8-released/</link>
+        <guid isPermaLink="true">/blog/2015/03/31/drill-0.8-released/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>MicroStrategy Announces Drill Support</title>
+        <description>&lt;p&gt;Today MicroStrategy  &lt;a href=&quot;http://ir.microstrategy.com/releasedetail.cfm?ReleaseID=902795&quot;&gt;announced&lt;/a&gt; that it has certified its platform with Apache Drill. According to MicroStrategy&amp;#39;s CTO, Tim Lang, Drill reduces the time-to-value for MicroStrategy users, and enables them to leverage multi-structured data.&lt;/p&gt;
+
+&lt;p&gt;Many early adopters of Drill have been interested in leveraging MicroStrategy&amp;#39;s powerful BI platform. With it&amp;#39;s first-class support for self-describing data and evolving structure, Drill enables MicroStrategy users to explore and analyze the data in Hadoop and NoSQL databases without the usual friction that comes with having to define and manage schemas.&lt;/p&gt;
+
+&lt;p&gt;If you would like to learn more about this integration, &lt;a href=&quot;http://info.microstrategy.com/accessing-multi-structured-data-sources&quot;&gt;sign up&lt;/a&gt; for MicroStrategy&amp;#39;s webinar next month, which includes a live demo of the integration with Drill.&lt;/p&gt;
+
+&lt;p&gt;Happy Drilling!&lt;br&gt;
+Tomer Shiran&lt;/p&gt;
+</description>
+        <pubDate>Mon, 23 Mar 2015 00:00:00 -0700</pubDate>
+        <link>/blog/2015/03/23/microstrategy-announces-drill-support/</link>
+        <guid isPermaLink="true">/blog/2015/03/23/microstrategy-announces-drill-support/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Schema-free JSON Data Infrastructure</title>
+        <description>&lt;p&gt;JSON has emerged in recent years as the de-facto standard data exchange format. It is being used everywhere. Front-end Web applications use JSON to maintain data and communicate with back-end applications. Web APIs are JSON-based (eg, &lt;a href=&quot;https://dev.twitter.com/rest/public&quot;&gt;Twitter REST APIs&lt;/a&gt;, &lt;a href=&quot;http://developers.marketo.com/documentation/rest/&quot;&gt;Marketo REST APIs&lt;/a&gt;, &lt;a href=&quot;https://developer.github.com/v3/&quot;&gt;GitHub API&lt;/a&gt;). It&amp;#39;s the format of choice for public datasets, operational log files and more.&lt;/p&gt;
+
+&lt;h1 id=&quot;why-is-json-a-convenient-data-exchange-format?&quot;&gt;Why is JSON a Convenient Data Exchange Format?&lt;/h1&gt;
+
+&lt;p&gt;While I won&amp;#39;t dive into the historical roots of JSON (JavaScript Object Notation, &lt;a href=&quot;http://en.wikipedia.org/wiki/JSON#JavaScript_eval.28.29&quot;&gt;&lt;code&gt;eval()&lt;/code&gt;&lt;/a&gt;, etc.), I do want to highlight several attributes of JSON that make it a convenient data exchange format:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;JSON is self-describing&lt;/strong&gt;. You can look at a JSON document and understand what it represents. The field names are included in the document. You don&amp;#39;t need an external schema or definition to interpret JSON-encoded data. This makes life easier for anyone who wants to deal with the data, and it also means that a collection of JSON documents represents what many people call a &amp;quot;schema-less dataset&amp;quot; (where structure can evolve, and different records can have different fields).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;JSON is simple&lt;/strong&gt;. Other self-describing formats such as XML are much more complicated. A JSON document is made up of arrays and maps (or objects, in JSON terminology), and that&amp;#39;s about it.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;JSON can naturally represent real-world objects&lt;/strong&gt;. Try representing your application&amp;#39;s &lt;code&gt;Customer&lt;/code&gt; object (with the person&amp;#39;s address, order history, etc.) in a CSV file or a relational database. It&amp;#39;s hard. In fact, ORM systems were invented to help alleviate this issue.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;JSON libraries are available in virtually every programming language&lt;/strong&gt;. Take a look at &lt;a href=&quot;http://www.json.org/&quot;&gt;the list of supported languages on JSON.org&lt;/a&gt;. I counted 15 languages that start with the letters A, B or C.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;JSON is idiomatic in loosely typed languages&lt;/strong&gt;. Many loosely typed languages, such as Python, Ruby and JavaScript, have data structures that are similar to JSON objects, making it very natural to handle JSON data in those languages. For example, a Python dictionary looks just like a JSON object. This makes it easy for developers to utilize JSON in their applications.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;json-data-infrastructure&quot;&gt;JSON Data Infrastructure&lt;/h1&gt;
+
+&lt;p&gt;Traditional data infrastructure, such as relational databases, has some features that make it easier to store and process JSON-encoded data. For example, Oracle has &lt;a href=&quot;https://docs.oracle.com/database/121/ADXDB/json.htm&quot;&gt;a JSON data type and a set of functions for handling JSON data&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;However, a new class of data infrastructure is providing a much more seamless experience via a full-fledged JSON data model. For example:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Drill is a SQL engine in which each record is conceptually a JSON document.&lt;/li&gt;
+&lt;li&gt;Elasticsearch is a search engine in which each indexed document is conceptually a JSON document.&lt;/li&gt;
+&lt;li&gt;MongoDB is an operational database in which each record is conceptually a JSON document.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;These systems view JSON as a data model as opposed to one of many data types, realizing that JSON offers a simple way to represent real-world objects.&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;Traditional Infrastructure&lt;/th&gt;
+&lt;th&gt;JSON Infrastructure&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Examples:&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Oracle, SQL Server&lt;/td&gt;
+&lt;td&gt;Drill, Elasticsearch, MongoDB&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Record:&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Tuple&lt;/td&gt;
+&lt;td&gt;JSON document&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Variable schema:&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;No&lt;/td&gt;
+&lt;td&gt;Yes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;If you happen to be in the Bay Area tomorrow, please join Gaurav Gupta (VP Product Management, Elasticsearch), Paul Pedersen (Deputy CTO, MongoDB), Robert Greene (Senior Principal Product Manager, Oracle), Sukanta Ganguly (VP Solutions Architecture, Aerospike) and me for a panel moderated by Gartner&amp;#39;s Nick Heudecker on this new world of schema-free JSON. Check out &lt;a href=&quot;http://www.meetup.com/SF-Bay-Areas-Big-Data-Think-Tank/&quot;&gt;The Hive Big Data Think Tank&lt;/a&gt; for more information.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 27 Jan 2015 00:50:01 -0800</pubDate>
+        <link>/blog/2015/01/27/schema-free-json-data-infrastructure/</link>
+        <guid isPermaLink="true">/blog/2015/01/27/schema-free-json-data-infrastructure/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Drill 0.7 Released</title>
+        <description>&lt;p&gt;I&amp;#39;m excited to announce that the community has just released Drill 0.7, which includes &lt;a href=&quot;https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12313820&amp;amp;version=12327473&quot;&gt;228 resolved JIRAs&lt;/a&gt; and numerous enhancements such as: &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;No dependency on UDP multicast. Drill can now work on EC2, as well as clusters with multiple subnets or multihomed configurations&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://cwiki.apache.org/confluence/display/DRILL/Partition+Pruning&quot;&gt;Automatic partition pruning&lt;/a&gt; based on directory structures&lt;/li&gt;
+&lt;li&gt;New nested data functions: &lt;a href=&quot;https://cwiki.apache.org/confluence/display/DRILL/KVGEN+Function&quot;&gt;KVGEN&lt;/a&gt; and &lt;a href=&quot;https://cwiki.apache.org/confluence/display/DRILL/FLATTEN+Function&quot;&gt;FLATTEN&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Fast &amp;quot;schema&amp;quot; return. This provides a better experience when using BI tools&lt;/li&gt;
+&lt;li&gt;Hive 0.13 Metastore support&lt;/li&gt;
+&lt;li&gt;Improved performance for queries on JSON data&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You can now &lt;a href=&quot;/download/&quot;&gt;download Drill 0.7&lt;/a&gt;. As always, you may check out the official &lt;a href=&quot;https://cwiki.apache.org/confluence/display/DRILL/Release+Notes&quot;&gt;release notes&lt;/a&gt; for more details.&lt;/p&gt;
+
+&lt;p&gt;In case you&amp;#39;re interested in understanding more about where we&amp;#39;re heading, check out Tomer&amp;#39;s recent blog post outlining some of the &lt;a href=&quot;/blog/2014/12/16/whats-coming-in-2015/&quot;&gt;planned initiatives for 2015&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Happy Drilling!&lt;br&gt;
+Jacques Nadeau&lt;/p&gt;
+</description>
+        <pubDate>Tue, 23 Dec 2014 00:00:00 -0800</pubDate>
+        <link>/blog/2014/12/23/drill-0.7-released/</link>
+        <guid isPermaLink="true">/blog/2014/12/23/drill-0.7-released/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>What&#39;s Coming in 2015?</title>
+        <description>&lt;p&gt;2014 was an exciting year for the Drill community. In August we made Drill available for downloads, and last week the Apache Software Foundation promoted Drill to a top-level project. Many of you have asked me what&amp;#39;s coming next, so I decided to sit down and outline some of the interesting initiatives that the Drill community is currently working on:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Flexible Access Control&lt;/li&gt;
+&lt;li&gt;JSON in Any Shape or Form&lt;/li&gt;
+&lt;li&gt;Advanced SQL&lt;/li&gt;
+&lt;li&gt;New Data Sources&lt;/li&gt;
+&lt;li&gt;Drill/Spark Integration&lt;/li&gt;
+&lt;li&gt;Operational Enhancements: Speed, Scalability and Workload Management&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is by no means intended to be an exhaustive list of everything that will be added to Drill in 2015. With Drill&amp;#39;s rapidly expanding community, I anticipate that you&amp;#39;ll see a whole lot more.&lt;/p&gt;
+
+&lt;h2 id=&quot;flexible-access-control&quot;&gt;Flexible Access Control&lt;/h2&gt;
+
+&lt;p&gt;Many organizations are now interested in providing Drill as a service to their users, supporting many users, groups and organizations with a single cluster. To do so, they need to be able to control who can access what data. Today&amp;#39;s volume and variety of data requires a new approach to access control. For example, it is becoming impractical for organizations to manage a standalone, centralized repository of permissions for every column/row of every table. Drill&amp;#39;s virtual datasets (views) provide a more scalable solution to access control:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The user creates a virtual dataset (&lt;code&gt;CREATE VIEW vd AS SELECT ...&lt;/code&gt;), selecting the data to be exposed/shared. The virtual dataset is defined as a SQL statement. For example, a virtual dataset may represent only the records that were created in the last 30 days and don&amp;#39;t have the &lt;code&gt;restricted&lt;/code&gt; flag. It could even mask some columns. Drill&amp;#39;s virtual datasets (just the SQL statement) are stored as files in the file system, so users can leverage file system permissions to control who can access the virtual dataset, without granting access to the source data.&lt;/li&gt;
+&lt;li&gt;A virtual dataset is owned by a specific user and can only &amp;quot;select&amp;quot; data that the owner has access to. The data sources (HDFS, HBase, MongoDB, etc.) are responsible for access control decisions. Users and administrators do not need to define separate permissions inside Drill or utilize yet another centralized permission repository, such as Sentry and Ranger.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;json-in-any-shape-or-form&quot;&gt;JSON in Any Shape or Form&lt;/h2&gt;
+
+&lt;p&gt;When data is &lt;strong&gt;Big&lt;/strong&gt; (as in Big Data), it is painful to copy and transform it. Users should be able to explore the raw data without (or at least prior to) transforming it into another format. Drill is designed to enable in-situ analytics. Just point it at a file or directory and run the queries.&lt;/p&gt;
+
+&lt;p&gt;JSON has emerged as the most common self-describing format, and Drill is able to query JSON files out of the box. Drill currently assumes that the JSON documents (or records) are stored sequentially in a file:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Lee&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;quot;yelping_since&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;2012-02&amp;quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Matthew&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;quot;yelping_since&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;2011-12&amp;quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Jasmine&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;quot;yelping_since&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;2010-09&amp;quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;However, many JSON-based datasets, ranging from &lt;a href=&quot;http://data.gov&quot;&gt;data.gov&lt;/a&gt; (government) datasets to Twitter API responses, are not organized as simple sequences of JSON documents. In some cases the actual records are listed as elements of an internal array inside a single JSON document. For example, consider the following file, which technically consists of a single JSON document, but really contains three records (under the &lt;code&gt;data.records&lt;/code&gt; field):&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;metadata&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;data&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;quot;records&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Lee&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;quot;yelping_since&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;2012-02&amp;quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Matthew&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;quot;yelping_since&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;2011-12&amp;quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Jasmine&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;quot;yelping_since&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;2010-09&amp;quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The &lt;code&gt;FLATTEN&lt;/code&gt; function in Drill 0.7+ takes an array and converts each item into a top-level record:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sql&quot; data-lang=&quot;sql&quot;&gt;&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FLATTEN&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;records&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dfs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;json&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can use this as an inner query (or inside a view):&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sql&quot; data-lang=&quot;sql&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FLATTEN&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;records&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;AS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;record&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dfs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;json&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;------------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;------------+&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Lee&lt;/span&gt;        &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Matthew&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Jasmine&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;------------+&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;While this works today, the dataset is technically a single JSON document, so Drill ends up reading the entire dataset into memory. We&amp;#39;re developing a FLATTEN-pushdown mechanism that will enable the JSON reader to emit the individual records into the downstream operators, thereby making this work with datasets of arbitrary size. Once that&amp;#39;s implemented, users will be able to explore any JSON-based dataset in-situ (ie, without having to transform it).&lt;/p&gt;
+
+&lt;h2 id=&quot;full-sql&quot;&gt;Full SQL&lt;/h2&gt;
+
+&lt;p&gt;Unlike the majority of SQL engines for Hadoop and NoSQL databases, which support SQL-like languages (HiveQL, CQL, etc.), Drill is designed from the ground up to be compliant with ANSI SQL. We simply started with a real SQL parser (Apache Calcite, previously known as Optiq). We&amp;#39;re currently implementing the remaining SQL constructs, and plan to support the full TPC-DS suite (with no query modifications) in 2015. Full SQL support makes BI tools work better, and enables users who are proficient with SQL to leverage their existing knowledge and skills.&lt;/p&gt;
+
+&lt;h2 id=&quot;new-data-sources&quot;&gt;New Data Sources&lt;/h2&gt;
+
+&lt;p&gt;Drill is a standalone, distributed SQL engine. It has a pluggable architecture that allows it to support multiple data sources. Drill 0.6 includes storage plugins for:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://hadoop.apache.org/docs/current/api/org/apache/hadoop/fs/FileSystem.html&quot;&gt;Hadoop File System&lt;/a&gt; implementations (local file system, HDFS, MapR-FS, Amazon S3, etc.)&lt;/li&gt;
+&lt;li&gt;HBase and MapR-DB&lt;/li&gt;
+&lt;li&gt;MongoDB&lt;/li&gt;
+&lt;li&gt;Hive Metastore (query any dataset that is registered in Hive Metastore)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A single query can join data from different systems. For example, a query can join user profiles in MongoDB with log files in Hadoop, or datasets in multiple Hadoop clusters.&lt;/p&gt;
+
+&lt;p&gt;I&amp;#39;m eager to see what storage plugins the community develops over the next 12 months. In the last few weeks alone, developers in the community have expressed their desire (on the &lt;a href=&quot;mailto:dev@drill.apache.org&quot;&gt;public list&lt;/a&gt;) to develop additional storage plugins for the following data sources:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Cassandra&lt;/li&gt;
+&lt;li&gt;Solr&lt;/li&gt;
+&lt;li&gt;JDBC (any RDBMS, including Oracle, MySQL, PostgreSQL and SQL Server)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you&amp;#39;re interested in implementing a new storage plugin, I would encourage you to reach out to the Drill developer community on &lt;a href=&quot;mailto:dev@drill.apache.org&quot;&gt;dev@drill.apache.org&lt;/a&gt;. I&amp;#39;m looking forward to publishing an example of a single-query join across 10 data sources.&lt;/p&gt;
+
+&lt;h2 id=&quot;drill/spark-integration&quot;&gt;Drill/Spark Integration&lt;/h2&gt;
+
+&lt;p&gt;We&amp;#39;re seeing growing interest in Spark as an execution engine for data pipelines, providing an alternative to MapReduce. The Drill community is working on integrating Drill and Spark to address a few new use cases:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Use a Drill query (or view) as the input to Spark. Drill is a powerful engine for extracting and pre-processing data from various data sources, thereby reducing development time and effort. Here&amp;#39;s an example:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-scala&quot; data-lang=&quot;scala&quot;&gt;&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sc&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SparkContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;conf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;drillRDD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;SELECT * FROM dfs.root.`path/to/logs` l, mongo.mydb.users u WHERE l.user_id = u.id GROUP BY ...&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;formatted&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;first&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;last&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;visits&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;first&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;last&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;visits&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;$first $last $visits&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Use Drill to query Spark RDDs. Analysts will be able to use BI tools like MicroStrategy, Spotfire and Tableau to query in-memory data in Spark. In addition, Spark developers will be able to embed Drill execution in a Spark data pipeline, thereby enjoying the power of Drill&amp;#39;s schema-free, columnar execution engine.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;operational-enhancements&quot;&gt;Operational Enhancements&lt;/h2&gt;
+
+&lt;p&gt;As we continue with our monthly releases and march towards the 1.0 release early next year, we&amp;#39;re focused on improving Drill&amp;#39;s speed and scalability. We&amp;#39;ll also enhance Drill&amp;#39;s multi-tenancy with more advanced workload management.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Speed&lt;/strong&gt;: Drill is already extremely fast, and we&amp;#39;re going to make it even faster over the next few months. With that said, we think that improving user productivity and time-to-insight is as important as shaving a few milliseconds off a query&amp;#39;s runtime.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Scalability&lt;/strong&gt;: To date we&amp;#39;ve focused mainly on clusters of up to a couple hundred nodes. We&amp;#39;re currently working to support clusters with thousands of nodes. We&amp;#39;re also improving concurrency to better support deployments in which hundreds of analysts or developers are running queries at the same time.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Workload management&lt;/strong&gt;: A single cluster is often shared among many users and groups, and everyone expects answers in real-time. Workload management prioritizes the allocation of resources to ensure that the most important workloads get done first so that business demands can be met. Administrators need to be able to assign priorities and quotas at a fine granularity. We&amp;#39;re working on enhancing Drill&amp;#39;s workload management to provide these capabilities while providing tight integration with YARN and Mesos.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;we-would-love-to-hear-from-you!&quot;&gt;We Would Love to Hear From You!&lt;/h2&gt;
+
+&lt;p&gt;Are there other features you would like to see in Drill? We would love to hear from you:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Drill users: &lt;a href=&quot;mailto:user@drill.apache.org&quot;&gt;user@drill.apache.org&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Drill developers: &lt;a href=&quot;mailto:dev@drill.apache.org&quot;&gt;dev@drill.apache.org&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Me: &lt;a href=&quot;mailto:tshiran@apache.org&quot;&gt;tshiran@apache.org&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Happy Drilling!&lt;br&gt;
+Tomer Shiran&lt;/p&gt;
+</description>
+        <pubDate>Tue, 16 Dec 2014 00:00:00 -0800</pubDate>
+        <link>/blog/2014/12/16/whats-coming-in-2015/</link>
+        <guid isPermaLink="true">/blog/2014/12/16/whats-coming-in-2015/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Apache Drill Q&amp;A Panelist Spotlight</title>
+        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;https://addthisevent.com/libs/1.5.8/ate.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;a href=&quot;/blog/2014/12/11/apache-drill-qa-panelist-spotlight/&quot; title=&quot;Add to Calendar&quot; class=&quot;addthisevent&quot;&gt;
+    Add to Calendar
+    &lt;span class=&quot;_start&quot;&gt;12-17-2014 11:30:00&lt;/span&gt;
+    &lt;span class=&quot;_end&quot;&gt;12-17-2014 12:30:00&lt;/span&gt;
+    &lt;span class=&quot;_zonecode&quot;&gt;6&lt;/span&gt;
+    &lt;span class=&quot;_summary&quot;&gt;Apache Drill - Live Q&amp;amp;A on Twitter&lt;/span&gt;
+    &lt;span class=&quot;_description&quot;&gt;Join us on Twitter for a one-hour, live SQL-on-Hadoop Q&amp;amp;A. Use the &lt;strong&gt;hashtag #DrillQA&lt;/strong&gt; so the panelists can engage with your questions and comments. Apache Drill committers Tomer Shiran, Jacques Nadeau, and Ted Dunning, as well as Tableau Product Manager Jeff Feng and Data Scientist Dr. Kirk Borne will be on hand to answer your questions.&lt;/span&gt;
+    &lt;span class=&quot;_location&quot;&gt;Twitter: #DrillQA&lt;/span&gt;
+    &lt;span class=&quot;_organizer&quot;&gt;Tomer Shiran&lt;/span&gt;
+    &lt;span class=&quot;_organizer_email&quot;&gt;&lt;a href=&quot;mailto:tshiran@apache.org&quot;&gt;tshiran@apache.org&lt;/a&gt;&lt;/span&gt;
+    &lt;span class=&quot;_all_day_event&quot;&gt;false&lt;/span&gt;
+    &lt;span class=&quot;_date_format&quot;&gt;MM-DD-YYYY&lt;/span&gt;
+&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Hadoop has always been a powerful platform, but it is even more so with the release of Apache Drill, a valuable technology for self-service data exploration on big data. For BI users, this is really exciting news. &lt;/p&gt;
+
+&lt;p&gt;With Apache Drill, you can immediately query complex data in native formats, such as schema-less data, nested data, and data with rapidly-evolving schemas. And with analytic tools likes Tableau, you can easily create queries, build dashboards and explore data. &lt;/p&gt;
+
+&lt;p&gt;Want to learn how to leverage Apache Drill in order to get better analytical insights? &lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Join us on Twitter&lt;/strong&gt; for a one-hour, live SQL-on-Hadoop Q&amp;amp;A, next &lt;strong&gt;Wednesday, December 17th starting at 11:30am PST, 2:30pm EST&lt;/strong&gt;. Use the &lt;strong&gt;hashtag #DrillQA&lt;/strong&gt; so the panelists can engage with your questions and comments.&lt;/p&gt;
+
+&lt;p&gt;Apache Drill committers Tomer Shiran, Jacques Nadeau, and Ted Dunning, as well as Tableau Product Manager Jeff Feng and Data Scientist Dr. Kirk Borne will be on hand to answer your questions.&lt;/p&gt;
+
+&lt;h4 id=&quot;tomer-shiran,-apache-drill-founder-(@tshiran)&quot;&gt;Tomer Shiran, Apache Drill Founder (@tshiran)&lt;/h4&gt;
+
+&lt;p&gt;Tomer Shiran is the founder of Apache Drill, and a PMC member and committer on the project. He is VP Product Management at MapR, responsible for product strategy, roadmap and new feature development. Prior to MapR, Tomer held numerous product management and engineering roles at Microsoft, most recently as the product manager for Microsoft Internet Security &amp;amp; Acceleration Server (now Microsoft Forefront). He is the founder of two websites that have served tens of millions of users, and received coverage in prestigious publications such as The New York Times, USA Today and The Times of London. Tomer is also the author of a 900-page programming book. He holds an MS in Computer Engineering from Carnegie Mellon University and a BS in Computer Science from Technion - Israel Institute of Technology.&lt;/p&gt;
+
+&lt;h4 id=&quot;jeff-feng,-product-manager-tableau-software-(@jtfeng)&quot;&gt;Jeff Feng, Product Manager Tableau Software (@jtfeng)&lt;/h4&gt;
+
+&lt;p&gt;Jeff Feng is a Product Manager at Tableau and leads their Big Data product roadmap &amp;amp; strategic vision.  In his role, he focuses on joint technology integration and partnership efforts with a number of Hadoop, NoSQL and web application partners in helping users see and understand their data.&lt;/p&gt;
+
+&lt;h4 id=&quot;ted-dunning,-apache-drill-comitter-(@ted_dunning)&quot;&gt;Ted Dunning, Apache Drill Comitter (@Ted_Dunning)&lt;/h4&gt;
+
+&lt;p&gt;Ted Dunning is Chief Applications Architect at MapR Technologies and committer and PMC member of the Apache Mahout, Apache ZooKeeper, and Apache Drill projects and mentor for Apache Storm. He contributed to Mahout clustering, classification and matrix decomposition algorithms  and helped expand the new version of Mahout Math library. Ted was the chief architect behind the MusicMatch (now Yahoo Music) and Veoh recommendation systems, he built fraud detection systems for ID Analytics (LifeLock) and he has issued 24 patents to date. Ted has a PhD in computing science from University of Sheffield. When he’s not doing data science, he plays guitar and mandolin.&lt;/p&gt;
+
+&lt;h4 id=&quot;jacques-nadeau,-vice-president,-apache-drill-(@intjesus)&quot;&gt;Jacques Nadeau, Vice President, Apache Drill (@intjesus)&lt;/h4&gt;
+
+&lt;p&gt;Jacques Nadeau leads Apache Drill development efforts at MapR Technologies. He is an industry veteran with over 15 years of big data and analytics experience. Most recently, he was cofounder and CTO of search engine startup YapMap. Before that, he was director of new product engineering with Quigo (contextual advertising, acquired by AOL in 2007). He also built the Avenue A | Razorfish analytics data warehousing system and associated services practice (acquired by Microsoft).&lt;/p&gt;
+
+&lt;h4 id=&quot;dr.-kirk-borne,-george-mason-university-(@kirkdborne)&quot;&gt;Dr. Kirk Borne, George Mason University (@KirkDBorne)&lt;/h4&gt;
+
+&lt;p&gt;Dr. Kirk Borne is a Transdisciplinary Data Scientist and an Astrophysicist. He is Professor of Astrophysics and Computational Science in the George Mason University School of Physics, Astronomy, and Computational Sciences. He has been at Mason since 2003, where he teaches and advises students in the graduate and undergraduate Computational Science, Informatics, and Data Science programs. Previously, he spent nearly 20 years in positions supporting NASA projects, including an assignment as NASA&amp;#39;s Data Archive Project Scientist for the Hubble Space Telescope, and as Project Manager in NASA&amp;#39;s Space Science Data Operations Office. He has extensive experience in big data and data science, including expertise in scientific data mining and data systems. He has published over 200 articles (research papers, conference papers, and book chapters), and given over 200 invited talks at conferences and universities worldwide.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 11 Dec 2014 00:00:00 -0800</pubDate>
+        <link>/blog/2014/12/11/apache-drill-qa-panelist-spotlight/</link>
+        <guid isPermaLink="true">/blog/2014/12/11/apache-drill-qa-panelist-spotlight/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Running SQL Queries on Amazon S3</title>
+        <description>&lt;p&gt;The functionality and sheer usefulness of Drill is growing fast.  If you&amp;#39;re a user of some of the popular BI tools out there like Tableau or SAP Lumira, now is a good time to take a look at how Drill can make your life easier, especially if  you&amp;#39;re faced with the task of quickly getting a handle on large sets of unstructured data.  With schema generated on the fly, you can save a lot of time and headaches by running SQL queries on the data where it rests without knowing much about columns or formats.  There&amp;#39;s even more good news:  Drill also works with data stored in the cloud.  With a few simple steps, you can configure the S3 storage plugin for Drill and be off to the races running queries.  In this post we&amp;#39;ll look at how to configure Drill to access data stored in an S3 bucket.&lt;/p&gt;
+
+&lt;p&gt;If you&amp;#39;re more of a visual person, you can skip this article entirely and &lt;a href=&quot;https://www.youtube.com/watch?v=w8gZ2nn_ZUQ&quot;&gt;go straight to a video&lt;/a&gt; I put together that walks through an end-to-end example with Tableau.  This example is easily extended to other BI tools, as the steps are identical on the Drill side.&lt;/p&gt;
+
+&lt;p&gt;At a high level, configuring Drill to access S3 bucket data is accomplished with the following steps on each node running a drillbit.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Download and install the &lt;a href=&quot;http://www.jets3t.org/&quot;&gt;JetS3t&lt;/a&gt; JAR files and enable them.&lt;/li&gt;
+&lt;li&gt;Add your S3 credentials in the relevant XML configuration file.&lt;/li&gt;
+&lt;li&gt;Configure and enable the S3 storage plugin through the Drill web interface.&lt;/li&gt;
+&lt;li&gt;Connect your BI tool of choice and query away.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Consult the &lt;a href=&quot;https://cwiki.apache.org/confluence/display/DRILL/Architectural+Overview&quot;&gt;Architectural Overview&lt;/a&gt; for a refresher on the architecture of Drill.&lt;/p&gt;
+
+&lt;h3 id=&quot;prerequisites&quot;&gt;Prerequisites&lt;/h3&gt;
+
+&lt;p&gt;These steps assume you have a &lt;a href=&quot;https://cwiki.apache.org/confluence/display/DRILL/Apache+Drill+in+10+Minutes&quot;&gt;typical Drill cluster and ZooKeeper quorum&lt;/a&gt; configured and running.  To access data in S3, you will need an S3 bucket configured and have the required Amazon security credentials in your possession.  An &lt;a href=&quot;http://blogs.aws.amazon.com/security/post/Tx1R9KDN9ISZ0HF/Where-s-my-secret-access-key&quot;&gt;Amazon blog post&lt;/a&gt; has more information on how to get these from your account.&lt;/p&gt;
+
+&lt;h3 id=&quot;configuration-steps&quot;&gt;Configuration Steps&lt;/h3&gt;
+
+&lt;p&gt;To connect Drill to S3, all of the drillbit nodes will need to access code in the JetS3t library developed by Amazon.  As of this writing, 0.9.2 is the latest version but you might want to check &lt;a href=&quot;https://jets3t.s3.amazonaws.com/toolkit/toolkit.html&quot;&gt;the main page&lt;/a&gt; to see if anything has been updated.  Be sure to get version 0.9.2 or later as earlier versions have a bug relating to reading Parquet data.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;wget http://bitbucket.org/jmurty/jets3t/downloads/jets3t-0.9.2.zip
+cp jets3t-0.9.2/jars/jets3t-0.9.2.jar &lt;span class=&quot;nv&quot;&gt;$DRILL_HOME&lt;/span&gt;/jars/3rdparty
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Next, enable the plugin by editing the file:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$DRILL_HOME&lt;/span&gt;/bin/hadoop_excludes.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and removing the line &lt;code&gt;jets3t&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Drill will need to know your S3 credentials in order to access data there. These credentials will need to be placed in the core-site.xml file for your installation.  If you already have a core-site.xml file configured for your environment, add the following parameters to it, otherwise create the file from scratch.  If you do end up creating it from scratch you will need to wrap these parameters with &lt;code&gt;&amp;lt;configuration&amp;gt;&lt;/code&gt; and &lt;code&gt;&amp;lt;/configuration&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;property&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;fs.s3.awsAccessKeyId&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&amp;gt;&lt;/span&gt;ID&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;property&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;fs.s3.awsSecretAccessKey&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&amp;gt;&lt;/span&gt;SECRET&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;property&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;fs.s3n.awsAccessKeyId&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&amp;gt;&lt;/span&gt;ID&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;property&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;fs.s3n.awsSecretAccessKey&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&amp;gt;&lt;/span&gt;SECRET&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The steps so far give Drill enough information to connect to the S3 service.  Remember, you have to do this on all the nodes running drillbit.&lt;/p&gt;
+
+&lt;p&gt;Next, let&amp;#39;s go into the Drill web interface and enable the S3 storage plugin.  In this case you only need to connect to &lt;strong&gt;one&lt;/strong&gt; of the nodes because Drill&amp;#39;s configuration is synchronized across the cluster.  Complete the following steps:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Point your browser to &lt;code&gt;http://&amp;lt;host&amp;gt;:8047&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Select the &amp;#39;Storage&amp;#39; tab.&lt;/li&gt;
+&lt;li&gt;A good starting configuration for S3 can be entirely the same as the &lt;code&gt;dfs&lt;/code&gt; plugin, except the connection parameter is changed to &lt;code&gt;s3://bucket&lt;/code&gt;.  So first select the &lt;code&gt;Update&lt;/code&gt; button for &lt;code&gt;dfs&lt;/code&gt;, then select the text area and copy it into the clipboard (on Windows, ctrl-A, ctrl-C works).&lt;/li&gt;
+&lt;li&gt;Press &lt;code&gt;Back&lt;/code&gt;, then create a new plugin by typing the name into the &lt;code&gt;New Storage Plugin&lt;/code&gt;, then press &lt;code&gt;Create&lt;/code&gt;.  You can choose any name, but a good convention is to use &lt;code&gt;s3-&amp;lt;bucketname&amp;gt;&lt;/code&gt; so you can easily identify it later.&lt;/li&gt;
+&lt;li&gt;In the configuration area, paste the configuration you just grabbed from &amp;#39;dfs&amp;#39;.  Change the line &lt;code&gt;connection: &amp;quot;file:///&amp;quot;&lt;/code&gt; to &lt;code&gt;connection: &amp;quot;s3://&amp;lt;bucket&amp;gt;&amp;quot;&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Click &lt;code&gt;Update&lt;/code&gt;.  You should see a message that indicates success.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;At this point you can run queries on the data directly and you have a couple of options on how you want to access it.  You can use Drill Explorer and create a custom view (based on an SQL query) that you can then access in Tableau or other BI tools, or just use Drill directly from within the tool.&lt;/p&gt;
+
+&lt;p&gt;You may want to check out the &lt;a href=&quot;http://www.youtube.com/watch?v=jNUsprJNQUg&quot;&gt;Tableau demo&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;With just a few lines of configuration, you&amp;#39;ve just opened the vast world of data available in the Amazon cloud and reduced the amount of work you have to do in advance to access data stored there with SQL.  There are even some &lt;a href=&quot;https://aws.amazon.com/datasets&quot;&gt;public datasets&lt;/a&gt; available directly on S3 that are great for experimentation.&lt;/p&gt;
+
+&lt;p&gt;Happy Drilling!&lt;/p&gt;
+</description>
+        <pubDate>Tue, 09 Dec 2014 10:50:01 -0800</pubDate>
+        <link>/blog/2014/12/09/running-sql-queries-on-amazon-s3/</link>
+        <guid isPermaLink="true">/blog/2014/12/09/running-sql-queries-on-amazon-s3/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Apache Drill Graduates to a Top-Level Project</title>
+        <description>&lt;p&gt;The Apache Software Foundation has just announced that it has promoted Drill to a top-level project at Apache, similar to other well-known projects like Apache Hadoop and httpd (the world&amp;#39;s most popular Web server). This marks a significant accomplishment for the Drill community, and I wanted to personally thank everyone who has contributed to the project. It takes many people, and countless hours, to develop something as complex and innovative as Drill.&lt;/p&gt;
+
+&lt;p&gt;In this post I wanted to reflect on the past and future of Drill.&lt;/p&gt;
+
+&lt;h2 id=&quot;why-we-started-drill&quot;&gt;Why We Started Drill&lt;/h2&gt;
+
+&lt;h3 id=&quot;the-evolution-of-application-development-and-data&quot;&gt;The Evolution of Application Development and Data&lt;/h3&gt;
+
+&lt;p&gt;Over the last decade, organizations have been striving to become more agile and data-driven, seeking to gain competitive advantage in their markets. This trend has led to dramatic changes in the way applications are built and delivered, and in the type and volume of data that is being leveraged.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Applications&lt;/strong&gt;: In previous decades, software development was a carefully orchestrated and planned process. The release cycles were often measured in years, and upgrades were infrequent. Today, Web and mobile applications are developed in a much more iterative fashion. The release cycles are measured in days or weeks, and upgrades are a non-issue. (What version of Salesforce.com or Google Maps are you using?)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Data&lt;/strong&gt;: In previous decades, data was measured in MBs or GBs, and it was highly structured and denormalized. Today&amp;#39;s data is often measured in TBs or PBs, and it tends to be multi-structured — a combination of unstructured, semi-structured and structured. The data comes from many different sources, including a variety of applications, devices and services, and its structure changes much more frequently.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-new-generation-of-datastores&quot;&gt;A New Generation of Datastores&lt;/h3&gt;
+
+&lt;p&gt;The relational database, which was invented in 1970, was not designed for these new processes and data volumes and structures. As a result, a new generation of datastores has emerged, including HDFS, NoSQL (HBase, MongoDB, etc.) and search (Elasticsearch, Solr).  These systems are schema-free (also known as &amp;quot;dynamic schema&amp;quot;). Applications, as opposed to DBAs, control the data structure, enabling more agility and flexibility. For example, an application developer can independently evolve the data structure with each application release (which could be daily or weekly) without filing a ticket with IT and waiting for the schema of the databae to be modified.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-need-for-a-new-query-engine&quot;&gt;The Need for a New Query Engine&lt;/h2&gt;
+
+&lt;p&gt;With data increasingly being stored in schema-free datastores (HDFS, HBase, MongoDB, etc.) and a variety of cloud services, users need a way to explore and analyze this data, and a way to visualize it with BI tools (reports, dashboards, etc.). In 2012 we decided to embark on a journey to create the world&amp;#39;s next-generation SQL engine. We had several high-level requirements in mind:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;A schema-free data model.&lt;/strong&gt; Schema-free datastores (HDFS, NoSQL, search) need a schema-free SQL engine. These datastores became popular for a reason, and we shouldn&amp;#39;t expect organizations to sacrifice those advantages in order to enjoy SQL-based analytics and BI. Today&amp;#39;s organizations need agility and flexibility to cope with the volume, variety and velocity associated with modern applications and data.&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;A standalone query engine that supports multiple data sources.&lt;/strong&gt; Most companies now use a variety of best-of-breed datastores and services to store data. This is true not just for large Global 2000 companies, but also for small startups. For example, it is not uncommon for a startup to have data in MySQL, MongoDB, HBase and HDFS, as well as a variety of online services. ETL was hard even 10 years ago when data was static and 100x smaller than it is today, and in today&amp;#39;s era of Big Data it&amp;#39;s often impractical or impossible to ingest all the data into a single system.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Ease of use.&lt;/strong&gt; The SQL engine can&amp;#39;t be hard to setup and use. Analysts and developers should be able to download and use it without deploying any complex infrastructure such as Hadoop.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Scalability and performance.&lt;/strong&gt; The SQL engine must support interactive queries. It can&amp;#39;t be batch-oriented like Hive. In addition, it must be able to scale linearly from a small laptop or virtual machine to a large cluster with hundreds or thousands of powerful servers.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;With these requirements in mind, we decided to incubate a new project in 2012 in the Apache Software Foundation so that a community of vendors and developers could come together and develop the technology. (One little known fact is that the name &amp;quot;Drill&amp;quot; was actually suggested by Google engineers due to its inspiration from Google&amp;#39;s Dremel execution engine.)&lt;/p&gt;
+
+&lt;p&gt;After almost two years of research and development, we released Drill 0.4 in August, and continued with monthly releases since then.&lt;/p&gt;
+
+&lt;h2 id=&quot;what&amp;#39;s-next&quot;&gt;What&amp;#39;s Next&lt;/h2&gt;
+
+&lt;p&gt;Graduating to a top-level project is a significant milestone, but it&amp;#39;s really just the beginning of the journey. In fact, we&amp;#39;re currently wrapping up Drill 0.7, which includes hundreds of fixes and enhancements, and we expect to release that in the next couple weeks.&lt;/p&gt;
+
+&lt;p&gt;Drill is currently being used by dozens of organizations, ranging from small startups to some of the largest Fortune 100s. These organizations are already gaining tremendous business value with Drill. As we march towards a 1.0 release early next year, these organizations are helping us shape the project and ensure that it meets the needs of a broad range of organizations as well as users (business analysts, technical analysts, data scientists and application developers). I would like to encourage you to join the ride today by &lt;a href=&quot;http://drill.apache.org/download/&quot;&gt;downloading Drill&lt;/a&gt; and &lt;a href=&quot;mailto:user@drill.apache.org&quot;&gt;letting us know&lt;/a&gt; what you think.&lt;/p&gt;
+
+&lt;p&gt;Happy Drilling!&lt;br&gt;
+Tomer Shiran&lt;/p&gt;
+</description>
+        <pubDate>Tue, 02 Dec 2014 08:00:00 -0800</pubDate>
+        <link>/blog/2014/12/02/drill-top-level-project/</link>
+        <guid isPermaLink="true">/blog/2014/12/02/drill-top-level-project/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+  </channel>
+</rss>
