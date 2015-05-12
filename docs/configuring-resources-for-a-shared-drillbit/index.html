@@ -188,11 +188,11 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/getting-to-know-the-drill-sandbox/">Getting to Know the Drill Sandbox</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/lession-1-learn-about-the-data-set/">Lession 1: Learn about the Data Set</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/lesson-1-learn-about-the-data-set/">Lesson 1: Learn about the Data Set</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/lession-2-run-queries-with-ansi-sql/">Lession 2: Run Queries with ANSI SQL</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/lesson-2-run-queries-with-ansi-sql/">Lesson 2: Run Queries with ANSI SQL</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/lession-3-run-queries-on-complex-data-types/">Lession 3: Run Queries on Complex Data Types</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/lesson-3-run-queries-on-complex-data-types/">Lesson 3: Run Queries on Complex Data Types</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/summary/">Summary</a></li>
               
@@ -401,11 +401,19 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/using-microstrategy-analytics-with-drill/">Using MicroStrategy Analytics with Drill</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/using-microstrategy-analytics-with-apache-drill/">Using MicroStrategy Analytics with Apache Drill</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/using-apache-drill-with-tibco-spotfire-desktop/">Using Apache Drill with Tibco Spotfire Desktop</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/using-tibco-spotfire-with-drill/">Using Tibco Spotfire with Drill</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-desktop/">Using Apache Drill with Tableau 9 Desktop</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
             
           
           </ul>
@@ -559,17 +567,17 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/alter-system-command/">ALTER SYSTEM Command</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/create-table-as-ctas-command/">CREATE TABLE AS (CTAS) command</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/create-table-as-ctas-command/">CREATE TABLE AS (CTAS) Command</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/create-view-command/">CREATE VIEW command</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/create-view-command/">CREATE VIEW Command</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/describe-command/">DESCRIBE Command</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/explain-commands/">EXPLAIN commands</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/explain-commands/">EXPLAIN Commands</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/select-statements/">SELECT Statements</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/show-databases-and-show-schemas-command/">SHOW DATABASES AND SHOW SCHEMAS Command</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/show-databases-and-show-schemas-command/">SHOW DATABASES and SHOW SCHEMAS Command</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/show-files-command/">SHOW FILES Command</a></li>
               
@@ -826,9 +834,9 @@
 
       <div class="int_text" align="left">
         
-          <p>To manage a cluster in which multiple users share a Drillbit, you configure Drill queuing and parallelization in addition to memory, as described in the previous section.</p>
+          <p>To manage a cluster in which multiple users share a Drillbit, you configure Drill queuing and parallelization in addition to memory, as described in the previous section, <a href="/docs/configuring-drill-memory/">&quot;Configuring Drill Memory&quot;</a>.</p>
 
-<h2 id="configuring-drill-query-queuing">Configuring Drill Query Queuing</h2>
+<h2 id="configuring-query-queuing">Configuring Query Queuing</h2>
 
 <p>Set <a href="/docs/configuration-options-introduction/">options in sys.options</a> to enable and manage query queuing, which is turned off by default. There are two types of queues: large and small. You configure a maximum number of queries that each queue allows by configuring the following options in the <code>sys.options</code> table:</p>
 
@@ -839,7 +847,7 @@
 
 <h3 id="example-configuration">Example Configuration</h3>
 
-<p>For example, you configure the queue reserved for large queries to hold a 5-query maximum. You configure the queue reserved for small queries to hold 20 queries. Users start to run queries, and Drill receives the following query requests in this order:</p>
+<p>For example, you configure the queue reserved for large queries for a 5-query maximum. You configure the queue reserved for small queries for 20 queries. Users start to run queries, and Drill receives the following query requests in this order:</p>
 
 <ul>
 <li>Query A (blue): 1 billion records, Drill estimates 10 million rows will be processed<br></li>
@@ -854,7 +862,7 @@
 
 <p>The Drill queuing configuration in this example tends to give many users running small queries a rapid response. Users running a large query might experience some delay until an earlier-received large query returns, freeing space in the large queue to process queries that are waiting.</p>
 
-<h2 id="controlling-parallelization">Controlling Parallelization</h2>
+<h2 id="configuring-parallelization">Configuring Parallelization</h2>
 
 <p>By default, Drill parallelizes operations when number of records manipulated within a fragment reaches 100,000. When parallelization of operations is high, the cluster operates as fast as possible, which is fine for a single user. In a contentious multi-tenant situation, however, you need to reduce parallelization to levels based on user needs.</p>
 
@@ -883,7 +891,7 @@ A parallelizer in the Foreman transforms the physical plan into multiple phases.
 
 <h2 id="data-isolation">Data Isolation</h2>
 
-<p>Tenants can share data on a cluster using Drill views and impersonation. ??Link to impersonation doc.??</p>
+<p>Tenants can share data on a cluster using Drill views and <a href="/docs/configuring-user-impersonation">impersonation</a>. </p>
 
       
         

@@ -188,11 +188,11 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/getting-to-know-the-drill-sandbox/">Getting to Know the Drill Sandbox</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/lession-1-learn-about-the-data-set/">Lession 1: Learn about the Data Set</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/lesson-1-learn-about-the-data-set/">Lesson 1: Learn about the Data Set</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/lession-2-run-queries-with-ansi-sql/">Lession 2: Run Queries with ANSI SQL</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/lesson-2-run-queries-with-ansi-sql/">Lesson 2: Run Queries with ANSI SQL</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/lession-3-run-queries-on-complex-data-types/">Lession 3: Run Queries on Complex Data Types</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/lesson-3-run-queries-on-complex-data-types/">Lesson 3: Run Queries on Complex Data Types</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/summary/">Summary</a></li>
               
@@ -401,11 +401,19 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/using-microstrategy-analytics-with-drill/">Using MicroStrategy Analytics with Drill</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/using-microstrategy-analytics-with-apache-drill/">Using MicroStrategy Analytics with Apache Drill</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/using-apache-drill-with-tibco-spotfire-desktop/">Using Apache Drill with Tibco Spotfire Desktop</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/using-tibco-spotfire-with-drill/">Using Tibco Spotfire with Drill</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-desktop/">Using Apache Drill with Tableau 9 Desktop</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
             
           
           </ul>
@@ -559,17 +567,17 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/alter-system-command/">ALTER SYSTEM Command</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/create-table-as-ctas-command/">CREATE TABLE AS (CTAS) command</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/create-table-as-ctas-command/">CREATE TABLE AS (CTAS) Command</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/create-view-command/">CREATE VIEW command</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/create-view-command/">CREATE VIEW Command</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/describe-command/">DESCRIBE Command</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/explain-commands/">EXPLAIN commands</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/explain-commands/">EXPLAIN Commands</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/select-statements/">SELECT Statements</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/show-databases-and-show-schemas-command/">SHOW DATABASES AND SHOW SCHEMAS Command</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/show-databases-and-show-schemas-command/">SHOW DATABASES and SHOW SCHEMAS Command</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/show-files-command/">SHOW FILES Command</a></li>
               
@@ -826,47 +834,11 @@
 
       <div class="int_text" align="left">
         
-          <p>Drill operations are memory and CPU-intensive. Currently, Drill resources are managed outside MapR Warden service in terms of configuring the resources as well as enforcing the resource usage within the limit. Configure memory for Drill in a multitenant by modifying drill-env.sh. <Add detail on property names etc></p>
+          <p>Drill operations are memory and CPU-intensive. Currently, Drill resources are managed outside of any cluster management service. In a multitenant or any other type of cluster, YARN-enabled or not, you configure memory and memory usage limits for Drill by modifying the <code>drill-env.sh</code> file as described in <a href="/docs/configuring-drill-memory">&quot;Configuring Drill Memory&quot;</a>.</p>
 
-<ol>
-<li>To ensure Warden account for resources required for Drill, make sure the following properties are set appropriately in warden.drill-bits.conf. For reference on the meaning of the properties refer to the following MapR doc <add link></li>
-</ol>
+<p>Configure a multitenant cluster manager to account for resources required for Drill. Configuring <code>drill-env.sh</code> allocates resources for Drill to use during query execution. It might be necessary to configure the cluster manager from committing the resources to other processes.</p>
 
-<p>service.heapsize.min
-service.heapsize.max
-service.heapsize.percent</p>
-
-<p>The percent should always be considered as the one to change, it is more intuitive to understand and grows/shrinks according to different node&#39;s configuration. </p>
-
-<p>It will be good if someone in Drill QA could try it out and see if it fits Drill&#39;s needs. </p>
-
-<p>Note that these properties should be set in addition to configuring the resources the in drill-env.conf even if you didnt change the defaults in drill-env.sh. Setting up memory limit in drill-env.sh tells Drill how much resources to use during query execution and setting up these warden-drill-bits.conf tells warden not to commit these resources to some other process. In near future, we expect to provide a more deeper integration on these settings
-&lt;give an example&gt;</p>
-
-<ol>
-<li>This configuration is same whether you use Drill is enabled cluster or non-YARN cluster.</li>
-</ol>
-
-<p>You need to statically partition the cluster to designate which partition handles which workload. To configure resources for Drill in a MapR cluster, modify one or more of the following files in <code>/opt/mapr/conf/conf.d</code> that the installation process creates. </p>
-
-<ul>
-<li><code>warden.drill-bits.conf</code></li>
-<li><code>warden.nodemanager.conf</code></li>
-<li><code>warden.resourcemanager.conf</code></li>
-</ul>
-
-<p>Configure Drill memory by modifying <code>warden.drill-bits.conf</code> in YARN and non-YARN clusters. Configure other resources by modifying <code>warden.nodemanager.conf</code>and <code>warden.resourcemanager.conf</code>in a YARN-enabled cluster.</p>
-
-<h2 id="configuring-drill-memory-in-a-mixed-cluster">Configuring Drill Memory in a Mixed Cluster</h2>
-
-<p>Add the following lines to the <code>warden.drill-bits.conf</code> file to configure memory resources for Drill:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">service.heapsize.min=&lt;some value in MB&gt;
-service.heapsize.max=&lt;some value in MB&gt;
-service.heapsize.percent=&lt;a whole number&gt;
-</code></pre></div>
-<p>The service.heapsize.percent is the percentage of memory for the service bounded by minimum and maximum values.</p>
-
-<h2 id="configuring-drill-in-a-yarn-enabled-mapr-cluster">Configuring Drill in a YARN-enabled MapR Cluster</h2>
+<h2 id="configuring-drill-in-a-yarn-enabled">Configuring Drill in a YARN-enabled</h2>
 
 <p>To add Drill to a YARN-enabled cluster, change memory resources to suit your application. For example, you have 120G of available memory that you allocate to following workloads in a Yarn-enabled cluster:</p>
 
@@ -891,39 +863,11 @@ There is at least one instance in a cluster, more if you configure high availabi
 There is one instance per node. </li>
 </ul>
 
-<p>ResourceManager and NodeManager memory in <code>warden.resourcemanager.conf</code> and
- <code>warden.nodemanager.conf</code> are set to the following defaults. </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">service.heapsize.min=64
-service.heapsize.max=325
-service.heapsize.percent=2
-</code></pre></div>
-<p>Change these settings for NodeManager and ResourceManager to reconfigure the total memory required for YARN services to run. If you want to place an upper limit on memory set YARN_NODEMANAGER_HEAPSIZE or YARN_RESOURCEMANAGER_HEAPSIZE environment variable in /opt/mapr/hadoop/hadoop-2.5.1/etc/hadoop/yarn-env.sh. The -Xmx option is not set, allowing memory on to grow as needed.</p>
+<p>Configure NodeManager and ResourceManager to reconfigure the total memory required for YARN services to run. If you want to place an upper limit on memory set YARN_NODEMANAGER_HEAPSIZE or YARN_RESOURCEMANAGER_HEAPSIZE environment variable. Do not set the <code>-Xmx</code> option to allow the heap to grow as needed.</p>
 
-<h3 id="mapreduce-v1-resources">MapReduce v1 Resources</h3>
+<h3 id="mapreduce-resources">MapReduce Resources</h3>
 
-<p>The following default settings in /opt/mapr/conf/warden.conf control MapReduce v1 memory:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">mr1.memory.percent=50
-mr1.cpu.percent=50
-mr1.disk.percent=50
-</code></pre></div>
-<p>Modify these settings to reconfigure MapReduce v1 resources to suit your application needs, as described in section <a href="http://doc.mapr.com/display/MapR/Resource+Allocation+for+Jobs+and+Applications">&quot;Resource Allocation for Jobs and Applications&quot;</a> of the MapR documentation. Remaining memory is given to YARN applications. </p>
-
-<h3 id="mapreduce-v2-and-other-resources">MapReduce v2 and other Resources</h3>
-
-<p>You configure memory for each service by setting three values in <code>warden.conf</code>.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">service.command.&lt;servicename&gt;.heapsize.percent
-service.command.&lt;servicename&gt;.heapsize.max
-service.command.&lt;servicename&gt;.heapsize.min
-</code></pre></div>
-<p>Configure memory for other services in the same manner, as described in <a href="http://doc.mapr.com/display/MapR/warden.%3Cservicename%3E.conf">MapR documentation</a></p>
-
-<p>For more information about managing memory in a MapR cluster, see the following sections in the MapR documentation:</p>
-
-<ul>
-<li><a href="http://doc.mapr.com/display/MapR40x/Memory+Allocation+for+Nodes">Memory Allocation for Nodes</a><br></li>
-<li><a href="http://doc.mapr.com/display/MapR40x/Cluster+Resource+Allocation">Cluster Resource Allocation</a><br></li>
-<li><a href="http://doc.mapr.com/display/MapR40x/Customize+Memory+Settings+for+MapReduce+v1">Customizing Memory Settings for MapReduce v1</a><br></li>
-</ul>
+<p>Modify MapReduce memory to suit your application needs. Remaining memory is typically given to YARN applications. </p>
 
 <h2 id="how-to-manage-drill-cpu-resources">How to Manage Drill CPU Resources</h2>
 

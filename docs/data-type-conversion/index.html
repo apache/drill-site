@@ -188,11 +188,11 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/getting-to-know-the-drill-sandbox/">Getting to Know the Drill Sandbox</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/lession-1-learn-about-the-data-set/">Lession 1: Learn about the Data Set</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/lesson-1-learn-about-the-data-set/">Lesson 1: Learn about the Data Set</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/lession-2-run-queries-with-ansi-sql/">Lession 2: Run Queries with ANSI SQL</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/lesson-2-run-queries-with-ansi-sql/">Lesson 2: Run Queries with ANSI SQL</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/lession-3-run-queries-on-complex-data-types/">Lession 3: Run Queries on Complex Data Types</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/lesson-3-run-queries-on-complex-data-types/">Lesson 3: Run Queries on Complex Data Types</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/summary/">Summary</a></li>
               
@@ -401,11 +401,19 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/using-microstrategy-analytics-with-drill/">Using MicroStrategy Analytics with Drill</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/using-microstrategy-analytics-with-apache-drill/">Using MicroStrategy Analytics with Apache Drill</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/using-apache-drill-with-tibco-spotfire-desktop/">Using Apache Drill with Tibco Spotfire Desktop</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/using-tibco-spotfire-with-drill/">Using Tibco Spotfire with Drill</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-desktop/">Using Apache Drill with Tableau 9 Desktop</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
             
           
           </ul>
@@ -559,17 +567,17 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/alter-system-command/">ALTER SYSTEM Command</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/create-table-as-ctas-command/">CREATE TABLE AS (CTAS) command</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/create-table-as-ctas-command/">CREATE TABLE AS (CTAS) Command</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/create-view-command/">CREATE VIEW command</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/create-view-command/">CREATE VIEW Command</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/describe-command/">DESCRIBE Command</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/explain-commands/">EXPLAIN commands</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/explain-commands/">EXPLAIN Commands</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/select-statements/">SELECT Statements</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/show-databases-and-show-schemas-command/">SHOW DATABASES AND SHOW SCHEMAS Command</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/show-databases-and-show-schemas-command/">SHOW DATABASES and SHOW SCHEMAS Command</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/show-files-command/">SHOW FILES Command</a></li>
               
@@ -1705,10 +1713,10 @@ FROM sys.version;
 </code></pre></div>
 <h2 id="time-zone-limitation">Time Zone Limitation</h2>
 
-<p>Currently Drill does not support conversion of a date, time, or timestamp from one time zone to another. The workaround is to configure Drill to use <a href="http://www.timeanddate.com/time/aboututc.html">UTC</a>-based time, convert your data to UTC timestamps, and perform date/time operation in UTC.  </p>
+<p>Currently Drill does not support conversion of a date, time, or timestamp from one time zone to another. Queries of data associated with a time zone can return inconsistent results or an error. For more information, see the <a href="http://www.openkb.info/2015/05/understanding-drills-timestamp-and.html#.VUzhotpVhHw">&quot;Understanding Drill&#39;s Timestamp and Timezone&quot;</a> blog. The Drill time zone is based on the operating system time zone unless you override it. To work around the limitation, configure Drill to use <a href="http://www.timeanddate.com/time/aboututc.html">UTC</a>-based time, convert your data to UTC timestamps, and perform date/time operation in UTC.  </p>
 
 <ol>
-<li><p>Take a look at the Drill time zone configuration by running the TIMEOFDAY function. This function returns the local date and time with time zone information.</p>
+<li><p>Take a look at the Drill time zone configuration by running the TIMEOFDAY function or by querying the system.options table. This TIMEOFDAY function returns the local date and time with time zone information. </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMEOFDAY() FROM sys.version;
 
 +------------+
