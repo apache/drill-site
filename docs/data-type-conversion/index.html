@@ -500,6 +500,46 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/performance-tuning-introduction/">Performance Tuning Introduction</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/partition-pruning/">Partition Pruning</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/choosing-a-storage-format/">Choosing a Storage Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Query Plans and Tuning</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/query-plans-and-tuning-introduction/">Query Plans and Tuning Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/join-planning-guidelines/">Join Planning Guidelines</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/guidelines-for-optimizing-aggregation/">Guidelines for Optimizing Aggregation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/modifying-query-planning-options/">Modifying Query Planning Options</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sort-based-and-hash-based-memory-constrained-operators/">Sort-Based and Hash-Based Memory-Constrained Operators</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/enabling-query-queuing/">Enabling Query Queuing</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/controlling-parallelization-to-balance-performance-with-multi-tenancy/">Controlling Parallelization to Balance Performance with Multi-Tenancy</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Identifying Performance Issues</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/query-plans/">Query Plans</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/query-profiles/">Query Profiles</a></li>
+              
+            </ul>
+            
+          
           </ul>
         
       
@@ -938,14 +978,6 @@
 
 <h3 id="cast-usage-notes">CAST Usage Notes</h3>
 
-<p>If the SELECT statement includes a WHERE clause that compares a column of an unknown data type, cast both the value of the column and the comparison value in the WHERE clause. For example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT c_row, CAST(c_int AS DECIMAL(28,8)) FROM mydata WHERE CAST(c_int AS DECIMAL(28,8)) &gt; -3.0;
-</code></pre></div>
-<div class="admonition note">
-  <p class="first admonition-title">Note</p>
-  <p class="last">In this release, Drill disables the DECIMAL data type. To enable, set the planner.enable_decimal_data_type option to true.  </p>
-</div>
-
 <p>Use CONVERT_TO and CONVERT_FROM instead of the CAST function for converting binary data types with one exception: When converting an INT or BIGINT number, having a byte count in the destination/source that does not match the byte count of the number in the VARBINARY source/destination, use CAST.  </p>
 
 <p>Refer to the following tables for information about the data types to use for casting:</p>
@@ -961,7 +993,7 @@
 
 <h3 id="casting-a-character-string-to-a-number">Casting a Character String to a Number</h3>
 
-<p>You cannot cast a character string that includes a decimal point to an INT or BIGINT. For example, if you have &quot;1200.50&quot; in a JSON file, attempting to select and cast the string to an INT fails. As a workaround, cast to a FLOAT or DECIMAL type, and then to an INT. </p>
+<p>You cannot cast a character string that includes a decimal point to an INT or BIGINT. For example, if you have &quot;1200.50&quot; in a JSON file, attempting to select and cast the string to an INT fails. As a workaround, cast to a FLOAT or DOUBLE type, and then cast to an INT, assuming you want to lose digits to the right of the decimal point. </p>
 
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
@@ -1122,7 +1154,7 @@ SELECT * FROM students;
 +--------------------+
 1 row selected (0.141 seconds)
 </code></pre></div>
-<h3 id="set-up-a-storage-plugin-for-working-with-hbase-files">Set Up a Storage Plugin for Working with HBase Files</h3>
+<h3 id="set-up-a-storage-plugin-for-working-with-hbase">Set Up a Storage Plugin for Working with HBase</h3>
 
 <p>This example assumes you are working in the Drill Sandbox. The <code>maprdb</code> storage plugin definition is limited, so you modify the <code>dfs</code> storage plugin slightly and use that plugin for this example.</p>
 
@@ -1537,6 +1569,11 @@ use in your Drill queries as described in this section:</p>
 </tr>
 </tbody></table>
 
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">The Joda format specifiers are case-sensitive.  </p>
+</div>
+
 <p>For more information about specifying a format, refer to one of the following format specifier documents:</p>
 
 <ul>
@@ -1561,21 +1598,22 @@ use in your Drill queries as described in this section:</p>
 
 <h3 id="to_char-examples">TO_CHAR Examples</h3>
 
-<p>Convert a FLOAT to a character string.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TO_CHAR(125.789383, &#39;#,###.###&#39;) FROM sys.version;
+<p>Convert a FLOAT to a character string. The format specifications use a comma to separate thousands and round-off to three decimal places.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TO_CHAR(1256.789383, &#39;#,###.###&#39;) FROM sys.version;
 +------------+
 |   EXPR$0   |
 +------------+
-| 125.789    |
+| 1,256.789  |
 +------------+
+1 row selected (1.767 seconds)
 </code></pre></div>
 <p>Convert an integer to a character string.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TO_CHAR(125, &#39;#,###.###&#39;) FROM sys.version;
-+------------+
-|   EXPR$0   |
-+------------+
-| 125        |
-+------------+
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TO_CHAR(125677.4567, &#39;#,###.###&#39;) FROM sys.version;
++--------------+
+|    EXPR$0    |
++--------------+
+| 125,677.457  |
++--------------+
 1 row selected (0.083 seconds)
 </code></pre></div>
 <p>Convert a date to a character string.</p>
@@ -1618,7 +1656,7 @@ use in your Drill queries as described in this section:</p>
 
 <h3 id="to_date-usage-notes">TO_DATE Usage Notes</h3>
 
-<p>Specify a format using patterns defined in <a href="http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html">Java DateTimeFormat class</a>. The TO_TIMESTAMP function takes a Unix epoch timestamp. The TO_DATE function takes a UNIX epoch timestamp in milliseconds.</p>
+<p>Specify a format using patterns defined in <a href="http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html">Joda DateTimeFormat class</a>. The TO_TIMESTAMP function takes a Unix epoch timestamp. The TO_DATE function takes a UNIX epoch timestamp in milliseconds.</p>
 
 <p>To compare dates in the WHERE clause, use TO_DATE on the value in the date column and in the comparison value. For example:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT &lt;fields&gt; FROM &lt;plugin&gt; WHERE TO_DATE(&lt;field&gt;, &lt;format&gt;) &lt; TO_DATE (&lt;value&gt;, &lt;format&gt;);
@@ -1741,7 +1779,7 @@ SELECT TO_NUMBER(&#39;12345&#39;, &#39;##0.##E0&#39;) FROM sys.version;
 
 <h2 id="to_time-usage-notes">TO_TIME Usage Notes</h2>
 
-<p>Specify a format using patterns defined in <a href="http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html">Java DateTimeFormat class</a>.</p>
+<p>Specify a format using patterns defined in <a href="http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html">Joda DateTimeFormat class</a>.</p>
 
 <h3 id="to_time-examples">TO_TIME Examples</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TO_TIME(&#39;12:20:30&#39;, &#39;HH:mm:ss&#39;) FROM sys.version;
@@ -1772,7 +1810,7 @@ SELECT TO_NUMBER(&#39;12345&#39;, &#39;##0.##E0&#39;) FROM sys.version;
 
 <h3 id="to_timestamp-usage-notes">TO_TIMESTAMP Usage Notes</h3>
 
-<p>Specify a format using patterns defined in <a href="http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html">Java DateTimeFormat class</a>. The TO_TIMESTAMP function takes a Unix epoch timestamp. The TO_DATE function takes a UNIX epoch timestamp in milliseconds.</p>
+<p>Specify a format using patterns defined in <a href="http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html">Joda DateTimeFormat class</a>. The TO_TIMESTAMP function takes a Unix epoch timestamp. The TO_DATE function takes a UNIX epoch timestamp in milliseconds.</p>
 
 <h3 id="to_timestamp-examples">TO_TIMESTAMP Examples</h3>
 

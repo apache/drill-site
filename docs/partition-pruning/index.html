@@ -493,11 +493,51 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Performance Tuning</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Performance Tuning</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/performance-tuning-introduction/">Performance Tuning Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2 current"><a class="reference internal" href="/docs/partition-pruning/">Partition Pruning</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/choosing-a-storage-format/">Choosing a Storage Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Query Plans and Tuning</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/query-plans-and-tuning-introduction/">Query Plans and Tuning Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/join-planning-guidelines/">Join Planning Guidelines</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/guidelines-for-optimizing-aggregation/">Guidelines for Optimizing Aggregation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/modifying-query-planning-options/">Modifying Query Planning Options</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sort-based-and-hash-based-memory-constrained-operators/">Sort-Based and Hash-Based Memory-Constrained Operators</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/enabling-query-queuing/">Enabling Query Queuing</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/controlling-parallelization-to-balance-performance-with-multi-tenancy/">Controlling Parallelization to Balance Performance with Multi-Tenancy</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Identifying Performance Issues</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/query-plans/">Query Plans</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/query-profiles/">Query Profiles</a></li>
+              
+            </ul>
             
           
           </ul>
@@ -823,8 +863,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Archived Pages</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">Archived Pages</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/how-to-run-the-drill-demo/">How to Run the Drill Demo</a></li>
@@ -890,7 +930,7 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/archived-pages/">Archived Pages</a></li>
+    <li><a href="/docs/performance-tuning/">Performance Tuning</a></li>
   
   <li>Partition Pruning</li>
 </nav>
@@ -899,7 +939,7 @@
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/archived-pages/030-partition-pruning.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/performance-tuning/020-partition-pruning.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
@@ -911,77 +951,96 @@
 
     <div class="int_text" align="left">
       
-        <p>Partition pruning is a performance optimization that limits the number of
-files and partitions that Drill reads when querying file systems and Hive
-tables. Drill only reads a subset of the files that reside in a file system or
-a subset of the partitions in a Hive table when a query matches certain filter
-criteria.</p>
+        <p>Partition pruning is a performance optimization that limits the number of files and partitions that Drill reads when querying file systems and Hive tables. When you partition data, Drill only reads a subset of the files that reside in a file system or a subset of the partitions in a Hive table when a query matches certain filter criteria.</p>
 
-<p>For Drill to apply partition pruning to Hive tables, you must have created the
-tables in Hive using the <code>PARTITION BY</code> clause:</p>
+<p>The query planner in Drill evaluates the filters as part of a Filter operator. If no partition filters are present, the underlying Scan operator reads all files in all directories and then sends the data to operators downstream, such as Filter. When partition filters are present, the query planner determines if it can push the filters down to the Scan such that the Scan only reads the directories that match the partition filters, thus reducing disk I/O.</p>
 
-<p><code>CREATE TABLE &lt;table_name&gt; (&lt;column_name&gt;) PARTITION BY (&lt;column_name&gt;);</code></p>
+<h2 id="determining-a-partitioning-scheme">Determining a Partitioning Scheme</h2>
 
-<p>When you create Hive tables using the <code>PARTITION BY</code> clause, each partition of
-data is automatically split out into different directories as data is written
-to disk. For more information about Hive partitioning, refer to the <a href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL/#LanguageManualDDL-PartitionedTables">Apache
-Hive wiki</a>.</p>
+<p>You can organize your data in such a way that maximizes partition pruning in Drill to optimize performance. Currently, you must partition data manually for a query to take advantage of partition pruning in Drill.</p>
 
-<p>Typically, table data in a file system is organized by directories and
-subdirectories. Queries on table data may contain <code>WHERE</code> clause filters on
-specific directories.</p>
+<p>Partitioning data requires you to determine a partitioning scheme, or a logical way to store the data in a hierarchy of directories. You can then use CTAS to create Parquet files from the original data, specifying filter conditions, and then move the files into the correlating directories in the hierarchy. Once you have partitioned the data, you can create and query views on the data.</p>
 
-<p>Drill’s query planner evaluates the filters as part of a Filter operator. If
-no partition filters are present, the underlying Scan operator reads all files
-in all directories and then sends the data to operators downstream, such as
-Filter.</p>
-
-<p>When partition filters are present, the query planner determines if it can
-push the filters down to the Scan such that the Scan only reads the
-directories that match the partition filters, thus reducing disk I/O.</p>
-
-<h2 id="partition-pruning-example">Partition Pruning Example</h2>
-
-<p>The /<code>Users/max/data/logs</code> directory in a file system contains subdirectories
-that span a few years.</p>
-
-<p>The following image shows the hierarchical structure of the <code>…/logs</code> directory
-and (sub) directories:</p>
-
-<p><img src="/docs/img/54.png" alt="drill query flow"></p>
-
-<p>The following query requests log file data for 2013 from the <code>…/logs</code>
-directory in the file system:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM dfs.`/Users/max/data/logs` WHERE cust_id &lt; 10 and dir0 = 2013 limit 2;
+<p>Partitioning Example
+For example, if you have several text files with log data which span multiple years, and you want to partition the data by year and quarter, you could create the following hierarchy of directories:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   …/logs/1994/Q1  
+   …/logs/1994/Q2  
+   …/logs/1994/Q3  
+   …/logs/1994/Q4  
+   …/logs/1995/Q1  
+   …/logs/1995/Q2  
+   …/logs/1995/Q3  
+   …/logs/1995/Q4  
+   …/logs/1996/Q1  
+   …/logs/1996/Q2  
+   …/logs/1996/Q3  
+   …/logs/1996/Q4  
 </code></pre></div>
-<p>If you run the <code>EXPLAIN PLAN</code> command for the query, you can see that the<code>
-…/logs</code> directory is filtered by the scan operator.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">EXPLAIN PLAN FOR SELECT * FROM dfs.`/Users/max/data/logs` WHERE cust_id &lt; 10 and dir0 = 2013 limit 2;
+<p>Once the directory structure is in place, run CTAS with a filter condition in the year and quarter for Q1 1994.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">      CREATE TABLE TT_1994_Q1 
+          AS SELECT * FROM &lt;raw table data in text format &gt;
+          WHERE columns[1] = 1994 AND columns[2] = &#39;Q1&#39;
 </code></pre></div>
-<p>The following image shows a portion of the physical plan when partition
-pruning is applied:</p>
+<p>This creates a Parquet file with the log data for Q1 1994 in the current workspace.  You can then move the file into the correlating directory, and repeat the process until all of the files are stored in their respective directories.</p>
 
-<p><img src="/docs/img/21.png" alt="drill query flow"></p>
-
-<h2 id="filter-examples">Filter Examples</h2>
-
-<p>The following queries include examples of the types of filters eligible for
-partition pruning optimization:</p>
-
-<p><strong>Example 1: Partition filters ANDed together</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM dfs.`/Users/max/data/logs` WHERE dir0 = &#39;2014&#39; AND dir1 = &#39;1&#39;
+<p>Now you can define views on the parquet files and query the views.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; create view vv1 as select `dir0` as `year`, `dir1` as `qtr` from dfs.`/Users/max/data/multilevel/parquet`;
+   +------------+------------+
+   |     ok     |  summary   |
+   +------------+------------+
+   | true       | View &#39;vv1&#39; created successfully in &#39;dfs.tmp&#39; schema |
+   +------------+------------+
+   1 row selected (0.16 seconds)  
 </code></pre></div>
-<p><strong>Example 2: Partition filter ANDed with regular column filter</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM dfs.`/Users/max/data/logs` WHERE cust_id &lt; 10 AND dir0 = 2013 limit 2;
+<p>Query the view to see all of the logs.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; select * from dfs.tmp.vv1;
+   +------------+------------+
+   |    year    |    qtr     |
+   +------------+------------+
+   | 1994       | Q1         |
+   | 1994       | Q3         |
+   | 1994       | Q3         |
+   | 1994       | Q4         |
+   | 1994       | Q4         |
+   | 1994       | Q4         |
+   | 1994       | Q4         |
+   | 1995       | Q2         |
+   | 1995       | Q2         |
+   | 1995       | Q2         |
+   | 1995       | Q2         |
+   | 1995       | Q4         |
+   | 1995       | Q4         |
+   | 1995       | Q4         |
+   | 1995       | Q4         |
+   | 1995       | Q4         |
+   | 1995       | Q4         |
+   | 1995       | Q4         |
+   | 1996       | Q1         |
+   | 1996       | Q1         |
+   | 1996       | Q1         |
+   | 1996       | Q1         |
+   | 1996       | Q1         |
+   | 1996       | Q2         |
+   | 1996       | Q3         |
+   | 1996       | Q3         |
+   | 1996       | Q3         |
+   +------------+------------+
+   ...
 </code></pre></div>
-<p><strong>Example 3: Combination of AND, OR involving partition filters</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM dfs.`/Users/max/data/logs` WHERE (dir0 = &#39;2013&#39; AND dir1 = &#39;1&#39;) OR (dir0 = &#39;2014&#39; AND dir1 = &#39;2&#39;)
+<p>When you query the view, Drill can apply partition pruning and read only the files and directories required to return query results.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; explain plan for select * from dfs.tmp.vv1 where `year` = 1996 and qtr = &#39;Q2&#39;;
+   +------------+------------+
+   |    text    |    json    |
+   +------------+------------+
+   | 00-00    Screen
+   00-01      Project(year=[$0], qtr=[$1])
+   00-02        Scan(groupscan=[ParquetGroupScan [entries=[ReadEntryWithPath [path=file:/Users/maxdata/multilevel/parquet/1996/Q2/orders_96_q2.parquet]], selectionRoot=/Users/max/data/multilevel/parquet, numFiles=1, columns=[`dir0`, `dir1`]]])
 </code></pre></div>
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/what-is-apache-drill/">← What is Apache Drill</a></span><span class="next-toc"><a href="/docs/progress-reports/">Progress Reports →</a></span>
+  <span class="previous-toc"><a href="/docs/performance-tuning-introduction/">← Performance Tuning Introduction</a></span><span class="next-toc"><a href="/docs/choosing-a-storage-format/">Choosing a Storage Format →</a></span>
 </div>
 
     

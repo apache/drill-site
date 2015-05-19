@@ -500,6 +500,46 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/performance-tuning-introduction/">Performance Tuning Introduction</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/partition-pruning/">Partition Pruning</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/choosing-a-storage-format/">Choosing a Storage Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Query Plans and Tuning</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/query-plans-and-tuning-introduction/">Query Plans and Tuning Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/join-planning-guidelines/">Join Planning Guidelines</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/guidelines-for-optimizing-aggregation/">Guidelines for Optimizing Aggregation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/modifying-query-planning-options/">Modifying Query Planning Options</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sort-based-and-hash-based-memory-constrained-operators/">Sort-Based and Hash-Based Memory-Constrained Operators</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/enabling-query-queuing/">Enabling Query Queuing</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/controlling-parallelization-to-balance-performance-with-multi-tenancy/">Controlling Parallelization to Balance Performance with Multi-Tenancy</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Identifying Performance Issues</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/query-plans/">Query Plans</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/query-profiles/">Query Profiles</a></li>
+              
+            </ul>
+            
+          
           </ul>
         
       
@@ -953,7 +993,7 @@
 </tr>
 <tr>
 <td><a href="/docs/date-time-functions-and-arithmetic#date_sub">DATE_SUB</a></td>
-<td>DATE, TIMESTAMOP</td>
+<td>DATE, TIMESTAMP</td>
 </tr>
 <tr>
 <td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">LOCALTIME</a></td>
@@ -1016,10 +1056,13 @@
 <div class="highlight"><pre><code class="language-text" data-lang="text">DATE_ADD(date literal_date, integer)
 
 DATE_ADD(keyword literal, interval expr)
+
+DATE_ADD(column &lt;date type&gt;)
 </code></pre></div>
 <p><em>date</em> is the keyword date.<br>
 <em>literal_date</em> is a date in yyyy-mm-dd format enclosed in single quotation marks.<br>
-<em>integer</em> is a number of days to add to the date/time.  </p>
+<em>integer</em> is a number of days to add to the date/time.<br>
+<em>column</em> is a date data in a data source.</p>
 
 <p><em>keyword</em> is the word date, time, or timestamp.<br>
 <em>literal</em> is a date, time, or timestamp literal.<br>
@@ -1028,6 +1071,9 @@ DATE_ADD(keyword literal, interval expr)
 
 <h3 id="date_add-examples">DATE_ADD Examples</h3>
 
+<p>Add two days to the birthday column in the genealogy database.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD (CAST (birthdays AS date), 2) from genealogy.json;
+</code></pre></div>
 <p>Add two days to today&#39;s date May 15, 2015.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(date &#39;2015-05-15&#39;, 2) FROM sys.version;
 +------------+
@@ -1113,15 +1159,6 @@ SELECT DATE_PART(&#39;hour&#39;, &#39;23:14:30.076&#39;) FROM sys.version;
 +------------+
 1 row selected (0.088 seconds)
 </code></pre></div>
-<p>Find the hour part of the timestamp for April 2, 2015 23:25:43. Use Unix Epoch timestamp in milliseconds, which is 1428017143000 in UTC.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_PART(&#39;hour&#39;, 1428017143000) FROM sys.version;
-+------------+
-|   EXPR$0   |
-+------------+
-| 23         |
-+------------+
-1 row selected (0.07 seconds)
-</code></pre></div>
 <p>Return the day part of the one year, 2 months, 10 days interval.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_PART(&#39;day&#39;, &#39;1:2:10&#39;) FROM sys.version;
 +------------+
@@ -1139,10 +1176,13 @@ SELECT DATE_PART(&#39;hour&#39;, &#39;23:14:30.076&#39;) FROM sys.version;
 <div class="highlight"><pre><code class="language-text" data-lang="text">DATE_SUB(date literal_date, integer) 
 
 DATE_SUB(keyword literal, interval expr)  
+
+DATE_ADD(column &lt;date type&gt;)  
 </code></pre></div>
 <p><em>date</em> is the keyword date.<br>
 <em>literal_date</em> is a date in yyyy-mm-dd format enclosed in single quotation marks.<br>
-<em>integer</em> is a number of days to subtract from the date/time.  </p>
+<em>integer</em> is a number of days to subtract from the date/time.<br>
+<em>column</em> is date data in a data source.</p>
 
 <p><em>keyword</em> is the word date, time, or timestamp.<br>
 <em>literal</em> is a date, time, or timestamp literal.<br>
@@ -1297,7 +1337,7 @@ SELECT NOW() FROM sys.version;
 <p><em>extract_expression</em> is:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">component FROM (timestamp | time | date | interval)
 </code></pre></div>
-<p><em>component</em> is supported time unit.</p>
+<p><em>component</em> is one of the following time units: year, month, day, hour, minute, second.</p>
 
 <h3 id="extract-usage-notes">EXTRACT Usage Notes</h3>
 

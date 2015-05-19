@@ -500,6 +500,46 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/performance-tuning-introduction/">Performance Tuning Introduction</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/partition-pruning/">Partition Pruning</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/choosing-a-storage-format/">Choosing a Storage Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Query Plans and Tuning</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/query-plans-and-tuning-introduction/">Query Plans and Tuning Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/join-planning-guidelines/">Join Planning Guidelines</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/guidelines-for-optimizing-aggregation/">Guidelines for Optimizing Aggregation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/modifying-query-planning-options/">Modifying Query Planning Options</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sort-based-and-hash-based-memory-constrained-operators/">Sort-Based and Hash-Based Memory-Constrained Operators</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/enabling-query-queuing/">Enabling Query Queuing</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/controlling-parallelization-to-balance-performance-with-multi-tenancy/">Controlling Parallelization to Balance Performance with Multi-Tenancy</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Identifying Performance Issues</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/query-plans/">Query Plans</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/query-profiles/">Query Profiles</a></li>
+              
+            </ul>
+            
+          
           </ul>
         
       
@@ -911,7 +951,14 @@
 
     <div class="int_text" align="left">
       
-        <p>A storage plugin is an interface for connecting to a data source to read and write data. Apache Drill connects to a data source, such as a file on the file system or a Hive metastore, through a storage plugin. When you execute a query, Drill gets the plugin name you provide in FROM clause of your query or from the default you specify in the USE.<plugin name> command that precedes the query.
+        <p>A storage plugin provides the following information to Drill:</p>
+
+<ul>
+<li>Interfaces that Drill can use to read from and write to data sources.<br></li>
+<li>A set of storage plugin optimization rules that assist with efficient and faster execution of Drill queries, such as pushdowns, statistics, and partition awareness.<br></li>
+</ul>
+
+<p>Apache Drill connects to a data source, such as a file on the file system or a Hive metastore, through a storage plugin. When you execute a query, Drill gets the plugin name you provide in FROM clause of your query or from the default you specify in the USE.<plugin name> command that precedes the query.
 . </p>
 
 <p>In addition to the connection string, the storage plugin configures the workspace and file formats for reading data, as described in subsequent sections. </p>
@@ -932,17 +979,7 @@ data source:</p>
 <li>A set of storage plugin optimization rules that assist with efficient and faster execution of Drill queries, such as pushdowns, statistics, and partition awareness</li>
 </ul>
 
-<p>A storage plugin performs scanner and writer functions, and informs the metadata repository of any known metadata. The metadata repository is a database created to store metadata. The metadata is information about the structures that contain the actual data, such as:</p>
-
-<ul>
-<li>Schema</li>
-<li>File size</li>
-<li>Data ordering</li>
-<li>Secondary indices</li>
-<li>Number of blocks</li>
-</ul>
-
-<p>A storage plugin informs the execution engine of any native capabilities, such
+<p>A storage plugin performs scanner and writer functions and informs the execution engine of any native capabilities, such
 as predicate pushdown, joins, and SQL.</p>
 
     
