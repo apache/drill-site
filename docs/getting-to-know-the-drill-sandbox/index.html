@@ -922,24 +922,23 @@ Welcome to your Mapr Demo virtual machine.
 </code></pre></div>
 <p>Using the secure shell instead of the VM interface has some advantages. You can copy/paste commands from the tutorial and avoid mouse control problems.</p>
 
-<p>Drill includes a shell for connecting to relational databases and executing SQL commands. On the sandbox, the Drill shell runs in embedded mode. After logging into the sandbox,  use the <code>SQLLine</code> command to start SQLLine for executing Drill queries in embedded mode.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">[mapr@maprdemo ~]# sqlline
-sqlline version 1.1.6
+<p>Drill includes a shell for connecting to relational databases and executing SQL commands. On the sandbox, the Drill shell runs in embedded mode. After logging into the sandbox,  use the <code>SQLLine</code> command. The Drill shell appears, and you can run Drill queries.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">[mapr@maprdemo ~]$ sqlline
+apache drill 1.0.0 
+&quot;the only truly happy people are children, the creative minority and drill users&quot;
 0: jdbc:drill:&gt;
 </code></pre></div>
 <p>In this tutorial you query a number of data sets, including Hive and HBase, and files on the file system, such as CSV, JSON, and Parquet files. To access these diverse data sources, you connect Drill to storage plugins. </p>
 
 <h2 id="storage-plugin-overview">Storage Plugin Overview</h2>
 
-<p>This section describes storage plugins included in the sandbox. For general information about Drill storage plugins, see <a href="/docs/connect-a-data-source-introduction">&quot;Connect to a Data Source&quot;</a>.
-Take a look at the pre-configured storage plugins for the sandbox by opening the Storage tab in the Drill Web UI. Launch a web browser and go to: <code>http://&lt;IP address&gt;:8047/storage</code>. For example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">http://localhost:8047/storage
-</code></pre></div>
+<p>You use a <a href="/docs/connect-a-data-source-introduction">storage plugins</a> to connect to a data source, such as a file or the Hive metastore. Take a look at the storage plugin definitions by opening the Storage tab in the Drill Web UI. Launch a web browser and go to: <code>http://&lt;IP address&gt;:8047/storage</code>. </p>
+
 <p>The control panel for managing storage plugins appears.</p>
 
 <p><img src="/docs/img/get2kno_plugin.png" alt="sandbox plugin"></p>
 
-<p>You see that the following storage plugin controls:</p>
+<p>You see the following storage plugin controls:</p>
 
 <ul>
 <li>cp</li>
@@ -950,11 +949,9 @@ Take a look at the pre-configured storage plugins for the sandbox by opening the
 <li>mongo</li>
 </ul>
 
-<p>Click Update to look at a configuration. </p>
+<p>Click Update to examine a configuration. </p>
 
-<p>In some cases, the storage plugin defined for use in the sandbox differs from the default storage plugin of the same name in a Drill installation as described in the following sections. Typically you create a storage plugin or customize an existing one for analyzing a particular data source. </p>
-
-<p>The tutorial uses the dfs, hive, maprdb, and hbase storage plugins. </p>
+<p>If you&#39;ve used an installation of Drill before using the sandbox, you might notice that a few storage plugins in the sandbox differ from the same storage plugin in a Drill installation. The sandbox version of dfs, hive, maprdb, and hbase storage plugins definitions play a role in simulating the cluster environment for running the tutorial. </p>
 
 <h3 id="dfs">dfs</h3>
 
@@ -997,30 +994,33 @@ location in MapR-FS:</p>
      &quot;delimiter&quot;: &quot;,&quot;
   },
  . . .
-  &quot;json&quot;: {
-   &quot;type&quot;: &quot;json&quot;
-   }
+   &quot;json&quot;: {
+      &quot;type&quot;: &quot;json&quot;
+  },
+   &quot;maprdb&quot;: {
+      &quot;type&quot;: &quot;maprdb&quot;
   }
-}
+ . . .
 </code></pre></div>
 <h3 id="maprdb">maprdb</h3>
 
 <p>The maprdb storage plugin is a configuration for MapR-DB in the sandbox. You use this plugin in the sandbox to query HBase as well as MapR-DB data because the sandbox does not include HBase services. In addition to the following brief example, see the <a href="/docs/hbase-storage-plugin">Registering HBase</a> for more
 information on how to configure Drill to query HBase.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">{
-  &quot;type&quot; : &quot;hbase&quot;,
-  &quot;enabled&quot; : true,
-  &quot;config&quot; : {
-    &quot;hbase.table.namespace.mappings&quot; : &quot;*:/tables&quot;
-  }
- }
+  &quot;type&quot;: &quot;hbase&quot;,
+  &quot;config&quot;: {
+    &quot;hbase.table.namespace.mappings&quot;: &quot;*:/tables&quot;
+  },
+  &quot;size.calculator.enabled&quot;: false,
+  &quot;enabled&quot;: true
+}
 </code></pre></div>
 <h3 id="hive">hive</h3>
 
 <p>The hive storage plugin is a configuration for a Hive data warehouse within the sandbox.
 Drill connects to the Hive metastore by using the configured metastore thrift
 URI. Metadata for Hive tables is automatically available for users to query.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> {
+<div class="highlight"><pre><code class="language-text" data-lang="text">{
   &quot;type&quot;: &quot;hive&quot;,
   &quot;enabled&quot;: true,
   &quot;configProps&quot;: {

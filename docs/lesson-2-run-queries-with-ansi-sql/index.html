@@ -938,31 +938,32 @@ statement.</p>
 <h2 id="aggregation">Aggregation</h2>
 
 <h3 id="set-the-schema-to-hive:">Set the schema to hive:</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; use hive;
-+------------+------------+
-|     ok     |  summary   |
-+------------+------------+
-| true       | Default schema changed to &#39;hive&#39; |
-+------------+------------+
-1 row selected
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; use hive.`default`;
++-------+-------------------------------------------+
+|  ok   |                  summary                  |
++-------+-------------------------------------------+
+| true  | Default schema changed to [hive.default]  |
++-------+-------------------------------------------+
+1 row selected 
 </code></pre></div>
 <h3 id="return-sales-totals-by-month:">Return sales totals by month:</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; select `month`, sum(order_total)
 from orders group by `month` order by 2 desc;
-+------------+------------+
-| month | EXPR$1 |
-+------------+------------+
-| June | 950481 |
-| May | 947796 |
-| March | 836809 |
-| April | 807291 |
-| July | 757395 |
-| October | 676236 |
-| August | 572269 |
-| February | 532901 |
-| September | 373100 |
-| January | 346536 |
-+------------+------------+
++------------+---------+
+|   month    | EXPR$1  |
++------------+---------+
+| June       | 950481  |
+| May        | 947796  |
+| March      | 836809  |
+| April      | 807291  |
+| July       | 757395  |
+| October    | 676236  |
+| August     | 572269  |
+| February   | 532901  |
+| September  | 373100  |
+| January    | 346536  |
++------------+---------+
+10 rows selected 
 </code></pre></div>
 <p>Drill supports SQL aggregate functions such as SUM, MAX, AVG, and MIN.
 Standard SQL clauses work in the same way in Drill queries as in relational
@@ -974,31 +975,31 @@ is a reserved word in SQL.</p>
 <h3 id="return-the-top-20-sales-totals-by-month-and-state:">Return the top 20 sales totals by month and state:</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; select `month`, state, sum(order_total) as sales from orders group by `month`, state
 order by 3 desc limit 20;
-+------------+------------+------------+
-|   month    |   state    |   sales    |
-+------------+------------+------------+
-| May        | ca         | 119586     |
-| June       | ca         | 116322     |
-| April      | ca         | 101363     |
-| March      | ca         | 99540      |
-| July       | ca         | 90285      |
-| October    | ca         | 80090      |
-| June       | tx         | 78363      |
-| May        | tx         | 77247      |
-| March      | tx         | 73815      |
-| August     | ca         | 71255      |
-| April      | tx         | 68385      |
-| July       | tx         | 63858      |
-| February   | ca         | 63527      |
-| June       | fl         | 62199      |
-| June       | ny         | 62052      |
-| May        | fl         | 61651      |
-| May        | ny         | 59369      |
-| October    | tx         | 55076      |
-| March      | fl         | 54867      |
-| March      | ny         | 52101      |
-+------------+------------+------------+
-20 rows selected
++-----------+--------+---------+
+|   month   | state  |  sales  |
++-----------+--------+---------+
+| May       | ca     | 119586  |
+| June      | ca     | 116322  |
+| April     | ca     | 101363  |
+| March     | ca     | 99540   |
+| July      | ca     | 90285   |
+| October   | ca     | 80090   |
+| June      | tx     | 78363   |
+| May       | tx     | 77247   |
+| March     | tx     | 73815   |
+| August    | ca     | 71255   |
+| April     | tx     | 68385   |
+| July      | tx     | 63858   |
+| February  | ca     | 63527   |
+| June      | fl     | 62199   |
+| June      | ny     | 62052   |
+| May       | fl     | 61651   |
+| May       | ny     | 59369   |
+| October   | tx     | 55076   |
+| March     | fl     | 54867   |
+| March     | ny     | 52101   |
++-----------+--------+---------+
+20 rows selected 
 </code></pre></div>
 <p>Note the alias for the result of the SUM function. Drill supports column
 aliases and table aliases.</p>
@@ -1009,27 +1010,28 @@ aliases and table aliases.</p>
 
 <h3 id="set-the-workspace-to-dfs.clicks">Set the workspace to dfs.clicks</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; use dfs.clicks;
-+------------+------------+
-|     ok     |  summary   |
-+------------+------------+
-| true       | Default schema changed to &#39;dfs.clicks&#39; |
-+------------+------------+
++-------+-----------------------------------------+
+|  ok   |                 summary                 |
++-------+-----------------------------------------+
+| true  | Default schema changed to [dfs.clicks]  |
++-------+-----------------------------------------+
 1 row selected
 </code></pre></div>
 <h3 id="return-total-number-of-clicks-for-devices-that-indicate-high-click-throughs:">Return total number of clicks for devices that indicate high click-throughs:</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; select t.user_info.device, count(*) from `clicks/clicks.json` t 
 group by t.user_info.device
 having count(*) &gt; 1000;
-+------------+------------+
-|   EXPR$0   |   EXPR$1   |
-+------------+------------+
-| IOS5       | 11814      |
-| AOS4.2     | 5986       |
-| IOS6       | 4464       |
-| IOS7       | 3135       |
-| AOS4.4     | 1562       |
-| AOS4.3     | 3039       |
-+------------+------------+
++---------+---------+
+| EXPR$0  | EXPR$1  |
++---------+---------+
+| IOS5    | 11814   |
+| AOS4.2  | 5986    |
+| IOS6    | 4464    |
+| IOS7    | 3135    |
+| AOS4.4  | 1562    |
+| AOS4.3  | 3039    |
++---------+---------+
+6 rows selected
 </code></pre></div>
 <p>The aggregate is a count of the records for each different mobile device in
 the clickstream data. Only the activity for the devices that registered more
@@ -1059,19 +1061,23 @@ duplicate rows from those files): <code>clicks.campaign.json</code> and <code>cl
 <h2 id="subqueries">Subqueries</h2>
 
 <h3 id="set-the-workspace-to-hive:">Set the workspace to hive:</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; use hive;
-+------------+------------+
-|     ok     |  summary   |
-+------------+------------+
-| true       | Default schema changed to &#39;hive&#39; |
-+------------+------------+
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; use hive.`default`;
++-------+-------------------------------------------+
+|  ok   |                  summary                  |
++-------+-------------------------------------------+
+| true  | Default schema changed to [hive.default]  |
++-------+-------------------------------------------+
+1 row selected
 </code></pre></div>
 <h3 id="compare-order-totals-across-states:">Compare order totals across states:</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; select o1.cust_id, sum(o1.order_total) as ny_sales,
-(select sum(o2.order_total) from hive.orders o2
-where o1.cust_id=o2.cust_id and state=&#39;ca&#39;) as ca_sales
-from hive.orders o1 where o1.state=&#39;ny&#39; group by o1.cust_id
-order by cust_id limit 20;
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; select ny_sales.cust_id, ny_sales.total_orders, ca_sales.total_orders
+from
+(select o.cust_id, sum(o.order_total) as total_orders from hive.orders o where state = &#39;ny&#39; group by o.cust_id) ny_sales
+left outer join
+(select o.cust_id, sum(o.order_total) as total_orders from hive.orders o where state = &#39;ca&#39; group by o.cust_id) ca_sales
+on ny_sales.cust_id = ca_sales.cust_id
+order by ny_sales.cust_id
+limit 20;
 +------------+------------+------------+
 |  cust_id   |  ny_sales  |  ca_sales  |
 +------------+------------+------------+
@@ -1097,26 +1103,18 @@ order by cust_id limit 20;
 | 1024       | 233        | null       |
 +------------+------------+------------+
 </code></pre></div>
-<p>This example demonstrates Drill support for correlated subqueries. This query
-uses a subquery in the select list and correlates the result of the subquery
-with the outer query, using the cust_id column reference. The subquery returns
-the sum of order totals for California, and the outer query returns the
-equivalent sum, for the same cust_id, for New York.</p>
-
-<p>The result set is sorted by the cust_id and presents the sales totals side by
-side for easy comparison. Null values indicate customer IDs that did not
-register any sales in that state.</p>
+<p>This example demonstrates Drill support for subqueries. </p>
 
 <h2 id="cast-function">CAST Function</h2>
 
 <h3 id="use-the-maprdb-workspace:">Use the maprdb workspace:</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; use maprdb;
-+------------+------------+
-|     ok     |  summary   |
-+------------+------------+
-| true       | Default schema changed to &#39;maprdb&#39; |
-+------------+------------+
-1 row selected
++-------+-------------------------------------+
+|  ok   |               summary               |
++-------+-------------------------------------+
+| true  | Default schema changed to [maprdb]  |
++-------+-------------------------------------+
+1 row selected (0.088 seconds)
 </code></pre></div>
 <h3 id="return-customer-data-with-appropriate-data-types">Return customer data with appropriate data types</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; select cast(row_key as int) as cust_id, cast(t.personal.name as varchar(20)) as name, 
@@ -1124,16 +1122,15 @@ cast(t.personal.gender as varchar(10)) as gender, cast(t.personal.age as varchar
 cast(t.address.state as varchar(4)) as state, cast(t.loyalty.agg_rev as dec(7,2)) as agg_rev, 
 cast(t.loyalty.membership as varchar(20)) as membership
 from customers t limit 5;
-+------------+------------+------------+------------+------------    +------------+------------+
-|  cust_id   |    name    |   gender   |    age     |   state    |  agg_rev   | membership |
-+------------+------------+------------+------------+------------+------------+------------+
-| 10001      | &quot;Corrine Mecham&quot; | &quot;FEMALE&quot;   | &quot;15-20&quot;    | &quot;va&quot;       | 197.00     | &quot;silver&quot;   |
-| 10005      | &quot;Brittany Park&quot; | &quot;MALE&quot;     | &quot;26-35&quot;    | &quot;in&quot;       | 230.00     | &quot;silver&quot;   |
-| 10006      | &quot;Rose Lokey&quot; | &quot;MALE&quot;     | &quot;26-35&quot;    | &quot;ca&quot;       | 250.00     | &quot;silver&quot;   |
-| 10007      | &quot;James Fowler&quot; | &quot;FEMALE&quot;   | &quot;51-100&quot;   | &quot;me&quot;       | 263.00     | &quot;silver&quot;   |
-| 10010      | &quot;Guillermo Koehler&quot; | &quot;OTHER&quot;    | &quot;51-100&quot;   | &quot;mn&quot;       | 202.00     | &quot;silver&quot;   |
-+------------+------------+------------+------------+------------+------------+------------+
-5 rows selected
++----------+----------------------+-----------+-----------+--------+----------+-------------+
+| cust_id  |         name         |  gender   |    age    | state  | agg_rev  | membership  |
++----------+----------------------+-----------+-----------+--------+----------+-------------+
+| 10001    | &quot;Corrine Mecham&quot;     | &quot;FEMALE&quot;  | &quot;15-20&quot;   | &quot;va&quot;   | 197.00   | &quot;silver&quot;    |
+| 10005    | &quot;Brittany Park&quot;      | &quot;MALE&quot;    | &quot;26-35&quot;   | &quot;in&quot;   | 230.00   | &quot;silver&quot;    |
+| 10006    | &quot;Rose Lokey&quot;         | &quot;MALE&quot;    | &quot;26-35&quot;   | &quot;ca&quot;   | 250.00   | &quot;silver&quot;    |
+| 10007    | &quot;James Fowler&quot;       | &quot;FEMALE&quot;  | &quot;51-100&quot;  | &quot;me&quot;   | 263.00   | &quot;silver&quot;    |
+| 10010    | &quot;Guillermo Koehler&quot;  | &quot;OTHER&quot;   | &quot;51-100&quot;  | &quot;mn&quot;   | 202.00   | &quot;silver&quot;    |
++----------+----------------------+-----------+-----------+--------+----------+-------------+
 </code></pre></div>
 <p>Note the following features of this query:</p>
 
@@ -1159,11 +1156,12 @@ from customers t limit 1;
 </code></pre></div>
 <h2 id="create-view-command">CREATE VIEW Command</h2>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; use dfs.views;
-+------------+------------+
-| ok | summary |
-+------------+------------+
-| true | Default schema changed to &#39;dfs.views&#39; |
-+------------+------------+
++-------+----------------------------------------+
+|  ok   |                summary                 |
++-------+----------------------------------------+
+| true  | Default schema changed to [dfs.views]  |
++-------+----------------------------------------+
+1 row selected
 </code></pre></div>
 <h3 id="use-a-mutable-workspace:">Use a mutable workspace:</h3>
 
@@ -1180,11 +1178,11 @@ cast(t.address.state as varchar(4)) as state,
 cast(t.loyalty.agg_rev as dec(7,2)) as agg_rev,
 cast(t.loyalty.membership as varchar(20)) as membership
 from maprdb.customers t;
-+------------+------------+
-|     ok     |  summary   |
-+------------+------------+
-| true       | View &#39;custview&#39; replaced successfully in &#39;dfs.views&#39; schema |
-+------------+------------+
++-------+-------------------------------------------------------------+
+|  ok   |                           summary                           |
++-------+-------------------------------------------------------------+
+| true  | View &#39;custview&#39; created successfully in &#39;dfs.views&#39; schema  |
++-------+-------------------------------------------------------------+
 1 row selected
 </code></pre></div>
 <p>Drill provides CREATE OR REPLACE VIEW syntax similar to relational databases
@@ -1206,11 +1204,12 @@ supports the creation of metadata in the file system.</p>
 
 <h3 id="query-data-from-the-view:">Query data from the view:</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; select * from custview limit 1;
-+------------+------------+------------+------------+------------+------------+------------+
-|  cust_id   |    name    |   gender   |    age     |   state    |  agg_rev   | membership |
-+------------+------------+------------+------------+------------+------------+------------+
-| 10001      | &quot;Corrine Mecham&quot; | &quot;FEMALE&quot;   | &quot;15-20&quot;    | &quot;va&quot;       | 197.00     | &quot;silver&quot;   |
-+------------+------------+------------+------------+------------+------------+------------+
++----------+-------------------+-----------+----------+--------+----------+-------------+
+| cust_id  |       name        |  gender   |   age    | state  | agg_rev  | membership  |
++----------+-------------------+-----------+----------+--------+----------+-------------+
+| 10001    | &quot;Corrine Mecham&quot;  | &quot;FEMALE&quot;  | &quot;15-20&quot;  | &quot;va&quot;   | 197.00   | &quot;silver&quot;    |
++----------+-------------------+-----------+----------+--------+----------+-------------+
+1 row selected
 </code></pre></div>
 <p>Once the users get an idea on what data is available by exploring it directly
 from file system , views can be used as a way to take the data in downstream
