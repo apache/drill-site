@@ -70,6 +70,8 @@
       
         <li><a href="/docs/develop-custom-functions/">Develop Custom Functions</a></li>
       
+        <li><a href="/docs/troubleshooting/">Troubleshooting</a></li>
+      
         <li><a href="/docs/developer-information/">Developer Information</a></li>
       
         <li><a href="/docs/release-notes/">Release Notes</a></li>
@@ -81,8 +83,6 @@
         <li><a href="/docs/progress-reports/">Progress Reports</a></li>
       
         <li><a href="/docs/project-bylaws/">Project Bylaws</a></li>
-      
-        <li><a href="/docs/log-and-debug/">Log and Debug</a></li>
       
     </ul>
   </li>
@@ -147,6 +147,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/architecture-introduction/">Architecture Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/drill-query-execution/">Drill Query Execution</a></li>
             
           
             
@@ -540,11 +544,41 @@
             </ul>
             
           
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Performance Tuning Reference</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/query-profile-column-descriptions/">Query Profile Column Descriptions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/physical-operators/">Physical Operators</a></li>
+              
+            </ul>
+            
+          
           </ul>
         
       
         
-          <li class="toctree-l1"><a class="reference internal" href="/docs/log-and-debug/">Log and Debug</a></li>
+          <li class="toctree-l1"><a href="javascript: void(0);">Log and Debug</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/log-and-debug-introduction/">Log and Debug Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/error-messages/">Error Messages</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/modify-logback-xml/">Modify logback.xml</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/review-the-java-stack-trace/">Review the Java Stack Trace</a></li>
+            
+          
+          </ul>
         
       
         
@@ -759,6 +793,10 @@
         
       
         
+          <li class="toctree-l1"><a class="reference internal" href="/docs/troubleshooting/">Troubleshooting</a></li>
+        
+      
+        
           <li class="toctree-l1"><a href="javascript: void(0);">Developer Information</a></li>
           <ul style="display: none">
           
@@ -840,6 +878,10 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-9-0-release-notes/">Apache Drill 0.9.0 Release Notes</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-0-0-release-notes/">Apache Drill 1.0.0 Release Notes</a></li>
+            
+          
           </ul>
         
       
@@ -896,29 +938,6 @@
           <li class="toctree-l1"><a class="reference internal" href="/docs/project-bylaws/">Project Bylaws</a></li>
         
       
-        
-          <li class="toctree-l1"><a href="javascript: void(0);">Log and Debug</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/log-and-debug-introduction/">Log and Debug Introduction</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/error-messages/">Error Messages</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/modify-logback-xml/">Modify logback.xml</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/review-the-java-stack-trace/">Review the Java Stack Trace</a></li>
-            
-          
-          </ul>
-        
-      
       </ul>
 
     </div>
@@ -958,9 +977,8 @@
 <p>The following planning options affect query planning and performance:</p>
 
 <ul>
-<li><p><strong>planner.width.max_per_node</strong> </p>
-
-<p>Default is 3. Configure this option to achieve fine grained, absolute control over parallelization.</p>
+<li><p><strong>planner.width.max_per_node</strong><br>
+ Configure this option to achieve fine grained, absolute control over parallelization.</p>
 
 <p>In this context width refers to fan out or distribution potential: the ability to run a query in parallel across the cores on a node and the nodes on a cluster. A physical plan consists of intermediate operations, known as query &quot;fragments,&quot; that run concurrently, yielding opportunities for parallelism above and below each exchange operator in the plan. An exchange operator represents a breakpoint in the execution flow where processing can be distributed. For example, a single-process scan of a file may flow into an exchange operator, followed by a multi-process aggregation fragment.</p>
 
@@ -968,15 +986,12 @@
 
 <p>For example, on a single-node test system with 2 cores and hyper-threading enabled: 1 * 4 * 0.7 = 3.
  When you modify the default setting, you can supply any meaningful number. The system does not automatically scale down your setting.  </p></li>
-<li><p><strong>planner.width_max_per_query</strong>  </p>
-
-<p>Default is 1000. The maximum number of threads than can run in parallel for a query across all nodes. Only change this setting when Drill over-parallelizes on very large clusters.</p></li>
-<li><p><strong>planner.slice_target</strong>  </p>
-
-<p>Default is 100000. The minimum number of estimated records to work with in a major fragment before applying additional parallelization.</p></li>
-<li><p><strong>planner.broadcast_threshold</strong>  </p>
-
-<p>Default is 10000000. The maximum number of records allowed to be broadcast as part of a join. After one million records, Drill reshuffles data rather than doing a broadcast to one side of the join. To improve performance you can increase this number, especially on 10GB Ethernet clusters.</p></li>
+<li><p><strong>planner.width_max_per_query</strong><br>
+ Default is 1000. The maximum number of threads than can run in parallel for a query across all nodes. Only change this setting when Drill over-parallelizes on very large clusters.</p></li>
+<li><p><strong>planner.slice_target</strong><br>
+ Default is 100000. The minimum number of estimated records to work with in a major fragment before applying additional parallelization.</p></li>
+<li><p><strong>planner.broadcast_threshold</strong><br>
+ Default is 10000000. The maximum number of records allowed to be broadcast as part of a join. After one million records, Drill reshuffles data rather than doing a broadcast to one side of the join. To improve performance you can increase this number, especially on 10GB Ethernet clusters.</p></li>
 </ul>
 
     
