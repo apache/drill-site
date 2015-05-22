@@ -973,9 +973,9 @@
         <p>Apache Drill is one of the fastest growing open source projects, with the community making rapid progress with monthly releases. The key difference is Drill’s agility and flexibility.
 Along with meeting the table stakes for SQL-on-Hadoop, which is to achieve low
 latency performance at scale, Drill allows users to analyze the data without
-any ETL or up-front schema definitions. The data could be in any file format
-such as text, JSON, or Parquet. Data could have simple types such as string,
-integer, dates, or more complex multi-structured data, such as nested maps and
+any ETL or up-front schema definitions. The data can be in any file format
+such as text, JSON, or Parquet. Data can have simple types such as strings,
+integers, dates, or more complex multi-structured data, such as nested maps and
 arrays. Data can exist in any file system, local or distributed, such as HDFS,
 MapR FS, or S3. Drill, has a “no schema” approach, which enables you to get
 value from your data in just a few minutes.</p>
@@ -991,25 +991,17 @@ example is downloadable from <a href="http://www.yelp.com/dataset_challenge">Yel
 
 <h3 id="step-1:-download-apache-drill-onto-your-local-machine">Step 1: Download Apache Drill onto your local machine</h3>
 
-<p><a href="http://drill.apache.org/download/">http://drill.apache.org/download/</a></p>
+<p>To experiment with Drill locally, follow the installation instructions in <a href="/docs/drill-in-10-minutes/">Drill in 10 Minutes</a>.</p>
 
-<p>You can also <a href="/docs/installing-drill-in-distributed-mode">in Drill in distributed mode</a> if you
+<p>Alternatively, you can <a href="/docs/installing-drill-in-distributed-mode">install Drill in distributed mode</a> if you
 want to scale your environment.</p>
-
-<h3 id="step-2-:-open-the-drill-tar-file">Step 2 : Open the Drill tar file</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">tar -xvf apache-drill-0.1.0.tar.gz
-</code></pre></div>
-<h3 id="step-3:-start-the-drill-shell.">Step 3: Start the Drill shell.</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">bin/drill-embedded
-</code></pre></div>
-<p>That’s it! You are now ready explore the data.</p>
 
 <p>Let’s try out some SQL examples to understand how Drill makes the raw data
 analysis extremely easy.</p>
 
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
-  <p class="last">You need to substitute your local path to the Yelp data set in the FROM clause of each query you run.  </p>
+  <p class="last">You need to substitute your local path to the Yelp data set in the angle-bracketed portion of the FROM clause of each query you run.  </p>
 </div>
 
 <hr>
@@ -1020,7 +1012,7 @@ analysis extremely easy.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; !set maxwidth 10000
 
 0: jdbc:drill:zk=local&gt; select * from
-    dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_business.json`
+    dfs.`&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json`
     limit 1;
 
 +------------------------+----------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+--------------------------------+---------+--------------+-------------------+-------------+-------+-------+-----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+----------+---------------+
@@ -1040,7 +1032,7 @@ analysis extremely easy.</p>
 
 <h4 id="total-reviews-in-the-data-set">Total reviews in the data set</h4>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select sum(review_count) as totalreviews 
-from dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_business.json`;
+from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json`;
 
 +--------------+
 | totalreviews |
@@ -1050,7 +1042,7 @@ from dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_business.js
 </code></pre></div>
 <h4 id="top-states-and-cities-in-total-number-of-reviews">Top states and cities in total number of reviews</h4>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select state, city, count(*) totalreviews 
-from dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_business.json` 
+from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json` 
 group by state, city order by count(*) desc limit 10;
 
 +------------+------------+--------------+
@@ -1070,7 +1062,7 @@ group by state, city order by count(*) desc limit 10;
 </code></pre></div>
 <h4 id="average-number-of-reviews-per-business-star-rating">Average number of reviews per business star rating</h4>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select stars,trunc(avg(review_count)) reviewsavg 
-from dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_business.json`
+from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json`
 group by stars order by stars desc;
 
 +------------+------------+
@@ -1089,7 +1081,7 @@ group by stars order by stars desc;
 </code></pre></div>
 <h4 id="top-businesses-with-high-review-counts-(&gt;-1000)">Top businesses with high review counts (&gt; 1000)</h4>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select name, state, city, `review_count` from
-dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_business.json`
+dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json`
 where review_count &gt; 1000 order by `review_count` desc limit 10;
 
 +-------------------------------+-------------+------------+---------------+
@@ -1111,7 +1103,7 @@ where review_count &gt; 1000 order by `review_count` desc limit 10;
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select b.name, b.hours.Saturday.`open`,
 b.hours.Saturday.`close`  
 from
-dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_business.json`
+dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json`
 b limit 10;
 
 +----------------------------+------------+------------+
@@ -1148,7 +1140,7 @@ the data).</p>
 +------------+-----------------------------------+
 </code></pre></div>
 <p>Then, query the attribute’s data.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select attributes from dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_business.json` limit 10;
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select attributes from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json` limit 10;
 
 +-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |                                                     attributes                                                                                                                    |
@@ -1182,7 +1174,7 @@ on data.</p>
 <h3 id="4.-explore-the-restaurant-businesses-in-the-data-set">4. Explore the restaurant businesses in the data set</h3>
 
 <h4 id="number-of-restaurants-in-the-data-set">Number of restaurants in the data set</h4>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select count(*) as TotalRestaurants from dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_business.json` where true=repeated_contains(categories,&#39;Restaurants&#39;);
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select count(*) as TotalRestaurants from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json` where true=repeated_contains(categories,&#39;Restaurants&#39;);
 +------------------+
 | TotalRestaurants |
 +------------------+
@@ -1190,7 +1182,7 @@ on data.</p>
 +------------------+
 </code></pre></div>
 <h4 id="top-restaurants-in-number-of-reviews">Top restaurants in number of reviews</h4>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select name,state,city,`review_count` from dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_business.json` where true=repeated_contains(categories,&#39;Restaurants&#39;) order by `review_count` desc limit 10;
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select name,state,city,`review_count` from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json` where true=repeated_contains(categories,&#39;Restaurants&#39;) order by `review_count` desc limit 10;
 
 +------------------------+-------+-----------+--------------+
 |          name          | state |    city   | review_count |
@@ -1208,7 +1200,7 @@ on data.</p>
 +------------------------+-------+-----------+--------------+
 </code></pre></div>
 <h4 id="top-restaurants-in-number-of-listed-categories">Top restaurants in number of listed categories</h4>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select name,repeated_count(categories) as categorycount, categories from dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_business.json` where true=repeated_contains(categories,&#39;Restaurants&#39;) order by repeated_count(categories) desc limit 10;
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select name,repeated_count(categories) as categorycount, categories from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json` where true=repeated_contains(categories,&#39;Restaurants&#39;) order by repeated_count(categories) desc limit 10;
 
 +---------------------------------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
 | name                            | categorycount | categories                                                                                                                                        |
@@ -1232,7 +1224,7 @@ on data.</p>
 
 <h4 id="top-first-categories-in-number-of-review-counts">Top first categories in number of review counts</h4>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select categories[0], count(categories[0]) as categorycount 
-from dfs.`/users/nrentachintala/Downloads/yelp_academic_dataset_business.json` 
+from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp_academic_dataset_business.json` 
 group by categories[0] 
 order by count(categories[0]) desc limit 10;
 
@@ -1255,7 +1247,7 @@ order by count(categories[0]) desc limit 10;
 
 <h4 id="take-a-look-at-the-contents-of-the-yelp-reviews-dataset.">Take a look at the contents of the Yelp reviews dataset.</h4>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select * 
-from dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_review.json` limit 1;
+from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_review.json` limit 1;
 +---------------------------------+------------------------+------------------------+-------+------------+----------------------------------------------------------------------+--------+------------------------+
 | votes                           | user_id                | review_id              | stars | date       | text                                                                 | type   | business_id            |
 +---------------------------------+------------------------+------------------------+-------+------------+----------------------------------------------------------------------+--------+------------------------+
@@ -1268,9 +1260,9 @@ from dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_review.json
 review_count to the Yelp review data, which holds additional details on each
 of the reviews themselves.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; Select b.name 
-from dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_business.json` b 
+from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json` b 
 where b.business_id in (SELECT r.business_id 
-FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_review.json` r
+FROM dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_review.json` r
 GROUP BY r.business_id having sum(r.votes.cool) &gt; 2000 
 order by sum(r.votes.cool)  desc);
 +-------------------------------+
@@ -1291,7 +1283,7 @@ or distributed file system). If you want to persist the data physically
 instead of in a logical view, you can use CREATE TABLE AS SELECT syntax.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; create or replace view dfs.tmp.businessreviews as 
 Select b.name,b.stars,b.state,b.city,r.votes.funny,r.votes.useful,r.votes.cool, r.`date` 
-from dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_business.json` b, dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_review.json` r 
+from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json` b, dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_review.json` r 
 where r.business_id=b.business_id
 +------------+-----------------------------------------------------------------+
 |     ok     |                           summary                               |
@@ -1307,7 +1299,7 @@ where r.business_id=b.business_id
 | 1125458    |
 +------------+
 </code></pre></div>
-<p>In addition to these queries, you can get many more deeper insights using
+<p>In addition to these queries, you can get many deep insights using
 Drill’s <a href="/docs/sql-reference">SQL functionality</a>. If you are not comfortable with writing queries manually, you
 can use a BI/Analytics tools such as Tableau/MicroStrategy to query raw
 files/Hive/HBase data or Drill-created views directly using Drill <a href="/docs/odbc-jdbc-interfaces">ODBC/JDBC
@@ -1323,7 +1315,7 @@ data so you can apply even deeper SQL functionality. Here is a sample query:</p>
 
 <h4 id="get-a-flattened-list-of-categories-for-each-business">Get a flattened list of categories for each business</h4>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select name, flatten(categories) as category 
-from dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_business.json`  limit 20;
+from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json`  limit 20;
 +-----------------------------+---------------------------------+
 | name                        | category                        |
 +-----------------------------+---------------------------------+

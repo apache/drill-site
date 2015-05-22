@@ -1014,12 +1014,19 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.79-b02, mixed mode)
 <p>Complete the following steps to install Drill:  </p>
 
 <ol>
-<li><p>Issue the following command in a terminal to download the latest version of Apache Drill to a directory on your machine, or download Drill from the <a href="http://getdrill.org/drill/download/apache-drill-1.0.0.tar.gz">Drill web site</a>:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">wget http://getdrill.org/drill/download/apache-drill-1.0.0.tar.gz  
-</code></pre></div></li>
+<li><p>In a terminal windows, change to the directory where you want to install Drill.</p></li>
+<li><p>To download the latest version of Apache Drill, download Drill from the <a href="http://getdrill.org/drill/download/apache-drill-1.0.0.tar.gz">Drill web site</a>or run one of the following commands, depending on which you have installed on your system:</p></li>
+</ol>
+
+<ul>
+<li><code>wget http://getdrill.org/drill/download/apache-drill-1.0.0.tar.gz</code><br></li>
+<li> <code>curl -o apache-drill-1.0.0.tar.gz http://getdrill.org/drill/download/apache-drill-1.0.0.tar.gz</code><br></li>
+</ul>
+
+<ol>
 <li><p>Copy the downloaded file to the directory where you want to install Drill. </p></li>
-<li><p>Extract the contents of the Drill tar.gz file. Use sudo if necessary:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">sudo tar -xvzf apache-drill-1.0.0.tar.gz  
+<li><p>Extract the contents of the Drill tar.gz file. Use sudo only if necessary:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">tar -xvzf apache-drill-1.0.0.tar.gz  
 </code></pre></div></li>
 </ol>
 
@@ -1049,7 +1056,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.79-b02, mixed mode)
 <p>You can install Drill on Windows 7 or 8. First, set the JAVA_HOME environment variable, and then install Drill. Complete the following steps to install Drill:</p>
 
 <ol>
-<li>Click the following link to download the latest version of Apache Drill:  <a href="http://getdrill.org/drill/download/apache-drill-0.1.0.tar.gz">http://getdrill.org/drill/download/apache-drill-1.0.0.tar.gz</a><br></li>
+<li>Click the following link to download the latest version of Apache Drill:  <a href="http://getdrill.org/drill/download/apache-drill-1.0.0.tar.gz">http://getdrill.org/drill/download/apache-drill-1.0.0.tar.gz</a><br></li>
 <li>Move the <code>apache-drill-1.0.0.tar.gz</code> file to a directory where you want to install Drill.<br></li>
 <li>Unzip the <code>TAR.GZ</code> file using a third-party tool. If the tool you use does not unzip the TAR file as well as the <code>TAR.GZ</code> file, unzip the <code>apache-drill-1.0.0.tar</code> to extract the Drill software. The extraction process creates the installation directory named apache-drill-1.0.0 containing the Drill software. For example:<br>
 <img src="/docs/img/drill-directory.png" alt="drill install dir"></li>
@@ -1083,7 +1090,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.79-b02, mixed mode)
 </code></pre></div>
 <h2 id="query-sample-data">Query Sample Data</h2>
 
-<p>Your Drill installation includes a <code>sample-date</code> directory with JSON and
+<p>Your Drill installation includes a <code>sample-data</code> directory with JSON and
 Parquet files that you can query. The local file system on your machine is
 configured as the <code>dfs</code> storage plugin instance by default when you install
 Drill in embedded mode. For more information about storage plugin
@@ -1096,7 +1103,7 @@ configuration, refer to <a href="/docs/connect-a-data-source-introduction">Stora
 <p>A sample JSON file, <code>employee.json</code>, contains fictitious employee data.</p>
 
 <p>To view the data in the <code>employee.json</code> file, submit the following SQL query
-to Drill:</p>
+to Drill, using the <a href="/docs/storage-plugin-registration/">cp (classpath) storage plugin</a> to point to the file.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM cp.`employee.json` LIMIT 3;
 </code></pre></div>
 <p>The query output is:</p>
@@ -1122,24 +1129,13 @@ systems.</p>
 
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
-  <p class="last">When you enter the query, include the version of Drill that you are currently running.  </p>
+  <p class="last">Substitute your installation path and the Drill version in the angle-bracketed locations when you enter the query.  </p>
 </div> 
 
 <p>To view the data in the <code>region.parquet</code> file, issue the query appropriate for
 your operating system:</p>
-
-<ul>
-<li><p>Linux  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM dfs.`/opt/drill/apache-drill-&lt;version&gt;/sample-data/region.parquet`;
-</code></pre></div></li>
-<li><p>Mac OS X</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM dfs.`/Users/max/drill/apache-drill-&lt;version&gt;/sample-data/region.parquet`;
-</code></pre></div></li>
-<li><p>Windows  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM dfs.`C:\drill\apache-drill-&lt;version&gt;\sample-data\region.parquet`;
-</code></pre></div></li>
-</ul>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">    SELECT * FROM dfs.`&lt;path-to-installation&gt;/apache-drill-&lt;version&gt;/sample-data/region.parquet`;
+</code></pre></div>
 <p>The query returns the following results:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">+--------------+--------------+-----------------------+
 | R_REGIONKEY  |    R_NAME    |       R_COMMENT       |
@@ -1160,24 +1156,13 @@ systems.</p>
 
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
-  <p class="last">When you enter the query, include the version of Drill that you are currently running.  </p>
+  <p class="last">Substitute your installation path and the Drill version in the angle-bracketed locations when you enter the query  </p>
 </div>
 
 <p>To view the data in the <code>nation.parquet</code> file, issue the query appropriate for
 your operating system:</p>
-
-<ul>
-<li><p>Linux  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">  SELECT * FROM dfs.`/opt/drill/apache-drill-&lt;version&gt;/sample-data/nation.parquet`;
-</code></pre></div></li>
-<li><p>Mac OS X</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">  SELECT * FROM dfs.`/Users/max/drill/apache-drill-&lt;version&gt;/sample-data/nation.parquet`;
-</code></pre></div></li>
-<li><p>Windows </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">  SELECT * FROM dfs.`C:\drill\apache-drill-&lt;version&gt;\sample-data\nation.parquet`;
-</code></pre></div></li>
-</ul>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">      SELECT * FROM dfs.`&lt;path-to-installation&gt;/apache-drill-&lt;version&gt;/sample-data/nation.parquet`;
+</code></pre></div>
 <p>The query returns the following results:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM dfs.`Users/khahn/drill/apache-drill-1.0.0-SNAPSHOT/sample-data/nation.parquet`;
 +--------------+-----------------+--------------+-----------------------+

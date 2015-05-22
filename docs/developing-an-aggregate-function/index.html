@@ -982,7 +982,7 @@ BIGINT. For a list of supported data types, refer to the <a href="/docs/supporte
 <div class="highlight"><pre><code class="language-text" data-lang="text">&lt;dependency&gt;
 &lt;groupId&gt;org.apache.drill.exec&lt;/groupId&gt;
 &lt;artifactId&gt;drill-java-exec&lt;/artifactId&gt;
-&lt;version&gt;1.0.0-m2-incubating-SNAPSHOT&lt;/version&gt;
+&lt;version&gt;1.0.0&lt;/version&gt;
 &lt;/dependency&gt;
 </code></pre></div></li>
 <li><p>Create a class that implements the <code>DrillAggFunc</code> interface and identify the scope as <code>FunctionTemplate.FunctionScope.POINT_AGGREGATE</code>.</p>
@@ -998,26 +998,7 @@ public static class BitCount implements DrillAggFunc{
 @Workspace BitHolder value;
 @Output BitHolder out;
 </code></pre></div></li>
-<li><p>Include the <code>setup(), add(), output(),</code> and <code>reset()</code> methods.</p>
-
-<p><strong>Example</strong>
-    public void setup(RecordBatch b) {
-      value = new BitHolder(); 
-        value.value = 0;
-    }</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">@Override
-public void add() {
-      value.value++;
-}
-@Override
-public void output() {
-  out.value = value.value;
-}
-@Override
-public void reset() {
-
-    value.value = 0;
-</code></pre></div></li>
+<li><p>Include the <code>setup(), add(), output(),</code> and <code>reset()</code> methods.  </p></li>
 <li><p>Use the maven-source-plugin to compile the sources and classes JAR files. Verify that an empty <code>drill-module.conf</code> is included in the resources folder of the JARs.<br>
 Drill searches this module during classpath scanning. If the file is not
 included in the resources folder, you can add it to the JAR file or add it to
