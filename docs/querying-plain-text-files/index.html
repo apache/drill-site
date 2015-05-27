@@ -972,9 +972,8 @@
 
     <div class="int_text" align="left">
       
-        <p>You can use Drill to access both structured file types and plain text files
-(flat files). This section shows a few simple examples that work on flat
-files:</p>
+        <p>You can use Drill to access structured file types and plain text files
+(flat files), such as the following file types:</p>
 
 <ul>
 <li>CSV files (comma-separated values)</li>
@@ -982,8 +981,15 @@ files:</p>
 <li>PSV files (pipe-separated values)</li>
 </ul>
 
-<p>The examples here show CSV files, but queries against TSV and PSV files return
-equivalent results. However, make sure that your registered storage plugins
+<p>Follow these general guidelines for querying a plain text file:</p>
+
+<ul>
+<li>Use a storage plugin that defines the file format, such as comma-separated (CSV) or tab-separated values (TSV), of the data in the plain text file.</li>
+<li>In the SELECT statement, use the <code>COLUMNS[n]</code> syntax in lieu of column names, which do not exist in a plain text file. The first column is column <code>0</code>.</li>
+<li>In the FROM clause, use the path to the plain text file instead of using a table name. Enclose the path and file name in back ticks. </li>
+</ul>
+
+<p>Make sure that your registered storage plugins
 recognize the appropriate file types and extensions. For example, the
 following configuration expects PSV files (files with a pipe delimiter) to
 have a <code>tbl</code> extension, not a <code>psv</code> extension. Drill returns a &quot;file not
@@ -1082,6 +1088,104 @@ from dfs.`/Users/brumsby/drill/plays.csv` where columns[0]&gt;1599;
 </code></pre></div>
 <p>Note that the restriction with the use of aliases applies to queries against
 all data sources.</p>
+
+<h2 id="example-of-querying-a-tsv-file">Example of Querying a TSV File</h2>
+
+<p>This example uses a tab-separated value (TSV) file that you download from a
+Google internet site. The data in the file consists of phrases from books that
+Google scans and generates for its <a href="http://storage.googleapis.com/books/ngrams/books/datasetsv2.html">Google Books Ngram
+Viewer</a>. You
+use the data to find the relative frequencies of Ngrams. </p>
+
+<h3 id="about-the-data">About the Data</h3>
+
+<p>Each line in the TSV file has the following structure:</p>
+
+<p><code>ngram TAB year TAB match_count TAB volume_count NEWLINE</code></p>
+
+<p>For example, lines 1722089 and 1722090 in the file contain this data:</p>
+
+<table ><tbody><tr><th >ngram</th><th >year</th><th colspan="1" >match_count</th><th >volume_count</th></tr><tr><td ><p class="p1">Zoological Journal of the Linnean</p></td><td >2007</td><td colspan="1" >284</td><td >101</td></tr><tr><td colspan="1" ><p class="p1">Zoological Journal of the Linnean</p></td><td colspan="1" >2008</td><td colspan="1" >257</td><td colspan="1" >87</td></tr></tbody></table> 
+  
+
+<p>In 2007, &quot;Zoological Journal of the Linnean&quot; occurred 284 times overall in 101
+distinct books of the Google sample.</p>
+
+<h3 id="download-and-set-up-the-data">Download and Set Up the Data</h3>
+
+<p>After downloading the file, you use the <code>dfs</code> storage plugin, and then select
+data from the file as you would a table. In the SELECT statement, enclose the
+path and name of the file in back ticks.</p>
+
+<ol>
+<li><p>Download the compressed Google Ngram data from this location:  </p>
+
+<p><a href="http://storage.googleapis.com/books/ngrams/books/googlebooks-eng-all-5gram-20120701-zo.gz">http://storage.googleapis.com/books/ngrams/books/googlebooks-eng-all-5gram-20120701-zo.gz</a></p></li>
+<li><p>Unzip the file.<br>
+ A file named googlebooks-eng-all-5gram-20120701-zo appears.</p></li>
+<li><p>Change the file name to add a <code>.tsv</code> extension.<br>
+The Drill <code>dfs</code> storage plugin definition includes a TSV format that requires
+a file to have this extension. Later, you learn how to skip this step and query the GZ file directly.</p></li>
+</ol>
+
+<h3 id="query-the-data">Query the Data</h3>
+
+<p>Get data about &quot;Zoological Journal of the Linnean&quot; that appears more than 250
+times a year in the books that Google scans.</p>
+
+<ol>
+<li><p>Switch back to using the <code>dfs</code> storage plugin.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">  USE dfs;
+</code></pre></div></li>
+<li><p>Issue a SELECT statement to get the first three columns in the file.  </p>
+
+<ul>
+<li>In the FROM clause of the example, substitute your path to the TSV file.<br></li>
+<li>Use aliases to replace the column headers, such as EXPR$0, with user-friendly column headers, Ngram, Publication Date, and Frequency.</li>
+<li>In the WHERE clause, enclose the string literal &quot;Zoological Journal of the Linnean&quot; in single quotation marks.<br></li>
+<li><p>Limit the output to 10 rows.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT COLUMNS[0] AS Ngram,
+       COLUMNS[1] AS Publication_Date,
+       COLUMNS[2] AS Frequency
+FROM `/Users/drilluser/Downloads/googlebooks-eng-all-5gram-20120701-zo.tsv`
+WHERE ((columns[0] = &#39;Zoological Journal of the Linnean&#39;)
+AND (columns[2] &gt; 250)) LIMIT 10;
+</code></pre></div></li>
+</ul>
+
+<p>The output is:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text"> +------------------------------------+-------------------+------------+
+ |               Ngram                | Publication_Date  | Frequency  |
+ +------------------------------------+-------------------+------------+
+ | Zoological Journal of the Linnean  | 1993              | 297        |
+ | Zoological Journal of the Linnean  | 1997              | 255        |
+ | Zoological Journal of the Linnean  | 2003              | 254        |
+ | Zoological Journal of the Linnean  | 2007              | 284        |
+ | Zoological Journal of the Linnean  | 2008              | 257        |
+ +------------------------------------+-------------------+------------+
+ 5 rows selected (1.175 seconds)
+</code></pre></div></li>
+</ol>
+
+<p>The Drill default storage plugins support common file formats. </p>
+
+<h2 id="query-the-gz-file-directly">Query the GZ File Directly</h2>
+
+<p>This example covers how to query the GZ file containing the compressed TSV data. The GZ file name needs to be renamed to specify the type of delimited file, such as CSV or TSV. You add <code>.tsv</code> before the <code>.gz</code> extension in this example.</p>
+
+<ol>
+<li>Rename the GZ file <code>googlebooks-eng-all-5gram-20120701-zo.gz</code> to googlebooks-eng-all-5gram-20120701-zo.tsv.gz.</li>
+<li><p>Query the renamed GZ file directly to get data about &quot;Zoological Journal of the Linnean&quot; that appears more than 250 times a year in the books that Google scans. In the FROM clause, instead of using the full path to the file as you did in the last exercise, connect to the data using the storage plugin workspace name ngram.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text"> SELECT COLUMNS[0], 
+        COLUMNS[1], 
+        COLUMNS[2] 
+ FROM dfs.`/Users/drilluser/Downloads/googlebooks-eng-all-5gram-20120701-zo.tsv.gz` 
+ WHERE ((columns[0] = &#39;Zoological Journal of the Linnean&#39;) 
+ AND (columns[2] &gt; 250)) 
+ LIMIT 10;
+</code></pre></div>
+<p>The 5 rows of output appear.  </p></li>
+</ol>
 
     
       

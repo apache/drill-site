@@ -982,8 +982,8 @@ also query directories of JSON files, for example.</p>
 same structure: <code>plays.csv</code> and <code>moreplays.csv</code>. The first file contains 7
 records and the second file contains 3 records. The following query returns
 the &quot;union&quot; of the two files, ordered by the first column:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select columns[0] as `Year`, columns[1] as Play 
-from dfs.`/Users/brumsby/drill/testdata` order by 1;
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT COLUMNS[0] AS `Year`, COLUMNS[1] AS Play 
+FROM dfs.`/Users/brumsby/drill/testdata` order by 1;
 
 +------------+------------------------+
 |    Year    |          Play          |
@@ -1016,7 +1016,7 @@ directories contain JSON files.</p>
 <p>You can query all of these files, or a subset, by referencing the file system
 once in a Drill query. For example, the following query counts the number of
 records in all of the files inside the <code>2013</code> directory:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; select count(*) from MFS.`/mapr/drilldemo/labs/clicks/logs/2013` ;
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; SELECT COUNT(*) FROM MFS.`/mapr/drilldemo/labs/clicks/logs/2013` ;
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1030,7 +1030,7 @@ is a workspace that points to the <code>logs</code> directory, which contains mu
 subdirectories: <code>2012</code>, <code>2013</code>, and <code>2014</code>. The following query constrains
 files inside the subdirectory named <code>2013</code>. The variable <code>dir0</code> refers to the
 first level down from logs, <code>dir1</code> to the next level, and so on.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; use bob.logdata;
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; USE bob.logdata;
 +------------+-----------------------------------------+
 |     ok     |              summary                    |
 +------------+-----------------------------------------+
@@ -1038,7 +1038,7 @@ first level down from logs, <code>dir1</code> to the next level, and so on.</p>
 +------------+-----------------------------------------+
 1 row selected (0.305 seconds)
 
-0: jdbc:drill:&gt; select * from logs where dir0=&#39;2013&#39; limit 10;
+0: jdbc:drill:&gt; SELECT * FROM logs WHERE dir0=&#39;2013&#39; LIMIT 10;
 +------------+------------+------------+------------+------------+------------+------------+------------+------------+-------------+
 |    dir0    |    dir1    |  trans_id  |    date    |    time    |  cust_id   |   device   |   state    |  camp_id   |  keywords   |
 +------------+------------+------------+------------+------------+------------+------------+------------+------------+-------------+
@@ -1055,8 +1055,6 @@ first level down from logs, <code>dir1</code> to the next level, and so on.</p>
 +------------+------------+------------+------------+------------+------------+------------+------------+------------+-------------+
 10 rows selected (0.583 seconds)
 </code></pre></div>
-<p>For more information about querying directories, see the section, <a href="/docs/query-directory-functions">&quot;Query Directory Functions&quot;</a>.</p>
-
     
       
         <div class="doc-nav">
