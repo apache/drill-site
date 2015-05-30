@@ -329,7 +329,7 @@
               <li class="toctree-l2"><a href="javascript: void(0);">Storage Plugin Configuration</a></li>
               <ul style="display: none">
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/plugin-configuration-introduction/">Plugin Configuration Introduction</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/plugin-configuration-basics/">Plugin Configuration Basics</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/file-system-storage-plugin/">File System Storage Plugin</a></li>
               
@@ -1054,7 +1054,7 @@
 </tr>
 </tbody></table>
 
-<p>* In this release, Drill disables the DECIMAL data type, including casting to DECIMAL and reading DECIMAL types from Parquet and Hive. The NUMERIC data type is an alias for the DECIMAL data type.<br>
+<p>* In this release, Drill disables the DECIMAL data type (an alpha feature), including casting to DECIMAL and reading DECIMAL types from Parquet and Hive. The NUMERIC data type is an alias for the DECIMAL data type.<br>
 ** Not currently supported.<br>
 *** Currently, Drill supports only variable-length strings.  </p>
 
@@ -1133,12 +1133,12 @@ Implicitly casts Parquet data to the SQL types shown in <a href="/docs/parquet-f
 Implicitly casts all textual data to VARCHAR.</li>
 </ul>
 
-<h2 id="explicit-casting-precedence-of-data-types">Explicit Casting Precedence of Data Types</h2>
+<h2 id="implicit-casting-precedence-of-data-types">Implicit Casting Precedence of Data Types</h2>
 
 <p>The following list includes data types Drill uses in descending order of precedence. Casting precedence shown in the following table applies to the implicit casting that Drill performs. For example, Drill might implicitly cast data when a query includes a function or filter on mismatched data types:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT myBigInt FROM mytable WHERE myBigInt = 2.5;
 </code></pre></div>
-<p>As shown in the table, you can cast a NULL value, which has the lowest precedence, to any other type; you can cast a SMALLINT (not supported in this release) value to INT. Drill might deviate from these precedence rules for performance reasons. Under certain circumstances, such as queries involving SUBSTR and CONCAT functions, Drill reverses the order of precedence and allows a cast to VARCHAR from a type of higher precedence than VARCHAR, such as BIGINT.</p>
+<p>As shown in the table, Drill can cast a NULL value, which has the lowest precedence, to any other type; you can cast a SMALLINT (not supported in this release) value to INT. Drill might deviate from these precedence rules for performance reasons. Under certain circumstances, such as queries involving SUBSTR and CONCAT functions, Drill reverses the order of precedence and allows a cast to VARCHAR from a type of higher precedence than VARCHAR, such as BIGINT.</p>
 
 <h3 id="casting-precedence">Casting Precedence</h3>
 
@@ -1211,8 +1211,8 @@ Implicitly casts all textual data to VARCHAR.</li>
 <td>FIXEDBINARY</td>
 </tr>
 <tr>
-<td>21</td>
-<td>NULL (lowest)</td>
+<td></td>
+<td></td>
 <td>21</td>
 <td>NULL (lowest)</td>
 </tr>
@@ -1352,7 +1352,7 @@ Converts a string to TIMESTAMP.</li>
 <td>yes</td>
 <td>yes</td>
 <td>yes</td>
-<td>char</td>
+<td>no</td>
 <td>yes</td>
 <td>yes</td>
 <td>yes</td>
@@ -1379,7 +1379,7 @@ Converts a string to TIMESTAMP.</li>
 <td>yes</td>
 <td>yes</td>
 <td>no</td>
-<td>no</td>
+<td>yes</td>
 </tr>
 <tr>
 <td>VARBINARY**</td>
@@ -1401,7 +1401,7 @@ Converts a string to TIMESTAMP.</li>
 
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
-  <p class="last">The CAST function does not support all representations of FIXEDBINARY. Only the UTF-8 format is supported.   </p>
+  <p class="last">The CAST function does not support all representations of FIXEDBINARY and VARBINARY. Only the UTF-8 format is supported.   </p>
 </div>
 
 <p>If your FIXEDBINARY or VARBINARY data is in a format other than UTF-8, such as big endian, use the CONVERT_TO/FROM functions instead of CAST.</p>
@@ -1511,9 +1511,9 @@ Converts a string to TIMESTAMP.</li>
 </tr>
 </tbody></table>
 
-<p>* Used to cast binary UTF-8 data coming to/from sources such as MapR-DB/HBase.   </p>
+<p>* Used to cast binary UTF-8 data coming to/from sources such as MapR-DB/HBase. The CAST function does not support all representations of FIXEDBINARY and VARBINARY. Only the UTF-8 format is supported. </p>
 
-<h2 id="convert_to-and-convert_from-data-types">CONVERT_TO and CONVERT_FROM Data Types</h2>
+<h2 id="convert_to-and-convert_from">CONVERT_TO and CONVERT_FROM</h2>
 
 <p>CONVERT_TO converts data to binary from the input type. CONVERT_FROM converts data from binary to the input type. For example, the following CONVERT_TO function converts an integer in big endian format to VARBINARY:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">CONVERT_TO(mycolumn, &#39;INT_BE&#39;)

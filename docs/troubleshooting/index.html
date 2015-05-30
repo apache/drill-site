@@ -329,7 +329,7 @@
               <li class="toctree-l2"><a href="javascript: void(0);">Storage Plugin Configuration</a></li>
               <ul style="display: none">
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/plugin-configuration-introduction/">Plugin Configuration Introduction</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/plugin-configuration-basics/">Plugin Configuration Basics</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/file-system-storage-plugin/">File System Storage Plugin</a></li>
               
@@ -998,16 +998,18 @@ SELECT commit_id FROM sys.version;</p>
 
 <p>If you have any issues in Drill, search the following list for your issue and apply the suggested solution:</p>
 
-<p><strong>Query Parsing Errors</strong><br>
-Symptom:  </p>
+<h3 id="query-parsing-errors">Query Parsing Errors</h3>
+
+<p>Symptom:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   PARSE ERROR: At line x, column x: ...
 </code></pre></div>
 <p>Solution: Verify that you are using valid syntax. See <a href="/docs/sql-reference-introduction/">SQL Reference</a>.
 If you are using common words, they may be reserved words.  Make sure to use back ticks
 Confirm that you are using back ticks to quote identifiers when using special characters such as back slashes or periods from a file path.</p>
 
-<p><strong>Reserved Words</strong><br>
-Symptom:   </p>
+<h3 id="reserved-words">Reserved Words</h3>
+
+<p>Symptom:   </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   select count from dfs.drill.`test2.json`;
    Query failed: SYSTEM ERROR: Failure parsing SQL. Encountered &quot;count from&quot; at line 1, column 8.
    Was expecting one of:
@@ -1017,8 +1019,9 @@ Symptom:   </p>
 <p>Solution: Fix with correct syntax. See <a href="/docs/reserved-keywords/">Reserved Keywords</a>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   select `count` from dfs.drill.`test2.json`;  
 </code></pre></div>
-<p><strong>Tables not found</strong><br>
-Symptom:</p>
+<h3 id="tables-not-found">Tables not found</h3>
+
+<p>Symptom:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   select * from dfs.drill.test2.json;
    Query failed: PARSE ERROR: From line 1, column 15 to line 1, column 17: Table &#39;dfs.drill.test2.json&#39; not found  
 </code></pre></div>
@@ -1041,21 +1044,23 @@ Symptom:</p>
 </ul></li>
 </ol>
 
-<p><strong>Access nested fields without table name/alias</strong><br>
-Symptom: </p>
+<h3 id="access-nested-fields-without-table-name/alias">Access nested fields without table name/alias</h3>
+
+<p>Symptom: </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   select x.y …  
    PARSE ERROR: At line 1, column 8: Table &#39;x&#39; not found  
 </code></pre></div>
 <p>Solution: Add table name or alias to the field reference:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   select t.x.y from t  
 </code></pre></div>
-<p><strong>Unexpected null values for columns in results</strong><br>
-Symptom:  The following type of query returns NULL values:  </p>
+<h3 id="unexpected-null-values-for-columns-in-results">Unexpected null values for columns in results</h3>
+
+<p>Symptom:  The following type of query returns NULL values:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   select t.price from t 
 </code></pre></div>
 <p>Solution: Drill is schema-less system. Verify that column names are typed correctly.</p>
 
-<p><strong>Using functions with incorrect data types</strong>  </p>
+<h3 id="using-functions-with-incorrect-data-types">Using functions with incorrect data types</h3>
 
 <p>Symptom: Example  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   select trunc(c3) from t3;
@@ -1072,7 +1077,7 @@ Symptom:  The following type of query returns NULL values:  </p>
 </code></pre></div>
 <p>Solution: Ensure that the function is invoked with the correct data type parameters. In the example above, c3 is an unsupported date type. </p>
 
-<p><strong>Query takes a long time to return</strong> </p>
+<h3 id="query-takes-a-long-time-to-return">Query takes a long time to return</h3>
 
 <p>Symptom: Query takes longer to return than expected.</p>
 
@@ -1084,7 +1089,7 @@ Symptom:  The following type of query returns NULL values:  </p>
 <li>Confirm that Drill is taking advantage of the nature of your data, including things like partition pruning and projection pushdown.</li>
 </ul>
 
-<p><strong>Schema changes</strong>  </p>
+<h3 id="schema-changes**">Schema changes**</h3>
 
 <p>Symptom:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   DATA_READ ERROR: Error parsing JSON - You tried to write a XXXX type when you are using a ValueWriter of type XXXX.       
@@ -1094,7 +1099,7 @@ Symptom:  The following type of query returns NULL values:  </p>
 </code></pre></div>
 <p>Solution: Drill does not fully support schema changes.  In this case, you will need to either ensure that your schemas are the same or only select columns that share schema.</p>
 
-<p><strong>Timestamps and Timezones other than UTC</strong>  </p>
+<h3 id="timestamps-and-timezones-other-than-utc">Timestamps and Timezones other than UTC</h3>
 
 <p>Symptoms: Issues with timestamp and timezone. Illegal instant due to time zone offset transition (America/New_York)</p>
 
@@ -1103,68 +1108,68 @@ Symptom:  The following type of query returns NULL values:  </p>
 </code></pre></div>
 <p><code>http://www.openkb.info/2015/05/understanding-drills-timestamp-and.html</code>  </p>
 
-<p><strong>Unexpected ODBC issues</strong>  </p>
+<h3 id="unexpected-odbc-issues">Unexpected ODBC issues</h3>
 
 <p>Symptom: ODBC errors.</p>
 
 <p>Solution: Make sure that the ODBC driver version is compatible with the server version. 
 Turn on ODBC driver debug logging to better understand failure.  </p>
 
-<p><strong>Connectivity issues when connecting via ZooKeeper for JDBC/ODBC</strong>  </p>
+<h3 id="connectivity-issues-when-connecting-via-zookeeper-for-jdbc/odbc">Connectivity issues when connecting via ZooKeeper for JDBC/ODBC</h3>
 
 <p>Symptom: Client cannot resolve ZooKeeper host names for JDBC/ODBC.</p>
 
 <p>Solution: Ensure that Zookeeper is up and running. Verify that Drill has the correct drill-override.conf settings for the Zookeeper quorum.</p>
 
-<p><strong>Metadata queries take a long time to return</strong>  </p>
+<h3 id="metadata-queries-take-a-long-time-to-return">Metadata queries take a long time to return</h3>
 
 <p>Symptom: Running SHOW databases/schemas/tables hangs (in general any information_schema queries hang).</p>
 
 <p>Solution: Disable incorrectly configured storage plugins or start appropriate services. Check compatibility matrix for the appropriate versions.  </p>
 
-<p><strong>Unexpected results due to implicit casting</strong>  </p>
+<h3 id="unexpected-results-due-to-implicit-casting">Unexpected results due to implicit casting</h3>
 
 <p>Symptom: rill implicitly casts based on order of precedence.</p>
 
 <p>Solution: Review Drill casting behaviors and explicitly cast for the expected results. See <a href="/docs/handling-different-data-types/">Data Types</a>.</p>
 
-<p><strong>Column alias causes an error</strong>  </p>
+<h3 id="column-alias-causes-an-error">Column alias causes an error</h3>
 
 <p>Symptom: Drill is not case sensitive, and you can provide any alias for a column name. However, if the storage type is case sensitive, the alias name may conflict and cause errors.</p>
 
 <p>Solution: Verify that the column alias does not conflict with the storage type. See <a href="/docs/lexical-structure/#case-sensitivity">Lexical Structures</a>.  </p>
 
-<p><strong>List (arrays) contains null</strong>  </p>
+<h3 id="list-(arrays)-contains-null">List (arrays) contains null</h3>
 
 <p>Symptom: UNSUPPORTED_OPERATION ERROR: Null values are not supported in lists by default. Please set store.json.all_text_mode to true to read lists containing nulls. Be advised that this will treat JSON null values as a string containing the word &#39;null&#39;.</p>
 
 <p>Solution: Change Drill session settings to enable all_text_mode per message.<br>
 Avoid selecting fields that are arrays containing nulls.</p>
 
-<p><strong>SELECT COUNT (*) takes a long time to run</strong>  </p>
+<h3 id="select-count-(*)-takes-a-long-time-to-run">SELECT COUNT (*) takes a long time to run</h3>
 
 <p>Solution: In come cases, the underlying storage format does not have a built-in capability to return a count of records in a table.  In these cases, Drill will do a full scan of the data to verify the number of records.</p>
 
-<p><strong>Tableau issues</strong>  </p>
+<h3 id="tableau-issues">Tableau issues</h3>
 
 <p>Symptom: You see a lot of error messages in ODBC trace files or the performance is slow.</p>
 
 <p>Solution: Verify that you have installed the TDC file shipped with the ODBC driver.  </p>
 
-<p><strong>Group by using alias</strong>  </p>
+<h3 id="group-by-using-alias">Group by using alias</h3>
 
 <p>Symptom: Invalid column.</p>
 
 <p>Solution: Not supported. Use column name and/or expression directly.  </p>
 
-<p><strong>Casting a Varchar string to an integer results in an error</strong>  </p>
+<h3 id="casting-a-varchar-string-to-an-integer-results-in-an-error">Casting a Varchar string to an integer results in an error</h3>
 
 <p>Symptom: </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   SYSTEM ERROR: java.lang.NumberFormatException
 </code></pre></div>
 <p>Solution: Per the ANSI SQL specification CAST to INT does not support empty strings.  If you want to change this behavior, you can set Drill to use the cast empty string to null behavior.  This can be done using the drill.exec.functions.cast_empty_string_to_null SESSION/SYSTEM option. </p>
 
-<p><strong>Unexpected exception during fragment initialization</strong>  </p>
+<h3 id="unexpected-exception-during-fragment-initialization">Unexpected exception during fragment initialization</h3>
 
 <p>Symptom: The error occurred during the Foreman phase of the query. The error typically occurs due to the following common causes:  </p>
 
@@ -1175,7 +1180,7 @@ Avoid selecting fields that are arrays containing nulls.</p>
 
 <p>Solution: Enable the verbose errors option and run the query again to see if further insight is provided.  </p>
 
-<p><strong>Queries running out of memory</strong>  </p>
+<h3 id="queries-running-out-of-memory">Queries running out of memory</h3>
 
 <p>Symptom: </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   RESOURCE ERROR: One or more nodes ran out of memory while executing the query.
@@ -1190,7 +1195,7 @@ Avoid selecting fields that are arrays containing nulls.</p>
 <li>See <a href="/docs/configuration-options-introduction/">Configuration Options</a><br></li>
 </ul>
 
-<p><strong>Unclear Error Message</strong>  </p>
+<h3 id="unclear-error-message">Unclear Error Message</h3>
 
 <p>Symptom: Cannot determine issue from error message.</p>
 
@@ -1199,7 +1204,7 @@ Avoid selecting fields that are arrays containing nulls.</p>
 </code></pre></div>
 <p>Determine your currently connected drillbit using select * from sys.drillbits.  Then review logs Drill logs from that drillbit.</p>
 
-<p><strong>SQLLine error starting Drill in embedded mode</strong>  </p>
+<h3 id="sqlline-error-starting-drill-in-embedded-mode">SQLLine error starting Drill in embedded mode</h3>
 
 <p>Symptom:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   java.net.BindException: Address already in use  
