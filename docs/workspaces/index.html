@@ -10,6 +10,7 @@
 <title>Workspaces - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
 <link href="/css/site.css" rel="stylesheet" type="text/css"/>
 
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
@@ -330,9 +331,9 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/plugin-configuration-introduction/">Plugin Configuration Introduction</a></li>
               
-                <li class="toctree-l3 current"><a class="reference internal" href="/docs/workspaces/">Workspaces</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/file-system-storage-plugin/">File System Storage Plugin</a></li>
+              
+                <li class="toctree-l3 current"><a class="reference internal" href="/docs/workspaces/">Workspaces</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
               
@@ -960,7 +961,7 @@
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/connect-a-data-source/040-workspaces.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/connect-a-data-source/050-workspaces.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
@@ -973,58 +974,14 @@
     <div class="int_text" align="left">
       
         <p>When you register an instance of a file system data source, you can configure
-one or more workspaces for the instance. A workspace is a directory within the
-file system that you define. Drill searches the workspace to locate data when
+one or more workspaces for the instance. The workspace defines the default directory location of files in a local or distributed file system. The <code>default</code>
+workspace points to the root of the file system. Drill searches the workspace to locate data when
 you run a query.</p>
 
-<p>Each workspace that you register defines a schema that you can connect to and
-query. Configuring workspaces is useful when you want to run multiple queries
-on files or tables in a specific directory. You cannot create workspaces for
-<code>hive</code> and <code>hbase</code> instances, though Hive databases show up as workspaces in
-Drill.</p>
-
-<p>The following example shows an instance of a file type storage plugin with a
-workspace named <code>json</code> configured to point Drill to the
-<code>/users/max/drill/json/</code> directory in the local file system <code>(dfs)</code>:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{
-  &quot;type&quot; : &quot;file&quot;,
-  &quot;enabled&quot; : true,
-  &quot;connection&quot; : &quot;file:///&quot;,
-  &quot;workspaces&quot; : {
-    &quot;json&quot; : {
-      &quot;location&quot; : &quot;/users/max/drill/json/&quot;,
-      &quot;writable&quot; : false,
-      &quot;defaultinputformat&quot; : json
-   } 
-},
-</code></pre></div>
-<div class="admonition note">
-  <p class="first admonition-title">Note</p>
-  <p class="last">The `connection` parameter in the configuration above is "`file:///`", connecting Drill to the local file system (`dfs`).  </p>
-</div>
-
-<p>To connect to a Hadoop or MapR file system the <code>connection</code> parameter would be &quot;<code>hdfs:///&quot;</code>or<code>&quot;maprfs:///&quot;,</code>respectively.</p>
-
-<p>To query a file in the example <code>json</code> workspace, you can issue the <code>USE</code>
-command to tell Drill to use the <code>json</code> workspace configured in the <code>dfs</code>
-instance for each query that you issue:</p>
-
-<p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">USE dfs.json;
-SELECT * FROM dfs.json.`donuts.json` WHERE type=&#39;frosted&#39;
-</code></pre></div>
-<p>If the <code>json</code> workspace did not exist, the query would have to include the
-full path to the <code>donuts.json</code> file:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM dfs.`/users/max/drill/json/donuts.json` WHERE type=&#39;frosted&#39;;
-</code></pre></div>
-<p>Using a workspace alleviates the need to repeatedly enter the directory path
-in subsequent queries on the directory.</p>
-
-<h3 id="default-workspaces">Default Workspaces</h3>
-
-<p>Each <code>file</code> and <code>hive</code> instance includes a <code>default</code> workspace. The <code>default</code>
-workspace points to the file system or to the Hive metastore. When you query
-files and tables in the <code>file</code> or <code>hive default</code> workspaces, you can omit the
+<p>You cannot create workspaces for
+<code>hive</code> and <code>hbase</code> storage plugins, though Hive databases show up as workspaces in
+Drill. Each <code>hive</code> instance includes a <code>default</code> workspace that points to the  Hive metastore. When you query
+files and tables in the <code>hive default</code> workspaces, you can omit the
 workspace name from the query.</p>
 
 <p>For example, you can issue a query on a Hive table in the <code>default workspace</code>
@@ -1050,7 +1007,7 @@ optionally configure workspaces, you can query the data source.</p>
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/plugin-configuration-introduction/">← Plugin Configuration Introduction</a></span><span class="next-toc"><a href="/docs/file-system-storage-plugin/">File System Storage Plugin →</a></span>
+  <span class="previous-toc"><a href="/docs/file-system-storage-plugin/">← File System Storage Plugin</a></span><span class="next-toc"><a href="/docs/hbase-storage-plugin/">HBase Storage Plugin →</a></span>
 </div>
 
     

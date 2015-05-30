@@ -10,6 +10,7 @@
 <title>File System Storage Plugin - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
 <link href="/css/site.css" rel="stylesheet" type="text/css"/>
 
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
@@ -330,9 +331,9 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/plugin-configuration-introduction/">Plugin Configuration Introduction</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/workspaces/">Workspaces</a></li>
-              
                 <li class="toctree-l3 current"><a class="reference internal" href="/docs/file-system-storage-plugin/">File System Storage Plugin</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/workspaces/">Workspaces</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
               
@@ -960,7 +961,7 @@
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/connect-a-data-source/050-file-system-storage-plugin.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/connect-a-data-source/040-file-system-storage-plugin.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
@@ -972,14 +973,25 @@
 
     <div class="int_text" align="left">
       
-        <p>You can register a storage plugin instance that connects Drill to a local file
-system or a distributed file system registered in <code>core-site.xml</code>, such as S3
-or HDFS. When you register a storage plugin instance for a file system,
-provide a unique name for the instance, and identify the type as “<code>file</code>”. By
+        <p>You can register a storage plugin instance that connects Drill to a local file system or to a distributed file system registered in <code>core-site.xml</code>, such as S3
+or HDFS. By
 default, Drill includes an instance named <code>dfs</code> that points to the local file
-system on your machine. You can update this configuration to point to a
-distributed file system or you can create a new instance to point to a
-distributed file system.</p>
+system on your machine. </p>
+
+<h2 id="connecting-drill-to-a-file-system">Connecting Drill to a File System</h2>
+
+<p>In a Drill cluster, you typically do not query the local file system, but instead place files on the distributed file system. You configure the connection property of the storage plugin workspace to connect Drill to a distributed file system. For example, the following connection properties connect Drill to an HDFS, MapR-FS, or Mongo-DB cluster:</p>
+
+<ul>
+<li>HDFS<br>
+<code>&quot;connection&quot;: &quot;hdfs://&lt;IP Address&gt;:&lt;Port&gt;/&quot;</code><br></li>
+<li>MapR-FS Remote Cluster<br>
+<code>&quot;connection&quot;: &quot;maprfs://&lt;IP Address&gt;/&quot;</code><br></li>
+<li>Mongo-DB Cluster<br>
+`&quot;connection&quot;: &quot;mongodb://<IP Address>:<Port>/&quot;</li>
+</ul>
+
+<p>The Drill installation includes a <a href="/docs/mongodb-plugin-for-apache-drill">Mongo-DB storage plugin</a>.</p>
 
 <p>To register a local or a distributed file system with Apache Drill, complete
 the following steps:</p>
@@ -989,7 +1001,7 @@ the following steps:</p>
 <li>In the New Storage Plugin window, enter a unique name and then click <strong>Create</strong>.</li>
 <li><p>In the Configuration window, provide the following configuration information for the type of file system that you are configuring as a data source.</p>
 
-<ol>
+<ul>
 <li><p>Local file system example:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">{
   &quot;type&quot;: &quot;file&quot;,
@@ -1028,9 +1040,9 @@ the following steps:</p>
   }
 }
 </code></pre></div></li>
-</ol>
+</ul>
 
-<p>To connect to a Hadoop file system, you must include the IP address of the
+<p>To connect to a Hadoop file system, you include the IP address of the
 name node and the port number.</p></li>
 <li><p>Click <strong>Enable</strong>.</p></li>
 </ol>
@@ -1038,11 +1050,43 @@ name node and the port number.</p></li>
 <p>Once you have configured a storage plugin instance for the file system, you
 can issue Drill queries against it.</p>
 
+<p>The following example shows an instance of a file type storage plugin with a
+workspace named <code>json_files</code> configured to point Drill to the
+<code>/users/max/drill/json/</code> directory in the local file system <code>(dfs)</code>:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">{
+  &quot;type&quot; : &quot;file&quot;,
+  &quot;enabled&quot; : true,
+  &quot;connection&quot; : &quot;file:///&quot;,
+  &quot;workspaces&quot; : {
+    &quot;json_files&quot; : {
+      &quot;location&quot; : &quot;/users/max/drill/json/&quot;,
+      &quot;writable&quot; : false,
+      &quot;defaultinputformat&quot; : json
+   } 
+},
+</code></pre></div>
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">The `connection` parameter in the configuration above is "`file:///`", connecting Drill to the local file system (`dfs`).  </p>
+</div>
+
+<p>To query a file in the example <code>json_files</code> workspace, you can issue the <code>USE</code>
+command to tell Drill to use the <code>json_files</code> workspace configured in the <code>dfs</code>
+instance for each query that you issue:</p>
+
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">USE dfs.json_files;
+SELECT * FROM dfs.json_files.`donuts.json` WHERE type=&#39;frosted&#39;
+</code></pre></div>
+<p>If the <code>json_files</code> workspace did not exist, the query would have to include the
+full path to the <code>donuts.json</code> file:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM dfs.`/users/max/drill/json/donuts.json` WHERE type=&#39;frosted&#39;;
+</code></pre></div>
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/workspaces/">← Workspaces</a></span><span class="next-toc"><a href="/docs/hbase-storage-plugin/">HBase Storage Plugin →</a></span>
+  <span class="previous-toc"><a href="/docs/plugin-configuration-introduction/">← Plugin Configuration Introduction</a></span><span class="next-toc"><a href="/docs/workspaces/">Workspaces →</a></span>
 </div>
 
     

@@ -10,6 +10,7 @@
 <title>Connect a Data Source Introduction - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
 <link href="/css/site.css" rel="stylesheet" type="text/css"/>
 
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
@@ -330,9 +331,9 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/plugin-configuration-introduction/">Plugin Configuration Introduction</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/workspaces/">Workspaces</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/file-system-storage-plugin/">File System Storage Plugin</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/workspaces/">Workspaces</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
               
@@ -977,10 +978,15 @@
 <li>A set of storage plugin optimization rules that assist with efficient and faster execution of Drill queries, such as pushdowns, statistics, and partition awareness.<br></li>
 </ul>
 
-<p>Apache Drill connects to a data source, such as a file on the file system or a Hive metastore, through a storage plugin. When you execute a query, Drill gets the plugin name you provide in FROM clause of your query or from the default you specify in the USE.<plugin name> command that precedes the query.
-. </p>
+<p>Through the storage plugin, Drill connects to a data source, such as a database, a file on a local or distributed file system, or a Hive metastore. When you execute a query, Drill gets the plugin name in one of several ways:</p>
 
-<p>In addition to the connection string, the storage plugin configures the workspace and file formats for reading data, as described in subsequent sections. </p>
+<ul>
+<li>The FROM clause of the query can identify the plugin to use.</li>
+<li>The USE <plugin name> command can precede the query.</li>
+<li>You can specify the storage plugin when starting Drill.</li>
+</ul>
+
+<p>In addition to providing a the connection string to the data source, the storage plugin configures the workspace and file formats for reading data, as described in subsequent sections. </p>
 
 <h2 id="storage-plugins-internals">Storage Plugins Internals</h2>
 

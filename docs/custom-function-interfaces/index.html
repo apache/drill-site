@@ -10,6 +10,7 @@
 <title>Custom Function Interfaces - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
 <link href="/css/site.css" rel="stylesheet" type="text/css"/>
 
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
@@ -330,9 +331,9 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/plugin-configuration-introduction/">Plugin Configuration Introduction</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/workspaces/">Workspaces</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/file-system-storage-plugin/">File System Storage Plugin</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/workspaces/">Workspaces</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
               
@@ -1023,7 +1024,6 @@ import org.apache.drill.exec.expr.holders.BigIntHolder;
 import org.apache.drill.exec.expr.holders.Float8Holder;
 import org.apache.drill.exec.expr.holders.IntHolder;
 import org.apache.drill.exec.expr.holders.VarCharHolder;
-import org.apache.drill.exec.record.RecordBatch;
 
 public class MyUdfs {
 
@@ -1033,7 +1033,7 @@ public class MyUdfs {
     @Param BigIntHolder input1;
     @Param BigIntHolder input2;
     @Output BigIntHolder out;
-    public void setup(RecordBatch b){}
+    public void setup(){}
 
     public void eval(){
       out.value = input1.value + input2.value;
@@ -1085,7 +1085,6 @@ import org.apache.drill.exec.expr.holders.BigIntHolder;
 import org.apache.drill.exec.expr.holders.Float8Holder;
 import org.apache.drill.exec.expr.holders.IntHolder;
 import org.apache.drill.exec.expr.holders.VarCharHolder;
-import org.apache.drill.exec.record.RecordBatch;
 
 public class MyUdfs {
 
@@ -1095,9 +1094,9 @@ public class MyUdfs {
     @Workspace BigIntHolder min;
     @Workspace BigIntHolder secondMin;
     @Output BigIntHolder out;
-    public void setup(RecordBatch b) {
-        min = new BigIntHolder(); 
-        secondMin = new BigIntHolder(); 
+    public void setup() {
+      min = new BigIntHolder(); 
+      secondMin = new BigIntHolder(); 
       min.value = 999999999;
       secondMin.value = 999999999;
     }
@@ -1106,8 +1105,8 @@ public class MyUdfs {
     public void add() {
 
         if (in.value &lt; min.value) {
-            min.value = in.value;
-            secondMin.value = min.value;
+          min.value = in.value;
+          secondMin.value = min.value;
         }
 
     }
