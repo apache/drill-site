@@ -686,23 +686,25 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/select/">SELECT</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/select-from/">SELECT FROM</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/select-list/">SELECT List</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/select-group-by/">SELECT GROUP BY</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/from-clause/">FROM Clause</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/select-having/">SELECT HAVING</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/group-by-clause/">GROUP BY Clause</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/select-limit/">SELECT LIMIT</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/having-clause/">HAVING Clause</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/select-offset/">SELECT OFFSET</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/limit-clause/">LIMIT Clause</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/select-order-by/">SELECT ORDER BY</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/offset-clause/">OFFSET Clause</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/select-union/">SELECT UNION</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/order-by-clause/">ORDER BY Clause</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/select-where/">SELECT WHERE</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/union-set-operator/">UNION Set Operator</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/select-with/">SELECT WITH</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/where-clause/">WHERE Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/with-clause/">WITH Clause</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/show-databases-and-show-schemas/">SHOW DATABASES and SHOW SCHEMAS</a></li>
               
@@ -1083,20 +1085,26 @@
 <p>Returns the sum of a date/time and a number of days/hours, or of a date/time and date/time interval.</p>
 
 <h3 id="date_add-syntax">DATE_ADD Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">DATE_ADD(keyword literal_date, integer)
+<div class="highlight"><pre><code class="language-text" data-lang="text">DATE_ADD(keyword literal, integer)
 
 DATE_ADD(keyword literal, interval expr)
 
 DATE_ADD(column, integer)
+
+DATE_ADD(column, interval expr)
 </code></pre></div>
 <p><em>keyword</em> is the word date, time, or timestamp.<br>
 <em>literal</em> is a date, time, or timestamp literal.  For example, a date in yyyy-mm-dd format enclosed in single quotation marks.<br>
 <em>integer</em> is a number of days to add to the date/time.<br>
 <em>column</em> is date, time, or timestamp data in a data source column.<br>
 <em>interval</em> is the keyword interval.<br>
-<em>expr</em> is an interval expression.  </p>
+<em>expr</em> is an interval expression, such as the name of a data source column containing interval data.  </p>
 
 <h3 id="date_add-examples">DATE_ADD Examples</h3>
+
+<p>The following examples show how to use the syntax variations.</p>
+
+<p><strong><code>DATE_ADD(keyword literal, integer)</code> Syntax Example</strong></p>
 
 <p>Add two days to today&#39;s date May 15, 2015.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(date &#39;2015-05-15&#39;, 2) FROM sys.version;
@@ -1107,7 +1115,9 @@ DATE_ADD(column, integer)
 +------------+
 1 row selected (0.07 seconds)
 </code></pre></div>
-<p>Using the example data from the <a href="/docs/data-type-conversion/#casting-intervals">&quot;Casting Intervals&quot;</a> section, add intervals from the <code>intervals.json</code> file to a literal timestamp using an interval expression. Create an interval expression that casts the interval data in the intervals.json file to a timestamp.</p>
+<p><strong><code>DATE_ADD(keyword literal, interval expr)</code> Syntax Example</strong></p>
+
+<p>Using the example data from the <a href="/docs/data-type-conversion/#casting-intervals">&quot;Casting Intervals&quot;</a> section, add intervals from the <code>intervals.json</code> file to a literal timestamp. Create an interval expression that casts the INTERVALDAY_col column, which contains P1D, P2D, and P3D, to a timestamp.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(timestamp &#39;2015-04-15 22:55:55&#39;, CAST(INTERVALDAY_col as interval second)) FROM dfs.`/Users/drilluser/apache-drill-1.0.0/intervals.json`;
 +------------------------+
 |         EXPR$0         |
@@ -1118,9 +1128,25 @@ DATE_ADD(column, integer)
 +------------------------+
 3 rows selected (0.105 seconds)
 </code></pre></div>
-<p>The query returns the sum of the timestamp plus 1, 2, and 3 days becuase the INTERVALDAY_col contains P1D, P2D, and P3D, </p>
+<p>The query output is the sum of the timestamp and 1, 2, and 3 days corresponding to P1D, P2D, and P3D.</p>
 
-<p>The Drill installation includes the <code>employee.json</code> file that has records of employee hire dates:</p>
+<p><strong>DATE_ADD(column, integer) Syntax Example</strong></p>
+
+<p>Add two days to the value in the birth_date column.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(CAST(birth_date AS date), 2) FROM cp.`employee.json` LIMIT 1;
++-------------+
+|   EXPR$0    |
++-------------+
+| 1961-08-28  |
++-------------+
+1 row selected (0.209 seconds)
+</code></pre></div>
+<p><strong><code>DATE_ADD(column, interval expr)</code> Syntax Example</strong></p>
+
+<p>Add a 10 hour interval to the hire dates of employees listed in the <code>employee.json</code> file, which Drill includes in the installation.</p>
+
+<ol>
+<li><p>Take a look at the employee data:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM cp.`employee.json` LIMIT 1;
 +--------------+---------------+-------------+------------+--------------+-----------------+-----------+----------------+-------------+------------------------+----------+----------------+------------------+-----------------+---------+--------------------+
 | employee_id  |   full_name   | first_name  | last_name  | position_id  | position_title  | store_id  | department_id  | birth_date  |       hire_date        |  salary  | supervisor_id  | education_level  | marital_status  | gender  |  management_role   |
@@ -1128,8 +1154,8 @@ DATE_ADD(column, integer)
 | 1            | Sheri Nowmer  | Sheri       | Nowmer     | 1            | President       | 0         | 1              | 1961-08-26  | 1994-12-01 00:00:00.0  | 80000.0  | 0              | Graduate Degree  | S               | F       | Senior Management  |
 +--------------+---------------+-------------+------------+--------------+-----------------+-----------+----------------+-------------+------------------------+----------+----------------+------------------+-----------------+---------+--------------------+
 1 row selected (0.137 seconds)
-</code></pre></div>
-<p>Look at the hire_dates for the employee 578 and 761 in <code>employee.json</code>.</p>
+</code></pre></div></li>
+<li><p>Look at the hire_dates for the employee 578 and 761 in <code>employee.json</code>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT hire_date FROM cp.`employee.json` where employee_id IN( &#39;578&#39;,&#39;761&#39;);
 +------------------------+
 |       hire_date        |
@@ -1138,8 +1164,8 @@ DATE_ADD(column, integer)
 | 1998-01-01 00:00:00.0  |
 +------------------------+
 2 rows selected (0.135 seconds)
-</code></pre></div>
-<p>Cast the hire_dates of the employees 578 and 761 to a timestamp, and add 10 hours to the hire_date timestamp. Because Drill reads data from JSON as VARCHAR, you need to cast the hire_date to the TIMESTAMP type. </p>
+</code></pre></div></li>
+<li><p>Cast the hire_dates of the employees 578 and 761 to a timestamp, and add 10 hours to the hire_date timestamp. Because Drill reads data from JSON as VARCHAR, you need to cast the hire_date to the TIMESTAMP type. </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(CAST(hire_date AS TIMESTAMP), interval &#39;10&#39; hour) FROM cp.`employee.json` where employee_id IN( &#39;578&#39;,&#39;761&#39;);
 +------------------------+
 |         EXPR$0         |
@@ -1148,7 +1174,11 @@ DATE_ADD(column, integer)
 | 1998-01-01 10:00:00.0  |
 +------------------------+
 2 rows selected (0.172 seconds)
-</code></pre></div>
+</code></pre></div></li>
+</ol>
+
+<p><strong><code>DATE_ADD(keyword literal, integer)</code> Syntax Example</strong></p>
+
 <p>Add 1 year and 1 month to the timestamp 2015-04-15 22:55:55.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(timestamp &#39;2015-04-15 22:55:55&#39;, interval &#39;1-2&#39; year to month) FROM sys.version;
 +------------------------+
@@ -1217,27 +1247,23 @@ SELECT DATE_PART(&#39;hour&#39;, &#39;23:14:30.076&#39;) FROM sys.version;
 DATE_SUB(keyword literal, interval expr)  
 
 DATE_ADD(column, integer)  
+
+DATE_SUB(column, interval expr)
 </code></pre></div>
 <p><em>keyword</em> is the word date, time, or timestamp.<br>
 <em>literal</em> is a date, time, or timestamp literal. For example, a date in yyyy-mm-dd format enclosed in single quotation marks.<br>
-<em>integer</em> is a number of days to subtract from the date, time, or timestamp.<br>
+<em>integer</em> is a number of days to subtract from the date, time, or timestamp.
 <em>column</em> is date, time, or timestamp data in the data source.<br>
 <em>interval</em> is the keyword interval.<br>
-<em>expr</em> is an interval expression.</p>
+<em>expr</em> is an interval expression, such as the name of a data source column containing interval data.</p>
 
 <h3 id="date_sub-examples">DATE_SUB Examples</h3>
 
-<p>Cast the hire_dates of the employees 578 and 761 to a timestamp, and add 10 hours to the hire_date timestamp. Because Drill reads data from JSON as VARCHAR, you need to cast the hire_date to the TIMESTAMP type. </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(CAST(hire_date AS TIMESTAMP), interval &#39;10&#39; hour) FROM cp.`employee.json` WHERE employee_id IN( &#39;578&#39;,&#39;761&#39;);
-+------------------------+
-|         EXPR$0         |
-+------------------------+
-| 1995-12-31 14:00:00.0  |
-| 1997-12-31 14:00:00.0  |
-+------------------------+
-2 rows selected (0.161 seconds)
-</code></pre></div>
-<p>Subtract two days to today&#39;s date May 15, 2015.</p>
+<p>The following examples show how to apply the syntax variations.</p>
+
+<p><strong><code>DATE_SUB(keyword literal, integer)</code> Syntax Example</strong></p>
+
+<p>Subtract two days from today&#39;s date May 15, 2015.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(date &#39;2015-05-15&#39;, 2) FROM sys.version;
 +------------+
 |   EXPR$0   |
@@ -1255,6 +1281,8 @@ DATE_ADD(column, integer)
 +------------+
 1 row selected (0.088 seconds)
 </code></pre></div>
+<p><strong><code>DATE_SUB(keyword literal, interval expr)</code> Syntax Example</strong></p>
+
 <p>Subtract 10 hours from the timestamp 2015-04-15 22:55:55.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(timestamp &#39;2015-04-15 22:55:55&#39;, interval &#39;10&#39; hour) FROM sys.version;
 +------------------------+
@@ -1290,6 +1318,27 @@ DATE_ADD(column, integer)
 | 01:26:40.100  |
 +---------------+
 1 row selected (0.095 seconds)
+</code></pre></div>
+<p><strong><code>DATE_SUB(column, integer)</code> Syntax Example</strong></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(CAST(birth_date AS date), 2) FROM cp.`employee.json` LIMIT 1;
++-------------+
+|   EXPR$0    |
++-------------+
+| 1961-08-24  |
++-------------+
+1 row selected (0.158 seconds)
+</code></pre></div>
+<p><strong><code>DATE_SUB(column, interval expr)</code> Syntax Example</strong></p>
+
+<p>The <code>employee.json</code> file, which Drill includes in the installation, lists the hire dates of employees. Cast the hire_dates of the employees 578 and 761 to a timestamp, and add 10 hours to the hire_date timestamp. Because Drill reads data from JSON as VARCHAR, you need to cast the hire_date to the TIMESTAMP type. </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(CAST(hire_date AS TIMESTAMP), interval &#39;10&#39; hour) FROM cp.`employee.json` WHERE employee_id IN( &#39;578&#39;,&#39;761&#39;);
++------------------------+
+|         EXPR$0         |
++------------------------+
+| 1995-12-31 14:00:00.0  |
+| 1997-12-31 14:00:00.0  |
++------------------------+
+2 rows selected (0.161 seconds)
 </code></pre></div>
 <h2 id="other-date-and-time-functions">Other Date and Time Functions</h2>
 
@@ -1377,7 +1426,7 @@ SELECT NOW() FROM sys.version;
 
 <p>Returns a component of a timestamp, time, date, or interval.</p>
 
-<h4 id="extract-syntax">EXTRACT Syntax</h4>
+<h3 id="extract-syntax">EXTRACT Syntax</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">EXTRACT (extract_expression) 
 </code></pre></div>
 <p><em>extract_expression</em> is:</p>
