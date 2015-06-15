@@ -375,6 +375,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-the-driver-on-windows/">Installing the Driver on Windows</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-the-tdc-file-on-windows/">Installing the TDC File on Windows</a></li>
+              
             </ul>
             
           
@@ -1068,35 +1070,49 @@ Description=Sample MapR Drill ODBC Driver DSN
 # Driver: The location where the ODBC driver is installed to.
 Driver=/opt/mapr/drillodbc/lib/universal/libmaprdrillodbc.dylib
 
+# The DriverUnicodeEncoding setting is only used for SimbaDM
+# When set to 1, SimbaDM runs in UTF-16 mode.
+# When set to 2, SimbaDM runs in UTF-8 mode.
+#DriverUnicodeEncoding=2
+
 # Values for ConnectionType, AdvancedProperties, Catalog, Schema should be set here.
+
 # If ConnectionType is Direct, include Host and Port. If ConnectionType is ZooKeeper, include ZKQuorum and ZKClusterID
-# They can also be specified in the connection string.
+# They can also be specified on the connection string.
+# AuthenticationType: No authentication; Basic Authentication
 ConnectionType=Direct
 HOST=localhost
 PORT=31010
-ZKQuorum=
-ZKClusterID=
-AdvancedProperties={HandshakeTimeout=5;QueryTimeout=180;TimestampTZDisplayTimeout=utc;ExcludedSchemas=sys,INFORMATION_SCHEMA}
+ZKQuorum=[Zookeeper Quorum]
+ZKClusterID=[Cluster ID]
+AuthenticationType=No Authentication
+UID=[USERNAME]
+PWD=[PASSWORD]
+AdvancedProperties=CastAnyToVarchar=true;HandshakeTimeout=5;QueryTimeout=180;TimestampTZDisplayTimezone=utc;ExcludedSchemas=sys,INFORMATION_SCHEMA;NumberOfPrefetchBuffers=5;
 Catalog=DRILL
 Schema=
 </code></pre></div>
-<p>If ConnectionType=Zookeeper, get the ZKQuorum and ZKClusterID values from the <code>drill-override.conf</code> file, and define the ZKQuorum and ZKClusterID properties. For example:</p>
+<h3 id="authentication-properties">Authentication Properties</h3>
+
+<p>To password protect the DSN, uncomment the AuthenticationType, select Basic Authentication for the AuthenticationType, and configure UID and PWD properties.</p>
+
+<h3 id="direct-to-drillbit-and-zookeeper-quorum-properties">Direct to Drillbit and ZooKeeper Quorum Properties</h3>
+
+<p>To use Drill in distributed mode, set ConnectionType to Zookeeper, get the ZKQuorum and ZKClusterID values from the <code>drill-override.conf</code> file, and define the ZKQuorum and ZKClusterID properties. For example:</p>
 
 <ul>
 <li><code>ZKQuorum=localhost:2181</code><br></li>
 <li><code>ZKClusterID=drillbits1</code></li>
 </ul>
 
-<p>If ConnectionType=Direct, define HOST and PORT properties. For example:</p>
+<p>To use Drill in embedded mode, set ConnectionType to Direct and define HOST and PORT properties. For example:</p>
 
 <ul>
 <li><code>HOST=localhost</code><br></li>
 <li><code>PORT=31010</code></li>
 </ul>
 
-<p><a href="/docs/odbc-configuration-reference/#configuration-options">Driver
-Configuration
-Options</a> describes configuration options available for controlling the
+<p><a href="/docs/odbc-configuration-reference/#configuration-options">Driver Configuration Options</a> describes configuration options available for controlling the
 behavior of DSNs using the MapR Drill ODBC Driver.</p>
 
 <hr>

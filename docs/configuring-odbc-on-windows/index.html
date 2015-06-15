@@ -375,6 +375,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-the-driver-on-windows/">Installing the Driver on Windows</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-the-tdc-file-on-windows/">Installing the TDC File on Windows</a></li>
+              
             </ul>
             
           
@@ -978,52 +980,54 @@ sources:</p>
 
 <h2 id="create-a-data-source-name-(dsn)">Create a Data Source Name (DSN)</h2>
 
-<p>Create a DSN that an application can use to connect to Drill data sources. If
+<p>Create a DSN to connect to Drill data sources. If
 you want to create a DSN for a 32-bit application, you must use the 32-bit
 version of the ODBC Administrator to create the DSN.</p>
 
 <ol>
-<li><p>To launch the ODBC Administrator, click <strong>Start &gt; All Programs &gt; MapR Drill ODBC Driver 1.0 (32|64-bit) &gt; (32|64-bit) ODBC Administrator</strong>.  </p>
+<li><p>Click <strong>Start</strong>, and locate the ODBC Administrator app that you installed, and click the ODBC Administrator app icon to start the app.
+The ODBC Data Source Administrator dialog appears.
+<img src="/docs/img/odbc-user-dsn.png" alt=""></p></li>
+<li><p>Click the <strong>System DSN</strong> tab, and in System Data Sources, select MapR ODBC Driver for Drill DSN.
+<img src="/docs/img/odbc-configure1.png" alt="">
+The system DSN is available for all users who log in to the machine. You can set up a user DSN is available only to the user who creates the DSN.  </p></li>
+<li><p>Click <strong>Configure</strong>.<br>
+The MapR Drill ODBC Driver DSN Setup dialog appears with a preconfigured sample DSN. The following screenshot shows a possible DSN configuration for using Drill in embedded mode.
+<img src="/docs/img/odbc-configure2.png" alt=""></p></li>
+</ol>
 
-<p>To launch the 32-bit version of the ODBC driver on a 64-bit machine, run:
-<code>C:\WINDOWS\SysWOW64\odbcad32.exe</code>.<br>
-The ODBC Data Source Administrator window appears.  </p></li>
-<li><p>Create a system or user DSN on the <strong>System DSN</strong> or <strong>User DSN</strong> tab, respectively. A system DSN is available for all users who log in to the machine. A user DSN is available to the user who creates the DSN.  </p></li>
-<li><p>Click <strong>Add</strong>.  </p></li>
-<li><p>Select <strong>MapR Drill ODBC Driver</strong> and click <strong>Finish</strong>.<br>
-The <em>MapR Drill ODBC Driver DSN Setup</em> window appears.</p></li>
-<li><p>In the <strong>Data Source Name</strong> field, enter a name for the DSN.  </p></li>
-<li><p>Optionally, enter a description of the DSN in the Description field.</p></li>
-<li><p>In the Connection Type section, select one of the following connection types:  </p>
+<h3 id="authentication-options">Authentication Options</h3>
+
+<p>To password protect the DSN, uncomment the AuthenticationType, select Basic Authentication in the Authentication Type dropdown, and configure UID and PWD properties. To configure no password protection, select No Authentication.</p>
+
+<h3 id="direct-to-drillbit-and-zookeeper-quorum-options">Direct to Drillbit and ZooKeeper Quorum Options</h3>
+
+<p>In the Connection Type section, Direct to Drillbit is selected for using Drill in embedded mode. To use Drill in embedded mode, set ConnectionType to Direct and define HOST and PORT properties. For example:</p>
 
 <ul>
-<li>ZooKeeper Quorum<br></li>
-<li>Direct to Drillbit<br></li>
-</ul></li>
-<li><p>If you select <strong>ZooKeeper Quorum</strong>, provide values for the following properties:  </p>
-
-<ul>
-<li>Quorum<br>
-A comma separated list of ZooKeeper nodes in the following format:<br>
-<code>&lt;host name/ip address&gt; : &lt;port number&gt;, &lt;host name/ip address&gt; : &lt;port number&gt;, . . .</code><br></li>
-<li>Cluster ID<br>
-Name of the drillbit cluster, drillbits1 by default. Check the <code>drill-override.conf</code> file for any cluster name changes.<br></li>
+<li><code>HOST=localhost</code><br></li>
+<li><code>PORT=31010</code></li>
 </ul>
 
-<p>If you select Direct to Drillbit, provide the IP address or host name of the Drill server and the Drill listen port number, 31010 by default. Check the <code>drill-override.conf</code> file for any port changes.  </p></li>
-<li><p>In <strong>Default Schema</strong>, select the <a href="/docs/configuring-connections-on-windows/#schema">default schema</a> to connect to.  </p></li>
-<li><p>Optionally, perform the following operations:  </p>
+<p>Check the <code>drill-override.conf</code> file for any port changes.  </p>
 
-<ul>
-<li>Update the <a href="/docs/configuring-connections-on-windows/#advanced-properties">advanced properties</a> configuration.<br></li>
-<li>Configure <a href="/docs/configuring-connections-on-windows/#logging-options">logging options</a> to log types of events.<br></li>
-</ul></li>
-<li><p>Click <strong>OK</strong> to save the DSN.</p></li>
-</ol>
+<p>To use Drill in distributed mode, select <strong>ZooKeeper Quorum</strong>.
+<img src="/docs/img/odbc-configure3.png" alt=""></p>
+
+<p>If you select <strong>ZooKeeper Quorum</strong>, provide values for the following properties:<br>
+   * Quorum<br>
+     A comma separated list of ZooKeeper nodes in the following format:<br>
+     <code>&lt;host name/ip address&gt; : &lt;port number&gt;, &lt;host name/ip address&gt; : &lt;port number&gt;, . . .</code><br>
+   * Cluster ID<br>
+     Name of the drillbit cluster, drillbits1 by default. </p>
+
+<p>Check the <code>drill-override.conf</code> file for ZooKeeper node information and for any cluster name changes. </p>
+
+<p><a href="/docs/odbc-configuration-reference/">Advanced Properties</a>, <a href="/docs/odbc-configuration-reference/#logging-options">logging options</a>, and [Drill Explorer].</p>
 
 <h3 id="next-step">Next Step</h3>
 
-<p><a href="/docs/connecting-to-odbc-data-sources">Connect to Drill Data Sources from a BI Tool</a>.</p>
+<p><a href="/docs/testing-the-odbc-connection/">Testing the ODBC Connection</a>.</p>
 
     
       
