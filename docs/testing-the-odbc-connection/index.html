@@ -386,7 +386,9 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/odbc-configuration-reference/">ODBC Configuration Reference</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-linux-mac-os-x/">Configuring ODBC on Linux/Mac OS X</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-linux/">Configuring ODBC on Linux</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-mac-os-x/">Configuring ODBC on Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-windows/">Configuring ODBC on Windows</a></li>
               
@@ -403,7 +405,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/connecting-drill-explorer-to-data/">Connecting Drill Explorer to Data</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/using-drill-explorer-to-browse-data/">Using Drill Explorer to Browse Data</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/browsing-data-and-defining-views/">Browsing Data and Defining Views</a></li>
               
             </ul>
             
@@ -996,8 +998,7 @@ The success message appears.<br>
 
 <h2 id="testing-the-odbc-connection-on-linux">Testing the ODBC Connection on Linux</h2>
 
-<p>To test the ODBC connection on Linux use the test utilities that are packaged
-with your driver manager installation: <code>iodbctest</code> and <code>iodbctestw</code>. Use <code>iodbctest</code> to
+<p>To test the ODBC connection on Linux use the test utilities in the <code>samples</code> directory of the driver manager installation: <code>iodbctest</code> and <code>iodbctestw</code>. Use <code>iodbctest</code> to
 test how your driver works with an ANSI application. Use <code>iodbctestw</code> to test
 how your driver works with a Unicode application.</p>
 
@@ -1006,27 +1007,53 @@ how your driver works with a Unicode application.</p>
 <p>Visit <a href="http://www.iodbc.org/">http://www.iodbc.org</a> for further details on
 using the iODBC driver manager.</p>
 
-<p>To test the ODBC connection on Linux, follow these steps:</p>
+<p><strong>Example</strong></p>
+
+<p>To test the ODBC connection on a Linux cluster, follow these steps:</p>
 
 <ol>
-<li><a href="/docs/starting-drill-on-linux-and-mac-os-x/">Start Drill</a>.</li>
-<li>Run <code>iodbctest</code> or <code>iodbctestw</code>. The program prompts you for an ODBC connection string.</li>
-<li>If you do not remember the DSN name, type a question mark (?) to see a list of DSNs.</li>
+<li><p><a href="/docs/starting-drill-on-linux-and-mac-os-x/">Start Drill</a>. For example, to start Drill in local mode on a linux cluster:
+    [root@centos23 drill-1.0.0]# bin/drill-localhost
+    apache drill 1.0.0 
+    &quot;the only truly happy people are children, the creative minority and drill users&quot;</p></li>
+<li><p>Run <code>iodbctest</code> or <code>iodbctestw</code>. 
+The prompt for an ODBC connection string appears.
+    [root@centos23 libiodbc-3.52.7]# samples/iodbctest
+    iODBC Demonstration program
+    This program shows an interactive SQL processor
+    Driver Manager: 03.52.0709.0909</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Enter ODBC connect string (? shows list): ?
+</code></pre></div></li>
+<li><p>Type ? to see the DSN name.
+Output is:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">DSN                              | Driver                                  
+------------------------------------------------------------------------------
+Sample MapR Drill DSN 64         | MapR Drill ODBC Driver 64-bit           
+Enter ODBC connect string (? shows list):
+</code></pre></div></li>
 <li><p>If you are connecting directly to a Drillbit, type an ODBC connection string using the following format:</p>
 
-<p><code>DRIVER=MapR Drill ODBC Driver;ConnectionType=Direct;Host=HostName;Port=PortNumber</code></p>
+<p><code>DSN=&lt;DSN name&gt;;ConnectionType=Direct;Host=&lt;Host Name&gt;;Port=&lt;Port Number&gt;</code></p>
 
 <p>OR</p>
 
-<p>If you are connecting to a ZooKeeper cluster, type an ODBC connection string
-using the following format:</p>
+<p>If you are connecting to a ZooKeeper cluster, type an ODBC connection string using the following format:</p>
 
-<p><code>DRIVER=MapR Drill ODBC Driver;ConnectionType=ZooKeeper;ZKQuorum=Server1:Port1
-,Server2:Port2;ZKClusterID=DrillbitName</code></p>
-
-<p>If the connection is successful, the <code>SQL&gt;</code> prompt appears.</p></li>
+<p><code>DSN=&lt;DSN Name&gt;;ConnectionType=ZooKeeper;ZKQuorum=&lt;Server1:Port1&gt;
+,&lt;Server2:Port2&gt;;ZKClusterID=&lt;Cluster Name&gt;</code></p></li>
 </ol>
 
+<p>The following example shows a connection string:</p>
+
+<p><code>DSN=Sample MapR Drill DSN 64;ConnectionType=Direct;Host=localhost;Port=31010</code></p>
+
+<p>The output of a successful test is:</p>
+
+<p>`Driver: 1.0.0.1001 (MapR Drill ODBC Driver)</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">    SQL&gt; `
+
+ After he `SQL&gt;` prompt appears, go to the Drill shell to run commands. Do not attempt to run SQL commands from this prompt.
+</code></pre></div>
 <h2 id="testing-the-odbc-connection-on-windows">Testing the ODBC Connection on Windows</h2>
 
 <p>To test the ODBC connection on Windows, follow these steps:</p>

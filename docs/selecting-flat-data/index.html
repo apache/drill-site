@@ -386,7 +386,9 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/odbc-configuration-reference/">ODBC Configuration Reference</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-linux-mac-os-x/">Configuring ODBC on Linux/Mac OS X</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-linux/">Configuring ODBC on Linux</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-mac-os-x/">Configuring ODBC on Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-windows/">Configuring ODBC on Windows</a></li>
               
@@ -403,7 +405,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/connecting-drill-explorer-to-data/">Connecting Drill Explorer to Data</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/using-drill-explorer-to-browse-data/">Using Drill Explorer to Browse Data</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/browsing-data-and-defining-views/">Browsing Data and Defining Views</a></li>
               
             </ul>
             
@@ -969,16 +971,20 @@
     <div class="int_text" align="left">
       
         <p>A very simple query against the <code>donuts.json</code> file returns the values for the
-four &quot;flat&quot; columns (the columns that contain data at the top level only: no
+five &quot;flat&quot; columns (the columns that contain data at the top level only: no
 nested data):</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select id, type, name, ppu
 from dfs.`/Users/brumsby/drill/donuts.json`;
-+------------+------------+------------+------------+
-|     id     |    type    |    name    |    ppu     |
-+------------+------------+------------+------------+
-| 0001       | donut      | Cake       | 0.55       |
-+------------+------------+------------+------------+
-1 row selected (0.248 seconds)
++-------+--------+----------------+-------+
+|  id   |  type  |      name      |  ppu  |
++-------+--------+----------------+-------+
+| 0001  | donut  | Cake           | 0.55  |
+| 0002  | donut  | Raised         | 0.69  |
+| 0003  | donut  | Old Fashioned  | 0.55  |
+| 0004  | donut  | Filled         | 0.69  |
+| 0005  | donut  | Apple Fritter  | 1.0   |
++-------+--------+----------------+-------+
+5 rows selected (0.18 seconds)
 </code></pre></div>
 <p>Note that <code>dfs</code> is the schema name, the path to the file is enclosed by
 backticks, and the query must end with a semicolon.</p>

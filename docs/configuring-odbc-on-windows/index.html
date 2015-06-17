@@ -386,7 +386,9 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/odbc-configuration-reference/">ODBC Configuration Reference</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-linux-mac-os-x/">Configuring ODBC on Linux/Mac OS X</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-linux/">Configuring ODBC on Linux</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-mac-os-x/">Configuring ODBC on Mac OS X</a></li>
               
                 <li class="toctree-l3 current"><a class="reference internal" href="/docs/configuring-odbc-on-windows/">Configuring ODBC on Windows</a></li>
               
@@ -403,7 +405,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/connecting-drill-explorer-to-data/">Connecting Drill Explorer to Data</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/using-drill-explorer-to-browse-data/">Using Drill Explorer to Browse Data</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/browsing-data-and-defining-views/">Browsing Data and Defining Views</a></li>
               
             </ul>
             
@@ -978,17 +980,17 @@ sources:</p>
 
 <p><strong>Prerequisite:</strong> An Apache Drill installation must be <a href="/docs/connect-a-data-source-introduction/">configured</a> to access the data sources that you want to connect to.  For information about how to install Apache Drill, see <a href="/docs/install-drill">Install Drill</a>.</p>
 
-<h2 id="create-a-data-source-name-(dsn)">Create a Data Source Name (DSN)</h2>
+<h2 id="sample-odbc-configuration-(dsn)">Sample ODBC Configuration (DSN)</h2>
 
-<p>Create a DSN to connect to Drill data sources. If
+<p>You can see how to create a DSN to connect to Drill data sources by taking a look at the preconfigured sample that the installer sets up. If
 you want to create a DSN for a 32-bit application, you must use the 32-bit
 version of the ODBC Administrator to create the DSN.</p>
 
 <ol>
-<li><p>Click <strong>Start</strong>, and locate the ODBC Administrator app that you installed, and click the ODBC Administrator app icon to start the app.
+<li><p>Click <strong>Start</strong>, and locate the ODBC Administrator app that you installed, and click  ODBC Administrator to start the app.
 The ODBC Data Source Administrator dialog appears.
 <img src="/docs/img/odbc-user-dsn.png" alt=""></p></li>
-<li><p>Click the <strong>System DSN</strong> tab, and in System Data Sources, select MapR ODBC Driver for Drill DSN.
+<li><p>On the <strong>System DSN</strong> tab in System Data Sources, select the sample MapR ODBC Driver for Drill DSN.
 <img src="/docs/img/odbc-configure1.png" alt="">
 The system DSN is available for all users who log in to the machine. You can set up a user DSN is available only to the user who creates the DSN.  </p></li>
 <li><p>Click <strong>Configure</strong>.<br>
@@ -1009,21 +1011,24 @@ The MapR Drill ODBC Driver DSN Setup dialog appears with a preconfigured sample 
 <li><code>PORT=31010</code></li>
 </ul>
 
-<p>Check the <code>drill-override.conf</code> file for any port changes.  </p>
+<p>Check the <code>drill-override.conf</code> file for any port changes. </p>
 
-<p>To use Drill in distributed mode, select <strong>ZooKeeper Quorum</strong>.
+<p>To use Drill in distributed mode, select ZooKeeper Quorum. </p>
+
+<p>If you select ZooKeeper Quorum, provide values for the following properties:</p>
+
+<ul>
+<li>Quorum
+A comma separated list of ZooKeeper nodes in the following format:
+<code>&lt;host name/ip address&gt; : &lt;port number&gt;, &lt;host name/ip address&gt; : &lt;port number&gt;, . . .</code></li>
+<li>Cluster ID
+Name of the drillbit cluster. Check the drill-override.conf file for ZooKeeper node information and for any cluster name changes.</li>
+</ul>
+
+<p>Check the <code>drill-override.conf</code> file for the cluster name.
 <img src="/docs/img/odbc-configure3.png" alt=""></p>
 
-<p>If you select <strong>ZooKeeper Quorum</strong>, provide values for the following properties:<br>
-   * Quorum<br>
-     A comma separated list of ZooKeeper nodes in the following format:<br>
-     <code>&lt;host name/ip address&gt; : &lt;port number&gt;, &lt;host name/ip address&gt; : &lt;port number&gt;, . . .</code><br>
-   * Cluster ID<br>
-     Name of the drillbit cluster, drillbits1 by default. </p>
-
-<p>Check the <code>drill-override.conf</code> file for ZooKeeper node information and for any cluster name changes. </p>
-
-<p><a href="/docs/odbc-configuration-reference/">Advanced Properties</a>, <a href="/docs/odbc-configuration-reference/#logging-options">logging options</a>, and [Drill Explorer].</p>
+<p><a href="/docs/odbc-configuration-reference/">Advanced Properties</a>, <a href="/docs/odbc-configuration-reference/#logging-options">logging options</a>, and <a href="/docs/drill-explorer-introduction/">Drill Explorer</a>.</p>
 
 <h3 id="next-step">Next Step</h3>
 
@@ -1033,7 +1038,7 @@ The MapR Drill ODBC Driver DSN Setup dialog appears with a preconfigured sample 
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/configuring-odbc-on-linux-mac-os-x/">← Configuring ODBC on Linux/Mac OS X</a></span><span class="next-toc"><a href="/docs/testing-the-odbc-connection/">Testing the ODBC Connection →</a></span>
+  <span class="previous-toc"><a href="/docs/configuring-odbc-on-mac-os-x/">← Configuring ODBC on Mac OS X</a></span><span class="next-toc"><a href="/docs/testing-the-odbc-connection/">Testing the ODBC Connection →</a></span>
 </div>
 
     
