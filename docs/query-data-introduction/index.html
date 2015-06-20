@@ -426,6 +426,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-tibco-spotfire-with-drill/">Using Tibco Spotfire with Drill</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-tibco-spotfire-server-with-drill/">Configuring Tibco Spotfire Server with Drill</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-desktop/">Using Apache Drill with Tableau 9 Desktop</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
@@ -676,6 +678,8 @@
                 <li class="toctree-l3"><a class="reference internal" href="/docs/alter-system/">ALTER SYSTEM</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-table-as-ctas/">CREATE TABLE AS (CTAS)</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/partition-by-clause/">PARTITION BY Clause</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-view/">CREATE VIEW</a></li>
               
@@ -974,44 +978,46 @@
 
     <div class="int_text" align="left">
       
-        <p>You can query local and distributed file systems, Hive, and HBase data sources
-registered with Drill. You issue the <code>USE
-&lt;storage plugin&gt;</code> statement to run your queries against a particular storage plugin. You use dot notation and back ticks to specify the storage plugin name and sometimes the workspace name. For example, to use the dfs storage plugin and default workspace, issue this command: <code>USE dfs.`default</code></p>
+        <p>You can query local and distributed file systems, Hive, HBase data, complex data, INFORMATION SCHEMA, and system tables as described in the subtopics of this section. </p>
 
-<p>Alternatively, you can omit the USE statement, and specify the storage plugin and workspace name using dot notation and back ticks. For example:</p>
+<p>The query specifies the data source location and include data casting. </p>
+
+<h2 id="specifying-the-data-source-location">Specifying the Data Source Location</h2>
+
+<p>The optional <a href="/docs/use">USE statement</a> runs subsequent queries against a particular <a href="/docs/connect-a-data-source-introduction/">storage plugin</a>. The USE statement typically saves typing some of the storage plugin information in the FROM statement. If you omit the USE statement, specify a storage plugin, such as dfs, and optionally a workspace, such as default, and a path to the data source using dot notation and back ticks. For example:</p>
 
 <p><code>dfs.`default`.`/Users/drill-user/apache-drill-1.0.0/log/sqlline_queries.json</code>`;</p>
 
-<p>You may need to use casting functions in some queries. For example, you may
-have to cast a string <code>&quot;100&quot;</code> to an integer in order to apply a math function
+<h2 id="casting-data">Casting Data</h2>
+
+<p>In some cases, Drill converts schema-less data to correctly-typed data implicitly. In this case, you do not need to <a href="/docs/supported-data-types/#casting-and-converting-data-types">cast the data</a> to another type. The file format of the data and the nature of your query determines the requirement for casting or converting. Differences in casting depend on the data source. </p>
+
+<p>For example, you have to cast a string <code>&quot;100&quot;</code> in a JSON file to an integer in order to apply a math function
 or an aggregate function.</p>
 
-<p>You can use the EXPLAIN command to analyze errors and troubleshoot queries
+<p>Use CONVERT_TO and CONVERT_FROM instead of the CAST function for converting binary data types, as described in section &quot;<a href="/docs/data-type-conversion/#convert_to-and-convert_from-usage-notes">CONVERT_TO and CONVERT_FROM Usage Notes</a>&quot;.</p>
+
+<h2 id="troubleshooting-queries">Troubleshooting Queries</h2>
+
+<p>In addition to testing queries interactively in the Drill shell, and examining error messages, use the <a href="/docs/explain/">EXPLAIN command</a> to analyze errors and troubleshoot queries
 that do not run. For example, if you run into a casting error, the query plan
 text may help you isolate the problem.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; !set maxwidth 10000
 0: jdbc:drill:zk=local&gt; explain plan for select ... ;
 </code></pre></div>
-<p>The set command increases the default text display (number of characters). By
+<p><a href="/docs/configuring-the-drill-shell/">Drill shell commands</a> include the <code>!set &lt;set variable&gt; &lt;value&gt;</code> to increase the default text display (number of characters). By
 default, most of the plan output is hidden.</p>
+
+<h2 id="query-syntax-tips">Query Syntax Tips</h2>
 
 <p>Remember the following tips when querying data with Drill:</p>
 
 <ul>
-<li>Include a semicolon at the end of SQL statements, except when you issue a command with an exclamation point <code>(!).   
-</code>Example: <code>!set maxwidth 10000</code></li>
-<li><p>Use backticks around file and directory names that contain special characters and also around reserved words when you query a file system.<br>
-The following special characters require backticks:</p>
-
-<ul>
-<li>. (period)</li>
-<li>/ (forward slash)</li>
-<li>_ (underscore)
-Example: <code>SELECT * FROM dfs.default.`sample_data/my_sample.json`;</code></li>
-</ul></li>
-<li><p><code>CAST</code> data to <code>VARCHAR</code> if an expression in a query returns <code>VARBINARY</code> as the result type in order to view the <code>VARBINARY</code> types as readable data. If you do not use the <code>CAST</code> function, Drill returns the results as byte data.<br>
- Example: <code>CAST (VARBINARY_expr as VARCHAR(50))</code></p></li>
-<li><p>When selecting all (SELECT *) schema-less data, the order of returned columns might differ from the stored order and might vary from query to query.</p></li>
+<li>Include a semicolon at the end of SQL statements, except when you issue a <a href="/docs/configuring-the-drill-shell/">Drill shell command</a>.<br>
+<code>Example:</code>!set maxwidth 10000`</li>
+<li>Use backticks around <a href="/docs/reserved-keywords">keywords</a>, special characters, and <a href="/docs/lexical-structure/#identifier">identifiers</a> that SQL cannot parse, such as the keyword default and a path that contains a forward slash character:
+Example: <code>SELECT * FROM dfs.`default`.`/Users/drilluser/apache-drill-1.1.0-SNAPSHOT/sample-data/nation.parquet`;</code></li>
+<li>When selecting all (SELECT *) schema-less data, the order of returned columns might differ from the stored order and might vary from query to query.</li>
 </ul>
 
     

@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Drill in 10 Minutes - Apache Drill</title>
+<title>PARTITION BY Clause - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -164,15 +164,15 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Tutorials</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">Tutorials</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/tutorials-introduction/">Tutorials Introduction</a></li>
             
           
             
-              <li class="toctree-l2 current"><a class="reference internal" href="/docs/drill-in-10-minutes/">Drill in 10 Minutes</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/drill-in-10-minutes/">Drill in 10 Minutes</a></li>
             
           
             
@@ -597,8 +597,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">SQL Reference</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">SQL Reference</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sql-reference-introduction/">SQL Reference Introduction</a></li>
@@ -669,7 +669,7 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">SQL Commands</a></li>
-              <ul style="display: none">
+              <ul style="">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/supported-sql-commands/">Supported SQL Commands</a></li>
               
@@ -679,7 +679,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-table-as-ctas/">CREATE TABLE AS (CTAS)</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/partition-by-clause/">PARTITION BY Clause</a></li>
+                <li class="toctree-l3 current"><a class="reference internal" href="/docs/partition-by-clause/">PARTITION BY Clause</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-view/">CREATE VIEW</a></li>
               
@@ -957,20 +957,22 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/tutorials/">Tutorials</a></li>
+    <li><a href="/docs/sql-reference/">SQL Reference</a></li>
   
-  <li>Drill in 10 Minutes</li>
+    <li><a href="/docs/sql-commands/">SQL Commands</a></li>
+  
+  <li>PARTITION BY Clause</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/tutorials/020-drill-in-10-minutes.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/sql-reference/sql-commands/035-partition-by-clause.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>Drill in 10 Minutes</h1>
+      <h1>PARTITION BY Clause</h1>
 
     </div>
 
@@ -978,266 +980,43 @@
 
     <div class="int_text" align="left">
       
-        <h2 id="objective">Objective</h2>
-
-<p>Use Apache Drill to query sample data in 10 minutes. For simplicity, you’ll
-run Drill in <em>embedded</em> mode rather than <em>distributed</em> mode to try out Drill
-without having to perform any setup tasks.</p>
-
-<h2 id="installation-overview">Installation Overview</h2>
-
-<p>You can install Drill in embedded mode on a machine running Linux, Mac OS X, or Windows. For information about installing Drill in distributed mode, see <a href="/docs/installing-drill-in-distributed-mode">Installing Drill in Distributed Mode</a>.</p>
-
-<p>This installation procedure includes how to download the Apache Drill archive and extract the contents to a directory on your machine. The Apache Drill archive contains sample JSON and Parquet files that you can query immediately.</p>
-
-<p>After installing Drill, you start the Drill shell. The Drill shell is a pure-Java console-based utility for connecting to relational databases and executing SQL commands. Drill follows the ANSI SQL: 2011 standard with <a href="/docs/sql-extensions/">extensions</a> for nested data formats and other capabilities.</p>
-
-<h2 id="embedded-mode-installation-prerequisites">Embedded Mode Installation Prerequisites</h2>
-
-<p>You need to meet the following prerequisites to run Drill:</p>
+        <p>You can take advantage of automatic partitioning in Drill 1.1 using the PARTITION BY CLAUSE in the CTAS command:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE table_name [ (column_name, . . .) ] 
+[ PARTITION_BY (column_name, . . .) ] 
+AS SELECT_statement;
+</code></pre></div>
+<p>The CTAS statement that uses the PARTITION BY clause must store the data in Parquet format. The CTAS statement needs to meet one of the following requirements:</p>
 
 <ul>
-<li>Linux, Mac OS X, and Windows: <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html">Oracle Java SE Development (JDK) Kit 7</a> installation<br></li>
-<li>Windows only:<br>
-
-<ul>
-<li>A JAVA_HOME environment variable set up that points to  to the JDK installation<br></li>
-<li>A PATH environment variable that includes a pointer to the JDK installation<br></li>
-<li>A third-party utility for unzipping a tar.gz file </li>
-</ul></li>
+<li>The column list in the PARTITION by clause are included in the column list following the table_name</li>
+<li>The SELECT statement has to use a * column if the base table in the SELECT statement is schema-less, and when the partition column is resolved to * column in a schema-less query, this * column cannot be a result of a join operation. </li>
 </ul>
 
-<h3 id="java-installation-prerequisite-check">Java Installation Prerequisite Check</h3>
-
-<p>Run the following command in a terminal (Linux and Mac OS X) or Command Prompt (Windows) to verify that Java 7 is the version in effect:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">java -version
-</code></pre></div>
-<p>The output looks something like this:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">java version &quot;1.7.0_79&quot;
-Java(TM) SE Runtime Environment (build 1.7.0_7965-b15)
-Java HotSpot(TM) 64-Bit Server VM (build 24.79-b02, mixed mode)
-</code></pre></div>
-<h2 id="install-drill-on-linux-or-mac-os-x">Install Drill on Linux or Mac OS X</h2>
-
-<p>Complete the following steps to install Drill:  </p>
+<p>To create and verify the contents of a table that contains this row:</p>
 
 <ol>
-<li><p>In a terminal windows, change to the directory where you want to install Drill.</p></li>
-<li><p>To download the latest version of Apache Drill, download Drill from the <a href="http://getdrill.org/drill/download/apache-drill-1.0.0.tar.gz">Drill web site</a> or run one of the following commands, depending on which you have installed on your system:</p></li>
+<li>Set the workspace to a writable workspace.</li>
+<li>Set the <code>store.format</code> option to Parquet</li>
+<li>Run a CTAS statement with the PARTITION BY clause.</li>
+<li>Go to the directory where the table is stored and check the contents of the file.</li>
+<li>Run a query against the new table.</li>
 </ol>
 
-<ul>
-<li><code>wget http://getdrill.org/drill/download/apache-drill-1.0.0.tar.gz</code><br></li>
-<li> <code>curl -o apache-drill-1.0.0.tar.gz http://getdrill.org/drill/download/apache-drill-1.0.0.tar.gz</code><br></li>
-</ul>
-
-<ol>
-<li><p>Copy the downloaded file to the directory where you want to install Drill. </p></li>
-<li><p>Extract the contents of the Drill tar.gz file. Use sudo only if necessary:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">tar -xvzf apache-drill-1.0.0.tar.gz  
-</code></pre></div></li>
-</ol>
-
-<p>The extraction process creates the installation directory named apache-drill-1.0.0 containing the Drill software.</p>
-
-<p>At this point, you can start Drill.</p>
-
-<h2 id="start-drill-on-linux-and-mac-os-x">Start Drill on Linux and Mac OS X</h2>
-
-<p>Start Drill in embedded mode using the <code>drill-embedded</code> command:</p>
-
-<ol>
-<li><p>Navigate to the Drill installation directory. For example:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">cd apache-drill-1.0.0  
-</code></pre></div></li>
-<li><p>Issue the following command to launch Drill in embedded mode:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">bin/drill-embedded  
-</code></pre></div></li>
-</ol>
-
-<p>The message of the day followed by the <code>0: jdbc:drill:zk=local&gt;</code>  prompt appears.  </p>
-
-<p>At this point, you can <a href="/docs/drill-in-10-minutes#query-sample-data">submit queries</a> to Drill.</p>
-
-<h3 id="install-drill-on-windows">Install Drill on Windows</h3>
-
-<p>You can install Drill on Windows 7 or 8. First, set the JAVA_HOME environment variable, and then install Drill. Complete the following steps to install Drill:</p>
-
-<ol>
-<li>Click the following link to download the latest version of Apache Drill:  <a href="http://getdrill.org/drill/download/apache-drill-1.0.0.tar.gz">http://getdrill.org/drill/download/apache-drill-1.0.0.tar.gz</a><br></li>
-<li>Move the <code>apache-drill-1.0.0.tar.gz</code> file to a directory where you want to install Drill.<br></li>
-<li>Unzip the <code>TAR.GZ</code> file using a third-party tool. If the tool you use does not unzip the TAR file as well as the <code>TAR.GZ</code> file, unzip the <code>apache-drill-1.0.0.tar</code> to extract the Drill software. The extraction process creates the installation directory named apache-drill-1.0.0 containing the Drill software. For example:<br>
-<img src="/docs/img/drill-directory.png" alt="drill install dir"></li>
-</ol>
-
-<p>At this point, you can start Drill.  </p>
-
-<h2 id="start-drill-on-windows">Start Drill on Windows</h2>
-
-<p>Start Drill by running the sqlline.bat file and typing a connection string, as shown in the following procedure. The <code>zk=local</code> in the connection string means the local node is the ZooKeeper node:</p>
-
-<p>Start the Drill shell using the <strong>sqlline command</strong>. The <code>zk=local</code> means the local node is the ZooKeeper node. Complete the following steps to launch the Drill shell:</p>
-
-<ol>
-<li>Open Command Prompt.<br></li>
-<li>Open the apache-drill-1.0.0 folder. For example:<br>
-<code>cd apache-drill-1.0.0</code></li>
-<li>Go to the bin directory. For example:<br>
-<code>cd bin</code></li>
-<li>Type the following command on the command line:
-<code>sqlline.bat -u &quot;jdbc:drill:zk=local&quot;</code>
-<img src="/docs/img/sqlline1.png" alt="drill install dir"></li>
-</ol>
-
-<p>At this point, you can <a href="/docs/drill-in-10-minutes#query-sample-data">run queries</a>.</p>
-
-<h2 id="stopping-drill">Stopping Drill</h2>
-
-<p>Issue the following command when you want to exit the Drill shell:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">!quit
+<p>Examples:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE mytable1 PARTITION BY (r_regionkey) AS 
+  SELECT r_regionkey, r_name FROM cp.`tpch/region.parquet`
+CREATE TABLE mytable2 PARTITION BY (r_regionkey) AS 
+  SELECT * FROM cp.`tpch/region.parquet`
+CREATE TABLE mytable3 PARTITION BY (r_regionkey) AS
+  SELECT r.r_regionkey, r.r_name, n.n_nationkey, n.n_name 
+  FROM cp.`tpch/nation.parquet` n, cp.`tpch/region.parquet` r
+  WHERE n.n_regionkey = r.r_regionkey
 </code></pre></div>
-<h2 id="query-sample-data">Query Sample Data</h2>
-
-<p>Your Drill installation includes a <code>sample-data</code> directory with JSON and
-Parquet files that you can query. The local file system on your machine is
-configured as the <code>dfs</code> storage plugin instance by default when you install
-Drill in embedded mode. For more information about storage plugin
-configuration, refer to <a href="/docs/connect-a-data-source-introduction">Storage Plugin Registration</a>.</p>
-
-<p>Use SQL syntax to query the sample <code>JSON</code> and <code>Parquet</code> files in the <code>sample-data</code> directory on your local file system.</p>
-
-<h3 id="querying-a-json-file">Querying a JSON File</h3>
-
-<p>A sample JSON file, <code>employee.json</code>, contains fictitious employee data.</p>
-
-<p>To view the data in the <code>employee.json</code> file, submit the following SQL query
-to Drill, using the <a href="/docs/storage-plugin-registration/">cp (classpath) storage plugin</a> to point to the file.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM cp.`employee.json` LIMIT 3;
-</code></pre></div>
-<p>The query output is:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">+--------------+------------------+-------------+------------+--------------+---------------------+-----------+----------------+-------------+------------------------+----------+----------------+------------------+-----------------+---------+--------------------+
-| employee_id  |    full_name     | first_name  | last_name  | position_id  |   position_title    | store_id  | department_id  | birth_date  |       hire_date        |  salary  | supervisor_id  | education_level  | marital_status  | gender  |  management_role   |
-+--------------+------------------+-------------+------------+--------------+---------------------+-----------+----------------+-------------+------------------------+----------+----------------+------------------+-----------------+---------+--------------------+
-| 1            | Sheri Nowmer     | Sheri       | Nowmer     | 1            | President           | 0         | 1              | 1961-08-26  | 1994-12-01 00:00:00.0  | 80000.0  | 0              | Graduate Degree  | S               | F       | Senior Management  |
-| 2            | Derrick Whelply  | Derrick     | Whelply    | 2            | VP Country Manager  | 0         | 1              | 1915-07-03  | 1994-12-01 00:00:00.0  | 40000.0  | 1              | Graduate Degree  | M               | M       | Senior Management  |
-| 4            | Michael Spence   | Michael     | Spence     | 2            | VP Country Manager  | 0         | 1              | 1969-06-20  | 1998-01-01 00:00:00.0  | 40000.0  | 1              | Graduate Degree  | S               | M       | Senior Management  |
-+--------------+------------------+-------------+------------+--------------+---------------------+-----------+----------------+-------------+------------------------+----------+----------------+------------------+-----------------+---------+--------------------+
-3 rows selected (0.827 seconds)
-</code></pre></div>
-<h3 id="querying-a-parquet-file">Querying a Parquet File</h3>
-
-<p>Query the <code>region.parquet</code> and <code>nation.parquet</code> files in the <code>sample-data</code>
-directory on your local file system.</p>
-
-<h4 id="region-file">Region File</h4>
-
-<p>If you followed the Apache Drill in 10 Minutes instructions to install Drill
-in embedded mode, the path to the parquet file varies between operating
-systems.</p>
-
-<div class="admonition note">
-  <p class="first admonition-title">Note</p>
-  <p class="last">Substitute your installation path and the Drill version in the angle-bracketed locations when you enter the query.  </p>
-</div> 
-
-<p>To view the data in the <code>region.parquet</code> file, issue the query appropriate for
-your operating system:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">    SELECT * FROM dfs.`&lt;path-to-installation&gt;/apache-drill-&lt;version&gt;/sample-data/region.parquet`;
-</code></pre></div>
-<p>The query returns the following results:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">+--------------+--------------+-----------------------+
-| R_REGIONKEY  |    R_NAME    |       R_COMMENT       |
-+--------------+--------------+-----------------------+
-| 0            | AFRICA       | lar deposits. blithe  |
-| 1            | AMERICA      | hs use ironic, even   |
-| 2            | ASIA         | ges. thinly even pin  |
-| 3            | EUROPE       | ly final courts cajo  |
-| 4            | MIDDLE EAST  | uickly special accou  |
-+--------------+--------------+-----------------------+
-5 rows selected (0.409 seconds)
-</code></pre></div>
-<h4 id="nation-file">Nation File</h4>
-
-<p>If you followed the Apache Drill in 10 Minutes instructions to install Drill
-in embedded mode, the path to the parquet file varies between operating
-systems.</p>
-
-<div class="admonition note">
-  <p class="first admonition-title">Note</p>
-  <p class="last">Substitute your installation path and the Drill version in the angle-bracketed locations when you enter the query  </p>
-</div>
-
-<p>To view the data in the <code>nation.parquet</code> file, issue the query appropriate for
-your operating system:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">      SELECT * FROM dfs.`&lt;path-to-installation&gt;/apache-drill-&lt;version&gt;/sample-data/nation.parquet`;
-</code></pre></div>
-<p>The query returns the following results:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM dfs.`Users/khahn/drill/apache-drill-1.0.0-SNAPSHOT/sample-data/nation.parquet`;
-+--------------+-----------------+--------------+-----------------------+
-| N_NATIONKEY  |     N_NAME      | N_REGIONKEY  |       N_COMMENT       |
-+--------------+-----------------+--------------+-----------------------+
-| 0            | ALGERIA         | 0            |  haggle. carefully f  |
-| 1            | ARGENTINA       | 1            | al foxes promise sly  |
-| 2            | BRAZIL          | 1            | y alongside of the p  |
-| 3            | CANADA          | 1            | eas hang ironic, sil  |
-| 4            | EGYPT           | 4            | y above the carefull  |
-| 5            | ETHIOPIA        | 0            | ven packages wake qu  |
-| 6            | FRANCE          | 3            | refully final reques  |
-| 7            | GERMANY         | 3            | l platelets. regular  |
-| 8            | INDIA           | 2            | ss excuses cajole sl  |
-| 9            | INDONESIA       | 2            |  slyly express asymp  |
-| 10           | IRAN            | 4            | efully alongside of   |
-| 11           | IRAQ            | 4            | nic deposits boost a  |
-| 12           | JAPAN           | 2            | ously. final, expres  |
-| 13           | JORDAN          | 4            | ic deposits are blit  |
-| 14           | KENYA           | 0            |  pending excuses hag  |
-| 15           | MOROCCO         | 0            | rns. blithely bold c  |
-| 16           | MOZAMBIQUE      | 0            | s. ironic, unusual a  |
-| 17           | PERU            | 1            | platelets. blithely   |
-| 18           | CHINA           | 2            | c dependencies. furi  |
-| 19           | ROMANIA         | 3            | ular asymptotes are   |
-| 20           | SAUDI ARABIA    | 4            | ts. silent requests   |
-| 21           | VIETNAM         | 2            | hely enticingly expr  |
-| 22           | RUSSIA          | 3            |  requests against th  |
-| 23           | UNITED KINGDOM  | 3            | eans boost carefully  |
-| 24           | UNITED STATES   | 1            | y final packages. sl  |
-+--------------+-----------------+--------------+-----------------------+
-25 rows selected (0.101 seconds)
-</code></pre></div>
-<h2 id="summary">Summary</h2>
-
-<p>Now, you have been introduced to Apache Drill, which supports nested data, schema-less execution, and decentralized metadata. To summarize, you have completed the following tasks:</p>
-
-<ul>
-<li>Downloaded and installed Apache Drill.</li>
-<li>Started Drill in embedded mode.</li>
-<li>Queried the sample JSON file, <code>employee.json</code>, to view its data.</li>
-<li>Queried the sample <code>region.parquet</code> file to view its data.</li>
-<li>Queried the sample <code>nation.parquet</code> file to view its data.</li>
-</ul>
-
-<h2 id="next-steps">Next Steps</h2>
-
-<p>Now that you have an idea about what Drill can do, you might want to:</p>
-
-<ul>
-<li><a href="/docs/installing-drill-on-the-cluster">Install Drill on a cluster.</a></li>
-<li><a href="/docs/connect-a-data-source-introduction">Configure storage plugins to connect Drill to your data sources</a>.</li>
-<li>Query <a href="/docs/querying-hive">Hive</a> and <a href="/docs/hbase-storage-plugin">HBase</a> data.</li>
-<li><a href="/docs/querying-complex-data">Query Complex Data</a></li>
-<li><a href="/docs/querying-plain-text-files">Query Plain Text Files</a></li>
-</ul>
-
-<h2 id="more-information">More Information</h2>
-
-<p>For more information about Apache Drill, explore the  <a href="http://drill.apache.org">Apache Drill
-web site</a>.</p>
-
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/tutorials-introduction/">← Tutorials Introduction</a></span><span class="next-toc"><a href="/docs/analyzing-the-yelp-academic-dataset/">Analyzing the Yelp Academic Dataset →</a></span>
+  <span class="previous-toc"><a href="/docs/create-table-as-ctas/">← CREATE TABLE AS (CTAS)</a></span><span class="next-toc"><a href="/docs/create-view/">CREATE VIEW →</a></span>
 </div>
 
     

@@ -426,6 +426,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-tibco-spotfire-with-drill/">Using Tibco Spotfire with Drill</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-tibco-spotfire-server-with-drill/">Configuring Tibco Spotfire Server with Drill</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-desktop/">Using Apache Drill with Tableau 9 Desktop</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
@@ -676,6 +678,8 @@
                 <li class="toctree-l3"><a class="reference internal" href="/docs/alter-system/">ALTER SYSTEM</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-table-as-ctas/">CREATE TABLE AS (CTAS)</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/partition-by-clause/">PARTITION BY Clause</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-view/">CREATE VIEW</a></li>
               
@@ -976,17 +980,33 @@
       
         <p>Partition pruning is a performance optimization that limits the number of files and partitions that Drill reads when querying file systems and Hive tables. When you partition data, Drill only reads a subset of the files that reside in a file system or a subset of the partitions in a Hive table when a query matches certain filter criteria.</p>
 
-<p>The query planner in Drill evaluates the filters as part of a Filter operator. If no partition filters are present, the underlying Scan operator reads all files in all directories and then sends the data to operators downstream, such as Filter. When partition filters are present, the query planner determines if it can push the filters down to the Scan such that the Scan only reads the directories that match the partition filters, thus reducing disk I/O.</p>
+<p>The query planner in Drill performs partition pruning by evaluating the filters. If no partition filters are present, the underlying Scan operator reads all files in all directories and then sends the data to operators, such as Filter, downstream. When partition filters are present, the query planner pushes the filters down to the Scan if possible. The Scan reads only the directories that match the partition filters, thus reducing disk I/O.</p>
 
-<h2 id="determining-a-partitioning-scheme">Determining a Partitioning Scheme</h2>
+<h2 id="how-to-use-partition-pruning">How to Use Partition Pruning</h2>
 
-<p>You can organize your data in such a way that maximizes partition pruning in Drill to optimize performance. Currently, you must partition data manually for a query to take advantage of partition pruning in Drill.</p>
+<p>You can partition data manually or automatically to take advantage of partition pruning in Drill. In Drill 1.0 and earlier, you need to organize your data in such a way to take advantage of partition pruning. In Drill 1.1.0 and later, if the data source is Parquet, you can partition data automatically using CTAS--no data organization tasks required. </p>
 
-<p>Partitioning data requires you to determine a partitioning scheme, or a logical way to store the data in a hierarchy of directories. You can then use CTAS to create Parquet files from the original data, specifying filter conditions, and then move the files into the correlating directories in the hierarchy. Once you have partitioned the data, you can create and query views on the data.</p>
+<h2 id="automatic-partitioning">Automatic Partitioning</h2>
 
-<h3 id="partitioning-example">Partitioning Example</h3>
+<p>Automatic partitioning in Drill 1.1.0 and later occurs when you write Parquet date using the [<a href="/docs/partition-by-clause/">PARTITION BY</a> clause in the CTAS statemebnt.</p>
 
-<p>If you have several text files with log data which span multiple years, and you want to partition the data by year and quarter, you could create the following hierarchy of directories:  </p>
+<p>Automatic partitioning creates separate files, but not separate directories, for different partitions. Each file contains exactly one partition value, but there could be multiple files for the same partition value.</p>
+
+<p>Partition pruning uses the Parquet column statistics to determine which columns to use to prune.</p>
+
+<h2 id="manual-partitioning">Manual Partitioning</h2>
+
+<ol>
+<li>Devise a logical way to store the data in a hierarchy of directories. </li>
+<li>Use CTAS to create Parquet files from the original data, specifying filter conditions.</li>
+<li>Move the files into directories in the hierarchy. </li>
+</ol>
+
+<p>After partitioning the data, create and query views on the data.</p>
+
+<h3 id="manual-partitioning-example">Manual Partitioning Example</h3>
+
+<p>Suppose you have text files containing several years of log data. To partition the data by year and quarter, create the following hierarchy of directories:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   …/logs/1994/Q1  
    …/logs/1994/Q2  
    …/logs/1994/Q3  
@@ -1000,7 +1020,7 @@
    …/logs/1996/Q3  
    …/logs/1996/Q4  
 </code></pre></div>
-<p>Once the directory structure is in place, run CTAS with a filter condition in the year and quarter for Q1 1994.</p>
+<p>Run the following CTAS statement, filtering on the Q1 1994 data.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">      CREATE TABLE TT_1994_Q1 
           AS SELECT * FROM &lt;raw table data in text format &gt;
           WHERE columns[1] = 1994 AND columns[2] = &#39;Q1&#39;
