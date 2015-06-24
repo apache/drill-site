@@ -924,10 +924,6 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/what-is-apache-drill/">What is Apache Drill</a></li>
             
           
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/partition-pruning/">Partition Pruning</a></li>
-            
-          
           </ul>
         
       
@@ -1011,20 +1007,22 @@ modes:</p>
   <p class="last">Switching between storage modes does not migrate configuration data.  </p>
 </div>
 
-<h2 id="zookeeper-for-persistent-configuration-storage">ZooKeeper for Persistent Configuration Storage</h2>
+<h2 id="configuring-zookeeper-pstore">Configuring ZooKeeper PStore</h2>
 
-<p>To make Drill installation and configuration simple, Drill uses ZooKeeper to
+<p>Drill uses ZooKeeper to
 store persistent configuration data. The ZooKeeper PStore provider stores all
 of the persistent configuration data in ZooKeeper except for query profile
-data.</p>
+data. The ZooKeeper PStore provider offloads query profile data to the Drill log directory on Drill nodes. </p>
 
-<p>The ZooKeeper PStore provider offloads query profile data to the
-${DRILL_LOG_DIR:-/var/log/drill} directory on Drill nodes. If you want the
-query profile data stored in a specific location, you can configure where
-ZooKeeper offloads the data.</p>
+<p>You need to configure the ZooKeeper PStore to use the Drill Web UI when running multiple Drillbits. </p>
 
-<p>To modify where the ZooKeeper PStore provider offloads query profile data,
-configure the <code>sys.store.provider.zk.blobroot</code> property in the <code>drill.exec</code>
+<h3 id="why-configure-the-zookeeper-pstore">Why Configure the ZooKeeper PStore</h3>
+
+<p>When you run multiple DrillBits, configure a specific location for ZooKeeper to offload the query profile data instead of accepting the default temporary location. All Drillbits in the cluster cannot access the temporary location. Consequently, when you do not configure a location on the distributed file system, queries sent to do some Drillbits do not appear in the Completed section of the Drill Web UI. Also, some Running links that you click to get information about the running queries are broken links.</p>
+
+<h3 id="how-to-configure-the-zookeeper-pstore">How to Configure the ZooKeeper PStore</h3>
+
+<p>To configure the ZooKeeper PStore, set the <code>sys.store.provider.zk.blobroot</code> property in the <code>drill.exec</code>
 block in <code>&lt;drill_installation_directory&gt;/conf/drill-override.conf</code> on each
 Drill node and then restart the Drillbit service.</p>
 

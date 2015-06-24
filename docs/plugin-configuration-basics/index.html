@@ -924,10 +924,6 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/what-is-apache-drill/">What is Apache Drill</a></li>
             
           
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/partition-pruning/">Partition Pruning</a></li>
-            
-          
           </ul>
         
       
@@ -1177,7 +1173,12 @@ The storage plugin definition as you would enter it in the Web UI.</p></li>
 
 <p>If you need to add a storage plugin to Drill and do not want to use a web browser, you can create a <a href="https://github.com/apache/drill/blob/master/contrib/storage-hbase/src/main/resources/bootstrap-storage-plugins.json">bootstrap-storage-plugins.json</a> file and include it on the classpath when starting Drill. The storage plugin loads when Drill starts up.</p>
 
-<p>Bootstrapping a storage plugin works only when the first drillbit in the cluster first starts up. After cluster startup, you have to use the REST API or Drill Web UI to add a storage plugin. </p>
+<p>Bootstrapping a storage plugin works only when the first drillbit in the cluster first starts up. The configuration is
+stored in zookeeper, preventing Drill from picking up the boostrap-storage-plugins.json again.</p>
+
+<p>After cluster startup, you have to use the REST API or Drill Web UI to add a storage plugin. Alternatively, you
+can modify the entry in zookeeper by uploading the json file for
+that plugin to the /drill directory of the zookeeper installation, or just delete the /drill directory if you do not have configuration properties to preserve.</p>
 
 <p>If you configure an HBase storage plugin using bootstrap-storage-plugins.json file and HBase is not installed, you might experience a delay when executing the queries. Configure the <a href="http://hbase.apache.org/book.html#config.files">HBase client timeout</a> and retry settings in the config block of HBase plugin instance configuration.</p>
 

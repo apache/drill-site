@@ -924,10 +924,6 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/what-is-apache-drill/">What is Apache Drill</a></li>
             
           
-            
-              <li class="toctree-l2 current"><a class="reference internal" href="/docs/partition-pruning/">Partition Pruning</a></li>
-            
-          
           </ul>
         
       
@@ -982,13 +978,13 @@
 
 <p>The query planner in Drill performs partition pruning by evaluating the filters. If no partition filters are present, the underlying Scan operator reads all files in all directories and then sends the data to operators, such as Filter, downstream. When partition filters are present, the query planner pushes the filters down to the Scan if possible. The Scan reads only the directories that match the partition filters, thus reducing disk I/O.</p>
 
-<h2 id="how-to-use-partition-pruning">How to Use Partition Pruning</h2>
+<h2 id="how-partition-data">How Partition Data</h2>
 
 <p>You can partition data manually or automatically to take advantage of partition pruning in Drill. In Drill 1.0 and earlier, you need to organize your data in such a way to take advantage of partition pruning. In Drill 1.1.0 and later, if the data source is Parquet, you can partition data automatically using CTAS--no data organization tasks required. </p>
 
 <h2 id="automatic-partitioning">Automatic Partitioning</h2>
 
-<p>Automatic partitioning in Drill 1.1.0 and later occurs when you write Parquet date using the [<a href="/docs/partition-by-clause/">PARTITION BY</a> clause in the CTAS statemebnt.</p>
+<p>Automatic partitioning in Drill 1.1.0 and later occurs when you write Parquet date using the <a href="/docs/partition-by-clause/">PARTITION BY</a> clause in the CTAS statemebnt.</p>
 
 <p>Automatic partitioning creates separate files, but not separate directories, for different partitions. Each file contains exactly one partition value, but there could be multiple files for the same partition value.</p>
 

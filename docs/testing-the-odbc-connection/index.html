@@ -924,10 +924,6 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/what-is-apache-drill/">What is Apache Drill</a></li>
             
           
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/partition-pruning/">Partition Pruning</a></li>
-            
-          
           </ul>
         
       
@@ -999,24 +995,26 @@ how your driver works with a Unicode application.</p>
 <p>Visit <a href="http://www.iodbc.org/">http://www.iodbc.org</a> for further details on
 using the iODBC driver manager.</p>
 
-<p><strong>Example</strong></p>
+<h3 id="example-of-a-test-on-linux">Example of a Test on Linux</h3>
 
 <p>To test the ODBC connection on a Linux cluster, follow these steps:</p>
 
 <ol>
-<li><p><a href="/docs/starting-drill-on-linux-and-mac-os-x/">Start Drill</a>. For example, to start Drill in local mode on a linux cluster:
-    [root@centos23 drill-1.0.0]# bin/drill-localhost
-    apache drill 1.0.0 
-    &quot;the only truly happy people are children, the creative minority and drill users&quot;</p></li>
-<li><p>Run <code>iodbctest</code> or <code>iodbctestw</code>. 
-The prompt for an ODBC connection string appears.
-    [root@centos23 libiodbc-3.52.7]# samples/iodbctest
-    iODBC Demonstration program
-    This program shows an interactive SQL processor
-    Driver Manager: 03.52.0709.0909</p>
+<li><p><a href="/docs/starting-drill-on-linux-and-mac-os-x/">Start Drill</a>. For example, to start Drill in local mode on a linux cluster:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">[root@centos23 drill-1.0.0]# bin/drill-localhost
+apache drill 1.0.0 
+&quot;the only truly happy people are children, the creative minority and drill users&quot;
+</code></pre></div></li>
+<li><p>In the <code>samples</code> directory of the driver manager installation, run <code>iodbctest</code> or <code>iodbctestw</code>.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">[root@centos23 libiodbc-3.52.7]# samples/iodbctest
+  iODBC Demonstration program
+This program shows an interactive SQL processor
+Driver Manager: 03.52.0709.0909
+</code></pre></div>
+<p>The prompt for an ODBC connection string appears.  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">Enter ODBC connect string (? shows list): ?
 </code></pre></div></li>
-<li><p>Type ? to see the DSN name.
+<li><p>Type ? to see the DSN name.<br>
 Output is:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">DSN                              | Driver                                  
 ------------------------------------------------------------------------------
@@ -1024,27 +1022,26 @@ Sample MapR Drill DSN 64         | MapR Drill ODBC Driver 64-bit
 Enter ODBC connect string (? shows list):
 </code></pre></div></li>
 <li><p>If you are connecting directly to a Drillbit, type an ODBC connection string using the following format:</p>
-
-<p><code>DSN=&lt;DSN name&gt;;ConnectionType=Direct;Host=&lt;Host Name&gt;;Port=&lt;Port Number&gt;</code></p>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">DSN=&lt;DSN name&gt;;ConnectionType=Direct;Host=&lt;Host Name&gt;;Port=&lt;Port Number&gt;
+</code></pre></div>
 <p>OR</p>
 
 <p>If you are connecting to a ZooKeeper cluster, type an ODBC connection string using the following format:</p>
-
-<p><code>DSN=&lt;DSN Name&gt;;ConnectionType=ZooKeeper;ZKQuorum=&lt;Server1:Port1&gt;
-,&lt;Server2:Port2&gt;;ZKClusterID=&lt;Cluster Name&gt;</code></p></li>
+<div class="highlight"><pre><code class="language-text" data-lang="text">DSN=&lt;DSN Name&gt;;ConnectionType=ZooKeeper;ZKQuorum=&lt;Server1:Port1&gt;,&lt;Server2:Port2&gt;;ZKClusterID=&lt;Cluster Name&gt;`
+</code></pre></div>
+<p>The output of a successful test is:<br>
+ <code>Driver: 1.0.0.1001 (MapR Drill ODBC Driver)  
+ SQL&gt;</code><br>
+ After the <code>SQL&gt;</code> prompt appears, type <code>quit;</code>, and go to the Drill shell to run commands. Do not attempt to run SQL commands from this prompt.</p></li>
 </ol>
 
-<p>The following example shows a connection string:</p>
+<h3 id="example-connection-strings">Example Connection Strings</h3>
 
-<p><code>DSN=Sample MapR Drill DSN 64;ConnectionType=Direct;Host=localhost;Port=31010</code></p>
-
-<p>The output of a successful test is:</p>
-
-<p>`Driver: 1.0.0.1001 (MapR Drill ODBC Driver)</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">    SQL&gt; `
-
- After he `SQL&gt;` prompt appears, go to the Drill shell to run commands. Do not attempt to run SQL commands from this prompt.
+<p>The following example shows a connection string for a direct connection:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">    DSN=Sample MapR Drill DSN 64;ConnectionType=Direct;Host=localhost;Port=31010
+</code></pre></div>
+<p>The following example shows a connection string for a ZooKeeper cluster connection:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">    DSN=Sample MapR Drill DSN 64;ConnectionType=ZooKeeper;ZKQuorum=centos23.lab:5181;ZKClusterID=docs41cluster-drillbits
 </code></pre></div>
 <h2 id="testing-the-odbc-connection-on-mac-os-x">Testing the ODBC Connection on Mac OS X</h2>
 
