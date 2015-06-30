@@ -424,7 +424,9 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-microstrategy-analytics-with-apache-drill/">Using MicroStrategy Analytics with Apache Drill</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/using-tibco-spotfire-with-drill/">Using Tibco Spotfire with Drill</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/using-tibco-spotfire-desktop-with-drill/">Using Tibco Spotfire Desktop with Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/using-tibco-spotfire-desktop-with-drill/">Using Tibco Spotfire Desktop with Drill</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-tibco-spotfire-server-with-drill/">Configuring Tibco Spotfire Server with Drill</a></li>
               
@@ -978,15 +980,15 @@
 
 <p>The query planner in Drill performs partition pruning by evaluating the filters. If no partition filters are present, the underlying Scan operator reads all files in all directories and then sends the data to operators, such as Filter, downstream. When partition filters are present, the query planner pushes the filters down to the Scan if possible. The Scan reads only the directories that match the partition filters, thus reducing disk I/O.</p>
 
-<h2 id="how-partition-data">How Partition Data</h2>
+<h2 id="how-to-partition-data">How to Partition Data</h2>
 
 <p>You can partition data manually or automatically to take advantage of partition pruning in Drill. In Drill 1.0 and earlier, you need to organize your data in such a way to take advantage of partition pruning. In Drill 1.1.0 and later, if the data source is Parquet, you can partition data automatically using CTAS--no data organization tasks required. </p>
 
 <h2 id="automatic-partitioning">Automatic Partitioning</h2>
 
-<p>Automatic partitioning in Drill 1.1.0 and later occurs when you write Parquet date using the <a href="/docs/partition-by-clause/">PARTITION BY</a> clause in the CTAS statemebnt.</p>
+<p>Automatic partitioning in Drill 1.1.0 and later occurs when you write Parquet date using the <a href="/docs/partition-by-clause/">PARTITION BY</a> clause in the CTAS statement.</p>
 
-<p>Automatic partitioning creates separate files, but not separate directories, for different partitions. Each file contains exactly one partition value, but there could be multiple files for the same partition value.</p>
+<p>Automatic partitioning creates separate files, but not separate directories, for different partitions. Each file contains exactly one partition value, but there can be multiple files for the same partition value.</p>
 
 <p>Partition pruning uses the Parquet column statistics to determine which columns to use to prune.</p>
 
@@ -1000,7 +1002,7 @@
 
 <p>After partitioning the data, create and query views on the data.</p>
 
-<h3 id="manual-partitioning-example">Manual Partitioning Example</h3>
+<h3 id="manual-partitioning">Manual Partitioning</h3>
 
 <p>Suppose you have text files containing several years of log data. To partition the data by year and quarter, create the following hierarchy of directories:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   …/logs/1994/Q1  

@@ -424,7 +424,9 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-microstrategy-analytics-with-apache-drill/">Using MicroStrategy Analytics with Apache Drill</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/using-tibco-spotfire-with-drill/">Using Tibco Spotfire with Drill</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/using-tibco-spotfire-desktop-with-drill/">Using Tibco Spotfire Desktop with Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/using-tibco-spotfire-desktop-with-drill/">Using Tibco Spotfire Desktop with Drill</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-tibco-spotfire-server-with-drill/">Configuring Tibco Spotfire Server with Drill</a></li>
               
@@ -1004,6 +1006,7 @@
 <p>If you have any of the following problems, try the suggested solution:</p>
 
 <ul>
+<li><a href="/docs/troubleshooting/#memory-issues">Memory Issues</a></li>
 <li><a href="/docs/troubleshooting/#query-parsing-errors">Query Parsing Errors</a></li>
 <li><a href="/docs/troubleshooting/#query-parsing-errors-caused-by-reserved-words">Query Parsing Errors Caused by Reserved Words</a></li>
 <li><a href="/docs/troubleshooting/#table-not-found">Table Not Found</a></li>
@@ -1029,6 +1032,12 @@
 <li><a href="/docs/troubleshooting/#sqlline-error-starting-drill-in-embedded-mode">SQLLine Error Starting Drill in Embedded Mode</a></li>
 </ul>
 
+<h3 id="memory-issues">Memory Issues</h3>
+
+<p>Symptom: Memory problems occur when you run certain queries, such as those that perform window functions.</p>
+
+<p>Solution: The <a href="/docs/configuration-options-introduction/#system-options"><code>planner.memory.max_query_memory_per_node</code></a> system option value determines the memory limits per node for each running query, especially for those involving external sorts, such as window functions. When you have a large amount of direct memory allocated, but still encounter memory issues when running these queries, increase the value of the option.</p>
+
 <h3 id="query-parsing-errors">Query Parsing Errors</h3>
 
 <p>Symptom:  </p>
@@ -1052,7 +1061,9 @@ Symptom:   </p>
 
 <h3 id="table-not-found">Table Not Found</h3>
 
-<p>Symptom:</p>
+<p>To resolve a Table Not Found problem that results from querying a file, try the solutions listed in this section. To resolve a Table Not Found problem that results from querying a directory, try removing or moving hidden files from the directory. Drill 1.1 and earlier might create hidden files in a directory (<a href="https://issues.apache.org/jira/browse/DRILL-2424">DRILL-2424</a>). </p>
+
+<p>Symptom that results from querying a file:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT * FROM dfs.drill.test2.json;
    Query failed: PARSE ERROR: From line 1, column 15 to line 1, column 17: Table &#39;dfs.drill.test2.json&#39; not found  
 </code></pre></div>
@@ -1063,7 +1074,7 @@ Symptom:   </p>
 <li>Check the permission of the files with those for the the Drill user.<br></li>
 <li>Enclose file and path name in back ticks:<br>
 <code>SELECT * FROM dfs.drill.`test2.json`;</code><br></li>
-<li>Drill may not be able to determine the type of file you are trying to read. Try using Drill Default Input Format.<br></li>
+<li>Drill may not be able to determine the type of file you are trying to read. Try using Drill <a href="/docs/plugin-configuration-basics/#storage-plugin-attributes">Default Input Format</a>.<br></li>
 <li>Verify that your storage plugin is correctly configured.</li>
 <li>Verify that Drill can auto-detect your file format.  Drill supports auto-detection for the following formats:<br>
 

@@ -424,7 +424,9 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-microstrategy-analytics-with-apache-drill/">Using MicroStrategy Analytics with Apache Drill</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/using-tibco-spotfire-with-drill/">Using Tibco Spotfire with Drill</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/using-tibco-spotfire-desktop-with-drill/">Using Tibco Spotfire Desktop with Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/using-tibco-spotfire-desktop-with-drill/">Using Tibco Spotfire Desktop with Drill</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-tibco-spotfire-server-with-drill/">Configuring Tibco Spotfire Server with Drill</a></li>
               
@@ -976,25 +978,129 @@
 
     <div class="int_text" align="left">
       
-        <p>You can take advantage of automatic partitioning in Drill 1.1 by using the PARTITION BY clause in the CTAS command:</p>
+        <p>You can take advantage of automatic partitioning in Drill 1.1 by using the PARTITION BY clause in the CTAS command.</p>
 
 <h2 id="syntax">Syntax</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE table_name [ (column_name, . . .) ] 
-[ PARTITION_BY (column_name, . . .) ] 
-AS SELECT_statement;
+<div class="highlight"><pre><code class="language-text" data-lang="text">[ PARTITION_BY ( column_name[, . . .] ) ] 
 </code></pre></div>
-<p>The CTAS statement that uses the PARTITION BY clause must store the data in Parquet format and meet one of the following requirements:</p>
+<p>Only the Parquet storage format is supported for automatic partitioning. Before using CTAS, <a href="/docs/create-table-as-ctas/#setting-the-storage-format">set the <code>store.format</code> option</a> for the table to Parquet.</p>
 
-<ul>
-<li>The columns in the column list in the PARTITION BY clause are included in the column list following the table_name</li>
-<li>The SELECT statement has to use a * column (SELECT *) if the base table in the SELECT statement is schema-less, and when the partition column is resolved to a * column in a schema-less query, this * column cannot be a result of a join operation. </li>
-</ul>
+<p>When the base table in the SELECT statement is schema-less, include columns in the PARTITION BY clause in the table&#39;s column list, or use a select all (SELECT *) statement:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE dest_name [ (column, . . .) ]
+[ PARTITION_BY (column, . . .) ] 
+AS SELECT &lt;column_list&gt; FROM &lt;source_name&gt;;
+</code></pre></div>
+<p>When columns in the source table have ambiguous names, such as COLUMNS[0], define one or more column aliases in the SELECT statement. Use the alias name or names in the CREATE TABLE list. List aliases in the same order as the corresponding columns in the SELECT statement. Matching order is important because Drill performs an overwrite operation.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE dest_name (alias1, alias2, . . .) 
+[ PARTITION_BY (alias1, . . . ) ] 
+AS SELECT column1 alias1, column2 alias2, . . .;
+</code></pre></div>
+<p>For example:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE by_yr (yr, ngram, occurrances) PARTITION BY (yr) AS SELECT columns[1] yr, columns[0] ngram, columns[2] occurrances FROM `googlebooks-eng-all-5gram-20120701-zo.tsv`;
+</code></pre></div>
+<p>When the partition column is resolved to * column in a schema-less query, the * column cannot be a result of join operation. </p>
 
-<p>The output of using the PARTITION BY clause creates separate files. Each file contains one partition value, and Drill can create multiple files for the same partition value.</p>
+<p>The output of CTAS using a PARTITION BY clause creates separate files. Each file contains one partition value, and Drill can create multiple files for the same partition value.</p>
 
-<p>Partition pruning uses the parquet column stats to determine which which columns can be used to prune.</p>
+<p><a href="/docs/partition-pruning/">Partition pruning</a> uses the Parquet column statistics to determine which columns can be used to prune.</p>
 
-<p>Examples:</p>
+<h2 id="partioning-example">Partioning Example</h2>
+
+<p>This example uses a tab-separated value (TSV) files that you download from a
+Google internet site. The data in the file consists of phrases from books that
+Google scans and generates for its <a href="https://storage.googleapis.com/books/ngrams/books/datasetsv2.html">Google Books Ngram
+Viewer</a>. You
+use the data to find the relative frequencies of Ngrams.</p>
+
+<h3 id="about-the-data">About the Data</h3>
+
+<p>Each line in the TSV file has the following structure:</p>
+
+<p><code>ngram TAB year TAB match_count TAB volume_count NEWLINE</code></p>
+
+<p>For example, lines 1722089 and 1722090 in the file contain this data:</p>
+
+<table ><tbody><tr><th >ngram</th><th >year</th><th colspan="1" >match_count</th><th >volume_count</th></tr><tr><td ><p class="p1">Zoological Journal of the Linnean</p></td><td >2007</td><td colspan="1" >284</td><td >101</td></tr><tr><td colspan="1" ><p class="p1">Zoological Journal of the Linnean</p></td><td colspan="1" >2008</td><td colspan="1" >257</td><td colspan="1" >87</td></tr></tbody></table> 
+  
+
+<p>In 2007, &quot;Zoological Journal of the Linnean&quot; occurred 284 times overall in 101
+distinct books of the Google sample.</p>
+
+<h3 id="creating-a-partitioned-table-of-ngram-data">Creating a Partitioned Table of Ngram Data</h3>
+
+<p>For this example, you can use Drill in distributed mode to write 1.7M lines of data to a distributed file system, such as HDFS. Alternatively, you can use Drill in embedded mode and write fewer lines of data to a local file system. </p>
+
+<ol>
+<li><p>Download the compressed Google Ngram data from this location:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">wget http://storage.googleapis.com/books/ngrams/books/googlebooks-eng-all-5gram-20120701-zo.gz  
+</code></pre></div></li>
+<li><p>Unzip the file. On Linux for example use the <code>gzip -d</code> command:<br>
+<code>gzip -d googlebooks-eng-all-5gram-20120701-zo.gz</code><br>
+A file named <code>googlebooks-eng-all-5gram-20120701-zo</code> appears.</p></li>
+<li><p>Embedded mode: Move the unzipped file name to <code>/tmp</code> and add a <code>.tsv</code> extension. The Drill <code>dfs</code> storage plugin definition includes a TSV format that requires
+a file to have this extension.<br>
+<code>mv googlebooks-eng-all-5gram-20120701-zo /tmp/googlebooks-eng-all-5gram-20120701-zo.tsv</code><br>
+Distributed mode: Move the unzipped file to HDFS and add a <code>.tsv</code> extension.
+<code>hadoop fs -put googlebooks-eng-all-5gram-20120701-zo /tmp/googlebooks-eng-all-5gram-20120701-zo.tsv</code></p></li>
+<li><p>Start the Drill shell, and use the default <code>dfs.tmp</code> workspace, which is predefined as writable.<br>
+Distributed mode: This example assumes that the default <code>dfs</code> either works with your distributed file system out-of-the-box, or that you have adapted the storage plugin to your environment.<br>
+<code>USE dfs.tmp</code>;  </p></li>
+<li><p>Set the <code>store.format</code> property to the default parquet if you changed the default.
+<code>ALTER SESSION SET</code>store.format<code>= &#39;parquet&#39;;</code>  </p></li>
+<li><p>Partition Google Ngram data by year in a directory named <code>by_yr</code>.<br>
+Embedded mode:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE by_yr (yr, ngram, occurrances) PARTITION BY (yr) AS SELECT columns[1] yr, columns[0] ngram, columns[2] occurrances FROM `googlebooks-eng-all-5gram-20120701-zo.tsv` LIMIT 100;
+</code></pre></div>
+<p>Output is:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">+-----------+----------------------------+
+| Fragment  | Number of records written  |
++-----------+----------------------------+
+| 0_0       | 100                        |
++-----------+----------------------------+
+1 row selected (5.775 seconds)
+</code></pre></div>
+<p>Distributed mode:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE by_yr (yr, ngram, occurrances) PARTITION BY (yr) AS SELECT columns[1] yr, columns[0] ngram, columns[2] occurrances FROM `googlebooks-eng-all-5gram-20120701-zo.tsv`;
+</code></pre></div>
+<p>Output is:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">+-----------+----------------------------+
+| Fragment  | Number of records written  |
++-----------+----------------------------+
+| 0_0       | 1773829                    |
++-----------+----------------------------+
+1 row selected (54.159 seconds)
+</code></pre></div>
+<p>Drill writes more than 1.7M rows of data to the table. The files look something like this:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">0_0_1.parquet   0_0_28.parquet  0_0_46.parquet  0_0_64.parquet
+0_0_10.parquet  0_0_29.parquet  0_0_47.parquet  0_0_65.parquet
+0_0_11.parquet  0_0_3.parquet   0_0_48.parquet  0_0_66.parquet
+0_0_12.parquet  0_0_30.parquet  0_0_49.parquet  0_0_67.parquet
+. . .  
+</code></pre></div></li>
+<li><p>Query the <code>by_yr</code> directory to check the data partitioning.<br>
+<code>SELECT * FROM by_yr LIMIT 100</code>;<br>
+The output looks something like this:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">+-------+------------------------------------------------------------+--------------+
+|  yr   |                           ngram                            | occurrances  |
++-------+------------------------------------------------------------+--------------+
+| 1737  | Zone_NOUN ,_. and_CONJ the_DET Tippet_NOUN                 | 1            |
+| 1737  | Zones_NOUN of_ADP the_DET Earth_NOUN ,_.                   | 2            |
+. . .
+| 1737  | Zobah , David slew of                                      | 1            |
+| 1966  | zones_NOUN of_ADP the_DET medulla_NOUN ._.                 | 3            |
+| 1966  | zone_NOUN is_VERB more_ADV or_CONJ less_ADJ                | 1            |
+. . .
++-------+------------------------+-------------+
+|  yr   |         ngram          | occurrances |
++-------+------------------------+-------------+
+| 1966  | zone by virtue of the  | 1           |
++-------+------------------------+-------------+
+100 rows selected (2.184 seconds)
+</code></pre></div>
+<p>Files are partitioned by year. The output is not expected to be in perfect sorted order because Drill reads files sequentially. </p></li>
+</ol>
+
+<h2 id="other-examples">Other Examples</h2>
 <div class="highlight"><pre><code class="language-text" data-lang="text">USE cp;
 CREATE TABLE mytable1 PARTITION BY (r_regionkey) AS 
   SELECT r_regionkey, r_name FROM cp.`tpch/region.parquet`;

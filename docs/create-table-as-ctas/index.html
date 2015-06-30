@@ -424,7 +424,9 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-microstrategy-analytics-with-apache-drill/">Using MicroStrategy Analytics with Apache Drill</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/using-tibco-spotfire-with-drill/">Using Tibco Spotfire with Drill</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/using-tibco-spotfire-desktop-with-drill/">Using Tibco Spotfire Desktop with Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/using-tibco-spotfire-desktop-with-drill/">Using Tibco Spotfire Desktop with Drill</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-tibco-spotfire-server-with-drill/">Configuring Tibco Spotfire Server with Drill</a></li>
               
@@ -976,36 +978,46 @@
 
     <div class="int_text" align="left">
       
-        <p>You can create tables in Drill by using the CTAS command:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE &lt;table name&gt; AS &lt;query&gt;;
-</code></pre></div>
-<p><em>table name</em> is a unique table table, optionally prefaced by a storage plugin name, such as dfs, a workspace, such as tmp, and a path to the write location using dot notation and back ticks.<br>
-<em>query</em> is a SELECT statement that can include an optional column list for the new table. </p>
+        <p>You can create tables in Drill by using the CTAS command.</p>
 
-<p>Example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE logtable(transid, prodid) AS SELECT transaction_id, product_id FROM ...
+<h2 id="syntax">Syntax</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE &lt;name&gt; [ (column list) ] AS &lt;query&gt;;
 </code></pre></div>
-<p>You can store table data in one of three formats:</p>
+<p><em>name</em> is a unique directory name, optionally prefaced by a storage plugin name, such as dfs, and a workspace, such as tmp using <a href="/docs/workspaces">dot notation</a>.<br>
+<em>column list</em> is an optional list of column names or aliases in the new table.<br>
+<em>query</em> is a SELECT statement that needs to include aliases for ambiguous column names, such as COLUMNS[0]. </p>
+
+<p>You can use the <a href="/docs/partition-by-clause">PARTITION BY</a> clause in a CTAS command.</p>
+
+<p>Drill writes files having names, such as 0_0_0.parquet, to the directory named in the CTAS command or to the workspace that is in use when you run the CTAS statement. You query the directory as you would query a table.</p>
+
+<p>The following command writes Parquet data from <code>nation.parquet</code>, installed with Drill, to the <code>/tmp/name_key</code> directory.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">USE dfs;
+CREATE TABLE tmp.`name_key` (N_NAME, N_NATIONKEY) AS SELECT N_NATIONKEY, N_NAME FROM dfs.`/Users/drilluser/apache-drill-1.0/sample-data/nation.parquet`;
+</code></pre></div>
+<p>To query the data, use this command:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM tmp.`name_key`;
+</code></pre></div>
+<p>This example writes a JSON table to the <code>/tmp/by_yr</code> directory that contains <a href="/docs/partition-by-clause/#partioning-example">Google Ngram data</a>.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Use dfs.tmp;
+CREATE TABLE by_yr (yr, ngram, occurrances) AS SELECT COLUMNS[0] ngram, COLUMNS[1] yr, COLUMNS[2] occurrances FROM `googlebooks-eng-all-5gram-20120701-zo.tsv` WHERE (columns[1] = &#39;1993&#39;);
+</code></pre></div>
+<h2 id="setting-the-storage-format">Setting the Storage Format</h2>
+
+<p>Before using CTAS, set the <code>store.format</code> option for the table to one of the following formats:</p>
 
 <ul>
-<li>csv</li>
+<li>csv, tsv, psv</li>
 <li>parquet</li>
 <li>json</li>
 </ul>
 
-<p>The parquet and json formats can be used to store complex data. Drill automatically partitions data stored in parquet when you use the <a href="/docs/partition-by-clause">PARTITION BY</a> clause.</p>
+<p>Use the ALTER SESSION command as <a href="/docs/create-table-as-ctas/#alter-session-command">shown in the example</a> in this section to set the <code>store.format</code> option.</p>
 
-<p>To set the output format for a Drill table, set the <code>store.format</code> option with
-the ALTER SYSTEM or ALTER SESSION command. For example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">alter session set `store.format`=&#39;json&#39;;
-</code></pre></div>
-<p>Table data is stored in the location specified by the workspace that is in use
-when you run the CTAS statement. By default, a directory is created, using the
-exact table name specified in the CTAS statement. A .json, .csv, or .parquet
-file inside that directory contains the data.</p>
+<h2 id="restrictions">Restrictions</h2>
 
-<p>You can only create new tables in workspaces. You cannot create tables in
-other storage plugins such as Hive and HBase.</p>
+<p>You can only create new tables in workspaces. You cannot create tables using
+storage plugins, such as Hive and HBase, that do not specify a workspace.</p>
 
 <p>You must use a writable (mutable) workspace when creating Drill tables. For
 example:</p>
@@ -1014,11 +1026,11 @@ example:</p>
       &quot;writable&quot;: true,
        }
 </code></pre></div>
-<h2 id="example">Example</h2>
+<h2 id="complete-ctas-example">Complete CTAS Example</h2>
 
-<p>The following query returns one row from a JSON file:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select id, type, name, ppu
-from dfs.`/Users/brumsby/drill/donuts.json`;
+<p>The following query returns one row from a JSON file that <a href="/docs/sample-data-donuts">you can download</a>:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT id, type, name, ppu
+FROM dfs.`/Users/brumsby/drill/donuts.json`;
 +------------+------------+------------+------------+
 |     id     |    type    |    name    |    ppu     |
 +------------+------------+------------+------------+
@@ -1033,7 +1045,7 @@ from dfs.`/Users/brumsby/drill/donuts.json`;
 <li>Set the <code>store.format</code> option appropriately.</li>
 <li>Run a CTAS statement that contains the query.</li>
 <li>Go to the directory where the table is stored and check the contents of the file.</li>
-<li>Run a query against the new table.</li>
+<li>Run a query against the new table by querying the directory that contains the table.</li>
 </ol>
 
 <p>The following sqlline output captures this sequence of steps.</p>
@@ -1045,10 +1057,10 @@ from dfs.`/Users/brumsby/drill/donuts.json`;
        }
 </code></pre></div>
 <h3 id="alter-session-command">ALTER SESSION Command</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">alter session set `store.format`=&#39;json&#39;;
+<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SESSION SET `store.format`=&#39;json&#39;;
 </code></pre></div>
 <h3 id="use-command">USE Command</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; use dfs.tmp;
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; USE dfs.tmp;
 +------------+------------+
 |     ok     |  summary   |
 +------------+------------+
@@ -1057,8 +1069,8 @@ from dfs.`/Users/brumsby/drill/donuts.json`;
 1 row selected (0.03 seconds)
 </code></pre></div>
 <h3 id="ctas-command">CTAS Command</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; create table donuts_json as
-select id, type, name, ppu from dfs.`/Users/brumsby/drill/donuts.json`;
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; CREATE TABLE donuts_json AS
+SELECT id, type, name, ppu FROM dfs.`/Users/brumsby/drill/donuts.json`;
 +------------+---------------------------+
 |  Fragment  | Number of records written |
 +------------+---------------------------+
@@ -1079,7 +1091,7 @@ administorsmbp7:donuts_json brumsby$ more 0_0_0.json
 }
 </code></pre></div>
 <h3 id="query-against-new-table">Query Against New Table</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select * from donuts_json;
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM donuts_json;
 +------------+------------+------------+------------+
 |     id     |    type    |    name    |    ppu     |
 +------------+------------+------------+------------+
@@ -1090,8 +1102,8 @@ administorsmbp7:donuts_json brumsby$ more 0_0_0.json
 <h3 id="use-a-different-output-format">Use a Different Output Format</h3>
 
 <p>You can run the same sequence again with a different storage format set for
-the system or session (csv or parquet). For example, if the format is set to
-csv, and you name the table donuts_csv, the resulting file would look like
+the system or session (csv or Parquet). For example, if the format is set to
+csv, and you name the directory donuts_csv, the resulting file would look like
 this:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">administorsmbp7:tmp brumsby$ cd donuts_csv
 administorsmbp7:donuts_csv brumsby$ ls
