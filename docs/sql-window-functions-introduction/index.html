@@ -906,6 +906,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-9-0-release-notes/">Apache Drill 0.9.0 Release Notes</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-0-0-release-notes/">Apache Drill 1.0.0 Release Notes</a></li>
             
           
@@ -1041,7 +1045,7 @@ To compare, you can run a query using the AVG() function as a standard set funct
 <p>Window functions are applied to the rows within each partition and sorted according to the order specification.  </p>
 
 <p>The following query uses the AVG() window function with the PARTITION BY clause to determine the average car sales for each dealer in Q1:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   select emp_name, dealer_id, sales, avg(sales) over (PARTITION BY dealer_id) as avgsales from q1_sales;
+<div class="highlight"><pre><code class="language-text" data-lang="text">   select emp_name, dealer_id, sales, avg(sales) over (partition by dealer_id) as avgsales from q1_sales;
    +-----------------+------------+--------+-----------+
    |    emp_name     | dealer_id  | sales  | avgsales  |
    +-----------------+------------+--------+-----------+
@@ -1062,7 +1066,7 @@ To compare, you can run a query using the AVG() function as a standard set funct
 
 <p>Currently, Drill supports the following aggregate and ranking window functions:  </p>
 
-<p>Aggregation  </p>
+<p>Aggregate   </p>
 
 <ul>
 <li>AVG()</li>
@@ -1082,15 +1086,14 @@ To compare, you can run a query using the AVG() function as a standard set funct
 <li>ROW_NUMBER()</li>
 </ul>
 
-<p>All of the ranking functions listed depend on the sort ordering specified by the ORDER BY clause of the associated window definition. Rows that are not distinct in the ordering are called peers. The ranking functions are defined so that they give the same answer for any two peer rows.  </p>
+<p>All of the ranking functions depend on the sort ordering specified by the ORDER BY clause of the associated window definition. Rows that are not distinct in the ordering are called peers. The ranking functions are defined so that they give the same answer for any two peer rows.  </p>
 
 <h2 id="syntax">Syntax</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   window_function (expression) 
-   OVER (
+<div class="highlight"><pre><code class="language-text" data-lang="text">   window_function (expression) OVER (
    [ PARTITION BY expr_list ]
    [ ORDER BY order_list ][ frame_clause ] )  
 </code></pre></div>
-<p>where function is one of the functions described, such as AVG() and <em>expr_list</em> is:  </p>
+<p>where function is one of the functions described, such as AVG(), and <em>expr_list</em> is:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   expression | column_name [, expr_list ]
 </code></pre></div>
 <p>and <em>order_list</em> is:  </p>
@@ -1127,13 +1130,13 @@ OVER() is a mandatory clause that defines a window within a query result set. OV
 PARTITION BY is an optional clause that subdivides the data into partitions. Including the partition clause divides the query result set into partitions, and the window function is applied to each partition separately. Computation restarts for each partition. If you do not include a partition clause, the function calculates on the entire table or file.  </p>
 
 <p>ORDER BY <em>order_list</em><br>
-The ORDER BY clause defines the logical order of the rows within each partition of the result set. If no PARTITION BY is specified, ORDER BY uses the entire table. ORDER BY is optional for the aggregation window functions, but required for the ranking functions. This ORDER BY clause does not relate to the ORDER BY clause that you use outside of the OVER clause.  </p>
+The ORDER BY clause defines the logical order of the rows within each partition of the result set. If no PARTITION BY is specified, ORDER BY uses the entire table. ORDER BY is optional for the aggregate window functions and required for the ranking functions. This ORDER BY clause does not relate to the ORDER BY clause used outside of the OVER clause.  </p>
 
 <p>The window function is applied to the rows within each partition sorted according to the order specification.  </p>
 
 <p>Column identifiers or expressions that evaluate to column identifiers are required in the order list. You can also use constants as substitutes for column names.  </p>
 
-<p>NULLS are treated as their own group, sorted and ranked last in ASC, and sorted and ranked first in DESC. ASC is the default sort order.  </p>
+<p>NULLS are treated as their own group, sorted and ranked last in ASC and sorted and ranked first in DESC. ASC is the default sort order.  </p>
 
 <p><em>column_name</em><br>
 The name of a column to be partitioned by or ordered by.  </p>
@@ -1148,7 +1151,7 @@ The frame_clause specifies the group of rows that create the window frame. Curre
 <div class="highlight"><pre><code class="language-text" data-lang="text">   RANGE UNBOUNDED PRECEDING
    RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW  
 </code></pre></div>
-<p>When OVER clause does not contain an ORDER BY clause, the following frames are equivalent to the default frame:  </p>
+<p>When the OVER clause does not contain an ORDER BY clause, the following frames are equivalent to the default frame:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
    ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING  
 </code></pre></div>

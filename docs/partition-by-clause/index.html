@@ -906,6 +906,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-9-0-release-notes/">Apache Drill 0.9.0 Release Notes</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-0-0-release-notes/">Apache Drill 1.0.0 Release Notes</a></li>
             
           
@@ -1007,7 +1011,7 @@
 <p>When the base table in the SELECT statement is schema-less, include columns in the PARTITION BY clause in the table&#39;s column list, or use a select all (SELECT *) statement:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE dest_name [ (column, . . .) ]
 [ PARTITION_BY (column, . . .) ] 
-AS SELECT &lt;column_list&gt; FROM &lt;source_name&gt;;
+AS SELECT column_list FROM &lt;source_name&gt;;
 </code></pre></div>
 <p>When columns in the source table have ambiguous names, such as COLUMNS[0], define one or more column aliases in the SELECT statement. Use the alias name or names in the CREATE TABLE list. List aliases in the same order as the corresponding columns in the SELECT statement. Matching order is important because Drill performs an overwrite operation.  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE dest_name (alias1, alias2, . . .) 
@@ -1017,7 +1021,7 @@ AS SELECT column1 alias1, column2 alias2, . . .;
 <p>For example:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE by_yr (yr, ngram, occurrances) PARTITION BY (yr) AS SELECT columns[1] yr, columns[0] ngram, columns[2] occurrances FROM `googlebooks-eng-all-5gram-20120701-zo.tsv`;
 </code></pre></div>
-<p>When the partition column is resolved to * column in a schema-less query, the * column cannot be a result of join operation. </p>
+<p>When the partition column is resolved to * column (due to a SELECT * query) in a schema-less query, the * column cannot be a result of join operation. </p>
 
 <p>The output of CTAS using a PARTITION BY clause creates separate files. Each file contains one partition value, and Drill can create multiple files for the same partition value.</p>
 

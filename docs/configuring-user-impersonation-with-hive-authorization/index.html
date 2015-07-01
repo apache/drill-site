@@ -906,6 +906,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-9-0-release-notes/">Apache Drill 0.9.0 Release Notes</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-0-0-release-notes/">Apache Drill 1.0.0 Release Notes</a></li>
             
           
@@ -1009,13 +1013,13 @@
 
 <h2 id="sql-standard-based-authorization">SQL Standard Based Authorization</h2>
 
-<p>You can configure Hive SQL standard based authorization in Hive version 1.0 to work with Drill impersonation. The SQL standard based authorization model can control which users have access to columns, rows, and views. Users with the appropriate permissions can issue the GRANT and REVOKE statements to manage privileges from Hive.</p>
+<p>You can configure Hive SQL standard based authorization in Hive version 1.0 to work with impersonation in Drill 1.1. The SQL standard based authorization model can control which users have access to columns, rows, and views. Users with the appropriate permissions can issue the GRANT and REVOKE statements to manage privileges from Hive.</p>
 
 <p>For more information, see <a href="https://cwiki.apache.org/confluence/display/HELIX/SQL+Standard+Based+Hive+Authorization">SQL Standard Based Hive Authorization</a>.  </p>
 
 <h2 id="configuration">Configuration</h2>
 
-<p>Once you determine which type of Hive authorization model that you want to use, enable impersonation in Drill. Update hive-site.xml with the relevant parameters for the type of authorization that you have decided to implement. Modify the Hive storage plugin instance in Drill with the relevant settings for the type of authorization.  </p>
+<p>Once you determine the Hive authorization model that you want to implement, enable impersonation in Drill. Update hive-site.xml with the relevant parameters for the authorization type. Modify the Hive storage plugin instance in Drill with the relevant settings for the authorization type.  </p>
 
 <h3 id="prerequisites">Prerequisites</h3>
 
@@ -1037,7 +1041,7 @@
          max_chained_user_hops: 3
   }
 </code></pre></div></li>
-<li><p>Verify that enabled is set to <code>‘true’</code>.</p></li>
+<li><p>Verify that enabled is set to <code>&quot;true&quot;</code>.</p></li>
 <li><p>Set the maximum number of chained user hops that you want Drill to allow.</p></li>
 <li><p>(MapR clusters only) Add the following lines to the <code>drill-env.sh</code> file:</p>
 
@@ -1067,48 +1071,31 @@
 
 <h3 id="storage-based-authorization">Storage Based Authorization</h3>
 
-<p>Add the required parameters to the hive-site.xml file to configure storage based authentication.  </p>
+<p>Add the following required authorization parameters in hive-site.xml to configure storage based authentication:  </p>
 
-<p>The following table lists the required authorization parameters and their descriptions:  </p>
+<p><strong>hive.metastore.pre.event.listeners</strong><br>
+<strong>Description:</strong> Turns on metastore-side security.<br>
+<strong>Value:</strong> org.apache.hadoop.hive.ql.security.authorization.AuthorizationPreEventListener  </p>
 
-<table><thead>
-<tr>
-<th>Property</th>
-<th>Value</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>hive.metastore.pre.event.listeners</td>
-<td>Set to: org.apache.hadoop.hive.ql.security.authorization.AuthorizationPreEventListener</td>
-<td>Turns on metastore-side security.</td>
-</tr>
-<tr>
-<td>hive.security.metastore.authorization.manager</td>
-<td>Set to: org.apache.hadoop.hive.ql.security.authorization.StorageBasedAuthorizationProvider</td>
-<td>Tells Hive which metastore-side authorization provider to use. The default setting uses DefaultHiveMetastoreAuthorizationProvider, which implements the standard Hive grant/revoke model. To use an HDFS permission-based model (recommended) to do your authorization, use StorageBasedAuthorizationProvider.</td>
-</tr>
-<tr>
-<td>hive.security.metastore.authenticator.manager</td>
-<td>Set to:org.apache.hadoop.hive.ql.security.HadoopDefaultMetastoreAuthenticator</td>
-<td>The authenticator manager class name in the metastore for authentication.</td>
-</tr>
-<tr>
-<td>hive.security.metastore.authorization.auth.reads</td>
-<td>Set to “true”.</td>
-<td>Tells Hive metastore authorization checks for read access.</td>
-</tr>
-<tr>
-<td>hive.metastore.execute.setugi</td>
-<td>Set to “true”.</td>
-<td>Causes the metastore to execute file system operations using the client&#39;s reported user and group permissions. You must set this property on both the client and server sides. If client sets it to true and server sets it to false, the client setting is ignored.</td>
-</tr>
-<tr>
-<td>hive.server2.enable.doAs</td>
-<td>Set to “true”.</td>
-<td>Tells HiveServer2 to execute Hive operations as the user making the calls.</td>
-</tr>
-</tbody></table>
+<p><strong>hive.security.metastore.authorization.manager</strong><br>
+<strong>Description:</strong> Tells Hive which metastore-side authorization provider to use. The default setting uses DefaultHiveMetastoreAuthorizationProvider, which implements the standard Hive grant/revoke model. To use an HDFS permission-based model (recommended) for authorization, use StorageBasedAuthorizationProvider.<br>
+<strong>Value:</strong> org.apache.hadoop.hive.ql.security.authorization.StorageBasedAuthorizationProvider  </p>
+
+<p><strong>hive.security.metastore.authenticator.manager</strong><br>
+<strong>Description:</strong> The authenticator manager class name in the metastore for authentication.<br>
+<strong>Value:</strong> org.apache.hadoop.hive.ql.security.HadoopDefaultMetastoreAuthenticator  </p>
+
+<p><strong>hive.security.metastore.authorization.auth.reads</strong><br>
+<strong>Description:</strong> Tells Hive metastore authorization checks for read access.<br>
+<strong>Value:</strong> true  </p>
+
+<p><strong>hive.metastore.execute.setugi</strong><br>
+<strong>Description:</strong> Causes the metastore to execute file system operations using the client&#39;s reported user and group permissions. You must set this property on both the client and server sides. If client sets it to true and server sets it to false, the client setting is ignored.
+<strong>Value:</strong> true </p>
+
+<p><strong>hive.server2.enable.doAs</strong><br>
+<strong>Description:</strong> Tells HiveServer2 to execute Hive operations as the user making the calls. 
+<strong>Value:</strong> true </p>
 
 <h3 id="example-hive-site.xml-settings-for-storage-based-authorization">Example hive-site.xml Settings for Storage Based Authorization</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   &lt;property&gt;
@@ -1143,48 +1130,31 @@
 </code></pre></div>
 <h2 id="sql-standard-based-authorization">SQL Standard Based Authorization</h2>
 
-<p>Add the required parameters to the hive-site.xml file to configure SQL standard based authorization.  </p>
+<p>Add the following required authorization parameters in hive-site.xml to configure SQL standard based authentication:  </p>
 
-<p>The following table lists the required authorization parameters and their descriptions:  </p>
+<p><strong>hive.security.authorization.enabled</strong><br>
+<strong>Description:</strong> Enables/disables Hive security authorization.<br>
+<strong>Value:</strong> true </p>
 
-<table><thead>
-<tr>
-<th>Property</th>
-<th>Value</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>hive.security.authorization.enabled</td>
-<td>Set to true.</td>
-<td>Enables/disables Hive security authorization.</td>
-</tr>
-<tr>
-<td>hive.security.authenticator.manager</td>
-<td>Set to:org.apache.hadoop.hive.ql.security.SessionStateUserAuthenticator</td>
-<td>Class that implements HiveAuthenticationProvider to provide the client’s username and groups.</td>
-</tr>
-<tr>
-<td>hive.security.authorization.manager</td>
-<td>Set to:org.apache.hadoop.hive.ql.security.authorization.plugin.sqlstd.SQLStdHiveAuthorizerFactory</td>
-<td>The Hive client authorization manager class name.</td>
-</tr>
-<tr>
-<td>hive.server2.enable.doAs</td>
-<td>Set to false.</td>
-<td>Tells HiveServer2 to execute Hive operations as the user making the calls.</td>
-</tr>
-<tr>
-<td>hive.users.in.admin.role</td>
-<td>Set to the list of comma-separated users who need to be added to the admin role.</td>
-<td>A comma separated list of users which gets added to the ADMIN role when the metastore starts up. You can add more uses at any time. Note that a user who belongs to the admin role needs to run the &quot;set role&quot; command before getting the privileges of the admin role, as this role is not in the current roles by default.</td>
-</tr>
-<tr>
-<td>hive.metastore.execute.setugi</td>
-<td>Set to false.</td>
-<td>Causes the metastore to execute file system operations using the client&#39;s reported user and group permissions. You must set this property on both the client and server sides. If client sets it to true and server sets it to false, the client setting is ignored.</td>
-</tr>
-</tbody></table>
+<p><strong>hive.security.authenticator.manager</strong><br>
+<strong>Description:</strong> Class that implements HiveAuthenticationProvider to provide the client’s username and groups.<br>
+<strong>Value:</strong> Set to:org.apache.hadoop.hive.ql.security.SessionStateUserAuthenticator  </p>
+
+<p><strong>hive.security.authorization.manager</strong><br>
+<strong>Description:</strong> The Hive client authorization manager class name.<br>
+<strong>Value:</strong> org.apache.hadoop.hive.ql.security.authorization.plugin.sqlstd.SQLStdHiveAuthorizerFactory  </p>
+
+<p><strong>hive.server2.enable.doAs</strong><br>
+<strong>Description:</strong> Tells HiveServer2 to execute Hive operations as the user making the calls.<br>
+<strong>Value:</strong> false  </p>
+
+<p><strong>hive.users.in.admin.role</strong><br>
+<strong>Description:</strong> A comma separated list of users which gets added to the ADMIN role when the metastore starts up. You can add more uses at any time. Note that a user who belongs to the admin role needs to run the &quot;set role&quot; command before getting the privileges of the admin role, as this role is not in the current roles by default.<br>
+<strong>Value:</strong> Set to the list of comma-separated users who need to be added to the admin role. </p>
+
+<p><strong>hive.metastore.execute.setugi</strong><br>
+<strong>Description:</strong> Causes the metastore to execute file system operations using the client&#39;s reported user and group permissions. You must set this property on both the client and server side. If the client is set to true and the server is set to false, the client setting is ignored.<br>
+<strong>Value:</strong> false </p>
 
 <h3 id="example-hive-site.xml-settings-for-sql-standard-based-authorization">Example hive-site.xml Settings for SQL Standard Based Authorization</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   &lt;property&gt;
@@ -1226,8 +1196,8 @@
 <p>Complete the following steps to modify the Hive storage plugin:  </p>
 
 <ol>
-<li> Navigate to http://<drillbit_hostname>:8047, and select the Storage tab.<br></li>
-<li> Click Update next to the hive instance.<br></li>
+<li> Navigate to <code>http://&lt;drillbit_hostname&gt;:8047</code>, and select the <strong>Storage tab</strong>.<br></li>
+<li> Click <strong>Update</strong> next to the hive instance.<br></li>
 <li><p>In the configuration window, add the configuration settings for the authorization type.  </p>
 
 <ul>
@@ -1247,6 +1217,7 @@
 </ul></li>
 </ol>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   * For SQL standard based authorization, add the following settings:  
+
 
           {
            type:&quot;hive&quot;,
