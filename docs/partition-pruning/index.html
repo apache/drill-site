@@ -286,6 +286,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+            
+          
+            
               <li class="toctree-l2"><a href="javascript: void(0);">Configuration Options</a></li>
               <ul style="display: none">
               
@@ -423,8 +427,6 @@
                 <li class="toctree-l3"><a class="reference internal" href="/docs/tableau-examples/">Tableau Examples</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-microstrategy-analytics-with-apache-drill/">Using MicroStrategy Analytics with Apache Drill</a></li>
-              
-                <li class="toctree-l3"><a class="reference internal" href="/docs/using-tibco-spotfire-desktop-with-drill/">Using Tibco Spotfire Desktop with Drill</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-tibco-spotfire-desktop-with-drill/">Using Tibco Spotfire Desktop with Drill</a></li>
               
@@ -644,6 +646,21 @@
                 <li class="toctree-l3"><a class="reference internal" href="/docs/aggregate-and-aggregate-statistical/">Aggregate and Aggregate Statistical</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/functions-for-handling-nulls/">Functions for Handling Nulls</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Window Functions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-window-functions-introduction/">SQL Window Functions Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/aggregate-window-functions/">Aggregate Window Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/ranking-window-functions/">Ranking Window Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-window-functions-examples/">SQL Window Functions Examples</a></li>
               
             </ul>
             
@@ -986,13 +1003,15 @@
 
 <h2 id="automatic-partitioning">Automatic Partitioning</h2>
 
-<p>Automatic partitioning in Drill 1.1.0 and later occurs when you write Parquet date using the <a href="/docs/partition-by-clause/">PARTITION BY</a> clause in the CTAS statement.</p>
+<p>Automatic partitioning in Drill 1.1 and later occurs when you write Parquet data using the <a href="/docs/partition-by-clause/">PARTITION BY</a> clause in the CTAS statement. Unlike manual partitioning, no view is required, nor is it necessary to use the <a href="/docs/querying-directories">dir* variables</a>. The Parquet writer first sorts by the partition keys, and then creates a new file when it encounters a new value for the partition columns.</p>
 
 <p>Automatic partitioning creates separate files, but not separate directories, for different partitions. Each file contains exactly one partition value, but there can be multiple files for the same partition value.</p>
 
-<p>Partition pruning uses the Parquet column statistics to determine which columns to use to prune.</p>
+<p>Partition pruning uses the Parquet column statistics to determine which columns to use to prune. </p>
 
 <h2 id="manual-partitioning">Manual Partitioning</h2>
+
+<p>Manual partitioning is directory-based. You perform the following steps to manually partition data.   </p>
 
 <ol>
 <li>Devise a logical way to store the data in a hierarchy of directories. </li>
@@ -1000,9 +1019,9 @@
 <li>Move the files into directories in the hierarchy. </li>
 </ol>
 
-<p>After partitioning the data, create and query views on the data.</p>
+<p>After partitioning the data, you need to create a view of the partitioned data to query the data. You can use the <a href="/docs/querying-directories">dir* variables</a> in queries to refer to subdirectories in your workspace path.</p>
 
-<h3 id="manual-partitioning">Manual Partitioning</h3>
+<h3 id="manual-partitioning-example">Manual Partitioning Example</h3>
 
 <p>Suppose you have text files containing several years of log data. To partition the data by year and quarter, create the following hierarchy of directories:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   …/logs/1994/Q1  

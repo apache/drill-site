@@ -286,6 +286,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+            
+          
+            
               <li class="toctree-l2"><a href="javascript: void(0);">Configuration Options</a></li>
               <ul style="display: none">
               
@@ -423,8 +427,6 @@
                 <li class="toctree-l3"><a class="reference internal" href="/docs/tableau-examples/">Tableau Examples</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-microstrategy-analytics-with-apache-drill/">Using MicroStrategy Analytics with Apache Drill</a></li>
-              
-                <li class="toctree-l3"><a class="reference internal" href="/docs/using-tibco-spotfire-desktop-with-drill/">Using Tibco Spotfire Desktop with Drill</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-tibco-spotfire-desktop-with-drill/">Using Tibco Spotfire Desktop with Drill</a></li>
               
@@ -644,6 +646,21 @@
                 <li class="toctree-l3"><a class="reference internal" href="/docs/aggregate-and-aggregate-statistical/">Aggregate and Aggregate Statistical</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/functions-for-handling-nulls/">Functions for Handling Nulls</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Window Functions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-window-functions-introduction/">SQL Window Functions Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/aggregate-window-functions/">Aggregate Window Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/ranking-window-functions/">Ranking Window Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-window-functions-examples/">SQL Window Functions Examples</a></li>
               
             </ul>
             
@@ -978,11 +995,13 @@
 
     <div class="int_text" align="left">
       
-        <p>You can take advantage of automatic partitioning in Drill 1.1 by using the PARTITION BY clause in the CTAS command.</p>
+        <p>The PARTITION BY clause in the CTAS command automatically partitions data, which Drill <a href="/docs/partition-pruning/">prunes</a> to improve performance when you query the data. (Drill 1.1.0)</p>
 
 <h2 id="syntax">Syntax</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">[ PARTITION_BY ( column_name[, . . .] ) ] 
+<div class="highlight"><pre><code class="language-text" data-lang="text"> [ PARTITION_BY ( column_name[, . . .] ) ]
 </code></pre></div>
+<p>The PARTITION BY clause partitions the data by the first column_name, and then subpartitions the data by the next column_name, if there is one, and so on. </p>
+
 <p>Only the Parquet storage format is supported for automatic partitioning. Before using CTAS, <a href="/docs/create-table-as-ctas/#setting-the-storage-format">set the <code>store.format</code> option</a> for the table to Parquet.</p>
 
 <p>When the base table in the SELECT statement is schema-less, include columns in the PARTITION BY clause in the table&#39;s column list, or use a select all (SELECT *) statement:  </p>
@@ -1020,8 +1039,27 @@ use the data to find the relative frequencies of Ngrams.</p>
 
 <p>For example, lines 1722089 and 1722090 in the file contain this data:</p>
 
-<table ><tbody><tr><th >ngram</th><th >year</th><th colspan="1" >match_count</th><th >volume_count</th></tr><tr><td ><p class="p1">Zoological Journal of the Linnean</p></td><td >2007</td><td colspan="1" >284</td><td >101</td></tr><tr><td colspan="1" ><p class="p1">Zoological Journal of the Linnean</p></td><td colspan="1" >2008</td><td colspan="1" >257</td><td colspan="1" >87</td></tr></tbody></table> 
-  
+<table><thead>
+<tr>
+<th>ngram</th>
+<th>year</th>
+<th>match_count</th>
+<th>volume_count</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Zoological Journal of the Linnean</td>
+<td>2007</td>
+<td>284</td>
+<td>101</td>
+</tr>
+<tr>
+<td>Zoological Journal of the Linnean</td>
+<td>2008</td>
+<td>257</td>
+<td>87</td>
+</tr>
+</tbody></table>
 
 <p>In 2007, &quot;Zoological Journal of the Linnean&quot; occurred 284 times overall in 101
 distinct books of the Google sample.</p>
@@ -1046,7 +1084,7 @@ Distributed mode: Move the unzipped file to HDFS and add a <code>.tsv</code> ext
 Distributed mode: This example assumes that the default <code>dfs</code> either works with your distributed file system out-of-the-box, or that you have adapted the storage plugin to your environment.<br>
 <code>USE dfs.tmp</code>;  </p></li>
 <li><p>Set the <code>store.format</code> property to the default parquet if you changed the default.
-<code>ALTER SESSION SET</code>store.format<code>= &#39;parquet&#39;;</code>  </p></li>
+<code>ALTER SESSION SET `store.format` = &#39;parquet&#39;;</code>  </p></li>
 <li><p>Partition Google Ngram data by year in a directory named <code>by_yr</code>.<br>
 Embedded mode:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE by_yr (yr, ngram, occurrances) PARTITION BY (yr) AS SELECT columns[1] yr, columns[0] ngram, columns[2] occurrances FROM `googlebooks-eng-all-5gram-20120701-zo.tsv` LIMIT 100;
@@ -1077,8 +1115,8 @@ Embedded mode:  </p>
 0_0_12.parquet  0_0_30.parquet  0_0_49.parquet  0_0_67.parquet
 . . .  
 </code></pre></div></li>
-<li><p>Query the <code>by_yr</code> directory to check the data partitioning.<br>
-<code>SELECT * FROM by_yr LIMIT 100</code>;<br>
+<li><p>Query the <code>by_yr</code> directory to check to see how the data appears.<br>
+<code>SELECT * FROM by_yr LIMIT 100;</code><br>
 The output looks something like this:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">+-------+------------------------------------------------------------+--------------+
 |  yr   |                           ngram                            | occurrances  |
@@ -1087,17 +1125,40 @@ The output looks something like this:</p>
 | 1737  | Zones_NOUN of_ADP the_DET Earth_NOUN ,_.                   | 2            |
 . . .
 | 1737  | Zobah , David slew of                                      | 1            |
-| 1966  | zones_NOUN of_ADP the_DET medulla_NOUN ._.                 | 3            |
-| 1966  | zone_NOUN is_VERB more_ADV or_CONJ less_ADJ                | 1            |
-. . .
-+-------+------------------------+-------------+
-|  yr   |         ngram          | occurrances |
-+-------+------------------------+-------------+
 | 1966  | zone by virtue of the  | 1           |
 +-------+------------------------+-------------+
 100 rows selected (2.184 seconds)
 </code></pre></div>
 <p>Files are partitioned by year. The output is not expected to be in perfect sorted order because Drill reads files sequentially. </p></li>
+<li><p>Distributed mode: Query the data to find all ngrams in 1993.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM by_yr WHERE yr=1993;
++-------+-------------------------------------------------------------+--------------+
+|  yr   |                            ngram                            | occurrances  |
++-------+-------------------------------------------------------------+--------------+
+| 1993  | zoom out , click the                                        | 1            |
+| 1993  | zones on earth . _END_                                          | 4           |
+. . .
+| 1993  | zoology at Oxford University ,                                  | 5           |
+| 1993  | zones_NOUN ,_. based_VERB mainly_ADV on_ADP  | 2           |
++-------+----------------------------------------------+-------------+
+31,100 rows selected (5.45 seconds)
+</code></pre></div>
+<p>Drill performs partition pruning when you query partitioned data, which improves performance.</p></li>
+<li><p>Distributed mode: Query the unpartitioned data to compare the performance of the query of the partitioned data in the last step.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM `/googlebooks-eng-all-5gram-20120701-zo.tsv` WHERE (columns[1] = &#39;1993&#39;);
+
+SELECT * FROM `googlebooks-eng-all-5gram-20120701-zo.tsv` WHERE (columns[1] = &#39;1993&#39;);
++--------------------------------------------------------------------------------+
+|                                    columns                                     |
++--------------------------------------------------------------------------------+
+| [&quot;Zone , the government of&quot;,&quot;1993&quot;,&quot;1&quot;,&quot;1&quot;]                                    |
+| [&quot;Zone : Fragments for a&quot;,&quot;1993&quot;,&quot;7&quot;,&quot;7&quot;]                                      |
+. . .
+| [&quot;zooxanthellae_NOUN and_CONJ the_DET evolution_NOUN of_ADP&quot;,&quot;1993&quot;,&quot;4&quot;,&quot;3&quot;]  |
++-------------------------------------------------------------------------------+
+31,100 rows selected (8.389 seconds)
+</code></pre></div>
+<p>The larger the data set you query, the greater the performance benefit from partition pruning. </p></li>
 </ol>
 
 <h2 id="other-examples">Other Examples</h2>
