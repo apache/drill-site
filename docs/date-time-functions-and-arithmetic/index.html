@@ -785,6 +785,10 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/text-files-csv-tsv-psv/">Text Files: CSV, TSV, PSV</a></li>
+            
+          
           </ul>
         
       
@@ -1056,6 +1060,10 @@
 <tr>
 <td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">TIMEOFDAY</a></td>
 <td>VARCHAR</td>
+</tr>
+<tr>
+<td><a href="/docs/date-time-functions-and-arithmetic/#unix_timestamp">UNIX_TIMESTAMP</a></td>
+<td>BIGINT</td>
 </tr>
 </tbody></table>
 
@@ -1532,6 +1540,55 @@ SELECT NOW() FROM sys.version;
 +------------+
 1 row selected (0.033 seconds)
 </code></pre></div>
+<h2 id="unix_timestamp">UNIX_TIMESTAMP</h2>
+
+<p>Returns UNIX Epoch time, which is the number of seconds elapsed since January 1, 1970.</p>
+
+<p>### UNIX_TIMESTAMP Syntax</p>
+
+<p>UNIX_TIMESTAMP()
+UNIX_TIMESTAMP(string date)
+UNIX_TIMESTAMP(string date, string pattern)</p>
+
+<p>These functions perform the following operations, respectively:</p>
+
+<ul>
+<li>Gets current Unix timestamp in seconds if given no arguments. </li>
+<li>Converts the time string in format yyyy-MM-dd HH:mm:ss to a Unix timestamp in seconds using the default timezone and locale.</li>
+<li>Converts the time string with the given pattern to a Unix time stamp in seconds.</li>
+</ul>
+
+<p>SELECT UNIX_TIMESTAMP() FROM sys.version;
++-------------+
+|   EXPR$0    |
++-------------+
+| 1435711031  |
++-------------+
+1 row selected (0.749 seconds)</p>
+
+<p>SELECT UNIX_TIMESTAMP()(&#39;2009-03-20 11:15:55&#39;) from sys.version;
++-------------+
+|   EXPR$0    |
++-------------+
+| 1237572955  |
++-------------+
+1 row selected (1.848 seconds)</p>
+
+<p>SELECT UNIX_TIMESTAMP()(&#39;2009-03-20&#39;, &#39;yyyy-MM-dd&#39;) from sys.version;
++-------------+
+|   EXPR$0    |
++-------------+
+| 1237532400  |
++-------------+
+1 row selected (0.181 seconds)</p>
+
+<p>SELECT UNIX_TIMESTAMP()(&#39;2015-05-29 08:18:53.0&#39;, &#39;yyyy-MM-dd HH:mm:ss.SSS&#39;) from sys.version;
++-------------+
+|   EXPR$0    |
++-------------+
+| 1432912733  |
++-------------+</p>
+
     
       
         <div class="doc-nav">

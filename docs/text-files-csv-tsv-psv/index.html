@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Using Apache Drill with Tableau 9 Desktop - Apache Drill</title>
+<title>Text Files: CSV, TSV, PSV - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -358,8 +358,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">ODBC/JDBC Interfaces</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">ODBC/JDBC Interfaces</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/interfaces-introduction/">Interfaces Introduction</a></li>
@@ -420,7 +420,7 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">Using Drill with BI Tools</a></li>
-              <ul style="">
+              <ul style="display: none">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-drill-with-bi-tools-introduction/">Using Drill with BI Tools Introduction</a></li>
               
@@ -432,7 +432,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-tibco-spotfire-server-with-drill/">Configuring Tibco Spotfire Server with Drill</a></li>
               
-                <li class="toctree-l3 current"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-desktop/">Using Apache Drill with Tableau 9 Desktop</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-desktop/">Using Apache Drill with Tableau 9 Desktop</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
               
@@ -762,8 +762,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Data Sources and File Formats</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Data Sources and File Formats</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/data-sources-and-file-formats-introduction/">Data Sources and File Formats Introduction</a></li>
@@ -786,7 +786,7 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/text-files-csv-tsv-psv/">Text Files: CSV, TSV, PSV</a></li>
+              <li class="toctree-l2 current"><a class="reference internal" href="/docs/text-files-csv-tsv-psv/">Text Files: CSV, TSV, PSV</a></li>
             
           
           </ul>
@@ -980,22 +980,20 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces</a></li>
+    <li><a href="/docs/data-sources-and-file-formats/">Data Sources and File Formats</a></li>
   
-    <li><a href="/docs/using-drill-with-bi-tools/">Using Drill with BI Tools</a></li>
-  
-  <li>Using Apache Drill with Tableau 9 Desktop</li>
+  <li>Text Files: CSV, TSV, PSV</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/odbc-jdbc-interfaces/using-drill-with-bi-tools/060-using-apache-drill-with-tableau-9-desktop.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/data-sources-and-file-formats/060-text-files-csv-tsv-psv.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>Using Apache Drill with Tableau 9 Desktop</h1>
+      <h1>Text Files: CSV, TSV, PSV</h1>
 
     </div>
 
@@ -1003,98 +1001,98 @@
 
     <div class="int_text" align="left">
       
-        <p>This document describes how to connect Tableau 9 Desktop to Apache Drill and explore multiple data formats instantly on Hadoop. Use the combined power of these tools to get direct access to semi-structured data, without having to rely on IT teams for schema creation.</p>
+        <p>The section <a href="/docs/plugin-configuration-basics">&quot;Plugin Configuration Basics&quot;</a> covers attributes that you configure for use with a CSV, TSV, PSV (comma-, tab-, pipe-separated) values text file. This section presents examples of how to use those attributes and <a href="/docs/text-files-csv-tsv-psv/#tips-for-performant-querying">tips for performant querying</a> of these text files. </p>
 
-<p>To use Apache Drill with Tableau 9 Desktop, complete the following steps: </p>
+<h2 id="managing-headers-in-text-files">Managing Headers in Text Files</h2>
 
-<ol>
-<li>Install the Drill ODBC driver from MapR.</li>
-<li>Install the Tableau Data-connection Customization (TDC) file.</li>
-<li>Connect Tableau to Drill Using ODBC.</li>
-<li>Query and analyze various data formats with Tableau and Drill.</li>
-</ol>
+<p>In the storage plugin configuration, you set attributes on the text reader format configuration. This section presents examples of using the following attributes defined in <a href="/docs/plugin-configuration-basics/#list-of-attributes-and-definitions">&quot;List of Attributes and Definitions&quot;</a>:</p>
 
-<hr>
+<ul>
+<li>String lineDelimiter = &quot;\n&quot;;<br>
+One or more characters used to denote a new record. Allows reading files with windows line endings.<br></li>
+<li>char fieldDelimiter = &#39;,&#39;;<br>
+A single character used to separate each value.<br></li>
+<li>char quote = &#39;&quot;&#39;;<br>
+A single character used to start/end a quoted value.<br></li>
+<li>char escape = &#39;&quot;&#39;;<br>
+A single character used to escape a quote inside of a value.<br></li>
+<li>char comment = &#39;#&#39;;<br>
+A single character used to denote a comment line.<br></li>
+<li>boolean skipFirstLine = false;<br>
+Set to true to avoid reading headers as data.<br></li>
+</ul>
 
-<h3 id="step-1:-install-and-configure-the-mapr-drill-odbc-driver">Step 1: Install and Configure the MapR Drill ODBC Driver</h3>
+<p>You can deal with a mix of text files with and without headers either by creating two separate format plugins or by creating two format plugins within the same storage plugin. The former approach is typically easier than the latter.</p>
 
-<p>Drill uses standard ODBC connectivity to provide easy data-exploration capabilities on complex, schema-less data sets. For the best experience use the latest release of Apache Drill. For Tableau 9.0 Desktop, Drill Version 0.9 or higher is recommended.</p>
+<h3 id="creating-two-separate-format-plugins">Creating Two Separate Format Plugins</h3>
 
-<p>Complete the following steps to install and configure the driver:</p>
+<p>Format plugins are associated with a particular storage plugin. Storage plugins define a root directory that Drill targets when using the storage plugin. You can define separate storage plugins for different root directories, and define each of the format attributes to match the files stored below that directory. All files can use the .csv extension.</p>
 
-<ol>
-<li>Download the 64-bit MapR Drill ODBC Driver for Windows from the following location:<br> <a href="http://package.mapr.com/tools/MapR-ODBC/MapR_Drill/">http://package.mapr.com/tools/MapR-ODBC/MapR_Drill/</a><br>
-<strong>Note:</strong> Tableau 9.0 Desktop 64 bit can use either the 32-bit driver or the 64-bit driver.</li>
-<li><a href="/docs/installing-the-driver-on-windows/">Install the ODBC driver on Windows</a>.</li>
-<li><a href="/docs/configuring-odbc-on-windows/">Configure the driver</a>.</li>
-<li>If Drill authentication is enabled, select <strong>Basic Authentication</strong> as the authentication type. Enter a valid user and password. <img src="/docs/img/tableau-odbc-setup.png" alt="drill query flow"></li>
-</ol>
+<p>For example:</p>
 
-<p>Note: If you select <strong>ZooKeeper Quorum</strong> as the ODBC connection type, the client system must be able to resolve the hostnames of the ZooKeeper nodes. The simplest way is to add the hostnames and IP addresses for the ZooKeeper nodes to the <code>%WINDIR%\system32\drivers\etc\hosts</code> file. <img src="/docs/img/tableau-odbc-setup-2.png" alt="drill query flow"></p>
+<p>Storage Plugin A</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;csv&quot;: {
+  &quot;type&quot;: &quot;text&quot;,
+  &quot;extensions&quot;: [
+    &quot;csv&quot;
+  ],
+  &quot;delimiter&quot;: &quot;,&quot;
+},
+. . .
+</code></pre></div>
+<p>Storage Plugin B</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;csv&quot;: {
+  &quot;type&quot;: &quot;text&quot;,
+  &quot;extensions&quot;: [
+    &quot;csv&quot;
+  ],
+  &quot;comment&quot;: &quot;&amp;&quot;,
+  &quot;skipFirstLine&quot;: true,
+  &quot;delimiter&quot;: &quot;,&quot;
+},
+</code></pre></div>
+<h3 id="creating-two-format-plugins-within-the-same-storage-plugin">Creating Two Format Plugins within the Same Storage Plugin</h3>
 
-<p>Also make sure to test the ODBC connection to Drill before using it with Tableau.</p>
+<p>Give a different extension to files with a header and to files without a header, and use a storage plugin that looks something like the following example. This method requires renaming some files to use the csv2 extension.</p>
 
-<hr>
+<p>For example:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;csv&quot;: {
+  &quot;type&quot;: &quot;text&quot;,
+  &quot;extensions&quot;: [
+    &quot;csv&quot;
+  ],
+  &quot;delimiter&quot;: &quot;,&quot;
+},
+&quot;csv_with_header&quot;: {
+  &quot;type&quot;: &quot;text&quot;,
+  &quot;extensions&quot;: [
+    &quot;csv2&quot;
+  ],
+  &quot;comment&quot;: &quot;&amp;&quot;,
+  &quot;skipFirstLine&quot;: true,
+  &quot;delimiter&quot;: &quot;,&quot;
+},
+</code></pre></div>
+<h2 id="tips-for-performant-querying">Tips for Performant Querying</h2>
 
-<h3 id="step-2:-install-the-tableau-data-connection-customization-(tdc)-file">Step 2: Install the Tableau Data-connection Customization (TDC) File</h3>
+<p>Converting these files to another format, such as Parquet, using the CTAS command and a SELECT * statement is not recommended. Drill reads CSV, TSV, and PSV files into a list of
+VARCHARS, rather than individual columns. While parquet supports lists and
+Drill reads them, the read path for complex data is not yet optimized. Select data from particular columns using the <a href="/docs/querying-plain-text-files">COLUMN[n] syntax</a>, and then assign meaningful column
+names using aliases. For example:</p>
 
-<p>The MapR Drill ODBC Driver includes a file named <code>MapRDrillODBC.TDC</code>. The TDC file includes customizations that improve ODBC configuration and performance when using Tableau. The MapR Drill ODBC Driver installer automatically installs the TDC file if the installer can find the Tableau installation. If you installed the MapR Drill ODBC Driver first and then installed Tableau, the TDC file is not installed automatically, and you need to <a href="/docs/installing-the-tdc-file-on-windows/">install the TDC file manually</a>. </p>
+<p>CREATE TABLE parquet_users AS SELECT CAST(COLUMNS[0] AS INT) AS user_id,
+COLUMNS[1] AS username, CAST(COLUMNS[2] AS TIMESTAMP) AS registration_date
+FROM <code>users.csv1</code>;</p>
 
-<hr>
+<p>Cast the VARCHAR data to INT, FLOAT, DATETIME, and so on. You get better performance reading fixed-width than reading VARCHAR data. </p>
 
-<h3 id="step-3:-connect-tableau-to-drill-via-odbc">Step 3: Connect Tableau to Drill via ODBC</h3>
-
-<p>Complete the following steps to configure an ODBC data connection: </p>
-
-<p>To connect Tableau to Drill use the following steps:</p>
-
-<ol>
-<li> In a Tableau Workbook click <strong>Data &gt; New Data Source</strong>.<img src="/docs/img/new-data-source.png" alt="drill query flow"></li>
-<li> In the <strong>Connect</strong> list, select <strong>Other Databases (ODBC)</strong>. <img src="/docs/img/connect-list.png" alt="drill query flow"></li>
-<li> On the Server Connection window, select the DSN configured in Step 1 from the drop-down list of ODBC data sources. Then click <strong>Connect</strong>. Note: You will be prompted to enter a username and password; these entries will be passed to the Server Connection window. 
-<img src="/docs/img/other-dbs.png" alt="drill query flow"> <img src="/docs/img/other-dbs-2.png" alt="drill query flow">
-Tableau is now connected to Drill, and you can select various tables and views. <img src="/docs/img/tableau-schemas.png" alt="drill query flow"></li>
-<li> Click the <strong>Schema</strong> drop-down list and choose a schema by clicking the search icon: all available Drill schemas will be displayed. When you have selected the schema, click the search icon in the Table dialog box: all available tables or views will be displayed. </li>
-</ol>
-
-<p>You can select tables and views to build a Tableau Visualization. You can also use custom SQL by clicking the <strong>New Custom SQL</strong> option. </p>
-
-<p>Tableau can natively work with Hive tables and Drill views. For Drill data sources, including directly accessible  file systems or HBase/MapR-DB tables, you can either use the Custom SQL option, or you can create a view in Drill to easily represent the complex data to Tableau. For more information, see the following links:
-<a href="http://drill.apache.org/docs/step-3-connect-to-drill-data-sources-from-a-bi-tool/">http://drill.apache.org/docs/step-3-connect-to-drill-data-sources-from-a-bi-tool/</a>
-<a href="http://drill.apache.org/docs/tableau-examples/">http://drill.apache.org/docs/tableau-examples/</a></p>
-
-<p>Note: If Drill authentication and impersonation is enabled, only the views that the user has access to will be displayed in the Table dialog box. Also, if custom SQL is being used to try and access data sources that the user does not have access to, an error message will be displayed. <img src="/docs/img/tableau-error.png" alt="drill query flow"></p>
-
-<hr>
-
-<h3 id="step-4:-query-and-analyze-the-data">Step 4: Query and Analyze the Data</h3>
-
-<p>Tableau Desktop can now use Drill to query various data sources and visualize the information.</p>
-
-<p>Assume that a retailer has weblog data stored as JSON files in a nested directory structure and product information stored in a Hive table. Using Drill and Tableau, users would like to understand the volume of product sold by state and product category.</p>
-
-<ol>
-<li><p>Using the New Custom SQL function in Tableau, write a Drill query to read the JSON files without the need for ETL. Casting data types is recommended when you are working directly with files. 
-For example: <img src="/docs/img/edit-custom-sql.png" alt="drill query flow"></p></li>
-<li><p>Next select the Hive products table: <img src="/docs/img/custom-sql-query.png" alt="drill query flow"></p></li>
-<li><p>Verify that Tableau is joining the two data sources (JSON files and Hive table) on the prod_id key:<img src="/docs/img/tableau-join-key.png" alt="drill query flow">
-The data sources are now configured and ready to be used in the visualization.</p></li>
-<li><p>Drag State from the Custom SQL (JSON files) to <strong>Columns</strong>, and drag Category from the Hive products table to <strong>Rows</strong>. </p></li>
-<li><p>Create a calculated field called <code>Total Number of Products</code> and enter <code>count(prod_id)</code> for the <code>prod_id</code> field from the weblog files (Custom SQL), then drag it to <strong>Rows</strong> next to Category. The visualization will now show the total products by category and state. </p></li>
-<li><p>To filter out weblog data where products were not bought, drag the <code>purch_flag</code> field from the weblog files to <strong>Filters</strong>. Select only data where the <code>purch_flag</code> was true.</p></li>
-<li><p>Finally, order the data from the state with the most products sold to the one with the least.</p></li>
-<li><p>Add a grand total row by clicking <strong>Analysis &gt; Totals &gt; Show Column Grand Totals</strong>. <img src="/docs/img/tableau-desktop-query.png" alt="drill query flow"></p></li>
-</ol>
-
-<hr>
-
-<p>In this quick tutorial, you saw how you can configure Tableau Desktop 9.0 to work with Apache Drill. </p>
+<p>Using a distributed file system, such as HDFS, instead of a local file system to query the files also improves performance because currently Drill does not split files on block splits.</p>
 
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/configuring-tibco-spotfire-server-with-drill/">← Configuring Tibco Spotfire Server with Drill</a></span><span class="next-toc"><a href="/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server →</a></span>
+  <span class="previous-toc"><a href="/docs/json-data-model/">← JSON Data Model</a></span><span class="next-toc"><a href="/docs/develop-custom-functions/">Develop Custom Functions →</a></span>
 </div>
 
     
