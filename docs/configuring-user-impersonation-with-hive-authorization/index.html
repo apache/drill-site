@@ -1090,11 +1090,11 @@
 <strong>Value:</strong> true  </p>
 
 <p><strong>hive.metastore.execute.setugi</strong><br>
-<strong>Description:</strong> Causes the metastore to execute file system operations using the client&#39;s reported user and group permissions. You must set this property on both the client and server sides. If client sets it to true and server sets it to false, the client setting is ignored.
+<strong>Description:</strong> Causes the metastore to execute file system operations using the client&#39;s reported user and group permissions. You must set this property on both the client and server sides. If client sets it to true and server sets it to false, the client setting is ignored.<br>
 <strong>Value:</strong> true </p>
 
 <p><strong>hive.server2.enable.doAs</strong><br>
-<strong>Description:</strong> Tells HiveServer2 to execute Hive operations as the user making the calls. 
+<strong>Description:</strong> Tells HiveServer2 to execute Hive operations as the user making the calls.<br>
 <strong>Value:</strong> true </p>
 
 <h3 id="example-hive-site.xml-settings-for-storage-based-authorization">Example hive-site.xml Settings for Storage Based Authorization</h3>
@@ -1138,7 +1138,7 @@
 
 <p><strong>hive.security.authenticator.manager</strong><br>
 <strong>Description:</strong> Class that implements HiveAuthenticationProvider to provide the client’s username and groups.<br>
-<strong>Value:</strong> Set to:org.apache.hadoop.hive.ql.security.SessionStateUserAuthenticator  </p>
+<strong>Value:</strong> org.apache.hadoop.hive.ql.security.SessionStateUserAuthenticator  </p>
 
 <p><strong>hive.security.authorization.manager</strong><br>
 <strong>Description:</strong> The Hive client authorization manager class name.<br>
@@ -1214,35 +1214,34 @@
    }
   }  
 </code></pre></div></li>
+<li><p>For SQL standard based authorization, add the following settings:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">  {
+   type:&quot;hive&quot;,
+   enabled: true,
+   configProps : {
+     &quot;hive.metastore.uris&quot;
+  : &quot;thrift://&lt;metastore_host&gt;:&lt;port&gt;&quot;,
+     &quot;fs.default.name&quot;
+  : &quot;hdfs://&lt;host&gt;:&lt;port&gt;/&quot;,
+     &quot;hive.security.authorization.enabled&quot;
+  : &quot;true&quot;,
+     &quot;hive.security.authenticator.manager&quot;
+  : &quot;org.apache.hadoop.hive.ql.security.SessionStateUserAuthenticator&quot;,
+     &quot;hive.security.authorization.manager&quot;
+  :
+  &quot;org.apache.hadoop.hive.ql.security.authorization.plugin.sqlstd.SQLStdHiveAuthorizerFactory&quot;,
+     &quot;hive.metastore.sasl.enabled&quot;
+  : &quot;false&quot;,
+     &quot;hive.server2.enable.doAs&quot;
+  : &quot;false&quot;,
+     &quot;hive.metastore.execute.setugi&quot;
+  : &quot;false&quot;
+   }
+  }
+</code></pre></div></li>
 </ul></li>
 </ol>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   * For SQL standard based authorization, add the following settings:  
 
-
-          {
-           type:&quot;hive&quot;,
-           enabled: true,
-           configProps : {
-             &quot;hive.metastore.uris&quot;
-          : &quot;thrift://&lt;metastore_host&gt;:&lt;port&gt;&quot;,
-             &quot;fs.default.name&quot;
-          : &quot;hdfs://&lt;host&gt;:&lt;port&gt;/&quot;,
-             &quot;hive.security.authorization.enabled&quot;
-          : &quot;true&quot;,
-             &quot;hive.security.authenticator.manager&quot;
-          : &quot;org.apache.hadoop.hive.ql.security.SessionStateUserAuthenticator&quot;,
-             &quot;hive.security.authorization.manager&quot;
-          :
-          &quot;org.apache.hadoop.hive.ql.security.authorization.plugin.sqlstd.SQLStdHiveAuthorizerFactory&quot;,
-             &quot;hive.metastore.sasl.enabled&quot;
-          : &quot;false&quot;,
-             &quot;hive.server2.enable.doAs&quot;
-          : &quot;false&quot;,
-             &quot;hive.metastore.execute.setugi&quot;
-          : &quot;false&quot;
-           }
-          }
-</code></pre></div>
     
       
         <div class="doc-nav">
