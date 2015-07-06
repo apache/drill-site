@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Apache Drill Q&A Panelist Spotlight - Apache Drill</title>
+<title>Drill 1.1 Released - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -117,65 +117,84 @@
 <div class="post int_text">
   <header class="post-header">
     <div class="int_title">
-      <h1 class="post-title">Apache Drill Q&A Panelist Spotlight</h1>
+      <h1 class="post-title">Drill 1.1 Released</h1>
     </div>
     <p class="post-meta">
     
       
       
-      <strong>Author:</strong> Tomer Shiran (Founder, PMC Member and Committer, Apache Drill)<br />
+      <strong>Author:</strong> Jacques Nadeau (PMC Chair and Committer, Apache Drill)<br />
     
-
+<strong>Date:</strong> Jul 5, 2015
 </p>
   </header>
   <div class="addthis_sharing_toolbox"></div>
 
   <article class="post-content">
-    <script type="text/javascript" src="//addthisevent.com/libs/1.5.8/ate.min.js"></script>
+    <p>Today I&#39;m happy to announce the availability of the Drill 1.1 release. This release addresses <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12313820&amp;version=12329689">162 JIRAs</a> on top of May&#39;s 1.0 release. Highlights include:</p>
 
-<p><a href="/blog/2014/12/11/apache-drill-qa-panelist-spotlight/" title="Add to Calendar" class="addthisevent">
-    Add to Calendar
-    <span class="_start">12-17-2014 11:30:00</span>
-    <span class="_end">12-17-2014 12:30:00</span>
-    <span class="_zonecode">6</span>
-    <span class="_summary">Apache Drill - Live Q&amp;A on Twitter</span>
-    <span class="_description">Join us on Twitter for a one-hour, live SQL-on-Hadoop Q&amp;A. Use the <strong>hashtag #DrillQA</strong> so the panelists can engage with your questions and comments. Apache Drill committers Tomer Shiran, Jacques Nadeau, and Ted Dunning, as well as Tableau Product Manager Jeff Feng and Data Scientist Dr. Kirk Borne will be on hand to answer your questions.</span>
-    <span class="_location">Twitter: #DrillQA</span>
-    <span class="_organizer">Tomer Shiran</span>
-    <span class="_organizer_email">tshiran\@apache.org</span>
-    <span class="_all_day_event">false</span>
-    <span class="_date_format">MM-DD-YYYY</span>
-</a></p>
+<h4 id="automatic-partitioning-for-parquet-files">Automatic Partitioning for Parquet Files</h4>
 
-<p>Hadoop has always been a powerful platform, but it is even more so with the release of Apache Drill, a valuable technology for self-service data exploration on big data. For BI users, this is really exciting news. </p>
+<p>Drill now supports creating partitions automatically when using <code>CREATE TABLE AS</code> (CTAS) to generate Parquet files. By leveraging the unique capabilities of the Parquet file format, Drill is able provide this capability and still maintain data integrity and compatibility with all other systems that consume Parquet (a world&#39;s first). This functionality can be exercised by utilizing the new <a href="https://drill.apache.org/docs/partition-by-clause/"><code>PARTITION BY</code></a> clause support.</p>
 
-<p>With Apache Drill, you can immediately query complex data in native formats, such as schema-less data, nested data, and data with rapidly-evolving schemas. And with analytic tools likes Tableau, you can easily create queries, build dashboards and explore data. </p>
+<h4 id="window-functions">Window Functions</h4>
 
-<p>Want to learn how to leverage Apache Drill in order to get better analytical insights? </p>
+<p>Drill now has first-class support for SQL window Functions. This includes:</p>
 
-<p><strong>Join us on Twitter</strong> for a one-hour, live SQL-on-Hadoop Q&amp;A, next <strong>Wednesday, December 17th starting at 11:30am PST, 2:30pm EST</strong>. Use the <strong>hashtag #DrillQA</strong> so the panelists can engage with your questions and comments.</p>
+<ul>
+<li>Aggregate Functions: <code>AVG</code>, <code>COUNT</code>, <code>MAX</code>, <code>MIN</code>, <code>SUM</code></li>
+<li>Ranking Functions: <code>CUME_DIST</code>, <code>DENSE_RANK</code>, <code>PERCENT_RANK</code>, <code>RANK</code> and <code>ROW_NUMBER</code></li>
+</ul>
 
-<p>Apache Drill committers Tomer Shiran, Jacques Nadeau, and Ted Dunning, as well as Tableau Product Manager Jeff Feng and Data Scientist Dr. Kirk Borne will be on hand to answer your questions.</p>
+<p>The community has done an excellent job providing a <a href="https://drill.apache.org/docs/sql-window-functions-introduction/">comprehensive documentation</a> so that you can start using window functions immediately.  </p>
 
-<h4 id="tomer-shiran,-apache-drill-founder-(@tshiran)">Tomer Shiran, Apache Drill Founder (@tshiran)</h4>
+<h4 id="hive-storage-plugin-enhancements">Hive Storage Plugin Enhancements</h4>
 
-<p>Tomer Shiran is the founder of Apache Drill, and a PMC member and committer on the project. He is VP Product Management at MapR, responsible for product strategy, roadmap and new feature development. Prior to MapR, Tomer held numerous product management and engineering roles at Microsoft, most recently as the product manager for Microsoft Internet Security &amp; Acceleration Server (now Microsoft Forefront). He is the founder of two websites that have served tens of millions of users, and received coverage in prestigious publications such as The New York Times, USA Today and The Times of London. Tomer is also the author of a 900-page programming book. He holds an MS in Computer Engineering from Carnegie Mellon University and a BS in Computer Science from Technion - Israel Institute of Technology.</p>
+<p>We&#39;ve enhanced Drill to work even better with Hive. We started by upgrading Drill&#39;s support to work with Hive 1.0. In addition, Drill now provides a powerful new security feature called <a href="https://drill.apache.org/docs/configuring-user-impersonation-with-hive-authorization/">delegated Hive impersonation</a>. Compatibility and performance are also improved with better data type support (including support for binary, tinyint and smallint data types) and better concurrency.</p>
 
-<h4 id="jeff-feng,-product-manager-tableau-software-(@jtfeng)">Jeff Feng, Product Manager Tableau Software (@jtfeng)</h4>
+<h4 id="sql-union-improvements">SQL <code>UNION</code> Improvements</h4>
 
-<p>Jeff Feng is a Product Manager at Tableau and leads their Big Data product roadmap &amp; strategic vision.  In his role, he focuses on joint technology integration and partnership efforts with a number of Hadoop, NoSQL and web application partners in helping users see and understand their data.</p>
+<p>We&#39;ve enhanced support for SQL <code>UNION</code> functionality.  Drill now supports both <code>UNION</code> and <code>UNION ALL</code> capabilities.  We&#39;ve also improved the query optimizer to better optimize plans that include the <code>UNION</code> clause.</p>
 
-<h4 id="ted-dunning,-apache-drill-comitter-(@ted_dunning)">Ted Dunning, Apache Drill Comitter (@Ted_Dunning)</h4>
+<h4 id="new-features-for-complex-data">New Features For Complex Data</h4>
 
-<p>Ted Dunning is Chief Applications Architect at MapR Technologies and committer and PMC member of the Apache Mahout, Apache ZooKeeper, and Apache Drill projects and mentor for Apache Storm. He contributed to Mahout clustering, classification and matrix decomposition algorithms  and helped expand the new version of Mahout Math library. Ted was the chief architect behind the MusicMatch (now Yahoo Music) and Veoh recommendation systems, he built fraud detection systems for ID Analytics (LifeLock) and he has issued 24 patents to date. Ted has a PhD in computing science from University of Sheffield. When he’s not doing data science, he plays guitar and mandolin.</p>
+<p>Drill&#39;s complex data capabilities continue to be the best in the market, now including support for <code>COUNT</code> aggregations on various types of complex objects. Also, Drill&#39;s <code>FLATTEN</code> function now supports very large complex objects.</p>
 
-<h4 id="jacques-nadeau,-vice-president,-apache-drill-(@intjesus)">Jacques Nadeau, Vice President, Apache Drill (@intjesus)</h4>
+<h4 id="improved-jdbc-driver-compatibility">Improved JDBC Driver Compatibility</h4>
 
-<p>Jacques Nadeau leads Apache Drill development efforts at MapR Technologies. He is an industry veteran with over 15 years of big data and analytics experience. Most recently, he was cofounder and CTO of search engine startup YapMap. Before that, he was director of new product engineering with Quigo (contextual advertising, acquired by AOL in 2007). He also built the Avenue A | Razorfish analytics data warehousing system and associated services practice (acquired by Microsoft).</p>
+<p>Apache Drill&#39;s JDBC driver continues to improve. This includes a number of enhancements and fixes to better support JDBC tools including <a href="https://drill.apache.org/docs/using-microstrategy-analytics-with-apache-drill/">MicroStrategy</a>, <a href="https://drill.apache.org/docs/using-tibco-spotfire-desktop-with-drill/">TIBCO Spotfire</a>, <a href="https://drill.apache.org/docs/configuring-jreport-with-drill/">JReport</a> and <a href="https://drill.apache.org/docs/using-jdbc-with-squirrel-on-windows/">SQuirreL</a>.  </p>
 
-<h4 id="dr.-kirk-borne,-george-mason-university-(@kirkdborne)">Dr. Kirk Borne, George Mason University (@KirkDBorne)</h4>
+<p>The Apache Drill community now publishes the JDBC driver for easy inclusion in your application through the use of Maven coordinates. You can incorporate Drill&#39;s JDBC driver into your application by <a href="http://search.maven.org/remotecontent?filepath=org/apache/drill/exec/drill-jdbc-all/1.1.0/drill-jdbc-all-1.1.0.jar">downloading it directly</a> or referencing the following coordinates within your Maven application.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;dependency&gt;
+  &lt;groupId&gt;org.apache.drill.exec&lt;/groupId&gt;
+  &lt;artifactId&gt;drill-jdbc-all&lt;/artifactId&gt;
+  &lt;version&gt;1.1.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre></div>
+<h4 id="mongodb-3.0-support">MongoDB 3.0 Support</h4>
 
-<p>Dr. Kirk Borne is a Transdisciplinary Data Scientist and an Astrophysicist. He is Professor of Astrophysics and Computational Science in the George Mason University School of Physics, Astronomy, and Computational Sciences. He has been at Mason since 2003, where he teaches and advises students in the graduate and undergraduate Computational Science, Informatics, and Data Science programs. Previously, he spent nearly 20 years in positions supporting NASA projects, including an assignment as NASA&#39;s Data Archive Project Scientist for the Hubble Space Telescope, and as Project Manager in NASA&#39;s Space Science Data Operations Office. He has extensive experience in big data and data science, including expertise in scientific data mining and data systems. He has published over 200 articles (research papers, conference papers, and book chapters), and given over 200 invited talks at conferences and universities worldwide.</p>
+<p>Drill now uses MongoDB&#39;s latest Java driver and has enhanced connection pooling for better performance and resilience in large-scale deployments.  Learn more about using the <a href="https://drill.apache.org/docs/mongodb-plugin-for-apache-drill/">MongoDB plugin</a>.</p>
+
+<h4 id="many-more-fixes">Many More Fixes</h4>
+
+<p>Drill includes a variety of <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12313820&amp;version=12329689">other fixes and enhancements</a> including:</p>
+
+<ul>
+<li>Improvements for certain types of exists and correlated subqueries</li>
+<li>Fixes for running Drill on Windows</li>
+<li>Improvements in implicit casting capabilities in schemaless scenarios</li>
+<li>Improvements in <code>INFORMATION_SCHEMA</code></li>
+<li>Fixes for the Web UI and the REST API</li>
+</ul>
+
+<h4 id="more-frequent-releases">More Frequent Releases</h4>
+
+<p>The amazing Drill community continues to be the driving force behind these rapid iterative releases.  Thanks to all the <a href="/team/">committers</a> and contributors that made this release possible!  The community&#39;s goal continues to be maintaining a 4-6 release cycle throughout the summer.  This means you will have many more enhancements to look for in the next few months.  If you use Drill, want to, or want to help develop it, drop by in <a href="https://drill.apache.org/mailinglists/">the community</a>.</p>
+
+<p>Download the <a href="https://drill.apache.org/download/">Drill 1.1.0 release</a> now and let us know your thoughts.</p>
+
+<p>Drill On!<br>
+Jacques Nadeau</p>
 
   </article>
  <div id="disqus_thread"></div>
