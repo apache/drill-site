@@ -878,27 +878,15 @@
           <ul style="display: none">
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-5-0-release-notes/">Apache Drill 0.5.0 Release Notes</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-1-0-release-notes/">Apache Drill 1.1.0 Release Notes</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-4-0-release-notes/">Apache Drill 0.4.0 Release Notes</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-0-0-release-notes/">Apache Drill 1.0.0 Release Notes</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-m1-release-notes-apache-drill-alpha/">Apache Drill M1 Release Notes (Apache Drill Alpha)</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-m1-release-notes-apache-drill-alpha/">Apache Drill M1 Release Notes (Apache Drill Alpha)</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-6-0-release-notes/">Apache Drill 0.6.0 Release Notes</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-7-0-release-notes/">Apache Drill 0.7.0 Release Notes</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-9-0-release-notes/">Apache Drill 0.9.0 Release Notes</a></li>
             
           
             
@@ -906,15 +894,27 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-9-0-release-notes/">Apache Drill 0.9.0 Release Notes</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-7-0-release-notes/">Apache Drill 0.7.0 Release Notes</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-9-0-release-notes/">Apache Drill 0.9.0 Release Notes</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-6-0-release-notes/">Apache Drill 0.6.0 Release Notes</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-0-0-release-notes/">Apache Drill 1.0.0 Release Notes</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-m1-release-notes-apache-drill-alpha/">Apache Drill M1 Release Notes (Apache Drill Alpha)</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-m1-release-notes-apache-drill-alpha/">Apache Drill M1 Release Notes (Apache Drill Alpha)</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-5-0-release-notes/">Apache Drill 0.5.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-4-0-release-notes/">Apache Drill 0.4.0 Release Notes</a></li>
             
           
           </ul>
@@ -1001,11 +1001,36 @@
 
     <div class="int_text" align="left">
       
-        <p>The section <a href="/docs/plugin-configuration-basics">&quot;Plugin Configuration Basics&quot;</a> covers attributes that you configure for use with a CSV, TSV, PSV (comma-, tab-, pipe-separated) values text file. This section presents examples of how to use those attributes and <a href="/docs/text-files-csv-tsv-psv/#tips-for-performant-querying">tips for performant querying</a> of these text files. </p>
+        <p>Best practices for reading text files are:</p>
 
-<h2 id="managing-headers-in-text-files">Managing Headers in Text Files</h2>
+<ul>
+<li>Select data from particular columns<br></li>
+<li>Cast data</li>
+<li>Use a distributed file system<br></li>
+</ul>
 
-<p>In the storage plugin configuration, you set attributes on the text reader format configuration. This section presents examples of using the following attributes defined in <a href="/docs/plugin-configuration-basics/#list-of-attributes-and-definitions">&quot;List of Attributes and Definitions&quot;</a>:</p>
+<h3 id="select-data-from-particular-columns">Select Data from Particular Columns</h3>
+
+<p>Converting text files to another format, such as Parquet, using the CTAS command and a SELECT * statement is not recommended. Instead, select data from particular columns using the <a href="/docs/querying-plain-text-files">COLUMN[n] syntax</a>, and then assign meaningful column
+names using aliases. For example:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE parquet_users AS SELECT CAST(COLUMNS[0] AS INT) AS user_id,
+COLUMNS[1] AS username, CAST(COLUMNS[2] AS TIMESTAMP) AS registration_date
+FROM `users.csv1`;
+</code></pre></div>
+<p>You need to select particular columns instead of using SELECT * for performance reasons. Drill reads CSV, TSV, and PSV files into a list of
+VARCHARS, rather than individual columns. While parquet supports and Drill reads lists, as of this release of Drill, the read path for complex data is not optimized. </p>
+
+<h3 id="cast-data">Cast data</h3>
+
+<p>You can also improve performance by casting the VARCHAR data to INT, FLOAT, DATETIME, and so on when you read the data from a text file. Drill performs better reading fixed-width than reading VARCHAR data. </p>
+
+<h3 id="use-a-distributed-file-system">Use a Distributed File System</h3>
+
+<p>Using a distributed file system, such as HDFS, instead of a local file system to query the files also improves performance because currently Drill does not split files on block splits.</p>
+
+<h2 id="configuring-drill-to-read-text-files">Configuring Drill to Read Text Files</h2>
+
+<p>In the storage plugin configuration, you can set the following attributes that affect how Drill reads CSV, TSV, PSV (comma-, tab-, pipe-separated) files.  </p>
 
 <ul>
 <li>String lineDelimiter = &quot;\n&quot;;<br>
@@ -1013,22 +1038,22 @@ One or more characters used to denote a new record. Allows reading files with wi
 <li>char fieldDelimiter = &#39;,&#39;;<br>
 A single character used to separate each value.<br></li>
 <li>char quote = &#39;&quot;&#39;;<br>
-A single character used to start/end a quoted value.<br></li>
+A single character used to start/end a value enclosed in quotation marks.<br></li>
 <li>char escape = &#39;&quot;&#39;;<br>
-A single character used to escape a quote inside of a value.<br></li>
+A single character used to escape a quototation mark inside of a value.<br></li>
 <li>char comment = &#39;#&#39;;<br>
 A single character used to denote a comment line.<br></li>
 <li>boolean skipFirstLine = false;<br>
-Set to true to avoid reading headers as data.<br></li>
+Set to true to avoid reading headers as data. </li>
 </ul>
+
+<p>For more information about storage plugin configuration, see <a href="/docs/plugin-configuration-basics/#list-of-attributes-and-definitions">&quot;List of Attributes and Definitions&quot;</a>.</p>
 
 <p>You can deal with a mix of text files with and without headers either by creating two separate format plugins or by creating two format plugins within the same storage plugin. The former approach is typically easier than the latter.</p>
 
 <h3 id="creating-two-separate-format-plugins">Creating Two Separate Format Plugins</h3>
 
-<p>Format plugins are associated with a particular storage plugin. Storage plugins define a root directory that Drill targets when using the storage plugin. You can define separate storage plugins for different root directories, and define each of the format attributes to match the files stored below that directory. All files can use the .csv extension.</p>
-
-<p>For example:</p>
+<p>Format plugins are associated with a particular storage plugin. Storage plugins define a root directory that Drill targets when using the storage plugin. You can define separate storage plugins for different root directories, and define each of the format attributes to match the files stored below that directory. All files can use the .csv extension, as shown in the following example:</p>
 
 <p>Storage Plugin A</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">&quot;csv&quot;: {
@@ -1053,9 +1078,7 @@ Set to true to avoid reading headers as data.<br></li>
 </code></pre></div>
 <h3 id="creating-two-format-plugins-within-the-same-storage-plugin">Creating Two Format Plugins within the Same Storage Plugin</h3>
 
-<p>Give a different extension to files with a header and to files without a header, and use a storage plugin that looks something like the following example. This method requires renaming some files to use the csv2 extension.</p>
-
-<p>For example:</p>
+<p>Give a different extension to files with a header and to files without a header, and use a storage plugin that looks something like the following example. This method requires renaming some files to use the csv2 extension, as shown in the following example:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">&quot;csv&quot;: {
   &quot;type&quot;: &quot;text&quot;,
   &quot;extensions&quot;: [
@@ -1073,21 +1096,77 @@ Set to true to avoid reading headers as data.<br></li>
   &quot;delimiter&quot;: &quot;,&quot;
 },
 </code></pre></div>
-<h2 id="tips-for-performant-querying">Tips for Performant Querying</h2>
+<h2 id="examples-of-querying-text-files">Examples of Querying Text Files</h2>
 
-<p>Converting these files to another format, such as Parquet, using the CTAS command and a SELECT * statement is not recommended. Drill reads CSV, TSV, and PSV files into a list of
-VARCHARS, rather than individual columns. While parquet supports lists and
-Drill reads them, the read path for complex data is not yet optimized. Select data from particular columns using the <a href="/docs/querying-plain-text-files">COLUMN[n] syntax</a>, and then assign meaningful column
-names using aliases. For example:</p>
+<p>The examples in this section show the results of querying CSV files that use and do not use a header, include comments, and use an escape character:</p>
 
-<p>CREATE TABLE parquet_users AS SELECT CAST(COLUMNS[0] AS INT) AS user_id,
-COLUMNS[1] AS username, CAST(COLUMNS[2] AS TIMESTAMP) AS registration_date
-FROM <code>users.csv1</code>;</p>
+<h3 id="using-a-header-in-a-file">Using a Header in a File</h3>
 
-<p>Cast the VARCHAR data to INT, FLOAT, DATETIME, and so on. You get better performance reading fixed-width than reading VARCHAR data. </p>
+<p><img src="/docs/img/csv_with_header.png" alt="CSV with header"></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/csv_with_header.csv2`;
++------------------------+
+|        columns         |
++------------------------+
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
++------------------------+
+</code></pre></div>
+<h3 id="not-using-a-header-in-a-file">Not Using a Header in a File</h3>
 
-<p>Using a distributed file system, such as HDFS, instead of a local file system to query the files also improves performance because currently Drill does not split files on block splits.</p>
+<p><img src="/docs/img/csv_no_header.png" alt="CSV no header"></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/csv_no_header.csv`;
++------------------------+
+|        columns         |
++------------------------+
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
++------------------------+
+7 rows selected (0.112 seconds)
+</code></pre></div>
+<h3 id="escaping-a-character-in-a-file">Escaping a Character in a File</h3>
 
+<p><img src="/docs/img/csv_with_escape.png" alt="CSV with escape"></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/csv_with_escape.csv`;
++------------------------------------------------------------------------+
+|                                columns                                 |
++------------------------------------------------------------------------+
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3 \&quot; double quote is the default escape character&quot;]  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]                                                  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]                                                  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]                                                  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]                                                  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]                                                  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]                                                  |
++------------------------------------------------------------------------+
+7 rows selected (0.104 seconds)
+</code></pre></div>
+<h3 id="adding-comments-to-a-file">Adding Comments to a File</h3>
+
+<p><img src="/docs/img/csv_with_comments.png" alt="CSV with comments"></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/csv_with_comments.csv2`;
++------------------------+
+|        columns         |
++------------------------+
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
+| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
++------------------------+
+7 rows selected (0.111 seconds)
+</code></pre></div>
     
       
         <div class="doc-nav">
