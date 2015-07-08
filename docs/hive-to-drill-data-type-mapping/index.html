@@ -1023,7 +1023,7 @@
 <td>TRUE (1) or FALSE (0)</td>
 </tr>
 <tr>
-<td>CHAR</td>
+<td>VARCHAR</td>
 <td>CHAR</td>
 <td>Character string, fixed-length max 255</td>
 </tr>
@@ -1048,9 +1048,9 @@
 <td>8-byte double precision floating point number</td>
 </tr>
 <tr>
-<td>INT or INTEGER</td>
-<td>INT</td>
-<td>4-byte signed integer</td>
+<td>INTEGER</td>
+<td>INT, TINYINT, SMALLINT</td>
+<td>1-, 2-, or 4-byte signed integer</td>
 </tr>
 <tr>
 <td>INTERVALDAY</td>
@@ -1061,11 +1061,6 @@
 <td>INTERVALYEAR</td>
 <td>N/A</td>
 <td>Integer fields representing a year</td>
-</tr>
-<tr>
-<td>SMALLINT</td>
-<td>SMALLINT</td>
-<td>2-byte signed integer</td>
 </tr>
 <tr>
 <td>TIME</td>
@@ -1091,6 +1086,11 @@
 <td>VARCHAR</td>
 <td>VARCHAR</td>
 <td>Character string variable length</td>
+</tr>
+<tr>
+<td>VARBINARY</td>
+<td>BINARY</td>
+<td>Binary string</td>
 </tr>
 </tbody></table>
 
@@ -1151,17 +1151,7 @@ Time taken: 0.524 seconds, Fetched: 1 row(s)
 </code></pre></div>
 <h3 id="connect-drill-to-hive-and-query-the-data">Connect Drill to Hive and Query the Data</h3>
 
-<p>In Drill, you use the Hive storage plugin that has the following definition.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{
-  &quot;type&quot;: &quot;hive&quot;,
-  &quot;enabled&quot;: true,
-  &quot;configProps&quot;: {
-    &quot;hive.metastore.uris&quot;: &quot;thrift://localhost:9083&quot;,
-    &quot;hive.metastore.sasl.enabled&quot;: &quot;false&quot;
-  }
-}
-</code></pre></div>
-<p>Using the Hive storage plugin connects Drill to the Hive metastore containing the data.</p>
+<p>In Drill, you use the <a href="/docs/hive-storage-plugin">Hive storage plugin</a>. Using the Hive storage plugin connects Drill to the Hive metastore containing the data.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; USE hive;
 +------------+------------+
 |     ok     |  summary   |

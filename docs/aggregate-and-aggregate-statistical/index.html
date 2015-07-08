@@ -1047,9 +1047,49 @@ Drill queries:</p>
 </tr>
 </tbody></table>
 
-<p>* In this release, Drill disables the DECIMAL data type, including casting to DECIMAL and reading DECIMAL types from Parquet and Hive. You can <a href="docs/supported-data-types/#enabling-the-decimal-type">enable the DECIMAL type</a>, but this is not recommented.</p>
+<p>* In this release, Drill disables the DECIMAL data type, including casting to DECIMAL and reading DECIMAL types from Parquet and Hive. You can <a href="docs/supported-data-types/#enabling-the-decimal-type">enable the DECIMAL type</a>, but this is not recommended.</p>
 
-<p>MIN, MAX, COUNT, AVG, and SUM accept ALL and DISTINCT keywords. The default is ALL.</p>
+<p>AVG, COUNT, MIN, MAX, and SUM accept ALL and DISTINCT keywords. The default is ALL.</p>
+
+<h2 id="avg">AVG</h2>
+
+<p>Averages a column of all records in a data source. Averages a column of one or more groups of records. Which records to include in the calculation can be based on a condition.</p>
+
+<h3 id="syntax">Syntax</h3>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT AVG(aggregate_expression)
+FROM tables
+WHERE conditions;
+
+SELECT expression1, expression2, ... expression_n,
+       AVG(aggregate_expression)
+FROM tables
+WHERE conditions
+GROUP BY expression1, expression2, ... expression_n;
+</code></pre></div>
+<p>Expressions listed within the AVG function and must be included in the GROUP BY clause.</p>
+
+<h3 id="examples">Examples</h3>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT AVG(salary) FROM cp.`employee.json`;
++---------------------+
+|       EXPR$0        |
++---------------------+
+| 4019.6017316017314  |
++---------------------+
+1 row selected (0.221 seconds)
+
+SELECT education_level, AVG(salary) FROM cp.`employee.json` GROUP BY education_level;
++----------------------+---------------------+
+|   education_level    |       EXPR$1        |
++----------------------+---------------------+
+| Graduate Degree      | 4392.823529411765   |
+| Bachelors Degree     | 4492.404181184669   |
+| Partial College      | 4047.1180555555557  |
+| High School Degree   | 3516.1565836298932  |
+| Partial High School  | 3511.0852713178297  |
++----------------------+---------------------+
+5 rows selected (0.495 seconds)
+</code></pre></div>
+<h2 id="count,-min,-max,-and-sum">COUNT, MIN, MAX, and SUM</h2>
 
 <h3 id="examples">Examples</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT a2 FROM t2;

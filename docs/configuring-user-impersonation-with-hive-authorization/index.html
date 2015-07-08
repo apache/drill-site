@@ -1055,7 +1055,7 @@
 <li>If the underlying file system has MapR security enabled, add the following line:
 <code>export MAPR_TICKETFILE_LOCATION=/opt/mapr/conf/mapruserticket</code><br></li>
 <li>If you are implementing Hive SQL standard based authorization, and you are running Drill     and Hive in a secure MapR cluster, add the following lines:<br>
-<code>export DRILLBIT_JAVA_OPTS=&quot;$DRILLBIT_JAVA_OPTS -Dmapr_sec_enabled=true -Dhadoop.login=maprsasl -Dzookeeper.saslprovider=com.mapr.security.maprsasl.MaprSaslProvider -Dmapr.library.flatclass&quot;</code><br>
+<code>export DRILL_JAVA_OPTS=&quot;$DRILL_JAVA_OPTS -Dmapr_sec_enabled=true -Dhadoop.login=maprsasl -Dzookeeper.saslprovider=com.mapr.security.maprsasl.MaprSaslProvider -Dmapr.library.flatclass&quot;</code><br>
 <code>export MAPR_IMPERSONATION_ENABLED=true</code><br>
 <code>export MAPR_TICKETFILE_LOCATION=/opt/mapr/conf/mapruserticket</code></li>
 </ul></li>
@@ -1195,56 +1195,59 @@
 
 <p>Modify the Hive storage plugin instance in the Drill Web UI to include specific authorization settings. The Drillbit that you use to access the Web UI must be running. </p>
 
-<p>Note: The metastore host port for MapR is typically 9083.  </p>
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">The metastore host port for MapR is typically 9083.  </p>
+</div>  
 
 <p>Complete the following steps to modify the Hive storage plugin:  </p>
 
 <ol>
 <li> Navigate to <code>http://&lt;drillbit_hostname&gt;:8047</code>, and select the <strong>Storage tab</strong>.<br></li>
 <li> Click <strong>Update</strong> next to the hive instance.<br></li>
-<li><p>In the configuration window, add the configuration settings for the authorization type.  </p>
+<li> In the configuration window, add the configuration settings for the authorization type. If you are running Drill and Hive in a secure MapR cluster, do not include the line <code>&quot;hive.metastore.sasl.enabled&quot; : &quot;false&quot;</code>.<br></li>
+</ol>
 
 <ul>
 <li><p>For storage based authorization, add the following settings:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">  {
-   type:&quot;hive&quot;,
-   enabled: true,
-   configProps : {
-     &quot;hive.metastore.uris&quot; : &quot;thrift://&lt;metastore_host&gt;:&lt;port&gt;&quot;,
-     &quot;fs.default.name&quot; : &quot;hdfs://&lt;host&gt;:&lt;port&gt;/&quot;,
-     &quot;hive.metastore.sasl.enabled&quot; : &quot;false&quot;,
-     &quot;hive.server2.enable.doAs&quot; : &quot;true&quot;,
-     &quot;hive.metastore.execute.setugi&quot; : &quot;true&quot;
-   }
-  }  
+<div class="highlight"><pre><code class="language-text" data-lang="text">      {
+       type:&quot;hive&quot;,
+       enabled: true,
+       configProps : {
+         &quot;hive.metastore.uris&quot; : &quot;thrift://&lt;metastore_host&gt;:&lt;port&gt;&quot;,
+         &quot;fs.default.name&quot; : &quot;hdfs://&lt;host&gt;:&lt;port&gt;/&quot;,
+         &quot;hive.metastore.sasl.enabled&quot; : &quot;false&quot;,
+         &quot;hive.server2.enable.doAs&quot; : &quot;true&quot;,
+         &quot;hive.metastore.execute.setugi&quot; : &quot;true&quot;
+       }
+      }  
 </code></pre></div></li>
 <li><p>For SQL standard based authorization, add the following settings:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">  {
-   type:&quot;hive&quot;,
-   enabled: true,
-   configProps : {
-     &quot;hive.metastore.uris&quot;
-  : &quot;thrift://&lt;metastore_host&gt;:&lt;port&gt;&quot;,
-     &quot;fs.default.name&quot;
-  : &quot;hdfs://&lt;host&gt;:&lt;port&gt;/&quot;,
-     &quot;hive.security.authorization.enabled&quot;
-  : &quot;true&quot;,
-     &quot;hive.security.authenticator.manager&quot;
-  : &quot;org.apache.hadoop.hive.ql.security.SessionStateUserAuthenticator&quot;,
-     &quot;hive.security.authorization.manager&quot;
-  :
-  &quot;org.apache.hadoop.hive.ql.security.authorization.plugin.sqlstd.SQLStdHiveAuthorizerFactory&quot;,
-     &quot;hive.metastore.sasl.enabled&quot;
-  : &quot;false&quot;,
-     &quot;hive.server2.enable.doAs&quot;
-  : &quot;false&quot;,
-     &quot;hive.metastore.execute.setugi&quot;
-  : &quot;false&quot;
-   }
-  }
+<div class="highlight"><pre><code class="language-text" data-lang="text">      {
+       type:&quot;hive&quot;,
+       enabled: true,
+       configProps : {
+         &quot;hive.metastore.uris&quot;
+      : &quot;thrift://&lt;metastore_host&gt;:&lt;port&gt;&quot;,
+         &quot;fs.default.name&quot;
+      : &quot;hdfs://&lt;host&gt;:&lt;port&gt;/&quot;,
+         &quot;hive.security.authorization.enabled&quot;
+      : &quot;true&quot;,
+         &quot;hive.security.authenticator.manager&quot;
+      : &quot;org.apache.hadoop.hive.ql.security.SessionStateUserAuthenticator&quot;,
+         &quot;hive.security.authorization.manager&quot;
+      :
+      &quot;org.apache.hadoop.hive.ql.security.authorization.plugin.sqlstd.SQLStdHiveAuthorizerFactory&quot;,
+         &quot;hive.metastore.sasl.enabled&quot;
+      : &quot;false&quot;,
+         &quot;hive.server2.enable.doAs&quot;
+      : &quot;false&quot;,
+         &quot;hive.metastore.execute.setugi&quot;
+      : &quot;false&quot;
+       }
+      }
 </code></pre></div></li>
-</ul></li>
-</ol>
+</ul>
 
     
       
