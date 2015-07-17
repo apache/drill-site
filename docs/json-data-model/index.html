@@ -1137,10 +1137,13 @@ SELECT my column from dfs.`&lt;path_file_name&gt;`;
 
 <h2 id="analyzing-json">Analyzing JSON</h2>
 
-<p>Generally, you query JSON files using the following syntax, which includes a table alias. The alias is typically required for querying complex data:</p>
+<p>Generally, you query JSON files using the following syntax, which includes a table alias. The alias is sometimes required for querying complex data. Because of the ambiguity between y.z where y could be a column or a table,
+Drill currently explicitly requires a table prefix for referencing a field
+inside another field (t.y.z).  This isn&#39;t required in the case y, y[z] or
+y[z].x because these references are not ambiguous. Observe the following guidelines:</p>
 
 <ul>
-<li><p>Dot notation to drill down into a JSON map.</p>
+<li><p>Use dot notation to drill down into a JSON map.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT t.level1.level2. . . . leveln FROM &lt;storage plugin location&gt;`myfile.json` t
 </code></pre></div></li>
 <li><p>Use square brackets, array-style notation to drill down into a JSON array.</p>
@@ -1156,7 +1159,7 @@ SELECT my column from dfs.`&lt;path_file_name&gt;`;
 
 <p>Drill returns null when a document does not have the specified map or level.</p>
 
-<p>Using the following techniques, you can query complex, nested JSON:</p>
+<p>Use the following techniques to query complex, nested JSON:</p>
 
 <ul>
 <li>Flatten nested data</li>

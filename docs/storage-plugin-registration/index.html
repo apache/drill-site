@@ -1001,29 +1001,29 @@
 
     <div class="int_text" align="left">
       
-        <p>You connect Drill to a file system, Hive, HBase, or other data source using storage plugins. Drill includes a number of storage plugins in the installation. On the Storage tab of the Web UI, you can view, create, reconfigure, and register a storage plugin. To open the Storage tab, go to <code>http://&lt;IP address&gt;:8047/storage</code>, where IP address is any one of the installed drill bits:</p>
+        <p>You connect Drill to a file system, Hive, HBase, or other data source through a storage plugin. On the Storage tab of the Web UI, you can view and reconfigure a storage plugin. You can create a new name for the reconfigured version, thereby registering the new version. To open the Storage tab, go to <code>http://&lt;IP address&gt;:8047/storage</code>, where IP address is any one of the installed Drillbits in a distributed system or <code>localhost</code> in an embedded system:</p>
 
 <p><img src="/docs/img/plugin-default.png" alt="drill-installed plugins"></p>
 
-<p>The Drill installation registers the <code>cp</code>, <code>dfs</code>, <code>hbase</code>, <code>hive</code>, and <code>mongo</code> storage plugins instances by default.</p>
+<p>The Drill installation registers the the <code>cp</code>, <code>dfs</code>, <code>hbase</code>, <code>hive</code>, and <code>mongo</code> storage plugin configurations.</p>
 
 <ul>
 <li><code>cp</code><br>
 Points to a JAR file in the Drill classpath that contains the Transaction Processing Performance Council (TPC) benchmark schema TPC-H that you can query. </li>
 <li><code>dfs</code><br>
-Points to the local file system on your machine, but you can configure this instance to
+Points to the local file system, but you can configure this storage plugin to
 point to any distributed file system, such as a Hadoop or S3 file system. </li>
 <li><code>hbase</code><br>
-Provides a connection to HBase/M7.</li>
+Provides a connection to HBase.</li>
 <li><code>hive</code><br>
-Integrates Drill with the Hive metadata abstraction of files, HBase/M7, and libraries to read data and operate on SerDes and UDFs.</li>
+Integrates Drill with the Hive metadata abstraction of files, HBase, and libraries to read data and operate on SerDes and UDFs.</li>
 <li><code>mongo</code><br>
 Provides a connection to MongoDB data.</li>
 </ul>
 
-<p>In the Drill sandbox,  the <code>dfs</code> storage plugin connects you to the MapR File System (MFS). Using an installation of Drill instead of the sandbox, <code>dfs</code> connects you to the root of your file system.</p>
+<p>In the <a href="/docs/about-the-mapr-sandbox/">Drill sandbox</a>, the <code>dfs</code> storage plugin connects you to a simulation of a distributed file system. If you install Drill, <code>dfs</code> connects you to the root of your file system.</p>
 
-<p>Storage plugin configurations are saved in a temporary directory (embedded mode) or in ZooKeeper (distributed mode). Seeing a storage plugin that you created in one version appear in the Drill Web UI of another version is expected. For example, on Mac OS X, Drill uses <code>/tmp/drill/sys.storage_plugins</code> to store storage plugin configurations. To revert to the default storage plugins for a particular version, in embedded mode, delete the contents of this directory and restart the Drill shell.</p>
+<p>Drill saves storage plugin configurations in a temporary directory (embedded mode) or in ZooKeeper (distributed mode). The storage plugin configuration persists after upgrading, so a configuration that you created in one version of Drill appears in the Drill Web UI of an upgraded version of Drill. For example, on Mac OS X, Drill uses <code>/tmp/drill/sys.storage_plugins</code> to store storage plugin configurations. To revert to the default storage plugins for a particular version, in embedded mode, delete the contents of this directory and restart the Drill shell.</p>
 
     
       

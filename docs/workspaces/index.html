@@ -1003,33 +1003,31 @@
 
     <div class="int_text" align="left">
       
-        <p>When you register an instance of a file system data source, you can configure
-one or more workspaces for the instance. The workspace defines the  directory location of files in a local or distributed file system. Drill searches the workspace to locate data when
+        <p>You can define one or more workspaces in a storage plugin configuration. The workspace defines the directory location of files in a local or distributed file system. Drill searches the workspace to locate data when
 you run a query. The <code>default</code>
 workspace points to the root of the file system. </p>
 
-<p>Configuring <code>workspaces</code> in the storage plugin definition to include the file location simplifies the query, which is important when querying the same data source repeatedly. After you configure a long path name in the workspaces location property, instead of
+<p>Configuring <code>workspaces</code> to include a file location simplifies the query, which is important when querying the same data source repeatedly. After you configure a long path name in the workspaces location property, instead of
 using the full path to the data source, you use dot notation in the FROM
 clause.</p>
 
 <p><code>&lt;workspaces&gt;.`&lt;location&gt;</code>`</p>
 
-<p>To query the data source while you are <em>not</em> connected to
-that storage plugin, include the plugin name. This syntax assumes you did not issue a USE statement to connect to a storage plugin that defines the
+<p>To query the data source while you are not <em>using</em> that storage plugin, include the plugin name. This syntax assumes you did not issue a USE statement to connect to a storage plugin that defines the
 location of the data:</p>
 
 <p><code>&lt;plugin&gt;.&lt;workspaces&gt;.`&lt;location&gt;</code>`</p>
 
 <h2 id="no-workspaces-for-hive-and-hbase">No Workspaces for Hive and HBase</h2>
 
-<p>You cannot create workspaces for
-<code>hive</code> and <code>hbase</code> storage plugins, though Hive databases show up as workspaces in
+<p>You cannot configure workspaces for
+<code>hive</code> and <code>hbase</code>, though Hive databases show up as workspaces in
 Drill. Each <code>hive</code> instance includes a <code>default</code> workspace that points to the  Hive metastore. When you query
 files and tables in the <code>hive default</code> workspaces, you can omit the
 workspace name from the query.</p>
 
 <p>For example, you can issue a query on a Hive table in the <code>default workspace</code>
-using either of the following formats and get the same results:</p>
+using either of the following queries and get the same results:</p>
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM hive.customers LIMIT 10;
@@ -1040,13 +1038,10 @@ SELECT * FROM hive.`default`.customers LIMIT 10;
   <p class="last">Default is a reserved word. You must enclose reserved words in back ticks.  </p>
 </div>
 
-<p>Because HBase instances do not have workspaces, you can use the following
-format to query a table in HBase:</p>
+<p>Because the HBase storage plugin configuration does not have a workspace, you can use the following
+query:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM hbase.customers LIMIT 10;
 </code></pre></div>
-<p>After you register a data source as a storage plugin instance with Drill, and
-optionally configure workspaces, you can query the data source.</p>
-
     
       
         <div class="doc-nav">
