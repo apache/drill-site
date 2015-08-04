@@ -801,7 +801,11 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/develop-a-simple-function/">Develop a Simple Function</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/developing-a-simple-function/">Developing a Simple Function</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/tutorial-develop-a-simple-function/">Tutorial: Develop a Simple Function</a></li>
             
           
             
@@ -1004,48 +1008,36 @@
     <div class="int_text" align="left">
       
         <p>You can define a default input format to tell Drill what file type exists in a
-workspace within a file system. Drill determines the file type based on file
-extensions and magic numbers when searching a workspace.</p>
+workspace within a file system. </p>
 
-<p>Magic numbers are file signatures that Drill uses to identify Parquet files.
-If Drill cannot identify the file type based on file extensions or magic
+<p>Normally, Drill determines the file type based on file
+extensions and <em>magic numbers</em> when searching a workspace. Magic numbers are file signatures that Drill uses to identify Parquet files. If Drill cannot identify the file type based on file extensions or magic
 numbers, the query fails. Defining a default input format can prevent queries
 from failing in situations where Drill cannot determine the file type.</p>
 
-<p>If you incorrectly define the file type in a workspace and Drill cannot
-determine the file type, the query fails. For example, if JSON files do not have a <code>.json</code> extension, the query fails.</p>
-
-<p>You can define one default input format per workspace. If you do not define a
-default input format, and Drill cannot detect the file format, the query
-fails. You can define a default input format for any of the file types that
-Drill supports. Currently, Drill supports the following types:</p>
+<p>If you do not define the default file type in a workspace or incorrectly define the default file type, and Drill cannot
+determine the file type without this information, the query fails. You can define one default input format per workspace. You can define a default input format for any of the file types that
+Drill supports. Currently, Drill supports the following input types:</p>
 
 <ul>
 <li>Avro</li>
 <li>CSV, TSV, or PSV</li>
 <li>Parquet</li>
 <li>JSON</li>
-<li>MapR-DB*</li>
 </ul>
 
-<p>* Only available when you install Drill on a cluster using the mapr-drill package.</p>
+<p>You must have a <a href="/docs/workspaces">defined workspace</a> before you can define a default input format.</p>
 
-<h2 id="defining-a-default-input-format">Defining a Default Input Format</h2>
-
-<p>You define the default input format for a file system workspace through the
-Drill Web UI. You must have a <a href="/docs/workspaces">defined workspace</a> before you can define a
-default input format.</p>
-
-<p>To define a default input format for a workspace, complete the following
-steps:</p>
+<p>To define a default input format for a workspace:</p>
 
 <ol>
-<li>Navigate to the Drill Web UI at <code>&lt;drill_node_ip_address&gt;:8047</code>. The Drillbit process must be running on the node before you connect to the Drill Web UI.</li>
+<li>Navigate to the <a href="/docs/plugin-configuration-basics/#using-the-drill-web-ui">Drill Web UI</a>. The Drillbit process must be running on the node before you connect to the Drill Web UI.</li>
 <li>Select <strong>Storage</strong> in the toolbar.</li>
-<li>Click <strong>Update</strong> next to the storage plugin for which you want to define a default input format for a workspace.</li>
-<li><p>In the Configuration area, locate the workspace, and change the <code>defaultInputFormat</code> attribute to any of the supported file types.</p>
+<li>Click <strong>Update</strong> next to the storage plugin configuration for which you want to define a default input format for a workspace.</li>
+<li>In the Configuration area, locate the workspace, and change the <code>defaultInputFormat</code> attribute to any of the supported file types.</li>
+</ol>
 
-<p><strong>Example</strong></p>
+<h3 id="example-of-defining-a-default-input-format">Example of Defining a Default Input Format</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">{
   &quot;type&quot;: &quot;file&quot;,
   &quot;enabled&quot;: true,
@@ -1054,20 +1046,14 @@ steps:</p>
     &quot;root&quot;: {
       &quot;location&quot;: &quot;/drill/testdata&quot;,
       &quot;writable&quot;: false,
-      &quot;defaultInputFormat&quot;: csv
+      &quot;defaultInputFormat&quot;: &quot;csv&quot;
   },
   &quot;local&quot; : {
     &quot;location&quot; : &quot;/max/proddata&quot;,
     &quot;writable&quot; : true,
     &quot;defaultInputFormat&quot; : &quot;json&quot;
 }
-</code></pre></div></li>
-</ol>
-
-<h2 id="querying-compressed-files">Querying Compressed Files</h2>
-
-<p>You can query compressed GZ files, such as JSON and CSV, as well as uncompressed files. The file extension specified in the <code>formats . . . extensions</code> property of the storage plugin configuration must precede the gz extension in the file name. For example, <code>proddata.json.gz</code> or <code>mydata.csv.gz</code> are valid file names to use in a query, as shown in the example in <a href="/docs/querying-plain-text-files/#query-the-gz-file-directly">&quot;Querying the GZ File Directly&quot;</a>.</p>
-
+</code></pre></div>
     
       
         <div class="doc-nav">

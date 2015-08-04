@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Installing the Driver on Linux - Apache Drill</title>
+<title>Developing a Simple Function - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -358,8 +358,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">ODBC/JDBC Interfaces</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">ODBC/JDBC Interfaces</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/interfaces-introduction/">Interfaces Introduction</a></li>
@@ -375,9 +375,9 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">Installing the ODBC Driver</a></li>
-              <ul style="">
+              <ul style="display: none">
               
-                <li class="toctree-l3 current"><a class="reference internal" href="/docs/installing-the-driver-on-linux/">Installing the Driver on Linux</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-the-driver-on-linux/">Installing the Driver on Linux</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-the-driver-on-mac-os-x/">Installing the Driver on Mac OS X</a></li>
               
@@ -793,15 +793,15 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Develop Custom Functions</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Develop Custom Functions</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/develop-custom-functions-introduction/">Develop Custom Functions Introduction</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/developing-a-simple-function/">Developing a Simple Function</a></li>
+              <li class="toctree-l2 current"><a class="reference internal" href="/docs/developing-a-simple-function/">Developing a Simple Function</a></li>
             
           
             
@@ -984,22 +984,20 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces</a></li>
+    <li><a href="/docs/develop-custom-functions/">Develop Custom Functions</a></li>
   
-    <li><a href="/docs/installing-the-odbc-driver/">Installing the ODBC Driver</a></li>
-  
-  <li>Installing the Driver on Linux</li>
+  <li>Developing a Simple Function</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/odbc-jdbc-interfaces/installing-the-odbc-driver/010-installing-the-driver-on-linux.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/develop-custom-functions/020-developing-a-simple-function.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>Installing the Driver on Linux</h1>
+      <h1>Developing a Simple Function</h1>
 
     </div>
 
@@ -1007,133 +1005,56 @@
 
     <div class="int_text" align="left">
       
-        <p>Install the MapR Drill ODBC Driver on the machine from which you connect to
-the Drill service. You can install the 32- or 64-bit driver on Linux. Install
-the version of the driver that matches the architecture of the client
-application that you use to access Drill. The 64-bit editions of Linux support
-32- and 64-bit applications.</p>
+        <p>The section presents a brief overview of developing a simple function. The <a href="/docs/tutorial-develop-a-simple-function/">tutorial</a> in the next section covers how to create a simple function in more depth.</p>
 
-<p>Install the MapR Drill ODBC Driver on a system that meets the <a href="/docs/installing-the-driver-on-linux/#system-requirements">system requirements</a>, and then complete the following steps described in detail in this document:</p>
+<p>To develop a simple function, you need to create a class within a Java package that implements Drill’s simple interface
+into the program, and include the required information for the function type.
+Your function must use <a href="/docs/supported-data-types/">data types</a> that Drill supports. </p>
 
-<ul>
-<li><a href="/docs/installing-the-driver-on-linux/#step-1:-download-the-mapr-drill-odbc-driver">Step 1: Download the MapR Drill ODBC Driver</a> </li>
-<li><a href="/docs/installing-the-driver-on-linux/#step-2:-install-the-mapr-drill-odbc-driver">Step 2: Install the MapR Drill ODBC Driver</a></li>
-<li><a href="/docs/installing-the-driver-on-linux/#step-3:-check-the-mapr-drill-odbc-driver-version">Step 3: Check the MapR Drill ODBC Driver version</a></li>
-</ul>
-
-<p>Verify that your system meets the system requirements before you start.</p>
-
-<h2 id="system-requirements">System Requirements</h2>
-
-<ul>
-<li>One of the following distributions (32- and 64-bit editions are supported):
-
-<ul>
-<li>Red Hat® Enterprise Linux® (RHEL) 5.0/6.0</li>
-<li>CentOS 5.0/6.0</li>
-<li>SUSE Linux Enterprise Server (SLES) 11</li>
-</ul></li>
-<li>90 MB of available disk space.</li>
-<li>An installed ODBC driver manager:
-
-<ul>
-<li>iODBC 3.52.7 or above<br>
-OR </li>
-<li>unixODBC 2.2.12 or above<br>
-On Linux, 3.52.7 is available as a tarball. After unpacking the tarball, see the README for instructions about building the driver manager.</li>
-</ul></li>
-<li><p>The client must be able to resolve the actual host name of the Drill node or nodes from the IP address. Verify that a DNS entry was created on the client machine for the Drill node or nodes.<br>
-If not, create an entry in <code>/etc/hosts</code> for each node in the following format:  </p>
-
-<p><code>&lt;drill-machine-IP&gt; &lt;drill-machine-hostname&gt;</code><br>
-Example: <code>127.0.0.1 localhost</code></p></li>
-</ul>
-
-<p>To install the driver, you need Administrator privileges on the computer.</p>
-
-<h2 id="step-1:-download-the-mapr-drill-odbc-driver">Step 1: Download the MapR Drill ODBC Driver</h2>
-
-<p>Download either the 32- or 64-bit driver:</p>
-
-<ul>
-<li><a href="http://package.mapr.com/tools/MapR-ODBC/MapR_Drill/MapRDrill_odbc_v1.1.0.1000/MapRDrillODBC-32bit-1.1.0.i686.rpm">MapR Drill ODBC Driver (32-bit)</a></li>
-<li><a href="http://package.mapr.com/tools/MapR-ODBC/MapR_Drill/MapRDrill_odbc_v1.1.0.1000/MapRDrillODBC-1.1.0.x86_64.rpm">MapR Drill ODBC Driver (64-bit)</a></li>
-</ul>
-
-<h2 id="step-2:-install-the-mapr-drill-odbc-driver">Step 2: Install the MapR Drill ODBC Driver</h2>
-
-<p>To install the driver, complete the following steps:</p>
+<p>Complete the following steps to develop a simple function using Drill’s simple
+function interface:</p>
 
 <ol>
-<li>Login as the root user.</li>
-<li>Navigate to the folder that contains the driver RPM packages to install.</li>
-<li>Enter the following command where <em>RPMFileName</em> is the file name of the RPM package containing the version of the driver that you want to install:<br>
+<li><p>Create a Maven project and add the following dependency:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;dependency&gt;
+&lt;groupId&gt;org.apache.drill.exec&lt;/groupId&gt;
+&lt;artifactId&gt;drill-java-exec&lt;/artifactId&gt;
+&lt;version&gt;1.1.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre></div></li>
+<li><p>Create a class that implements the <code>DrillSimpleFunc</code> interface and identify the scope as <code>FunctionScope.SIMPLE</code>.</p>
 
-<ul>
-<li>RedHat/CentOS<br>
-<code>yum localinstall --nogpgcheck &lt;RPMFileName&gt;</code></li>
-<li>SUSE<br>
-<code>zypper install RPMFileName</code></li>
-</ul></li>
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">@FunctionTemplate(name = &quot;myaddints&quot;, scope = FunctionScope.SIMPLE, nulls = NullHandling.NULL_IF_NULL)
+  public static class IntIntAdd implements DrillSimpleFunc {
+</code></pre></div></li>
+<li><p>Provide the variables used in the code in the <code>Param</code> and <code>Output</code> bit holders.</p>
+
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">@Param IntHolder in1;
+@Param IntHolder in2;
+@Output IntHolder out;
+</code></pre></div></li>
+<li><p>Add the code that performs operations for the function in the eval() method.</p>
+
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">public void setup() {
+}
+public void eval() {
+  out.value = in1.value + in2.value;
+}
+</code></pre></div></li>
+<li><p>Use the maven-source-plugin to compile the sources and classes JAR files. Verify that an empty <code>drill-module.conf</code> is included in the resources folder.<br>
+Drill searches this module during classpath scanning. If the file is not
+included in the resources folder, you can add it to the JAR file or add it to
+<code>etc/drill/conf</code>.</p></li>
 </ol>
-
-<p>The MapR Drill ODBC Driver depends on the following resources:</p>
-
-<ul>
-<li><code>cyrus-sasl-2.1.22-7</code> or above</li>
-<li><code>cyrus-sasl-gssapi-2.1.22-7</code> or above</li>
-<li><code>cyrus-sasl-plain-2.1.22-7</code> or above</li>
-</ul>
-
-<p>The MapR Drill ODBC Driver typically resolves dependencies automatically. If not, error messages during the installation indicate that the package manager in your Linux distribution cannot resolve the
-dependencies automatically. In this case, manually install the packages.</p>
-
-<p>The following table provides a list of the MapR Drill ODBC Driver file
-locations and descriptions:</p>
-
-<table><thead>
-<tr>
-<th>File</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>/opt/mapr/drillodbc/ErrorMessages</code></td>
-<td>Error messages files directory.</td>
-</tr>
-<tr>
-<td><code>/opt/mapr/drillodbc/Setup</code></td>
-<td>Sample configuration files directory.</td>
-</tr>
-<tr>
-<td><code>/opt/mapr/drillodbc/lib/32</code></td>
-<td>32-bit shared libraries directory.</td>
-</tr>
-<tr>
-<td><code>/opt/mapr/drillodbc/lib/64</code></td>
-<td>64-bit shared libraries directory.</td>
-</tr>
-</tbody></table>
-
-<h2 id="step-3:-check-the-mapr-drill-odbc-driver-version">Step 3: Check the MapR Drill ODBC Driver version</h2>
-
-<p>To check the version of the driver you installed, use the following case-sensitive command on the terminal command line:</p>
-
-<p><code>yum list | grep MapRDrillODBC</code></p>
-
-<p>or</p>
-
-<p><code>rpm -qa | grep MapRDrillodbc</code></p>
-
-<h3 id="next-step">Next Step</h3>
-
-<p><a href="/docs/configuring-odbc-on-linux/">Configuring ODBC on Linux</a>.</p>
 
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/installing-the-odbc-driver/">← Installing the ODBC Driver</a></span><span class="next-toc"><a href="/docs/installing-the-driver-on-mac-os-x/">Installing the Driver on Mac OS X →</a></span>
+  <span class="previous-toc"><a href="/docs/develop-custom-functions-introduction/">← Develop Custom Functions Introduction</a></span><span class="next-toc"><a href="/docs/tutorial-develop-a-simple-function/">Tutorial: Develop a Simple Function →</a></span>
 </div>
 
     

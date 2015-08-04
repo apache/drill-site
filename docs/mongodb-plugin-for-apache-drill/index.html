@@ -801,7 +801,11 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/develop-a-simple-function/">Develop a Simple Function</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/developing-a-simple-function/">Developing a Simple Function</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/tutorial-develop-a-simple-function/">Tutorial: Develop a Simple Function</a></li>
             
           
             
@@ -1003,21 +1007,19 @@
       
         <h2 id="overview">Overview</h2>
 
-<p>Drill supports MongoDB 3.0, providing a mongodb format plugin to connect to MongoDB using MongoDB&#39;s latest Java driver. You can run queries
-to read, but not write, the Mongo data using Drill. Attempting to write data back to Mongo results in an error. You do not need any upfront schema definitions. </p>
+<p>Drill supports MongoDB 3.0, providing a mongodb storage plugin to connect to MongoDB using MongoDB&#39;s latest Java driver. You can run queries
+to read, but not write, Mongo data using Drill. Attempting to write data back to Mongo results in an error. You do not need any upfront schema definitions. </p>
 
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
-  <p class="last">A local instance of Drill is used in this tutorial for simplicity.   </p>
+  <p class="last">In the following examples, you use a local instance of Drill for simplicity.   </p>
 </div>
 
 <p>You can also run Drill and MongoDB together in distributed mode.</p>
 
 <h3 id="before-you-begin">Before You Begin</h3>
 
-<p>Before you can query MongoDB with Drill, you must have Drill and MongoDB
-installed on your machine. Examples in this tutorial use zip code aggregation data
-provided by MongoDB that you download in the following steps:</p>
+<p>To query MongoDB with Drill, you install Drill and MongoDB, and then you import zip code aggregation data into MongoDB. </p>
 
 <ol>
 <li><a href="/docs/installing-drill-in-embedded-mode">Install Drill</a>, if you do not already have it installed.</li>
@@ -1027,21 +1029,15 @@ provided by MongoDB that you download in the following steps:</p>
 
 <h2 id="configuring-mongodb">Configuring MongoDB</h2>
 
-<p>Start Drill and configure the MongoDB storage plugin in the Drill Web
-UI to connect to Drill. Drill must be running in order to access the Web UI.</p>
-
-<p>Complete the following steps to configure MongoDB as a data source for Drill:</p>
+<p>Drill must be running in order to access the Web UI to configure a storage plugin configuration. Start Drill and view and enable the MongoDB storage plugin configuration as described in the following procedure: </p>
 
 <ol>
 <li><p><a href="/docs/starting-drill-on-linux-and-mac-os-x/">Start the Drill shell</a>.</p>
 
 <p>The Drill shell needs to be running to access the Drill Web UI.</p></li>
-<li><p>Open a browser window, and navigate to the Drill Web UI at <code>http://localhost:8047</code>.</p></li>
-<li><p>In the navigation bar, click <strong>Storage</strong>.</p></li>
-<li><p>Under Disabled Storage Plugins, select <strong>Update</strong> next to the <code>mongo</code> storage plugin.</p></li>
-<li><p>In the Configuration window, verify that <code>&quot;enabled&quot;</code> is set to <code>&quot;true.&quot;</code></p>
-
-<p><strong>Example</strong></p>
+<li><p>In the <a href="/docs/plugin-configuration-basics/#using-the-drill-web-ui">Drill Web UI</a>, select the <strong>Storage</strong> tab.</p></li>
+<li><p>Under Disabled Storage Plugins, select <strong>Update</strong> to choose the <code>mongo</code> storage plugin configuration.</p></li>
+<li><p>In the Configuration window, take a look at the default configuration:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">{
   &quot;type&quot;: &quot;mongo&quot;,
   &quot;connection&quot;: &quot;mongodb://localhost:27017/&quot;,
@@ -1057,7 +1053,7 @@ UI to connect to Drill. Drill must be running in order to access the Web UI.</p>
 
 <h2 id="querying-mongodb">Querying MongoDB</h2>
 
-<p>In the Drill shell, you can issue the <code>SHOW DATABASES</code>command to see a list of databases from all
+<p>In the <a href="/docs/starting-drill-on-linux-and-mac-os-x/">Drill shell</a>, you can issue the <code>SHOW DATABASES</code> command to see a list of schemas from all
 Drill data sources, including MongoDB. If you downloaded the zip codes file,
 you should see <code>mongo.zipdb</code> in the results.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SHOW DATABASES;
@@ -1073,15 +1069,10 @@ you should see <code>mongo.zipdb</code> in the results.</p>
 | INFORMATION_SCHEMA |
 +--------------------+
 </code></pre></div>
-<p>If you want all queries that you submit to run on <code>mongo.zipdb</code>, you can issue
+<p>If you want all queries that you submit to default to <code>mongo.zipdb</code>, you can issue
 the <code>USE</code> command to change schema.</p>
 
 <h3 id="example-queries">Example Queries</h3>
-
-<p>The following example queries are included for reference. However, you can use
-the SQL power of Apache Drill directly on MongoDB. For more information about,
-refer to the <a href="/docs/sql-reference">SQL
-Reference</a>.</p>
 
 <p><strong>Example 1: View mongo.zipdb Dataset</strong></p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM zipcodes LIMIT 10;
@@ -1151,10 +1142,8 @@ Reference</a>.</p>
 </code></pre></div>
 <h2 id="using-odbc/jdbc-drivers">Using ODBC/JDBC Drivers</h2>
 
-<p>You can leverage the power of Apache Drill to query MongoDB through standard
-BI tools, such as Tableau and SQuirreL.</p>
-
-<p>For information about Drill ODBC and JDBC drivers, refer to <a href="/docs/odbc-jdbc-interfaces">Drill Interfaces</a>.</p>
+<p>You can query MongoDB through standard
+BI tools, such as Tableau and SQuirreL. For information about Drill ODBC and JDBC drivers, refer to <a href="/docs/odbc-jdbc-interfaces">Drill Interfaces</a>.</p>
 
     
       

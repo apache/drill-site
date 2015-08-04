@@ -801,7 +801,11 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/develop-a-simple-function/">Develop a Simple Function</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/developing-a-simple-function/">Developing a Simple Function</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/tutorial-develop-a-simple-function/">Tutorial: Develop a Simple Function</a></li>
             
           
             
@@ -1003,65 +1007,71 @@
 
     <div class="int_text" align="left">
       
-        <p>You can register a storage plugin instance that connects Drill to a local file system or to a distributed file system registered in <code>core-site.xml</code>, such as S3
+        <p>You can register a storage plugin configuration that connects Drill to a local file system or to a distributed file system registered in the Hadoop <code>core-site.xml</code>, such as S3
 or HDFS. By
-default, Apache Drill includes an storage plugin named <code>dfs</code> that points to the local file
+default, Apache Drill includes a storage plugin configuration named <code>dfs</code> that points to the local file
 system on your machine by default. </p>
 
 <h2 id="connecting-drill-to-a-file-system">Connecting Drill to a File System</h2>
 
-<p>In a Drill cluster, you typically do not query the local file system, but instead place files on the distributed file system. You configure the connection property of the storage plugin workspace to connect Drill to a distributed file system. For example, the following connection properties connect Drill to an HDFS cluster from a client:</p>
+<p>In a Drill cluster, you typically do not query the local file system, but instead place files on the distributed file system. Currently, you need to use a distributed file system when connecting multiple Drillbits to get complete, consistent query results.</p>
+
+<p>You configure the connection property of the storage plugin workspace to connect Drill to a distributed file system. For example, the following connection property connects Drill to an HDFS cluster from a client:</p>
 
 <p><code>&quot;connection&quot;: &quot;hdfs://&lt;IP Address&gt;:&lt;Port&gt;/&quot;</code>   </p>
 
-<p>To query a file on HDFS from a node on the cluster, you can simply change the connection to from <code>file:///</code> to <code>hdfs://</code> in the <code>dfs</code> storage plugin.</p>
+<p>To query a file on HDFS from a node on the cluster, you can simply change the connection from <code>file:///</code> to <code>hdfs://</code> in the <code>dfs</code> storage plugin.</p>
 
-<p>To change the <code>dfs</code> storage plugin configuration to point to a local or a distributed file system, use <code>connection</code> attributes as shown in the following example.
-* Local file system example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{
-  &quot;type&quot;: &quot;file&quot;,
-  &quot;enabled&quot;: true,
-  &quot;connection&quot;: &quot;file:///&quot;,
-  &quot;workspaces&quot;: {
-    &quot;root&quot;: {
-      &quot;location&quot;: &quot;/user/max/donuts&quot;,
-      &quot;writable&quot;: false,
-      &quot;defaultInputFormat&quot;: null
-     }
-  },
-     &quot;formats&quot; : {
-       &quot;json&quot; : {
-         &quot;type&quot; : &quot;json&quot;
+<p>To change the <code>dfs</code> storage plugin configuration to point to a different local or a distributed file system, use <code>connection</code> attributes as shown in the following examples.</p>
+
+<ul>
+<li>Local file system example:</li>
+</ul>
+<div class="highlight"><pre><code class="language-text" data-lang="text">  {
+    &quot;type&quot;: &quot;file&quot;,
+    &quot;enabled&quot;: true,
+    &quot;connection&quot;: &quot;file:///&quot;,
+    &quot;workspaces&quot;: {
+      &quot;root&quot;: {
+        &quot;location&quot;: &quot;/user/max/donuts&quot;,
+        &quot;writable&quot;: false,
+        &quot;defaultInputFormat&quot;: null
        }
-     }
+    },
+    &quot;formats&quot; : {
+      &quot;json&quot; : {
+        &quot;type&quot; : &quot;json&quot;
+      }
+    }
   }
 </code></pre></div>
 <ul>
-<li><p>Distributed file system example:</p>
-
-<p>{
-  &quot;type&quot; : &quot;file&quot;,
-  &quot;enabled&quot; : true,
-  &quot;connection&quot; : &quot;hdfs://10.10.30.156:8020/&quot;,
-  &quot;workspaces&quot; : {
-    &quot;root&quot; : {
-      &quot;location&quot; : &quot;/user/root/drill&quot;,
-      &quot;writable&quot; : true,
-      &quot;defaultInputFormat&quot; : null
-    }
-  },
-  &quot;formats&quot; : {
-    &quot;json&quot; : {
-      &quot;type&quot; : &quot;json&quot;
+<li>Distributed file system example:</li>
+</ul>
+<div class="highlight"><pre><code class="language-text" data-lang="text">  {
+    &quot;type&quot; : &quot;file&quot;,
+    &quot;enabled&quot; : true,
+    &quot;connection&quot; : &quot;hdfs://10.10.30.156:8020/&quot;,
+    &quot;workspaces&quot; : {
+      &quot;root&quot; : {
+        &quot;location&quot; : &quot;/user/root/drill&quot;,
+        &quot;writable&quot; : true,
+        &quot;defaultInputFormat&quot; : null
+      }
+    },
+    &quot;formats&quot; : {
+      &quot;json&quot; : {
+        &quot;type&quot; : &quot;json&quot;
+      }
     }
   }
-}</p></li>
-</ul>
+</code></pre></div>
+<p>To connect to a Hadoop file system, you include the IP address and port number of the
+name node.</p>
 
-<p>To connect to a Hadoop file system, you include the IP address of the
-name node and the port number.</p>
+<h3 id="querying-donuts-example">Querying Donuts Example</h3>
 
-<p>The following example shows an file type storage plugin configuration with a
+<p>The following example shows a file type storage plugin configuration with a
 workspace named <code>json_files</code>. The configuration points Drill to the
 <code>/users/max/drill/json/</code> directory in the local file system <code>(dfs)</code>:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">{
@@ -1076,18 +1086,16 @@ workspace named <code>json_files</code>. The configuration points Drill to the
    } 
 },
 </code></pre></div>
-<p>The <code>connection</code> parameter in this configuration is &quot;<code>file:///</code>&quot;, connecting Drill to the local file system (<code>dfs</code>).</p>
+<p>The <code>connection</code> parameter in this configuration is &quot;<code>file:///</code>&quot;, connecting Drill to the local file system.</p>
 
 <p>To query a file in the example <code>json_files</code> workspace, you can issue the <code>USE</code>
 command to tell Drill to use the <code>json_files</code> workspace configured in the <code>dfs</code>
 instance for each query that you issue:</p>
-
-<p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">USE dfs.json_files;
-SELECT * FROM dfs.json_files.`donuts.json` WHERE type=&#39;frosted&#39;
+SELECT * FROM `donuts.json` WHERE type=&#39;frosted&#39;
 </code></pre></div>
 <p>If the <code>json_files</code> workspace did not exist, the query would have to include the
-full path to the <code>donuts.json</code> file:</p>
+full file path name to the <code>donuts.json</code> file:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM dfs.`/users/max/drill/json/donuts.json` WHERE type=&#39;frosted&#39;;
 </code></pre></div>
     

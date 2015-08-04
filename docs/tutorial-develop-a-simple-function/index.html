@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Installing the Driver on Linux - Apache Drill</title>
+<title>Tutorial: Develop a Simple Function - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -358,8 +358,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">ODBC/JDBC Interfaces</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">ODBC/JDBC Interfaces</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/interfaces-introduction/">Interfaces Introduction</a></li>
@@ -375,9 +375,9 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">Installing the ODBC Driver</a></li>
-              <ul style="">
+              <ul style="display: none">
               
-                <li class="toctree-l3 current"><a class="reference internal" href="/docs/installing-the-driver-on-linux/">Installing the Driver on Linux</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-the-driver-on-linux/">Installing the Driver on Linux</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-the-driver-on-mac-os-x/">Installing the Driver on Mac OS X</a></li>
               
@@ -793,8 +793,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Develop Custom Functions</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Develop Custom Functions</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/develop-custom-functions-introduction/">Develop Custom Functions Introduction</a></li>
@@ -805,7 +805,7 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/tutorial-develop-a-simple-function/">Tutorial: Develop a Simple Function</a></li>
+              <li class="toctree-l2 current"><a class="reference internal" href="/docs/tutorial-develop-a-simple-function/">Tutorial: Develop a Simple Function</a></li>
             
           
             
@@ -984,22 +984,20 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces</a></li>
+    <li><a href="/docs/develop-custom-functions/">Develop Custom Functions</a></li>
   
-    <li><a href="/docs/installing-the-odbc-driver/">Installing the ODBC Driver</a></li>
-  
-  <li>Installing the Driver on Linux</li>
+  <li>Tutorial: Develop a Simple Function</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/odbc-jdbc-interfaces/installing-the-odbc-driver/010-installing-the-driver-on-linux.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/develop-custom-functions/025-tutorial-develop-a-simple-function.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>Installing the Driver on Linux</h1>
+      <h1>Tutorial: Develop a Simple Function</h1>
 
     </div>
 
@@ -1007,133 +1005,234 @@
 
     <div class="int_text" align="left">
       
-        <p>Install the MapR Drill ODBC Driver on the machine from which you connect to
-the Drill service. You can install the 32- or 64-bit driver on Linux. Install
-the version of the driver that matches the architecture of the client
-application that you use to access Drill. The 64-bit editions of Linux support
-32- and 64-bit applications.</p>
+        <p>You can create complex functions having advanced features, but for example purposes, this tutorial covers how to create a simple MASK function. You extend the Drill query engine using the Drill Simple Function interface:</p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">drill</span><span class="o">.</span><span class="na">contrib</span><span class="o">.</span><span class="na">function</span><span class="o">;</span>
 
-<p>Install the MapR Drill ODBC Driver on a system that meets the <a href="/docs/installing-the-driver-on-linux/#system-requirements">system requirements</a>, and then complete the following steps described in detail in this document:</p>
+<span class="kn">import</span> <span class="nn">org.apache.drill.exec.expr.DrillSimpleFunc</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.drill.exec.expr.annotations.FunctionTemplate</span><span class="o">;</span>
+
+<span class="nd">@FunctionTemplate</span><span class="o">(</span>         
+  <span class="cm">/* Add annotations name, scope, and nulls */</span>          
+<span class="o">)</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleMaskFunc</span> <span class="kd">implements</span> <span class="n">DrillSimpleFunc</span><span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">eval</span><span class="o">()</span> <span class="o">{</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>The MASK function transforms the value of a column on each row. The function masks characters in a string, as shown by the following pseudo-code:</p>
+
+<p><code>MASK( &#39;PASSWORD&#39; , &#39;#&#39; , 4 ) =&gt; ####WORD</code></p>
+
+<p>The MASK function replaces a given number of characters from the beginning of a string with another character. In this example, MASK replaces four characters with the # character. </p>
+
+<p>You can get the complete project for creating and building this function from the <a href="https://github.com/tgrall/drill-simple-mask-function">drill-simple-mask-function Github repository</a>. </p>
+
+<h2 id="prerequisites">Prerequisites</h2>
 
 <ul>
-<li><a href="/docs/installing-the-driver-on-linux/#step-1:-download-the-mapr-drill-odbc-driver">Step 1: Download the MapR Drill ODBC Driver</a> </li>
-<li><a href="/docs/installing-the-driver-on-linux/#step-2:-install-the-mapr-drill-odbc-driver">Step 2: Install the MapR Drill ODBC Driver</a></li>
-<li><a href="/docs/installing-the-driver-on-linux/#step-3:-check-the-mapr-drill-odbc-driver-version">Step 3: Check the MapR Drill ODBC Driver version</a></li>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html">Oracle Java SE Development (JDK) Kit 7</a> or later<br></li>
+<li><a href="http://getdrill.org/drill/download/apache-drill-1.1.0.tar.gz">Apache Drill 1.1</a> or later<br></li>
+<li><a href="https://maven.apache.org/download.cgi">Maven 3.0</a> or later</li>
 </ul>
 
-<p>Verify that your system meets the system requirements before you start.</p>
+<hr>
 
-<h2 id="system-requirements">System Requirements</h2>
+<h2 id="step-1:-add-dependencies">Step 1: Add dependencies</h2>
+
+<p>First, add the following Drill dependency to your maven project:</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"> <span class="nt">&lt;dependency&gt;</span>
+     <span class="nt">&lt;groupId&gt;</span>org.apache.drill.exec<span class="nt">&lt;/groupId&gt;</span>
+     <span class="nt">&lt;artifactId&gt;</span>drill-java-exec<span class="nt">&lt;/artifactId&gt;</span>
+     <span class="nt">&lt;version&gt;</span>1.1.0<span class="nt">&lt;/version&gt;</span>
+ <span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div>
+<hr>
+
+<h2 id="step-2:-implement-the-function-template">Step 2: Implement the function template</h2>
+
+<p>In the @FunctionTemplate declaration, add the following annotations:</p>
 
 <ul>
-<li>One of the following distributions (32- and 64-bit editions are supported):
+<li>Name of the custom function 
+<code>name=&quot;mask&quot;</code></li>
+<li>Scope of the custom function, in this case, Simple 
+<code>scope= FunctionTemplate.FunctionScope.SIMPLE</code></li>
+<li>What to do when the value is NULL, in this case Reverse will just returns NULL
+<code>nulls = FunctionTemplate.NullHandling.NULL_IF_NULL</code></li>
+</ul>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="o">.</span> <span class="o">.</span> <span class="o">.</span>
+<span class="nd">@FunctionTemplate</span><span class="o">(</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;mask&quot;</span><span class="o">,</span>
+        <span class="n">scope</span> <span class="o">=</span> <span class="n">FunctionTemplate</span><span class="o">.</span><span class="na">FunctionScope</span><span class="o">.</span><span class="na">SIMPLE</span><span class="o">,</span>
+        <span class="n">nulls</span> <span class="o">=</span> <span class="n">FunctionTemplate</span><span class="o">.</span><span class="na">NullHandling</span><span class="o">.</span><span class="na">NULL_IF_NULL</span>
+<span class="o">)</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleMaskFunc</span> <span class="kd">implements</span> <span class="n">DrillSimpleFunc</span><span class="o">{</span>
+<span class="o">.</span> <span class="o">.</span> <span class="o">.</span>
+<span class="o">}</span>
+</code></pre></div>
+<hr>
+
+<h2 id="step-3:-declare-input-parameters">Step 3: Declare input parameters</h2>
+
+<p>The eval() method that you implement appears to have no parameters. By examining the simple function interface <a href="https://github.com/apache/drill/blob/master/exec/java-exec/src/main/java/org/apache/drill/exec/expr/fn/DrillSimpleFuncHolder.java#L42">source code</a>, you can see that Drill generates the function dynamically, and in this case, requires declaration of the following input parameters using the @Param annotation:</p>
 
 <ul>
-<li>Red Hat® Enterprise Linux® (RHEL) 5.0/6.0</li>
-<li>CentOS 5.0/6.0</li>
-<li>SUSE Linux Enterprise Server (SLES) 11</li>
-</ul></li>
-<li>90 MB of available disk space.</li>
-<li>An installed ODBC driver manager:
-
-<ul>
-<li>iODBC 3.52.7 or above<br>
-OR </li>
-<li>unixODBC 2.2.12 or above<br>
-On Linux, 3.52.7 is available as a tarball. After unpacking the tarball, see the README for instructions about building the driver manager.</li>
-</ul></li>
-<li><p>The client must be able to resolve the actual host name of the Drill node or nodes from the IP address. Verify that a DNS entry was created on the client machine for the Drill node or nodes.<br>
-If not, create an entry in <code>/etc/hosts</code> for each node in the following format:  </p>
-
-<p><code>&lt;drill-machine-IP&gt; &lt;drill-machine-hostname&gt;</code><br>
-Example: <code>127.0.0.1 localhost</code></p></li>
+<li>A nullable string<br></li>
+<li>The mask char or string<br></li>
+<li>The number of characters to replace starting from the first<br></li>
 </ul>
 
-<p>To install the driver, you need Administrator privileges on the computer.</p>
+<p>For each of these parameters, use a holder class: VarCharHolder or NullableVarCharHolder. </p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="o">.</span> <span class="o">.</span> <span class="o">.</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleMaskFunc</span> <span class="kd">implements</span> <span class="n">DrillSimpleFunc</span> <span class="o">{</span>
 
-<h2 id="step-1:-download-the-mapr-drill-odbc-driver">Step 1: Download the MapR Drill ODBC Driver</h2>
+    <span class="nd">@Param</span>
+    <span class="n">NullableVarCharHolder</span> <span class="n">input</span><span class="o">;</span>
 
-<p>Download either the 32- or 64-bit driver:</p>
+    <span class="nd">@Param</span><span class="o">(</span><span class="n">constant</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
+    <span class="n">VarCharHolder</span> <span class="n">mask</span><span class="o">;</span>
+
+    <span class="nd">@Param</span><span class="o">(</span><span class="n">constant</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
+    <span class="n">IntHolder</span> <span class="n">toReplace</span><span class="o">;</span>
+<span class="o">.</span> <span class="o">.</span> <span class="o">.</span>
+<span class="o">}</span>
+</code></pre></div>
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">Drill doesn’t actually use the Java heap for data being processed in a query but instead keeps this data off the heap and manages the life-cycle for us without using the Java garbage collector.  </p>
+</div>
+
+<hr>
+
+<h2 id="step-4:-declare-the-return-value-type">Step 4: Declare the return value type</h2>
+
+<p>The eval() method that you implement appears to return void, but from simple function interface, but the MASK function returns a string. To declare the return value type, use the @Output annotation and declare the type to be of the VarCharHolder type. Also, because you are manipulating a VarChar, you also have to inject a buffer that Drill uses for the output. </p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleMaskFunc</span> <span class="kd">implements</span> <span class="n">DrillSimpleFunc</span> <span class="o">{</span>
+<span class="o">.</span> <span class="o">.</span> <span class="o">.</span>
+    <span class="nd">@Output</span>
+    <span class="n">VarCharHolder</span> <span class="n">out</span><span class="o">;</span>
+
+    <span class="nd">@Inject</span>
+    <span class="n">DrillBuf</span> <span class="n">buffer</span><span class="o">;</span>
+<span class="o">.</span> <span class="o">.</span> <span class="o">.</span>
+<span class="o">}</span>
+</code></pre></div>
+<hr>
+
+<h2 id="step-5:-implement-the-eval()-method">Step 5: Implement the eval() method</h2>
+
+<p>The MASK function does not require any setup, so you do not need to define the setup() method. Define only the eval() method. </p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">eval</span><span class="o">()</span> <span class="o">{</span>
+
+    <span class="c1">// get the value and replace with</span>
+    <span class="n">String</span> <span class="n">maskValue</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">drill</span><span class="o">.</span><span class="na">exec</span><span class="o">.</span><span class="na">expr</span><span class="o">.</span><span class="na">fn</span><span class="o">.</span><span class="na">impl</span><span class="o">.</span><span class="na">StringFunctionHelpers</span><span class="o">.</span><span class="na">getStringFromVarCharHolder</span><span class="o">(</span><span class="n">mask</span><span class="o">);</span>
+    <span class="n">String</span> <span class="n">stringValue</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">drill</span><span class="o">.</span><span class="na">exec</span><span class="o">.</span><span class="na">expr</span><span class="o">.</span><span class="na">fn</span><span class="o">.</span><span class="na">impl</span><span class="o">.</span><span class="na">StringFunctionHelpers</span><span class="o">.</span><span class="na">toStringFromUTF8</span><span class="o">(</span><span class="n">input</span><span class="o">.</span><span class="na">start</span><span class="o">,</span> <span class="n">input</span><span class="o">.</span><span class="na">end</span><span class="o">,</span> <span class="n">input</span><span class="o">.</span><span class="na">buffer</span><span class="o">);</span>
+
+    <span class="kt">int</span> <span class="n">numberOfCharToReplace</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">toReplace</span><span class="o">.</span><span class="na">value</span><span class="o">,</span> <span class="n">stringValue</span><span class="o">.</span><span class="na">length</span><span class="o">());</span>
+
+    <span class="c1">// build the mask substring</span>
+    <span class="n">String</span> <span class="n">maskSubString</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="na">google</span><span class="o">.</span><span class="na">common</span><span class="o">.</span><span class="na">base</span><span class="o">.</span><span class="na">Strings</span><span class="o">.</span><span class="na">repeat</span><span class="o">(</span><span class="n">maskValue</span><span class="o">,</span> <span class="n">numberOfCharToReplace</span><span class="o">);</span>
+    <span class="n">String</span> <span class="n">outputValue</span> <span class="o">=</span> <span class="o">(</span><span class="k">new</span> <span class="nf">StringBuilder</span><span class="o">(</span><span class="n">maskSubString</span><span class="o">)).</span><span class="na">append</span><span class="o">(</span><span class="n">stringValue</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="n">numberOfCharToReplace</span><span class="o">)).</span><span class="na">toString</span><span class="o">();</span>
+
+    <span class="c1">// put the output value in the out buffer</span>
+    <span class="n">out</span><span class="o">.</span><span class="na">buffer</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">;</span>
+    <span class="n">out</span><span class="o">.</span><span class="na">start</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="n">out</span><span class="o">.</span><span class="na">end</span> <span class="o">=</span> <span class="n">outputValue</span><span class="o">.</span><span class="na">getBytes</span><span class="o">().</span><span class="na">length</span><span class="o">;</span>
+    <span class="n">buffer</span><span class="o">.</span><span class="na">setBytes</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">outputValue</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>The eval() method performs the following tasks:</p>
 
 <ul>
-<li><a href="http://package.mapr.com/tools/MapR-ODBC/MapR_Drill/MapRDrill_odbc_v1.1.0.1000/MapRDrillODBC-32bit-1.1.0.i686.rpm">MapR Drill ODBC Driver (32-bit)</a></li>
-<li><a href="http://package.mapr.com/tools/MapR-ODBC/MapR_Drill/MapRDrill_odbc_v1.1.0.1000/MapRDrillODBC-1.1.0.x86_64.rpm">MapR Drill ODBC Driver (64-bit)</a></li>
+<li>Gets the mask</li>
+<li>Gets the value</li>
+<li>Gets the number of character to replace</li>
+<li>Generates a new string with masked values</li>
+<li>Creates and populates the output buffer</li>
 </ul>
 
-<h2 id="step-2:-install-the-mapr-drill-odbc-driver">Step 2: Install the MapR Drill ODBC Driver</h2>
+<p>Even to a seasoned Java developer, the eval() method might look a bit mysterious because Drill generates the final code on the fly to fulfill a query request. This technique leverages Java’s just-in-time (JIT) compiler for maximum speed.</p>
 
-<p>To install the driver, complete the following steps:</p>
+Basic Coding Rules</h2>
 
-<ol>
-<li>Login as the root user.</li>
-<li>Navigate to the folder that contains the driver RPM packages to install.</li>
-<li>Enter the following command where <em>RPMFileName</em> is the file name of the RPM package containing the version of the driver that you want to install:<br>
+<p>To leverage Java’s just-in-time (JIT) compiler for maximum speed, you need to adhere to some basic rules.</p>
 
 <ul>
-<li>RedHat/CentOS<br>
-<code>yum localinstall --nogpgcheck &lt;RPMFileName&gt;</code></li>
-<li>SUSE<br>
-<code>zypper install RPMFileName</code></li>
-</ul></li>
-</ol>
-
-<p>The MapR Drill ODBC Driver depends on the following resources:</p>
-
-<ul>
-<li><code>cyrus-sasl-2.1.22-7</code> or above</li>
-<li><code>cyrus-sasl-gssapi-2.1.22-7</code> or above</li>
-<li><code>cyrus-sasl-plain-2.1.22-7</code> or above</li>
+<li>Do not use imports. Instead, use the fully qualified class name as required by the Google Guava API packaged in Apache Drill and as shown in <a href="/docs/tutorial-develop-a-simple-function/#step-3-declare-input-parameters">&quot;Step 3: Declare input parameters&quot;</a>.<br></li>
+<li>Manipulate the ValueHolders classes, for example VarCharHolder and IntHolder, as structs by calling helper methods, such as getStringFromVarCharHolder and toStringFromUTF8 as shown in <a href="/docs/tutorial-develop-a-simple-function/#step-5-implement-the-eval-function">&quot;Step 5: Implement the eval() function&quot;</a>.<br></li>
+<li>Do not call methods such as toString because this causes serious problems.</li>
 </ul>
 
-<p>The MapR Drill ODBC Driver typically resolves dependencies automatically. If not, error messages during the installation indicate that the package manager in your Linux distribution cannot resolve the
-dependencies automatically. In this case, manually install the packages.</p>
+<h2 id="complete-code-listing">Complete Code Listing</h2>
 
-<p>The following table provides a list of the MapR Drill ODBC Driver file
-locations and descriptions:</p>
+<p>The Github drill-simple-mask-function project includes the <a href="https://github.com/tgrall/drill-simple-mask-function/blob/master/src/main/java/org/apache/drill/contrib/function/SimpleMaskFunc.java">complete listing</a> of the code for the MASK function. </p>
 
-<table><thead>
-<tr>
-<th>File</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><code>/opt/mapr/drillodbc/ErrorMessages</code></td>
-<td>Error messages files directory.</td>
-</tr>
-<tr>
-<td><code>/opt/mapr/drillodbc/Setup</code></td>
-<td>Sample configuration files directory.</td>
-</tr>
-<tr>
-<td><code>/opt/mapr/drillodbc/lib/32</code></td>
-<td>32-bit shared libraries directory.</td>
-</tr>
-<tr>
-<td><code>/opt/mapr/drillodbc/lib/64</code></td>
-<td>64-bit shared libraries directory.</td>
-</tr>
-</tbody></table>
+<h2 id="prepare-the-package">Prepare the Package</h2>
 
-<h2 id="step-3:-check-the-mapr-drill-odbc-driver-version">Step 3: Check the MapR Drill ODBC Driver version</h2>
+<p>Because Drill generates the source, you must prepare your package such that classes and sources of the function are present in the classpath. The classes and sources are required for the necessary code generation. Drill uses the compiled code to access the annotations and uses the source code to do code generation. This packaging differs from the way Java code is typically packaged.</p>
 
-<p>To check the version of the driver you installed, use the following case-sensitive command on the terminal command line:</p>
+<p>For simplicity, use maven to build your project in a pom.xml file as follows:</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;plugin&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>maven-source-plugin<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>2.4<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;executions&gt;</span>
+        <span class="nt">&lt;execution&gt;</span>
+            <span class="nt">&lt;id&gt;</span>attach-sources<span class="nt">&lt;/id&gt;</span>
+            <span class="nt">&lt;phase&gt;</span>package<span class="nt">&lt;/phase&gt;</span>
+            <span class="nt">&lt;goals&gt;</span>
+                <span class="nt">&lt;goal&gt;</span>jar-no-fork<span class="nt">&lt;/goal&gt;</span>
+            <span class="nt">&lt;/goals&gt;</span>
+        <span class="nt">&lt;/execution&gt;</span>
+    <span class="nt">&lt;/executions&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
+</code></pre></div>
+<h2 id="build-and-deploy-the-function">Build and Deploy the Function</h2>
 
-<p><code>yum list | grep MapRDrillODBC</code></p>
+<p>Build the function using mvn package:</p>
 
-<p>or</p>
+<p><code>mvn clean package</code></p>
 
-<p><code>rpm -qa | grep MapRDrillodbc</code></p>
+<p>Maven generates two JAR files:</p>
 
-<h3 id="next-step">Next Step</h3>
+<ul>
+<li>The default jar with the classes and resources (drill-simple-mask-1.0.jar)<br></li>
+<li>A second jar with the sources (drill-simple-mask-1.0-sources.jar)</li>
+</ul>
 
-<p><a href="/docs/configuring-odbc-on-linux/">Configuring ODBC on Linux</a>.</p>
+<p>Copy the JAR files to the following location:</p>
 
+<p><code>&lt;Drill installation directory&gt;/jars/3rdparty</code> </p>
+
+<h2 id="add-a-drill-module.conf-file-to-resources">Add a drill-module.conf File to Resources</h2>
+
+<p>Add a <code>drill-module.conf</code> file in the resources folder of your project. The presence of this file tells Drill that your jar contains a custom function. If you have no specific configuration to set for your function, you can keep this file empty.</p>
+
+<h2 id="test-the-new-function">Test the New Function</h2>
+
+<p>Restart drill and run the following query:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT MASK(first_name, &#39;*&#39; , 3) FIRST , MASK(last_name, &#39;#&#39;, 7) LAST  FROM cp.`employee.json` LIMIT 5;
++----------+------------+
+|  FIRST   |    LAST    |
++----------+------------+
+| ***ri    | ######     |
+| ***rick  | #######    |
+| ***hael  | ######     |
+| ***a     | #######ez  |
+| ***erta  | #######    |
++----------+------------+
+5 rows selected (2.259 seconds)
+</code></pre></div>
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/installing-the-odbc-driver/">← Installing the ODBC Driver</a></span><span class="next-toc"><a href="/docs/installing-the-driver-on-mac-os-x/">Installing the Driver on Mac OS X →</a></span>
+  <span class="previous-toc"><a href="/docs/developing-a-simple-function/">← Developing a Simple Function</a></span><span class="next-toc"><a href="/docs/developing-an-aggregate-function/">Developing an Aggregate Function →</a></span>
 </div>
 
     
