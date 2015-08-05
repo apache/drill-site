@@ -1005,22 +1005,14 @@
 
     <div class="int_text" align="left">
       
-        <p>You can create complex functions having advanced features, but for example purposes, this tutorial covers how to create a simple MASK function. You extend the Drill query engine using the Drill Simple Function interface:</p>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">drill</span><span class="o">.</span><span class="na">contrib</span><span class="o">.</span><span class="na">function</span><span class="o">;</span>
+        <p>You can create complex functions having advanced features, but for example purposes, this tutorial covers how to create a simple MASK function. You extend the Drill query engine using the <a href="https://github.com/apache/drill/blob/master/exec/java-exec/src/main/java/org/apache/drill/exec/expr/DrillSimpleFunc.java">Drill Simple Function interface</a>:</p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">drill</span><span class="o">.</span><span class="na">exec</span><span class="o">.</span><span class="na">expr</span><span class="o">;</span>
 
-<span class="kn">import</span> <span class="nn">org.apache.drill.exec.expr.DrillSimpleFunc</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.apache.drill.exec.expr.annotations.FunctionTemplate</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.drill.exec.record.RecordBatch</span><span class="o">;</span>
 
-<span class="nd">@FunctionTemplate</span><span class="o">(</span>         
-  <span class="cm">/* Add annotations name, scope, and nulls */</span>          
-<span class="o">)</span>
-
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleMaskFunc</span> <span class="kd">implements</span> <span class="n">DrillSimpleFunc</span><span class="o">{</span>
-
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
-    <span class="o">}</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">eval</span><span class="o">()</span> <span class="o">{</span>
-    <span class="o">}</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">DrillSimpleFunc</span> <span class="kd">extends</span> <span class="n">DrillFunc</span><span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">();</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">eval</span><span class="o">();</span>
 <span class="o">}</span>
 </code></pre></div>
 <p>The MASK function transforms the value of a column on each row. The function masks characters in a string, as shown by the following pseudo-code:</p>
@@ -1052,9 +1044,9 @@
 </code></pre></div>
 <hr>
 
-<h2 id="step-2:-implement-the-function-template">Step 2: Implement the function template</h2>
+<h2 id="step-2:-add-annotations-to-the-function-template">Step 2: Add annotations to the function template</h2>
 
-<p>In the @FunctionTemplate declaration, add the following annotations:</p>
+<p>To start implementing the DrillSimpleFunc interface, add the following annotations to the @FunctionTemplate declaration:</p>
 
 <ul>
 <li>Name of the custom function 
@@ -1065,21 +1057,32 @@
 <code>nulls = FunctionTemplate.NullHandling.NULL_IF_NULL</code></li>
 </ul>
 <div class="highlight"><pre><code class="language-java" data-lang="java"><span class="o">.</span> <span class="o">.</span> <span class="o">.</span>
+<span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">drill</span><span class="o">.</span><span class="na">contrib</span><span class="o">.</span><span class="na">function</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.drill.exec.expr.DrillSimpleFunc</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.apache.drill.exec.expr.annotations.FunctionTemplate</span><span class="o">;</span>
+
 <span class="nd">@FunctionTemplate</span><span class="o">(</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;mask&quot;</span><span class="o">,</span>
-        <span class="n">scope</span> <span class="o">=</span> <span class="n">FunctionTemplate</span><span class="o">.</span><span class="na">FunctionScope</span><span class="o">.</span><span class="na">SIMPLE</span><span class="o">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s">&quot;mask&quot;</span><span class="o">,</span>
+        <span class="n">scope</span><span class="o">=</span> <span class="n">FunctionTemplate</span><span class="o">.</span><span class="na">FunctionScope</span><span class="o">.</span><span class="na">SIMPLE</span><span class="o">,</span>
         <span class="n">nulls</span> <span class="o">=</span> <span class="n">FunctionTemplate</span><span class="o">.</span><span class="na">NullHandling</span><span class="o">.</span><span class="na">NULL_IF_NULL</span>
 <span class="o">)</span>
-
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleMaskFunc</span> <span class="kd">implements</span> <span class="n">DrillSimpleFunc</span><span class="o">{</span>
-<span class="o">.</span> <span class="o">.</span> <span class="o">.</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
+
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">eval</span><span class="o">()</span> <span class="o">{</span>
+
+    <span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div>
 <hr>
 
 <h2 id="step-3:-declare-input-parameters">Step 3: Declare input parameters</h2>
 
-<p>The eval() method that you implement appears to have no parameters. By examining the simple function interface <a href="https://github.com/apache/drill/blob/master/exec/java-exec/src/main/java/org/apache/drill/exec/expr/fn/DrillSimpleFuncHolder.java#L42">source code</a>, you can see that Drill generates the function dynamically, and in this case, requires declaration of the following input parameters using the @Param annotation:</p>
+<p>The function will be generated dynamically, as you can see in the <a href="https://github.com/apache/drill/blob/master/exec/java-exec/src/main/java/org/apache/drill/exec/expr/fn/DrillSimpleFuncHolder.java#L42">DrillSimpleFuncHolder</a>, and the input parameters and output holders are defined using holders by annotations. Define the parameters using the @Param annotation. </p>
 
 <ul>
 <li>A nullable string<br></li>
@@ -1087,7 +1090,7 @@
 <li>The number of characters to replace starting from the first<br></li>
 </ul>
 
-<p>For each of these parameters, use a holder class: VarCharHolder or NullableVarCharHolder. </p>
+<p>Use a holder classes to provide a buffer to manage larger objects in an efficient way: VarCharHolder or NullableVarCharHolder. </p>
 <div class="highlight"><pre><code class="language-java" data-lang="java"><span class="o">.</span> <span class="o">.</span> <span class="o">.</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleMaskFunc</span> <span class="kd">implements</span> <span class="n">DrillSimpleFunc</span> <span class="o">{</span>
 
@@ -1111,7 +1114,7 @@
 
 <h2 id="step-4:-declare-the-return-value-type">Step 4: Declare the return value type</h2>
 
-<p>The eval() method that you implement appears to return void, but from simple function interface, but the MASK function returns a string. To declare the return value type, use the @Output annotation and declare the type to be of the VarCharHolder type. Also, because you are manipulating a VarChar, you also have to inject a buffer that Drill uses for the output. </p>
+<p>Also, using the @Output annotation, define the returned value as VarCharHolder type. Because you are manipulating a VarChar, you also have to inject a buffer that Drill uses for the output. </p>
 <div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleMaskFunc</span> <span class="kd">implements</span> <span class="n">DrillSimpleFunc</span> <span class="o">{</span>
 <span class="o">.</span> <span class="o">.</span> <span class="o">.</span>
     <span class="nd">@Output</span>
@@ -1156,7 +1159,7 @@
 <li>Creates and populates the output buffer</li>
 </ul>
 
-<p>Even to a seasoned Java developer, the eval() method might look a bit mysterious because Drill generates the final code on the fly to fulfill a query request. This technique leverages Java’s just-in-time (JIT) compiler for maximum speed.</p>
+<p>Even to a seasoned Java developer, the eval() method might look a bit strange because Drill generates the final code on the fly to fulfill a query request. This technique leverages Java’s just-in-time (JIT) compiler for maximum speed.</p>
 
 Basic Coding Rules</h2>
 

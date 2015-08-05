@@ -1476,25 +1476,6 @@ FROM dfs.`/Users/mypath/example.json` t;
 <li><p><a href="/docs/kvgen/">KVGEN</a> separates objects having more elements than optimal for querying.</p></li>
 </ul>
 
-<h3 id="nested-column-names">Nested Column Names</h3>
-
-<p>You cannot use reserved words for nested column names because Drill returns null if you enclose n-level nested column names in back ticks. The previous example encloses the date and time column names in back ticks because the names are reserved words. The enclosure of column names in back ticks works because the date and time columns belong to the first level of the JSON object.</p>
-
-<p>For example, the following object contains the reserved word key, which you need to rename to <code>_key</code> or something other than non-reserved word:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{
-  &quot;type&quot;: &quot;ticket&quot;,
-  &quot;channel&quot;: 123455,
-  &quot;_month&quot;: 12,
-  &quot;_day&quot;: [ 15, 25, 28, 31 ],
-  &quot;sales&quot;: {
-    &quot;NY&quot;: 532806,
-    &quot;PA&quot;: 112889,
-    &quot;TX&quot;: 898999,
-    &quot;UT&quot;: 10875
-    &quot;key&quot;: [ 78946, 39107, 76311 ]
-  }
-}
-</code></pre></div>
 <h3 id="schema-changes">Schema changes</h3>
 
 <p>Drill cannot read JSON files containing changes in the schema. For example, attempting to query an object having array elements of different data types cause an error:</p>
