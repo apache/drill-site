@@ -1012,6 +1012,7 @@
 <ul>
 <li><a href="/docs/data-type-conversion#cast">CAST</a></li>
 <li><a href="/docs/data-type-conversion#convert_to-and-convert_from">CONVERT_TO and CONVERT_FROM</a></li>
+<li><a href="/docs/data-type-conversion#string_binary-function">STRING_BINARY</a> and <a href="/docs/data-type-conversion#binary_string-function">BINARY_STRING</a></li>
 <li><a href="/docs/data-type-conversion#other-data-type-conversions">Other Data Type Conversions</a></li>
 </ul>
 
@@ -1163,6 +1164,8 @@ CONVERT_FROM(column, type)
 data as encoded VARBINARY data. To read HBase data in Drill, convert every column of an HBase table <em>from</em> binary to an Drill internal type. To write HBase or Parquet binary data, convert SQL data <em>to</em> binary data and store the data in an HBase or Parquet while creating a table as a selection (CTAS).</p>
 
 <p>CONVERT_TO also converts an SQL data type to complex types, including HBase byte arrays, JSON and Parquet arrays, and maps. CONVERT_FROM converts from complex types, including HBase arrays, JSON and Parquet arrays and maps to an SQL data type. </p>
+
+<p>Use the BINARY_STRING and STRING_BINARY custom Drill functions with CONVERT_TO and CONVERT_FROM to see readable results of your conversions.</p>
 
 <h3 id="conversion-of-data-types-examples">Conversion of Data Types Examples</h3>
 
@@ -1378,6 +1381,111 @@ FROM tmp.`json2parquet2`;
 </code></pre></div></li>
 </ol>
 
+<h2 id="string_binary-function">STRING_BINARY function</h2>
+
+<p>Converts a VARBINARY type into a hexadecimal-encoded string.</p>
+
+<h3 id="string_binary-syntax">STRING_BINARY Syntax</h3>
+<div class="highlight"><pre><code class="language-text" data-lang="text">STRING_BINARY(expression)
+</code></pre></div>
+<p><em>expression</em> is a byte array, such as {(byte)0xca, (byte)0xfe, (byte)0xba, (byte)0xbe}</p>
+
+<p>This function returns a hexadecimal string, such as &quot;\xca\xfe\xba\xbe&quot;. You can use this function with CONVERT_TO when you want to test the effects of a conversion.</p>
+
+<h3 id="string_binary-examples">STRING_BINARY Examples</h3>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT
+  STRING_BINARY(CONVERT_TO(1, &#39;INT&#39;)) as i,
+  STRING_BINARY(CONVERT_TO(1, &#39;INT_BE&#39;)) as i_be,
+  STRING_BINARY(CONVERT_TO(1, &#39;BIGINT&#39;)) as l,
+  STRING_BINARY(CONVERT_TO(1, &#39;BIGINT&#39;)) as l_be,
+  STRING_BINARY(CONVERT_TO(1, &#39;INT_HADOOPV&#39;)) as l_be
+FROM (VALUES (1));
+</code></pre></div>
+<p>Output is:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">+-------------------+-------------------+-----------------------------------+-----------------------------------+--------+
+|         i         |       i_be        |                 l                 |               l_be                | l_be0  |
++-------------------+-------------------+-----------------------------------+-----------------------------------+--------+
+| \x01\x00\x00\x00  | \x00\x00\x00\x01  | \x01\x00\x00\x00\x00\x00\x00\x00  | \x01\x00\x00\x00\x00\x00\x00\x00  | \x01   |
++-------------------+-------------------+-----------------------------------+-----------------------------------+--------+
+1 row selected (0.323 seconds)
+</code></pre></div>
+<p>Encode &#39;hello&#39; in UTF-8 and UTF-16 VARBINARY encoding and return the results as a VARCHAR.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT
+  STRING_BINARY(CONVERT_TO(&#39;hello&#39;, &#39;UTF8&#39;)) u8,
+  STRING_BINARY(CONVERT_TO(&#39;hello&#39;, &#39;UTF16&#39;)) u16
+FROM (VALUES (1));
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">+--------+------------------------------------+
+|   u8   |                u16                 |
++--------+------------------------------------+
+| hello  | \xFE\xFF\x00h\x00e\x00l\x00l\x00o  |
++--------+------------------------------------+
+1 row selected (0.168 seconds)
+</code></pre></div>
+<h2 id="binary_string-function">BINARY_STRING function</h2>
+
+<p>Converts a hexadecimal-encoded string into a VARBINARY type. </p>
+
+<h3 id="binary_string-syntax">BINARY_STRING Syntax</h3>
+<div class="highlight"><pre><code class="language-text" data-lang="text">BINARY_STRING(expression)
+</code></pre></div>
+<p><em>expression</em> is a hexadecimal string, such as &quot;\xca\xfe\xba\xbe&quot;.</p>
+
+<p>This function returns a byte array, such as {(byte)0xca, (byte)0xfe, (byte)0xba, (byte)0xbe}. You can use this function with CONVERT_FROM for readable results.</p>
+
+<h3 id="binary_string-example">BINARY_STRING Example</h3>
+
+<p>Converts a VARBINARY type into a hexadecimal-encoded string.</p>
+
+<h3 id="binary_string-syntax">BINARY_STRING Syntax</h3>
+<div class="highlight"><pre><code class="language-text" data-lang="text">BINARY_STRING(expression)
+</code></pre></div>
+<p><em>expression</em> is a byte array, such as {(byte)0xca, (byte)0xfe, (byte)0xba, (byte)0xbe}.</p>
+
+<p>This function returns a hexadecimal-encoded string, such as &quot;\xca\xfe\xba\xbe&quot;. You can use this function with CONVERT_TO for readable results.</p>
+
+<h3 id="binary_string-examples">BINARY_STRING Examples</h3>
+
+<p>Decode the hexadecimal string 000000C8 expressed in four octets \x00\x00\x00\xC8 into its big endian four-byte integer equivalent. </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT CONVERT_FROM(BINARY_STRING(&#39;\x00\x00\x00\xC8&#39;), &#39;INT_BE&#39;) AS cnvrt
+FROM (VALUES (1));
+</code></pre></div>
+<p>Output is:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">+--------+
+| cnvrt  |
++--------+
+| 200    |
++--------+
+1 row selected (0.133 seconds)
+</code></pre></div>
+<p>Decode the same hexadecimal string into its little endian four-byte signed integer equivalent.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT CONVERT_FROM(BINARY_STRING(&#39;\x00\x00\x00\xC8&#39;), &#39;INT&#39;) AS cnvrt FROM (VALUES (1));
+</code></pre></div>
+<p>Output is:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">+-------------+
+|    cnvrt    |
++-------------+
+| -939524096  |
++-------------+
+1 row selected (0.133 seconds)
+</code></pre></div>
+<p>Convert a hexadecimal number BEBAFECA to its decimal equivalent and then to its VARBINARY equivalent, which is how the value is represented in HBase.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT CONVERT_FROM(BINARY_STRING(&#39;\xBE\xBA\xFE\xCA&#39;), &#39;INT_BE&#39;) FROM (VALUES (1));
+
++--------------+
+|    EXPR$0    |
++--------------+
+| -1095041334  |
++--------------+
+
+SELECT CONVERT_TO(-1095041334, &#39;INT_BE&#39;) FROM (VALUES (1));
+
++--------------+
+|    EXPR$0    |
++--------------+
+| [B@10c24faf  |
++--------------+
+1 row selected (0.161 seconds)
+</code></pre></div>
 <h2 id="other-data-type-conversions">Other Data Type Conversions</h2>
 
 <p>Drill supports the format for date and time literals shown in the following examples:</p>
@@ -1727,7 +1835,7 @@ use in your Drill queries as described in this section:</p>
 
 <h3 id="to_date-usage-notes">TO_DATE Usage Notes</h3>
 
-<p>Specify a format using patterns defined in <a href="http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html">Joda DateTimeFormat class</a>. The TO_TIMESTAMP function takes a Unix epoch timestamp. The TO_DATE function takes a UNIX epoch timestamp in milliseconds.</p>
+<p>Specify a format using patterns defined in <a href="http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html">Joda DateTimeFormat class</a>. The TO_TIMESTAMP function takes a Unix epoch timestamp. The TO_DATE function takes a UNIX epoch timestamp in milliseconds. The <a href="/docs/date-time-functions-and-arithmetic/#unix_timestamp">UNIX_TIMESTAMP</a> function converts a time string to a UNIX timestamp in seconds. </p>
 
 <p>To compare dates in the WHERE clause, use TO_DATE on the value in the date column and in the comparison value. For example:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT &lt;fields&gt; FROM &lt;plugin&gt; WHERE TO_DATE(&lt;field&gt;, &lt;format&gt;) &lt; TO_DATE (&lt;value&gt;, &lt;format&gt;);

@@ -1032,19 +1032,27 @@
 
 <h3 id="installing-and-configuring-pam">Installing and Configuring PAM</h3>
 
-<p>Install and configure the provided Drill PAM. Drill only supports the PAM provided here. Optionally, you can <a href="/docs/configuring-user-authentication/#implementing-and-configuring-a-custom-authenticator">build and implement a custom authenticator</a>.</p>
+<p>Install and configure the provided Drill PAM. Drill only supports the PAM provided here. Optionally, you can <a href="/docs/configuring-user-authentication/#implementing-and-configuring-a-custom-authenticator">build and implement a custom authenticator</a>. </p>
+
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">Do not point to an existing directory where other Hadoop components are installed. Other file system libraries can conflict with the Drill libraries and cause system errors.  </p>
+</div>
+ 
 
 <p>Complete the following steps to install and configure PAM for Drill:</p>
 
 <ol>
 <li>Download the <code>tar.gz</code> file for the Linux platform:<br>
 <a href="http://sourceforge.net/projects/jpam/files/jpam/jpam-1.1/">http://sourceforge.net/projects/jpam/files/jpam/jpam-1.1/</a></li>
-<li>Untar the file, and copy the <code>libjpam.so</code> file into a directory.<br>
+<li>Untar the file, and copy the <code>libjpam.so</code> file into a directory that does not contain other Hadoop components.<br>
 Example:<code>/opt/pam/</code></li>
-<li>Run the following command, and include the directory where you put the <code>libjpam.so</code> file:<br>
-<code>export DRILLBIT_JAVA_OPTS=&quot; -Djava.library.path=&lt;directory&gt;&quot;</code><br>
-Example: <code>export DRILLBIT_JAVA_OPTS=&quot; -Djava.library.path=/opt/pam/&quot;</code></li>
-<li><p>Add the following block to <code>drill.exec</code> in the <code>drill-override.conf</code> file located in <code>&lt;DRILLINSTALL_HOME&gt;/conf/</code>:  </p>
+<li><p>Add the following line to <code>&lt;DRILL_HOME&gt;/conf/drill-env.sh</code>, including the directory where the <code>libjpam.so</code> file is located:  </p>
+
+<p><code>export DRILLBIT_JAVA_OPTS=&quot;-Djava.library.path=&lt;directory&gt;&quot;</code>  </p>
+
+<p>Example: <code>export DRILLBIT_JAVA_OPTS=&quot;-Djava.library.path=/opt/pam/&quot;</code>  </p></li>
+<li><p>Add the following configuration to the <code>drill.exec</code> block in <code>&lt;DRILL_HOME&gt;/conf/drill-override.conf</code>:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">  drill.exec {
    security.user.auth {
          enabled: true,
@@ -1134,7 +1142,7 @@ Example: <code>export DRILLBIT_JAVA_OPTS=&quot; -Djava.library.path=/opt/pam/&qu
 </code></pre></div></li>
 <li><p>Add the JAR file that you built to the following directory on each Drill node:<br>
 <code>&lt;DRILLINSTALL_HOME&gt;/jars</code></p></li>
-<li><p>Add the following block to the <code>drill.exec</code> section in the <code>drill-override.conf</code> file located in <code>&lt;DRILLINSTALL_HOME&gt;/conf/</code>:  </p>
+<li><p>Add the following configuration to the <code>drill.exec</code> block in the <code>drill-override.conf</code> file located in <code>&lt;DRILLINSTALL_HOME&gt;/conf/</code>:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">      drill.exec {
        security.user.auth {
             enabled: true,

@@ -1032,15 +1032,15 @@
 <p>To configure parallelization, configure the following options in the <code>sys.options</code> table:</p>
 
 <ul>
-<li><code>planner.width.max.per.node</code><br>
+<li><code>planner.width.max_per_node</code><br>
 The maximum degree of distribution of a query across cores and cluster nodes.</li>
-<li><code>planner.width.max.per.query</code><br>
+<li><code>planner.width.max_per_query</code><br>
 Same as max per node but applies to the query as executed by the entire cluster.</li>
 </ul>
 
 <h3 id="planner.width.max_per_node">planner.width.max_per_node</h3>
 
-<p>Configure the <code>planner.width.max.per.node</code> to achieve fine grained, absolute control over parallelization. In this context <em>width</em> refers to fanout or distribution potential: the ability to run a query in parallel across the cores on a node and the nodes on a cluster. A physical plan consists of intermediate operations, known as query &quot;fragments,&quot; that run concurrently, yielding opportunities for parallelism above and below each exchange operator in the plan. An exchange operator represents a breakpoint in the execution flow where processing can be distributed. For example, a single-process scan of a file may flow into an exchange operator, followed by a multi-process aggregation fragment.</p>
+<p>Configure the <code>planner.width.max_per_node</code> to achieve fine grained, absolute control over parallelization. In this context <em>width</em> refers to fanout or distribution potential: the ability to run a query in parallel across the cores on a node and the nodes on a cluster. A physical plan consists of intermediate operations, known as query &quot;fragments,&quot; that run concurrently, yielding opportunities for parallelism above and below each exchange operator in the plan. An exchange operator represents a breakpoint in the execution flow where processing can be distributed. For example, a single-process scan of a file may flow into an exchange operator, followed by a multi-process aggregation fragment.</p>
 
 <p>The maximum width per node defines the maximum degree of parallelism for any fragment of a query, but the setting applies at the level of a single node in the cluster. The <em>default</em> maximum degree of parallelism per node is calculated as follows, with the theoretical maximum automatically scaled back (and rounded down) so that only 70% of the actual available capacity is taken into account: number of active drillbits (typically one per node) * number of cores per node * 0.7</p>
 
