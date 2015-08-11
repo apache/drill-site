@@ -1007,7 +1007,7 @@
 
     <div class="int_text" align="left">
       
-        <p>Drill reads from and writes to data sources having a wide variety of types. Drill uses data types at the RPC level that are not supported for query input, often implicitly casting data. Drill supports the following SQL data types for query input:</p>
+        <p>Drill reads from and writes to data sources having a wide variety of types. Drill uses data types at the RPC level that are not supported for query input, such as INTERVALDAY and INTERVALYEAR types, often implicitly casting data. Drill supports the following SQL data types for query input:</p>
 
 <table><thead>
 <tr>
@@ -1057,14 +1057,9 @@
 <td>2147483646</td>
 </tr>
 <tr>
-<td>INTERVALDAY</td>
-<td>A period of time in days, hours, minutes, and seconds only</td>
-<td>&#39;1 10:20:30.123&#39;</td>
-</tr>
-<tr>
-<td>INTERVALYEAR</td>
-<td>A period of time in years and months only</td>
-<td>&#39;1-2&#39; year to month</td>
+<td>INTERVAL</td>
+<td>A period of time in days, hours, minutes, and seconds only (INTERVALDAY) or in years and months (INTERVALYEAR)</td>
+<td>&#39;1 10:20:30.123&#39; (INTERVALDAY) or &#39;1-2&#39; year to month (INTERVALYEAR)</td>
 </tr>
 <tr>
 <td>SMALLINT**</td>
@@ -1172,7 +1167,7 @@ Implicitly casts all textual data to VARCHAR.</li>
 <p>The following list includes data types Drill uses in descending order of precedence. Casting precedence shown in the following table applies to the implicit casting that Drill performs. For example, Drill might implicitly cast data when a query includes a function or filter on mismatched data types:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT myBigInt FROM mytable WHERE myBigInt = 2.5;
 </code></pre></div>
-<p>As shown in the table, Drill can cast a NULL value, which has the lowest precedence, to any other type; you can cast a SMALLINT (not supported in this release) value to INT. Drill might deviate from these precedence rules for performance reasons. Under certain circumstances, such as queries involving SUBSTR and CONCAT functions, Drill reverses the order of precedence and allows a cast to VARCHAR from a type of higher precedence than VARCHAR, such as BIGINT.</p>
+<p>As shown in the table, Drill can cast a NULL value, which has the lowest precedence, to any other type; you can cast a SMALLINT (not supported in this release) value to INT. Drill might deviate from these precedence rules for performance reasons. Under certain circumstances, such as queries involving SUBSTR and CONCAT functions, Drill reverses the order of precedence and allows a cast to VARCHAR from a type of higher precedence than VARCHAR, such as BIGINT. The INTERVALDAY and INTERVALYEAR types are internal types.</p>
 
 <h3 id="casting-precedence">Casting Precedence</h3>
 
@@ -1187,68 +1182,68 @@ Implicitly casts all textual data to VARCHAR.</li>
 <tr>
 <td>1</td>
 <td>INTERVALYEAR (highest)</td>
-<td>11</td>
-<td>INT</td>
-</tr>
-<tr>
-<td>2</td>
-<td>INTERVALDAY</td>
 <td>12</td>
 <td>UINT2</td>
 </tr>
 <tr>
-<td>3</td>
-<td>TIMESTAMP</td>
+<td>2</td>
+<td>INTERVALDAY</td>
 <td>13</td>
 <td>SMALLINT*</td>
 </tr>
 <tr>
-<td>4</td>
-<td>DATE</td>
+<td>3</td>
+<td>TIMESTAMP</td>
 <td>14</td>
 <td>UINT1</td>
 </tr>
 <tr>
-<td>5</td>
-<td>TIME</td>
+<td>4</td>
+<td>DATE</td>
 <td>15</td>
 <td>VAR16CHAR</td>
 </tr>
 <tr>
-<td>6</td>
-<td>DOUBLE</td>
+<td>5</td>
+<td>TIME</td>
 <td>16</td>
 <td>FIXED16CHAR</td>
 </tr>
 <tr>
-<td>7</td>
-<td>DECIMAL</td>
+<td>6</td>
+<td>DOUBLE</td>
 <td>17</td>
 <td>VARCHAR</td>
 </tr>
 <tr>
-<td>8</td>
-<td>UINT8</td>
+<td>7</td>
+<td>DECIMAL</td>
 <td>18</td>
 <td>CHAR</td>
 </tr>
 <tr>
-<td>9</td>
-<td>BIGINT</td>
+<td>8</td>
+<td>UINT8</td>
 <td>19</td>
 <td>VARBINARY</td>
 </tr>
 <tr>
-<td>10</td>
-<td>UINT4</td>
+<td>9</td>
+<td>BIGINT</td>
 <td>20</td>
 <td>FIXEDBINARY</td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td>10</td>
+<td>UINT4</td>
 <td>21</td>
 <td>NULL (lowest)</td>
+</tr>
+<tr>
+<td>11</td>
+<td>INT</td>
+<td></td>
+<td></td>
 </tr>
 </tbody></table>
 
@@ -1448,14 +1443,12 @@ Converts a string to TIMESTAMP.</li>
 <th>DATE</th>
 <th>TIME</th>
 <th>TIMESTAMP</th>
-<th>INTERVALDAY</th>
 <th>INTERVALYEAR</th>
 <th>INTERVALDAY</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>From:</td>
-<td></td>
 <td></td>
 <td></td>
 <td></td>
@@ -1469,11 +1462,9 @@ Converts a string to TIMESTAMP.</li>
 <td>Yes</td>
 <td>Yes</td>
 <td>Yes</td>
-<td>Yes</td>
 </tr>
 <tr>
 <td>FIXEDBINARY*</td>
-<td>No</td>
 <td>No</td>
 <td>No</td>
 <td>No</td>
@@ -1487,14 +1478,12 @@ Converts a string to TIMESTAMP.</li>
 <td>Yes</td>
 <td>Yes</td>
 <td>Yes</td>
-<td>Yes</td>
 </tr>
 <tr>
 <td>VARBINARY*</td>
 <td>No</td>
 <td>No</td>
 <td>Yes</td>
-<td>No</td>
 <td>No</td>
 <td>No</td>
 </tr>
@@ -1505,14 +1494,12 @@ Converts a string to TIMESTAMP.</li>
 <td>Yes</td>
 <td>No</td>
 <td>No</td>
-<td>No</td>
 </tr>
 <tr>
 <td>TIME</td>
 <td>No</td>
 <td>Yes</td>
 <td>Yes</td>
-<td>No</td>
 <td>No</td>
 <td>No</td>
 </tr>
@@ -1523,13 +1510,11 @@ Converts a string to TIMESTAMP.</li>
 <td>Yes</td>
 <td>No</td>
 <td>No</td>
-<td>No</td>
 </tr>
 <tr>
 <td>INTERVALYEAR</td>
 <td>Yes</td>
 <td>No</td>
-<td>Yes</td>
 <td>Yes</td>
 <td>No</td>
 <td>Yes</td>
@@ -1538,7 +1523,6 @@ Converts a string to TIMESTAMP.</li>
 <td>INTERVALDAY</td>
 <td>Yes</td>
 <td>No</td>
-<td>Yes</td>
 <td>Yes</td>
 <td>Yes</td>
 <td>No</td>
