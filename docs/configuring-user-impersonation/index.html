@@ -436,8 +436,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-jreport-with-drill/">Configuring JReport with Drill</a></li>
-              
             </ul>
             
           
@@ -1120,22 +1118,9 @@ ALTER SYSTEM SET `new_view_default_permissions` = &#39;&lt;octal_code&gt;&#39;;
 </code></pre></div></li>
 <li><p>Verify that enabled is set to <code>‘true’</code>.</p></li>
 <li><p>Set the maximum number of chained user hops that you want Drill to allow.</p></li>
-<li><p>(MapR cluster only) Add one of the following lines to the <code>drill-env.sh</code> file:</p>
-
-<ul>
-<li>If the underlying file system is not secure, add the following line:
-<code>export MAPR_IMPERSONATION_ENABLED=true</code></li>
-<li>If the underlying file system has MapR security enabled, add the following line:
-<code>export MAPR_TICKETFILE_LOCATION=/opt/mapr/conf/mapruserticket</code></li>
-</ul></li>
 <li><p>Restart the Drillbit process on each Drill node.</p>
-
-<ul>
-<li>In a MapR cluster, run the following command:
-<code>maprcli node services -name drill-bits -action restart -nodes &lt;hostname&gt; -f</code></li>
-<li>In a non-MapR environment, run the following command:<br>
-<DRILLINSTALL_HOME>/bin/drillbit.sh restart</li>
-</ul></li>
+<div class="highlight"><pre><code class="language-text" data-lang="text"> &lt;DRILLINSTALL_HOME&gt;/bin/drillbit.sh restart
+</code></pre></div></li>
 </ol>
 
 <h2 id="impersonation-and-chaining-example">Impersonation and Chaining Example</h2>

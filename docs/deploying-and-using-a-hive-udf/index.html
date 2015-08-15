@@ -436,8 +436,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-jreport-with-drill/">Configuring JReport with Drill</a></li>
-              
             </ul>
             
           
@@ -1009,18 +1007,34 @@
 
 <h2 id="creating-the-udf">Creating the UDF</h2>
 
-<p>You create the JAR for a UDF to use in Drill in a conventional manner with a few caveats, using a unique name and creating a Drill resource, covered in this section.</p>
+<p>You create the JAR for a UDF to use in Drill in a conventional manner with a few caveats, using a unique name and creating a Drill resource, covered in this section. Sample code for this function is in <a href="https://github.com/viadea/HiveUDF">Github</a>.</p>
 
 <ol>
-<li>Use a unique name for the Hive UDF to avoid conflicts with Drill custom functions of the same name.</li>
-<li>Create a custom Hive UDF using either of these APIs:<br>
+<li><p>Use a unique name for the Hive UDF to avoid conflicts with Drill custom functions of the same name.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">@Description(
+        name = &quot;my_upper&quot;,
+        value = &quot;_FUNC_(str) - Converts a string to uppercase&quot;,
+        extended = &quot;Example:\n&quot; +
+        &quot;  &gt; SELECT my_upper(a) FROM test;\n&quot; +
+        &quot;  ABC&quot;
+        )
+</code></pre></div></li>
+<li><p>Create a custom Hive UDF using either of these APIs:  </p>
 
 <ul>
 <li>Simple API: org.apache.hadoop.hive.ql.exec.UDF</li>
 <li>Complex API: org.apache.hadoop.hive.ql.udf.generic.GenericUDF</li>
 </ul></li>
-<li>Create an empty <code>drill-module.conf</code> in the resources directory in the Java project. </li>
-<li>Export the logic to a JAR, including the <code>drill-module.conf</code> file in resources.</li>
+<li><p>Create an empty <code>drill-module.conf</code> in the resources directory in the Java project.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text"># ls -altr src/main/resources/drill-module.conf
+-rw-r--r-- 1 root root 0 Aug 12 23:16 src/main/resources/drill-module.conf
+</code></pre></div></li>
+<li><p>Export the logic to a JAR, including the <code>drill-module.conf</code> file in resources.</p></li>
+<li><p>Make sure the drill-module.conf is in the JAR.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text"># jar tf target/MyUDF-1.0.0.jar  |grep -i drill
+drill-module.conf
+</code></pre></div></li>
+<li><p>Test the UDF in Hive as shown in the <a href="https://github.com/viadea/HiveUDF#c-test-udf">Github readme</a>.</p></li>
 </ol>
 
 <p>The <code>drill-module.conf</code> file defines <a href="/docs/start-up-options/">startup options</a> and makes the JAR functions available to use in queries throughout the Hadoop cluster. After exporting the UDF logic to a JAR file, set up the UDF in Drill. Drill users can access the custom UDF for use in Hive queries.</p>
@@ -1032,16 +1046,23 @@
 <p>To set up the UDF:</p>
 
 <ol>
-<li>Register Hive. <a href="/docs/hive-storage-plugin/">Register a Hive storage plugin</a> that connects Drill to a Hive data source.</li>
-<li>Add the JAR for the UDF to the Drill CLASSPATH. In earlier versions of Drill, place the JAR file in the <code>/jars/3rdparty</code> directory of the Drill installation on all nodes running a Drillbit.</li>
-<li>On each Drill node in the cluster, restart the Drillbit.
+<li>Enable the default <a href="/docs/hive-storage-plugin/">Hive storage plugin configuration</a> that connects Drill to a Hive data source.<br></li>
+<li>Add the JAR for the UDF in the <code>/jars/3rdparty</code> directory of the Drill installation on all nodes running a Drillbit.<br>
+<code>clush -a cp /xxx/target/MyUDF-1.0.0.jar /xxx/drill-1.1.0/jars/3rdparty/</code><br></li>
+<li>On each Drill node in the cluster, restart the Drillbit.<br>
 <code>&lt;drill installation directory&gt;/bin/drillbit.sh restart</code></li>
 </ol>
 
 <h2 id="using-a-udf">Using a UDF</h2>
 
 <p>Use a Hive UDF just as you would use a Drill custom function. For example, to query using a Hive UDF named upper-to-lower that takes a column.value argument, the SELECT statement looks something like this:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> SELECT upper-to-lower(my_column.myvalue) FROM mytable;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT MY_UPPER(&#39;abc&#39;) from (VALUES(1));
++---------+
+| EXPR$0  |
++---------+
+| ABC     |
++---------+
+1 row selected (1.516 seconds)
 </code></pre></div>
     
       

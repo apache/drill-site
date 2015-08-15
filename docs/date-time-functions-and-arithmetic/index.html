@@ -436,8 +436,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-jreport-with-drill/">Configuring JReport with Drill</a></li>
-              
             </ul>
             
           
@@ -1087,7 +1085,7 @@
 <h3 id="age-examples">AGE Examples</h3>
 
 <p>Find the interval between midnight today, April 3, 2015, and June 13, 1957.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT AGE(&#39;1957-06-13&#39;) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT AGE(&#39;1957-06-13&#39;) FROM (VALUES(1));
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1106,7 +1104,7 @@
 2 rows selected (0.121 seconds)
 </code></pre></div>
 <p>Find the interval between 11:10:10 PM on January 1, 2001 and 10:10:10 PM on January 1, 2001.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT AGE(CAST(&#39;2010-01-01 10:10:10&#39; AS TIMESTAMP), CAST(&#39;2001-01-01 11:10:10&#39; AS TIMESTAMP)) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT AGE(CAST(&#39;2010-01-01 10:10:10&#39; AS TIMESTAMP), CAST(&#39;2001-01-01 11:10:10&#39; AS TIMESTAMP)) FROM (VALUES(1));
 +------------------+
 |      EXPR$0      |
 +------------------+
@@ -1143,7 +1141,7 @@ DATE_ADD(column, interval expr)
 <p><strong><code>DATE_ADD(keyword literal, integer)</code> Syntax Example</strong></p>
 
 <p>Add two days to today&#39;s date May 15, 2015.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(date &#39;2015-05-15&#39;, 2) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(date &#39;2015-05-15&#39;, 2) FROM (VALUES(1));
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1216,7 +1214,7 @@ DATE_ADD(column, interval expr)
 <p><strong><code>DATE_ADD(keyword literal, integer)</code> Syntax Example</strong></p>
 
 <p>Add 1 year and 1 month to the timestamp 2015-04-15 22:55:55.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(timestamp &#39;2015-04-15 22:55:55&#39;, interval &#39;1-2&#39; year to month) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(timestamp &#39;2015-04-15 22:55:55&#39;, interval &#39;1-2&#39; year to month) FROM (VALUES(1));
 +------------------------+
 |         EXPR$0         |
 +------------------------+
@@ -1225,7 +1223,7 @@ DATE_ADD(column, interval expr)
 1 row selected (0.106 seconds)
 </code></pre></div>
 <p>Add 1 day 2 and 1/2 hours and 45.100 seconds to the time 22:55:55.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(time &#39;22:55:55&#39;, interval &#39;1 2:30:45.100&#39; day to second) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(time &#39;22:55:55&#39;, interval &#39;1 2:30:45.100&#39; day to second) FROM (VALUES(1));
 +---------------+
 |    EXPR$0     |
 +---------------+
@@ -1248,7 +1246,7 @@ DATE_ADD(column, interval expr)
 <p>Use Unix Epoch timestamp in milliseconds as the expression to get the field of a timestamp.</p>
 
 <h3 id="date_part-examples">DATE_PART Examples</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_PART(&#39;day&#39;, &#39;2015-04-02&#39;) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_PART(&#39;day&#39;, &#39;2015-04-02&#39;) FROM (VALUES(1));
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1256,7 +1254,7 @@ DATE_ADD(column, interval expr)
 +------------+
 1 row selected (0.098 seconds)
 
-SELECT DATE_PART(&#39;hour&#39;, &#39;23:14:30.076&#39;) FROM sys.version;
+SELECT DATE_PART(&#39;hour&#39;, &#39;23:14:30.076&#39;) FROM (VALUES(1));
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1265,7 +1263,7 @@ SELECT DATE_PART(&#39;hour&#39;, &#39;23:14:30.076&#39;) FROM sys.version;
 1 row selected (0.088 seconds)
 </code></pre></div>
 <p>Return the day part of the one year, 2 months, 10 days interval.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_PART(&#39;day&#39;, &#39;1:2:10&#39;) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_PART(&#39;day&#39;, &#39;1:2:10&#39;) FROM (VALUES(1));
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1300,7 +1298,7 @@ DATE_SUB(column, interval expr)
 <p><strong><code>DATE_SUB(keyword literal, integer)</code> Syntax Example</strong></p>
 
 <p>Subtract two days from today&#39;s date May 15, 2015.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(date &#39;2015-05-15&#39;, 2) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(date &#39;2015-05-15&#39;, 2) FROM (VALUES(1));
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1309,7 +1307,7 @@ DATE_SUB(column, interval expr)
 1 row selected (0.088 seconds)
 </code></pre></div>
 <p>Subtact two months from April 15, 2015.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(date &#39;2015-04-15&#39;, interval &#39;2&#39; month) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(date &#39;2015-04-15&#39;, interval &#39;2&#39; month) FROM (VALUES(1));
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1320,7 +1318,7 @@ DATE_SUB(column, interval expr)
 <p><strong><code>DATE_SUB(keyword literal, interval expr)</code> Syntax Example</strong></p>
 
 <p>Subtract 10 hours from the timestamp 2015-04-15 22:55:55.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(timestamp &#39;2015-04-15 22:55:55&#39;, interval &#39;10&#39; hour) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(timestamp &#39;2015-04-15 22:55:55&#39;, interval &#39;10&#39; hour) FROM (VALUES(1));
 +------------------------+
 |         EXPR$0         |
 +------------------------+
@@ -1329,7 +1327,7 @@ DATE_SUB(column, interval expr)
 1 row selected (0.108 seconds)
 </code></pre></div>
 <p>Subtract 10 hours from the time 22 hours, 55 minutes, 55 seconds.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(time &#39;22:55:55&#39;, interval &#39;10&#39; hour) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(time &#39;22:55:55&#39;, interval &#39;10&#39; hour) FROM (VALUES(1));
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1338,7 +1336,7 @@ DATE_SUB(column, interval expr)
 1 row selected (0.079 seconds)
 </code></pre></div>
 <p>Subtract 1 year and 1 month from the timestamp 2015-04-15 22:55:55.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(timestamp &#39;2015-04-15 22:55:55&#39;, interval &#39;1-2&#39; year to month) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(timestamp &#39;2015-04-15 22:55:55&#39;, interval &#39;1-2&#39; year to month) FROM (VALUES(1));
 +------------------------+
 |         EXPR$0         |
 +------------------------+
@@ -1347,7 +1345,7 @@ DATE_SUB(column, interval expr)
 1 row selected (0.108 seconds)
 </code></pre></div>
 <p>Subtract 1 day, 2 and 1/2 hours, and 45.100 seconds from the time 22:55:55.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(time &#39;22:55:55&#39;, interval &#39;1 2:30:45.100&#39; day to second) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(time &#39;22:55:55&#39;, interval &#39;1 2:30:45.100&#39; day to second) FROM (VALUES(1));
 +---------------+
 |    EXPR$0     |
 +---------------+
@@ -1388,7 +1386,7 @@ DATE_SUB(column, interval expr)
 <li>LOCALTIMESTAMP</li>
 <li>NOW</li>
 <li><p>TIMEOFDAY</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT CURRENT_DATE FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT CURRENT_DATE FROM (VALUES(1));
 +--------------+
 | current_date |
 +--------------+
@@ -1396,7 +1394,7 @@ DATE_SUB(column, interval expr)
 +--------------+
 1 row selected (0.077 seconds)
 
-SELECT CURRENT_TIME FROM sys.version;
+SELECT CURRENT_TIME FROM (VALUES(1));
 +--------------+
 | current_time |
 +--------------+
@@ -1404,7 +1402,7 @@ SELECT CURRENT_TIME FROM sys.version;
 +--------------+
 1 row selected (0.073 seconds)
 
-SELECT CURRENT_TIMESTAMP FROM sys.version;
+SELECT CURRENT_TIMESTAMP FROM (VALUES(1));
 +--------------------------+
 |    CURRENT_TIMESTAMP     |
 +--------------------------+
@@ -1412,7 +1410,7 @@ SELECT CURRENT_TIMESTAMP FROM sys.version;
 +--------------------------+
 1 row selected (0.109 seconds)
 
-SELECT LOCALTIME FROM sys.version;
+SELECT LOCALTIME FROM (VALUES(1));
 
 +---------------+
 |   LOCALTIME   |
@@ -1421,7 +1419,7 @@ SELECT LOCALTIME FROM sys.version;
 +---------------+
 1 row selected (0.105 seconds)
 
-SELECT LOCALTIMESTAMP FROM sys.version;
+SELECT LOCALTIMESTAMP FROM (VALUES(1));
 
 +--------------------------+
 |      LOCALTIMESTAMP      |
@@ -1430,7 +1428,7 @@ SELECT LOCALTIMESTAMP FROM sys.version;
 +--------------------------+
 1 row selected (0.08 seconds)
 
-SELECT NOW() FROM sys.version;
+SELECT NOW() FROM (VALUES(1));
 +--------------------------+
 |          EXPR$0          |
 +--------------------------+
@@ -1441,7 +1439,7 @@ SELECT NOW() FROM sys.version;
 </ul>
 
 <p>If you set up Drill for <a href="/docs/data-type-conversion/#time-zone-limitation">UTC time</a>, TIMEOFDAY returns the result for the UTC time zone.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMEOFDAY() FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMEOFDAY() FROM (VALUES(1));
 +-----------------------------+
 |           EXPR$0            |
 +-----------------------------+
@@ -1450,7 +1448,7 @@ SELECT NOW() FROM sys.version;
 1 row selected (1.191 seconds)
 </code></pre></div>
 <p>If you did not set up Drill for UTC time, TIMEOFDAY returns the local date and time with time zone information.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMEOFDAY() FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMEOFDAY() FROM (VALUES(1));
 +----------------------------------------------+
 |                    EXPR$0                    |
 +----------------------------------------------+
@@ -1477,7 +1475,7 @@ SELECT NOW() FROM sys.version;
 <h3 id="extract-examples">EXTRACT Examples</h3>
 
 <p>On the third day of the month, run the following function:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(day FROM NOW()), EXTRACT(day FROM CURRENT_DATE) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(day FROM NOW()), EXTRACT(day FROM CURRENT_DATE) FROM (VALUES(1));
 
 +------------+------------+
 |   EXPR$0   |   EXPR$1   |
@@ -1487,7 +1485,7 @@ SELECT NOW() FROM sys.version;
 1 row selected (0.208 seconds)
 </code></pre></div>
 <p>At 8:00 am, extract the hour from the value of CURRENT_DATE.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(hour FROM CURRENT_DATE) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(hour FROM CURRENT_DATE) FROM (VALUES(1));
 
 +------------+
 |   EXPR$0   |
@@ -1496,7 +1494,7 @@ SELECT NOW() FROM sys.version;
 +------------+
 </code></pre></div>
 <p>What is the hour component of this time: 17:12:28.5?</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(hour FROM TIME &#39;17:12:28.5&#39;) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(hour FROM TIME &#39;17:12:28.5&#39;) FROM (VALUES(1));
 
 +------------+
 |   EXPR$0   |
@@ -1506,7 +1504,7 @@ SELECT NOW() FROM sys.version;
 1 row selected (0.056 seconds)
 </code></pre></div>
 <p>What is the seconds component of this timestamp: 2001-02-16 20:38:40</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(SECOND FROM TIMESTAMP &#39;2001-02-16 20:38:40&#39;) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(SECOND FROM TIMESTAMP &#39;2001-02-16 20:38:40&#39;) FROM (VALUES(1));
 
 +------------+
 |   EXPR$0   |
@@ -1518,7 +1516,7 @@ SELECT NOW() FROM sys.version;
 <h2 id="date,-time,-and-interval-arithmetic-functions">Date, Time, and Interval Arithmetic Functions</h2>
 
 <p>Is the day returned from the NOW function the same as the day returned from the CURRENT_DATE function?</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(day FROM NOW()) = EXTRACT(day FROM CURRENT_DATE) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(day FROM NOW()) = EXTRACT(day FROM CURRENT_DATE) FROM (VALUES(1));
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1527,7 +1525,7 @@ SELECT NOW() FROM sys.version;
 1 row selected (0.092 seconds)
 </code></pre></div>
 <p>Every 23 hours, a 4 hour task started. What time does the task end? </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIME &#39;04:00:00&#39; + interval &#39;23:00:00&#39; hour to second FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIME &#39;04:00:00&#39; + interval &#39;23:00:00&#39; hour to second FROM (VALUES(1));
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1536,7 +1534,7 @@ SELECT NOW() FROM sys.version;
 1 row selected (0.097 seconds)
 </code></pre></div>
 <p>Is the time 2:00 PM?</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(hour FROM CURRENT_DATE) = 2 FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(hour FROM CURRENT_DATE) = 2 FROM (VALUES(1));
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1560,7 +1558,7 @@ UNIX_TIMESTAMP(string date, string pattern)
 <li>Converts the time string in format yyyy-MM-dd HH:mm:ss to a Unix timestamp in seconds using the default timezone and locale.<br></li>
 <li>Converts the time string with the given pattern to a Unix time stamp in seconds.<br></li>
 </ul>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT UNIX_TIMESTAMP FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT UNIX_TIMESTAMP() FROM (VALUES(1));
 +-------------+
 |   EXPR$0    |
 +-------------+
@@ -1568,7 +1566,7 @@ UNIX_TIMESTAMP(string date, string pattern)
 +-------------+
 1 row selected (0.749 seconds)
 
-SELECT UNIX_TIMESTAMP(&#39;2009-03-20 11:15:55&#39;) FROM sys.version;
+SELECT UNIX_TIMESTAMP(&#39;2009-03-20 11:15:55&#39;) FROM (VALUES(1));
 +-------------+
 |   EXPR$0    |
 +-------------+
@@ -1576,7 +1574,7 @@ SELECT UNIX_TIMESTAMP(&#39;2009-03-20 11:15:55&#39;) FROM sys.version;
 +-------------+
 1 row selected (1.848 seconds)
 
-SELECT UNIX_TIMESTAMP(&#39;2009-03-20&#39;, &#39;yyyy-MM-dd&#39;) FROM sys.version;
+SELECT UNIX_TIMESTAMP(&#39;2009-03-20&#39;, &#39;yyyy-MM-dd&#39;) FROM (VALUES(1));
 +-------------+
 |   EXPR$0    |
 +-------------+
@@ -1584,7 +1582,7 @@ SELECT UNIX_TIMESTAMP(&#39;2009-03-20&#39;, &#39;yyyy-MM-dd&#39;) FROM sys.versi
 +-------------+
 1 row selected (0.181 seconds)
 
-SELECT UNIX_TIMESTAMP(&#39;2015-05-29 08:18:53.0&#39;, &#39;yyyy-MM-dd HH:mm:ss.SSS&#39;) FROM sys.version;
+SELECT UNIX_TIMESTAMP(&#39;2015-05-29 08:18:53.0&#39;, &#39;yyyy-MM-dd HH:mm:ss.SSS&#39;) FROM (VALUES(1));
 +-------------+
 |   EXPR$0    |
 +-------------+

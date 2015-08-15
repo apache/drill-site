@@ -436,8 +436,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-jreport-with-drill/">Configuring JReport with Drill</a></li>
-              
             </ul>
             
           
@@ -1012,18 +1010,18 @@
        TIME &#39;12:23:34&#39;, 
        TIMESTAMP &#39;2008-2-23 12:23:34.456&#39;, 
        INTERVAL &#39;1&#39; YEAR, INTERVAL &#39;2&#39; DAY, 
-       DATE_ADD(DATE &#39;2008-2-23&#39;, INTERVAL &#39;1 10:20:30&#39; DAY TO SECOND) 
+       DATE_ADD(DATE &#39;2008-2-23&#39;, INTERVAL &#39;1 10:20:30&#39; DAY TO SECOND), 
        DATE_ADD(DATE &#39;2010-2-23&#39;, 1)
-FROM sys.version LIMIT 1;
+FROM (VALUES (1));
 +-------------+-----------+--------------------------+---------+---------+------------------------+-------------+
 |   EXPR$0    |  EXPR$1   |          EXPR$2          | EXPR$3  | EXPR$4  |         EXPR$5         |   EXPR$6    |
 +-------------+-----------+--------------------------+---------+---------+------------------------+-------------+
 | 2008-02-23  | 12:23:34  | 2008-02-23 12:23:34.456  | P1Y     | P2D     | 2008-02-24 10:20:30.0  | 2010-02-24  |
 +-------------+-----------+--------------------------+---------+---------+------------------------+-------------+
 </code></pre></div>
-<h2 id="intervalyear-and-intervalday">INTERVALYEAR and INTERVALDAY</h2>
+<h2 id="interval">INTERVAL</h2>
 
-<p>The INTERVALYEAR and INTERVALDAY types represent a period of time. The INTERVALYEAR type specifies values from a year to a month. The INTERVALDAY type specifies values from a day to seconds.</p>
+<p>The INTERVALYEAR and INTERVALDAY internal types represent a period of time. The INTERVALYEAR type specifies values from a year to a month. The INTERVALDAY type specifies values from a day to seconds.</p>
 
 <h3 id="interval-in-data-source">Interval in Data Source</h3>
 
@@ -1073,13 +1071,13 @@ P [qty] Y [qty] M
 <h3 id="literal-interval-examples">Literal Interval Examples</h3>
 
 <p>In the following example, the INTERVAL keyword followed by 200 adds 200 years to the timestamp. The 3 in parentheses in <code>YEAR(3)</code> specifies the precision of the year interval, 3 digits in this case to support the hundreds interval.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT CURRENT_TIMESTAMP + INTERVAL &#39;200&#39; YEAR(3) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT CURRENT_TIMESTAMP + INTERVAL &#39;200&#39; YEAR(3) FROM (VALUES(1));
 +--------------------------+
 |          EXPR$0          |
 +--------------------------+
-| 2215-05-20 14:04:25.129  |
+| 2215-08-14 15:18:00.094  |
 +--------------------------+
-1 row selected (0.148 seconds)
+1 row selected (0.096 seconds)
 </code></pre></div>
 <p>The following examples show the input and output format of INTERVALYEAR (Year, Month) and INTERVALDAY (Day, Hours, Minutes, Seconds, Milliseconds). The following SELECT statements show how to format the query input. The output shows how to format the data in the data source.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT INTERVAL &#39;1 10:20:30.123&#39; day to second FROM sys.version;
@@ -1090,7 +1088,7 @@ P [qty] Y [qty] M
 +------------+
 1 row selected (0.054 seconds)
 
-SELECT INTERVAL &#39;1-2&#39; year to month FROM sys.version;
+SELECT INTERVAL &#39;1-2&#39; year to month FROM (VALUES(1));
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1098,7 +1096,7 @@ SELECT INTERVAL &#39;1-2&#39; year to month FROM sys.version;
 +------------+
 1 row selected (0.927 seconds)
 
-SELECT INTERVAL &#39;1&#39; year FROM sys.version;
+SELECT INTERVAL &#39;1&#39; year FROM (VALUES(1));
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1106,7 +1104,7 @@ SELECT INTERVAL &#39;1&#39; year FROM sys.version;
 +------------+
 1 row selected (0.088 seconds)
 
-SELECT INTERVAL &#39;13&#39; month FROM sys.version;
+SELECT INTERVAL &#39;13&#39; month FROM (VALUES(1));
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1126,7 +1124,7 @@ SELECT INTERVAL &#39;13&#39; month FROM sys.version;
 <li><code>date</code></li>
 <li><code>time</code></li>
 <li><p><code>timestamp</code></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT date &#39;2010-2-15&#39; FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT date &#39;2010-2-15&#39; FROM (VALUES(1));
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1134,7 +1132,7 @@ SELECT INTERVAL &#39;13&#39; month FROM sys.version;
 +------------+
 1 row selected (0.083 seconds)
 
-SELECT time &#39;15:20:30&#39; from sys.version;
+SELECT time &#39;15:20:30&#39; from (VALUES(1));
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1142,7 +1140,7 @@ SELECT time &#39;15:20:30&#39; from sys.version;
 +------------+
 1 row selected (0.067 seconds)
 
-SELECT timestamp &#39;2015-03-11 6:50:08&#39; FROM sys.version;
+SELECT timestamp &#39;2015-03-11 6:50:08&#39; FROM (VALUES(1));
 +------------+
 |   EXPR$0   |
 +------------+

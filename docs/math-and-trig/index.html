@@ -436,8 +436,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-jreport-with-drill/">Configuring JReport with Drill</a></li>
-              
             </ul>
             
           
@@ -1159,9 +1157,7 @@
 
 <h2 id="math-function-examples">Math Function Examples</h2>
 
-<p>Examples in this section use the <code>input2.json</code> file. Download the <code>input2.json</code> file from the <a href="https://github.com/apache/drill/tree/master/exec/java-exec/src/test/resources/jsoninput">Drill source code</a> page. </p>
-
-<p>You need to use a FROM clause in Drill queries. In addition to using <code>input2.json</code>, examples in this documentation often use <code>FROM sys.version</code> in the query for example purposes.</p>
+<p>Examples in this section use the <code>input2.json</code> file. Download the <code>input2.json</code> file from the <a href="https://github.com/apache/drill/tree/master/exec/java-exec/src/test/resources/jsoninput">Drill source code</a> page. You need to use a FROM clause in Drill queries. </p>
 
 <h3 id="abs-example">ABS Example</h3>
 
@@ -1277,7 +1273,7 @@ SELECT ROUND(`float`, 4) FROM dfs.`/Users/drill/input2.json`;
 <h3 id="log-examples">LOG Examples</h3>
 
 <p>Get the base 2 log of 64.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT LOG(2, 64) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT LOG(2, 64) FROM (VALUES(1));
 
 +------------+
 |   EXPR$0   |
@@ -1287,7 +1283,7 @@ SELECT ROUND(`float`, 4) FROM dfs.`/Users/drill/input2.json`;
 1 row selected (0.069 seconds)
 </code></pre></div>
 <p>Get the common log of 100.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT LOG10(100) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT LOG10(100) FROM (VALUES(1));
 
 +------------+
 |   EXPR$0   |
@@ -1297,7 +1293,7 @@ SELECT ROUND(`float`, 4) FROM dfs.`/Users/drill/input2.json`;
 1 row selected (0.203 seconds)
 </code></pre></div>
 <p>Get the natural log of 7.5.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT LOG(7.5) FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT LOG(7.5) FROM (VALUES(1));
 
 +---------------------+
 |       EXPR$0        |
@@ -1334,7 +1330,7 @@ Hyperbolic tangent of hyperbolic angle x in radians</p></li>
 <h3 id="trig-examples">Trig Examples</h3>
 
 <p>Find the sine and tangent of a 45 degree angle. First convert degrees to radians for use in the SIN() function.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT RADIANS(30) AS Degrees FROM sys.version;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT RADIANS(30) AS Degrees FROM (VALUES(1));
 
 +------------+
 |  Degrees   |
@@ -1343,7 +1339,7 @@ Hyperbolic tangent of hyperbolic angle x in radians</p></li>
 +------------+
 1 row selected (0.045 seconds)
 
-SELECT SIN(0.7853981633974483) AS `Sine of 30 degrees` FROM sys.version;
+SELECT SIN(0.7853981633974483) AS `Sine of 30 degrees` FROM (VALUES(1));
 
 +-----------------------+
 |  Sine of 45 degrees   |
@@ -1352,7 +1348,7 @@ SELECT SIN(0.7853981633974483) AS `Sine of 30 degrees` FROM sys.version;
 +-----------------------+
 1 row selected (0.059 seconds)
 
-SELECT TAN(0.7853981633974483) AS `Tangent of 30 degrees` from sys.version;
+SELECT TAN(0.7853981633974483) AS `Tangent of 30 degrees` from (VALUES(1));
 
 +-----------------------+
 | Tangent of 45 degrees |

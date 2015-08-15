@@ -436,8 +436,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-jreport-with-drill/">Configuring JReport with Drill</a></li>
-              
             </ul>
             
           
@@ -1135,7 +1133,7 @@ name. Names are case-sensitive.</li>
   </tr>
 </table></p>
 
-<p>* Pertains only to distributed drill installations using the mapr-drill package.  </p>
+<p>* Pertains only to distributed Drill installations using the mapr-drill package.  </p>
 
 <h2 id="using-the-formats-attributes">Using the Formats Attributes</h2>
 
@@ -1154,7 +1152,7 @@ name. Names are case-sensitive.</li>
 
 <h2 id="storage-plugin-rest-api">Storage Plugin REST API</h2>
 
-<p>Drill provides a REST API that you can use to create a storage plugin configuration. Use an HTTP POST and pass two properties:</p>
+<p>If you need to add a storage plugin configuration to Drill and do not want to use a web browser, Drill provides a REST API that you can use to create a storage plugin configuration. Use an HTTP POST and pass two properties:</p>
 
 <ul>
 <li><p>name<br>
@@ -1168,9 +1166,9 @@ The attribute settings as entered in the Web UI.</p></li>
 </code></pre></div>
 <h2 id="bootstrapping-a-storage-plugin">Bootstrapping a Storage Plugin</h2>
 
-<p>If you need to add a storage plugin configurationto Drill and do not want to use a web browser, you can create a <a href="https://github.com/apache/drill/blob/master/contrib/storage-hbase/src/main/resources/bootstrap-storage-plugins.json">bootstrap-storage-plugins.json</a> file and include it on the classpath when starting Drill. The storage plugin configuration loads when Drill starts up.</p>
+<p>The REST API is recommended for programmatically adding a storage plugin configuration to Drill. An alternative for use in a distributed environment only is bootstrapping. You can create a <a href="https://github.com/apache/drill/blob/master/contrib/storage-hbase/src/main/resources/bootstrap-storage-plugins.json">bootstrap-storage-plugins.json</a> file and include it on the classpath when starting Drill. The storage plugin configuration loads when Drill starts up.</p>
 
-<p>Bootstrapping a storage plugin configuration works only when the first Drillbit in the cluster first starts up. The configuration is
+<p>Currently, bootstrapping a storage plugin configuration works only when the first Drillbit in the cluster first starts up. The configuration is
 stored in ZooKeeper, preventing Drill from picking up the bootstrap-storage-plugins.json again.</p>
 
 <p>After cluster startup, you have to use the REST API or Drill Web UI to add a storage plugin configuration. Alternatively, you

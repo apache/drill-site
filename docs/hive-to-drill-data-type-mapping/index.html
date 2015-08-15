@@ -436,8 +436,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-jreport-with-drill/">Configuring JReport with Drill</a></li>
-              
             </ul>
             
           
@@ -1057,14 +1055,9 @@
 <td>1-, 2-, or 4-byte signed integer</td>
 </tr>
 <tr>
-<td>INTERVALDAY</td>
+<td>INTERVAL</td>
 <td>N/A</td>
-<td>Integer fields representing a day</td>
-</tr>
-<tr>
-<td>INTERVALYEAR</td>
-<td>N/A</td>
-<td>Integer fields representing a year</td>
+<td>A day-time or year-month interval</td>
 </tr>
 <tr>
 <td>TIME</td>
@@ -1112,7 +1105,13 @@
 <li>UNION</li>
 </ul>
 
-<p>The Hive version used in MapR supports the Hive timestamp in Unix Epoch format. Currently, the Apache Hive version used by Drill does not support this timestamp format. The workaround is to use the JDBC format for the timestamp, which Hive accepts and Drill uses, as shown in the following type mapping example. The timestamp value appears in the example CSV file in JDBC format: 2015-03-25 01:23:15. The Hive table defines column i in the CREATE EXTERNAL TABLE command as a timestamp column. The Drill extract function verifies that Drill interprets the timestamp correctly.</p>
+<p>Currently, the Apache Hive version used by Drill does not support the Hive timestamp in Unix Epoch format. The workaround is to use the JDBC format for the timestamp, which Hive accepts and Drill uses. The type mapping example shows how to use the workaround as follows. </p>
+
+<ul>
+<li>The timestamp value appears in the example CSV file in JDBC format: 2015-03-25 01:23:15.<br></li>
+<li>Workaround: The Hive table defines column i in the CREATE EXTERNAL TABLE command as a timestamp column.<br></li>
+<li>The Drill extract function verifies that Drill interprets the timestamp correctly.</li>
+</ul>
 
 <h2 id="type-mapping-example">Type Mapping Example</h2>
 
@@ -1124,7 +1123,7 @@
 <p>The example makes the following assumptions:</p>
 
 <ul>
-<li>The CSV resides on the MapR file system (MapRFS) in the Drill sandbox: <code>/mapr/demo.mapr.com/data/</code><br></li>
+<li>The CSV resides in the following location in the Drill sandbox: <code>/mapr/demo.mapr.com/data/</code><br></li>
 <li>You <a href="/docs/supported-data-types#enabling-the-decimal-type">enabled the DECIMAL data type</a> in Drill.<br></li>
 </ul>
 
