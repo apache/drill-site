@@ -436,6 +436,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-jreport-with-drill/">Configuring JReport with Drill</a></li>
+              
             </ul>
             
           
@@ -1015,6 +1017,7 @@ operations on your data.</p>
 <li>BETWEEN</li>
 <li>IN</li>
 <li>LIKE</li>
+<li>ILIKE</li>
 <li>NOT</li>
 <li>OR </li>
 </ul>
@@ -1044,6 +1047,7 @@ operations on your data.</p>
 
 <ul>
 <li>LIKE</li>
+<li>ILIKE</li>
 <li>NOT LIKE</li>
 <li>SIMILAR TO</li>
 <li>NOT SIMILAR TO</li>
@@ -1100,6 +1104,114 @@ operations on your data.</p>
 <p>The concatenate operator is an alternative to the <a href="/docs/string-manipulation#concat">concat function</a>.</p>
 
 <p>The concat function treats NULL as an empty string. The concatenate operator (||) returns NULL if any input is NULL.</p>
+
+<h2 id="operator-precedence">Operator Precedence</h2>
+
+<p>The following table shows the precedence of operators in decreasing order:</p>
+
+<table><thead>
+<tr>
+<th>Operator/Element</th>
+<th>Associativity</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>.</td>
+<td>left</td>
+<td>dot notation used, for example, to drill down in a JSON map</td>
+</tr>
+<tr>
+<td>[ ]</td>
+<td>left</td>
+<td>array-style notation to drill down into a JSON array</td>
+</tr>
+<tr>
+<td>-</td>
+<td>right</td>
+<td>unary minus</td>
+</tr>
+<tr>
+<td>E</td>
+<td>left</td>
+<td>exponentiation</td>
+</tr>
+<tr>
+<td>* / %</td>
+<td>left</td>
+<td>multiplication, division, modulo</td>
+</tr>
+<tr>
+<td>+ -</td>
+<td>left</td>
+<td>addition, subtraction</td>
+</tr>
+<tr>
+<td>IS</td>
+<td></td>
+<td>IS TRUE, IS FALSE, IS UNKNOWN, IS NULL</td>
+</tr>
+<tr>
+<td>IS NULL</td>
+<td></td>
+<td>test for null</td>
+</tr>
+<tr>
+<td>IS NOT NULL</td>
+<td></td>
+<td>test for not null</td>
+</tr>
+<tr>
+<td>(any other)</td>
+<td>left</td>
+<td>all other native and user-defined operators</td>
+</tr>
+<tr>
+<td>IN</td>
+<td></td>
+<td>set membership</td>
+</tr>
+<tr>
+<td>BETWEEN</td>
+<td></td>
+<td>range containment</td>
+</tr>
+<tr>
+<td>OVERLAPS</td>
+<td></td>
+<td>time interval overlap</td>
+</tr>
+<tr>
+<td>LIKE ILIKE SIMILAR TO NOT SIMILAR TO</td>
+<td></td>
+<td>string pattern matching</td>
+</tr>
+<tr>
+<td>&lt; &gt;</td>
+<td></td>
+<td>less than, greater than</td>
+</tr>
+<tr>
+<td>=</td>
+<td>right</td>
+<td>equality, assignment</td>
+</tr>
+<tr>
+<td>NOT</td>
+<td>right</td>
+<td>logical negation</td>
+</tr>
+<tr>
+<td>AND</td>
+<td>left</td>
+<td>logical conjunction</td>
+</tr>
+<tr>
+<td>OR</td>
+<td>left</td>
+<td>logical disjunction</td>
+</tr>
+</tbody></table>
 
     
       

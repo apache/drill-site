@@ -436,6 +436,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-jreport-with-drill/">Configuring JReport with Drill</a></li>
+              
             </ul>
             
           
@@ -1098,6 +1100,12 @@
 +-------+--------------------------------------------+
 1 row selected (0.08 seconds)
 </code></pre></div>
+<h2 id="disabling-the-decimal-type">Disabling the DECIMAL Type</h2>
+
+<p>By default, Drill disables the DECIMAL data type (an alpha feature), including casting to DECIMAL and reading DECIMAL types from Parquet and Hive. If you enabled the DECIMAL type by setting <code>planner.enable_decimal_data_type</code> = true, set the option to false to disable DECIMAL.</p>
+
+<p>When the DECIMAL type is disabled, you might see DECIMAL in the query plan, but Drill internally converts DECIMAL to NUMERIC.</p>
+
 <h2 id="composite-types">Composite Types</h2>
 
 <p>Drill supports the following composite types:</p>
@@ -1134,7 +1142,7 @@ changes in the data processing, Drill regenerates the code as necessary.</p>
 
 <h2 id="casting-and-converting-data-types">Casting and Converting Data Types</h2>
 
-<p>In Drill, you cast or convert data to the required type for moving data from one data source to another or to make the data readable.
+<p>In Drill, you cast or convert data to the required type for moving data from one data source to another.
 You do not assign a data type to every column name in a CREATE TABLE statement to define the table as you do in database software. Instead, you use the CREATE TABLE AS (CTAS) statement with one or more of the following functions to define the table:</p>
 
 <ul>
@@ -1148,7 +1156,7 @@ Use the <a href="/docs/supported-data-types/#convert_to-and-convert_from-data-ty
 
 <ul>
 <li>HBase<br>
-Does not implicitly cast input to SQL types. Convert data to appropriate types as shown in <a href="/docs/querying-hbase/">&quot;Querying HBase.&quot;</a></li>
+Does not implicitly cast input to SQL types. Convert data to appropriate types as as described in the section <a href="/docs/querying-hbase/">&quot;Querying HBase&quot;</a>. Use <a href="/docs//data-type-conversion/#convert_to-and-convert_from">CONVERT_TO or CONVERT_FROM data types</a>.</li>
 <li>Hive<br>
 Implicitly casts Hive types to SQL types as shown in the Hive <a href="/docs/hive-to-drill-data-type-mapping#type-mapping-example">type mapping example</a></li>
 <li>JSON<br>
@@ -1255,8 +1263,8 @@ Implicitly casts all textual data to VARCHAR.</li>
 <ul>
 <li><a href="/docs/data-type-conversion#cast">CAST</a><br>
 Casts data from one data type to another.</li>
-<li><a href="/docs/data-type-conversion#convert_to-and-convert_from">CONVERT_TO and CONVERT_FROM</a><br>
-Converts data, including binary data, from one data type to another.</li>
+<li>CONVERT_TO and CONVERT_FROM functions
+Converts data, including binary data, from one data type to another using <a href="/docs/supported-data-types/#convert_to-and-convert_from-data-types">&quot;CONVERT_TO and CONVERT_FROM data types&quot;</a><br></li>
 <li><a href="/docs/data-type-conversion/#to_char">TO_CHAR</a><br>
 Converts a TIMESTAMP, INTERVALDAY/INTERVALYEAR, INTEGER, DOUBLE, or DECIMAL to a string.</li>
 <li><a href="/docs/data-type-conversion/#to_date">TO_DATE</a><br>
@@ -1530,18 +1538,11 @@ Converts a string to TIMESTAMP.</li>
 
 <p>* Used to cast binary UTF-8 data coming to/from sources such as HBase. The CAST function does not support all representations of FIXEDBINARY and VARBINARY. Only the UTF-8 format is supported. </p>
 
-<h2 id="convert_to-and-convert_from">CONVERT_TO and CONVERT_FROM</h2>
+<h2 id="convert_to-and-convert_from-data-types">CONVERT_TO and CONVERT_FROM Data Types</h2>
 
-<p>CONVERT_TO converts data to binary from the input type. CONVERT_FROM converts data from binary to the input type. For example, the following CONVERT_TO function converts an integer encoded using big endian to VARBINARY:</p>
+<p>The <a href="/docs/data-type-conversion/#convert_to-and-convert_from">CONVERT_TO function</a> converts data to bytes from the input type. The <a href="/docs/data-type-conversion/#convert_to-and-convert_from">CONVERT_FROM function</a> converts data from bytes to the input type. For example, the following CONVERT_TO function converts an integer to bytes using big endian encoding:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">CONVERT_TO(mycolumn, &#39;INT_BE&#39;)
 </code></pre></div>
-<p>CONVERT_FROM and CONVERT_TO methods transform a known binary representation/encoding to a Drill internal format. </p>
-
-<p>We recommend storing HBase data in a binary representation rather than
-a string representation. Use the *_BE types to store integer data types in a table such as HBase.  INT is a 4-byte integer encoded in little endian. INT_BE is a 4-byte integer encoded in big endian. The comparison order of *_BE encoded bytes is the same as the integer value itself if the bytes are unsigned or positive. Using a *_BE type facilitates scan range pruning and filter pushdown into HBase scan. </p>
-
-<p>*_HADOOPV in the data type name denotes the variable length integer as defined by Hadoop libraries. Use a *_HADOOPV type if user data is encoded in this format by a Hadoop tool outside MapR.</p>
-
 <p>The following table lists the data types for use with the CONVERT_TO
 and CONVERT_FROM functions:</p>
 
@@ -1643,6 +1644,11 @@ and CONVERT_FROM functions:</p>
 <td>TIME</td>
 </tr>
 <tr>
+<td>TIMESTAMP_EPOCH</td>
+<td>bytes(8)</td>
+<td>DATE/TIME</td>
+</tr>
+<tr>
 <td>UTF8</td>
 <td>bytes</td>
 <td>VARCHAR</td>
@@ -1657,9 +1663,16 @@ and CONVERT_FROM functions:</p>
 <td>bytes(8)</td>
 <td>UINT8</td>
 </tr>
+<tr>
+<td>UINT8_BE</td>
+<td>bytes(8)</td>
+<td>UINT8</td>
+</tr>
 </tbody></table>
 
-<p>If you are unsure that the size of the source and destination INT or BIGINT you are converting is the same, use CAST to convert these data types to/from binary.</p>
+<p>This table includes types such as INT, for converting little endian-encoded data and types such as INT_BE for converting big endian-encoded data to Drill internal types. You need to convert binary representations, such as data in HBase, to a Drill internal format as you query the data. If you are unsure that the size of the source and destination INT or BIGINT you are converting is the same, use CAST to convert these data types to/from binary.  </p>
+
+<p>*_HADOOPV in the data type name denotes the variable length integer as defined by Hadoop libraries. Use a *_HADOOPV type if user data is encoded in this format by a Hadoop tool outside MapR.</p>
 
     
       

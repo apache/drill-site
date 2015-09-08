@@ -436,6 +436,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-jreport-with-drill/">Configuring JReport with Drill</a></li>
+              
             </ul>
             
           
@@ -1003,15 +1005,91 @@
 
     <div class="int_text" align="left">
       
-        <p>This exercise creates two tables in HBase, students and clicks, that you can query with Drill. You use the CONVERT_TO and CONVERT_FROM functions to convert binary text to readable output. You use the CAST function to convert the binary INT to readable output in step 4 of <a href="/docs/querying-hbase/#query-hbase-tables">Query HBase Tables</a>. When converting an INT or BIGINT number, having a byte count in the destination/source that does not match the byte count of the number in the VARBINARY source/destination, use CAST.</p>
+        <!-- 
+To use Drill to query HBase data, you need to understand how to work with the HBase byte arrays. If you want Drill to interpret the underlying HBase row key as something other than a byte array, you need to know the encoding of the data in HBase. By default, HBase stores data in little endian and Drill assumes the data is little endian, which is unsorted. The following table shows the sorting of typical rowkey IDs in bytes, encoded in little endian and big endian, respectively:
 
-<h2 id="create-the-hbase-tables">Create the HBase tables</h2>
+| IDs in Byte Notation Little Endian Sorting | IDs in Decimal Notation | IDs in Byte Notation Big Endian Sorting | IDs in Decimal Notation |
+|--------------------------------------------|-------------------------|-----------------------------------------|-------------------------|
+| 0 x 010000 . . . 000                       | 1                       | 0 x 010000 . . . 000                    | 1                       |
+| 0 x 010100 . . . 000                       | 17                      | 0 x 020000 . . . 000                    | 2                       |
+| 0 x 020000 . . . 000                       | 2                       | 0 x 030000 . . . 000                    | 3                       |
+| . . .                                      |                         | 0 x 040000 . . . 000                    | 4                       |
+| 0x 050000 . . . 000                        | 5                       | 0 x 050000 . . . 000                    | 5                       |
+| . . .                                      |                         | . . .                                   |                         |
+| 0 x 0A000000                               | 10                      | 0 x 0A0000 . . . 000                    | 10                      |
+|                                            |                         | 0 x 010100 . . . 000                    | 17                      |
+
+## Querying Big Endian-Encoded Data
+
+Drill optimizes scans of HBase tables when you use the ["CONVERT_TO and CONVERT_FROM data types"](/docs/supported-data-types/#convert_to-and-convert_from-data-types) on big endian-encoded data. Drill provides the \*\_BE encoded types for use with CONVERT_TO and CONVERT_FROM to take advantage of these optimizations. Here are a few examples of the \*\_BE types.
+
+* DATE_EPOCH_BE  
+* TIME_EPOCH_BE  
+* TIMESTAMP_EPOCH_BE  
+* UINT8_BE  
+* BIGINT_BE  
+
+For example, Drill returns results performantly when you use the following query on big endian-encoded data:
+
+```
+SELECT
+ CONVERT_FROM(BYTE_SUBSTR(row_key, 1, 8), 'DATE_EPOCH_BE') d
+, CONVERT_FROM(BYTE_SUBSTR(row_key, 9, 8), 'BIGINT_BE') id
+, CONVERT_FROM(tableName.f.c, 'UTF8') 
+ FROM hbase.`TestTableCompositeDate` tableName
+ WHERE
+ CONVERT_FROM(BYTE_SUBSTR(row_key, 1, 8), 'DATE_EPOCH_BE') < DATE '2015-06-18' AND
+ CONVERT_FROM(BYTE_SUBSTR(row_key, 1, 8), 'DATE_EPOCH_BE') > DATE '2015-06-13';
+```
+
+This query assumes that the row key of the table represents the DATE_EPOCH type encoded in big-endian format. The Drill HBase plugin will be able to prune the scan range since there is a condition on the big endian-encoded prefix of the row key. For more examples, see the [test code:](https://github.com/apache/drill/blob/95623912ebf348962fe8a8846c5f47c5fdcf2f78/contrib/storage-hbase/src/test/java/org/apache/drill/hbase/TestHBaseFilterPushDown.java).
+
+To query HBase data:
+
+1. Connect the data source to Drill using the [HBase storage plugin](/docs/hbase-storage-plugin/).  
+2. Determine the encoding of the HBase data you want to query. Ask the person in charge of creating the data.  
+3. Based on the encoding type of the data, use the ["CONVERT_TO and CONVERT_FROM data types"](/docs/supported-data-types/#convert_to-and-convert_from-data-types) to convert HBase binary representations to an SQL type as you query the data.  
+    For example, use CONVERT_FROM in your Drill query to convert a big endian-encoded row key to an SQL BIGINT type:  
+
+    `SELECT CONVERT_FROM(BYTE_SUBSTR(row_key, 1, 8),'BIGINT_BE’) FROM my_hbase_table;`
+
+The [BYTE_SUBSTR function](/docs/string-manipulation/#byte_substr) separates parts of a HBase composite key in this example. The Drill optimization is based on the capability in Drill 1.2 and later to push conditional filters down to the storage layer when HBase data is in big endian format. 
+
+Drill can performantly query HBase data that uses composite keys, as shown in the last example, if only the first component of the composite is encoded in big endian format. If the HBase row key is not stored in big endian, do not use the \*\_BE types. If you want to convert a little endian byte array to integer, use BIGINT instead of BIGINT_BE, for example, as an argument to CONVERT_FROM. 
+
+## Leveraging HBase Ordered Byte Encoding
+
+Drill 1.2 leverages new features introduced by [HBASE-8201 Jira](https://issues.apache.org/jira/browse/HBASE-8201) that allows ordered byte encoding of different data types. This encoding scheme preserves the sort order of the native data type when the data is stored as sorted byte arrays on disk. Thus, Drill will be able to process data through the HBase storage plugin if the row keys have been encoded in OrderedBytes format.
+
+To execute the following query, Drill prunes the scan range to only include the row keys representing [-32,59) range, thus reducing the amount of data read.
+
+```
+SELECT
+ CONVERT_FROM(t.row_key, 'INT_OB') rk,
+ CONVERT_FROM(t.`f`.`c`, 'UTF8') val
+FROM
+  hbase.`TestTableIntOB` t
+WHERE
+  CONVERT_FROM(row_key, 'INT_OB') >= cast(-32 as INT) AND
+  CONVERT_FROM(row_key, 'INT_OB') < cast(59 as INT);
+```
+
+For more examples, see the [test code:](https://github.com/apache/drill/blob/95623912ebf348962fe8a8846c5f47c5fdcf2f78/contrib/storage-hbase/src/test/java/org/apache/drill/hbase/TestHBaseFilterPushDown.java).
+
+By taking advantage of ordered byte encoding, Drill 1.2 and later can performantly execute conditional queries without a secondary index on HBase big endian data. 
+
+## Querying Little Endian-Encoded Data
+ -->
+
+<p>As mentioned earlier, HBase stores data in little endian by default and Drill assumes the data is encoded in little endian. This exercise involves working with data that is encoded in little endian. First, you create two tables in HBase, students and clicks, that you can query with Drill. You use the CONVERT_TO and CONVERT_FROM functions to convert binary text to/from typed data. You use the CAST function to convert the binary data to an INT in step 4 of <a href="/docs/querying-hbase/#query-hbase-tables">Query HBase Tables</a>. When converting an INT or BIGINT number, having a byte count in the destination/source that does not match the byte count of the number in the binary source/destination, use CAST.</p>
+
+<h3 id="create-the-hbase-tables">Create the HBase tables</h3>
 
 <p>To create the HBase tables and start Drill, complete the following
 steps:</p>
 
 <ol>
-<li><p>Pipe the following commands to the HBase shell to create students and  clicks tables in HBase:</p>
+<li><p>Pipe the following commands to the HBase shell to create students and clicks tables in HBase:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">  echo &quot;create &#39;students&#39;,&#39;account&#39;,&#39;address&#39;&quot; | hbase shell
   echo &quot;create &#39;clicks&#39;,&#39;clickinfo&#39;,&#39;iteminfo&#39;&quot; | hbase shell
 </code></pre></div></li>
@@ -1081,18 +1159,18 @@ put &#39;clicks&#39;,&#39;click9&#39;,&#39;clickinfo:time&#39;,&#39;2013-02-01 2
 put &#39;clicks&#39;,&#39;click9&#39;,&#39;iteminfo:itemtype&#39;,&#39;image&#39;
 put &#39;clicks&#39;,&#39;click9&#39;,&#39;iteminfo:quantity&#39;,&#39;10&#39;
 </code></pre></div></li>
-<li><p>Issue the following command to put the data into hbase:  </p>
+<li><p>Issue the following command to put the data into HBase:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">cat testdata.txt | hbase shell
 </code></pre></div></li>
 </ol>
 
-<h2 id="query-hbase-tables">Query HBase Tables</h2>
+<h3 id="query-hbase-tables">Query HBase Tables</h3>
 
 <ol>
 <li><p>Issue the following query to see the data in the students table:  </p>
 
 <p>SELECT * FROM students;
-The query returns binary results:</p>
+The query returns results that are not useable. In the next step, you convert the data.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">+-------------+-----------------------+---------------------------------------------------------------------------+
 |  row_key    |  account              |                                address                                    |
 +-------------+-----------------------+---------------------------------------------------------------------------+
@@ -1103,12 +1181,7 @@ The query returns binary results:</p>
 +-------------+-----------------------+---------------------------------------------------------------------------+
 4 rows selected (1.335 seconds)
 </code></pre></div></li>
-</ol>
-
-<p>The Drill output reflects the actual data type of the HBase data, which is binary.</p>
-
-<ol>
-<li><p>Issue the following query, that includes the CONVERT_FROM function, to convert the <code>students</code> table to readable data:</p>
+<li><p>Issue the following query, that includes the CONVERT_FROM function, to convert the <code>students</code> table to typed data:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text"> SELECT CONVERT_FROM(row_key, &#39;UTF8&#39;) AS studentid, 
         CONVERT_FROM(students.account.name, &#39;UTF8&#39;) AS name, 
         CONVERT_FROM(students.address.state, &#39;UTF8&#39;) AS state, 
@@ -1121,7 +1194,7 @@ The query returns binary results:</p>
 <p class="last">Use dot notation to drill down to a column in an HBase table: tablename.columnfamilyname.columnnname  </p>
 </div>
 
-<p>The query returns readable data:</p>
+<p>The query returns results that look much better:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">+------------+------------+------------+------------------+------------+
 | studentid  |    name    |   state    |       street     |  zipcode   |
 +------------+------------+------------+------------------+------------+

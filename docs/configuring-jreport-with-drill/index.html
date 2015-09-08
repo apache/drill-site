@@ -995,7 +995,7 @@
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/odbc-jdbc-interfaces/using-drill-with-bi-tools/080-configuring-jreport.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/odbc-jdbc-interfaces/using-drill-with-bi-tools/090-configuring-jreport-with-drill.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
@@ -1007,11 +1007,9 @@
 
     <div class="int_text" align="left">
       
-        <p>JReport is an embeddable BI solution that empowers users to analyze data and create reports and dashboards. JReport accesses data from Hadoop systems, such as the MapR Distribution through Apache Drill, as well as other big data and transactional data sources. By visualizing data through Drill, users can perform their own reporting and data discovery for agile, on-the-fly decision-making.</p>
+        <p>JReport is an embeddable BI solution that empowers users to analyze data and create reports and dashboards. JReport accesses data from Hadoop systems through Apache Drill. By visualizing data through Drill, users can perform their own reporting and data discovery for agile, on-the-fly decision-making.</p>
 
-<p>You can use JReport 13.1 and the the Apache Drill JDBC Driver to easily extract data from the MapR Distribution and visulaize it, creating reports and dashboards that you can embed into your own applications.</p>
-
-<p>Complete the following simple steps to use Apache Drill with JReport:</p>
+<p>You can use JReport 13.1 and the Apache Drill JDBC Driver to easily extract data and visualize it, creating reports and dashboards that you can embed into your own applications. Complete the following simple steps to use Apache Drill with JReport:</p>
 
 <ol>
 <li>Install the Drill JDBC Driver with JReport.</li>
@@ -1023,26 +1021,19 @@
 
 <h3 id="step-1:-install-the-drill-jdbc-driver-with-jreport">Step 1: Install the Drill JDBC Driver with JReport</h3>
 
-<p>Drill provides standard JDBC connectivity to easily integrate with JReport. JReport 13.1 requires Drill 1.0 or later.</p>
-
-<p>For general instructions on installing the Drill JDBC driver, see <a href="/docs/using-jdbc/">Using JDBC</a>.</p>
+<p>Drill provides standard JDBC connectivity to integrate with JReport. JReport 13.1 requires Drill 1.0 or later.
+For general instructions on installing the Drill JDBC driver, see <a href="/docs/using-the-jdbc-driver/">Using JDBC</a>.</p>
 
 <ol>
-<li><p>Locate the JDBC driver in the Drill installation directory on any node where Drill is installed on the cluster: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;drill-home&gt;/jars/jdbc-driver/drill-jdbc-all-&lt;drill-version&gt;.jar 
-</code></pre></div>
-<p>For example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">/opt/mapr/drill/drill-1.0.0/jars/jdbc-driver/drill-jdbc-all-1.0.0.jar
-</code></pre></div></li>
-<li><p>Copy the Drill JDBC driver into the JReport <code>lib</code> folder:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">%REPORTHOME%\lib\
-</code></pre></div>
-<p>For example, on Windows, copy the Drill JDBC driver jar file into:</p>
+<li><p>Locate the JDBC driver in the Drill installation directory on any node where Drill is installed on the cluster: 
+    <drill-home>/jars/jdbc-driver/drill-jdbc-all-<drill-version>.jar </p></li>
+<li><p>Copy the Drill JDBC driver into the JReport <code>lib</code> folder:
+    %REPORTHOME%\lib\
+For example, on Windows, copy the Drill JDBC driver jar file into:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">C:\JReport\Designer\lib\drill-jdbc-all-1.0.0.jar
 </code></pre></div></li>
-<li><p>Add the location of the JAR file to the JReport CLASSPATH variable. On Windows, edit the <code>C:\JReport\Designer\bin\setenv.bat</code> file:</p>
-
-<p><img src="/docs/img/jreport_setenv.png" alt="drill query flow"></p></li>
+<li><p>Add the location of the JAR file to the JReport CLASSPATH variable. On Windows, edit the <code>C:\JReport\Designer\bin\setenv.bat</code> file:
+<img src="/docs/img/jreport_setenv.png" alt="drill query flow"></p></li>
 <li><p>Verify that the JReport system can resolve the hostnames of the ZooKeeper nodes of the Drill cluster. You can do this by configuring DNS for all of the systems. Alternatively, you can edit the hosts file on the JReport system to include the hostnames and IP addresses of all the ZooKeeper nodes used with the Drill cluster.  For Linux systems, the hosts file is located at <code>/etc/hosts</code>. For Windows systems, the hosts file is located at <code>%WINDIR%\system32\drivers\etc\hosts</code>  Here is an example of a Windows hosts file: <img src="/docs/img/jreport-hostsfile.png" alt="drill query flow"></p></li>
 </ol>
 
@@ -1068,14 +1059,11 @@
 <ol>
 <li> In the Catalog Browser, right-click <strong>Queries</strong> and select <strong>Add Query…</strong></li>
 <li> Define a JReport query by using the Query Editor. You can also import your own SQL statements. <img src="/docs/img/jreport-queryeditor.png" alt="drill query flow"></li>
-<li><p>Click <strong>OK</strong> to close the Query Editor, and click the <strong>Save Catalog</strong> button to save your progress to the catalog file. </p>
-
-<p><strong>Note</strong>: If the report returns errors, you may need to edit the query and add the schema in front of the table name: <code>select column from schema.table_name</code> You can do this by clicking the <strong>SQL</strong> button on the Query Editor.</p></li>
-<li><p>Use JReport Designer to query the data and create a report. <img src="/docs/img/jreport-crosstab.png" alt="drill query flow"></p>
-
-<p><img src="/docs/img/jreport-crosstab2.png" alt="drill query flow"></p>
-
-<p><img src="/docs/img/jreport-crosstab3.png" alt="drill query flow"></p></li>
+<li><p>Click <strong>OK</strong> to close the Query Editor, and click the <strong>Save Catalog</strong> button to save your progress to the catalog file. 
+<strong>Note</strong>: If the report returns errors, you may need to edit the query and add the schema in front of the table name: <code>select column from schema.table_name</code> You can do this by clicking the <strong>SQL</strong> button on the Query Editor.</p></li>
+<li><p>Use JReport Designer to query the data and create a report. <img src="/docs/img/jreport-crosstab.png" alt="drill query flow">
+<img src="/docs/img/jreport-crosstab2.png" alt="drill query flow">
+<img src="/docs/img/jreport-crosstab3.png" alt="drill query flow"></p></li>
 </ol>
 
     

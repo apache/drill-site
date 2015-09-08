@@ -436,6 +436,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-jreport-with-drill/">Configuring JReport with Drill</a></li>
+              
             </ul>
             
           
@@ -1008,7 +1010,7 @@
         <p>The PARTITION BY clause in the CTAS command partitions data, which Drill <a href="/docs/partition-pruning/">prunes</a> to improve performance when you query the data. (Drill 1.1.0)</p>
 
 <h2 id="syntax">Syntax</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> [ PARTITION_BY ( column_name[, . . .] ) ]
+<div class="highlight"><pre><code class="language-text" data-lang="text"> [ PARTITION BY ( column_name[, . . .] ) ]
 </code></pre></div>
 <p>The PARTITION BY clause partitions the data by the first column_name, and then subpartitions the data by the next column_name, if there is one, and so on. </p>
 
@@ -1016,12 +1018,12 @@
 
 <p>When the base table in the SELECT statement is schema-less, include columns in the PARTITION BY clause in the table&#39;s column list, or use a select all (SELECT *) statement:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE dest_name [ (column, . . .) ]
-[ PARTITION_BY (column, . . .) ] 
+[ PARTITION BY (column, . . .) ] 
 AS SELECT column_list FROM &lt;source_name&gt;;
 </code></pre></div>
 <p>When columns in the source table have ambiguous names, such as COLUMNS[0], define one or more column aliases in the SELECT statement. Use the alias name or names in the CREATE TABLE list. List aliases in the same order as the corresponding columns in the SELECT statement. Matching order is important because Drill performs an overwrite operation.  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE dest_name (alias1, alias2, . . .) 
-[ PARTITION_BY (alias1, . . . ) ] 
+[ PARTITION BY (alias1, . . . ) ] 
 AS SELECT column1 alias1, column2 alias2, . . .;
 </code></pre></div>
 <p>For example:</p>
