@@ -1007,9 +1007,9 @@
       
         <h2 id="top-10-reasons-to-use-drill">Top 10 Reasons to Use Drill</h2>
 
-<h3 id="1.-get-started-in-minutes">1. Get started in minutes</h3>
+<h2 id="1.-get-started-in-minutes">1. Get started in minutes</h2>
 
-<p>It takes just a few minutes to get started with Drill. Untar the Drill software on your Mac or Windows laptop and run a query on a local file. No need to set up any infrastructure or to define schemas. Just point to the data, such as data in a file, directory, HBase table, and drill.</p>
+<p>It takes just a few minutes to get started with Drill. Untar the Drill software on your Linux, Mac, or Windows laptop and run a query on a local file. No need to set up any infrastructure or to define schemas. Just point to the data, such as data in a file, directory, HBase table, and drill.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">$ tar -xvf apache-drill-&lt;version&gt;.tar.gz
 $ &lt;install directory&gt;/bin/drill-embedded
 0: jdbc:drill:zk=local&gt; SELECT * FROM cp.`employee.json` LIMIT 5;
@@ -1038,13 +1038,13 @@ ORDER BY sq.prod_id;
 </code></pre></div>
 <h2 id="4.-real-sql----not-&quot;sql-like&quot;">4. Real SQL -- not &quot;SQL-like&quot;</h2>
 
-<p>Drill supports the standard SQL:2003 syntax. No need to learn a new &quot;SQL-like&quot; language or struggle with a semi-functional BI tool. Drill supports many data types including DATE, INTERVALDAY/INTERVALYEAR, TIMESTAMP, and VARCHAR, as well as complex query constructs such as correlated sub-queries and joins in WHERE clauses. Here is an example of a TPC-H standard query that runs in Drill &quot;as is&quot;:</p>
+<p>Drill supports the standard SQL:2003 syntax. No need to learn a new &quot;SQL-like&quot; language or struggle with a semi-functional BI tool. Drill supports many data types including DATE, INTERVAL, TIMESTAMP, and VARCHAR, as well as complex query constructs such as correlated sub-queries and joins in WHERE clauses. Here is an example of a TPC-H standard query that runs in Drill:</p>
 
 <h3 id="tpc-h-query-4">TPC-H query 4</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT  o.o_orderpriority, count(*) AS order_count
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT  o.o_orderpriority, COUNT(*) AS order_count
 FROM orders o
-WHERE o.o_orderdate &gt;= date &#39;1996-10-01&#39;
-      AND o.o_orderdate &lt; date &#39;1996-10-01&#39; + interval &#39;3&#39; month
+WHERE o.o_orderdate &gt;= DATE &#39;1996-10-01&#39;
+      AND o.o_orderdate &lt; DATE &#39;1996-10-01&#39; + INTERVAL &#39;3&#39; month
       AND EXISTS(
                  SELECT * FROM lineitem l 
                  WHERE l.l_orderkey = o.o_orderkey
