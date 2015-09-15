@@ -77,10 +77,6 @@
       
         <li><a href="/docs/sample-datasets/">Sample Datasets</a></li>
       
-        <li><a href="/docs/archived-pages/">Archived Pages</a></li>
-      
-        <li><a href="/docs/progress-reports/">Progress Reports</a></li>
-      
         <li><a href="/docs/project-bylaws/">Project Bylaws</a></li>
       
     </ul>
@@ -249,6 +245,10 @@
             </ul>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/starting-the-web-ui/">Starting the Web UI</a></li>
+            
+          
           </ul>
         
       
@@ -287,6 +287,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-web-ui-and-rest-api-security/">Configuring Web UI and REST API Security</a></li>
             
           
             
@@ -660,6 +664,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/ranking-window-functions/">Ranking Window Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/value-window-functions/">Value Window Functions</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/sql-window-functions-examples/">SQL Window Functions Examples</a></li>
               
             </ul>
@@ -702,9 +708,11 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-view/">CREATE VIEW</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/describe/">DESCRIBE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-table/">DROP TABLE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/explain/">EXPLAIN</a></li>
               
@@ -944,32 +952,6 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Archived Pages</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/how-to-run-the-drill-demo/">How to Run the Drill Demo</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/what-is-apache-drill/">What is Apache Drill</a></li>
-            
-          
-          </ul>
-        
-      
-        
-          <li class="toctree-l1"><a href="javascript: void(0);">Progress Reports</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/2014-q1-drill-report/">2014 Q1 Drill Report</a></li>
-            
-          
-          </ul>
-        
-      
-        
           <li class="toctree-l1"><a class="reference internal" href="/docs/project-bylaws/">Project Bylaws</a></li>
         
       
@@ -1005,81 +987,66 @@
 
     <div class="int_text" align="left">
       
-        <p>This section explains how to install and use the JDBC driver for Apache Drill. For specific examples of client tool connections to Drill via JDBC, see <a href="/docs/using-jdbc-with-squirrel-on-windows">Using JDBC with SQuirreL</a> and <a href="/docs/configuring-tibco-spotfire-server-with-drill/">Configuring Spotfire Server</a>.</p>
+        <p>This section explains how to install and use the JDBC driver for Apache Drill. To use the JDBC driver, you have to:</p>
 
-<h3 id="prerequisites">Prerequisites</h3>
+<ol>
+<li><a href="/docs/using-the-jdbc-driver/#prerequisites">Meet prerequisites</a>.</li>
+<li><a href="/docs/using-the-jdbc-driver/#getting-the-drill-jdbc-driver">Get the Drill JDBC Driver</a>.</li>
+<li>Put the Drill JDBC jar file on the classpath.</li>
+<li>Use a <a href="/docs/using-the-jdbc-driver/#using-the-jdbc-url-for-a-random-drillbit-connection">valid URL</a> in the JDBC connection string when you write application code or configure BI tools.</li>
+<li>Use the <a href="/docs/using-the-jdbc-driver/#using-the-drill-driver-class-name">name of the Drill driver class</a> in application code or in the configuration of client tools.</li>
+</ol>
+
+<p>Most client tools provide a UI where you can enter all of the required connection information, including the driver location, connection URL, and driver class name. For specific examples of client tool connections to Drill through JDBC, see <a href="/docs/using-jdbc-with-squirrel-on-windows">Using JDBC with SQuirreL</a> and <a href="/docs/configuring-tibco-spotfire-server-with-drill/">Configuring Spotfire Server</a>.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
 
 <ul>
-<li>JRE 7 or JDK 7</li>
-<li>Drill installed either in embedded mode or in distributed mode on one or more nodes in a cluster. Refer to the <a href="/docs/install-drill/">Install Drill</a> documentation for more information.</li>
-<li><p>The client must be able to resolve the actual hostname of the Drill node(s) with the IP(s). Verify that a DNS entry was created on the client machine for the Drill node(s).  If a DNS entry does not exist, create the entry for the Drill node(s).</p>
-
-<ul>
-<li>For Windows, create the entry in the %WINDIR%\system32\drivers\etc\hosts file.</li>
-<li>For Linux and Mac OSX, create the entry in /etc/hosts.<br>
-<drill-machine-IP> <drill-machine-hostname>
-For example: <code>127.0.1.1 maprdemo</code></li>
-</ul></li>
+<li>JRE 7 or JDK 7<br></li>
+<li><a href="/docs/install-drill/">A Drill installation</a><br></li>
+<li>Capability to resolve the actual host name of the Drill node(s) with the IP(s), as described in step 4 of <a href="/docs/configuring-jreport-with-drill/#step-1:-install-the-drill-jdbc-driver-with-jreport">Install the Drill JDBC Driver with JReport</a>. </li>
 </ul>
 
-<hr>
+<h2 id="getting-the-drill-jdbc-driver">Getting the Drill JDBC Driver</h2>
 
-<h3 id="getting-the-drill-jdbc-driver">Getting the Drill JDBC Driver</h3>
+<p>The Drill JDBC Driver <code>JAR</code> file must exist on a client machine so you can configure the driver for the application or third-party tool that you intend to use. Obtain the driver in one of the following ways:</p>
 
-<p>The Drill JDBC Driver <code>JAR</code> file must exist in a directory on a client machine so you can configure the driver for the application or third-party tool that you intend to use. You can obtain the driver in two different ways:</p>
+<ul>
+<li>Copy the <code>drill-jdbc-all</code> JAR file from the following Drill installation directory on a node where Drill is installed to a directory on your client machine:<br>
+<code>&lt;drill_installation_directory&gt;/jars/jdbc-driver/drill-jdbc-all-&lt;version&gt;.jar</code><br></li>
+</ul>
 
-<ol>
-<li><p>Copy the <code>drill-jdbc-all</code> JAR file from the following Drill installation directory on a node where Drill is installed to a directory on your client machine:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;drill_installation_directory&gt;/jars/jdbc-driver/drill-jdbc-all-&lt;version&gt;.jar
-</code></pre></div>
-<p>For example, on a MapR cluster: <code>/opt/mapr/drill/drill-1.0.0/jars/jdbc-driver/drill-jdbc-all-1.0.0-mapr-r1.jar</code></p></li>
-<li><p>Download the following tar file to a location on your client machine: <a href="http://apache.osuosl.org/drill/drill-1.0.0/apache-drill-1.0.0-src.tar.gz">apache-
-drill-1.0.0.tar.gz</a> and extract the file. You may need to use a decompression utility, such as <a href="http://www.7-zip.org/">7-zip</a>. The driver is extracted to the following directory:</p>
+<p>Or</p>
 
-<p><drill-home>\apache-drill-&lt;version&gt;\jars\jdbc-driver\drill-jdbc-all-<version>.jar</p></li>
-</ol>
+<ul>
+<li>Download the following TAR file to a location on your client machine: <a href="http://apache.osuosl.org/drill/drill-1.0.0/apache-drill-1.0.0-src.tar.gz">apache-
+drill-1.0.0.tar.gz</a>. Extract the file. On Windows, you may need to use a decompression utility, such as <a href="http://www.7-zip.org/">7-zip</a>. The driver is extracted to the following directory:<br>
+<code>&lt;drill-installation_directory&gt;/jars/jdbc-driver/drill-jdbc-all-&lt;version&gt;.jar</code></li>
+</ul>
 
-<hr>
+<h2 id="using-the-jdbc-url-for-a-random-drillbit-connection">Using the JDBC URL for a Random Drillbit Connection</h2>
 
-<h3 id="configuring-a-driver-application-or-client">Configuring a Driver Application or Client</h3>
+<p>The format of the JDBC URL differs slightly, depending on the way you want to connect to the Drillbit: random, local, or direct. This section covers using the URL for a random or local connection. Using a URL to <a href="/docs/using-the-jdbc-driver/#using-the-jdbc-url-format-for-a-direct-drillbit-connection">directly connect to a Drillbit</a> is covered later. If you want ZooKeeper to randomly choose a Drillbit in the cluster, or if you want to connect to the local Drillbit, the format of the driver URL is:</p>
 
-<p>To configure a JDBC application, users have to:</p>
+<p><code>jdbc:drill:[schema=&lt;storage plugin&gt;;]zk=&lt;zk name&gt;[:&lt;port&gt;][,&lt;zk name2&gt;[:&lt;port&gt;]...</code><br>
+  <code>]&lt;directory&gt;/&lt;cluster ID&gt;</code></p>
 
-<ol>
-<li>Put the Drill JDBC jar file on the class path.</li>
-<li>Use a valid Drill JDBC URL.</li>
-<li>Configure tools or application code with the name of the Drill driver class.</li>
-</ol>
+<p>where</p>
 
-<p>Most client tools provide a UI where you can enter all of the required connection information, including the Driver location, connection URL, and driver class name.</p>
+<ul>
+<li><code>jdbc</code> is the connection type. Required.<br></li>
+<li><code>schema</code> is the name of a <a href="/docs/storage-plugin-registration">storage plugin</a> configuration to use as the default for queries. For example,<code>schema=hive</code>. Optional.<br></li>
+<li><code>zk name</code> specifies one or more ZooKeeper host names, or IP addresses. Use <code>local</code> instead of a host name or IP address to connect to the local Drillbit. Required. </li>
+<li><code>port</code> is the ZooKeeper port number. Port 2181 is the default. On a MapR cluster, the default is 5181. Optional. </li>
+<li><code>directory</code> is the Drill directory in ZooKeeper, which by default is <code>/Drill</code>. Optional. </li>
+<li><code>cluster ID</code> is <code>drillbits1</code> by default. If the default has changed, <a href="/docs/using-the-jdbc-driver/#determining-the-cluster-id">determine the cluster ID</a> and use it. Optional.</li>
+</ul>
 
-<h3 id="jdbc-driver-urls">JDBC Driver URLs</h3>
+<h3 id="determining-the-cluster-id">Determining the Cluster ID</h3>
 
-<p>The driver URLs that you use to create JDBC connection strings must be formed as follows:</p>
+<p>To determine the cluster ID, check the following file:</p>
 
-<p><code>jdbc:drill:zk=&lt;zookeeper_quorum&gt;:&lt;port&gt;/&lt;drill_directory_in_zookeeper&gt;/&lt;cluster_ID&gt;;schema=&lt;schema_to_use_as_default&gt;</code></p>
-
-<p>Any Drill JDBC URL must start with: <code>jdbc:drill</code>.</p>
-
-<p><strong>ZooKeeper Quorum</strong></p>
-
-<p>To connect to a cluster, specify the ZooKeeper quorum as a list of hostnames or IP addresses. </p>
-
-<p><strong>ZooKeeper Port Number</strong></p>
-
-<p>The default ZooKeeper port is 2181. On a MapR cluster, the ZooKeeper port is 5181.</p>
-
-<p><strong>Drill Directory in ZooKeeper</strong></p>
-
-<p>The name of the Drill directory stored in ZooKeeper is <code>/drill</code>.</p>
-
-<p><strong>Cluster ID</strong></p>
-
-<p>The Drill default cluster ID is <code>drillbits1</code>.</p>
-
-<p>On a MapR cluster, check the following file for the cluster ID:</p>
-
-<p><code>/opt/mapr/drill/drill-1.0.0/conf/drill-override.conf</code></p>
+<p><code>&lt;drill-installation&gt;/conf/drill-override.conf</code></p>
 
 <p>For example:</p>
 
@@ -1090,34 +1057,49 @@ drill.exec: {
 }
 ...</code></p>
 
-<p><strong>Schema</strong></p>
-
-<p>Optionally, include the default schema for the JDBC connection. For example:</p>
-
-<p><code>schema=hive</code></p>
-
 <h3 id="url-examples">URL Examples</h3>
 
 <p><strong>Single-Node Installation</strong></p>
 
 <p><code>jdbc:drill:zk=maprdemo:5181</code></p>
 
-<p><code>jdbc:drill:zk=centos23.lab:5181/drill/docs41cluster-drillbits</code></p>
+<p><code>jdbc:drill:zk=centos23.lab:2181/drill/docs41cluster-drillbits</code></p>
 
-<p><code>jdbc:drill:zk=10.10.100.56:5181/drill/drillbits1;schema=hive</code></p>
+<p><code>jdbc:drill:zk=10.10.100.56:2181/drill/drillbits1;schema=hive</code></p>
 
 <p><strong>Cluster Installation</strong></p>
 
-<p><code>jdbc:drill:zk=10.10.100.30:5181,10.10.100.31:5181,10.10.100.32:5181/drill/drillbits1;schema=hive</code></p>
+<p><code>jdbc:drill:zk=10.10.100.30:5181,10.10.100.31:5181,10.10.100.32:2181/drill/drillbits1;schema=hive</code></p>
 
-<hr>
+<h2 id="using-the-jdbc-url-format-for-a-direct-drillbit-connection">Using the JDBC URL Format for a Direct Drillbit Connection</h2>
 
-<h3 id="driver-class-name">Driver Class Name</h3>
+<p>If you want to connect directly to a Drillbit instead of using ZooKeeper to choose the Drillbit, replace <code>zk=&lt;zk name&gt;</code> with <code>drillbit=&lt;node&gt;</code> as shown in the following URL.</p>
 
-<p>The class name for the JDBC driver is <code>org.apache.drill.jdbc.Driver</code></p>
+<p><code>jdbc:drill:[schema=&lt;storage plugin&gt;;]drillbit=&lt;node name&gt;[:&lt;port&gt;][,&lt;node name2&gt;[:&lt;port&gt;]...</code><br>
+  <code>]&lt;directory&gt;/&lt;cluster ID&gt;</code></p>
 
-<hr>
+<p>where</p>
 
+<p><code>drillbit=&lt;node name&gt;</code> specifies one or more host names or IP addresses of cluster nodes running Drill. </p>
+
+<p>For definitions of other URL components, see <a href="/docs/using-the-jdbc-driver/#using-the-jdbc-url-for-a-random-drillbit-connection">Using the JDBC URL for a Random Drillbit Connection</a>.</p>
+
+<h2 id="using-the-drill-driver-class-name">Using the Drill Driver Class Name</h2>
+
+<p>The class name for the JDBC driver is <code>org.apache.drill.jdbc.Driver</code>. </p>
+
+<h2 id="example-of-connecting-to-drill-programmatically">Example of Connecting to Drill Programmatically</h2>
+
+<p>The following sample code shows using the class name in a snippet that connects to Drill using the Drill-Jdbc-all driver:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Class.forName(&quot;org.apache.drill.jdbc.Driver&quot;);
+Connection connection =DriverManager.getConnection(&quot;jdbc:drill:zk=
+node3.mynode.com:2181/drill/my_cluster_com-drillbits&quot;);
+Statement st = connection.createStatement();
+ResultSet rs = st.executeQuery(&quot;SELECT * from cp.`employee`&quot;);
+while(rs.next()){
+System.out.println(rs.getString(1));
+}
+</code></pre></div>
     
       
         <div class="doc-nav">

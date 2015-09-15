@@ -77,10 +77,6 @@
       
         <li><a href="/docs/sample-datasets/">Sample Datasets</a></li>
       
-        <li><a href="/docs/archived-pages/">Archived Pages</a></li>
-      
-        <li><a href="/docs/progress-reports/">Progress Reports</a></li>
-      
         <li><a href="/docs/project-bylaws/">Project Bylaws</a></li>
       
     </ul>
@@ -249,6 +245,10 @@
             </ul>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/starting-the-web-ui/">Starting the Web UI</a></li>
+            
+          
           </ul>
         
       
@@ -287,6 +287,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-web-ui-and-rest-api-security/">Configuring Web UI and REST API Security</a></li>
             
           
             
@@ -660,6 +664,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/ranking-window-functions/">Ranking Window Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/value-window-functions/">Value Window Functions</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/sql-window-functions-examples/">SQL Window Functions Examples</a></li>
               
             </ul>
@@ -702,9 +708,11 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-view/">CREATE VIEW</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/describe/">DESCRIBE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-table/">DROP TABLE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/explain/">EXPLAIN</a></li>
               
@@ -944,32 +952,6 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Archived Pages</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/how-to-run-the-drill-demo/">How to Run the Drill Demo</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/what-is-apache-drill/">What is Apache Drill</a></li>
-            
-          
-          </ul>
-        
-      
-        
-          <li class="toctree-l1"><a href="javascript: void(0);">Progress Reports</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/2014-q1-drill-report/">2014 Q1 Drill Report</a></li>
-            
-          
-          </ul>
-        
-      
-        
           <li class="toctree-l1"><a class="reference internal" href="/docs/project-bylaws/">Project Bylaws</a></li>
         
       
@@ -1166,8 +1148,8 @@ Basic Coding Rules</h2>
 <p>To leverage Java’s just-in-time (JIT) compiler for maximum speed, you need to adhere to some basic rules.</p>
 
 <ul>
-<li>Do not use imports. Instead, use the fully qualified class name as required by the Google Guava API packaged in Apache Drill and as shown in <a href="/docs/tutorial-develop-a-simple-function/#step-3-declare-input-parameters">&quot;Step 3: Declare input parameters&quot;</a>.<br></li>
-<li>Manipulate the ValueHolders classes, for example VarCharHolder and IntHolder, as structs by calling helper methods, such as getStringFromVarCharHolder and toStringFromUTF8 as shown in <a href="/docs/tutorial-develop-a-simple-function/#step-5-implement-the-eval-function">&quot;Step 5: Implement the eval() function&quot;</a>.<br></li>
+<li>Do not use imports. Instead, use the fully qualified class name as required by the Google Guava API packaged in Apache Drill and as shown in <a href="/docs/tutorial-develop-a-simple-function/#step-3:-declare-input-parameters">&quot;Step 3: Declare input parameters&quot;</a>.<br></li>
+<li>Manipulate the ValueHolders classes, for example VarCharHolder and IntHolder, as structs by calling helper methods, such as getStringFromVarCharHolder and toStringFromUTF8 as shown in <a href="/docs/tutorial-develop-a-simple-function/#step-5:-implement-the-eval()-method">&quot;Step 5: Implement the eval() function&quot;</a>.<br></li>
 <li>Do not call methods such as toString because this causes serious problems.</li>
 </ul>
 
@@ -1218,7 +1200,7 @@ Basic Coding Rules</h2>
 
 <h2 id="test-the-new-function">Test the New Function</h2>
 
-<p>Restart drill and run the following query:</p>
+<p>Restart drill and run the following query on the <a href="/docs/querying-json-files/"><code>employee.json</code></a> file installed with Drill:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT MASK(first_name, &#39;*&#39; , 3) FIRST , MASK(last_name, &#39;#&#39;, 7) LAST  FROM cp.`employee.json` LIMIT 5;
 +----------+------------+
 |  FIRST   |    LAST    |

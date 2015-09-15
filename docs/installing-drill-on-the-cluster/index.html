@@ -77,10 +77,6 @@
       
         <li><a href="/docs/sample-datasets/">Sample Datasets</a></li>
       
-        <li><a href="/docs/archived-pages/">Archived Pages</a></li>
-      
-        <li><a href="/docs/progress-reports/">Progress Reports</a></li>
-      
         <li><a href="/docs/project-bylaws/">Project Bylaws</a></li>
       
     </ul>
@@ -249,6 +245,10 @@
             </ul>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/starting-the-web-ui/">Starting the Web UI</a></li>
+            
+          
           </ul>
         
       
@@ -287,6 +287,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-web-ui-and-rest-api-security/">Configuring Web UI and REST API Security</a></li>
             
           
             
@@ -660,6 +664,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/ranking-window-functions/">Ranking Window Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/value-window-functions/">Value Window Functions</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/sql-window-functions-examples/">SQL Window Functions Examples</a></li>
               
             </ul>
@@ -702,9 +708,11 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-view/">CREATE VIEW</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/describe/">DESCRIBE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-table/">DROP TABLE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/explain/">EXPLAIN</a></li>
               
@@ -944,32 +952,6 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Archived Pages</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/how-to-run-the-drill-demo/">How to Run the Drill Demo</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/what-is-apache-drill/">What is Apache Drill</a></li>
-            
-          
-          </ul>
-        
-      
-        
-          <li class="toctree-l1"><a href="javascript: void(0);">Progress Reports</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/2014-q1-drill-report/">2014 Q1 Drill Report</a></li>
-            
-          
-          </ul>
-        
-      
-        
           <li class="toctree-l1"><a class="reference internal" href="/docs/project-bylaws/">Project Bylaws</a></li>
         
       
@@ -1007,20 +989,20 @@
 
     <div class="int_text" align="left">
       
-        <p>Complete the following steps to install Drill on designated nodes:</p>
+        <p>You install Drill on nodes in the cluster, and then configure a cluster ID and add Zookeeper information, as described in the following steps:</p>
 
 <ol>
-<li><p>Download the Drill tarball. For example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">curl http://getdrill.org/drill/download/apache-drill-1.1.0.tar.gz
-</code></pre></div></li>
-<li><p>Explode the tarball to the directory of your choice, such as <code>/opt</code>:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">tar -xzvf apache-drill-1.1.0.tar.gz
-</code></pre></div></li>
-<li><p>In <code>drill-override.conf,</code> create a unique Drill <code>cluster ID</code>, and provide Zookeeper host names and port numbers to configure a connection to your Zookeeper quorum.</p>
+<li><p>Download the Drill tarball. For example, enter the curl command using the latest version number for Drill:</p>
+
+<p><code>curl http://getdrill.org/drill/download/apache-drill-&lt;version&gt;.tar.gz</code></p></li>
+<li><p>Extract the tarball to the directory of your choice, such as <code>/opt</code>:</p>
+
+<p><code>tar -xzvf apache-drill-&lt;version&gt;.tar.gz</code></p></li>
+<li><p>In <code>drill-override.conf,</code> use the Drill <code>cluster ID</code>, and provide Zookeeper host names and port numbers to configure a connection to your Zookeeper quorum.</p>
 
 <ol>
-<li>Edit <code>drill-override.conf</code> located in the <code>/conf</code> directory.</li>
-<li>Provide a unique <code>cluster-id</code> and the Zookeeper host names and port numbers in <code>zk.connect</code>. If you install Drill on multiple nodes, assign the same <code>cluster ID</code> to each Drill node so that all Drill nodes share the same ID. The default Zookeeper port is 2181.</li>
+<li>Edit <code>drill-override.conf</code> located in the <code>conf</code> directory.</li>
+<li>Provide a unique <code>cluster-id</code> and the Zookeeper host names and port numbers in <code>zk.connect</code>. If you install Drill on multiple nodes, assign the same <code>cluster ID</code> to each Drill node so that all Drill nodes share the same ID. The default Zookeeper port on the open source version of Apache Drill is 2181.</li>
 </ol>
 
 <p><strong>Example</strong></p>
@@ -1030,9 +1012,6 @@
  }
 </code></pre></div></li>
 </ol>
-
-<p>You can connect Drill to various types of data sources. Refer to <a href="/docs/connect-a-data-source-introduction">Connect Apache Drill to Data Sources</a> to get configuration instructions for the
-particular type of data source that you want to connect to Drill.</p>
 
     
       

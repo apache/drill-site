@@ -77,10 +77,6 @@
       
         <li><a href="/docs/sample-datasets/">Sample Datasets</a></li>
       
-        <li><a href="/docs/archived-pages/">Archived Pages</a></li>
-      
-        <li><a href="/docs/progress-reports/">Progress Reports</a></li>
-      
         <li><a href="/docs/project-bylaws/">Project Bylaws</a></li>
       
     </ul>
@@ -249,6 +245,10 @@
             </ul>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/starting-the-web-ui/">Starting the Web UI</a></li>
+            
+          
           </ul>
         
       
@@ -287,6 +287,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-web-ui-and-rest-api-security/">Configuring Web UI and REST API Security</a></li>
             
           
             
@@ -660,6 +664,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/ranking-window-functions/">Ranking Window Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/value-window-functions/">Value Window Functions</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/sql-window-functions-examples/">SQL Window Functions Examples</a></li>
               
             </ul>
@@ -702,9 +708,11 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-view/">CREATE VIEW</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/describe/">DESCRIBE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-table/">DROP TABLE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/explain/">EXPLAIN</a></li>
               
@@ -944,32 +952,6 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Archived Pages</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/how-to-run-the-drill-demo/">How to Run the Drill Demo</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/what-is-apache-drill/">What is Apache Drill</a></li>
-            
-          
-          </ul>
-        
-      
-        
-          <li class="toctree-l1"><a href="javascript: void(0);">Progress Reports</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/2014-q1-drill-report/">2014 Q1 Drill Report</a></li>
-            
-          
-          </ul>
-        
-      
-        
           <li class="toctree-l1"><a class="reference internal" href="/docs/project-bylaws/">Project Bylaws</a></li>
         
       
@@ -1076,8 +1058,9 @@
 <p>Returns the interval between two timestamps or subtracts a timestamp from midnight of the current date.</p>
 
 <h3 id="age-syntax">AGE Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">AGE (timestamp[, timestamp])
-</code></pre></div>
+
+<p><code>AGE (timestamp[, timestamp])</code></p>
+
 <p><em>timestamp</em> is the data and time formatted as shown in the following examples.</p>
 
 <h3 id="age-usage-notes">AGE Usage Notes</h3>
@@ -1095,7 +1078,7 @@
 +------------+
 1 row selected (0.064 seconds)
 </code></pre></div>
-<p>Find the interval between midnight today, May 21, 2015, and hire dates of employees 578 and 761 in the <code>employees.json</code> file. The file is installed with Drill and located in the Drill classpath.</p>
+<p>Find the interval between midnight today, May 21, 2015, and hire dates of employees 578 and 761 in the <a href="/docs/querying-json-files/"><code>employee.json</code></a> file installed with Drill. The file is installed with Drill and located in the Drill classpath.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT AGE(CAST(hire_date AS TIMESTAMP)) FROM cp.`employee.json` where employee_id IN( &#39;578&#39;,&#39;761&#39;);
 +------------------+
 |      EXPR$0      |
@@ -1121,14 +1104,12 @@
 <p>Returns the sum of a date/time and a number of days/hours, or of a date/time and date/time interval.</p>
 
 <h3 id="date_add-syntax">DATE_ADD Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">DATE_ADD(keyword literal, integer)
 
-DATE_ADD(keyword literal, interval expr)
+<p><code>DATE_ADD(keyword literal, integer)</code><br>
+<code>DATE_ADD(keyword literal, interval expr)</code><br>
+<code>DATE_ADD(column, integer)</code><br>
+<code>DATE_ADD(column, interval expr)</code>  </p>
 
-DATE_ADD(column, integer)
-
-DATE_ADD(column, interval expr)
-</code></pre></div>
 <p><em>keyword</em> is the word date, time, or timestamp.<br>
 <em>literal</em> is a date, time, or timestamp literal.  For example, a date in yyyy-mm-dd format enclosed in single quotation marks.<br>
 <em>integer</em> is a number of days to add to the date/time.<br>
@@ -1238,8 +1219,9 @@ DATE_ADD(column, interval expr)
 <p>Returns a field of a date, time, timestamp, or interval.</p>
 
 <h3 id="date_part-syntax">DATE_PART Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">date_part(keyword, expression) 
-</code></pre></div>
+
+<p><code>date_part(keyword, expression)</code>  </p>
+
 <p><em>keyword</em> is year, month, day, hour, minute, or second enclosed in single quotation marks.<br>
 <em>expression</em> is date, time, timestamp, or interval literal enclosed in single quotation marks.</p>
 
@@ -1278,14 +1260,12 @@ SELECT DATE_PART(&#39;hour&#39;, &#39;23:14:30.076&#39;) FROM (VALUES(1));
 <p>Returns the difference between a date/time and a number of days/hours, or between a date/time and date/time interval.</p>
 
 <h3 id="date_sub-syntax">DATE_SUB Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">DATE_SUB(keyword literal, integer) 
 
-DATE_SUB(keyword literal, interval expr)  
+<p><code>DATE_SUB(keyword literal, integer)</code><br>
+<code>DATE_SUB(keyword literal, interval expr)</code><br>
+<code>DATE_ADD(column, integer)</code><br>
+<code>DATE_SUB(column, interval expr)</code>  </p>
 
-DATE_ADD(column, integer)  
-
-DATE_SUB(column, interval expr)
-</code></pre></div>
 <p><em>keyword</em> is the word date, time, or timestamp.<br>
 <em>literal</em> is a date, time, or timestamp literal. For example, a date in yyyy-mm-dd format enclosed in single quotation marks.<br>
 <em>integer</em> is a number of days to subtract from the date, time, or timestamp.
@@ -1463,8 +1443,9 @@ SELECT NOW() FROM (VALUES(1));
 <p>Returns a component of a timestamp, time, date, or interval.</p>
 
 <h3 id="extract-syntax">EXTRACT Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">EXTRACT (extract_expression) 
-</code></pre></div>
+
+<p><code>EXTRACT (extract_expression)</code>  </p>
+
 <p><em>extract_expression</em> is:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">component FROM (timestamp | time | date | interval)
 </code></pre></div>
@@ -1488,7 +1469,6 @@ SELECT NOW() FROM (VALUES(1));
 </code></pre></div>
 <p>At 8:00 am, extract the hour from the value of CURRENT_DATE.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(hour FROM CURRENT_DATE) FROM (VALUES(1));
-
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1497,7 +1477,6 @@ SELECT NOW() FROM (VALUES(1));
 </code></pre></div>
 <p>What is the hour component of this time: 17:12:28.5?</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(hour FROM TIME &#39;17:12:28.5&#39;) FROM (VALUES(1));
-
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1507,7 +1486,6 @@ SELECT NOW() FROM (VALUES(1));
 </code></pre></div>
 <p>What is the seconds component of this timestamp: 2001-02-16 20:38:40</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(SECOND FROM TIMESTAMP &#39;2001-02-16 20:38:40&#39;) FROM (VALUES(1));
-
 +------------+
 |   EXPR$0   |
 +------------+
@@ -1549,10 +1527,11 @@ SELECT NOW() FROM (VALUES(1));
 <p>Returns UNIX Epoch time, which is the number of seconds elapsed since January 1, 1970.</p>
 
 <h3 id="unix_timestamp-syntax">UNIX_TIMESTAMP Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">UNIX_TIMESTAMP()  
-UNIX_TIMESTAMP(string date)  
-UNIX_TIMESTAMP(string date, string pattern)  
-</code></pre></div>
+
+<p><code>UNIX_TIMESTAMP()</code><br>
+<code>UNIX_TIMESTAMP(string date)</code><br>
+<code>UNIX_TIMESTAMP(string date, string pattern)</code>  </p>
+
 <p>These functions perform the following operations, respectively:</p>
 
 <ul>

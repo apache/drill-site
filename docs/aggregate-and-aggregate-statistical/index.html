@@ -77,10 +77,6 @@
       
         <li><a href="/docs/sample-datasets/">Sample Datasets</a></li>
       
-        <li><a href="/docs/archived-pages/">Archived Pages</a></li>
-      
-        <li><a href="/docs/progress-reports/">Progress Reports</a></li>
-      
         <li><a href="/docs/project-bylaws/">Project Bylaws</a></li>
       
     </ul>
@@ -249,6 +245,10 @@
             </ul>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/starting-the-web-ui/">Starting the Web UI</a></li>
+            
+          
           </ul>
         
       
@@ -287,6 +287,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-web-ui-and-rest-api-security/">Configuring Web UI and REST API Security</a></li>
             
           
             
@@ -660,6 +664,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/ranking-window-functions/">Ranking Window Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/value-window-functions/">Value Window Functions</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/sql-window-functions-examples/">SQL Window Functions Examples</a></li>
               
             </ul>
@@ -702,9 +708,11 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-view/">CREATE VIEW</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/describe/">DESCRIBE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-table/">DROP TABLE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/explain/">EXPLAIN</a></li>
               
@@ -944,32 +952,6 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Archived Pages</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/how-to-run-the-drill-demo/">How to Run the Drill Demo</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/what-is-apache-drill/">What is Apache Drill</a></li>
-            
-          
-          </ul>
-        
-      
-        
-          <li class="toctree-l1"><a href="javascript: void(0);">Progress Reports</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/2014-q1-drill-report/">2014 Q1 Drill Report</a></li>
-            
-          
-          </ul>
-        
-      
-        
           <li class="toctree-l1"><a class="reference internal" href="/docs/project-bylaws/">Project Bylaws</a></li>
         
       
@@ -1021,7 +1003,7 @@ Drill queries:</p>
 </thead><tbody>
 <tr>
 <td>AVG(expression)</td>
-<td>SMALLINT, INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL, INTERVALYEAR or INTERVALDAY</td>
+<td>SMALLINT, INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL, INTERVAL</td>
 <td>DECIMAL for any integer-type argument, DOUBLE for a floating-point argument, otherwise the same as the argument data type</td>
 </tr>
 <tr>
@@ -1046,7 +1028,7 @@ Drill queries:</p>
 </tr>
 <tr>
 <td>SUM(expression)</td>
-<td>SMALLINT, INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL, INTERVALDAY, or INTERVALYEAR</td>
+<td>SMALLINT, INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL, INTERVAL</td>
 <td>BIGINT for SMALLINT or INTEGER arguments, DECIMAL for BIGINT arguments, DOUBLE for floating-point arguments, otherwise the same as the argument data type</td>
 </tr>
 </tbody></table>
@@ -1055,7 +1037,7 @@ Drill queries:</p>
 
 <p>AVG, COUNT, MIN, MAX, and SUM accept ALL and DISTINCT keywords. The default is ALL.</p>
 
-<p>These examples of aggregate functions use the <code>cp</code> storage plugin to access a JSON file installed with Drill. By default, JSON reads numbers as double-precision floating point numbers. These examples assume that you are using the default option <a href="/docs/json-data-model/#handling-type-differences">all_text_mode</a> set to false.</p>
+<p>These examples of aggregate functions use the <code>cp</code> storage plugin to access a the <a href="/docs/querying-json-files/"><code>employee.json</code></a> file installed with Drill. By default, JSON reads numbers as double-precision floating point numbers. These examples assume that you are using the default option <a href="/docs/json-data-model/#handling-type-differences">all_text_mode</a> set to false.</p>
 
 <h2 id="avg">AVG</h2>
 
@@ -1133,9 +1115,10 @@ SELECT AVG(DISTINCT salary) FROM cp.`employee.json`;
 <p>Returns the number of rows that match the given criteria.</p>
 
 <h3 id="count-syntax">COUNT Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT COUNT([DISTINCT | ALL] column) FROM . . .
-SELECT COUNT(*) FROM . . .
-</code></pre></div>
+
+<p><code>SELECT COUNT([DISTINCT | ALL] column) FROM . . .</code><br>
+<code>SELECT COUNT(*) FROM . . .</code>  </p>
+
 <ul>
 <li>column<br>
 Returns the number of values of the specified column.<br></li>
@@ -1222,7 +1205,7 @@ SELECT MAX(salary) FROM cp.`employee.json`;
 
 <h3 id="sum-syntax">SUM syntax</h3>
 
-<p>SUM(column)</p>
+<p><code>SUM(column)</code></p>
 
 <h3 id="examples">Examples</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT SUM(ALL salary) FROM cp.`employee.json`;

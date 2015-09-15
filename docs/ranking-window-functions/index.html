@@ -77,10 +77,6 @@
       
         <li><a href="/docs/sample-datasets/">Sample Datasets</a></li>
       
-        <li><a href="/docs/archived-pages/">Archived Pages</a></li>
-      
-        <li><a href="/docs/progress-reports/">Progress Reports</a></li>
-      
         <li><a href="/docs/project-bylaws/">Project Bylaws</a></li>
       
     </ul>
@@ -249,6 +245,10 @@
             </ul>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/starting-the-web-ui/">Starting the Web UI</a></li>
+            
+          
           </ul>
         
       
@@ -287,6 +287,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-web-ui-and-rest-api-security/">Configuring Web UI and REST API Security</a></li>
             
           
             
@@ -660,6 +664,8 @@
               
                 <li class="toctree-l3 current"><a class="reference internal" href="/docs/ranking-window-functions/">Ranking Window Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/value-window-functions/">Value Window Functions</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/sql-window-functions-examples/">SQL Window Functions Examples</a></li>
               
             </ul>
@@ -702,9 +708,11 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-view/">CREATE VIEW</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/describe/">DESCRIBE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-table/">DROP TABLE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/explain/">EXPLAIN</a></li>
               
@@ -944,32 +952,6 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Archived Pages</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/how-to-run-the-drill-demo/">How to Run the Drill Demo</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/what-is-apache-drill/">What is Apache Drill</a></li>
-            
-          
-          </ul>
-        
-      
-        
-          <li class="toctree-l1"><a href="javascript: void(0);">Progress Reports</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/2014-q1-drill-report/">2014 Q1 Drill Report</a></li>
-            
-          
-          </ul>
-        
-      
-        
           <li class="toctree-l1"><a class="reference internal" href="/docs/project-bylaws/">Project Bylaws</a></li>
         
       
@@ -1027,6 +1009,11 @@
 <td>DENSE_RANK()</td>
 <td>BIGINT</td>
 <td>The DENSE_RANK () window function determines the rank of a value in a group of values based on the ORDER BY expression and the OVER clause. Each value is ranked within its partition. Rows with equal values receive the same rank. There are no gaps in the sequence of ranked values if two or more rows have the same rank.</td>
+</tr>
+<tr>
+<td>NTILE()</td>
+<td>INTEGER</td>
+<td>The NTILE window function divides the rows for each window partition, as equally as possible, into a specified number of ranked groups. The NTILE window function requires the ORDER BY clause in the OVER clause.</td>
 </tr>
 <tr>
 <td>PERCENT_RANK()</td>
@@ -1102,7 +1089,45 @@ The window clauses for the function. The OVER clause cannot contain an explicit 
    | 1          | Ferris Brown    | 19745  | 7          |
    | 1          | Noel Meyer      | 19745  | 7          |
    +------------+-----------------+--------+------------+
-   10 rows selected (0.198 seconds)
+   10 rows selected (0.198 seconds)  
+</code></pre></div>
+<h3 id="ntile()">NTILE()</h3>
+
+<p>The following example uses the NTILE window function to divide the Q1 sales into five groups and list the sales in ascending order.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   select emp_mgr, sales, ntile(5) over(order by sales) as ntilerank from q1_sales;
+   +-----------------+--------+------------+
+   |     emp_mgr     | sales  | ntilerank  |
+   +-----------------+--------+------------+
+   | Kari Phelps     | 8227   | 1          |
+   | Rich Hernandez  | 9308   | 1          |
+   | Kari Phelps     | 9710   | 2          |
+   | Rich Hernandez  | 12369  | 2          |
+   | Mike Palomino   | 13181  | 3          |
+   | Rich Hernandez  | 15427  | 3          |
+   | Kari Phelps     | 15547  | 4          |
+   | Mike Palomino   | 16233  | 4          |
+   | Dan Brodi       | 19745  | 5          |
+   | Mike Palomino   | 23176  | 5          |
+   +-----------------+--------+------------+
+   10 rows selected (0.149 seconds)
+</code></pre></div>
+<p>The following example partitions sales by dealer_id and uses the NTILE window function to divide the rows in each partition into three groups; dealer 1 had one remainder which was added to the first group.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   select emp_mgr, dealer_id, sales, ntile(3) over(partition by dealer_id order by sales) as ntilerank from q1_sales;
+   +-----------------+------------+--------+------------+
+   |     emp_mgr     | dealer_id  | sales  | ntilerank  |
+   +-----------------+------------+--------+------------+
+   | Kari Phelps     | 1          | 8227   | 1          |
+   | Kari Phelps     | 1          | 9710   | 1          |
+   | Kari Phelps     | 1          | 15547  | 2          |
+   | Dan Brodi       | 1          | 19745  | 3          |
+   | Mike Palomino   | 2          | 13181  | 1          |
+   | Mike Palomino   | 2          | 16233  | 2          |
+   | Mike Palomino   | 2          | 23176  | 3          |
+   | Rich Hernandez  | 3          | 9308   | 1          |
+   | Rich Hernandez  | 3          | 12369  | 2          |
+   | Rich Hernandez  | 3          | 15427  | 3          |
+   +-----------------+------------+--------+------------+
+   10 rows selected (0.312 seconds)
 </code></pre></div>
 <h3 id="percent_rank()">PERCENT_RANK()</h3>
 
@@ -1168,7 +1193,7 @@ The window clauses for the function. The OVER clause cannot contain an explicit 
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/aggregate-window-functions/">← Aggregate Window Functions</a></span><span class="next-toc"><a href="/docs/sql-window-functions-examples/">SQL Window Functions Examples →</a></span>
+  <span class="previous-toc"><a href="/docs/aggregate-window-functions/">← Aggregate Window Functions</a></span><span class="next-toc"><a href="/docs/value-window-functions/">Value Window Functions →</a></span>
 </div>
 
     

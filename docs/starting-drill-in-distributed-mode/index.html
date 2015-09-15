@@ -77,10 +77,6 @@
       
         <li><a href="/docs/sample-datasets/">Sample Datasets</a></li>
       
-        <li><a href="/docs/archived-pages/">Archived Pages</a></li>
-      
-        <li><a href="/docs/progress-reports/">Progress Reports</a></li>
-      
         <li><a href="/docs/project-bylaws/">Project Bylaws</a></li>
       
     </ul>
@@ -249,6 +245,10 @@
             </ul>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/starting-the-web-ui/">Starting the Web UI</a></li>
+            
+          
           </ul>
         
       
@@ -287,6 +287,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-web-ui-and-rest-api-security/">Configuring Web UI and REST API Security</a></li>
             
           
             
@@ -660,6 +664,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/ranking-window-functions/">Ranking Window Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/value-window-functions/">Value Window Functions</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/sql-window-functions-examples/">SQL Window Functions Examples</a></li>
               
             </ul>
@@ -702,9 +708,11 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-view/">CREATE VIEW</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/describe/">DESCRIBE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-table/">DROP TABLE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/explain/">EXPLAIN</a></li>
               
@@ -944,32 +952,6 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Archived Pages</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/how-to-run-the-drill-demo/">How to Run the Drill Demo</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/what-is-apache-drill/">What is Apache Drill</a></li>
-            
-          
-          </ul>
-        
-      
-        
-          <li class="toctree-l1"><a href="javascript: void(0);">Progress Reports</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/2014-q1-drill-report/">2014 Q1 Drill Report</a></li>
-            
-          
-          </ul>
-        
-      
-        
           <li class="toctree-l1"><a class="reference internal" href="/docs/project-bylaws/">Project Bylaws</a></li>
         
       
@@ -1007,92 +989,96 @@
 
     <div class="int_text" align="left">
       
-        <p>The Drillbit service accepts requests from the client, processing the queries, and returning results to the client. You install Drill as a service and run the Drillbit on all of the required nodes in a Hadoop cluster to form a distributed cluster environment. When a Drillbit runs on each data node in the cluster, Drill maximizes data locality during query execution. Movement of data over the network or between nodes is minimized or eliminated when possible.</p>
+        <p>You start Drill in distributed mode in one of the following ways:</p>
 
-<p>To use Drill in distributed mode, you need to control a Drillbit. If you use Drill in embedded mode, you do not use the <strong>drillbit</strong> command. </p>
+<ul>
+<li>Using the <strong>drillbit.sh</strong> command</li>
+<li>Starting the Drill Shell</li>
+<li>Using an Ad-Hoc Connection to Drill</li>
+</ul>
 
-<p>Using the <strong>drillbit command</strong>, located in the <code>bin</code> directory, you check the status of the Drillbit, start, stop, and restart a DrillBit. You can use a configuration file to start Drill. Using such a file is handy for controlling Drillbits on multiple nodes.</p>
+<h2 id="using-the-drillbit.sh-command">Using the drillbit.sh Command</h2>
 
-<h3 id="drillbit-command-syntax">drillbit Command Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">drillbit.sh [--config &lt;conf-dir&gt;] (start|stop|status|restart|autorestart)
-</code></pre></div>
-<p>For example, to restart a Drillbit, navigate to the Drill installation directory, and issue the following command:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">bin/drillbit.sh restart
-</code></pre></div>
+<p>To use Drill in distributed mode, you need to control a Drillbit. If you use Drill in embedded mode, you do not use the <strong>drillbit.sh</strong> command. </p>
+
+<p>Using the <strong>drillbit.sh</strong> command you can perform the following tasks:</p>
+
+<ul>
+<li>Check the status of the Drillbit</li>
+<li>Start, stop, or restart a Drillbit</li>
+<li>Configure a Drillbit to restart by default</li>
+</ul>
+
+<p>You can use a configuration file to start Drill. Using such a file is handy for controlling Drillbits on multiple nodes.</p>
+
+<h3 id="drillbit.sh-command-syntax">drillbit.sh Command Syntax</h3>
+
+<p><code>drillbit.sh [--config &lt;conf-dir&gt;] (start|stop|status|restart|autorestart)</code></p>
+
+<p>For example, to restart a Drillbit on a tarball installation, navigate to the Drill installation directory, and issue the following command from the installation directory:</p>
+
+<p><code>bin/drillbit.sh restart</code></p>
+
 <h2 id="starting-the-drill-shell">Starting the Drill Shell</h2>
 
-<p>Using the Drill shell, you can connect to relational databases and execute SQL commands. To start the Drill shell, run one of the following scripts, which are located in the bin directory of the Drill installation:</p>
+<p>Using the Drill shell, you can connect to data sources and execute SQL commands. To start the Drill shell, run one of the following scripts, which are located in the bin directory of the Drill installation:</p>
 
 <ul>
 <li><code>drill-conf</code><br>
-Opens the shell using the connection string to ZooKeeper nodes specified in <code>drill-override.conf</code> in <code>/opt/mapr/drill/drill-1.1.0/conf</code>.<br></li>
+Opens the Drill shell using the connection string to ZooKeeper nodes specified in <code>drill-override.conf</code> in <code>&lt;installation directory&gt;/conf</code>.<br></li>
 <li><code>drill-localhost</code><br>
 Opens the Drill shell using a connection to the ZooKeeper running on the local host.</li>
 </ul>
 
-<p>Complete the following steps to start the Drill shell on the local node:</p>
+<p>The <a href="/docs/starting-drill-on-linux-and-mac-os-x/#about-the-drill-prompt">Drill prompt</a> appears when you start the Drill shell.</p>
 
-<ol>
-<li><p>Navigate to the Drill installation directory, and issue the following command to start the Drillbit if necessary:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">bin/drillbit.sh restart
-</code></pre></div></li>
-<li><p>Issue the following command to start the Drill shell if ZooKeeper is running on the same node as the shell:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">bin/drill-localhost
-</code></pre></div>
-<p>Alternatively, issue the following command to start the Drill shell using the connection string in <code>drill-conf</code>:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> bin/drill-conf
-</code></pre></div></li>
-<li><p>Issue the following query to check the Drillbits running in the cluster:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=&lt;zk1host&gt;:&lt;port&gt; select * from sys.drillbits;
-</code></pre></div></li>
-</ol>
+<p>Issue the following query to check the Drillbits running in the cluster:
+<code>0: jdbc:drill:zk=&lt;zk1host&gt;:&lt;port&gt; SELECT * FROM sys.drillbits;</code><br>
+Drill lists information about the Drillbits that are running, such as the host name and data port number.</p>
 
-<p>Drill provides a list of Drillbits that are running.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">+----------------+---------------+---------------+---------------+-----------+
-|    hostname    | user_port     | control_port  |   data_port   |  current  |
-+----------------+---------------+---------------+---------------+-----------+
-| &lt;host address&gt; | &lt;port number&gt; | &lt;port number&gt; | &lt;port number&gt; | &lt;boolean&gt; |
-+----------------+---------------+---------------+---------------+-----------+
-</code></pre></div>
-<p>Now you can run queries. The Drill installation includes sample data
-that you can query. Refer to <a href="/docs/querying-parquet-files/">Querying Parquet Files</a>.</p>
-
-<h3 id="using-an-ad-hoc-connection-to-drill">Using an Ad-Hoc Connection to Drill</h3>
+<h2 id="using-an-ad-hoc-connection-to-drill">Using an Ad-Hoc Connection to Drill</h2>
 
 <p>To use a custom connection to Drill, but not alter the connection string in <code>drill-conf</code> that you normally use, start the Drill shell on an ad-hoc basis using <code>sqlline</code>. For example, to start the Drill shell using a particular storage plugin as a schema, use the following command syntax: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">sqlline –u jdbc:drill:[schema=&lt;storage plugin&gt;;]zk=&lt;zk name&gt;[:&lt;port&gt;][,&lt;zk name2&gt;[:&lt;port&gt;]... ]
-</code></pre></div>
-<h4 id="sqlline-arguments">sqlline Arguments</h4>
+
+<p><code>sqlline –u jdbc:drill:[schema=&lt;storage plugin&gt;;]zk=&lt;zk name&gt;[:&lt;port&gt;][,&lt;zk name2&gt;[:&lt;port&gt;]... ]</code></p>
+
+<h3 id="sqlline-arguments-and-connection-parameters">sqlline Arguments and Connection Parameters</h3>
 
 <ul>
 <li><code>-u</code> is the option that precedes a connection string. Required.<br></li>
-<li><code>jdbc</code> is the connection protocol. Required.<br></li>
-<li><code>schema</code> is the name of a <a href="/docs/storage-plugin-registration">storage plugin</a> to use for queries. Optional.<br></li>
-<li><code>Zk=zkname</code> is one or more ZooKeeper host names or IP addresses.<br></li>
-<li><code>port</code> is the ZooKeeper port number. Optional. Port 2181 is the default.<br></li>
+<li><code>jdbc</code> is the connection type. Required.<br></li>
+<li><code>schema</code> is the name of a <a href="/docs/storage-plugin-registration">storage plugin</a> configuration to use as the default for queries. Optional.<br></li>
+<li><code>zk name</code> specifies one or more ZooKeeper host names or IP addresses.<br></li>
+<li><code>port</code> is the ZooKeeper port number. Optional. Port 2181 is the default for the open source version of Apache Drill.<br></li>
 </ul>
 
-<p>For example, start the Drill shell using the <code>dfs</code> storage plugin. Specifying the storage plugin when you start up eliminates the need to specify the storage plugin in the query:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">bin/sqlline –u jdbc:drill:schema=dfs;zk=centos26
-</code></pre></div>
-<p>This command starts the Drill shell in a cluster configured to run ZooKeeper on three nodes:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">bin/sqlline –u jdbc:drill:zk=cento23,zk=centos24,zk=centos26:5181
-</code></pre></div>
+<p>For example, start the Drill shell with the default schema being the <code>dfs</code> storage plugin:</p>
+
+<p><code>bin/sqlline –u jdbc:drill:schema=dfs;zk=centos26</code></p>
+
+<p>Specifying the storage plugin configuration name when you start up eliminates the need to enter <code>USE &lt;schema name&gt;</code> or specify the it in the FROM clause.</p>
+
+<p>The following command starts the Drill shell in a cluster configured to run ZooKeeper on three nodes:</p>
+
+<p><code>bin/sqlline –u jdbc:drill:zk=cento23,zk=centos24,zk=centos26:5181</code></p>
+
 <h2 id="exiting-the-drill-shell">Exiting the Drill Shell</h2>
 
 <p>To exit the Drill shell, issue the following command:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">!quit
-</code></pre></div>
+
+<p><code>!quit</code></p>
+
 <h2 id="stopping-drill">Stopping Drill</h2>
 
-<p>In some cases, such as stopping while a query is in progress, the <code>!quit</code> command does not stop Drill running in embedded mode. In distributed mode, you stop the Drillbit service. Navigate to the Drill installation directory, and issue the following command to stop a Drillbit:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">bin/drillbit.sh stop
-</code></pre></div>
+<p>Navigate to the Drill installation directory, and issue the following command to stop a Drillbit:</p>
+
+<p><code>bin/drillbit.sh stop</code></p>
+
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/installing-drill-on-the-cluster/">← Installing Drill on the Cluster</a></span><span class="next-toc"><a href="/docs/configure-drill/">Configure Drill →</a></span>
+  <span class="previous-toc"><a href="/docs/installing-drill-on-the-cluster/">← Installing Drill on the Cluster</a></span><span class="next-toc"><a href="/docs/starting-the-web-ui/">Starting the Web UI →</a></span>
 </div>
 
     

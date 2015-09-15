@@ -77,10 +77,6 @@
       
         <li><a href="/docs/sample-datasets/">Sample Datasets</a></li>
       
-        <li><a href="/docs/archived-pages/">Archived Pages</a></li>
-      
-        <li><a href="/docs/progress-reports/">Progress Reports</a></li>
-      
         <li><a href="/docs/project-bylaws/">Project Bylaws</a></li>
       
     </ul>
@@ -249,6 +245,10 @@
             </ul>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/starting-the-web-ui/">Starting the Web UI</a></li>
+            
+          
           </ul>
         
       
@@ -287,6 +287,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-web-ui-and-rest-api-security/">Configuring Web UI and REST API Security</a></li>
             
           
             
@@ -660,6 +664,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/ranking-window-functions/">Ranking Window Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/value-window-functions/">Value Window Functions</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/sql-window-functions-examples/">SQL Window Functions Examples</a></li>
               
             </ul>
@@ -702,9 +708,11 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-view/">CREATE VIEW</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/describe/">DESCRIBE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-table/">DROP TABLE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/explain/">EXPLAIN</a></li>
               
@@ -944,32 +952,6 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Archived Pages</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/how-to-run-the-drill-demo/">How to Run the Drill Demo</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/what-is-apache-drill/">What is Apache Drill</a></li>
-            
-          
-          </ul>
-        
-      
-        
-          <li class="toctree-l1"><a href="javascript: void(0);">Progress Reports</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/2014-q1-drill-report/">2014 Q1 Drill Report</a></li>
-            
-          
-          </ul>
-        
-      
-        
           <li class="toctree-l1"><a class="reference internal" href="/docs/project-bylaws/">Project Bylaws</a></li>
         
       
@@ -1007,14 +989,27 @@
 
     <div class="int_text" align="left">
       
-        <p>Your Drill installation includes a sample JSON file located in Drill&#39;s
-classpath. The sample JSON file, <code>employee.json</code>, contains fictitious employee
-data. Use SQL syntax to query the sample <code>JSON</code> file.</p>
+        <p>To query complex JSON files, you need to understand the <a href="/docs/json-data-model/">&quot;JSON Data Model&quot;</a>. This section provides a trivial example of querying a sample file that Drill installs. </p>
 
-<p>To view the data in the <code>employee.json</code> file, submit the following SQL query
-to Drill:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">     0: jdbc:drill:zk=local&gt; SELECT * FROM cp.`employee.json` LIMIT 5;
+<h2 id="about-the-employee.json-file">About the employee.json File</h2>
+
+<p>The sample file, <code>employee.json</code>, is packaged in the Foodmart data JAR in Drill&#39;s
+classpath:  </p>
+
+<p><code>./jars/3rdparty/foodmart-data-json.0.4.jar</code></p>
+
+<p>The file contains fictitious employee
+data. Here is a snippet of the file:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">{&quot;employee_id&quot;:1,&quot;full_name&quot;:&quot;Sheri Nowmer&quot;,&quot;first_name&quot;:&quot;Sheri&quot;,&quot;last_name&quot;:&quot;Nowmer&quot;,&quot;position_id&quot;:1,&quot;position_title&quot;:&quot;President&quot;,&quot;store_id&quot;:0,&quot;department_id&quot;:1,&quot;birth_date&quot;:&quot;1961-08-26&quot;,&quot;hire_date&quot;:&quot;1994-12-01 00:00:00.0&quot;,&quot;end_date&quot;:null,&quot;salary&quot;:80000.0000,&quot;supervisor_id&quot;:0,&quot;education_level&quot;:&quot;Graduate Degree&quot;,&quot;marital_status&quot;:&quot;S&quot;,&quot;gender&quot;:&quot;F&quot;,&quot;management_role&quot;:&quot;Senior Management&quot;}
 </code></pre></div>
+<p>To query a file in a JAR file in the Drill classpath, you need to use the <a href="/docs/storage-plugin-registration/">cp (classpath) storage plugin</a> configuration, as shown in the sample query.</p>
+
+<h2 id="sample-query">Sample Query</h2>
+
+<p>Start the Drill shell, and select five rows of data from the <code>employee.json</code> file installed with Drill.</p>
+
+<p><code>SELECT * FROM cp.`employee.json` LIMIT 5;</code></p>
+
 <p>The query returns the following results:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">+--------------+----------------------------+---------------------+---------------+--------------+----------------------------+-----------+----------------+-------------+------------------------+----------+----------------+----------------------+-----------------+---------+-----------------------+
 | employee_id  |         full_name          |     first_name      |   last_name   | position_id  |       position_title       | store_id  | department_id  | birth_date  |       hire_date        |  salary  | supervisor_id  |   education_level    | marital_status  | gender  |    management_role    |
@@ -1023,8 +1018,6 @@ to Drill:</p>
 | 2            | Derrick Whelply            | Derrick             | Whelply       | 2            | VP Country Manager         | 0         | 1              | 1915-07-03  | 1994-12-01 00:00:00.0  | 40000.0  | 1              | Graduate Degree      | M               | M       | Senior Management     |
 | 4            | Michael Spence             | Michael             | Spence        | 2            | VP Country Manager         | 0         | 1              | 1969-06-20  | 1998-01-01 00:00:00.0  | 40000.0  | 1              | Graduate Degree      | S               | M       | Senior Management     |
 | 5            | Maya Gutierrez             | Maya                | Gutierrez     | 2            | VP Country Manager         | 0         | 1              | 1951-05-10  | 1998-01-01 00:00:00.0  | 35000.0  | 1              | Bachelors Degree     | M               | F       | Senior Management     |
-
-0: jdbc:drill:zk=local&gt;
 </code></pre></div>
     
       

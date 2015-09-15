@@ -77,10 +77,6 @@
       
         <li><a href="/docs/sample-datasets/">Sample Datasets</a></li>
       
-        <li><a href="/docs/archived-pages/">Archived Pages</a></li>
-      
-        <li><a href="/docs/progress-reports/">Progress Reports</a></li>
-      
         <li><a href="/docs/project-bylaws/">Project Bylaws</a></li>
       
     </ul>
@@ -249,6 +245,10 @@
             </ul>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/starting-the-web-ui/">Starting the Web UI</a></li>
+            
+          
           </ul>
         
       
@@ -287,6 +287,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-web-ui-and-rest-api-security/">Configuring Web UI and REST API Security</a></li>
             
           
             
@@ -660,6 +664,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/ranking-window-functions/">Ranking Window Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/value-window-functions/">Value Window Functions</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/sql-window-functions-examples/">SQL Window Functions Examples</a></li>
               
             </ul>
@@ -702,9 +708,11 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-view/">CREATE VIEW</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/describe/">DESCRIBE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-table/">DROP TABLE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/explain/">EXPLAIN</a></li>
               
@@ -938,32 +946,6 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/wikipedia-edit-history/">Wikipedia Edit History</a></li>
-            
-          
-          </ul>
-        
-      
-        
-          <li class="toctree-l1"><a href="javascript: void(0);">Archived Pages</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/how-to-run-the-drill-demo/">How to Run the Drill Demo</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/what-is-apache-drill/">What is Apache Drill</a></li>
-            
-          
-          </ul>
-        
-      
-        
-          <li class="toctree-l1"><a href="javascript: void(0);">Progress Reports</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/2014-q1-drill-report/">2014 Q1 Drill Report</a></li>
             
           
           </ul>
@@ -1384,14 +1366,15 @@ FROM tmp.`json2parquet2`;
 
 <h2 id="string_binary-function">STRING_BINARY function</h2>
 
-<p>Converts a VARBINARY value into a string that is its hexadecimal encoding.</p>
+<p>Prints the bytes that are printable, and prints a hexadecimal
+representation for bytes that are not printable. This function is modeled after the hbase utilities.</p>
 
 <h3 id="string_binary-syntax">STRING_BINARY Syntax</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">STRING_BINARY(expression)
 </code></pre></div>
 <p><em>expression</em> is a byte array, such as {(byte)0xca, (byte)0xfe, (byte)0xba, (byte)0xbe}</p>
 
-<p>This function returns a hexadecimal string, such as <code>&quot;\xca\xfe\xba\xbe&quot;</code>. You can use this function with CONVERT_TO when you want to test the effects of a conversion.</p>
+<p>You can use this function with CONVERT_TO when you want to test the effects of a conversion.</p>
 
 <h3 id="string_binary-examples">STRING_BINARY Examples</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT
@@ -1431,7 +1414,7 @@ FROM (VALUES (1));
 </code></pre></div>
 <p><em>expression</em> is a hexadecimal string, such as <code>&quot;\xca\xfe\xba\xbe&quot;</code>.</p>
 
-<p>This function returns a byte array, such as {(byte)0xca, (byte)0xfe, (byte)0xba, (byte)0xbe}. You can use this function with CONVERT_FROM for readable results.</p>
+<p>This function returns a byte array, such as {(byte)0xca, (byte)0xfe, (byte)0xba, (byte)0xbe}. </p>
 
 <h3 id="binary_string-example">BINARY_STRING Example</h3>
 
@@ -1442,7 +1425,7 @@ FROM (VALUES (1));
 </code></pre></div>
 <p><em>expression</em> is a byte array, such as {(byte)0xca, (byte)0xfe, (byte)0xba, (byte)0xbe}.</p>
 
-<p>This function returns a hexadecimal-encoded string, such as <code>&quot;\xca\xfe\xba\xbe&quot;</code>. You can use this function with CONVERT_TO for meaningful results.</p>
+<p>This function returns a hexadecimal-encoded string, such as <code>&quot;\xca\xfe\xba\xbe&quot;</code>. You can use this function with CONVERT_FROM/TO for meaningful results.</p>
 
 <h3 id="binary_string-examples">BINARY_STRING Examples</h3>
 

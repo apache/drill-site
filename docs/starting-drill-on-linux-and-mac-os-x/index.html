@@ -77,10 +77,6 @@
       
         <li><a href="/docs/sample-datasets/">Sample Datasets</a></li>
       
-        <li><a href="/docs/archived-pages/">Archived Pages</a></li>
-      
-        <li><a href="/docs/progress-reports/">Progress Reports</a></li>
-      
         <li><a href="/docs/project-bylaws/">Project Bylaws</a></li>
       
     </ul>
@@ -249,6 +245,10 @@
             </ul>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/starting-the-web-ui/">Starting the Web UI</a></li>
+            
+          
           </ul>
         
       
@@ -287,6 +287,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-web-ui-and-rest-api-security/">Configuring Web UI and REST API Security</a></li>
             
           
             
@@ -660,6 +664,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/ranking-window-functions/">Ranking Window Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/value-window-functions/">Value Window Functions</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/sql-window-functions-examples/">SQL Window Functions Examples</a></li>
               
             </ul>
@@ -702,9 +708,11 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-view/">CREATE VIEW</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/describe/">DESCRIBE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-table/">DROP TABLE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/explain/">EXPLAIN</a></li>
               
@@ -944,32 +952,6 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Archived Pages</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/how-to-run-the-drill-demo/">How to Run the Drill Demo</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/what-is-apache-drill/">What is Apache Drill</a></li>
-            
-          
-          </ul>
-        
-      
-        
-          <li class="toctree-l1"><a href="javascript: void(0);">Progress Reports</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/2014-q1-drill-report/">2014 Q1 Drill Report</a></li>
-            
-          
-          </ul>
-        
-      
-        
           <li class="toctree-l1"><a class="reference internal" href="/docs/project-bylaws/">Project Bylaws</a></li>
         
       
@@ -1007,44 +989,42 @@
 
     <div class="int_text" align="left">
       
-        <p>Start the Drill shell using the <code>drill-embedded</code> command. The command uses a jdbc connection string and identifies the local node as the ZooKeeper node. Complete the following steps to start the Drill shell:</p>
+        <p>To start the Drill shell in embedded mode, use the <code>drill-embedded</code> command. Internally, the command uses a jdbc connection string and identifies the local node as the ZooKeeper node. Complete the following steps to start the Drill shell:</p>
 
 <ol>
-<li><p>Navigate to the Drill installation directory. For example:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">cd apache-drill-1.1.0  
-</code></pre></div></li>
+<li><p>Navigate to the Drill installation directory.</p></li>
 <li><p>Issue the following command to start the Drill shell:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">bin/drill-embedded  
-</code></pre></div></li>
+
+<p><code>bin/drill-embedded</code>  </p></li>
 </ol>
 
-<p>The <code>0: jdbc:drill:zk=local&gt;</code>  prompt appears.  </p>
+<p>The <code>0: jdbc:drill:zk=local&gt;</code>  prompt appears. </p>
 
 <p>At this point, you can <a href="/docs/query-data">run queries</a>.</p>
 
-<p>To start Drill, you can also use the <strong>sqlline</strong> command and a custom connection string, as described in detail in <a href="/docs/starting-drill-in-distributed-mode/#using-an-ad-hoc-connection-to-drill">&quot;Using an Ad-Hoc Connection to Drill&quot;</a>. For example, you can specify the storage plugin when you start the shell. Doing so eliminates the need to specify the storage plugin in the query. For example, this command specifies the <code>dfs</code> storage plugin:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">bin/sqlline –u jdbc:drill:schema=dfs;zk=local
-</code></pre></div>
+<p>To start Drill, you can also use the <strong>sqlline</strong> command and a custom connection string, as described in detail in <a href="/docs/starting-drill-in-distributed-mode/#using-an-ad-hoc-connection-to-drill">&quot;Using an Ad-Hoc Connection to Drill&quot;</a>. For example, you can specify the default storage plugin configuration when you start the shell. Doing so eliminates the need to specify the storage plugin configuration in the query. For example, this command specifies the <code>dfs</code> storage plugin:</p>
+
+<p><code>bin/sqlline –u jdbc:drill:schema=dfs;zk=local</code></p>
+
 <p>If you start Drill on one network, and then want to use Drill on another network, such as your home network, restart Drill.</p>
+
+<h2 id="about-the-drill-prompt">About the Drill Prompt</h2>
+
+<p>In embedded mode, the Drill prompt appears as follows:</p>
+
+<p><code>0: jdbc:drill:zk=local&gt;</code></p>
+
+<ul>
+<li>0 is the number of connections to Drill, which can be only one in embedded node. </li>
+<li>jdbc is the connection type.</li>
+<li>zk=local zk=local means the local node substitutes for the ZooKeeper node.</li>
+</ul>
 
 <h2 id="exiting-the-drill-shell">Exiting the Drill Shell</h2>
 
-<p>To exit the Drill shell, issue the following command:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">!quit
-</code></pre></div>
-<h2 id="stopping-drill">Stopping Drill</h2>
+<p>To exit the Drill shell and stop the Drill process on Mac OS X and Linux, issue the following command:</p>
 
-<p>In some cases, such as stopping while a query is in progress, the <code>!quit</code> command does not stop Drill running in embedded mode. To stop the Drill process on Mac OS X and Linux, use the kill command. For example, on Mac OS X and Linux, follow these steps:</p>
-
-<ol>
-<li>Issue a CTRL Z to stop the query, then start Drill again. If the startup message indicates success, skip the rest of the steps. If not, proceed to step 2.</li>
-<li><p>Search for the Drill process IDs.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">$ ps auwx | grep drill
-</code></pre></div></li>
-<li><p>Kill each process using the process numbers in the grep output. For example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">$ sudo kill -9 2674 
-</code></pre></div></li>
-</ol>
+<p><code>!quit</code></p>
 
     
       

@@ -77,10 +77,6 @@
       
         <li><a href="/docs/sample-datasets/">Sample Datasets</a></li>
       
-        <li><a href="/docs/archived-pages/">Archived Pages</a></li>
-      
-        <li><a href="/docs/progress-reports/">Progress Reports</a></li>
-      
         <li><a href="/docs/project-bylaws/">Project Bylaws</a></li>
       
     </ul>
@@ -249,6 +245,10 @@
             </ul>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/starting-the-web-ui/">Starting the Web UI</a></li>
+            
+          
           </ul>
         
       
@@ -287,6 +287,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-web-ui-and-rest-api-security/">Configuring Web UI and REST API Security</a></li>
             
           
             
@@ -660,6 +664,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/ranking-window-functions/">Ranking Window Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/value-window-functions/">Value Window Functions</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/sql-window-functions-examples/">SQL Window Functions Examples</a></li>
               
             </ul>
@@ -702,9 +708,11 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-view/">CREATE VIEW</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/describe/">DESCRIBE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-table/">DROP TABLE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/explain/">EXPLAIN</a></li>
               
@@ -944,32 +952,6 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Archived Pages</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/how-to-run-the-drill-demo/">How to Run the Drill Demo</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/what-is-apache-drill/">What is Apache Drill</a></li>
-            
-          
-          </ul>
-        
-      
-        
-          <li class="toctree-l1"><a href="javascript: void(0);">Progress Reports</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/2014-q1-drill-report/">2014 Q1 Drill Report</a></li>
-            
-          
-          </ul>
-        
-      
-        
           <li class="toctree-l1"><a class="reference internal" href="/docs/project-bylaws/">Project Bylaws</a></li>
         
       
@@ -1014,7 +996,7 @@ restart any of the Drillbits when you add or update a storage plugin configurati
 
 <h2 id="using-the-drill-web-ui">Using the Drill Web UI</h2>
 
-<p>Use the Drill Web UI to update or add a new storage plugin configuration. The Drill shell needs to be running to access the Drill Web UI. To open the Drill Web UI, launch a web browser, and go to: <code>http://&lt;IP address or host name&gt;:8047</code> of any Drillbit in the cluster. Select the Storage tab to view, update, or add a new storage plugin configuration. </p>
+<p>Assuming you are <a href="/docs/configuring-web-ui-and-rest-api-security/">authorized</a>, you can use the Drill Web UI to update or add a new storage plugin configuration. The Drill shell needs to be running to access the Drill Web UI. In Drill 1.2 and later, to open the Drill Web UI, launch a web browser, and go to: <code>https://&lt;IP address or host name&gt;:8047</code> of any Drillbit in the cluster. In Drill 1.1 and earlier, use <code>http</code> instead of <code>https</code>. Select the Storage tab to view, update, or add a new storage plugin configuration. </p>
 
 <p>To create a name and new configuration:</p>
 
@@ -1154,7 +1136,7 @@ name. Names are case-sensitive.</li>
 
 <h2 id="storage-plugin-rest-api">Storage Plugin REST API</h2>
 
-<p>If you need to add a storage plugin configuration to Drill and do not want to use a web browser, Drill provides a REST API that you can use to create a storage plugin configuration. Use an HTTP POST and pass two properties:</p>
+<p>If you need to add a storage plugin configuration to Drill and do not want to use a web browser, Drill provides a REST API that you can use to create a storage plugin configuration. Use a POST and pass two properties:</p>
 
 <ul>
 <li><p>name<br>
@@ -1164,7 +1146,7 @@ The attribute settings as entered in the Web UI.</p></li>
 </ul>
 
 <p>For example, this command creates a storage plugin named myplugin for reading files of an unknown type located on the root of the file system:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">curl -X POST -/json&quot; -d &#39;{&quot;name&quot;:&quot;myplugin&quot;, &quot;config&quot;: {&quot;type&quot;: &quot;file&quot;, &quot;enabled&quot;: false, &quot;connection&quot;: &quot;file:///&quot;, &quot;workspaces&quot;: { &quot;root&quot;: { &quot;location&quot;: &quot;/&quot;, &quot;writable&quot;: false, &quot;defaultInputFormat&quot;: null}}, &quot;formats&quot;: null}}&#39; http://localhost:8047/storage/myplugin.json
+<div class="highlight"><pre><code class="language-text" data-lang="text">curl -X POST -/json&quot; -d &#39;{&quot;name&quot;:&quot;myplugin&quot;, &quot;config&quot;: {&quot;type&quot;: &quot;file&quot;, &quot;enabled&quot;: false, &quot;connection&quot;: &quot;file:///&quot;, &quot;workspaces&quot;: { &quot;root&quot;: { &quot;location&quot;: &quot;/&quot;, &quot;writable&quot;: false, &quot;defaultInputFormat&quot;: null}}, &quot;formats&quot;: null}}&#39; https://localhost:8047/storage/myplugin.json
 </code></pre></div>
 <h2 id="bootstrapping-a-storage-plugin">Bootstrapping a Storage Plugin</h2>
 

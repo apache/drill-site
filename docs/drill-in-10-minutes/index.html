@@ -77,10 +77,6 @@
       
         <li><a href="/docs/sample-datasets/">Sample Datasets</a></li>
       
-        <li><a href="/docs/archived-pages/">Archived Pages</a></li>
-      
-        <li><a href="/docs/progress-reports/">Progress Reports</a></li>
-      
         <li><a href="/docs/project-bylaws/">Project Bylaws</a></li>
       
     </ul>
@@ -249,6 +245,10 @@
             </ul>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/starting-the-web-ui/">Starting the Web UI</a></li>
+            
+          
           </ul>
         
       
@@ -287,6 +287,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-web-ui-and-rest-api-security/">Configuring Web UI and REST API Security</a></li>
             
           
             
@@ -660,6 +664,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/ranking-window-functions/">Ranking Window Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/value-window-functions/">Value Window Functions</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/sql-window-functions-examples/">SQL Window Functions Examples</a></li>
               
             </ul>
@@ -702,9 +708,11 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-view/">CREATE VIEW</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/describe/">DESCRIBE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-table/">DROP TABLE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/explain/">EXPLAIN</a></li>
               
@@ -944,32 +952,6 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Archived Pages</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/how-to-run-the-drill-demo/">How to Run the Drill Demo</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/what-is-apache-drill/">What is Apache Drill</a></li>
-            
-          
-          </ul>
-        
-      
-        
-          <li class="toctree-l1"><a href="javascript: void(0);">Progress Reports</a></li>
-          <ul style="display: none">
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/2014-q1-drill-report/">2014 Q1 Drill Report</a></li>
-            
-          
-          </ul>
-        
-      
-        
           <li class="toctree-l1"><a class="reference internal" href="/docs/project-bylaws/">Project Bylaws</a></li>
         
       
@@ -1007,7 +989,7 @@
       
         <h2 id="objective">Objective</h2>
 
-<p>Use Apache Drill to query sample data in 10 minutes. For simplicity, you’ll
+<p>Use Apache Drill to query sample data in 10 minutes. For simplicity, you
 run Drill in <em>embedded</em> mode rather than <em>distributed</em> mode to try out Drill
 without having to perform any setup tasks.</p>
 
@@ -1061,9 +1043,9 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.79-b02, mixed mode)
 
 <ol>
 <li><p>Copy the downloaded file to the directory where you want to install Drill. </p></li>
-<li><p>Extract the contents of the Drill tar.gz file. Use sudo if necessary:  </p>
+<li><p>Extract the contents of the Drill .tar.gz file. Use sudo if necessary:  </p>
 
-<p><code>tar -xvzf apache-drill-1.1.0.tar.gz</code>  </p></li>
+<p><code>tar -xvzf &lt;.tar.gz file name&gt;</code>  </p></li>
 </ol>
 
 <p>The extraction process creates an installation directory containing the Drill software.</p>
@@ -1077,13 +1059,13 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.79-b02, mixed mode)
 <ol>
 <li><p>Navigate to the Drill installation directory. For example:  </p>
 
-<p><code>cd apache-drill-1.1.0</code>  </p></li>
+<p><code>cd apache-drill-&lt;version&gt;</code>  </p></li>
 <li><p>Issue the following command to launch Drill in embedded mode:</p>
 
 <p><code>bin/drill-embedded</code>  </p></li>
 </ol>
 
-<p>The message of the day followed by the <code>0: jdbc:drill:zk=local&gt;</code>  prompt appears.  </p>
+<p>The message of the day followed by the <a href="/docs/starting-drill-on-linux-and-mac-os-x/#about-the-drill-prompt"><code>0: jdbc:drill:zk=local&gt;</code>  prompt</a> appears.  </p>
 
 <p>At this point, you can <a href="/docs/drill-in-10-minutes#query-sample-data">submit queries</a> to Drill.</p>
 
@@ -1093,9 +1075,8 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.79-b02, mixed mode)
 
 <ol>
 <li>Click the following link to download the latest version of Apache Drill:  <a href="http://getdrill.org/drill/download/apache-drill-1.1.0.tar.gz">http://getdrill.org/drill/download/apache-drill-1.1.0.tar.gz</a><br></li>
-<li>Move the <code>apache-drill-1.1.0.tar.gz</code> file to a directory where you want to install Drill.<br></li>
-<li>Unzip the <code>TAR.GZ</code> file using a third-party tool. If the tool you use does not unzip the TAR file as well as the <code>TAR.GZ</code> file, unzip the <code>apache-drill-1.1.0.tar</code> to extract the Drill software. The extraction process creates the installation directory named apache-drill-1.1.0 containing the Drill software. For example:<br>
-<img src="/docs/img/drill-directory.png" alt="drill install dir"></li>
+<li>Move the <code>apache-drill-&lt;version&gt;.tar.gz</code> file to a directory where you want to install Drill.<br></li>
+<li>Unzip the <code>TAR.GZ</code> file using a third-party tool. If the tool you use does not unzip the TAR file as well as the <code>TAR.GZ</code> file, unzip the <code>apache-drill-&lt;version&gt;.tar</code> to extract the Drill software. The extraction process creates the installation directory named apache-drill-<version> containing the Drill software. </li>
 </ol>
 
 <p>At this point, you can start Drill.  </p>
@@ -1104,12 +1085,11 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.79-b02, mixed mode)
 
 <p>Start Drill by running the sqlline.bat file and typing a connection string, as shown in the following procedure. The <code>zk=local</code> in the connection string means the local node is the ZooKeeper node:</p>
 
-<p>Start the Drill shell using the <strong>sqlline command</strong>. The <code>zk=local</code> means the local node is the ZooKeeper node. Complete the following steps to launch the Drill shell:</p>
+<p>Start the Drill shell using the <strong>sqlline command</strong>. Complete the following steps to launch the Drill shell:</p>
 
 <ol>
 <li>Open Command Prompt.<br></li>
-<li>Open the apache-drill-1.1.0 folder. For example:<br>
-<code>cd apache-drill-1.1.0</code></li>
+<li>Open the apache-drill-<version> folder. </li>
 <li>Go to the bin directory. For example:<br>
 <code>cd bin</code></li>
 <li>Type the following command on the command line:
@@ -1117,7 +1097,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.79-b02, mixed mode)
 <img src="/docs/img/sqlline1.png" alt="drill install dir"></li>
 </ol>
 
-<p>At this point, you can <a href="/docs/drill-in-10-minutes#query-sample-data">run queries</a>.</p>
+<p>The <code>zk=local</code> means the local node is the ZooKeeper node. At this point, you can <a href="/docs/drill-in-10-minutes#query-sample-data">run queries</a>.</p>
 
 <h2 id="stopping-drill">Stopping Drill</h2>
 
@@ -1127,19 +1107,17 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.79-b02, mixed mode)
 
 <h2 id="query-sample-data">Query Sample Data</h2>
 
-<p>Your Drill installation includes a <code>sample-data</code> directory with JSON and
+<p>At the root of the Drill installation, a <code>sample-data</code> directory includes JSON and
 Parquet files that you can query. The default <code>dfs</code> storage plugin configuration represents the local file system on your machine when you install
 Drill in embedded mode. For more information about storage plugin
 configuration, refer to <a href="/docs/connect-a-data-source-introduction">Storage Plugin Registration</a>.</p>
 
-<p>Use SQL syntax to query the sample <code>JSON</code> and <code>Parquet</code> files in the <code>sample-data</code> directory on your local file system.</p>
+<p>Use SQL to query the sample <code>JSON</code> and <code>Parquet</code> files in the <code>sample-data</code> directory on your local file system.</p>
 
 <h3 id="querying-a-json-file">Querying a JSON File</h3>
 
-<p>A sample JSON file, <code>employee.json</code>, contains fictitious employee data.</p>
-
-<p>To view the data in the <code>employee.json</code> file, submit the following SQL query
-to Drill, using the <a href="/docs/storage-plugin-registration/">cp (classpath) storage plugin</a> to point to the file.</p>
+<p>A sample JSON file, <a href="/docs/querying-json-files/"><code>employee.json</code></a>, contains fictitious employee data. To view the data in the <code>employee.json</code> file, submit the following SQL query
+to Drill, using the <a href="/docs/storage-plugin-registration/">cp (classpath) storage plugin</a> configuration to point to the file.</p>
 
 <p><code>0: jdbc:drill:zk=local&gt; SELECT * FROM cp.</code>employee.json<code>LIMIT 3;</code></p>
 
@@ -1164,13 +1142,7 @@ directory on your local file system.</p>
 in embedded mode, the path to the parquet file varies between operating
 systems.</p>
 
-<div class="admonition note">
-  <p class="first admonition-title">Note</p>
-  <p class="last">Substitute your installation path and the Drill version in the angle-bracketed locations when you enter the query.  </p>
-</div> 
-
-<p>To view the data in the <code>region.parquet</code> file, issue the query appropriate for
-your operating system:</p>
+<p>To view the data in the <code>region.parquet</code> file, use the actual path to your Drill installation to construct this query:</p>
 
 <p><code>SELECT * FROM dfs.`&lt;path-to-installation&gt;/apache-drill-&lt;version&gt;/sample-data/region.parquet`;</code></p>
 
@@ -1188,22 +1160,13 @@ your operating system:</p>
 </code></pre></div>
 <h4 id="nation-file">Nation File</h4>
 
-<p>If you followed the Apache Drill in 10 Minutes instructions to install Drill
-in embedded mode, the path to the parquet file varies between operating
-systems.</p>
-
-<div class="admonition note">
-  <p class="first admonition-title">Note</p>
-  <p class="last">Substitute your installation path and the Drill version in the angle-bracketed locations when you enter the query  </p>
-</div>
-
-<p>To view the data in the <code>nation.parquet</code> file, issue the query appropriate for
-your operating system:</p>
+<p>The path to the parquet file varies between operating
+systems. Use the actual path to your Drill installation to construct this query:</p>
 
 <p><code>SELECT * FROM dfs.`&lt;path-to-installation&gt;/apache-drill-&lt;version&gt;/sample-data/nation.parquet`;</code></p>
 
 <p>The query returns the following results:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM dfs.`Users/khahn/drill/apache-drill-1.1.0-SNAPSHOT/sample-data/nation.parquet`;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM dfs.`Users/drilluser/apache-drill-1.1.0/sample-data/nation.parquet`;
 +--------------+-----------------+--------------+-----------------------+
 | N_NATIONKEY  |     N_NAME      | N_REGIONKEY  |       N_COMMENT       |
 +--------------+-----------------+--------------+-----------------------+
@@ -1237,15 +1200,7 @@ your operating system:</p>
 </code></pre></div>
 <h2 id="summary">Summary</h2>
 
-<p>Now, you have been introduced to Apache Drill, which supports nested data, schema-less execution, and decentralized metadata. To summarize, you have completed the following tasks:</p>
-
-<ul>
-<li>Downloaded and installed Apache Drill.</li>
-<li>Started Drill in embedded mode.</li>
-<li>Queried the sample JSON file, <code>employee.json</code>, to view its data.</li>
-<li>Queried the sample <code>region.parquet</code> file to view its data.</li>
-<li>Queried the sample <code>nation.parquet</code> file to view its data.</li>
-</ul>
+<p>Apache Drill supports nested data, schema-less execution, and decentralized metadata. At this point, you know how to create a simple query on a JSON or Parquet file.</p>
 
 <h2 id="next-steps">Next Steps</h2>
 
@@ -1261,8 +1216,7 @@ your operating system:</p>
 
 <h2 id="more-information">More Information</h2>
 
-<p>For more information about Apache Drill, explore the  <a href="http://drill.apache.org">Apache Drill
-web site</a>.</p>
+<p>For more information about Apache Drill, explore the <a href="http://drill.apache.org">Apache Drill web site</a>.</p>
 
     
       
