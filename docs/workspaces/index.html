@@ -989,10 +989,42 @@
 
     <div class="int_text" align="left">
       
-        <p>You can define one or more workspaces in a storage plugin configuration. The workspace defines the location of files in subdirectories of a local or distributed file system. Drill searches the workspace to locate data when
-you run a query. The <code>default</code>
-workspace points to the root of the file system. </p>
+        <p>You can define one or more workspaces in a <a href="/docs/plugin-configuration-basics/">storage plugin configuration</a>. The workspace defines the location of files in subdirectories of a local or distributed file system. Drill searches the workspace to locate data when
+you run a query. A hidden default workspace, <code>dfs.default</code>, points to the root of the file system.</p>
 
+<p>The following DFS storage plugin configuration shows some examples of defined workspaces:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   {
+     &quot;type&quot;: &quot;file&quot;,
+     &quot;enabled&quot;: true,
+     &quot;connection&quot;: &quot;file:///&quot;,
+     &quot;workspaces&quot;: {
+       &quot;root&quot;: {
+         &quot;location&quot;: &quot;/&quot;,
+         &quot;writable&quot;: false,
+         &quot;defaultInputFormat&quot;: null
+       },
+       &quot;tmp&quot;: {
+         &quot;location&quot;: &quot;/tmp&quot;,
+         &quot;writable&quot;: true,
+         &quot;defaultInputFormat&quot;: null
+       },
+       &quot;emp&quot;: {
+         &quot;location&quot;: &quot;/Users/user1/emp&quot;,
+         &quot;writable&quot;: true,
+         &quot;defaultInputFormat&quot;: null
+       },
+       &quot;donuts&quot;: {
+         &quot;location&quot;: &quot;/Users/user1/donuts&quot;,
+         &quot;writable&quot;: true,
+         &quot;defaultInputFormat&quot;: null
+       },
+       &quot;sales&quot;: {
+         &quot;location&quot;: &quot;/Users/user1/sales&quot;,
+         &quot;writable&quot;: true,
+         &quot;defaultInputFormat&quot;: null
+       }
+     },
+</code></pre></div>
 <p>Configuring workspaces to include a subdirectory simplifies the query, which is important when querying the same files repeatedly. After you configure a long path name in the workspace <code>location</code> property, instead of
 using the full path name to the data source, you use dot notation in the FROM
 clause.</p>
@@ -1004,8 +1036,18 @@ clause.</p>
 <p>To query the data source when you have not set the default schema name to the storage plugin configuration, include the plugin name. This syntax assumes you did not issue a USE statement to connect to a storage plugin that defines the
 location of the data:</p>
 
-<p><code>&lt;plugin&gt;.&lt;workspace name&gt;.`&lt;location&gt;</code>`</p>
+<p><code>&lt;plugin&gt;.&lt;workspace name&gt;.`&lt;location&gt;</code>`  </p>
 
+<h2 id="overriding-dfs.default">Overriding <code>dfs.default</code></h2>
+
+<p>You may want to override the hidden default workspace in scenarios where users do not have permissions to access the root directory. 
+Add the following workspace entry to the DFS storage plugin configuration to override the default workspace:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;default&quot;: {
+  &quot;location&quot;: &quot;&lt;/directory/path&gt;&quot;,
+  &quot;writable&quot;: true,
+  &quot;defaultInputFormat&quot;: null
+}
+</code></pre></div>
 <h2 id="no-workspaces-for-hive-and-hbase">No Workspaces for Hive and HBase</h2>
 
 <p>You cannot include workspaces in the configurations of the
