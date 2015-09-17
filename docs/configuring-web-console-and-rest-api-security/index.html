@@ -996,11 +996,11 @@ you can limit the access of certain users to Web Console functionality, such as 
 
 <p>Drill 1.2 uses the Linux Pluggable Authentication Module (PAM) and code-level support for transport layer security (TLS) to secure the Web Console and REST API. By default, the Web Console and REST API now support the HTTPS protocol.</p>
 
-<p>By default, Drill generates a self-signed certificate that works with SSL for HTTPS access to the Web Console; however, as administrator, you can set up SSL to specify the keystore or truststore, or both, for your organization, as described in the next section.</p>
+<p>By default, Drill generates a self-signed certificate that works with SSL for HTTPS access to the Web Console. Because Drill uses a self-signed certificate, you see a warning in the browser when you go to <code>https://&lt;node IP address&gt;:8047</code>. The Chrome browser, for example, requires you to click <code>Advanced</code>, and then <code>Proceed to &lt;address&gt; (unsafe)</code>.  If you have a signed certificate by an authority, you can set up a custom SSL to avoid this warning. You can set up SSL to specify the keystore or truststore, or both, for your organization, as described in the next section.</p>
 
 <h2 id="setting-up-a-custom-ssl-configuration">Setting Up a Custom SSL Configuration</h2>
 
-<p>As cluster administrator, you can set the following SSL configuration parameters at the JVM level through system properties, as described in the <a href="http://docs.oracle.com/javase/7/docs/technotes/guides/security/jsse/JSSERefGuide.html#Customization">Java product documentation</a>:</p>
+<p>As cluster administrator, you can set the following SSL configuration parameters at in the <code>conf/drill-override.conf</code> file, as described in the <a href="http://docs.oracle.com/javase/7/docs/technotes/guides/security/jsse/JSSERefGuide.html#Customization">Java product documentation</a>:</p>
 
 <ul>
 <li>javax.net.ssl.keyStore<br>
@@ -1031,10 +1031,10 @@ Optionally, you can set up Web Console administrator-user groups to facilitate m
 <li>security.admin.users<br>
 Set the value of this option to a comma-separated list of user names who you want to give administrator privileges, such as changing system options.<br></li>
 <li>security.admin.user_groups<br>
-Set the value of this option to a comma-separated list of administrators.</li>
+Set the value of this option to a comma-separated list of administrator groups.</li>
 </ul>
 
-<p>Any user for whom you have configured Drill user authentication, but not set up as a Web Console administrator, has only user privileges to access the Web Console and REST API client applications.</p>
+<p>Any user who is a member of any group listed in security.admin.user.groups is a Drill cluster administrator. Any user for whom you have configured Drill user authentication, but not set up as a Drill cluster administrator, has only user privileges to access the Web Console and REST API client applications.</p>
 
 <h2 id="web-console-and-rest-api-privileges">Web Console and REST API Privileges</h2>
 
@@ -1292,24 +1292,6 @@ Set the value of this option to a comma-separated list of administrators.</li>
 <li>ADMIN - can cancel the query.<br></li>
 <li>USER - cancel the query only if the query is launched by the user requesting the cancellation.</li>
 </ul>
-
-<h2 id="starting-the-web-console-using-authentication">Starting the Web Console Using Authentication</h2>
-
-<p>The following example shows the sequence of steps you typically perform to access the Web Console when authentication is enabled on a Drill cluster.</p>
-
-<ol>
-<li>Set the JVM library path to the location of the PAM <code>.so</code> file.<br>
-<code>export DRILLBIT_JAVA_OPTS=&quot; -Djava.library.path=/root/ &quot;</code><br></li>
-<li>Restart the Drillbit.<br>
-<code>[root@centos64-30143 apache-drill-1.2.0-SNAPSHOT]# ./bin/drillbit.sh restart</code><br></li>
-<li>Start the Drill Shell, using  a user name and password.<br>
-<code>bin/sqlline -u &quot;jdbc:drill:zk=10.10.30.146:5181&quot; -n joeadmin -p mypwd</code><br></li>
-<li>Open a browser, and go to <code>https://&lt;IP address&gt;:8047</code>, where IP address is the host name or IP address of one of the installed Drillbits in a distributed system.<br>
-The login screen appears:<br></li>
-</ol>
-
-<p><img src="/docs/img/web-ui-login.png" alt="Web Console Login">
-5. <a href="/docs/starting-the-web-console/">Start the Web Console</a>.</p>
 
     
       
