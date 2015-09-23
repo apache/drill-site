@@ -1094,11 +1094,22 @@ ALTER SYSTEM SET `new_view_default_permissions` = &#39;&lt;octal_code&gt;&#39;;
 
 <ol>
 <li>Navigate to <code>&lt;drill_installation_directory&gt;/conf/</code> and edit <code>drill-override.conf</code>.</li>
-<li><p>Under <code>drill.exe</code>, add the following:</p>
+<li><p>Under <code>drill.exec</code>, add the following:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">  drill.exec.impersonation: {
         enabled: true,
          max_chained_user_hops: 3
   }
+</code></pre></div>
+<p>Alternatively, you can nest impersonation within the <code>drill.exec</code> block, as shown in the following example: </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">      drill.exec: {
+           cluster-id: &quot;cluster_name&quot;,
+           zk.connect: &quot;&lt;hostname&gt;:&lt;port&gt;,&lt;hostname&gt;:&lt;port&gt;,&lt;hostname&gt;:&lt;port&gt;&quot;,
+           sys.store.provider.zk.blobroot: &quot;hdfs://&quot;,
+           impersonation: {
+             enabled: true,
+             max_chained_user_hops: 3
+           }
+         }
 </code></pre></div></li>
 <li><p>Verify that enabled is set to <code>‘true’</code>.</p></li>
 <li><p>Set the maximum number of chained user hops that you want Drill to allow.</p></li>
