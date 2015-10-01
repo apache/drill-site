@@ -1130,7 +1130,7 @@ You do not assign a data type to every column name in a CREATE TABLE statement t
 <ul>
 <li><a href="/docs/data-type-conversion#cast">CAST</a><br></li>
 <li><a href="/docs/data-type-conversion#convert_to-and-convert_from">CONVERT TO/FROM</a><br>
-Use the <a href="/docs/supported-data-types/#convert_to-and-convert_from-data-types">CONVERT TO AND CONVERT FROM data types</a><br></li>
+Use the <a href="/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">CONVERT TO AND CONVERT FROM data types</a><br></li>
 <li>Other <a href="/docs/data-type-conversion#other-data-type-conversions">data conversion functions</a><br></li>
 </ul>
 
@@ -1246,7 +1246,7 @@ Implicitly casts all textual data to VARCHAR.</li>
 <li><a href="/docs/data-type-conversion#cast">CAST</a><br>
 Casts data from one data type to another.</li>
 <li>CONVERT_TO and CONVERT_FROM functions
-Converts data, including binary data, from one data type to another using <a href="/docs/supported-data-types/#convert_to-and-convert_from-data-types">&quot;CONVERT_TO and CONVERT_FROM data types&quot;</a><br></li>
+Converts data, including binary data, from one data type to another using <a href="/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">&quot;CONVERT_TO and CONVERT_FROM data types&quot;</a><br></li>
 <li><a href="/docs/data-type-conversion/#to_char">TO_CHAR</a><br>
 Converts a TIMESTAMP, INTERVALDAY/INTERVALYEAR, INTEGER, DOUBLE, or DECIMAL to a string.</li>
 <li><a href="/docs/data-type-conversion/#to_date">TO_DATE</a><br>
@@ -1520,7 +1520,7 @@ Converts a string to TIMESTAMP.</li>
 
 <p>* Used to cast binary UTF-8 data coming to/from sources such as HBase. The CAST function does not support all representations of FIXEDBINARY and VARBINARY. Only the UTF-8 format is supported. </p>
 
-<h2 id="convert_to-and-convert_from-data-types">CONVERT_TO and CONVERT_FROM Data Types</h2>
+<h2 id="data-types-for-convert_to-and-convert_from-functions">Data Types for CONVERT_TO and CONVERT_FROM Functions</h2>
 
 <p>The <a href="/docs/data-type-conversion/#convert_to-and-convert_from">CONVERT_TO function</a> converts data to bytes from the input type. The <a href="/docs/data-type-conversion/#convert_to-and-convert_from">CONVERT_FROM function</a> converts data from bytes to the input type. For example, the following CONVERT_TO function converts an integer to bytes using big endian encoding:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">CONVERT_TO(mycolumn, &#39;INT_BE&#39;)
@@ -1631,6 +1631,11 @@ and CONVERT_FROM functions:</p>
 <td>DATE/TIME</td>
 </tr>
 <tr>
+<td>TIMESTAMP_IMPALA*</td>
+<td>bytes(8)</td>
+<td>INT96</td>
+</tr>
+<tr>
 <td>UTF8</td>
 <td>bytes</td>
 <td>VARCHAR</td>
@@ -1651,6 +1656,8 @@ and CONVERT_FROM functions:</p>
 <td>UINT8</td>
 </tr>
 </tbody></table>
+
+<p>* In Drill 1.2 and later, use the TIMESTAMP_IMPALA type with the CONVERT_FROM function to decode a timestamp from Hive or Impala, as shown in the section, <a href="/drill/docs/parquet-format/#about-int96-support">&quot;About INT96 Support&quot;</a>.</p>
 
 <p>This table includes types such as INT, for converting little endian-encoded data and types such as INT_BE for converting big endian-encoded data to Drill internal types. You need to convert binary representations, such as data in HBase, to a Drill internal format as you query the data. If you are unsure that the size of the source and destination INT or BIGINT you are converting is the same, use CAST to convert these data types to/from binary.  </p>
 

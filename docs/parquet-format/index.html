@@ -1042,20 +1042,22 @@ query. </p>
 
 <p>Use the <code>store.format</code> option to set the CTAS output format of a Parquet row group at the session or system level.</p>
 
-<p>Use the ALTER command to set the <code>store.format</code> option.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">    ALTER SESSION SET `store.format` = &#39;parquet&#39;;
-    ALTER SYSTEM SET `store.format` = &#39;parquet&#39;;
-</code></pre></div>
+<p>Use the ALTER command to set the <code>store.format</code> option.  </p>
+
+<p><code>ALTER SESSION SET `store.format` = &#39;parquet&#39;;</code><br>
+<code>ALTER SYSTEM SET `store.format` = &#39;parquet&#39;;</code>  </p>
+
 <h3 id="configuring-the-size-of-parquet-files">Configuring the Size of Parquet Files</h3>
 
 <p>Configuring the size of Parquet files by setting the <code>store.parquet.block-size</code> can improve write performance. The block size is the size of MFS, HDFS, or the file system. </p>
 
 <p>The larger the block size, the more memory Drill needs for buffering data. Parquet files that contain a single block maximize the amount of data Drill stores contiguously on disk. Given a single row group per file, Drill stores the entire Parquet file onto the block, avoiding network I/O.</p>
 
-<p>To maximize performance, set the target size of a Parquet row group to the number of bytes less than or equal to the block size of MFS, HDFS, or the file system by using the <code>store.parquet.block-size</code>:         </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">    ALTER SESSION SET `store.parquet.block-size` = 536870912;         
-    ALTER SYSTEM SET `store.parquet.block-size` = 536870912  
-</code></pre></div>
+<p>To maximize performance, set the target size of a Parquet row group to the number of bytes less than or equal to the block size of MFS, HDFS, or the file system by using the <code>store.parquet.block-size</code>:  </p>
+
+<p><code>ALTER SESSION SET `store.parquet.block-size` = 536870912;</code><br>
+<code>ALTER SYSTEM SET `store.parquet.block-size` = 536870912</code>  </p>
+
 <p>The default block size is 536870912 bytes.</p>
 
 <h3 id="type-mapping">Type Mapping</h3>
@@ -1171,11 +1173,21 @@ FROM dfs.tmp.`sampleparquet` t;
 <td>4-byte signed integer</td>
 </tr>
 <tr>
-<td>None</td>
+<td>None*</td>
 <td>INT96</td>
 <td>12-byte signed int</td>
 </tr>
 </tbody></table>
+
+<p>* Drill 1.2 and later supports reading the Parquet INT96 type.</p>
+
+<h2 id="about-int96-support">About INT96 Support</h2>
+
+<p>Drill 1.2 and later supports reading the Parquet INT96 type. For example, to decode a timestamp from Hive or Impala, which is of type INT96, use the CONVERT_FROM function and the <a href="/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">TIMESTAMP_IMPALA</a> type argument:</p>
+
+<p><code>SELECT CONVERT_FROM(timestamp_field, &#39;TIMESTAMP_IMPALA&#39;) as timestamp_field FROM `dfs.file_with_timestamp.parquet`;</code></p>
+
+<p>Because INT96 is supported for reads only, you cannot use the TIMESTAMP_IMPALA as a data type argument with CONVERT_TO.</p>
 
 <h3 id="sql-types-to-parquet-logical-types">SQL Types to Parquet Logical Types</h3>
 

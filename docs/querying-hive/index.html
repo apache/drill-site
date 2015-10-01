@@ -995,8 +995,8 @@ download the <a href="http://doc.mapr.com/download/attachments/28868943/customer
 
 <ol>
 <li><p>Issue the following command to start the Hive shell:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">hive
-</code></pre></div></li>
+
+<p><code>hive</code></p></li>
 <li><p>Issue the following command from the Hive shell create a table schema:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">hive&gt; create table customers(FirstName string, LastName string, Company string, Address string, City string, County string, State string, Zip string, Phone string, Fax string, Email string, Web string) row format delimited fields terminated by &#39;,&#39; stored as textfile;
 </code></pre></div></li>
@@ -1027,6 +1027,12 @@ download the <a href="http://doc.mapr.com/download/attachments/28868943/customer
 0: jdbc:drill:schema=hiveremote&gt;
 </code></pre></div></li>
 </ol>
+
+<h2 id="optimizing-reads-of-parquet-backed-tables">Optimizing Reads of Parquet-Backed Tables</h2>
+
+<p>Use the <code>store.hive.optimize_scan_with_native_readers</code> option to optimize reads of Parquet-backed external tables from Hive. When set to TRUE, this option uses Drill native readers instead of the Hive Serde interface, resulting in more performant queries of Parquet-backed external tables. (Drill 1.2 and later)</p>
+
+<p>Set the <code>store.hive.optimize_scan_with_native_readers</code> option as described in the section, <a href="/docs/planning-and-execution-options/">&quot;Planning and Execution Options&quot;</a>.</p>
 
     
       
