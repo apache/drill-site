@@ -1173,7 +1173,7 @@ FROM dfs.tmp.`sampleparquet` t;
 <td>4-byte signed integer</td>
 </tr>
 <tr>
-<td>None*</td>
+<td>VARBINARY(12)*</td>
 <td>INT96</td>
 <td>12-byte signed int</td>
 </tr>
@@ -1188,6 +1188,12 @@ FROM dfs.tmp.`sampleparquet` t;
 <p><code>SELECT CONVERT_FROM(timestamp_field, &#39;TIMESTAMP_IMPALA&#39;) as timestamp_field FROM `dfs.file_with_timestamp.parquet`;</code></p>
 
 <p>Because INT96 is supported for reads only, you cannot use the TIMESTAMP_IMPALA as a data type argument with CONVERT_TO.</p>
+
+<p>You can convert a SQL TIMESTAMP to VARBINARY using the CAST function, but the resultant VARBINARY is not the same as the INT96. For example, create a Drill table after reading an INT96 and converting some data to a timestamp.</p>
+
+<p><code>CREATE TABLE t2(c1) AS SELECT CONVERT_FROM(created_ts, &#39;TIMESTAMP_IMPALA&#39;) FROM t1 ORDER BY 1 LIMIT 1;</code></p>
+
+<p>t1.created_ts is an INT96 (or Hive/Impala timestamp) , t2.created_ts is a SQL timestamp. These types are not comparable--you cannot use a condition like t1.created_ts = t2.created_ts.</p>
 
 <h3 id="sql-types-to-parquet-logical-types">SQL Types to Parquet Logical Types</h3>
 

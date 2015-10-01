@@ -1010,8 +1010,27 @@
 
 <p>When user authentication is enabled, each user that accesses the Drillbit process through a client, such as SQLLine, must provide their username and password for access. </p>
 
-<p>When launching SQLLine, a user must include the <code>–n</code> and <code>–p</code> parameters with their username and password in the SQLLine argument:<br>
+<p>A user can include the <code>–n</code> and <code>–p</code> parameters with their username and password when launching SQLLine, as shown in the following example:<br>
        <code>sqlline –u jdbc:drill:zk=10.10.11.112:5181 –n bob –p bobdrill</code></p>
+
+<p>Alternatively, a user can launch SQLLine and then issue the <code>!connect</code> command to hide the password, as shown in the following procedure:  </p>
+
+<ol>
+<li><p>Start SQLLine, by running the sqlline script. On Linux, for example:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">      bobsmachine:~$ /etc/drill/bin/sqlline
+      apache drill 1.2.0
+      &quot;a drill in the hand is better than two in the bush&quot;  
+</code></pre></div></li>
+<li><p>At the sqlline prompt, enter the <code>!connect</code> command followed by <code>jdbc:drill:zk=zk=&lt;zk name&gt;[:&lt;port&gt;][,&lt;zk name2&gt;[:&lt;port&gt;]... ]</code>. For example:</p></li>
+<li><div class="highlight"><pre><code class="language-text" data-lang="text">      sqlline&gt; !connect jdbc:drill:zk=localhost:2181
+      scan complete in 1385ms
+</code></pre></div></li>
+<li><p>At the prompts, enter a user name and password.</p></li>
+<li><div class="highlight"><pre><code class="language-text" data-lang="text">      Enter username for jdbc:drill:zk=localhost:2181: bob
+      Enter password for jdbc:drill:zk=localhost:2181: *************
+</code></pre></div>
+<p>The password is hidden as it is typed.</p></li>
+</ol>
 
 <p>When a user connects to Drill from a BI tool, such as Tableau, the MapR Drill ODBC driver prompts the user for their username and password:</p>
 
