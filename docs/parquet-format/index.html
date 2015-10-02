@@ -1010,26 +1010,6 @@
 
 <p>When a read of Parquet data occurs, Drill loads only the necessary columns of data, which reduces I/O. Reading only a small piece of the Parquet data from a data file or table, Drill can examine and analyze all values for a column across multiple files. You can create a Drill table from one format and store the data in another format, including Parquet.</p>
 
-<h2 id="caching-metadata">Caching Metadata</h2>
-
-<p>For performant querying of a large number of files, Drill 1.2 and later can take advantage of metadata, such as the Hive metadata store, and includes the capability of generating a metadata cache for performant querying of thousands of Parquet files. The metadata cache is not a central caching system, but simply one or more files of metadata. Drill generates and saves a cache of metadata in each directory in nested directories. You trigger the generation of metadata caches by running the REFRESH TABLE METADATA command, as described in <a href="/docs/querying-parquet-files/">Querying Parquet Files</a>.</p>
-
-<p>After generating the metadata cache, Drill performs the following tasks during the planning phase for a query on a directory of Parquet files:</p>
-
-<ul>
-<li>Finds files.<br></li>
-<li>Recurses directories.<br></li>
-<li>Reads the footers of files to get information, such as row counts and HDFS block locations for every file for Drill to assign work based on locality.<br>
-When Drill reads the file, it attempts to execute the query on the node where the data rests.<br></li>
-<li>Summarizes the information from the footers in a single metadata cache file.<br></li>
-<li>Stores the metadata cache file at each level that covers that particular level and all lower levels.</li>
-</ul>
-
-<p>At execution time, Drill reads the actual files. At planning time, Drill reads only the metadata file. </p>
-
-<p>The first query that does not see the metadata file will gather the metadata, so the elapsed time of the first query will be very different from a subsequent 
-query. </p>
-
 <h2 id="writing-parquet-files">Writing Parquet Files</h2>
 
 <p>CREATE TABLE AS (CTAS) can use any data source provided by the storage plugin. To write Parquet data using the CTAS command, set the session store.format option as shown in the next section. Alternatively, configure the storage plugin to point to the directory containing the Parquet files.</p>
