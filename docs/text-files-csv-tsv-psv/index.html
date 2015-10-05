@@ -528,6 +528,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/optimizing-parquet-reading/">Optimizing Parquet Reading</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/choosing-a-storage-format/">Choosing a Storage Format</a></li>
             
           
@@ -1027,6 +1031,22 @@ VARCHARS, rather than individual columns. While parquet supports and Drill reads
 </ul>
 
 <p>Set the <code>sys.options</code> property setting <code>exec.storage.enable_new_text_reader</code> to true (the default) before attempting to use these attributes. </p>
+
+<h3 id="using-quotation-marks">Using Quotation Marks</h3>
+
+<p>CSV files typically enclose text fields in double quotation marks, and Drill treats the double quotation mark in CSV files as a special character accordingly. By default, Drill treats double quotation marks as a special character in TSV files also. If you want Drill <em>not</em> to treat double quotation marks as a special character, configure the storage plugin to set the <code>quote</code> attribute to the unicode null <code>&quot;\u0000&quot;</code>. For example:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   . . .
+   &quot;tsv&quot;: {
+   &quot;type&quot;: &quot;text&quot;,
+   &quot;extensions&quot;: [
+     &quot;tsv&quot;
+   ],
+   &quot;quote&quot;: &quot;\u0000&quot;,    &lt;-- set this to null 
+   &quot;delimiter&quot;: &quot;\t&quot;
+ },
+ . . .
+</code></pre></div>
+<p>As mentioned previously, set the <code>sys.options</code> property setting <code>exec.storage.enable_new_text_reader</code> to true (the default).</p>
 
 <h2 id="examples-of-querying-text-files">Examples of Querying Text Files</h2>
 
