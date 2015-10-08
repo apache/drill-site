@@ -1007,7 +1007,7 @@ steps:</p>
 <h2 id="sample-configuration-files">Sample Configuration Files</h2>
 
 <p>Before you connect to Drill through an ODBC client tool
-on Mac OS X, copy the following configuration files in <code>/opt/mapr/drillobdc/Setup</code> to your home directory unless the files already exist in your home directory:</p>
+on Mac OS X, copy the following configuration files in <code>/opt/mapr/drillodbc/Setup</code> to your home directory unless the files already exist in your home directory:</p>
 
 <ul>
 <li><code>mapr.drillodbc.ini</code></li>
@@ -1157,6 +1157,7 @@ file. This configures the driver to work with your ODBC driver manager. The foll
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">[Driver]
 ## - Note that this default DriverManagerEncoding of UTF-32 is for iODBC.
+DisableAsync=0
 DriverManagerEncoding=UTF-32
 ErrorMessagesPath=/opt/mapr/drillodbc/ErrorMessages
 
@@ -1172,14 +1173,16 @@ ODBCInstLib=libiodbcinst.dylib
 <p>To configure the MapR Drill ODBC Driver in the <code>mapr.drillodbc.ini</code> configuration file, complete the following steps:</p>
 
 <ol>
-<li>Open the <code>mapr.drillodbc.ini</code> configuration file in a text editor.</li>
-<li>Edit the DriverManagerEncoding setting if necessary. The value is typically UTF-16 or UTF-32, but depends on the driver manager used. iODBC uses UTF-32 and unixODBC uses UTF-16. Review your ODBC Driver Manager documentation for the correct setting.</li>
-<li><p>Edit the <code>ODBCInstLib</code> setting. The value is the name of the <code>ODBCInst</code> shared library for the ODBC driver manager that you use. The configuration file defaults to the shared library for <code>iODBC</code>. The shared library name for <code>iODBC</code> is <code>libiodbcinst.dylib</code>.</p>
+<li>Open the <code>mapr.drillodbc.ini</code> configuration file in a text editor.<br></li>
+<li>Edit the DisableAsync setting if you want to enable a synchronous ODBC connection for performance reasons. Change the default 0 to 1 to disable the asynchronous and enable the synchronous connection.<br>
+ A change in state occurs during driver initialization and is propagated to all driver DSNs.<br></li>
+<li>Edit the DriverManagerEncoding setting if necessary. The value is typically UTF-16 or UTF-32, but depends on the driver manager used. iODBC uses UTF-32 and unixODBC uses UTF-16. Review your ODBC Driver Manager documentation for the correct setting.<br></li>
+<li><p>Edit the <code>ODBCInstLib</code> setting. The value is the name of the <code>ODBCInst</code> shared library for the ODBC driver manager that you use. The configuration file defaults to the shared library for <code>iODBC</code>. The shared library name for <code>iODBC</code> is <code>libiodbcinst.dylib</code>.  </p>
 
 <p>Specify an absolute or relative filename for the library. If you use
 the relative file name, include the path to the library in the library path
 environment variable. The library path environment variable is
-named <code>DYLD_LIBRARY_PATH</code>.</p></li>
+named <code>DYLD_LIBRARY_PATH</code>.  </p></li>
 <li><p>Save the <code>mapr.drillodbc.ini</code> configuration file.</p></li>
 </ol>
 
