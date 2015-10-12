@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Learn Drill with the MapR Sandbox - Apache Drill</title>
+<title>Optimizing Parquet Metadata Reading - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -160,8 +160,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Tutorials</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">Tutorials</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/tutorials-introduction/">Tutorials Introduction</a></li>
@@ -176,8 +176,8 @@
             
           
             
-              <li class="toctree-l2 current"><a href="javascript: void(0);">Learn Drill with the MapR Sandbox</a></li>
-              <ul style="">
+              <li class="toctree-l2"><a href="javascript: void(0);">Learn Drill with the MapR Sandbox</a></li>
+              <ul style="display: none">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/about-the-mapr-sandbox/">About the MapR Sandbox</a></li>
               
@@ -516,8 +516,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Performance Tuning</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Performance Tuning</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/performance-tuning-introduction/">Performance Tuning Introduction</a></li>
@@ -528,7 +528,7 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/optimizing-parquet-metadata-reading/">Optimizing Parquet Metadata Reading</a></li>
+              <li class="toctree-l2 current"><a class="reference internal" href="/docs/optimizing-parquet-metadata-reading/">Optimizing Parquet Metadata Reading</a></li>
             
           
             
@@ -970,20 +970,20 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/tutorials/">Tutorials</a></li>
+    <li><a href="/docs/performance-tuning/">Performance Tuning</a></li>
   
-  <li>Learn Drill with the MapR Sandbox</li>
+  <li>Optimizing Parquet Metadata Reading</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/tutorials/040-learn-drill-with-the-mapr-sandbox.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/performance-tuning/025-optimizing-parquet-reading.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>Learn Drill with the MapR Sandbox</h1>
+      <h1>Optimizing Parquet Metadata Reading</h1>
 
     </div>
 
@@ -991,35 +991,50 @@
 
     <div class="int_text" align="left">
       
-        <ul>
-        
-          <li><a href="/docs/about-the-mapr-sandbox/">About the MapR Sandbox</a></li>
-        
-      
-          <li><a href="/docs/installing-the-apache-drill-sandbox/">Installing the Apache Drill Sandbox</a></li>
-        
-      
-          <li><a href="/docs/getting-to-know-the-drill-sandbox/">Getting to Know the Drill Sandbox</a></li>
-        
-      
-          <li><a href="/docs/lesson-1-learn-about-the-data-set/">Lesson 1: Learn about the Data Set</a></li>
-        
-      
-          <li><a href="/docs/lesson-2-run-queries-with-ansi-sql/">Lesson 2: Run Queries with ANSI SQL</a></li>
-        
-      
-          <li><a href="/docs/lesson-3-run-queries-on-complex-data-types/">Lesson 3: Run Queries on Complex Data Types</a></li>
-        
-      
-          <li><a href="/docs/summary/">Summary</a></li>
-        
-      
-      </ul>
+        <p>Parquet metadata caching is an optional feature in Drill 1.2 and later. When you use this feature, Drill generates a metadata cache file. Drill stores the metadata cache file in a directory you specify and its subdirectories. When you run a query on this directory or a subdirectory, Drill reads a single metadata cache file instead of retrieving metadata from multiple Parquet files during the query-planning phase.</p>
+
+<p>Parquet metadata caching is useful only with Parquet data, and does not benefit queries on Hive tables, HBase tables, or text files. </p>
+
+<h2 id="when-to-use-parquet-metadata-caching">When to Use Parquet Metadata Caching</h2>
+
+<p>The scenarios in which metadata caching is useful is when the planning time is a significant percentage of the total elapsed time of the query. If the query execution time is the dominant factor, which is typically observed with a large number of files, then metadata caching will have very little impact. To determine that query execution time is the dominant factor, run an EXPLAIN plan on your query of a large number of files, and compare its time to the total time of query execution. Use the comparison to determine whether metadata caching will be useful.</p>
+
+<p>When enabled, Drill always uses the Parquet metadata cache during the query-planning phase. To optimize reading Parquet metadata, make sure the metadata cache is up-to-date after making any changes, such as inserts, to the data in the cluster. The next section describes how to update the metadata cache.</p>
+
+<h2 id="how-to-trigger-generation-of-the-parquet-metadata-cache-file">How to Trigger Generation of the Parquet Metadata Cache File</h2>
+
+<p>The following command generates the Parquet metadata cache file in the <code>&lt;path to table&gt;</code> and its subdirectories.</p>
+
+<p><code>REFRESH TABLE METADATA &lt;path to table&gt;</code></p>
+
+<p>You need to run this command on a directory, nested or flat, only once during the session. Only the first query gathers the metadata unless the Parquet data changes, for example, you delete some data. If you did not make changes to the Parquet data, subsequent queries encounter the up-to-date Parquet metadata files. There is no need for Drill to regenerate the metadata. If there are changes, the metadata needs updating, so Drill dynamically regenerates the Parquet metadata when you issue the next query.</p>
+
+<p>The elapsed time of the first query that triggers regeneration of metadata can be greater than that of subsequent queries that use that metadata. If this increase in the time of the first query is unacceptable, make sure the cache is up-to-date by running the REFRESH TABLE METADATA command.</p>
+
+<h2 id="example-of-generating-parquet-metadata">Example of Generating Parquet Metadata</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:schema=dfs&gt; REFRESH TABLE METADATA t1;
++-------+----------------------------------------------+
+|  ok   |                   summary                    |
++-------+----------------------------------------------+
+| true  | Successfully updated metadata for table t1.  |
++-------+----------------------------------------------+
+1 row selected (0.445 seconds)
+</code></pre></div>
+<h2 id="how-drill-generates-and-uses-parquet-metadata">How Drill Generates and Uses Parquet Metadata</h2>
+
+<p>After running the REFRESH TABLE METADATA command, Drill traverses directories in the case of nested directories to find the Parquet files. From the footers of the files, Drill gathers metadata, such as row counts and node affinity based on HDFS block locations. For each directory level, Drill saves a summary of the information from the footers in a single Parquet metadata cache file. The summary at each level covers that particular level and all child levels; consequently, after generating metadata, you can query nested directories from any level. In order to leverage the metadata cache file for a table t, the file must exist at the root directory of that table. For example, you can query a subdirectory of Parquet files because Drill stores a Parquet metadata cache file at each level.</p>
+
+<p>At planning time, Drill reads only the metadata file. Parquet metadata caching has no effect on execution time. At execution time, Drill reads the actual files.</p>
+
+<h2 id="security-limitations">Security Limitations</h2>
+
+<p>TBD</p>
+
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/analyzing-the-yelp-academic-dataset/">← Analyzing the Yelp Academic Dataset</a></span><span class="next-toc"><a href="/docs/about-the-mapr-sandbox/">About the MapR Sandbox →</a></span>
+  <span class="previous-toc"><a href="/docs/partition-pruning/">← Partition Pruning</a></span><span class="next-toc"><a href="/docs/choosing-a-storage-format/">Choosing a Storage Format →</a></span>
 </div>
 
     
