@@ -6,14 +6,69 @@
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 15 Oct 2015 15:34:22 -0700</pubDate>
-    <lastBuildDate>Thu, 15 Oct 2015 15:34:22 -0700</lastBuildDate>
-    <generator>Jekyll v2.5.2</generator>
+    <pubDate>Sat, 17 Oct 2015 09:56:45 -0700</pubDate>
+    <lastBuildDate>Sat, 17 Oct 2015 09:56:45 -0700</lastBuildDate>
+    <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Drill 1.2 Released</title>
+        <description>&lt;p&gt;Today I&amp;#39;m happy to announce the availability of the Drill 1.2 release. This release addresses &lt;a href=&quot;https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12332042&amp;amp;projectId=12313820&quot;&gt;217 JIRAs&lt;/a&gt; on top of the 1.1 release. Highlights include:&lt;/p&gt;
+
+&lt;h2 id=&quot;relational-database-support&quot;&gt;Relational Database Support&lt;/h2&gt;
+
+&lt;p&gt;Drill now includes a JDBC storage plugin for querying relational databases (RDBMSs). Users can run SQL queries that join data between non-relational datastores (eg, MongoDB, HBase, HDFS, S3) and relational databases (eg, MySQL, Oracle). For example, a single query can join log files in HDFS with a users table in MySQL. Drill automatically pushes execution (projections, filters, partial joins, etc.) down into the RDBMS whenever possible.&lt;/p&gt;
+
+&lt;h2 id=&quot;new-window-functions&quot;&gt;New Window Functions&lt;/h2&gt;
+
+&lt;p&gt;The 1.2 release adds additional window functions: &lt;code&gt;NTILE&lt;/code&gt;, &lt;code&gt;FIRST_VALUE&lt;/code&gt;, &lt;code&gt;LAST_VALUE&lt;/code&gt;, &lt;code&gt;LEAD&lt;/code&gt; and &lt;code&gt;LAG&lt;/code&gt;. Drill now supports &lt;a href=&quot;/docs/sql-window-functions-introduction/&quot;&gt;15 different window functions&lt;/a&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Value Functions: &lt;code&gt;FIRST_VALUE&lt;/code&gt;, &lt;code&gt;LAST_VALUE&lt;/code&gt;, &lt;code&gt;LEAD&lt;/code&gt;, &lt;code&gt;LAG&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Aggregate Functions: &lt;code&gt;AVG&lt;/code&gt;, &lt;code&gt;COUNT&lt;/code&gt;, &lt;code&gt;MAX&lt;/code&gt;, &lt;code&gt;MIN&lt;/code&gt;, &lt;code&gt;SUM&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Ranking Functions: &lt;code&gt;CUME_DIST&lt;/code&gt;, &lt;code&gt;DENSE_RANK&lt;/code&gt;, &lt;code&gt;NTILE&lt;/code&gt;, &lt;code&gt;PERCENT_RANK&lt;/code&gt;, &lt;code&gt;RANK&lt;/code&gt;, &lt;code&gt;ROW_NUMBER&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In addition to supporting new window functions, Drill 1.2 adds support for multiple window functions in a single query. A query can contain multiple window functions that slice up the data in different ways by means of different &lt;code&gt;OVER&lt;/code&gt; clauses, but they all act on the same collection of rows.&lt;/p&gt;
+
+&lt;h2 id=&quot;parquet-metadata-caching&quot;&gt;Parquet Metadata Caching&lt;/h2&gt;
+
+&lt;p&gt;When running a query against a directory tree with Parquet files, Drill scans the directory and reads the footers of the files during the planning phase. This allows Drill to prune partitions and optimize query execution for data locality. However, this process can be time consuming for directory trees with thousands of files. Drill 1.2 includes &lt;a href=&quot;/docs/optimizing-parquet-reading/&quot;&gt;a new feature&lt;/a&gt; that caches the metadata information so that subsequent queries don&amp;#39;t need to scan all the files. The cache is automatically maintained based on the directory timestamps.&lt;/p&gt;
+
+&lt;h2 id=&quot;performance-improvements-on-hbase-and-hive-tables&quot;&gt;Performance Improvements on HBase and Hive Tables&lt;/h2&gt;
+
+&lt;p&gt;Drill 1.2 introduces a faster read path for HBase and Hive tables. When querying Hive tables backed by Parquet files, Drill now uses a high-performance Parquet reader rather than the Hive SerDe.&lt;/p&gt;
+
+&lt;h2 id=&quot;drop-table-for-files-and-directories&quot;&gt;&lt;code&gt;DROP TABLE&lt;/code&gt; for Files and Directories&lt;/h2&gt;
+
+&lt;p&gt;Drill 1.2 allows users to drop file- and directory-based tables with a SQL command (&lt;code&gt;DROP TABLE&lt;/code&gt;).&lt;/p&gt;
+
+&lt;h2 id=&quot;enhanced-mongodb-integration&quot;&gt;Enhanced MongoDB Integration&lt;/h2&gt;
+
+&lt;p&gt;Drill 1.2 supports extended JSON types, addressing previous issues with queries on MongoDB collections. &lt;/p&gt;
+
+&lt;h2 id=&quot;many-more-fixes&quot;&gt;Many More Fixes&lt;/h2&gt;
+
+&lt;p&gt;Drill 1.2 includes hundreds of &lt;a href=&quot;https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12332042&amp;amp;projectId=12313820&quot;&gt;other fixes and enhancements&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Download the &lt;a href=&quot;https://drill.apache.org/download/&quot;&gt;Drill 1.2 release&lt;/a&gt; now and let us know your thoughts.&lt;/p&gt;
+
+&lt;p&gt;Drill On!
+Jacques Nadeau&lt;/p&gt;
+</description>
+        <pubDate>Fri, 16 Oct 2015 00:00:00 -0700</pubDate>
+        <link>/blog/2015/10/16/drill-1.2-released/</link>
+        <guid isPermaLink="true">/blog/2015/10/16/drill-1.2-released/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Drill Tutorial at NoSQL Now! 2015</title>
-        <description>&lt;p&gt;&lt;script type=&quot;text/javascript&quot; src=&quot;//addthisevent.com/libs/1.5.8/ate.min.js&quot;&gt;&lt;/script&gt;
-&lt;a href=&quot;/blog/2015/07/23/drill-tutorial-at-nosql-now-2015/&quot; title=&quot;Add to Calendar&quot; class=&quot;addthisevent&quot;&gt;
+        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;//addthisevent.com/libs/1.5.8/ate.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;a href=&quot;/blog/2015/07/23/drill-tutorial-at-nosql-now-2015/&quot; title=&quot;Add to Calendar&quot; class=&quot;addthisevent&quot;&gt;
     Add to Calendar
     &lt;span class=&quot;_start&quot;&gt;08-20-2015 13:00:00&lt;/span&gt;
     &lt;span class=&quot;_end&quot;&gt;08-20-2014 16:15:00&lt;/span&gt;
@@ -377,35 +432,6 @@ Tomer Shiran&lt;/p&gt;
         <pubDate>Tue, 27 Jan 2015 00:50:01 -0800</pubDate>
         <link>/blog/2015/01/27/schema-free-json-data-infrastructure/</link>
         <guid isPermaLink="true">/blog/2015/01/27/schema-free-json-data-infrastructure/</guid>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Drill 0.7 Released</title>
-        <description>&lt;p&gt;I&amp;#39;m excited to announce that the community has just released Drill 0.7, which includes &lt;a href=&quot;https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12313820&amp;amp;version=12327473&quot;&gt;228 resolved JIRAs&lt;/a&gt; and numerous enhancements such as: &lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;No dependency on UDP multicast. Drill can now work on EC2, as well as clusters with multiple subnets or multihomed configurations&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://cwiki.apache.org/confluence/display/DRILL/Partition+Pruning&quot;&gt;Automatic partition pruning&lt;/a&gt; based on directory structures&lt;/li&gt;
-&lt;li&gt;New nested data functions: &lt;a href=&quot;https://cwiki.apache.org/confluence/display/DRILL/KVGEN+Function&quot;&gt;KVGEN&lt;/a&gt; and &lt;a href=&quot;https://cwiki.apache.org/confluence/display/DRILL/FLATTEN+Function&quot;&gt;FLATTEN&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Fast &amp;quot;schema&amp;quot; return. This provides a better experience when using BI tools&lt;/li&gt;
-&lt;li&gt;Hive 0.13 Metastore support&lt;/li&gt;
-&lt;li&gt;Improved performance for queries on JSON data&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;You can now &lt;a href=&quot;/download/&quot;&gt;download Drill 0.7&lt;/a&gt;. As always, you may check out the official &lt;a href=&quot;https://cwiki.apache.org/confluence/display/DRILL/Release+Notes&quot;&gt;release notes&lt;/a&gt; for more details.&lt;/p&gt;
-
-&lt;p&gt;In case you&amp;#39;re interested in understanding more about where we&amp;#39;re heading, check out Tomer&amp;#39;s recent blog post outlining some of the &lt;a href=&quot;/blog/2014/12/16/whats-coming-in-2015/&quot;&gt;planned initiatives for 2015&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Happy Drilling!&lt;br&gt;
-Jacques Nadeau&lt;/p&gt;
-</description>
-        <pubDate>Tue, 23 Dec 2014 00:00:00 -0800</pubDate>
-        <link>/blog/2014/12/23/drill-0.7-released/</link>
-        <guid isPermaLink="true">/blog/2014/12/23/drill-0.7-released/</guid>
         
         
         <category>blog</category>

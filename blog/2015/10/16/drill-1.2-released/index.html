@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Drill Tutorial at NoSQL Now! 2015 - Apache Drill</title>
+<title>Drill 1.2 Released - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -113,39 +113,62 @@
 <div class="post int_text">
   <header class="post-header">
     <div class="int_title">
-      <h1 class="post-title">Drill Tutorial at NoSQL Now! 2015</h1>
+      <h1 class="post-title">Drill 1.2 Released</h1>
     </div>
     <p class="post-meta">
     
       
       
-      <strong>Author:</strong> Tomer Shiran (Founder, PMC Member and Committer, Apache Drill)<br />
+      <strong>Author:</strong> Jacques Nadeau (PMC Chair and Committer, Apache Drill)<br />
     
-
+<strong>Date:</strong> Oct 16, 2015
 </p>
   </header>
   <div class="addthis_sharing_toolbox"></div>
 
   <article class="post-content">
-    <script type="text/javascript" src="//addthisevent.com/libs/1.5.8/ate.min.js"></script>
+    <p>Today I&#39;m happy to announce the availability of the Drill 1.2 release. This release addresses <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12332042&amp;projectId=12313820">217 JIRAs</a> on top of the 1.1 release. Highlights include:</p>
 
-<p><a href="/blog/2015/07/23/drill-tutorial-at-nosql-now-2015/" title="Add to Calendar" class="addthisevent">
-    Add to Calendar
-    <span class="_start">08-20-2015 13:00:00</span>
-    <span class="_end">08-20-2014 16:15:00</span>
-    <span class="_zonecode">6</span>
-    <span class="_summary">Drill Tutorial at NoSQL Now! 2015</span>
-    <span class="_description">NoSQL Now! 2015 is hosting a 3-hour tutorial on Apache Drill. Drill committers Tomer Shiran and Jacques Nadeau will demonstrate how to analyze NoSQL data with SQL queries and standard BI tools.</span>
-    <span class="_location">San Jose Convention Center, 150 West San Carlos St, San Jose, CA 95113 USA</span>
-    <span class="_organizer">Tomer Shiran</span>
-    <span class="_organizer_email">tshiran\@apache.org</span>
-    <span class="_all_day_event">false</span>
-    <span class="_date_format">MM-DD-YYYY</span>
-</a></p>
+<h2 id="relational-database-support">Relational Database Support</h2>
 
-<p>NoSQL Now! 2015 will be hosting a <a href="http://nosql2015.dataversity.net/sessionPop.cfm?confid=90&amp;proposalid=7727">3-hour tutorial</a> on Apache Drill. Jacques Nadeau and I will provide a deep dive on Drill and demonstrate how to analyze NoSQL data with SQL queries and standard BI tools. We would love to see you there!</p>
+<p>Drill now includes a JDBC storage plugin for querying relational databases (RDBMSs). Users can run SQL queries that join data between non-relational datastores (eg, MongoDB, HBase, HDFS, S3) and relational databases (eg, MySQL, Oracle). For example, a single query can join log files in HDFS with a users table in MySQL. Drill automatically pushes execution (projections, filters, partial joins, etc.) down into the RDBMS whenever possible.</p>
 
-<p>When you <a href="http://nosql2015.dataversity.net/reg.cfm">register</a>, use the coupon code &quot;SPEAKER&quot; for a 20% discount on the registration fees.</p>
+<h2 id="new-window-functions">New Window Functions</h2>
+
+<p>The 1.2 release adds additional window functions: <code>NTILE</code>, <code>FIRST_VALUE</code>, <code>LAST_VALUE</code>, <code>LEAD</code> and <code>LAG</code>. Drill now supports <a href="/docs/sql-window-functions-introduction/">15 different window functions</a>:</p>
+
+<ul>
+<li>Value Functions: <code>FIRST_VALUE</code>, <code>LAST_VALUE</code>, <code>LEAD</code>, <code>LAG</code></li>
+<li>Aggregate Functions: <code>AVG</code>, <code>COUNT</code>, <code>MAX</code>, <code>MIN</code>, <code>SUM</code></li>
+<li>Ranking Functions: <code>CUME_DIST</code>, <code>DENSE_RANK</code>, <code>NTILE</code>, <code>PERCENT_RANK</code>, <code>RANK</code>, <code>ROW_NUMBER</code></li>
+</ul>
+
+<p>In addition to supporting new window functions, Drill 1.2 adds support for multiple window functions in a single query. A query can contain multiple window functions that slice up the data in different ways by means of different <code>OVER</code> clauses, but they all act on the same collection of rows.</p>
+
+<h2 id="parquet-metadata-caching">Parquet Metadata Caching</h2>
+
+<p>When running a query against a directory tree with Parquet files, Drill scans the directory and reads the footers of the files during the planning phase. This allows Drill to prune partitions and optimize query execution for data locality. However, this process can be time consuming for directory trees with thousands of files. Drill 1.2 includes <a href="/docs/optimizing-parquet-reading/">a new feature</a> that caches the metadata information so that subsequent queries don&#39;t need to scan all the files. The cache is automatically maintained based on the directory timestamps.</p>
+
+<h2 id="performance-improvements-on-hbase-and-hive-tables">Performance Improvements on HBase and Hive Tables</h2>
+
+<p>Drill 1.2 introduces a faster read path for HBase and Hive tables. When querying Hive tables backed by Parquet files, Drill now uses a high-performance Parquet reader rather than the Hive SerDe.</p>
+
+<h2 id="drop-table-for-files-and-directories"><code>DROP TABLE</code> for Files and Directories</h2>
+
+<p>Drill 1.2 allows users to drop file- and directory-based tables with a SQL command (<code>DROP TABLE</code>).</p>
+
+<h2 id="enhanced-mongodb-integration">Enhanced MongoDB Integration</h2>
+
+<p>Drill 1.2 supports extended JSON types, addressing previous issues with queries on MongoDB collections. </p>
+
+<h2 id="many-more-fixes">Many More Fixes</h2>
+
+<p>Drill 1.2 includes hundreds of <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12332042&amp;projectId=12313820">other fixes and enhancements</a>.</p>
+
+<p>Download the <a href="https://drill.apache.org/download/">Drill 1.2 release</a> now and let us know your thoughts.</p>
+
+<p>Drill On!
+Jacques Nadeau</p>
 
   </article>
  <div id="disqus_thread"></div>
