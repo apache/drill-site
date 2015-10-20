@@ -337,13 +337,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/plugin-configuration-basics/">Plugin Configuration Basics</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/file-system-storage-plugin/">File System Storage Plugin</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/workspaces/">Workspaces</a></li>
-              
-                <li class="toctree-l3"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
-              
-                <li class="toctree-l3"><a class="reference internal" href="/docs/hive-storage-plugin/">Hive Storage Plugin</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/drill-default-input-format/">Drill Default Input Format</a></li>
               
@@ -351,7 +345,23 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/mongodb-plugin-for-apache-drill/">MongoDB Plugin for Apache Drill</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/file-system-storage-plugin/">File System Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hive-storage-plugin/">Hive Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/jdbc-storage-plugin/">JDBC Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/mongodb-storage-plugin/">MongoDB Storage Plugin</a></li>
             
           
             
@@ -1134,7 +1144,7 @@ SELECT my column from dfs.`&lt;path_file_name&gt;`;
 <h2 id="analyzing-json">Analyzing JSON</h2>
 
 <p>Generally, you query JSON files using the following syntax, which includes a table alias. The alias is sometimes required for querying complex data. Because of the ambiguity between y.z where y could be a column or a table,
-Drill currently explicitly requires a table prefix for referencing a field
+Drill requires a table prefix for referencing a field
 inside another field (t.y.z).  This isn&#39;t required in the case y, y[z] or
 y[z].x because these references are not ambiguous. Observe the following guidelines:</p>
 
@@ -1269,7 +1279,7 @@ ORDER BY TotalSales;
 </code></pre></div>
 <h3 id="example:-access-a-map-field-in-an-array">Example: Access a Map Field in an Array</h3>
 
-<p>To access a map field in an array, use dot notation to drill down through the hierarchy of the JSON data to the field. Examples are based on the following <a href="https://github.com/zemirco/sf-city-lots-json">City Lots San Francisco in .json</a>, modified slightly as described in the empty array workaround in <a href="/docs/json-data-model#empty-array">&quot;Limitations and Workarounds.&quot;</a></p>
+<p>To access a map field in an array, use dot notation to drill down through the hierarchy of the JSON data to the field. Examples are based on the following <a href="https://github.com/zemirco/sf-city-lots-json">City Lots San Francisco in .json</a>, modified slightly as described in the empty array workaround in <a href="/docs/json-data-model#empty-array">&quot;Limitations and Workarounds.&quot;</a> </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">{
   &quot;type&quot;: &quot;FeatureCollection&quot;,
   &quot;features&quot;: [
@@ -1321,6 +1331,14 @@ FROM dfs.`/Users/drilluser/citylots.json`;
 +-------------------+
 1 row selected (0.19 seconds)
 </code></pre></div>
+<p>More examples of workarounds for drilling down into the city lots data are presented in the following sections:</p>
+
+<ul>
+<li><a href="/docs/json-data-model/#commas-between-records">Commas between records</a></li>
+<li><a href="/docs/json-data-model/#irregular-data">Irregular data</a></li>
+<li><a href="/docs/json-data-model/#varying-types">Varying types</a></li>
+</ul>
+
 <p>More examples of drilling down into an array are shown in <a href="/docs/selecting-nested-data-for-a-column">&quot;Selecting Nested Data for a Column&quot;</a>.</p>
 
 <h3 id="example:-flatten-an-array-of-maps-using-a-subquery">Example: Flatten an Array of Maps using a Subquery</h3>
@@ -1393,7 +1411,11 @@ WHERE t.birth.bearer.max_hdl &lt; 160;
 
 <ul>
 <li><a href="/docs/json-data-model/#array-at-the-root-level">Array at the root level</a></li>
-<li><a href="/docs/json-data-model/#complex-nested-data">Complex nested data</a></li>
+<li><a href="/docs/json-data-model/#complex-nested-da%5Bta">Complex nested data</a></li>
+<li><a href="/docs/json-data-model/#commas-between-records">Commas between records</a></li>
+<li><a href="/docs/json-data-model/#irregular-data">Irregular data</a></li>
+<li><a href="/docs/json-data-model/#varying-types">Varying types</a></li>
+<li><a href="/docs/json-data-model/#misusing-dot-notation">Misusing Dot Notation</a></li>
 <li><a href="/docs/json-data-model/#empty-array">Empty array</a></li>
 <li><a href="/docs/json-data-model/#lengthy-json-objects">Lengthy JSON objects</a></li>
 <li><a href="/docs/json-data-model/#complex-json-objects">Complex JSON objects</a></li>
@@ -1413,7 +1435,7 @@ WHERE t.birth.bearer.max_hdl &lt; 160;
 
 <p>Drill cannot read some complex nested arrays unless you use a table alias.</p>
 
-<p>Workaround: To query n-level nested data, use the table alias to remove ambiguity; otherwise, column names such as user_info are parsed as table names by the SQL parser. The alias is not needed for data that is not nested, as shown in the following example:</p>
+<p>Workaround: To query n-level nested data, use the table alias to remove ambiguity; otherwise, column names such as user_info are parsed as table names by the SQL parser. The alias is not needed for data, such as dev_id, date, and time, that are not nested:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">{&quot;dev_id&quot;: 0,
   &quot;date&quot;:&quot;07/26/2013&quot;,
   &quot;time&quot;:&quot;04:56:59&quot;,
@@ -1433,16 +1455,84 @@ WHERE t.birth.bearer.max_hdl &lt; 160;
         }
 }
 . . .
-
-SELECT dev_id, `date`, `time`, t.user_info.user_id, t.user_info.device, t.dev_info.prod_id
-FROM dfs.`/Users/mypath/example.json` t;
 </code></pre></div>
+<p><code>SELECT dev_id, `date`, `time`, t.user_info.user_id, t.user_info.device, t.dev_info.prod_id
+FROM dfs.`/Users/mypath/example.json` t;</code></p>
+
+<h3 id="commas-between-records">Commas between records</h3>
+
+<p>Continuing the example <a href="/docs/json-data-model/#example-access-a-map-field-in-an-array">&quot;Accessing a Map Field in an Array&quot;</a>, Drill cannot find data in multiple records separated by commas.</p>
+
+<p>Workaround: Delete commas between records. </p>
+
+<p>After deleting the commas, the following query works:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT 
+  lots.geometry.coordinates[0][0][0] longitude,
+  lots.geometry.coordinates[0][0][1] latitude,
+  lots.geometry.coordinates[0][0][2] altitude 
+FROM dfs.`/Users/drilluser/citylots.json` lots LIMIT 1;
+
++-----------------------+---------------------+-----------+
+|       longitude       |      latitude       | altitude  |
++-----------------------+---------------------+-----------+
+| -122.422003528252475  | 37.808480096967251  | 0.0       |
++-----------------------+---------------------+-----------+
+1 row selected (0.618 seconds)
+</code></pre></div>
+<h3 id="irregular-data">Irregular data</h3>
+
+<p>Data that lacks uniformity causes a problem. Continuing the example <a href="/docs/json-data-model/#example-access-a-map-field-in-an-array">&quot;Accessing a Map Field in an Array&quot;</a>, Drill cannot handle the intermixed Polygon shapes and
+MultiPolygon shapes.</p>
+
+<p>Workaround: None, per se, but if you avoid querying the multi-polygon lines (120 of them), Drill works fine on the entire remainder. For example:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">WITH tbl AS (
+SELECT
+  CAST(lots.geometry.coordinates[0][0][0] AS FLOAT) longitude, 
+  CAST(lots.geometry.coordinates[0][0][1] AS FLOAT) latitude, 
+  CAST(lots.geometry.coordinates[0][0][2] AS FLOAT) altitude 
+FROM dfs./Users/drilluser/uniform.json` lots) 
+SELECT 
+  AVG(longitude), 
+  AVG(latitude), 
+  MAX(altitude) 
+FROM tbl;
+
++---------------------+--------------------+---------+
+|       EXPR$0        |       EXPR$1       | EXPR$2  |
++---------------------+--------------------+---------+
+| -122.4379846573301  | 37.75844260679518  | 0.0     |
++---------------------+--------------------+---------+
+1 row selected (6.64 seconds)
+</code></pre></div>
+<h3 id="varying-types">Varying types</h3>
+
+<p>Any attempt to query a list that has
+varying types fails. Continuing the example <a href="/docs/json-data-model/#example-access-a-map-field-in-an-array">&quot;Accessing a Map Field in an Array&quot;</a>, the city lots file has a list of lists of
+coordinates for shapes of type Polygon.  For shapes of MultiPolygon, this file has lists of lists
+of coordinates. Even a query that tries to filter away the
+MultiPolygons will fail.</p>
+
+<p>Workaround: None.</p>
+
+<h3 id="misusing-dot-notation">Misusing Dot Notation</h3>
+
+<p>Drill accesses an object when you use dot notation in the SELECT statement sses only when the dot is <em>not</em> the first dot in the expression. Drill attempts to access the table that appears after the first dot. For example,  records in some-file have a geometry field that Drill successfully accesses given this query:</p>
+
+<p><code>select geometry from  dfs.`some-file.json`;</code></p>
+
+<p>The following query, however, causes an error because there is no table named geometry.</p>
+
+<p><code>select geometry.x from dfs.`some-file.json`;</code></p>
+
+<p>Workaround: Use a table alias. For example:</p>
+
+<p><code>select tbl.geometry.x from dfs.`some-file.json` tbl;</code></p>
+
 <h3 id="empty-array">Empty array</h3>
 
-<p>Drill cannot read an empty array, shown in the following example, and attempting to do so causes an error.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">    { &quot;a&quot;:[] }
-</code></pre></div>
-<p>Workaround: Remove empty arrays.</p>
+<p>Drill cannot read some empty arrays.</p>
+
+<p>Workaround: Try removing empty arrays if you have a problem.</p>
 
 <p>For example, you cannot query the <a href="https://github.com/zemirco/sf-city-lots-json">City Lots San Francisco in .json</a> data unless you make the following modification.</p>
 
