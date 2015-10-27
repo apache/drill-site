@@ -1208,8 +1208,14 @@ AND (columns[2] &gt; 250)) LIMIT 10;
 
 <h2 id="querying-compressed-files">Querying Compressed Files</h2>
 
-<p>You can query compressed GZ files, such as JSON and CSV, as well as uncompressed files. The file extension specified in the <code>formats . . . extensions</code> property of the storage plugin configuration must precede the gz extension in the file name. For example, <code>proddata.json.gz</code> or <code>mydata.csv.gz</code> are valid file names to use in a query, as shown in the next example.</p>
-
+<p>You can query compressed JSON and CSV files. You can specify a file extension in the <code>formats . . . extensions</code> property of the storage plugin configuration to include the gz extension in the file name, or you can rename files, for example, <code>proddata.json.gz</code> or <code>mydata.csv.gz</code>, as shown in the next example. To change the <code>formats . . . extensions</code> property, you can copy the <code>dfs</code> storage plugin configuration to create a custom configuration. Using the following property in a configuration, Drill can read JSON in gzipped filed named <code>somefile.gz</code>:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">    &quot;json&quot;: {
+      &quot;type&quot;: &quot;json&quot;,
+      &quot;extensions&quot;: [
+        &quot;gz&quot;
+      ]
+    },
+</code></pre></div>
 <h3 id="query-the-gz-file-directly">Query the GZ File Directly</h3>
 
 <p>This example covers how to query the GZ file containing the compressed TSV data. The GZ file name needs to be renamed to specify the type of delimited file, such as CSV or TSV. You add <code>.tsv</code> before the <code>.gz</code> extension in this example.</p>

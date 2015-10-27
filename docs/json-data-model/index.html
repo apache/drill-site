@@ -1410,7 +1410,6 @@ WHERE t.birth.bearer.max_hdl &lt; 160;
 <p>In most cases, you can use a workaround, presented in the following sections, to overcome the following limitations:</p>
 
 <ul>
-<li><a href="/docs/json-data-model/#array-at-the-root-level">Array at the root level</a></li>
 <li><a href="/docs/json-data-model/#complex-nested-da%5Bta">Complex nested data</a></li>
 <li><a href="/docs/json-data-model/#commas-between-records">Commas between records</a></li>
 <li><a href="/docs/json-data-model/#irregular-data">Irregular data</a></li>
@@ -1422,14 +1421,6 @@ WHERE t.birth.bearer.max_hdl &lt; 160;
 <li><a href="/docs/json-data-model/#schema-changes">Schema changes</a></li>
 <li><a href="/docs/json-data-model/#selecting-all-in-a-json-directory-query">Selecting all in a JSON directory query</a></li>
 </ul>
-
-<h3 id="array-at-the-root-level">Array at the root level</h3>
-
-<p>Drill cannot read an array at the root level, outside an object.</p>
-
-<p>Workaround: Remove square brackets at the root of the object, as shown in the following example.</p>
-
-<p><img src="/docs/img/datasources-json-bracket.png" alt="drill query flow"></p>
 
 <h3 id="complex-nested-data">Complex nested data</h3>
 
@@ -1516,7 +1507,7 @@ MultiPolygons will fail.</p>
 
 <h3 id="misusing-dot-notation">Misusing Dot Notation</h3>
 
-<p>Drill accesses an object when you use dot notation in the SELECT statement sses only when the dot is <em>not</em> the first dot in the expression. Drill attempts to access the table that appears after the first dot. For example,  records in some-file have a geometry field that Drill successfully accesses given this query:</p>
+<p>Drill accesses an object when you use dot notation in the SELECT statement only when the dot is <em>not</em> the first dot in the expression. Drill attempts to access the table that appears after the first dot. For example,  records in <code>some-file</code> have a geometry field that Drill successfully accesses given this query:</p>
 
 <p><code>select geometry from  dfs.`some-file.json`;</code></p>
 
