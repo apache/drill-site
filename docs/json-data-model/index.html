@@ -1019,7 +1019,7 @@
 
 <p>Using Drill you can natively query dynamic JSON data sets using SQL. Drill treats a JSON object as a SQL record. One object equals one row in a Drill table.</p>
 
-<p>You can also <a href="/docs/querying-plain-text-files/#querying-compressed-files">query compressed .gz files</a> having JSON as well as uncompressed .json files.</p>
+<p>You can also <a href="/docs/querying-plain-text-files/#querying-compressed-files">query compressed .gz JSON files</a>.</p>
 
 <p>In addition to the examples presented later in this section, see <a href="https://www.mapr.com/blog/how-analyze-highly-dynamic-datasets-apache-drill">&quot;How to Analyze Highly Dynamic Datasets with Apache Drill&quot;</a> for information about how to analyze a JSON data set.</p>
 
@@ -1106,8 +1106,16 @@ Reads all data from JSON files as VARCHAR. You need to cast numbers from VARCHAR
 <div class="highlight"><pre><code class="language-text" data-lang="text">{ name: &quot;Apples&quot;, desc: &quot;Delicious&quot; }
 { name: &quot;Oranges&quot;, desc: &quot;Florida Navel&quot; }
 </code></pre></div>
-<p>To read and <a href="/docs/json-data-model#analyzing-json">analyze complex JSON</a> files, use the FLATTEN and KVGEN functions.</p>
-
+<p>To read and <a href="/docs/json-data-model#analyzing-json">analyze complex JSON</a> files, use the FLATTEN and KVGEN functions. For example, you need to flatten the data to read all the names in this JSON file:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text"> {&quot;Fruits: [{&quot;name&quot;:&quot;Apples&quot;, &quot;quantity&quot;:115},
+            {&quot;name&quot;:&quot;Oranges&quot;,&quot;quantity&quot;:199},
+            {&quot;name&quot;:&quot;Peaches&quot;, &quot;quantity&quot;:116}
+           ]
+ }
+</code></pre></div>
+<p>To flatten the data and read the names, use a subquery that flattens the complex nesting. Use table aliases, t and flatdata, to resolve ambiguities.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text"> SELECT t.flatdata.name FROM (select flatten(Fruits) AS flatdata FROM dfs.`/Users/path/fruits.json`) t;
+</code></pre></div>
 <h2 id="writing-json">Writing JSON</h2>
 
 <p>You can write data from Drill to a JSON file. The following setup is required:</p>
