@@ -1287,7 +1287,7 @@ ORDER BY TotalSales;
 </code></pre></div>
 <h3 id="example:-access-a-map-field-in-an-array">Example: Access a Map Field in an Array</h3>
 
-<p>To access a map field in an array, use dot notation to drill down through the hierarchy of the JSON data to the field. Examples are based on the following <a href="https://github.com/zemirco/sf-city-lots-json">City Lots San Francisco in .json</a>, modified slightly as described in the empty array workaround in <a href="/docs/json-data-model#empty-array">&quot;Limitations and Workarounds.&quot;</a> </p>
+<p>To access a map field in an array, use dot notation to drill down through the hierarchy of the JSON data to the field. Examples are based on the following <a href="https://github.com/zemirco/sf-city-lots-json">City Lots San Francisco in .json</a>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">{
   &quot;type&quot;: &quot;FeatureCollection&quot;,
   &quot;features&quot;: [
@@ -1423,7 +1423,6 @@ WHERE t.birth.bearer.max_hdl &lt; 160;
 <li><a href="/docs/json-data-model/#irregular-data">Irregular data</a></li>
 <li><a href="/docs/json-data-model/#varying-types">Varying types</a></li>
 <li><a href="/docs/json-data-model/#misusing-dot-notation">Misusing Dot Notation</a></li>
-<li><a href="/docs/json-data-model/#empty-array">Empty array</a></li>
 <li><a href="/docs/json-data-model/#lengthy-json-objects">Lengthy JSON objects</a></li>
 <li><a href="/docs/json-data-model/#complex-json-objects">Complex JSON objects</a></li>
 <li><a href="/docs/json-data-model/#schema-changes">Schema changes</a></li>
@@ -1526,18 +1525,6 @@ MultiPolygons will fail.</p>
 <p>Workaround: Use a table alias. For example:</p>
 
 <p><code>select tbl.geometry.x from dfs.`some-file.json` tbl;</code></p>
-
-<h3 id="empty-array">Empty array</h3>
-
-<p>Drill cannot read some empty arrays.</p>
-
-<p>Workaround: Try removing empty arrays if you have a problem.</p>
-
-<p>For example, you cannot query the <a href="https://github.com/zemirco/sf-city-lots-json">City Lots San Francisco in .json</a> data unless you make the following modification.</p>
-
-<p><img src="/docs/img/json-workaround.png" alt="drill query flow"></p>
-
-<p>After removing the extraneous square brackets in the coordinates array, you can drill down to query all the data for the lots.</p>
 
 <h3 id="lengthy-json-objects">Lengthy JSON objects</h3>
 
