@@ -1054,16 +1054,19 @@ in a Hive storage plugin configuration to configure a connection to Drill.</p>
      &quot;hive.metastore.uris&quot;: &quot;thrift://&lt;host&gt;:&lt;port&gt;&quot;,
   ...
 </code></pre></div></li>
-<li><p>Change the default location of files to suit your environment; for example, change <code>&quot;fs.default.name&quot;</code> property from <code>&quot;file:///&quot;</code> to one of these locations:</p>
-
-<ul>
-<li><code>hdfs://</code></li>
-<li><code>hdfs://&lt;hostname&gt;:&lt;port&gt;</code></li>
-</ul></li>
+<li><p>Change the default location of files to suit your environment; for example, change <code>&quot;fs.default.name&quot;</code> property from <code>&quot;file:///&quot;</code> to <code>hdfs://</code> or <code>hdfs://&lt;host name&gt;:&lt;port&gt;</code>. The <code>&quot;fs.default.name&quot;</code> that includes a host name and port must point to the main control node. For example:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">  {
+    &quot;type&quot;: &quot;hive&quot;,
+    &quot;enabled&quot;: false,
+    &quot;configProps&quot;: {
+    &quot;hive.metastore.uris&quot;: &quot;thrift://hdfs41:9083&quot;,
+    &quot;hive.metastore.sasl.enabled&quot;: &quot;false&quot;,
+    &quot;fs.default.name&quot;: &quot;hdfs://10.10.10.41/&quot;
+    }
+  }
+</code></pre></div></li>
 <li><p>Click <strong>Enable</strong>.  </p></li>
 </ol>
-
-<p>The &quot;fs.default.name&quot; should point to a the main control node. Do not point fs.default.name to a non-control node, such as a NameNode. If you&#39;re using MapR Drill, &quot;fs.default.name&quot; should be maprfs:///. The MapR FileClient figures out CLDB locations from mapr-clusters.conf. </p>
 
 <h2 id="hive-embedded-metastore-configuration">Hive Embedded Metastore Configuration</h2>
 
