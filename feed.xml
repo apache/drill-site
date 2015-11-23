@@ -6,9 +6,78 @@
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 18 Nov 2015 11:29:18 -0800</pubDate>
-    <lastBuildDate>Wed, 18 Nov 2015 11:29:18 -0800</lastBuildDate>
-    <generator>Jekyll v2.5.2</generator>
+    <pubDate>Mon, 23 Nov 2015 13:49:19 -0800</pubDate>
+    <lastBuildDate>Mon, 23 Nov 2015 13:49:19 -0800</lastBuildDate>
+    <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Drill 1.3 Released</title>
+        <description>&lt;p&gt;Today I&amp;#39;m happy to announce the availability of the Drill 1.3 release. This release addresses &lt;a href=&quot;https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12313820&amp;amp;version=12332946&quot;&gt;58 JIRAs&lt;/a&gt; on top of the 1.2 release. Highlights include:&lt;/p&gt;
+
+&lt;h2 id=&quot;enhanced-amazon-s3-support&quot;&gt;Enhanced Amazon S3 Support&lt;/h2&gt;
+
+&lt;p&gt;Drill 1.3 utilizes a new library, called s3a, for reading data from S3. The s3a library includes improvements over the previous s3n library, such as higher performance and the ability to read large files (over 5GB).&lt;/p&gt;
+
+&lt;p&gt;In addition to the new s3a library, Drill 1.3 makes it easier to set up your AWS credentials. Simply edit the file &lt;code&gt;conf/core-site.xml&lt;/code&gt; in the Drill install directory. For more information, check out the &lt;a href=&quot;/docs/s3-storage-plugin/&quot;&gt;step-by-step instructions&lt;/a&gt; in the documentation.&lt;/p&gt;
+
+&lt;h2 id=&quot;heterogeneous-types&quot;&gt;Heterogeneous Types&lt;/h2&gt;
+
+&lt;p&gt;Drill 1.3 includes support for mixed-type columns, often found in systems like MongoDB and file formats like JSON. For example, Drill can now columns that evolve from one data type to another over time.&lt;/p&gt;
+
+&lt;p&gt;Drill 1.3 provides a collection of functions that enable you to test the data type of a value. For example, if you have a column that has both lists (arrays) and numbers, you can use the following query to extract the first element from the array values:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;SELECT 1 + CASE WHEN is_list(a) THEN a[0] ELSE a END FROM table;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;text-file-headers&quot;&gt;Text File Headers&lt;/h2&gt;
+
+&lt;p&gt;Drill is now able to parse the header row in a text file (CSV, TSV, etc.). Prior to Drill 1.3, data had to be accessed through the &lt;code&gt;columns&lt;/code&gt; array:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;SELECT columns[0], columns[1] FROM dfs.`/path/to/users.csv`
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;With Drill 1.3, you can use the actual column names in the CSV file:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;SELECT name, address FROM dfs.`/path/to/users.csv`
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Enabling header parsing is as simple as setting the &lt;code&gt;extractHeader&lt;/code&gt; parameter in the storage plugin configuration for the desired file extensions. For more information, check out &lt;a href=&quot;/docs/text-files-csv-tsv-psv/&quot;&gt;the documentation&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;sequence-files&quot;&gt;Sequence Files&lt;/h2&gt;
+
+&lt;p&gt;Drill now &lt;a href=&quot;/docs/querying-sequence-files/&quot;&gt;supports sequence files&lt;/a&gt;, a format commonly used in the Hadoop ecosystem. A sequence file contains a series of keys and values, and querying it with Drill is as easy as querying any other self-describing format:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;SELECT *
+FROM dfs.tmp.`simple.seq`
+LIMIT 1;
++--------------+---------------+
+|  binary_key  | binary_value  |
++--------------+---------------+
+| [B@70828f46  | [B@b8c765f    |
++--------------+---------------+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Drill&amp;#39;s &lt;code&gt;CONVERT_FROM&lt;/code&gt; function makes it easy to decode the binary values:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;SELECT CONVERT_FROM(binary_key, &amp;#39;UTF8&amp;#39;), CONVERT_FROM(binary_value, &amp;#39;UTF8&amp;#39;)
+FROM dfs.tmp.`simple.seq`
+LIMIT 1
+;
++-----------+-------------+
+|  EXPR$0   |   EXPR$1    |
++-----------+-------------+
+| key0      |   value0    |
++-----------+-------------+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&quot;many-more-fixes&quot;&gt;Many More Fixes&lt;/h2&gt;
+
+&lt;p&gt;Drill 1.3 includes many other improvements, including enhancements related to querying Hive tables, MongoDB collections and Avro files. Check out the complete list of &lt;a href=&quot;https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12313820&amp;amp;version=12332946&quot;&gt;fixes and enhancements&lt;/a&gt; for more information.&lt;/p&gt;
+
+&lt;p&gt;Download the &lt;a href=&quot;https://drill.apache.org/download/&quot;&gt;Drill 1.3 release&lt;/a&gt; now and let us know your thoughts.&lt;/p&gt;
+
+&lt;p&gt;Drill On!
+Jacques Nadeau&lt;/p&gt;
+</description>
+        <pubDate>Mon, 23 Nov 2015 00:00:00 -0800</pubDate>
+        <link>/blog/2015/11/23/drill-1.3-released/</link>
+        <guid isPermaLink="true">/blog/2015/11/23/drill-1.3-released/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Drill 1.2 Released</title>
@@ -66,8 +135,9 @@ Jacques Nadeau&lt;/p&gt;
     
       <item>
         <title>Drill Tutorial at NoSQL Now! 2015</title>
-        <description>&lt;p&gt;&lt;script type=&quot;text/javascript&quot; src=&quot;//addthisevent.com/libs/1.5.8/ate.min.js&quot;&gt;&lt;/script&gt;
-&lt;a href=&quot;/blog/2015/07/23/drill-tutorial-at-nosql-now-2015/&quot; title=&quot;Add to Calendar&quot; class=&quot;addthisevent&quot;&gt;
+        <description>&lt;script type=&quot;text/javascript&quot; src=&quot;//addthisevent.com/libs/1.5.8/ate.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;a href=&quot;/blog/2015/07/23/drill-tutorial-at-nosql-now-2015/&quot; title=&quot;Add to Calendar&quot; class=&quot;addthisevent&quot;&gt;
     Add to Calendar
     &lt;span class=&quot;_start&quot;&gt;08-20-2015 13:00:00&lt;/span&gt;
     &lt;span class=&quot;_end&quot;&gt;08-20-2014 16:15:00&lt;/span&gt;
@@ -366,71 +436,6 @@ Tomer Shiran&lt;/p&gt;
         <pubDate>Mon, 23 Mar 2015 00:00:00 -0700</pubDate>
         <link>/blog/2015/03/23/microstrategy-announces-drill-support/</link>
         <guid isPermaLink="true">/blog/2015/03/23/microstrategy-announces-drill-support/</guid>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Schema-free JSON Data Infrastructure</title>
-        <description>&lt;p&gt;JSON has emerged in recent years as the de-facto standard data exchange format. It is being used everywhere. Front-end Web applications use JSON to maintain data and communicate with back-end applications. Web APIs are JSON-based (eg, &lt;a href=&quot;https://dev.twitter.com/rest/public&quot;&gt;Twitter REST APIs&lt;/a&gt;, &lt;a href=&quot;http://developers.marketo.com/documentation/rest/&quot;&gt;Marketo REST APIs&lt;/a&gt;, &lt;a href=&quot;https://developer.github.com/v3/&quot;&gt;GitHub API&lt;/a&gt;). It&amp;#39;s the format of choice for public datasets, operational log files and more.&lt;/p&gt;
-
-&lt;h1 id=&quot;why-is-json-a-convenient-data-exchange-format?&quot;&gt;Why is JSON a Convenient Data Exchange Format?&lt;/h1&gt;
-
-&lt;p&gt;While I won&amp;#39;t dive into the historical roots of JSON (JavaScript Object Notation, &lt;a href=&quot;http://en.wikipedia.org/wiki/JSON#JavaScript_eval.28.29&quot;&gt;&lt;code&gt;eval()&lt;/code&gt;&lt;/a&gt;, etc.), I do want to highlight several attributes of JSON that make it a convenient data exchange format:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;JSON is self-describing&lt;/strong&gt;. You can look at a JSON document and understand what it represents. The field names are included in the document. You don&amp;#39;t need an external schema or definition to interpret JSON-encoded data. This makes life easier for anyone who wants to deal with the data, and it also means that a collection of JSON documents represents what many people call a &amp;quot;schema-less dataset&amp;quot; (where structure can evolve, and different records can have different fields).&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;JSON is simple&lt;/strong&gt;. Other self-describing formats such as XML are much more complicated. A JSON document is made up of arrays and maps (or objects, in JSON terminology), and that&amp;#39;s about it.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;JSON can naturally represent real-world objects&lt;/strong&gt;. Try representing your application&amp;#39;s &lt;code&gt;Customer&lt;/code&gt; object (with the person&amp;#39;s address, order history, etc.) in a CSV file or a relational database. It&amp;#39;s hard. In fact, ORM systems were invented to help alleviate this issue.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;JSON libraries are available in virtually every programming language&lt;/strong&gt;. Take a look at &lt;a href=&quot;http://www.json.org/&quot;&gt;the list of supported languages on JSON.org&lt;/a&gt;. I counted 15 languages that start with the letters A, B or C.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;JSON is idiomatic in loosely typed languages&lt;/strong&gt;. Many loosely typed languages, such as Python, Ruby and JavaScript, have data structures that are similar to JSON objects, making it very natural to handle JSON data in those languages. For example, a Python dictionary looks just like a JSON object. This makes it easy for developers to utilize JSON in their applications.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;json-data-infrastructure&quot;&gt;JSON Data Infrastructure&lt;/h1&gt;
-
-&lt;p&gt;Traditional data infrastructure, such as relational databases, has some features that make it easier to store and process JSON-encoded data. For example, Oracle has &lt;a href=&quot;https://docs.oracle.com/database/121/ADXDB/json.htm&quot;&gt;a JSON data type and a set of functions for handling JSON data&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;However, a new class of data infrastructure is providing a much more seamless experience via a full-fledged JSON data model. For example:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Drill is a SQL engine in which each record is conceptually a JSON document.&lt;/li&gt;
-&lt;li&gt;Elasticsearch is a search engine in which each indexed document is conceptually a JSON document.&lt;/li&gt;
-&lt;li&gt;MongoDB is an operational database in which each record is conceptually a JSON document.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;These systems view JSON as a data model as opposed to one of many data types, realizing that JSON offers a simple way to represent real-world objects.&lt;/p&gt;
-
-&lt;table&gt;&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;&lt;/th&gt;
-&lt;th&gt;Traditional Infrastructure&lt;/th&gt;
-&lt;th&gt;JSON Infrastructure&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Examples:&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;Oracle, SQL Server&lt;/td&gt;
-&lt;td&gt;Drill, Elasticsearch, MongoDB&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Record:&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;Tuple&lt;/td&gt;
-&lt;td&gt;JSON document&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Variable schema:&lt;/strong&gt;&lt;/td&gt;
-&lt;td&gt;No&lt;/td&gt;
-&lt;td&gt;Yes&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
-
-&lt;p&gt;If you happen to be in the Bay Area tomorrow, please join Gaurav Gupta (VP Product Management, Elasticsearch), Paul Pedersen (Deputy CTO, MongoDB), Robert Greene (Senior Principal Product Manager, Oracle), Sukanta Ganguly (VP Solutions Architecture, Aerospike) and me for a panel moderated by Gartner&amp;#39;s Nick Heudecker on this new world of schema-free JSON. Check out &lt;a href=&quot;http://www.meetup.com/SF-Bay-Areas-Big-Data-Think-Tank/&quot;&gt;The Hive Big Data Think Tank&lt;/a&gt; for more information.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 27 Jan 2015 00:50:01 -0800</pubDate>
-        <link>/blog/2015/01/27/schema-free-json-data-infrastructure/</link>
-        <guid isPermaLink="true">/blog/2015/01/27/schema-free-json-data-infrastructure/</guid>
         
         
         <category>blog</category>

@@ -361,7 +361,7 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/jdbc-storage-plugin/">JDBC Storage Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/rdbms-storage-plugin/">RDBMS Storage Plugin</a></li>
             
           
             
@@ -370,6 +370,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/mapr-db-format/">MapR-DB Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/s3-storage-plugin/">S3 Storage Plugin</a></li>
             
           
           </ul>
@@ -485,6 +489,8 @@
                 <li class="toctree-l3"><a class="reference internal" href="/docs/querying-plain-text-files/">Querying Plain Text Files</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/querying-directories/">Querying Directories</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/querying-sequence-files/">Querying Sequence Files</a></li>
               
             </ul>
             
@@ -817,6 +823,10 @@
               <li class="toctree-l2 current"><a class="reference internal" href="/docs/text-files-csv-tsv-psv/">Text Files: CSV, TSV, PSV</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
           </ul>
         
       
@@ -864,6 +874,10 @@
           <ul style="display: none">
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/rest-api/">REST API</a></li>
+            
+          
+            
               <li class="toctree-l2"><a href="javascript: void(0);">Develop Drill</a></li>
               <ul style="display: none">
               
@@ -908,6 +922,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-3-0-release-notes/">Apache Drill 1.3.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-2-0-release-notes/">Apache Drill 1.2.0 Release Notes</a></li>
@@ -1021,15 +1039,18 @@
 
 <h3 id="select-data-from-particular-columns">Select Data from Particular Columns</h3>
 
-<p>Converting text files to another format, such as Parquet, using the CTAS command and a SELECT * statement is not recommended. Instead, select data from particular columns using the <a href="/docs/querying-plain-text-files">COLUMN[n] syntax</a>, and then assign meaningful column
-names using aliases. For example:</p>
+<p>Converting text files to another format, such as Parquet, using the CTAS command and a SELECT * statement is not recommended. Instead, you should select data from particular columns. If your text file have no headers, use the <a href="/docs/querying-plain-text-files">COLUMN[n] syntax</a>, and then assign meaningful column names using aliases. For example:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE parquet_users AS SELECT CAST(COLUMNS[0] AS INT) AS user_id,
 COLUMNS[1] AS username, CAST(COLUMNS[2] AS TIMESTAMP) AS registration_date
 FROM `users.csv1`;
 </code></pre></div>
-<p>You need to select particular columns instead of using SELECT * for performance reasons. Drill reads CSV, TSV, and PSV files into a list of
-VARCHARS, rather than individual columns. While parquet supports and Drill reads lists, as of this release of Drill, the read path for complex data is not optimized. </p>
+<p>You need to select particular columns instead of using SELECT * for performance reasons. Drill reads CSV, TSV, and PSV files into a list of VARCHARS, rather than individual columns. While parquet supports and Drill reads lists, as of this release of Drill, the read path for complex data is not optimized. </p>
 
+<p>If your text file have headers, you can enable extractHeader and select particular columns by name. For example:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE parquet_users AS SELECT CAST(user_id AS INT) AS user_id,
+username, CAST(registration_date AS TIMESTAMP) AS registration_date
+FROM `users.csv1`;
+</code></pre></div>
 <h3 id="cast-data">Cast data</h3>
 
 <p>You can also improve performance by casting the VARCHAR data to INT, FLOAT, DATETIME, and so on when you read the data from a text file. Drill performs better reading fixed-width than reading VARCHAR data. </p>
@@ -1048,6 +1069,7 @@ VARCHARS, rather than individual columns. While parquet supports and Drill reads
 <li>delimiter<br></li>
 <li>quote<br></li>
 <li>skipFirstLine</li>
+<li>extractHeader</li>
 </ul>
 
 <p>Set the <code>sys.options</code> property setting <code>exec.storage.enable_new_text_reader</code> to true (the default) before attempting to use these attributes. </p>
@@ -1072,8 +1094,16 @@ VARCHARS, rather than individual columns. While parquet supports and Drill reads
 
 <p>The examples in this section show the results of querying CSV files that use and do not use a header, include comments, and use an escape character:</p>
 
-<h3 id="using-a-header-in-a-file">Using a Header in a File</h3>
-
+<h3 id="not-using-a-header-in-a-file">Not Using a Header in a File</h3>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;csv&quot;: {
+  &quot;type&quot;: &quot;text&quot;,
+  &quot;extensions&quot;: [
+    &quot;csv2&quot;
+  ],
+  &quot;skipFirstLine&quot;: true,
+  &quot;delimiter&quot;: &quot;,&quot;
+},
+</code></pre></div>
 <p><img src="/docs/img/csv_with_header.png" alt="CSV with header"></p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/csv_with_header.csv2`;
 +------------------------+
@@ -1087,9 +1117,45 @@ VARCHARS, rather than individual columns. While parquet supports and Drill reads
 | [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
 | [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
 +------------------------+
+7 rows selected (0.112 seconds)
 </code></pre></div>
-<h3 id="not-using-a-header-in-a-file">Not Using a Header in a File</h3>
-
+<h3 id="using-a-header-in-a-file">Using a Header in a File</h3>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;csv&quot;: {
+  &quot;type&quot;: &quot;text&quot;,
+  &quot;extensions&quot;: [
+    &quot;csv2&quot;
+  ],
+  &quot;skipFirstLine&quot;: false,
+  &quot;extractHeader&quot;: true,
+  &quot;delimiter&quot;: &quot;,&quot;
+},
+</code></pre></div>
+<p><img src="/docs/img/csv_with_header.png" alt="CSV with header"></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/csv_with_header.csv2`;
++-------+------+------+------+
+| name  | num1 | num2 | num3 |
++-------+------+------+------+
+| hello |   1  |   2  |   3  |
+| hello |   1  |   2  |   3  |
+| hello |   1  |   2  |   3  |
+| hello |   1  |   2  |   3  |
+| hello |   1  |   2  |   3  |
+| hello |   1  |   2  |   3  |
+| hello |   1  |   2  |   3  |
++-------+------+------+------+
+7 rows selected (0.12 seconds)
+</code></pre></div>
+<h3 id="file-with-no-header">File with no Header</h3>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;csv&quot;: {
+  &quot;type&quot;: &quot;text&quot;,
+  &quot;extensions&quot;: [
+    &quot;csv&quot;
+  ],
+  &quot;skipFirstLine&quot;: false,
+  &quot;extractHeader&quot;: false,
+  &quot;delimiter&quot;: &quot;,&quot;
+},
+</code></pre></div>
 <p><img src="/docs/img/csv_no_header.png" alt="CSV no header"></p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/csv_no_header.csv`;
 +------------------------+
@@ -1166,7 +1232,8 @@ VARCHARS, rather than individual columns. While parquet supports and Drill reads
     &quot;csv&quot;
   ],
   &quot;comment&quot;: &quot;&amp;&quot;,
-  &quot;skipFirstLine&quot;: true,
+  &quot;skipFirstLine&quot;: false,
+  &quot;extractHeader&quot;: true,
   &quot;delimiter&quot;: &quot;,&quot;
 },
 </code></pre></div>
@@ -1186,7 +1253,8 @@ VARCHARS, rather than individual columns. While parquet supports and Drill reads
     &quot;csv2&quot;
   ],
   &quot;comment&quot;: &quot;&amp;&quot;,
-  &quot;skipFirstLine&quot;: true,
+  &quot;skipFirstLine&quot;: false,
+  &quot;extractHeader&quot;: true,
   &quot;delimiter&quot;: &quot;,&quot;
 },
 </code></pre></div>
@@ -1259,7 +1327,7 @@ FROM dfs.tmp.`/stats/airport_data/*`
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/json-data-model/">← JSON Data Model</a></span><span class="next-toc"><a href="/docs/develop-custom-functions/">Develop Custom Functions →</a></span>
+  <span class="previous-toc"><a href="/docs/json-data-model/">← JSON Data Model</a></span><span class="next-toc"><a href="/docs/sequence-files/">Sequence Files →</a></span>
 </div>
 
     
@@ -1285,6 +1353,6 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 ga('create', 'UA-53379651-1', 'auto');
 ga('send', 'pageview');
 </script>
-
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-548b2caa33765e8d" async="async"></script>
 </body>
 </html>

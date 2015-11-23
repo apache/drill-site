@@ -361,7 +361,7 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/jdbc-storage-plugin/">JDBC Storage Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/rdbms-storage-plugin/">RDBMS Storage Plugin</a></li>
             
           
             
@@ -370,6 +370,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/mapr-db-format/">MapR-DB Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/s3-storage-plugin/">S3 Storage Plugin</a></li>
             
           
           </ul>
@@ -485,6 +489,8 @@
                 <li class="toctree-l3"><a class="reference internal" href="/docs/querying-plain-text-files/">Querying Plain Text Files</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/querying-directories/">Querying Directories</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/querying-sequence-files/">Querying Sequence Files</a></li>
               
             </ul>
             
@@ -817,6 +823,10 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/text-files-csv-tsv-psv/">Text Files: CSV, TSV, PSV</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
           </ul>
         
       
@@ -864,6 +874,10 @@
           <ul style="display: none">
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/rest-api/">REST API</a></li>
+            
+          
+            
               <li class="toctree-l2"><a href="javascript: void(0);">Develop Drill</a></li>
               <ul style="display: none">
               
@@ -908,6 +922,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-3-0-release-notes/">Apache Drill 1.3.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-2-0-release-notes/">Apache Drill 1.2.0 Release Notes</a></li>
@@ -1025,7 +1043,7 @@ restart any of the Drillbits when you add or update a storage plugin configurati
 <p>To create a name and new configuration:</p>
 
 <ol>
-<li><a href="/docs/starting-drill-on-linux-and-mac-os-x/">Start the Drill shell</a>.<br></li>
+<li><a href="/docs/starting-drill-on-linux-and-mac-os-x/">Start the Drill shell</a>.</li>
 <li><a href="/docs/starting-the-web-console/">Start the Web Console</a>.<br></li>
 <li><p>On the Storage tab, enter a name in <strong>New Storage Plugin</strong>.
 Each configuration registered with Drill must have a distinct
@@ -1103,13 +1121,13 @@ Using a copy of an existing configuration reduces the risk of JSON coding errors
   </tr>
   <tr>
     <td>&quot;formats&quot;</td>
-    <td>&quot;psv&quot;<br>&quot;csv&quot;<br>&quot;tsv&quot;<br>&quot;parquet&quot;<br>&quot;json&quot;<br>&quot;avro&quot;<br>&quot;maprdb&quot; *</td>
-    <td>yes</td>
+<td>&quot;psv&quot;<br>&quot;csv&quot;<br>&quot;tsv&quot;<br>&quot;parquet&quot;<br>&quot;json&quot;<br>&quot;avro&quot;<br>&quot;maprdb&quot;<br>&quot;sequencefile&quot; *</td>
+    <td>yes if type is file</td>
     <td>One or more valid file formats for reading. Drill implicitly detects formats of some files based on extension or bits of data in the file; others require configuration.</td>
   </tr>
   <tr>
     <td>&quot;formats&quot; . . . &quot;type&quot;</td>
-    <td>&quot;text&quot;<br>&quot;parquet&quot;<br>&quot;json&quot;<br>&quot;maprdb&quot; *</td>
+    <td>&quot;text&quot;<br>&quot;parquet&quot;<br>&quot;json&quot;<br>&quot;maprdb&quot;<br>&quot;avro&quot;<br>&quot;sequencefile&quot; *</td>
     <td>yes</td>
     <td>Format type. You can define two formats, csv and psv, as type &quot;Text&quot;, but having different delimiters. </td>
   </tr>
@@ -1150,6 +1168,13 @@ Using a copy of an existing configuration reduces the risk of JSON coding errors
     <td>To include or omit the header when reading a delimited text file. Set to true to avoid reading headers as data.
     </td>
   </tr>
+    <tr>
+    <td>&quot;formats&quot; . . . &quot;extractHeader&quot;</td>
+    <td>true</td>
+    <td>no</td>
+    <td>Set to true to extract and use headers as column names when reading a delimited text file, false otherwise. Ensure skipFirstLine=false when extractHeader=true.
+    </td>
+  </tr>
 </table></p>
 
 <p>* Pertains only to distributed Drill installations using the mapr-drill package.  </p>
@@ -1171,7 +1196,7 @@ Using a copy of an existing configuration reduces the risk of JSON coding errors
 
 <h2 id="storage-plugin-rest-api">Storage Plugin REST API</h2>
 
-<p>If you need to add a storage plugin configuration to Drill and do not want to use a web browser, Drill provides a REST API that you can use to create a storage plugin configuration. Use a POST and pass two properties:</p>
+<p>If you need to add a storage plugin configuration to Drill and do not want to use a web browser, you can use the <a href="/docs/rest-api/">Drill REST API</a> to create a storage plugin configuration. Use a POST request and pass two properties:</p>
 
 <ul>
 <li><p>name<br>
@@ -1181,9 +1206,9 @@ The attribute settings as entered in the Web Console.</p></li>
 </ul>
 
 <p>For example, this command creates a storage plugin named myplugin for reading files of an unknown type located on the root of the file system:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">curl -X POST -H &quot;Content-Type: application/json&quot; -d &#39;{&quot;name&quot;:&quot;myplugin&quot;, &quot;config&quot;: {&quot;type&quot;: &quot;file&quot;, &quot;enabled&quot;: false, &quot;connection&quot;: &quot;file:///&quot;, &quot;workspaces&quot;: { &quot;root&quot;: { &quot;location&quot;: &quot;/&quot;, &quot;writable&quot;: false, &quot;defaultInputFormat&quot;: null}}, &quot;formats&quot;: null}}&#39; https://localhost:8047/storage/myplugin.json
+<div class="highlight"><pre><code class="language-text" data-lang="text">curl -X POST -H &quot;Content-Type: application/json&quot; -d &#39;{&quot;name&quot;:&quot;myplugin&quot;, &quot;config&quot;: {&quot;type&quot;: &quot;file&quot;, &quot;enabled&quot;: false, &quot;connection&quot;: &quot;file:///&quot;, &quot;workspaces&quot;: { &quot;root&quot;: { &quot;location&quot;: &quot;/&quot;, &quot;writable&quot;: false, &quot;defaultInputFormat&quot;: null}}, &quot;formats&quot;: null}}&#39; http://localhost:8047/storage/myplugin.json
 </code></pre></div>
-<p>For more information about the REST API, see this <a href="https://docs.google.com/document/d/1mRsuWk4Dpt6ts-jQ6ke3bB30PIwanRiCPfGxRwZEQME">Google doc</a>.</p>
+<p>This example assumes HTTPS has not been enabled. </p>
 
 <h2 id="bootstrapping-a-storage-plugin">Bootstrapping a Storage Plugin</h2>
 
@@ -1228,6 +1253,6 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 ga('create', 'UA-53379651-1', 'auto');
 ga('send', 'pageview');
 </script>
-
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-548b2caa33765e8d" async="async"></script>
 </body>
 </html>

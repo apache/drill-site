@@ -361,7 +361,7 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/jdbc-storage-plugin/">JDBC Storage Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/rdbms-storage-plugin/">RDBMS Storage Plugin</a></li>
             
           
             
@@ -370,6 +370,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/mapr-db-format/">MapR-DB Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/s3-storage-plugin/">S3 Storage Plugin</a></li>
             
           
           </ul>
@@ -485,6 +489,8 @@
                 <li class="toctree-l3"><a class="reference internal" href="/docs/querying-plain-text-files/">Querying Plain Text Files</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/querying-directories/">Querying Directories</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/querying-sequence-files/">Querying Sequence Files</a></li>
               
             </ul>
             
@@ -817,6 +823,10 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/text-files-csv-tsv-psv/">Text Files: CSV, TSV, PSV</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
           </ul>
         
       
@@ -864,6 +874,10 @@
           <ul style="display: none">
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/rest-api/">REST API</a></li>
+            
+          
+            
               <li class="toctree-l2"><a href="javascript: void(0);">Develop Drill</a></li>
               <ul style="display: none">
               
@@ -908,6 +922,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-3-0-release-notes/">Apache Drill 1.3.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-2-0-release-notes/">Apache Drill 1.2.0 Release Notes</a></li>
@@ -1020,14 +1038,12 @@ Restart the Drillbit on each node to refresh the configuration.</p>
 
 <ol>
 <li>Add the sources JAR file and the classes JAR file for the custom function to the Drill classpath on all nodes running a Drillbit. To add the JAR files, copy them to <code>&lt;drill installation directory&gt;/jars/3rdparty</code>.</li>
-<li><p>On all nodes running a Drillbit, add the name of the package that contains the classes to the main Drill configuration file in the following location:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;drill installation directory&gt;/conf/drill-override.conf
-</code></pre></div>
-<p>To add the package, add the package name to
-<code>drill.logical.function.package+=</code>. Separate package names with a comma.</p>
+<li>Your class jar file should contain a <code>drill-module.conf</code> file at its root. </li>
+<li><p>The <code>drill-module.conf</code> file should contain the packages to scan for functions
+<code>drill.classpath.scanning.package+=</code>. Separate package names with a comma.</p>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">drill.logical.function.package+= [“org.apache.drill.exec.expr.fn.impl&quot;,&quot;org.apache.drill.udfs”]
+<div class="highlight"><pre><code class="language-text" data-lang="text">drill.classpath.scanning.package+= &quot;com.mydomain.drill.fn&quot;
 </code></pre></div></li>
 <li><p>On each Drill node in the cluster, navigate to the Drill installation directory, and issue the following command to restart the Drillbit:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">&lt;drill installation directory&gt;/bin/drillbit.sh restart
@@ -1065,6 +1081,6 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 ga('create', 'UA-53379651-1', 'auto');
 ga('send', 'pageview');
 </script>
-
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-548b2caa33765e8d" async="async"></script>
 </body>
 </html>

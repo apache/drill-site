@@ -361,7 +361,7 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/jdbc-storage-plugin/">JDBC Storage Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/rdbms-storage-plugin/">RDBMS Storage Plugin</a></li>
             
           
             
@@ -370,6 +370,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/mapr-db-format/">MapR-DB Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/s3-storage-plugin/">S3 Storage Plugin</a></li>
             
           
           </ul>
@@ -485,6 +489,8 @@
                 <li class="toctree-l3"><a class="reference internal" href="/docs/querying-plain-text-files/">Querying Plain Text Files</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/querying-directories/">Querying Directories</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/querying-sequence-files/">Querying Sequence Files</a></li>
               
             </ul>
             
@@ -817,6 +823,10 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/text-files-csv-tsv-psv/">Text Files: CSV, TSV, PSV</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
           </ul>
         
       
@@ -864,6 +874,10 @@
           <ul style="display: none">
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/rest-api/">REST API</a></li>
+            
+          
+            
               <li class="toctree-l2"><a href="javascript: void(0);">Develop Drill</a></li>
               <ul style="display: none">
               
@@ -908,6 +922,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-3-0-release-notes/">Apache Drill 1.3.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-2-0-release-notes/">Apache Drill 1.2.0 Release Notes</a></li>
@@ -1099,6 +1117,18 @@ Reads all data from JSON files as VARCHAR. You need to cast numbers from VARCHAR
 <p><a href="/docs/querying-complex-data-introduction">“Query Complex Data”</a> show how to use <a href="/docs/supported-data-types/#composite-types">composite types</a> to access nested arrays.</p>
 
 <p>Drill uses these types internally for reading complex and nested data structures from data sources such as JSON.</p>
+
+<h3 id="experimental-feature:-heterogeneous-types">Experimental Feature: Heterogeneous types</h3>
+
+<p>The Union type allows storing different types in the same field. This new feature is still considered experimental, and must be explicitly enabled by setting the <code>exec.enabel_union_type</code> option to true.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SESSION SET `exec.enable_union_type` = true;
+</code></pre></div>
+<p>With this feature enabled, JSON data with changing types, which previously could not be queried by drill, are now queryable.</p>
+
+<p>A field with a Union type can be used inside of functions. Drill will automatically handle evaluation of the function appropriately for each type. If the data requires special handling for the different types, you can do this with case statement, leveraging the new <code>type</code> functions:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">select 1 + case when is_list(a) then a[0] else a end from table;
+</code></pre></div>
+<p>In this example, the column a contains both scalar and list types, so the case where it is a list is handled by using the first element of the array.</p>
 
 <h2 id="reading-json">Reading JSON</h2>
 
@@ -1506,6 +1536,8 @@ FROM tbl;
 +---------------------+--------------------+---------+
 1 row selected (6.64 seconds)
 </code></pre></div>
+<p>Another option is to use the experimental union type.</p>
+
 <h3 id="varying-types">Varying types</h3>
 
 <p>Any attempt to query a list that has
@@ -1514,7 +1546,7 @@ coordinates for shapes of type Polygon.  For shapes of MultiPolygon, this file h
 of coordinates. Even a query that tries to filter away the
 MultiPolygons will fail.</p>
 
-<p>Workaround: None.</p>
+<p>Workaround: Use union type (experimental).</p>
 
 <h3 id="misusing-dot-notation">Misusing Dot Notation</h3>
 
@@ -1562,7 +1594,7 @@ MultiPolygons will fail.</p>
 
 <p>Drill currently returns only fields common to all the files in a <a href="/docs/querying-directories">directory query</a> that selects all (SELECT *) JSON files.</p>
 
-<p>Workaround: Query each file individually.</p>
+<p>Workaround: Query each file individually. Another option is to use the union type (experimental).</p>
 
     
       
@@ -1594,6 +1626,6 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 ga('create', 'UA-53379651-1', 'auto');
 ga('send', 'pageview');
 </script>
-
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-548b2caa33765e8d" async="async"></script>
 </body>
 </html>
