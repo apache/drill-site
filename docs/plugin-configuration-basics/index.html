@@ -1181,7 +1181,22 @@ Using a copy of an existing configuration reduces the risk of JSON coding errors
 
 <h2 id="using-the-formats-attributes">Using the Formats Attributes</h2>
 
-<p>You set the formats attributes, such as skipFirstLine, in the <code>formats</code> area of the storage plugin configuration. When setting attributes for text files, such as CSV, you also need to set the <code>sys.options</code> property <code>exec.storage.enable_new_text_reader</code> to true (the default). For more information and examples of using formats for text files, see <a href="/docs/text-files-csv-tsv-psv/">&quot;Text Files: CSV, TSV, PSV&quot;</a>.</p>
+<p>You set the formats attributes, such as skipFirstLine, in the <code>formats</code> area of the storage plugin configuration. When setting attributes for text files, such as CSV, you also need to set the <code>sys.options</code> property <code>exec.storage.enable_new_text_reader</code> to true (the default). For more information and examples of using formats for text files, see <a href="/docs/text-files-csv-tsv-psv/">&quot;Text Files: CSV, TSV, PSV&quot;</a>.  </p>
+
+<h2 id="using-the-formats-attributes-as-table-function-parameters">Using the Formats Attributes as Table Function Parameters</h2>
+
+<p>You can also set the formats attributes defined above on a per query basis.
+To pass parameters to the format plugin you can use the table function syntax:  </p>
+
+<p><code>select a, b from table({table function name}(parameters))</code></p>
+
+<p>The table function name is your table name, the type parameter is the format name and the other parameters are the fields that the configuration of the format plugin accepts as defined in the table above (except for <code>extensions</code> that does not apply in this context).</p>
+
+<p>For example to read a CSV file and parse its header:<br>
+<code>select a, b from table(dfs.</code><code>path/to/data.csv</code><code>(type =&gt; &#39;text&#39;,
+fieldDelimiter =&gt; &#39;,&#39;, extractHeader =&gt; true))</code></p>
+
+<p>For more information about format plugin configuration see <a href="/docs/text-files-csv-tsv-psv/">&quot;Text Files: CSV, TSV, PSV&quot;</a>.  </p>
 
 <h2 id="using-other-attributes">Using Other Attributes</h2>
 
