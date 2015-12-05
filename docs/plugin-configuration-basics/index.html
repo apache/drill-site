@@ -1185,14 +1185,13 @@ Using a copy of an existing configuration reduces the risk of JSON coding errors
 
 <h2 id="using-the-formats-attributes-as-table-function-parameters">Using the Formats Attributes as Table Function Parameters</h2>
 
-<p>You can also set the formats attributes defined above on a per query basis.
-To pass parameters to the format plugin you can use the table function syntax:  </p>
+<p>In Drill version 1.4 and later, you can also set the formats attributes defined above on a per query basis. To pass parameters to the format plugin, use the table function syntax:  </p>
 
 <p><code>select a, b from table({table function name}(parameters))</code></p>
 
-<p>The table function name is your table name, the type parameter is the format name and the other parameters are the fields that the configuration of the format plugin accepts as defined in the table above (except for <code>extensions</code> that does not apply in this context).</p>
+<p>The <code>table function name</code> is the table name, the type parameter is the format name, and the other parameters are the fields that the format plugin configuration accepts, as defined in the table above (except for <code>extensions</code> which do not apply in this context).</p>
 
-<p>For example to read a CSV file and parse its header:<br>
+<p>For example, to read a CSV file and parse the header:<br>
 <code>select a, b from table(dfs.</code><code>path/to/data.csv</code><code>(type =&gt; &#39;text&#39;,
 fieldDelimiter =&gt; &#39;,&#39;, extractHeader =&gt; true))</code></p>
 
