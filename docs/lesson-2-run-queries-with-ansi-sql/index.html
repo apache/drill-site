@@ -1057,7 +1057,7 @@ statement.</p>
 
 <h2 id="aggregation">Aggregation</h2>
 
-<h3 id="set-the-schema-to-hive:">Set the schema to hive:</h3>
+<h3 id="set-the-schema-to-hive">Set the schema to hive:</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; use hive.`default`;
 +-------+-------------------------------------------+
 |  ok   |                  summary                  |
@@ -1066,7 +1066,7 @@ statement.</p>
 +-------+-------------------------------------------+
 1 row selected 
 </code></pre></div>
-<h3 id="return-sales-totals-by-month:">Return sales totals by month:</h3>
+<h3 id="return-sales-totals-by-month">Return sales totals by month:</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; select `month`, sum(order_total)
 from orders group by `month` order by 2 desc;
 +------------+---------+
@@ -1092,7 +1092,7 @@ database queries.</p>
 <p>Note that back ticks are required for the “month” column only because “month”
 is a reserved word in SQL.</p>
 
-<h3 id="return-the-top-20-sales-totals-by-month-and-state:">Return the top 20 sales totals by month and state:</h3>
+<h3 id="return-the-top-20-sales-totals-by-month-and-state">Return the top 20 sales totals by month and state:</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; select `month`, state, sum(order_total) as sales from orders group by `month`, state
 order by 3 desc limit 20;
 +-----------+--------+---------+
@@ -1128,7 +1128,7 @@ aliases and table aliases.</p>
 
 <p>This query uses the HAVING clause to constrain an aggregate result.</p>
 
-<h3 id="set-the-workspace-to-dfs.clicks">Set the workspace to dfs.clicks</h3>
+<h3 id="set-the-workspace-to-dfs-clicks">Set the workspace to dfs.clicks</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; use dfs.clicks;
 +-------+-----------------------------------------+
 |  ok   |                 summary                 |
@@ -1137,7 +1137,7 @@ aliases and table aliases.</p>
 +-------+-----------------------------------------+
 1 row selected
 </code></pre></div>
-<h3 id="return-total-number-of-clicks-for-devices-that-indicate-high-click-throughs:">Return total number of clicks for devices that indicate high click-throughs:</h3>
+<h3 id="return-total-number-of-clicks-for-devices-that-indicate-high-click-throughs">Return total number of clicks for devices that indicate high click-throughs:</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; select t.user_info.device, count(*) from `clicks/clicks.json` t 
 group by t.user_info.device
 having count(*) &gt; 1000;
@@ -1180,7 +1180,7 @@ duplicate rows from those files): <code>clicks.campaign.json</code> and <code>cl
 
 <h2 id="subqueries">Subqueries</h2>
 
-<h3 id="set-the-workspace-to-hive:">Set the workspace to hive:</h3>
+<h3 id="set-the-workspace-to-hive">Set the workspace to hive:</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; use hive.`default`;
 +-------+-------------------------------------------+
 |  ok   |                  summary                  |
@@ -1189,7 +1189,7 @@ duplicate rows from those files): <code>clicks.campaign.json</code> and <code>cl
 +-------+-------------------------------------------+
 1 row selected
 </code></pre></div>
-<h3 id="compare-order-totals-across-states:">Compare order totals across states:</h3>
+<h3 id="compare-order-totals-across-states">Compare order totals across states:</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; select ny_sales.cust_id, ny_sales.total_orders, ca_sales.total_orders
 from
 (select o.cust_id, sum(o.order_total) as total_orders from hive.orders o where state = &#39;ny&#39; group by o.cust_id) ny_sales
@@ -1227,7 +1227,7 @@ limit 20;
 
 <h2 id="cast-function">CAST Function</h2>
 
-<h3 id="use-the-maprdb-workspace:">Use the maprdb workspace:</h3>
+<h3 id="use-the-maprdb-workspace">Use the maprdb workspace:</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; use maprdb;
 +-------+-------------------------------------+
 |  ok   |               summary               |
@@ -1260,7 +1260,7 @@ from customers t limit 5;
 <li>The table alias t is required; otherwise the column family names would be parsed as table names and the query would return an error.</li>
 </ul>
 
-<h3 id="remove-the-quotes-from-the-strings:">Remove the quotes from the strings:</h3>
+<h3 id="remove-the-quotes-from-the-strings">Remove the quotes from the strings:</h3>
 
 <p>You can use the regexp_replace function to remove the quotes around the
 strings in the query results. For example, to return a state name va instead
@@ -1283,7 +1283,7 @@ from customers t limit 1;
 +-------+----------------------------------------+
 1 row selected
 </code></pre></div>
-<h3 id="use-a-mutable-workspace:">Use a mutable workspace:</h3>
+<h3 id="use-a-mutable-workspace">Use a mutable workspace:</h3>
 
 <p>A mutable (or writable) workspace is a workspace that is enabled for “write”
 operations. This attribute is part of the storage plugin configuration. You
@@ -1322,7 +1322,7 @@ statement.</p>
 defined in data sources such as Hive, HBase, and the file system. Drill also
 supports the creation of metadata in the file system.</p>
 
-<h3 id="query-data-from-the-view:">Query data from the view:</h3>
+<h3 id="query-data-from-the-view">Query data from the view:</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; select * from custview limit 1;
 +----------+-------------------+-----------+----------+--------+----------+-------------+
 | cust_id  |       name        |  gender   |   age    | state  | agg_rev  | membership  |
@@ -1337,7 +1337,7 @@ supports the creation of metadata in the file system.</p>
 
 <p>Continue using <code>dfs.views</code> for this query.</p>
 
-<h3 id="join-the-customers-view-and-the-orders-table:">Join the customers view and the orders table:</h3>
+<h3 id="join-the-customers-view-and-the-orders-table">Join the customers view and the orders table:</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; select membership, sum(order_total) as sales from hive.orders, custview
 where orders.cust_id=custview.cust_id
 group by membership order by 2;
@@ -1363,7 +1363,7 @@ rows are wide, set the maximum width of the display to 10000:</p>
 
 <p>Do not use a semicolon for this SET command.</p>
 
-<h3 id="join-the-customers,-orders,-and-clickstream-data:">Join the customers, orders, and clickstream data:</h3>
+<h3 id="join-the-customers-orders-and-clickstream-data">Join the customers, orders, and clickstream data:</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; select custview.membership, sum(orders.order_total) as sales from hive.orders, custview,
 dfs.`/mapr/demo.mapr.com/data/nested/clicks/clicks.json` c 
 where orders.cust_id=custview.cust_id and orders.cust_id=c.user_info.cust_id 
@@ -1393,7 +1393,7 @@ hive.orders table is also visible to the query.</p>
 workspace, so the query specifies the full path to the file:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">dfs.`/mapr/demo.mapr.com/data/nested/clicks/clicks.json`
 </code></pre></div>
-<h2 id="what&#39;s-next">What&#39;s Next</h2>
+<h2 id="what-39-s-next">What&#39;s Next</h2>
 
 <p>Go to <a href="/docs/lesson-3-run-queries-on-complex-data-types">Lesson 3: Run Queries on Complex Data Types</a>. </p>
 
