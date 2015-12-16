@@ -6,9 +6,57 @@
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 15 Dec 2015 18:07:55 -0800</pubDate>
-    <lastBuildDate>Tue, 15 Dec 2015 18:07:55 -0800</lastBuildDate>
-    <generator>Jekyll v2.4.0</generator>
+    <pubDate>Tue, 15 Dec 2015 21:09:41 -0800</pubDate>
+    <lastBuildDate>Tue, 15 Dec 2015 21:09:41 -0800</lastBuildDate>
+    <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Drill 1.4 Released</title>
+        <description>&lt;p&gt;Apache Drill 1.4 (&lt;a href=&quot;https://drill.apache.org/download/&quot;&gt;available here&lt;/a&gt;) includes bug fixes and enhancements from &lt;a href=&quot;https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12332947&amp;amp;projectId=12313820&quot;&gt;32 
+JIRAs&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Here&amp;#39;s a list of highlights from this newest version of Drill:&lt;/p&gt;
+
+&lt;h2 id=&quot;select-with-options&quot;&gt;Select With Options&lt;/h2&gt;
+
+&lt;p&gt;Queries that change storage plugin configuration options can now be written. For instance, to query the file &lt;code&gt;CO.dat&lt;/code&gt;, the following can be used:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;SELECT * FROM TABLE(dfs.`/path/to/CO.dat`(type =&amp;gt; &amp;#39;text&amp;#39;));
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;If a version of &lt;code&gt;CO.dat&lt;/code&gt; with a header is available, the first entries of the file can be parsed as column names by 
+passing an &lt;code&gt;extractHeader =&amp;gt; true&lt;/code&gt; argument. We can also use a pipe symbol, &amp;#39;|&amp;#39;, as the delimiter by passing 
+&lt;code&gt;fieldDelimiter&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;SELECT * FROM TABLE(dfs.`/path/to/CO.dat`(type =&amp;gt; &amp;#39;text&amp;#39;, fieldDelimiter =&amp;gt; &amp;#39;|&amp;#39;, extractHeader =&amp;gt; true));
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Additionally, &lt;code&gt;lineDelimiter&lt;/code&gt; can be used to indicate a deliminter for new lines, such as the double pipe, &amp;#39;||&amp;#39;, symbol in this example:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;SELECT * FROM TABLE(dfs.`/path/to/CO.dat`(type =&amp;gt; &amp;#39;text&amp;#39;, lineDelimiter =&amp;gt; &amp;#39;||&amp;#39;, fieldDelimiter =&amp;gt; &amp;#39;|&amp;#39;));
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&quot;improved-behavior-for-csv-header-parsing&quot;&gt;Improved Behavior For CSV Header Parsing&lt;/h2&gt;
+
+&lt;p&gt;When header parsing is enabled, queries to CSV files no longer raise an exception if the indicated column does not 
+exist. Instead, Drill now returns &lt;code&gt;null&lt;/code&gt; values for that column.&lt;/p&gt;
+
+&lt;h2 id=&quot;json-formatting&quot;&gt;JSON Formatting&lt;/h2&gt;
+
+&lt;p&gt;For more compact results, Drill&amp;#39;s default behavior of pretty-printing JSON can now be changed by setting the variable 
+&lt;code&gt;store.json.writer.uglify&lt;/code&gt; to &lt;code&gt;true&lt;/code&gt;. As in:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;ALTER SESSION SET store.json.writer.uglify = true;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&quot;better-logging&quot;&gt;Better Logging&lt;/h2&gt;
+
+&lt;p&gt;SQL query text is now logged to the &lt;code&gt;drillbit.log&lt;/code&gt; file.&lt;/p&gt;
+
+&lt;h2 id=&quot;other-improvements&quot;&gt;Other Improvements&lt;/h2&gt;
+
+&lt;p&gt;This version also features schema change compatible sorting, better Apache Hive support, and more efficient caching for Parquet file metadata.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 14 Dec 2015 00:00:00 -0800</pubDate>
+        <link>/blog/2015/12/14/drill-1.4-released/</link>
+        <guid isPermaLink="true">/blog/2015/12/14/drill-1.4-released/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Drill 1.3 Released</title>
@@ -206,7 +254,7 @@ Jacques Nadeau&lt;/p&gt;
   &amp;lt;version&amp;gt;1.1.0&amp;lt;/version&amp;gt;
 &amp;lt;/dependency&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;mongodb-3-0-support&quot;&gt;MongoDB 3.0 Support&lt;/h2&gt;
+&lt;h2 id=&quot;mongodb-3.0-support&quot;&gt;MongoDB 3.0 Support&lt;/h2&gt;
 
 &lt;p&gt;Drill now uses MongoDB&amp;#39;s latest Java driver and has enhanced connection pooling for better performance and resilience in large-scale deployments.  Learn more about using the &lt;a href=&quot;https://drill.apache.org/docs/mongodb-plugin-for-apache-drill/&quot;&gt;MongoDB plugin&lt;/a&gt;.&lt;/p&gt;
 
@@ -416,26 +464,6 @@ Tomer Shiran and Jacques Nadeau&lt;/p&gt;
         <pubDate>Tue, 31 Mar 2015 00:00:00 -0700</pubDate>
         <link>/blog/2015/03/31/drill-0.8-released/</link>
         <guid isPermaLink="true">/blog/2015/03/31/drill-0.8-released/</guid>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>MicroStrategy Announces Drill Support</title>
-        <description>&lt;p&gt;Today MicroStrategy  &lt;a href=&quot;http://ir.microstrategy.com/releasedetail.cfm?ReleaseID=902795&quot;&gt;announced&lt;/a&gt; that it has certified its platform with Apache Drill. According to MicroStrategy&amp;#39;s CTO, Tim Lang, Drill reduces the time-to-value for MicroStrategy users, and enables them to leverage multi-structured data.&lt;/p&gt;
-
-&lt;p&gt;Many early adopters of Drill have been interested in leveraging MicroStrategy&amp;#39;s powerful BI platform. With it&amp;#39;s first-class support for self-describing data and evolving structure, Drill enables MicroStrategy users to explore and analyze the data in Hadoop and NoSQL databases without the usual friction that comes with having to define and manage schemas.&lt;/p&gt;
-
-&lt;p&gt;If you would like to learn more about this integration, &lt;a href=&quot;http://info.microstrategy.com/accessing-multi-structured-data-sources&quot;&gt;sign up&lt;/a&gt; for MicroStrategy&amp;#39;s webinar next month, which includes a live demo of the integration with Drill.&lt;/p&gt;
-
-&lt;p&gt;Happy Drilling!&lt;br&gt;
-Tomer Shiran&lt;/p&gt;
-</description>
-        <pubDate>Mon, 23 Mar 2015 00:00:00 -0700</pubDate>
-        <link>/blog/2015/03/23/microstrategy-announces-drill-support/</link>
-        <guid isPermaLink="true">/blog/2015/03/23/microstrategy-announces-drill-support/</guid>
         
         
         <category>blog</category>

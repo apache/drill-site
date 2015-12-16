@@ -1110,7 +1110,7 @@ The window clauses for the function. The OVER clause cannot contain an explicit 
 
 <p>The following examples show queries that use each of the ranking window functions in Drill. See <a href="/docs/sql-window-functions-examples/">Window Functions Examples</a> for information about the data and setup for these examples.</p>
 
-<h3 id="cume_dist">CUME_DIST()</h3>
+<h3 id="cume_dist()">CUME_DIST()</h3>
 
 <p>The following query uses the CUME_DIST() window function to calculate the cumulative distribution of sales for each dealer in Q1.  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   select dealer_id, sales, cume_dist() over(order by sales) as cumedist from q1_sales;
@@ -1150,7 +1150,7 @@ The window clauses for the function. The OVER clause cannot contain an explicit 
    +------------+-----------------+--------+------------+
    10 rows selected (0.198 seconds)  
 </code></pre></div>
-<h3 id="ntile">NTILE()</h3>
+<h3 id="ntile()">NTILE()</h3>
 
 <p>The following example uses the NTILE window function to divide the Q1 sales into five groups and list the sales in ascending order.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   select emp_mgr, sales, ntile(5) over(order by sales) as ntilerank from q1_sales;
@@ -1188,7 +1188,7 @@ The window clauses for the function. The OVER clause cannot contain an explicit 
    +-----------------+------------+--------+------------+
    10 rows selected (0.312 seconds)
 </code></pre></div>
-<h3 id="percent_rank">PERCENT_RANK()</h3>
+<h3 id="percent_rank()">PERCENT_RANK()</h3>
 
 <p>The following query uses the PERCENT_RANK() window function to calculate the percent rank for employee sales in Q1.  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   select dealer_id, emp_name, sales, percent_rank() over(order by sales) as perrank from q1_sales; 
@@ -1208,7 +1208,7 @@ The window clauses for the function. The OVER clause cannot contain an explicit 
    +------------+-----------------+--------+---------------------+
    10 rows selected (0.169 seconds)
 </code></pre></div>
-<h3 id="rank">RANK()</h3>
+<h3 id="rank()">RANK()</h3>
 
 <p>The following query uses the RANK() window function to rank the employee sales for Q1. The word rank in Drill is a reserved keyword and must be enclosed in back ticks (``).</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   select dealer_id, emp_name, sales, rank() over(order by sales) as `rank` from q1_sales;
@@ -1228,7 +1228,7 @@ The window clauses for the function. The OVER clause cannot contain an explicit 
    +------------+-----------------+--------+-------+
    10 rows selected (0.174 seconds)
 </code></pre></div>
-<h3 id="row_number">ROW_NUMBER()</h3>
+<h3 id="row_number()">ROW_NUMBER()</h3>
 
 <p>The following query uses the ROW_NUMBER() window function to number the sales for each dealer_id. The word rownum contains the reserved keyword row and must be enclosed in back ticks (``).  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">    select dealer_id, emp_name, sales, row_number() over(partition by dealer_id order by sales) as `rownum` from q1_sales;

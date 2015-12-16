@@ -1083,7 +1083,7 @@ analysis extremely easy.</p>
 
 <h2 id="querying-data-with-drill">Querying Data with Drill</h2>
 
-<h3 id="1-view-the-contents-of-the-yelp-business-data">1. View the contents of the Yelp business data</h3>
+<h3 id="1.-view-the-contents-of-the-yelp-business-data">1. View the contents of the Yelp business data</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; !set maxwidth 10000
 
 0: jdbc:drill:zk=local&gt; select * from
@@ -1103,7 +1103,7 @@ analysis extremely easy.</p>
 
 <p>You can directly query self-describing files such as JSON, Parquet, and text. There is no need to create metadata definitions in the Hive metastore.</p>
 
-<h3 id="2-explore-the-business-data-set-further">2. Explore the business data set further</h3>
+<h3 id="2.-explore-the-business-data-set-further">2. Explore the business data set further</h3>
 
 <h4 id="total-reviews-in-the-data-set">Total reviews in the data set</h4>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select sum(review_count) as totalreviews 
@@ -1154,7 +1154,7 @@ group by stars order by stars desc;
 | 1.0        | 4.0        |
 +------------+------------+
 </code></pre></div>
-<h4 id="top-businesses-with-high-review-counts-gt-1000">Top businesses with high review counts (&gt; 1000)</h4>
+<h4 id="top-businesses-with-high-review-counts-(&gt;-1000)">Top businesses with high review counts (&gt; 1000)</h4>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select name, state, city, `review_count` from
 dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json`
 where review_count &gt; 1000 order by `review_count` desc limit 10;
@@ -1198,7 +1198,7 @@ b limit 10;
 </code></pre></div>
 <p>Note how Drill can traverse and refer through multiple levels of nesting.</p>
 
-<h3 id="3-get-the-amenities-of-each-business-in-the-data-set">3. Get the amenities of each business in the data set</h3>
+<h3 id="3.-get-the-amenities-of-each-business-in-the-data-set">3. Get the amenities of each business in the data set</h3>
 
 <p>Note that the attributes column in the Yelp business data set has a different
 element for every row, representing that businesses can have separate
@@ -1246,7 +1246,7 @@ on data.</p>
 | true  | store.json.all_text_mode updated.  |
 +-------+------------------------------------+
 </code></pre></div>
-<h3 id="4-explore-the-restaurant-businesses-in-the-data-set">4. Explore the restaurant businesses in the data set</h3>
+<h3 id="4.-explore-the-restaurant-businesses-in-the-data-set">4. Explore the restaurant businesses in the data set</h3>
 
 <h4 id="number-of-restaurants-in-the-data-set">Number of restaurants in the data set</h4>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select count(*) as TotalRestaurants from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json` where true=repeated_contains(categories,&#39;Restaurants&#39;);
@@ -1318,9 +1318,9 @@ order by count(categories[0]) desc limit 10;
 | Hair Salons          | 901           |
 +----------------------+---------------+
 </code></pre></div>
-<h3 id="5-explore-the-yelp-reviews-dataset-and-combine-with-the-businesses">5. Explore the Yelp reviews dataset and combine with the businesses.</h3>
+<h3 id="5.-explore-the-yelp-reviews-dataset-and-combine-with-the-businesses.">5. Explore the Yelp reviews dataset and combine with the businesses.</h3>
 
-<h4 id="take-a-look-at-the-contents-of-the-yelp-reviews-dataset">Take a look at the contents of the Yelp reviews dataset.</h4>
+<h4 id="take-a-look-at-the-contents-of-the-yelp-reviews-dataset.">Take a look at the contents of the Yelp reviews dataset.</h4>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select * 
 from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_review.json` limit 1;
 +---------------------------------+------------------------+------------------------+-------+------------+----------------------------------------------------------------------+--------+------------------------+
