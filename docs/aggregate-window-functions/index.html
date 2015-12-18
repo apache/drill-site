@@ -373,10 +373,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/mapr-db-format/">MapR-DB Format</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/s3-storage-plugin/">S3 Storage Plugin</a></li>
             
           
@@ -1124,7 +1120,7 @@ If an ORDER BY clause is used for an aggregate function, an explicit frame claus
 
 <p>The following examples show queries that use each of the aggregate window functions in Drill. See <a href="/docs/sql-window-functions-examples/">SQL Window Functions Examples</a> for information about the data and setup for these examples.</p>
 
-<h3 id="avg()">AVG()</h3>
+<h3 id="avg">AVG()</h3>
 
 <p>The following query uses the AVG() window function with the PARTITION BY clause to calculate the average sales for each car dealer in Q1.  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   select dealer_id, sales, avg(sales) over (partition by dealer_id) as avgsales from q1_sales;
@@ -1144,7 +1140,7 @@ If an ORDER BY clause is used for an aggregate function, an explicit frame claus
    +------------+--------+-----------+
    10 rows selected (0.455 seconds)
 </code></pre></div>
-<h3 id="count()">COUNT()</h3>
+<h3 id="count">COUNT()</h3>
 
 <p>The following query uses the COUNT (*) window function to count the number of sales in Q1, ordered by dealer_id. The word count is enclosed in back ticks (``) because it is a reserved keyword in Drill.  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   select dealer_id, sales, count(*) over(order by dealer_id) as `count` from q1_sales;
@@ -1182,7 +1178,7 @@ If an ORDER BY clause is used for an aggregate function, an explicit frame claus
    +------------+--------+--------+
    10 rows selected (0.249 seconds)
 </code></pre></div>
-<h3 id="max()">MAX()</h3>
+<h3 id="max">MAX()</h3>
 
 <p>The following query uses the MAX() window function with the PARTITION BY clause to identify the employee with the maximum number of car sales in Q1 at each dealership. The word max is a reserved keyword in Drill and must be enclosed in back ticks (``).  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   select emp_name, dealer_id, sales, max(sales) over(partition by dealer_id) as `max` from q1_sales;
@@ -1202,7 +1198,7 @@ If an ORDER BY clause is used for an aggregate function, an explicit frame claus
    +-----------------+------------+--------+--------+
    10 rows selected (0.402 seconds)
 </code></pre></div>
-<h3 id="min()">MIN()</h3>
+<h3 id="min">MIN()</h3>
 
 <p>The following query uses the MIN() window function with the PARTITION BY clause to identify the employee with the minimum number of car sales in Q1 at each dealership. The word min is a reserved keyword in Drill and must be enclosed in back ticks (``).  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   select emp_name, dealer_id, sales, min(sales) over(partition by dealer_id) as `min` from q1_sales;
@@ -1222,7 +1218,7 @@ If an ORDER BY clause is used for an aggregate function, an explicit frame claus
    +-----------------+------------+--------+-------+
    10 rows selected (0.194 seconds)
 </code></pre></div>
-<h3 id="sum()">SUM()</h3>
+<h3 id="sum">SUM()</h3>
 
 <p>The following query uses the SUM() window function to total the amount of sales for each dealer in Q1. The word sum is a reserved keyword in Drill and must be enclosed in back ticks (``).  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   select dealer_id, emp_name, sales, sum(sales) over(partition by dealer_id) as `sum` from q1_sales;
