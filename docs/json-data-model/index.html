@@ -1038,7 +1038,7 @@
 
     </div>
 
-     
+     Jan 7, 2016
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1120,7 +1120,7 @@ Reads all data from JSON files as VARCHAR. You need to cast numbers from VARCHAR
 <h3 id="handling-type-differences">Handling Type Differences</h3>
 
 <p>Set the <code>store.json.read_numbers_as_double</code> property to true.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SYSTEM SET `store.json.read_numbers_as_double` = true;
+<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SESSION SET `store.json.read_numbers_as_double` = true;
 </code></pre></div>
 <p>When you set this option, Drill reads all numbers from the JSON files as DOUBLE. After reading the data, use a SELECT statement in Drill to cast data as follows:</p>
 
@@ -1301,7 +1301,7 @@ FROM dfs.`/Users/drilluser/drill/ticket_sales.json`;
 <h3 id="example-aggregate-loosely-structured-data">Example: Aggregate Loosely Structured Data</h3>
 
 <p>Use flatten and kvgen together to aggregate the data from the <a href="/docs/json-data-model/#example:-flatten-and-generate-key-values-for-complex-json">previous example</a>. Make sure all text mode is set to false to sum numbers. Drill returns an error if you attempt to sum data in all text mode.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SYSTEM SET `store.json.all_text_mode` = false;
+<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SESSION SET `store.json.all_text_mode` = false;
 </code></pre></div>
 <p>Sum the ticket sales by combining the <code>SUM</code>, <code>FLATTEN</code>, and <code>KVGEN</code> functions in a single query.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT SUM(tkt.tot_sales.`value`) AS TicketSold FROM (SELECT flatten(kvgen(sales)) tot_sales FROM dfs.`/Users/drilluser/ticket_sales.json`) tkt;
@@ -1603,7 +1603,7 @@ MultiPolygons will fail.</p>
 <p>Drill interprets numbers that do not have a decimal point as BigInt values. In this example, Drill recognizes the first two coordinates as doubles and the third coordinate as a BigInt, which causes an error.</p>
 
 <p>Workaround: Set the <code>store.json.read_numbers_as_double</code> property, described earlier, to true.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SYSTEM SET `store.json.read_numbers_as_double` = true;
+<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SESSION SET `store.json.read_numbers_as_double` = true;
 </code></pre></div>
 <h3 id="selecting-all-in-a-json-directory-query">Selecting all in a JSON directory query</h3>
 
