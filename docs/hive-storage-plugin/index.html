@@ -1038,7 +1038,7 @@
 
     </div>
 
-     
+     Jan 6, 2016
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1049,38 +1049,50 @@ using custom SerDes or InputFormat/OutputFormat, all nodes running Drillbits
 must have the SerDes or InputFormat/OutputFormat <code>JAR</code> files in the 
 <code>&lt;drill_installation_directory&gt;/jars/3rdparty</code> folder.</p>
 
-<h2 id="hive-remote-metastore-configuration">Hive Remote Metastore Configuration</h2>
+<p>You can run Hive queries in the following ways by configuring the Hive storage plugin as described in this document:</p>
+
+<ul>
+<li><a href="/docs/hive-storage-plugin/#connect-drill-to-the-hive-remote-metastore-directly">Connect Drill to the Hive remote metastore</a><br></li>
+<li><a href="/docs/hive-storage-plugin/#connect-to-the-hive-embedded-metastore">Connect to the Hive embedded metastore</a><br></li>
+</ul>
+
+<p>You update the Hive storage plugin by selecting the <strong>Storage tab</strong> on the <a href="/docs/plugin-configuration-basics/#using-the-drill-web-console">Drill Web Console</a>. From the list of disabled storage plugins in the Drill Web Console, click <strong>Update</strong> next to <code>hive</code>.  The default Hive storage plugin configuration appears as follows:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">    {
+      &quot;type&quot;: &quot;hive&quot;,
+      &quot;enabled&quot;: false,
+      &quot;configProps&quot;: {
+        &quot;hive.metastore.uris&quot;: &quot;&quot;,
+        &quot;javax.jdo.option.ConnectionURL&quot;: &quot;jdbc:derby:;databaseName=../sample-data/drill_hive_db;create=true&quot;,
+        &quot;hive.metastore.warehouse.dir&quot;: &quot;/tmp/drill_hive_wh&quot;,
+        &quot;fs.default.name&quot;: &quot;file:///&quot;,
+        &quot;hive.metastore.sasl.enabled&quot;: &quot;false&quot;
+      }
+    }
+</code></pre></div>
+<h2 id="connect-drill-to-the-hive-remote-metastore">Connect Drill to the Hive Remote Metastore</h2>
 
 <p>The Hive metastore runs as a separate service outside
-of Hive. Drill communicates with the Hive metastore through Thrift. The
-metastore service communicates with the Hive database over JDBC. Point Drill
-to the Hive metastore service address, and provide the connection parameters
-in a Hive storage plugin configuration to configure a connection to Drill.</p>
+of Hive. Drill can query the Hive metastore through Thrift. The
+metastore service communicates with the Hive database over JDBC. </p>
+
+<p>Follow the steps in the next section to point Drill
+to the Hive metastore service address. Provide the connection parameters
+in a Hive storage plugin configuration to configure a connection to Drill. At this point, if you query data sources that Drill supports other than HBase (or MapR), you are finished configuring the Hive storage plugin. If you query HBase using Hive, you need to add ZooKeeper quorum and port properties.  The HBaseStorageHandler requires these properties. Drill discovers HBase services using these properties. If you use the HBase storage plugin, the ZooKeeper quorum and port properties in the Hive storage plugin are the same as those in the HBase storage plugin, assuming you want to use the same HBase database. </p>
 
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
   <p class="last">Verify that the Hive metastore service is running before you register the Hive metastore.  </p>
 </div>  
 
-<p>To register a remote Hive metastore with Drill:</p>
+<h3 id="hive-remote-metastore-configuration">Hive Remote Metastore Configuration</h3>
+
+<p>To connect Drill to a remote Hive metastore:</p>
 
 <ol>
-<li>Issue the following command to start the Hive metastore service on the system specified in the <code>hive.metastore.uris</code>:
+<li>Issue the following command to start the Hive metastore service on the system specified in the <code>hive.metastore.uris</code>:<br>
 <code>hive --service metastore</code></li>
 <li>In the <a href="/docs/plugin-configuration-basics/#using-the-drill-web-console">Drill Web Console</a>, select the <strong>Storage</strong> tab.</li>
-<li><p>In the list of disabled storage plugins in the Drill Web Console, click <strong>Update</strong> next to <code>hive</code>. The Hive storage plugin configuration appears:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{
-  &quot;type&quot;: &quot;hive&quot;,
-  &quot;enabled&quot;: false,
-  &quot;configProps&quot;: {
-    &quot;hive.metastore.uris&quot;: &quot;&quot;,
-    &quot;javax.jdo.option.ConnectionURL&quot;: &quot;jdbc:derby:;databaseName=../sample-data/drill_hive_db;create=true&quot;,
-    &quot;hive.metastore.warehouse.dir&quot;: &quot;/tmp/drill_hive_wh&quot;,
-    &quot;fs.default.name&quot;: &quot;file:///&quot;,
-    &quot;hive.metastore.sasl.enabled&quot;: &quot;false&quot;
-  }
-}
-</code></pre></div></li>
+<li>In the list of disabled storage plugins in the Drill Web Console, click <strong>Update</strong> next to <code>hive</code>.<br></li>
 <li><p>In the configuration window, add the <code>Thrift URI</code> and port to <code>hive.metastore.uris</code>. For example:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">  ...
      &quot;configProps&quot;: {
@@ -1098,15 +1110,30 @@ in a Hive storage plugin configuration to configure a connection to Drill.</p>
     }
   }
 </code></pre></div></li>
+<li><p>If you do not query HBase, skip this step. If you query HBase, in the configuration window, add the names of the ZooKeeper quorum hosts and the ZooKeeper port, for example 2181.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">{
+  &quot;type&quot;: &quot;hive&quot;,
+  &quot;enabled&quot;: false,
+  &quot;configProps&quot;: {
+  .
+  .
+  .
+    &quot;hbase.zookeeper.quorum&quot;: &quot;zkhost1,zkhost2,zkhost3&quot;,
+    &quot;hbase.zookeeper.property.clientPort:&quot; &quot;2181&quot; 
+  }
+}
+</code></pre></div></li>
 <li><p>Click <strong>Enable</strong>.  </p></li>
 </ol>
 
-<h2 id="hive-embedded-metastore-configuration">Hive Embedded Metastore Configuration</h2>
+<h2 id="connect-to-the-hive-embedded-metastore">Connect to the Hive embedded metastore</h2>
 
 <p>The Hive metastore configuration is embedded within the Drill process. Configure an embedded metastore only in a cluster that runs a single Drillbit and only for testing purposes. Do not embed the Hive metastore in production systems.</p>
 
 <p>Provide the metastore database configuration settings in the Drill Web Console. Before you configure an embedded Hive metastore, verify that the driver you use to connect to the Hive metastore is in the Drill classpath located in <code>/&lt;drill installation directory&gt;/lib/.</code> If the driver is not there, copy the driver to <code>/&lt;drill
 installation directory&gt;/lib</code> on the Drill node. For more information about storage types and configurations, refer to <a href="https://cwiki.apache.org/confluence/display/Hive/AdminManual+MetastoreAdmin">&quot;Hive Metastore Administration&quot;</a>.</p>
+
+<h3 id="hive-embedded-metastore-configuration">Hive Embedded Metastore Configuration</h3>
 
 <p>To configure an embedded Hive metastore, complete the following
 steps:</p>
