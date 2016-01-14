@@ -1067,6 +1067,10 @@
 <td>VARCHAR</td>
 </tr>
 <tr>
+<td><a href="/docs/string-manipulation/#ilike">ILIKE</a></td>
+<td>BOOLEAN</td>
+</tr>
+<tr>
 <td><a href="/docs/string-manipulation/#initcap">INITCAP</a></td>
 <td>VARCHAR</td>
 </tr>
@@ -1196,6 +1200,32 @@ SELECT CONVERT_FROM(BYTE_SUBSTR(row_key,6,length(row_key)),&#39;UTF8&#39;) FROM 
 </code></pre></div>
 <p>Alternatively, you can use the <a href="/docs/operators/#string-concatenate-operator">string concatenation operation</a> to concatenate strings.</p>
 
+<h2 id="ilike">ILIKE</h2>
+
+<p>Compares argument one and two and returns true if values match.</p>
+
+<h3 id="ilike-syntax">ILIKE Syntax</h3>
+
+<p>ILIKE( string, string )</p>
+
+<h3 id="ilike-examples">ILIKE Examples</h3>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT ILIKE(&#39;abc&#39;, &#39;abc&#39;) FROM (VALUES(1));
++---------+
+| EXPR$0  |
++---------+
+| true    |
++---------+
+1 row selected (0.185 seconds)
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">SELECT ILIKE(last_name, &#39;Spence&#39;) FROM cp.`employee.json` limit 3;
++---------+
+| EXPR$0  |
++---------+
+| false   |
+| false   |
+| true    |
++---------+
+3 rows selected (0.17 seconds)
+</code></pre></div>
 <h2 id="initcap">INITCAP</h2>
 
 <p>Returns the string using initial caps.</p>

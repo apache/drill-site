@@ -1077,10 +1077,22 @@ clause.</p>
 complete the following tasks:</p>
 
 <ol>
-<li>Create a Java program that implements Drill’s simple or aggregate interface, and compile a sources and a classes JAR file.</li>
-<li>Add the sources and classes JAR files to Drill’s classpath.</li>
-<li>Add the name of the package that contains the classes to Drill’s main configuration file, drill-override.conf. </li>
+<li>Create a Java program that implements Drill’s simple or aggregate interface.</li>
+<li><p>Add the following code to the drill-module.conf in your UDF project (src/main/resources/drill-module.conf). Replace com.yourgroupidentifier.udf with the package name(s) of your UDFs.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   drill {
+     classpath.scanning {
+       packages : ${?drill.classpath.scanning.packages} [
+         com.yourgroupidentifier.udf
+       ]
+     }
+   }   
+</code></pre></div></li>
+<li><p>Compile the UDF and place both jar files (source + binary) in the Drill classpath on all the Drillbits.  </p></li>
+<li><p>Ensure that DRILL_HOME/conf/drill-override.conf does not contain any information regarding UDF packages.  </p></li>
+<li><p>Restart drill on all the Drillbits.  </p></li>
 </ol>
+
+<p>The following example shows an alternative process that is simpler short-term, but involves maintainence.</p>
 
     
       
