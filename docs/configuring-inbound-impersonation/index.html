@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>HAVING Clause - Apache Drill</title>
+<title>Configuring Inbound Impersonation - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -261,8 +261,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Configure Drill</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Configure Drill</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configure-drill-introduction/">Configure Drill Introduction</a></li>
@@ -290,7 +290,7 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-inbound-impersonation/">Configuring Inbound Impersonation</a></li>
+              <li class="toctree-l2 current"><a class="reference internal" href="/docs/configuring-inbound-impersonation/">Configuring Inbound Impersonation</a></li>
             
           
             
@@ -646,8 +646,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">SQL Reference</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">SQL Reference</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sql-reference-introduction/">SQL Reference Introduction</a></li>
@@ -735,7 +735,7 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">SQL Commands</a></li>
-              <ul style="">
+              <ul style="display: none">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/supported-sql-commands/">Supported SQL Commands</a></li>
               
@@ -767,7 +767,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/group-by-clause/">GROUP BY Clause</a></li>
               
-                <li class="toctree-l3 current"><a class="reference internal" href="/docs/having-clause/">HAVING Clause</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/having-clause/">HAVING Clause</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/limit-clause/">LIMIT Clause</a></li>
               
@@ -1033,22 +1033,20 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/sql-reference/">SQL Reference</a></li>
+    <li><a href="/docs/configure-drill/">Configure Drill</a></li>
   
-    <li><a href="/docs/sql-commands/">SQL Commands</a></li>
-  
-  <li>HAVING Clause</li>
+  <li>Configuring Inbound Impersonation</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/sql-reference/sql-commands/083-having-clause.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/configure-drill/071-configure-inbound-impersonation.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>HAVING Clause</h1>
+      <h1>Configuring Inbound Impersonation</h1>
 
     </div>
 
@@ -1058,66 +1056,60 @@
 
     <div class="int_text" align="left">
       
-        <p>The HAVING clause filters group rows created by the GROUP BY clause. The HAVING clause is applied to each group of the grouped table, much as a WHERE clause is applied to a select list. If there is no GROUP BY clause, the HAVING clause is applied to the entire result as a single group. The SELECT clause cannot refer directly to any column that does not have a GROUP BY clause.</p>
+        <p>Drill supports <a href="/docs/configuring-user-impersonation/">user impersonation</a>  where queries run as the user that created a connection. However, this user is not necessarily the end user who submits the queries. For example, in a classic three-tier architecture, the end user interacts with Tableau Desktop, which communicates with a Tableau Server, which in turn communicates with a Drill cluster. In this scenario, a proxy user creates a connection, and the queries are submitted to Drill by the proxy user on behalf of the end user, and not by the end user directly. In this particular case, the query runs as the end user.  </p>
 
-<h2 id="syntax">Syntax</h2>
+<p><img src="http://i.imgur.com/R3b4fi0.png" alt="The picture shows how identity is propagated through various layers (with authentication enabled). The flow on the left is what Drill currently supports, and the flow on the right is the proposed change. t:euser is a property on the connection (u is username, p is password, t is impersonation_target).">  </p>
 
-<p>The HAVING clause supports the following syntax:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   HAVING  boolean_expression 
+<p>As of Drill 1.6, an administrator can define inbound impersonation policies to impersonate the end user. Impersonating the end user is a natural extension of Drill’s impersonation model and accounts for one more <a href="/docs/configuring-user-impersonation/#chained-impersonation">user hop in the chain</a>. This additional hop requires authorization, meaning that the proxy user needs to be authorized to submit queries on behalf of the specified end user. Otherwise, any user can impersonate another user. Then, the query runs as the end user, and data authorization is based on this user’s access permissions. Note that without <a href="/docs/configuring-user-authentication/">authentication</a> enabled in both communication channels, a user can impersonate any other user.</p>
+
+<p>Drill trusts proxy users to provide the correct end user identity information. Drill does not authenticate the end user. The proxy user (application) is responsible for end user authentication, which is usually enabled.</p>
+
+<h2 id="configuring-inbound-impersonation">Configuring Inbound Impersonation</h2>
+
+<p>You must be an administrator to configure inbound impersonation. You can define administrative users through the <code>security.admin.user_groups</code> and <code>security.admin.users</code> options. See <a href="/docs/configuration-options-introduction/#system-options">Configuration Options</a>. </p>
+
+<p><a href="/docs/configuring-user-impersonation/">User impersonation</a> must be enabled before you can configure inbound impersonation.</p>
+
+<p>Complete the following steps to enable inbound impersonation:  </p>
+
+<ol>
+<li><p>In <code>drill-override.conf</code>, set user impersonation to true:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">      {
+      drill.exec.impersonation.enabled: true,
+      ...
+      }
+</code></pre></div></li>
+<li><p>Define inbound impersonation policies. For example, the following ALTER SYSTEM statement authorizes:</p>
+
+<ul>
+<li><code>puser1</code> to impersonate any user (*)</li>
+<li><code>puser2</code> to impersonate <code>euser1</code> and all users in <code>egroup2</code> </li>
+<li><p>all users in <code>pgroup3</code> to impersonate all users in <code>egroup3</code>  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">  ALTER SYSTEM SET `exec.impersonation.inbound_policies`=‘[
+  { proxy_principals : { users: [“puser1”] },
+    target_principals: { users: [“*”] } },
+  { proxy_principals : { users: [“puser2”] }, 
+    target_principals: { users: [“euser1”], groups :  [“egroup2”] } },
+  { proxy_principals : { groups: [“pgroup3”] },
+    target_principals: { groups: [“egroup3”] } } ]’;  
 </code></pre></div>
-<h2 id="expression">Expression</h2>
-
-<p>A <em>boolean expression</em> can include one or more of the following operators:  </p>
-
-<ul>
-<li>AND</li>
-<li>OR</li>
-<li>NOT</li>
-<li>IS NULL</li>
-<li>IS NOT NULL</li>
-<li>LIKE </li>
-<li>BETWEEN</li>
-<li>IN</li>
-<li>Comparison operators</li>
-<li>Quantified comparison operators<br></li>
-</ul>
-
-<h2 id="usage-notes">Usage Notes</h2>
-
-<ul>
-<li>Any column referenced in a HAVING clause must be either a grouping column or a column that refers to the result of an aggregate function.</li>
-<li>In a HAVING clause, you cannot specify:
-
-<ul>
-<li>An alias that was defined in the select list. You must repeat the original, unaliased expression. </li>
-<li>An ordinal number that refers to a select list item. Only the GROUP BY and ORDER BY clauses accept ordinal numbers.</li>
+<p>Policy format:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">  { proxy_principals : { users : [“...”], groups : [“...”] },
+    target_principals: { users : [“...”], groups : [“...”] } }
+</code></pre></div></li>
 </ul></li>
-</ul>
+<li><p>Ensure that the proxy user (application) passes the username of the impersonation target user to Drill when creating a connection through the <code>impersonation_target</code> connection property. For example, through sqlline:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">bin/sqlline –u “jdbc:drill:schema=dfs;zk=myclusterzk;impersonation_target=euser1” -n puser1 -p ppass1  
+</code></pre></div></li>
+</ol>
 
-<h2 id="examples">Examples</h2>
-
-<p>The following example query uses the HAVING clause to constrain an aggregate result. Drill queries the <code>dfs.clicks workspace</code> and  returns the total number of clicks for devices that indicate high click-throughs:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:&gt; select t.user_info.device, count(*) from \`clicks/clicks.json\` t 
-   group by t.user_info.device having count(*) &gt; 1000;  
-
-   +------------+------------+
-   |   EXPR$0   |   EXPR$1   |
-   +------------+------------+
-   | IOS5       | 11814      |
-   | AOS4.2     | 5986       |
-   | IOS6       | 4464       |
-   | IOS7       | 3135       |
-   | AOS4.4     | 1562       |
-   | AOS4.3     | 3039       |
-   +------------+------------+  
-</code></pre></div>
-<p>The aggregate is a count of the records for each different mobile device in the clickstream data. Only the activity for the devices that registered more than 1000 transactions qualify for the result set.</p>
+<p>In this example, <code>puser1</code> is the user submitting the queries. This user is authenticated. Since this user is authorized to impersonate any user, queries through the established connection are run as <code>euser1</code>.</p>
 
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/group-by-clause/">← GROUP BY Clause</a></span><span class="next-toc"><a href="/docs/limit-clause/">LIMIT Clause →</a></span>
+  <span class="previous-toc"><a href="/docs/configuring-user-impersonation/">← Configuring User Impersonation</a></span><span class="next-toc"><a href="/docs/configuring-user-authentication/">Configuring User Authentication →</a></span>
 </div>
 
     
