@@ -1060,15 +1060,15 @@
 
     <div class="int_text" align="left">
       
-        <p>Drill supports <a href="/docs/configuring-user-impersonation/">user impersonation</a>  where queries run as the user that created a connection. However, this user is not necessarily the end user who submits the queries. For example, in a classic three-tier architecture, the end user interacts with Tableau Desktop, which communicates with a Tableau Server, which in turn communicates with a Drill cluster. In this scenario, a proxy user creates a connection, and the queries are submitted to Drill by the proxy user on behalf of the end user, and not by the end user directly. In this particular case, the query runs as the end user.  </p>
+        <p>Drill supports <a href="/docs/configuring-user-impersonation/">user impersonation</a>  where queries run as the user that created a connection. However, this user is not necessarily the end user who submits the queries. For example, in a classic three-tier architecture, the end user interacts with Tableau Desktop, which communicates with a Tableau Server, which in turn communicates with a Drill cluster. In this scenario, a proxy user creates a connection, and the queries are submitted to Drill by the proxy user on behalf of the end user, and not by the end user directly. In this particular case, the query needs to be run as the end user.  </p>
 
-<p>As of Drill 1.6, an administrator can define inbound impersonation policies to impersonate the end user. Impersonating the end user is a natural extension of Drill’s impersonation model and accounts for one more <a href="/docs/configuring-user-impersonation/#chained-impersonation">user hop in the chain</a>. This additional hop requires authorization, meaning that the proxy user needs to be authorized to submit queries on behalf of the specified end user. Otherwise, any user can impersonate another user. Then, the query runs as the end user, and data authorization is based on this user’s access permissions. Note that without <a href="/docs/configuring-user-authentication/">authentication</a> enabled in both communication channels, a user can impersonate any other user.</p>
+<p>As of Drill 1.6, an administrator can define inbound impersonation policies to impersonate the end user. The proxy user needs to be authorized to submit queries on behalf of the specified end user. Otherwise, any user can impersonate another user. Then, the query runs as the end user, and data authorization is based on this user’s access permissions. Note that without <a href="/docs/configuring-user-authentication/">authentication</a> enabled in both communication channels, a user can impersonate any other user.</p>
 
 <p>Drill trusts proxy users to provide the correct end user identity information. Drill does not authenticate the end user. The proxy user (application) is responsible for end user authentication, which is usually enabled.</p>
 
 <p><img src="/docs/img/inboundImpersonation.PNG" alt="">  </p>
 
-<p>This image shows how identity is propagated through various layers (with authentication enabled). The flow on the left is Drill with user impersonation enabled, and the flow on the right is Drill with inbound impersonation enabled. <code>t:euser</code> is a property on the connection (<code>u</code> is <code>username</code>, <code>p</code>is <code>password</code>, <code>t</code> is <code>impersonation_target</code>).  </p>
+<p>This image shows how identity is propagated through various layers (with authentication enabled). The flow on the left is Drill with user impersonation enabled, and the flow on the right is Drill with user impersonation and inbound impersonation enabled. <code>t:euser</code> is a property on the connection (<code>u</code> is <code>username</code>, <code>p</code>is <code>password</code>, <code>t</code> is <code>impersonation_target</code>).  </p>
 
 <h2 id="configuring-inbound-impersonation">Configuring Inbound Impersonation</h2>
 
@@ -1088,7 +1088,7 @@
 <li><p>Define inbound impersonation policies. For example, the following ALTER SYSTEM statement authorizes:</p>
 
 <ul>
-<li><code>puser1</code> to impersonate any user (*)</li>
+<li><code>puser1</code> to impersonate any user (use * as a wildcard character)</li>
 <li><code>puser2</code> to impersonate <code>euser1</code> and all users in <code>egroup2</code> </li>
 <li><p>all users in <code>pgroup3</code> to impersonate all users in <code>egroup3</code>  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">  ALTER SYSTEM SET `exec.impersonation.inbound_policies`=‘[
@@ -1100,8 +1100,8 @@
     target_principals: { groups: [“egroup3”] } } ]’;  
 </code></pre></div>
 <p>Policy format:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">  { proxy_principals : { users : [“...”], groups : [“...”] },
-    target_principals: { users : [“...”], groups : [“...”] } }
+<div class="highlight"><pre><code class="language-text" data-lang="text">  { proxy_principals : { users : [“...”, “...”], groups : [“...”, “...”] },
+  target_principals: { users : [“...”, “...”], groups : [“...”, “...”] } }
 </code></pre></div></li>
 </ul></li>
 <li><p>Ensure that the proxy user (application) passes the username of the impersonation target user to Drill when creating a connection through the <code>impersonation_target</code> connection property. For example, through sqlline:  </p>
