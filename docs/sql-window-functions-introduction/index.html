@@ -1052,7 +1052,7 @@
 
     </div>
 
-     
+     Mar 16, 2016
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1185,11 +1185,22 @@ To compare, you can run a query using the AVG() function as a standard set funct
 <div class="highlight"><pre><code class="language-text" data-lang="text">   expression | column_name [ASC | DESC] [ NULLS { FIRST | LAST } ] [, order_list ]
 </code></pre></div>
 <p>and the optional <em>frame_clause</em> is one of the following frames:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   RANGE UNBOUNDED PRECEDING
-   RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-   RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
-   ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING  
+<div class="highlight"><pre><code class="language-text" data-lang="text">   { RANGE | ROWS } frame_start
+   { RANGE | ROWS } BETWEEN frame_start AND frame_end  
 </code></pre></div>
+<p>where <em>frame_start</em> is one of the following choices: </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   UNBOUNDED PRECEDING  
+   CURRENT ROW  
+</code></pre></div>
+<p>and <em>frame_end</em> is one of the following choices:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   CURRENT ROW  
+   UNBOUNDED FOLLOWING  
+</code></pre></div>
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">The *frame_end* choice cannot appear earlier than the *frame_start* choice and defaults to CURRENT ROW if not explicitly included.  </p>
+</div>
+
 <h2 id="arguments">Arguments</h2>
 
 <p><em>window_function</em><br>
@@ -1235,22 +1246,26 @@ The name of a column to be partitioned by or ordered by.  </p>
 Specifies sort order, either ascending or descending.  </p>
 
 <p><em>frame_clause</em><br>
-The frame_clause specifies the group of rows that create the window frame. Currently, Drill only supports the default frame RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW, which sets the frame as all rows from the start of the partition through the current row&#39;s last peer in the ordering, as specified by the ORDER BY clause. The frame also includes ties when ordering is not unique. You cannot explicitly state the frame specification for ranking window functions.  </p>
+For window functions that operate on the frame instead of the whole partition, the frame_clause specifies the group of rows that create the window frame. The frame_clause supports the following frames:  </p>
 
-<p>When the OVER clause contains an ORDER BY clause, the following frames are equivalent to the default frame: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   RANGE UNBOUNDED PRECEDING
-   RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW  
-</code></pre></div>
-<p>When the OVER clause does not contain an ORDER BY clause, the following frames are equivalent to the default frame:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
-   ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING  
-</code></pre></div>
+<ul>
+<li>RANGE UNBOUNDED PRECEDING</li>
+<li>RANGE BETWEEN CURRENT ROW AND CURRENT ROW</li>
+<li>[RANGE | ROWS] BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</li>
+<li>[RANGE | ROWS] BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING<br></li>
+</ul>
+
+<p>The default frame is RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW, which is the same as RANGE UNBOUNDED PRECEDING. This frame sets the frame as all rows from the start of the partition through the current row&#39;s last peer in the ordering, as specified by the ORDER BY clause.  The frame also includes ties when ordering is not unique.  </p>
+
 <p>The following delimiters define the frame:  </p>
 
 <ul>
-<li>UNBOUNDED PRECEDING means that the frame starts with the first row of the partition.</li>
-<li>UNBOUNDED FOLLOWING means that the frame ends with the last row of the partition.</li>
-<li>CURRENT ROW means that the frame starts or ends with the current row’s first or last peer in the ORDER BY list.<br></li>
+<li>UNBOUNDED PRECEDING<br>
+The frame starts with the first row of the partition.<br></li>
+<li>UNBOUNDED FOLLOWING<br>
+The frame ends with the last row of the partition, for both ROW and RANGE modes.<br></li>
+<li>CURRENT ROW<br>
+In ROWS mode, CURRENT ROW means that the frame starts or ends with the current row. In RANGE mode, CURRENT ROW means that the frame starts or ends with the current row’s first or last peer in the ORDER BY ordering.</li>
 </ul>
 
 <h2 id="usage-notes">Usage Notes</h2>
