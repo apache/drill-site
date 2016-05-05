@@ -1058,7 +1058,7 @@
 
     </div>
 
-     
+     May 5, 2016
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1070,8 +1070,45 @@
 <li>HBase</li>
 <li>Hive</li>
 <li>MapR-DB</li>
-<li>File system</li>
+<li>File system<br></li>
 </ul>
+
+<p>Drill considers data sources to have either a strong schema or a weak schema.  </p>
+
+<p>The following table describes each schema type:</p>
+
+<table><thead>
+<tr>
+<th>Schema Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Strong</td>
+<td>With the exception of text file data sources, Drill verifies that data sources associated with a strong schema contain data types compatible with those used in the query. Drill also verifies that the columns referenced in the query exist in the underlying data sources. If the columns do not exist, CREATE VIEW fails.</td>
+</tr>
+<tr>
+<td>Weak</td>
+<td>Drill does not verify that data sources associated with a weak schema contain data types compatible with those used in the query. Drill does not verify if columns referenced in a query on a Parquet data source exist, therefore CREATE VIEW always succeeds. In the case of JSON files, Drill does not verify if the files contain the maps specified in the view.</td>
+</tr>
+</tbody></table>
+
+<p>The following table lists the current categories of schema and the data
+sources associated with each:</p>
+
+<table><thead>
+<tr>
+<th></th>
+<th>Strong Schema</th>
+<th>Weak Schema</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Data Sources</td>
+<td>views, hive tables, hbase column families, text</td>
+<td>json, mongodb, hbase column qualifiers, parquet</td>
+</tr>
+</tbody></table>
 
 <p>Drill supports the following input formats for data:</p>
 
