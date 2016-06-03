@@ -1062,7 +1062,7 @@
 
     </div>
 
-     
+     Jun 3, 2016
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1074,18 +1074,41 @@
 
 <p>Drill uses the following operators to perform data distribution over the network:  </p>
 
-<ul>
-<li>HashToRandomExchange</li>
-<li>HashToMergeExchange</li>
-<li>UnionExchange</li>
-<li>SingleMergeExchange</li>
-<li>BroadcastExchange</li>
-<li>UnorderedMuxExchange</li>
-</ul>
+<table><thead>
+<tr>
+<th>Operator</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>HashToRandomExchange</td>
+<td>A HashToRandomExchange gets an   input row, computes a hash value on the distribution key, determines the   destination receiver based on the hash value, and sends the row in a batch   operation. The join key or aggregation group-by keys are examples of distribution   keys. The destination receiver is a minor fragment on a destination   node.</td>
+</tr>
+<tr>
+<td>HashToMergeExchange</td>
+<td>A HashToMergeExchange is similar   to the HashToRandomExchange operator, except that each destination receiver   mergers incoming streams of sorted data received from a sender.</td>
+</tr>
+<tr>
+<td>UnionExchange</td>
+<td>A UnionExchange is a   serialization operator in which each sender sends to a single (common)   destination. The receiver “unions” the input streams from various senders.</td>
+</tr>
+<tr>
+<td>SingleMergeExchange</td>
+<td>A SingleMergeExchange is   distribution operator in which each sender sends a sorted stream of data to a   single receiver. The receiver performs a Merge operation to merge all of the   incoming streams. This operator is useful when performing an ORDER BY operation   that requires a final global ordering.</td>
+</tr>
+<tr>
+<td>BroadcastExchange</td>
+<td>A BroadcastExchange is a   distrubtion operation in which each sender sends its input data to all N   receivers via a broadcast.</td>
+</tr>
+<tr>
+<td>UnorderedMuxExchange</td>
+<td>An UnorderedMuxExchange is an   operation that multiplexes the data from all minor fragments on a node so the   data can be sent out on a single channel to a destination receiver. A sender   node only needs to maintain buffers for each receiving node instead of each   receiving minor fragment on every node.</td>
+</tr>
+</tbody></table>
 
 <h2 id="join-operators">Join Operators</h2>
 
-<p>Drill uses the following operators:</p>
+<p>Drill uses the following join operators:</p>
 
 <table><thead>
 <tr>
