@@ -6,9 +6,38 @@
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 14 Jun 2016 11:33:17 -0700</pubDate>
-    <lastBuildDate>Tue, 14 Jun 2016 11:33:17 -0700</lastBuildDate>
+    <pubDate>Tue, 28 Jun 2016 18:41:04 -0700</pubDate>
+    <lastBuildDate>Tue, 28 Jun 2016 18:41:04 -0700</lastBuildDate>
     <generator>Jekyll v2.5.2</generator>
+    
+      <item>
+        <title>Drill 1.7 Released</title>
+        <description>&lt;p&gt;Today, we&amp;#39;re happy to announce the availability of Drill 1.7.0. You can download it &lt;a href=&quot;https://drill.apache.org/download/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The release provides the following bug fixes and improvements:&lt;/p&gt;
+
+&lt;h2 id=&quot;monitoring-via-jmx&quot;&gt;Monitoring via JMX&lt;/h2&gt;
+
+&lt;p&gt;You can access Drill system-level metrics, collected by JMX, through the Metrics page in the Drill Web Console or a remote JMX monitoring tool. See INSERT PAGE. &lt;/p&gt;
+
+&lt;h2 id=&quot;hive-char-data-type&quot;&gt;Hive CHAR Data Type&lt;/h2&gt;
+
+&lt;p&gt;Drill automatically converts the Hive CHAR data type to VARCHAR. You no longer need to cast the Hive CHAR data type to VARCHAR when you query Hive tables. See &lt;a href=&quot;https://drill.apache.org/docs/hive-to-drill-data-type-mapping/&quot;&gt;Hive-to-Drill Data Type Mapping&lt;/a&gt;.  &lt;/p&gt;
+
+&lt;h2 id=&quot;hbase&quot;&gt;HBase&lt;/h2&gt;
+
+&lt;p&gt;Drill now supports HBase 1.x. &lt;/p&gt;
+
+&lt;p&gt;A complete list of JIRAs resolved in the 1.7.0 release can be found &lt;a href=&quot;https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12334767&amp;amp;styleName=&amp;amp;projectId=12313820&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 28 Jun 2016 00:00:00 -0700</pubDate>
+        <link>/blog/2016/06/28/drill-1.7-released/</link>
+        <guid isPermaLink="true">/blog/2016/06/28/drill-1.7-released/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Drill 1.6 Released</title>
@@ -432,43 +461,6 @@ Tomer Shiran and Jacques Nadeau&lt;/p&gt;
         <pubDate>Tue, 19 May 2015 00:00:00 -0700</pubDate>
         <link>/blog/2015/05/19/drill-1.0-released/</link>
         <guid isPermaLink="true">/blog/2015/05/19/drill-1.0-released/</guid>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Drill 0.9 Released</title>
-        <description>&lt;p&gt;It has been about a month since the release of Drill 0.8, which included &lt;a href=&quot;/blog/drill-0.8-released/&quot;&gt;more than 240 improvements&lt;/a&gt;. Today we&amp;#39;re happy to announce the availability of Drill 0.9, providing additional enhancements and bug fixes. In fact, this release includes &lt;a href=&quot;https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12313820&amp;amp;version=12328813&quot;&gt;200 resolved JIRAs&lt;/a&gt;. Some of the noteworthy features in Drill 0.9 are:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Authentication&lt;/strong&gt; (&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-2674&quot;&gt;DRILL-2674&lt;/a&gt;). Drill now supports username/password authentication through the Java and C++ clients, as well as JDBC and ODBC. On the server-side, Drill leverages Linux PAM to securely validate the credentials. Users can choose to use an external user directory such as Active Directory or LDAP. To enable authentication, set the &lt;code&gt;security.user.auth&lt;/code&gt; option in &lt;code&gt;drill-override.conf&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Impersonation&lt;/strong&gt; (&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-2363&quot;&gt;DRILL-2363&lt;/a&gt;). Queries now execute and access resources using the identity of the user who submitted the query. Previously, all queries would run as the same user (eg, &lt;code&gt;drill&lt;/code&gt;). With the new impersonation capability, the query will fail if the submitting user does not have permission to read the requested file(s) in the distributed file system. To enable impersonation, set the &lt;code&gt;drill.exec.impersonation&lt;/code&gt; option in &lt;code&gt;drill-override.conf&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Ownership chaining&lt;/strong&gt;. Drill now allows views with different owners to be chained. This represents a very flexible access control solution. For example, an administrator with access to raw, sensitive data could create a view called &lt;code&gt;masked&lt;/code&gt; which would expose only a subset of the data to other users. The administrator would enable users to read the &lt;code&gt;masked&lt;/code&gt; view but not the raw data. Note that Drill provides an option &lt;code&gt;max_chained_user_hops&lt;/code&gt; that specifies how many ownership changed are allowed in a chain, thereby providing administrators (or data stewards) more control over sharing of data.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;MongoDB authentication&lt;/strong&gt; (&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-1502&quot;&gt;DRILL-1502&lt;/a&gt;). Drill can now connect to a MongoDB cluster that requires authentication.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Extended JSON datatypes&lt;/strong&gt;. Our friends at MongoDB invented &lt;a href=&quot;http://docs.mongodb.org/manual/reference/mongodb-extended-json/&quot;&gt;extended JSON&lt;/a&gt; - a set of extensions to the JSON format for supporting additional data types. We decided to embrace extended JSON in Drill. For example, standard JSON doesn&amp;#39;t have a time type, so a time could be represented as either a string or a number: &lt;code&gt;{&amp;quot;foo&amp;quot;: &amp;quot;19:20:30.450Z&amp;quot;}&lt;/code&gt; is just a string. With extended JSON, the &lt;code&gt;$time&lt;/code&gt; qualifier can be used to specify that &lt;code&gt;foo&lt;/code&gt; is a time &lt;code&gt;{&amp;quot;foo&amp;quot;: {&amp;quot;$time&amp;quot;: &amp;quot;19:20:30.450Z&amp;quot;}}&lt;/code&gt;.
-We now support a number of qualifiers including &lt;code&gt;$bin&lt;/code&gt;, &lt;code&gt;$date&lt;/code&gt;, &lt;code&gt;$time&lt;/code&gt;, &lt;code&gt;$interval&lt;/code&gt;, &lt;code&gt;$numberLong&lt;/code&gt; and &lt;code&gt;$dateDay&lt;/code&gt; (see &lt;a href=&quot;https://github.com/apache/drill/blob/master/exec/java-exec/src/test/resources/vector/complex/extended.json&quot;&gt;the example&lt;/a&gt;). We&amp;#39;re in the process of adding some additional qualifiers to make sure that all of MongoDB&amp;#39;s extended types are supported (this is particularly important when querying data in MongoDB).&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Avro support&lt;/strong&gt; (&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-1512&quot;&gt;DRILL-1512&lt;/a&gt;). Drill can now read Avro files. This patch was contributed by Andrew Selden at Elastic.co (formerly known as Elasticsearch).&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Improved error messages&lt;/strong&gt; (&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-2675&quot;&gt;DRILL-2675&lt;/a&gt; and more). It can be challenging for a complex distributed system like Drill to translate low-level internal conditions into actionable messages to the user. This release includes several enhancements that enable Drill to accomplish just that in a variety of cases.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Parquet and Calcite enhancements&lt;/strong&gt; (&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-1410&quot;&gt;DRILL-1410&lt;/a&gt; and &lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-1384&quot;&gt;DRILL-1384&lt;/a&gt;). Drill isn&amp;#39;t a traditional query engine - it&amp;#39;s the first analytical query engine with a JSON data model. This has required us to enhance Parquet (our columnar format) and Calcite (our SQL parser). These enhancements have now been contributed back to those projects, and Drill is using the latest versions which include these enhancements.&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;New sys tables for memory and thread information&lt;/strong&gt; (&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-2275&quot;&gt;DRILL-2275&lt;/a&gt;). Drill includes two new &lt;code&gt;sys&lt;/code&gt; tables that provide real-time metrics about memory utilization and threads on each of the nodes in the cluster. You can run a simple &lt;code&gt;SELECT *&lt;/code&gt; to see what information is available:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sql&quot; data-lang=&quot;sql&quot;&gt;&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;drillmemory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;drillbitthreads&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Support for very wide tables&lt;/strong&gt; (&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-2739&quot;&gt;DRILL-2739&lt;/a&gt;). Drill previously had some issues with tables that had more than 4095 colums. This limitation has been addressed.&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;You can now &lt;a href=&quot;/download/&quot;&gt;download Drill 0.9&lt;/a&gt;. As always, you can check out the official &lt;a href=&quot;/docs/release-notes/&quot;&gt;release notes&lt;/a&gt; for more details.&lt;/p&gt;
-
-&lt;p&gt;We&amp;#39;re gearing up for Drill&amp;#39;s 1.0 release later this month. Stay tuned!&lt;/p&gt;
-
-&lt;p&gt;Happy Drilling!&lt;br&gt;
-Tomer Shiran and Jacques Nadeau&lt;/p&gt;
-</description>
-        <pubDate>Mon, 04 May 2015 00:00:00 -0700</pubDate>
-        <link>/blog/2015/05/04/drill-0.9-released/</link>
-        <guid isPermaLink="true">/blog/2015/05/04/drill-0.9-released/</guid>
         
         
         <category>blog</category>
