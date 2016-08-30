@@ -951,6 +951,10 @@
           <ul style="display: none">
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-8-0-release-notes/">Apache Drill 1.8.0 Release Notes</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-7-0-release-notes/">Apache Drill 1.7.0 Release Notes</a></li>
             
           
@@ -1070,28 +1074,41 @@
 
     </div>
 
-     
+     Aug 4, 2016
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>The DROP VIEW command removes a view that was created in a workspace using the CREATE VIEW command.</p>
+        <p>The DROP VIEW command removes a view that was created in a workspace using the CREATE VIEW command. As of Drill 1.8, you can include the IF EXISTS parameter with the DROP VIEW command.</p>
 
 <h2 id="syntax">Syntax</h2>
 
 <p>The DROP VIEW command supports the following syntax:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> DROP VIEW [workspace.]view_name;
+<div class="highlight"><pre><code class="language-text" data-lang="text">DROP VIEW [IF EXISTS] [workspace.]view_name;  
 </code></pre></div>
+<h2 id="parameters">Parameters</h2>
+
+<p>IF EXISTS<br>
+Drill does not throw an error if the view does not exist. Instead, Drill returns &quot;<code>View [view_name] not found in schema [workspace].</code>&quot;  </p>
+
+<p><em>workspace</em><br>
+The location of the view in subdirectories of a local or distributed file system.</p>
+
+<p><em>name</em><br>
+A unique directory or file name, optionally prefaced by a storage plugin name, such as <code>dfs</code>, and a workspace, such as <code>tmp</code> using dot notation. </p>
+
 <h2 id="usage-notes">Usage Notes</h2>
 
 <p>When you drop a view, all information about the view is deleted from the workspace in which it was created. DROP VIEW applies to the view only, not to the underlying data sources used to create the view. However, if you drop a view that another view is dependent on, you can no longer use the dependent view. If the underlying tables or views change after a view is created, you may want to drop and re-create the view. Alternatively, you can use the CREATE OR REPLACE VIEW syntax to update the view.</p>
 
 <h2 id="example">Example</h2>
 
-<p>This example shows you some steps to follow when you want to drop a view in Drill using the DROP VIEW command. A workspace named “donuts” was created for the steps in this example.
-Complete the following steps to drop a view in Drill:
-Use the writable workspace from which the view was created.</p>
+<p>This example shows you some steps to follow when you want to drop a view in Drill using the DROP VIEW command. A workspace named “donuts” was created for the steps in this example.  </p>
+
+<p>Complete the following steps to drop a view in Drill:  </p>
+
+<p>Use the writable workspace from which the view was created.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; use dfs.donuts;
 +------------+------------+
 |     ok    |  summary   |
@@ -1112,8 +1129,25 @@ Use the writable workspace from which the view was created.</p>
 +------------+------------+
 |   ok  |  summary   |
 +------------+------------+
-| true      | View &#39;yourdonuts&#39; deleted successfully from &#39;dfs.tmp&#39; schema |
-+------------+------------+
+| true      | View &#39;yourdonuts&#39; deleted successfully from &#39;dfs.tmp&#39; schema |  
++------------+------------+  
+</code></pre></div>
+<p>Use the DROP VIEW command with or without the IF EXISTS parameter to remove a view created in the current workspace.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; drop view if exists mydonuts;
++------------+--------------------------------------------------------------+
+|     ok     | summary                                                      |
++------------+--------------------------------------------------------------+
+| true       | View &#39;mydonuts&#39; deleted successfully from &#39;dfs.donuts&#39; schema|
++------------+--------------------------------------------------------------+
+</code></pre></div>
+<p>Use the DROP VIEW command with the IF EXISTS parameter to remove a view that does not exist in the current workspace, either because it was never created or it was already removed.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; drop view if exists mydonuts;
++-------+---------------------------------------------------+
+|  ok   |                   summary                         |
++-------+---------------------------------------------------+
+| true  | View &#39;mydonuts&#39; not found in schema &#39;dfs.donuts&#39;  |
++-------+---------------------------------------------------+
+1 row selected (0.085 seconds)
 </code></pre></div>
     
       

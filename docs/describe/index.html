@@ -951,6 +951,10 @@
           <ul style="display: none">
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-8-0-release-notes/">Apache Drill 1.8.0 Release Notes</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-7-0-release-notes/">Apache Drill 1.7.0 Release Notes</a></li>
             
           
@@ -1070,33 +1074,58 @@
 
     </div>
 
-     
+     Aug 4, 2016
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>The DESCRIBE command returns information about columns in a table or view.</p>
+        <p>The DESCRIBE command returns information about columns in a table, view, or schema.</p>
 
 <h2 id="syntax">Syntax</h2>
 
 <p>The DESCRIBE command supports the following syntax:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">DESCRIBE [workspace.]table_name|view_name
+DESCRIBE SCHEMA|DATABASE &lt;name&gt;[.workspace]
 </code></pre></div>
+<h2 id="parameters">Parameters</h2>
+
+<p><em>workspace</em><br>
+The location, within a schema, where a table or view exists.  </p>
+
+<p><em>view_name</em><br>
+The unique name of a view.  </p>
+
+<p><em>table_name</em><br>
+The unique name of a table.  </p>
+
+<p><em>schema/database</em><br>
+A configured storage plugin instance with or without a configured workspace. </p>
+
 <h2 id="usage-notes">Usage Notes</h2>
 
-<p>You can issue the DESCRIBE command against views created in a workspace and
-tables created in Hive and HBase. You can issue the DESCRIBE command
-on a table or view from any schema. For example, if you are working in the
-<code>dfs.myworkspace</code> schema, you can issue the DESCRIBE command on a view or
-table in another schema. Currently, DESCRIBE does not support tables created
-in a file system.</p>
+<p>Drill only supports SQL data types. Verify that all data types in an external data source, such as Hive or HBase, map to supported data types in Drill. See <a href="/docs/data-types/">Data Types</a> for more information.  </p>
 
-<p>Drill only supports SQL data types. Verify that all data types in an external
-data source, such as Hive or HBase, map to supported data types in Drill. See
-Drill Data Type Mapping for more information.</p>
+<h3 id="describe">DESCRIBE</h3>
 
-<h2 id="example">Example</h2>
+<ul>
+<li>You can issue the DESCRIBE command against views created in a workspace, tables created in Hive and HBase, or schemas.<br></li>
+<li>You can issue the DESCRIBE command on a table or view from any schema. For example, if you are working in the dfs.myworkspace schema, you can issue the DESCRIBE command on a view or table in another schema, such hive or dfs.devworkspace.<br></li>
+<li>Currently, DESCRIBE does not support tables created in a file system.</li>
+</ul>
+
+<h3 id="describe-schema">DESCRIBE SCHEMA</h3>
+
+<ul>
+<li>You can issue the DESCRIBE SCHEMA command on any schema. However, you can only include workspaces for file schemas, such as <code>dfs.myworkspace</code>.<br></li>
+<li>When you issue the DESCRIBE SCHEMA command on a particular schema, Drill returns all of the schema properties. The schema properties correlate with the configuration information in the Storage tab of the Drill Web Console for that schema.<br></li>
+<li>When you issue DESCRIBE SCHEMA against a schema and workspace, such as <code>dfs.myworkspace</code>, Drill returns the workspace properties in addition to all of the schema properties.<br></li>
+<li>When you issue DESCRIBE SCHEMA against the <code>dfs</code> schema, Drill also returns the properties of the “default” workspace. Issuing DESCRIBE SCHEMA against <code>dfs</code> or <code>dfs.`default`</code> returns the same results. </li>
+</ul>
+
+<h2 id="examples">Examples</h2>
+
+<h3 id="describe">DESCRIBE</h3>
 
 <p>The following example demonstrates the steps that you can follow when you want
 to use the DESCRIBE command to see column information for a view and for Hive
@@ -1164,8 +1193,36 @@ and HBase tables.</p>
 | agg_rev   | VARCHAR   | NO        |
 | membership  | VARCHAR | NO        |
 +-------------+------------+-------------+
-7 rows selected (0.403 seconds)
+7 rows selected (0.403 seconds)  
+</code></pre></div>
+<ol>
+<li><p>Issue the DESCRIBE SCHEMA command on <code>dfs.tmp</code> (the <code>dfs</code> schema and <code>tmp</code> workspace configured within the <code>dfs</code> schema) from the current schema.  </p>
+
+<p>0: jdbc:drill:zk=drilldemo:5181&gt; describe schema dfs.tmp;  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">  {
+    &quot;type&quot; : &quot;file&quot;,
+    &quot;enabled&quot; : true,
+    &quot;connection&quot; : &quot;file:///&quot;,
+    &quot;config&quot; : null,
+    &quot;formats&quot; : {
+      &quot;psv&quot; : {
+        &quot;type&quot; : &quot;text&quot;,
+        &quot;extensions&quot; : [ &quot;tbl&quot; ],
+        &quot;delimiter&quot; : &quot;|&quot;
+      },
+      &quot;csv&quot; : {
+        &quot;type&quot; : &quot;text&quot;,
+        &quot;extensions&quot; : [ &quot;csv&quot;, &quot;bcp&quot; ],
+        &quot;delimiter&quot; : &quot;,&quot;
+      },
+     ... 
+    },
+    &quot;location&quot; : &quot;/tmp&quot;,
+    &quot;writable&quot; : true,
+    &quot;defaultInputFormat&quot; : null
+  }  
 </code></pre></div></li>
+</ol></li>
 </ol>
 
     

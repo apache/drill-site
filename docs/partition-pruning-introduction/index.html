@@ -951,6 +951,10 @@
           <ul style="display: none">
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-8-0-release-notes/">Apache Drill 1.8.0 Release Notes</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-7-0-release-notes/">Apache Drill 1.7.0 Release Notes</a></li>
             
           
@@ -1070,13 +1074,15 @@
 
     </div>
 
-     
+     Aug 15, 2016
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
         <p>Partition pruning is a performance optimization that limits the number of files and partitions that Drill reads when querying file systems and Hive tables. When you partition data, Drill only reads a subset of the files that reside in a file system or a subset of the partitions in a Hive table when a query matches certain filter criteria.</p>
+
+<p>As of Drill 1.8, partition pruning also applies to the Parquet metadata cache. When data is partitioned in a directory hierarchy, Drill attempts to read the metadata cache file from a sub-partition, based on matching filter criteria instead of reading from the top level partition, to reduce the amount of metadata read during the query planning time. If you created a metadata cache file in a previous version of Drill, you must issue the REFRESH TABLE METADATA command to regenerate the metadata cache file before running queries for metadata cache pruning to occur. See <a href="/docs/optimizing-parquet-metadata-reading/">Optimizing Parquet Metadata Reading</a> for more information.  </p>
 
 <p>The query planner in Drill performs partition pruning by evaluating the filters. If no partition filters are present, the underlying Scan operator reads all files in all directories and then sends the data to operators, such as Filter, downstream. When partition filters are present, the query planner pushes the filters down to the Scan if possible. The Scan reads only the directories that match the partition filters, thus reducing disk I/O.</p>
 
