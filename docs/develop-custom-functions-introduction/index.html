@@ -569,7 +569,15 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/asynchronous-parquet-reader/">Asynchronous Parquet Reader</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/optimizing-parquet-metadata-reading/">Optimizing Parquet Metadata Reading</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/parquet-filter-pushdown/">Parquet Filter Pushdown</a></li>
             
           
             
@@ -759,11 +767,15 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-table-as-ctas/">CREATE TABLE AS (CTAS)</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/create-function-using-jar/">CREATE FUNCTION USING JAR</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/partition-by-clause/">PARTITION BY Clause</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-view/">CREATE VIEW</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/describe/">DESCRIBE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-function-using-jar/">DROP FUNCTION USING JAR</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/drop-table/">DROP TABLE</a></li>
               
@@ -880,7 +892,16 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/adding-custom-functions-to-drill/">Adding Custom Functions to Drill</a></li>
+              <li class="toctree-l2"><a href="javascript: void(0);">Adding Custom Functions to Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/adding-custom-functions-to-drill-introduction/">Adding Custom Functions to Drill Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/manually-adding-custom-functions-to-drill/">Manually Adding Custom Functions to Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/dynamic-udfs/">Dynamic UDFs</a></li>
+              
+            </ul>
             
           
             
@@ -949,6 +970,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-9-0-release-notes/">Apache Drill 1.9.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-8-0-release-notes/">Apache Drill 1.8.0 Release Notes</a></li>
@@ -1072,54 +1097,38 @@
 
     </div>
 
-     Jan 15, 2016
+     Nov 21, 2016
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Drill provides a high performance Java API with interfaces that you can
-implement to develop simple custom functions. Custom functions
-are reusable SQL functions that you develop in Java to encapsulate code that
-processes column values during a query. Custom functions have all the performance of the Drill primitive operations. Custom functions can perform
-calculations and transformations that built-in SQL operators and functions do
-not provide. Custom functions are called from within a SQL statement, like a
-regular function, and return a single value.</p>
+        <p>Drill provides a high performance Java API with interfaces that you can use to develop simple and aggregate custom functions. Custom functions are reusable SQL functions that you develop in Java to encapsulate code that processes column values during a query. </p>
 
-<p>This section includes a <a href="/docs/tutorial-develop-a-simple-function/">tutorial</a> for creating a simple function that is based on a github project, which you can download. </p>
+<p>Custom functions are called from within a SQL statement, like a regular function, and return a single value. Custom functions perform like Drill primitive operations. They can perform calculations and transformations that built-in SQL operators and functions do not provide.  </p>
 
 <h2 id="simple-function">Simple Function</h2>
 
 <p>A simple function operates on a single row and produces a single row as the
 output. When you include a simple function in a query, the function is called
 once for each row in the result set. Mathematical and string functions are
-examples of simple functions. </p>
+examples of simple functions.  </p>
+
+<p>You can use the provided <a href="/docs/tutorial-develop-a-simple-function/">tutorial</a> to create a simple function that is based on a github project, which you can download.</p>
 
 <h2 id="aggregate-function">Aggregate Function</h2>
 
-<p>The API for developing aggregate custom functions is at the alpha stage and intended for experimental use only. Aggregate functions differ from simple functions in the number of rows that
-they accept as input. An aggregate function operates on multiple input rows
-and produces a single row as output. The COUNT(), MAX(), SUM(), and AVG()
-functions are examples of aggregate functions. You can use an aggregate
-function in a query with a GROUP BY clause to produce a result set with a
-separate aggregate value for each combination of values from the GROUP BY
-clause.</p>
+<p>The API for developing aggregate custom functions is at the alpha stage and intended for experimental use only. Aggregate functions differ from simple functions in the number of rows that they accept as input. An aggregate function operates on multiple input rows
+and produces a single row as output.  </p>
 
-<h2 id="process">Process</h2>
+<p>The COUNT(), MAX(), SUM(), and AVG() functions are examples of aggregate functions. You can use an aggregate function in a query with a GROUP BY clause to produce a result set with a
+separate aggregate value for each combination of values from the GROUP BY clause.</p>
 
-<p>To develop custom functions that you can use in your Drill queries, you must
-complete the following tasks:</p>
+<h2 id="development-process">Development Process</h2>
 
-<ol>
-<li>Create a Java program that implements Drill’s simple or aggregate interface.</li>
-<li><p>Add the following code to the drill-module.conf in your UDF project (src/main/resources/drill-module.conf). Replace com.yourgroupidentifier.udf with the package name(s) of your UDFs.<br>
-       drill.classpath.scanning.packages += &quot;com.yourgroupidentifier.udf&quot;</p></li>
-<li><p>Compile the UDF and place both jar files (source + binary) in the Drill classpath on all the Drillbits.  </p></li>
-<li><p>Ensure that DRILL_HOME/conf/drill-override.conf does not contain any information regarding UDF packages.  </p></li>
-<li><p>Restart drill on all the Drillbits.  </p></li>
-</ol>
+<p>To develop custom functions for Drill, create a Java program that implements Drill’s <a href="/docs/developing-a-simple-function/">simple</a> or <a href="/docs/developing-an-aggregate-function/">aggregate</a> interface and then add your custom function(s) to Drill.  </p>
 
-<p>The following example shows an alternative process that is simpler short-term, but involves maintainence.</p>
+<p>As of Drill 1.9, there are two methods for adding custom functions to Drill. Administrators can manually add custom functions to Drill, or users can issue the CREATE FUNCTION USING JAR command to register their custom functions. The CREATE FUNCTION USING JAR command is part of the <a href="/docs/dynamic-udfs/">Dynamic UDF feature</a> which requires assistance from an administrator. </p>
 
     
       
