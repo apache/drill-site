@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+<meta name=viewport content="width=device-width, initial-scale=1">
+
+
+<title>Date/Time Functions and Arithmetic - Apache Drill</title>
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
+<link href="/css/site.css" rel="stylesheet" type="text/css"/>
+
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+<link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" language="javascript" type="text/javascript"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js" language="javascript" type="text/javascript"></script>
+<script language="javascript" type="text/javascript" src="/js/modernizr.custom.js"></script>
+<script language="javascript" type="text/javascript" src="/js/script.js"></script>
+<script language="javascript" type="text/javascript" src="/js/drill.js"></script>
+
+</head>
+
+
+<body onResize="resized();">
+  <div class="page-wrap">
+    <div class="bui"></div>
+
+<div id="menu" class="mw">
+<ul>
+  <li class='toc-categories'>
+  <a class="expand-toc-icon" href="javascript:void(0);"><i class="fa fa-bars"></i></a>
+  </li>
+  <li class="logo"><a href="/"></a></li>
+  <li class='expand-menu'>
+  <a href="javascript:void(0);"><span class='menu-text'>Menu</span><span class='expand-icon'><i class="fa fa-bars"></i></span></a>
+  </li>
+  <li class='clear-float'></li>
+  <li class="documentation-menu">
+    <a href="/docs/">Documentation</a>
+    <ul>
+      
+        <li><a href="/docs/getting-started/">Getting Started</a></li>
+      
+        <li><a href="/docs/architecture/">Architecture</a></li>
+      
+        <li><a href="/docs/tutorials/">Tutorials</a></li>
+      
+        <li><a href="/docs/install-drill/">Install Drill</a></li>
+      
+        <li><a href="/docs/configure-drill/">Configure Drill</a></li>
+      
+        <li><a href="/docs/connect-a-data-source/">Connect a Data Source</a></li>
+      
+        <li><a href="/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces</a></li>
+      
+        <li><a href="/docs/query-data/">Query Data</a></li>
+      
+        <li><a href="/docs/performance-tuning/">Performance Tuning</a></li>
+      
+        <li><a href="/docs/log-and-debug/">Log and Debug</a></li>
+      
+        <li><a href="/docs/sql-reference/">SQL Reference</a></li>
+      
+        <li><a href="/docs/data-sources-and-file-formats/">Data Sources and File Formats</a></li>
+      
+        <li><a href="/docs/develop-custom-functions/">Develop Custom Functions</a></li>
+      
+        <li><a href="/docs/troubleshooting/">Troubleshooting</a></li>
+      
+        <li><a href="/docs/developer-information/">Developer Information</a></li>
+      
+        <li><a href="/docs/release-notes/">Release Notes</a></li>
+      
+        <li><a href="/docs/sample-datasets/">Sample Datasets</a></li>
+      
+        <li><a href="/docs/project-bylaws/">Project Bylaws</a></li>
+      
+    </ul>
+  </li>
+  <li class='nav'>
+    <a href="/community-resources/">Community</a>
+    <ul>
+      <li><a href="/team/">Team</a></li>
+      <li><a href="/mailinglists/">Mailing Lists</a></li>
+      <li><a href="/community-resources/">Community Resources</a></li>
+    </ul>
+  </li>
+  <li class='nav'><a href="/faq/">FAQ</a></li>
+  <li class='nav'><a href="/blog/">Blog</a></li>
+  <li id="twitter-menu-item"><a href="https://twitter.com/apachedrill" title="apachedrill on twitter" target="_blank"><img src="/images/twitter_32_26_white.png" alt="twitter logo" align="center"></a> </li>
+  <li class='search-bar'>
+    <form id="drill-search-form">
+      <input type="text" placeholder="Search Apache Drill" id="drill-search-term" />
+      <button type="submit">
+        <i class="fa fa-search"></i>
+      </button>
+    </form>
+  </li>
+  <li class="d">
+    <a href="/download/">
+      <i class="fa fa-cloud-download"></i> Download
+    </a>
+  </li>
+</ul>
+</div>
+
+    <link href="/css/content.css" rel="stylesheet" type="text/css">
+
+
+      
+
+
+
+
+<aside class="sidebar">
+  <div class="docsidebar">
+    <div class="docsidebarwrapper">
+      <ul style="display: block;">
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Getting Started</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/drill-introduction/">Drill Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/why-drill/">Why Drill</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Architecture</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/architecture-introduction/">Architecture Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/drill-query-execution/">Drill Query Execution</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/core-modules/">Core Modules</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/performance/">Performance</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Tutorials</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/tutorials-introduction/">Tutorials Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/drill-in-10-minutes/">Drill in 10 Minutes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/analyzing-the-yelp-academic-dataset/">Analyzing the Yelp Academic Dataset</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Learn Drill with the MapR Sandbox</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/about-the-mapr-sandbox/">About the MapR Sandbox</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-the-apache-drill-sandbox/">Installing the Apache Drill Sandbox</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/getting-to-know-the-drill-sandbox/">Getting to Know the Drill Sandbox</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/lesson-1-learn-about-the-data-set/">Lesson 1: Learn about the Data Set</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/lesson-2-run-queries-with-ansi-sql/">Lesson 2: Run Queries with ANSI SQL</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/lesson-3-run-queries-on-complex-data-types/">Lesson 3: Run Queries on Complex Data Types</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/summary/">Summary</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/analyzing-highly-dynamic-datasets/">Analyzing Highly Dynamic Datasets</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/analyzing-social-media/">Analyzing Social Media</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/analyzing-data-using-window-functions/">Analyzing Data Using Window Functions</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Install Drill</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/install-drill-introduction/">Install Drill Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/migrating-parquet-data/">Migrating Parquet Data</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Installing Drill in Embedded Mode</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-windows/">Installing Drill on Windows</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-windows/">Starting Drill on Windows</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Installing Drill in Distributed Mode</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/distributed-mode-prerequisites/">Distributed Mode Prerequisites</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-the-cluster/">Installing Drill on the Cluster</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-in-distributed-mode/">Starting Drill in Distributed Mode</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/starting-the-web-console/">Starting the Web Console</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Configure Drill</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configure-drill-introduction/">Configure Drill Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-drill-memory/">Configuring Drill Memory</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Configuring a Multitenant Cluster</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-a-multitenant-cluster-introduction/">Configuring a Multitenant Cluster Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-multitenant-resources/">Configuring Multitenant Resources</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-resources-for-a-shared-drillbit/">Configuring Resources for a Shared Drillbit</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-user-impersonation/">Configuring User Impersonation</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-inbound-impersonation/">Configuring Inbound Impersonation</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-user-authentication/">Configuring User Authentication</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-web-console-and-rest-api-security/">Configuring Web Console and REST API Security</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Configuration Options</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuration-options-introduction/">Configuration Options Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/start-up-options/">Start-Up Options</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/planning-and-execution-options/">Planning and Execution Options</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/persistent-configuration-storage/">Persistent Configuration Storage</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ports-used-by-drill/">Ports Used by Drill</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-the-drill-shell/">Configuring the Drill Shell</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Connect a Data Source</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/connect-a-data-source-introduction/">Connect a Data Source Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/storage-plugin-registration/">Storage Plugin Registration</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Storage Plugin Configuration</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/plugin-configuration-basics/">Plugin Configuration Basics</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/workspaces/">Workspaces</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drill-default-input-format/">Drill Default Input Format</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/file-system-storage-plugin/">File System Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hive-storage-plugin/">Hive Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/rdbms-storage-plugin/">RDBMS Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/mongodb-storage-plugin/">MongoDB Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/mapr-db-format/">MapR-DB Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/s3-storage-plugin/">S3 Storage Plugin</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">ODBC/JDBC Interfaces</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/interfaces-introduction/">Interfaces Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/using-the-jdbc-driver/">Using the JDBC Driver</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/using-jdbc-with-squirrel-on-windows/">Using JDBC with SQuirreL on Windows</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Installing the ODBC Driver</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-the-driver-on-linux/">Installing the Driver on Linux</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-the-driver-on-mac-os-x/">Installing the Driver on Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-the-driver-on-windows/">Installing the Driver on Windows</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Configuring ODBC</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/odbc-configuration-reference/">ODBC Configuration Reference</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-linux/">Configuring ODBC on Linux</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-mac-os-x/">Configuring ODBC on Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-windows/">Configuring ODBC on Windows</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/testing-the-odbc-connection/">Testing the ODBC Connection</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Using Drill Explorer</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drill-explorer-introduction/">Drill Explorer Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/connecting-drill-explorer-to-data/">Connecting Drill Explorer to Data</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/browsing-data-and-defining-views/">Browsing Data and Defining Views</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Using Drill with BI Tools</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/using-drill-with-bi-tools-introduction/">Using Drill with BI Tools Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/tableau-examples/">Tableau Examples</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/using-microstrategy-analytics-with-apache-drill/">Using MicroStrategy Analytics with Apache Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/using-tibco-spotfire-desktop-with-drill/">Using Tibco Spotfire Desktop with Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-tibco-spotfire-server-with-drill/">Configuring Tibco Spotfire Server with Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/using-qlik-sense-with-drill/">Using Qlik Sense with Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-desktop/">Using Apache Drill with Tableau 9 Desktop</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/using-information-builders-webfocus-with-apache-drill/">Using Information Builders’ WebFOCUS with Apache Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-jreport-with-drill/">Configuring JReport with Drill</a></li>
+              
+            </ul>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Query Data</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/query-data-introduction/">Query Data Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Querying a File System</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/querying-a-file-system-introduction/">Querying a File System Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/querying-avro-files/">Querying Avro Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/querying-json-files/">Querying JSON Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/querying-parquet-files/">Querying Parquet Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/querying-plain-text-files/">Querying Plain Text Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/querying-directories/">Querying Directories</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/querying-sequence-files/">Querying Sequence Files</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/querying-hbase/">Querying HBase</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Querying Complex Data</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/querying-complex-data-introduction/">Querying Complex Data Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sample-data-donuts/">Sample Data: Donuts</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/selecting-flat-data/">Selecting Flat Data</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/using-sql-functions-clauses-and-joins/">Using SQL Functions, Clauses, and Joins</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/selecting-nested-data-for-a-column/">Selecting Nested Data for a Column</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/selecting-multiple-columns-within-nested-data/">Selecting Multiple Columns Within Nested Data</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/querying-hive/">Querying Hive</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/querying-the-information-schema/">Querying the INFORMATION SCHEMA</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/querying-system-tables/">Querying System Tables</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/monitoring-and-canceling-queries-in-the-drill-web-console/">Monitoring and Canceling Queries in the Drill Web Console</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Performance Tuning</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/performance-tuning-introduction/">Performance Tuning Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Partition Pruning</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/partition-pruning-introduction/">Partition Pruning Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/how-to-partition-data/">How to Partition Data</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/asynchronous-parquet-reader/">Asynchronous Parquet Reader</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/optimizing-parquet-metadata-reading/">Optimizing Parquet Metadata Reading</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/parquet-filter-pushdown/">Parquet Filter Pushdown</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hive-metadata-caching/">Hive Metadata Caching</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/choosing-a-storage-format/">Choosing a Storage Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Query Plans and Tuning</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/query-plans-and-tuning-introduction/">Query Plans and Tuning Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/join-planning-guidelines/">Join Planning Guidelines</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/guidelines-for-optimizing-aggregation/">Guidelines for Optimizing Aggregation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/modifying-query-planning-options/">Modifying Query Planning Options</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sort-based-and-hash-based-memory-constrained-operators/">Sort-Based and Hash-Based Memory-Constrained Operators</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/enabling-query-queuing/">Enabling Query Queuing</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/controlling-parallelization-to-balance-performance-with-multi-tenancy/">Controlling Parallelization to Balance Performance with Multi-Tenancy</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Identifying Performance Issues</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/query-plans/">Query Plans</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/query-profiles/">Query Profiles</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Performance Tuning Reference</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/query-profile-column-descriptions/">Query Profile Column Descriptions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/physical-operators/">Physical Operators</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/monitoring-metrics/">Monitoring Metrics</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Log and Debug</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/log-and-debug-introduction/">Log and Debug Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/error-messages/">Error Messages</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/modify-logback-xml/">Modify logback.xml</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/review-the-java-stack-trace/">Review the Java Stack Trace</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/query-audit-logging/">Query Audit Logging</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">SQL Reference</a></li>
+          <ul class="current_section">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/sql-reference-introduction/">SQL Reference Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Data Types</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/supported-data-types/">Supported Data Types</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/date-time-and-timestamp/">Date, Time, and Timestamp</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/handling-different-data-types/">Handling Different Data Types</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/lexical-structure/">Lexical Structure</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/operators/">Operators</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Functions</a></li>
+              <ul style="">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/about-sql-function-examples/">About SQL Function Examples</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/math-and-trig/">Math and Trig</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/data-type-conversion/">Data Type Conversion</a></li>
+              
+                <li class="toctree-l3 current"><a class="reference internal" href="/docs/date-time-functions-and-arithmetic/">Date/Time Functions and Arithmetic</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/string-manipulation/">String Manipulation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/aggregate-and-aggregate-statistical/">Aggregate and Aggregate Statistical</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/functions-for-handling-nulls/">Functions for Handling Nulls</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Window Functions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-window-functions-introduction/">SQL Window Functions Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/aggregate-window-functions/">Aggregate Window Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/ranking-window-functions/">Ranking Window Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/value-window-functions/">Value Window Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-window-functions-examples/">SQL Window Functions Examples</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Nested Data Functions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/nested-data-limitations/">Nested Data Limitations</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/flatten/">FLATTEN</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/kvgen/">KVGEN</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/repeated-count/">REPEATED_COUNT</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/repeated-contains/">REPEATED_CONTAINS</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/query-directory-functions/">Query Directory Functions</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Commands</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/supported-sql-commands/">Supported SQL Commands</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/set/">SET</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/reset/">RESET</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/alter-system/">ALTER SYSTEM</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/create-table-as-ctas/">CREATE TABLE AS (CTAS)</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/create-function-using-jar/">CREATE FUNCTION USING JAR</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/partition-by-clause/">PARTITION BY Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/create-view/">CREATE VIEW</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/describe/">DESCRIBE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-function-using-jar/">DROP FUNCTION USING JAR</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-table/">DROP TABLE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/explain/">EXPLAIN</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/select/">SELECT</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/select-list/">SELECT List</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/from-clause/">FROM Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/group-by-clause/">GROUP BY Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/having-clause/">HAVING Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/limit-clause/">LIMIT Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/offset-clause/">OFFSET Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/order-by-clause/">ORDER BY Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/union-set-operator/">UNION Set Operator</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/where-clause/">WHERE Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/with-clause/">WITH Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/show-databases-and-show-schemas/">SHOW DATABASES and SHOW SCHEMAS</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/show-files/">SHOW FILES</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/show-tables/">SHOW TABLES</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/use/">USE</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Conditional Expressions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/case/">CASE</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/reserved-keywords/">Reserved Keywords</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/sql-extensions/">SQL Extensions</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Data Sources and File Formats</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/data-sources-and-file-formats-introduction/">Data Sources and File Formats Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hive-to-drill-data-type-mapping/">Hive-to-Drill Data Type Mapping</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/deploying-and-using-a-hive-udf/">Deploying and Using a Hive UDF</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/parquet-format/">Parquet Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/text-files-csv-tsv-psv/">Text Files: CSV, TSV, PSV</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Develop Custom Functions</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/develop-custom-functions-introduction/">Develop Custom Functions Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/developing-a-simple-function/">Developing a Simple Function</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/tutorial-develop-a-simple-function/">Tutorial: Develop a Simple Function</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/developing-an-aggregate-function/">Developing an Aggregate Function</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Adding Custom Functions to Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/adding-custom-functions-to-drill-introduction/">Adding Custom Functions to Drill Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/manually-adding-custom-functions-to-drill/">Manually Adding Custom Functions to Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/dynamic-udfs/">Dynamic UDFs</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/using-custom-functions-in-queries/">Using Custom Functions in Queries</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/custom-function-interfaces/">Custom Function Interfaces</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a class="reference internal" href="/docs/troubleshooting/">Troubleshooting</a></li>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Developer Information</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/rest-api/">REST API</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Develop Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/compiling-drill-from-source/">Compiling Drill from Source</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Contribute to Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/apache-drill-contribution-guidelines/">Apache Drill Contribution Guidelines</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/apache-drill-contribution-ideas/">Apache Drill Contribution Ideas</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Design Docs</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drill-plan-syntax/">Drill Plan Syntax</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/rpc-overview/">RPC Overview</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/query-stages/">Query Stages</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/useful-research/">Useful Research</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/value-vectors/">Value Vectors</a></li>
+              
+            </ul>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-9-0-release-notes/">Apache Drill 1.9.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-8-0-release-notes/">Apache Drill 1.8.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-7-0-release-notes/">Apache Drill 1.7.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-6-0-release-notes/">Apache Drill 1.6.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-5-0-release-notes/">Apache Drill 1.5.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-4-0-release-notes/">Apache Drill 1.4.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-3-0-release-notes/">Apache Drill 1.3.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-2-0-release-notes/">Apache Drill 1.2.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-1-0-release-notes/">Apache Drill 1.1.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-0-0-release-notes/">Apache Drill 1.0.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-9-0-release-notes/">Apache Drill 0.9.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-8-0-release-notes/">Apache Drill 0.8.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-7-0-release-notes/">Apache Drill 0.7.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-6-0-release-notes/">Apache Drill 0.6.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-m1-release-notes-apache-drill-alpha/">Apache Drill M1 Release Notes (Apache Drill Alpha)</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-m1-release-notes-apache-drill-alpha/">Apache Drill M1 Release Notes (Apache Drill Alpha)</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-5-0-release-notes/">Apache Drill 0.5.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-4-0-release-notes/">Apache Drill 0.4.0 Release Notes</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Sample Datasets</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/aol-search/">AOL Search</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/enron-emails/">Enron Emails</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/wikipedia-edit-history/">Wikipedia Edit History</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a class="reference internal" href="/docs/project-bylaws/">Project Bylaws</a></li>
+        
+      
+      </ul>
+
+    </div>
+  </div>
+</aside>
+
+
+<nav class="breadcrumbs">
+  <li><a href="/docs/">Docs</a></li>
+ 
+  
+    <li><a href="/docs/sql-reference/">SQL Reference</a></li>
+  
+    <li><a href="/docs/sql-functions/">SQL Functions</a></li>
+  
+  <li>Date/Time Functions and Arithmetic</li>
+</nav>
+
+<div class="main-content-wrapper">
+  <div class="main-content">
+
+    
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/sql-reference/sql-functions/030-date-time-functions-and-arithmetic.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+    
+
+    <div class="int_title left">
+      <h1>Date/Time Functions and Arithmetic</h1>
+
+    </div>
+
+     
+
+    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+
+    <div class="int_text" align="left">
+      
+        <p>In addition to the TO_DATE, TO_TIME, and TO_TIMESTAMP functions, Drill supports a number of other date/time functions and arithmetic operators for use with dates, times, and intervals. Drill supports time functions based on the Gregorian calendar and in the range 1971 to 2037.</p>
+
+<p>This section covers the Drill <a href="/docs/data-type-conversion/#time-zone-limitation">time zone limitation</a> and defines the following date/time functions:</p>
+
+<table><thead>
+<tr>
+<th><strong>Function</strong></th>
+<th><strong>Return Type</strong></th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="/docs/date-time-functions-and-arithmetic/#age">AGE(TIMESTAMP)</a></td>
+<td>INTERVALDAY or INTERVALYEAR</td>
+</tr>
+<tr>
+<td><a href="/docs/date-time-functions-and-arithmetic/#extract">EXTRACT(field from time_expression)</a></td>
+<td>DOUBLE</td>
+</tr>
+<tr>
+<td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">CURRENT_DATE</a></td>
+<td>DATE</td>
+</tr>
+<tr>
+<td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">CURRENT_TIME</a></td>
+<td>TIME</td>
+</tr>
+<tr>
+<td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">CURRENT_TIMESTAMP</a></td>
+<td>TIMESTAMP</td>
+</tr>
+<tr>
+<td><a href="/docs/date-time-functions-and-arithmetic/#date_add">DATE_ADD</a></td>
+<td>DATE, TIMESTAMP</td>
+</tr>
+<tr>
+<td><a href="/docs/date-time-functions-and-arithmetic/#date_part">DATE_PART</a></td>
+<td>DOUBLE</td>
+</tr>
+<tr>
+<td><a href="/docs/date-time-functions-and-arithmetic/#date_sub">DATE_SUB</a></td>
+<td>DATE, TIMESTAMP</td>
+</tr>
+<tr>
+<td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">LOCALTIME</a></td>
+<td>TIME</td>
+</tr>
+<tr>
+<td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">LOCALTIMESTAMP</a></td>
+<td>TIMESTAMP</td>
+</tr>
+<tr>
+<td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">NOW</a></td>
+<td>TIMESTAMP</td>
+</tr>
+<tr>
+<td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">TIMEOFDAY</a></td>
+<td>VARCHAR</td>
+</tr>
+<tr>
+<td><a href="/docs/date-time-functions-and-arithmetic/#unix_timestamp">UNIX_TIMESTAMP</a></td>
+<td>BIGINT</td>
+</tr>
+</tbody></table>
+
+<h2 id="age">AGE</h2>
+
+<p>Returns the interval between two timestamps or subtracts a timestamp from midnight of the current date.</p>
+
+<h3 id="age-syntax">AGE Syntax</h3>
+
+<p><code>AGE (timestamp[, timestamp])</code></p>
+
+<p><em>timestamp</em> is the data and time formatted as shown in the following examples.</p>
+
+<h3 id="age-usage-notes">AGE Usage Notes</h3>
+
+<p>Cast string arguments to timestamp to include time data in the calculations of the interval.</p>
+
+<h3 id="age-examples">AGE Examples</h3>
+
+<p>Find the interval between midnight today, April 3, 2015, and June 13, 1957.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT AGE(&#39;1957-06-13&#39;) FROM (VALUES(1));
++------------+
+|   EXPR$0   |
++------------+
+| P703M23D   |
++------------+
+1 row selected (0.064 seconds)
+</code></pre></div>
+<p>Find the interval between midnight today, May 21, 2015, and hire dates of employees 578 and 761 in the <a href="/docs/querying-json-files/"><code>employee.json</code></a> file installed with Drill. The file is installed with Drill and located in the Drill classpath.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT AGE(CAST(hire_date AS TIMESTAMP)) FROM cp.`employee.json` where employee_id IN( &#39;578&#39;,&#39;761&#39;);
++------------------+
+|      EXPR$0      |
++------------------+
+| P236MT25200S     |
+| P211M19DT25200S  |
++------------------+
+2 rows selected (0.121 seconds)
+</code></pre></div>
+<p>Find the interval between 11:10:10 PM on January 1, 2001 and 10:10:10 PM on January 1, 2001.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT AGE(CAST(&#39;2010-01-01 10:10:10&#39; AS TIMESTAMP), CAST(&#39;2001-01-01 11:10:10&#39; AS TIMESTAMP)) FROM (VALUES(1));
++------------------+
+|      EXPR$0      |
++------------------+
+| P109M16DT82800S  |
++------------------+
+1 row selected (0.122 seconds)
+</code></pre></div>
+<p>For information about how to read the interval data, see the <a href="/docs/date-time-and-timestamp/#intervalyear-and-intervalday">Interval section</a>.</p>
+
+<h2 id="date_add">DATE_ADD</h2>
+
+<p>Returns the sum of a date/time and a number of days/hours, or of a date/time and date/time interval.</p>
+
+<h3 id="date_add-syntax">DATE_ADD Syntax</h3>
+
+<p><code>DATE_ADD(keyword literal, integer)</code><br>
+<code>DATE_ADD(keyword literal, interval expr)</code><br>
+<code>DATE_ADD(column, integer)</code><br>
+<code>DATE_ADD(column, interval expr)</code>  </p>
+
+<p><em>keyword</em> is the word date, time, or timestamp.<br>
+<em>literal</em> is a date, time, or timestamp literal.  For example, a date in yyyy-mm-dd format enclosed in single quotation marks.<br>
+<em>integer</em> is a number of days to add to the date/time.<br>
+<em>column</em> is date, time, or timestamp data in a data source column.<br>
+<em>interval</em> is the keyword interval.<br>
+<em>expr</em> is an interval expression, such as the name of a data source column containing interval data.  </p>
+
+<h3 id="date_add-examples">DATE_ADD Examples</h3>
+
+<p>The following examples show how to use the syntax variations.</p>
+
+<p><strong><code>DATE_ADD(keyword literal, integer)</code> Syntax Example</strong></p>
+
+<p>Add two days to today&#39;s date May 15, 2015.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(date &#39;2015-05-15&#39;, 2) FROM (VALUES(1));
++------------+
+|   EXPR$0   |
++------------+
+| 2015-05-17 |
++------------+
+1 row selected (0.07 seconds)
+</code></pre></div>
+<p><strong><code>DATE_ADD(keyword literal, interval expr)</code> Syntax Example</strong></p>
+
+<p>Using the example data from the <a href="/docs/data-type-conversion/#casting-intervals">&quot;Casting Intervals&quot;</a> section, add intervals from the <code>intervals.json</code> file to a literal timestamp. Create an interval expression that casts the INTERVALDAY_col column, which contains P1D, P2D, and P3D, to a timestamp.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(timestamp &#39;2015-04-15 22:55:55&#39;, CAST(INTERVALDAY_col as interval second)) FROM dfs.`/Users/drilluser/apache-drill-1.0.0/intervals.json`;
++------------------------+
+|         EXPR$0         |
++------------------------+
+| 2015-04-16 22:55:55.0  |
+| 2015-04-17 22:55:55.0  |
+| 2015-04-18 22:55:55.0  |
++------------------------+
+3 rows selected (0.105 seconds)
+</code></pre></div>
+<p>The query output is the sum of the timestamp and 1, 2, and 3 days corresponding to P1D, P2D, and P3D.</p>
+
+<p><strong>DATE_ADD(column, integer) Syntax Example</strong></p>
+
+<p>Add two days to the value in the birth_date column.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(CAST(birth_date AS date), 2) FROM cp.`employee.json` LIMIT 1;
++-------------+
+|   EXPR$0    |
++-------------+
+| 1961-08-28  |
++-------------+
+1 row selected (0.209 seconds)
+</code></pre></div>
+<p><strong><code>DATE_ADD(column, interval expr)</code> Syntax Example</strong></p>
+
+<p>Add a 10 hour interval to the hire dates of employees listed in the <code>employee.json</code> file, which Drill includes in the installation.</p>
+
+<ol>
+<li><p>Take a look at the employee data:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM cp.`employee.json` LIMIT 1;
++--------------+---------------+-------------+------------+--------------+-----------------+-----------+----------------+-------------+------------------------+----------+----------------+------------------+-----------------+---------+--------------------+
+| employee_id  |   full_name   | first_name  | last_name  | position_id  | position_title  | store_id  | department_id  | birth_date  |       hire_date        |  salary  | supervisor_id  | education_level  | marital_status  | gender  |  management_role   |
++--------------+---------------+-------------+------------+--------------+-----------------+-----------+----------------+-------------+------------------------+----------+----------------+------------------+-----------------+---------+--------------------+
+| 1            | Sheri Nowmer  | Sheri       | Nowmer     | 1            | President       | 0         | 1              | 1961-08-26  | 1994-12-01 00:00:00.0  | 80000.0  | 0              | Graduate Degree  | S               | F       | Senior Management  |
++--------------+---------------+-------------+------------+--------------+-----------------+-----------+----------------+-------------+------------------------+----------+----------------+------------------+-----------------+---------+--------------------+
+1 row selected (0.137 seconds)
+</code></pre></div></li>
+<li><p>Look at the hire_dates for the employee 578 and 761 in <code>employee.json</code>.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT hire_date FROM cp.`employee.json` where employee_id IN( &#39;578&#39;,&#39;761&#39;);
++------------------------+
+|       hire_date        |
++------------------------+
+| 1996-01-01 00:00:00.0  |
+| 1998-01-01 00:00:00.0  |
++------------------------+
+2 rows selected (0.135 seconds)
+</code></pre></div></li>
+<li><p>Cast the hire_dates of the employees 578 and 761 to a timestamp, and add 10 hours to the hire_date timestamp. Because Drill reads data from JSON as VARCHAR, you need to cast the hire_date to the TIMESTAMP type. </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(CAST(hire_date AS TIMESTAMP), interval &#39;10&#39; hour) FROM cp.`employee.json` where employee_id IN( &#39;578&#39;,&#39;761&#39;);
++------------------------+
+|         EXPR$0         |
++------------------------+
+| 1996-01-01 10:00:00.0  |
+| 1998-01-01 10:00:00.0  |
++------------------------+
+2 rows selected (0.172 seconds)
+</code></pre></div></li>
+</ol>
+
+<p><strong><code>DATE_ADD(keyword literal, integer)</code> Syntax Example</strong></p>
+
+<p>Add 1 year and 1 month to the timestamp 2015-04-15 22:55:55.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(timestamp &#39;2015-04-15 22:55:55&#39;, interval &#39;1-2&#39; year to month) FROM (VALUES(1));
++------------------------+
+|         EXPR$0         |
++------------------------+
+| 2016-06-15 22:55:55.0  |
++------------------------+
+1 row selected (0.106 seconds)
+</code></pre></div>
+<p>Add 1 day 2 and 1/2 hours and 45.100 seconds to the time 22:55:55.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(time &#39;22:55:55&#39;, interval &#39;1 2:30:45.100&#39; day to second) FROM (VALUES(1));
++---------------+
+|    EXPR$0     |
++---------------+
+| 01:26:40.100  |
++---------------+
+1 row selected (0.106 seconds)
+</code></pre></div>
+<h2 id="date_part">DATE_PART</h2>
+
+<p>Returns a field of a date, time, timestamp, or interval.</p>
+
+<h3 id="date_part-syntax">DATE_PART Syntax</h3>
+
+<p><code>date_part(keyword, expression)</code>  </p>
+
+<p><em>keyword</em> is year, month, day, hour, minute, or second enclosed in single quotation marks.<br>
+<em>expression</em> is date, time, timestamp, or interval literal enclosed in single quotation marks.</p>
+
+<h3 id="date_part-usage-notes">DATE_PART Usage Notes</h3>
+
+<p>Use Unix Epoch timestamp in milliseconds as the expression to get the field of a timestamp.</p>
+
+<h3 id="date_part-examples">DATE_PART Examples</h3>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_PART(&#39;day&#39;, &#39;2015-04-02&#39;) FROM (VALUES(1));
++------------+
+|   EXPR$0   |
++------------+
+| 2          |
++------------+
+1 row selected (0.098 seconds)
+
+SELECT DATE_PART(&#39;hour&#39;, &#39;23:14:30.076&#39;) FROM (VALUES(1));
++------------+
+|   EXPR$0   |
++------------+
+| 23         |
++------------+
+1 row selected (0.088 seconds)
+</code></pre></div>
+<p>Return the day part of the one year, 2 months, 10 days interval.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_PART(&#39;day&#39;, &#39;1:2:10&#39;) FROM (VALUES(1));
++------------+
+|   EXPR$0   |
++------------+
+| 10         |
++------------+
+1 row selected (0.069 seconds)
+</code></pre></div>
+<h2 id="date_sub">DATE_SUB</h2>
+
+<p>Returns the difference between a date/time and a number of days/hours, or between a date/time and date/time interval.</p>
+
+<h3 id="date_sub-syntax">DATE_SUB Syntax</h3>
+
+<p><code>DATE_SUB(keyword literal, integer)</code><br>
+<code>DATE_SUB(keyword literal, interval expr)</code><br>
+<code>DATE_ADD(column, integer)</code><br>
+<code>DATE_SUB(column, interval expr)</code>  </p>
+
+<p><em>keyword</em> is the word date, time, or timestamp.<br>
+<em>literal</em> is a date, time, or timestamp literal. For example, a date in yyyy-mm-dd format enclosed in single quotation marks.<br>
+<em>integer</em> is a number of days to subtract from the date, time, or timestamp.
+<em>column</em> is date, time, or timestamp data in the data source.<br>
+<em>interval</em> is the keyword interval.<br>
+<em>expr</em> is an interval expression, such as the name of a data source column containing interval data.</p>
+
+<h3 id="date_sub-examples">DATE_SUB Examples</h3>
+
+<p>The following examples show how to apply the syntax variations.</p>
+
+<p><strong><code>DATE_SUB(keyword literal, integer)</code> Syntax Example</strong></p>
+
+<p>Subtract two days from today&#39;s date May 15, 2015.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(date &#39;2015-05-15&#39;, 2) FROM (VALUES(1));
++------------+
+|   EXPR$0   |
++------------+
+| 2015-05-13 |
++------------+
+1 row selected (0.088 seconds)
+</code></pre></div>
+<p>Subtact two months from April 15, 2015.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(date &#39;2015-04-15&#39;, interval &#39;2&#39; month) FROM (VALUES(1));
++------------+
+|   EXPR$0   |
++------------+
+| 2015-02-15 |
++------------+
+1 row selected (0.088 seconds)
+</code></pre></div>
+<p><strong><code>DATE_SUB(keyword literal, interval expr)</code> Syntax Example</strong></p>
+
+<p>Subtract 10 hours from the timestamp 2015-04-15 22:55:55.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(timestamp &#39;2015-04-15 22:55:55&#39;, interval &#39;10&#39; hour) FROM (VALUES(1));
++------------------------+
+|         EXPR$0         |
++------------------------+
+| 2015-04-15 12:55:55.0  |
++------------------------+
+1 row selected (0.108 seconds)
+</code></pre></div>
+<p>Subtract 10 hours from the time 22 hours, 55 minutes, 55 seconds.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(time &#39;22:55:55&#39;, interval &#39;10&#39; hour) FROM (VALUES(1));
++------------+
+|   EXPR$0   |
++------------+
+| 12:55:55   |
++------------+
+1 row selected (0.079 seconds)
+</code></pre></div>
+<p>Subtract 1 year and 1 month from the timestamp 2015-04-15 22:55:55.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(timestamp &#39;2015-04-15 22:55:55&#39;, interval &#39;1-2&#39; year to month) FROM (VALUES(1));
++------------------------+
+|         EXPR$0         |
++------------------------+
+| 2014-02-15 22:55:55.0  |
++------------------------+
+1 row selected (0.108 seconds)
+</code></pre></div>
+<p>Subtract 1 day, 2 and 1/2 hours, and 45.100 seconds from the time 22:55:55.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(time &#39;22:55:55&#39;, interval &#39;1 2:30:45.100&#39; day to second) FROM (VALUES(1));
++---------------+
+|    EXPR$0     |
++---------------+
+| 01:26:40.100  |
++---------------+
+1 row selected (0.095 seconds)
+</code></pre></div>
+<p><strong><code>DATE_SUB(column, integer)</code> Syntax Example</strong></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(CAST(birth_date AS date), 2) FROM cp.`employee.json` LIMIT 1;
++-------------+
+|   EXPR$0    |
++-------------+
+| 1961-08-24  |
++-------------+
+1 row selected (0.158 seconds)
+</code></pre></div>
+<p><strong><code>DATE_SUB(column, interval expr)</code> Syntax Example</strong></p>
+
+<p>The <code>employee.json</code> file, which Drill includes in the installation, lists the hire dates of employees. Cast the hire_dates of the employees 578 and 761 to a timestamp, and add 10 hours to the hire_date timestamp. Because Drill reads data from JSON as VARCHAR, you need to cast the hire_date to the TIMESTAMP type. </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(CAST(hire_date AS TIMESTAMP), interval &#39;10&#39; hour) FROM cp.`employee.json` WHERE employee_id IN( &#39;578&#39;,&#39;761&#39;);
++------------------------+
+|         EXPR$0         |
++------------------------+
+| 1995-12-31 14:00:00.0  |
+| 1997-12-31 14:00:00.0  |
++------------------------+
+2 rows selected (0.161 seconds)
+</code></pre></div>
+<h2 id="other-date-and-time-functions">Other Date and Time Functions</h2>
+
+<p>The following examples show how to use these functions:</p>
+
+<ul>
+<li>CURRENT_DATE</li>
+<li>CURRENT_TIME</li>
+<li>CURRENT_TIMESTAMP</li>
+<li>LOCALTIME</li>
+<li>LOCALTIMESTAMP</li>
+<li>NOW</li>
+<li><p>TIMEOFDAY</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT CURRENT_DATE FROM (VALUES(1));
++--------------+
+| current_date |
++--------------+
+| 2015-04-02   |
++--------------+
+1 row selected (0.077 seconds)
+
+SELECT CURRENT_TIME FROM (VALUES(1));
++--------------+
+| current_time |
++--------------+
+| 14:32:04.751 |
++--------------+
+1 row selected (0.073 seconds)
+
+SELECT CURRENT_TIMESTAMP FROM (VALUES(1));
++--------------------------+
+|    CURRENT_TIMESTAMP     |
++--------------------------+
+| 2015-05-17 22:45:55.848  |
++--------------------------+
+1 row selected (0.109 seconds)
+
+SELECT LOCALTIME FROM (VALUES(1));
+
++---------------+
+|   LOCALTIME   |
++---------------+
+| 22:46:19.656  |
++---------------+
+1 row selected (0.105 seconds)
+
+SELECT LOCALTIMESTAMP FROM (VALUES(1));
+
++--------------------------+
+|      LOCALTIMESTAMP      |
++--------------------------+
+| 2015-05-17 22:46:47.944  |
++--------------------------+
+1 row selected (0.08 seconds)
+
+SELECT NOW() FROM (VALUES(1));
++--------------------------+
+|          EXPR$0          |
++--------------------------+
+| 2015-05-17 22:47:11.008  |
++--------------------------+
+1 row selected (0.085 seconds)
+</code></pre></div></li>
+</ul>
+
+<p>If you set up Drill for <a href="/docs/data-type-conversion/#time-zone-limitation">UTC time</a>, TIMEOFDAY returns the result for the UTC time zone.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMEOFDAY() FROM (VALUES(1));
++-----------------------------+
+|           EXPR$0            |
++-----------------------------+
+| 2015-04-02 22:05:02.424 UTC |
++-----------------------------+
+1 row selected (1.191 seconds)
+</code></pre></div>
+<p>If you did not set up Drill for UTC time, TIMEOFDAY returns the local date and time with time zone information.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMEOFDAY() FROM (VALUES(1));
++----------------------------------------------+
+|                    EXPR$0                    |
++----------------------------------------------+
+| 2015-05-17 22:47:38.012 America/Los_Angeles  |
++----------------------------------------------+
+1 row selected (0.08 seconds)
+</code></pre></div>
+<h2 id="extract">EXTRACT</h2>
+
+<p>Returns a component of a timestamp, time, date, or interval.</p>
+
+<h3 id="extract-syntax">EXTRACT Syntax</h3>
+
+<p><code>EXTRACT (extract_expression)</code>  </p>
+
+<p><em>extract_expression</em> is:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">component FROM (timestamp | time | date | interval)
+</code></pre></div>
+<p><em>component</em> is one of the following time units: year, month, day, hour, minute, second.</p>
+
+<h3 id="extract-usage-notes">EXTRACT Usage Notes</h3>
+
+<p>The extract function supports the following time units: YEAR, MONTH, DAY, HOUR, MINUTE, SECOND.</p>
+
+<h3 id="extract-examples">EXTRACT Examples</h3>
+
+<p>On the third day of the month, run the following function:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(day FROM NOW()), EXTRACT(day FROM CURRENT_DATE) FROM (VALUES(1));
+
++------------+------------+
+|   EXPR$0   |   EXPR$1   |
++------------+------------+
+| 3          | 3          |
++------------+------------+
+1 row selected (0.208 seconds)
+</code></pre></div>
+<p>At 8:00 am, extract the hour from the value of CURRENT_DATE.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(hour FROM CURRENT_DATE) FROM (VALUES(1));
++------------+
+|   EXPR$0   |
++------------+
+| 8          |
++------------+
+</code></pre></div>
+<p>What is the hour component of this time: 17:12:28.5?</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(hour FROM TIME &#39;17:12:28.5&#39;) FROM (VALUES(1));
++------------+
+|   EXPR$0   |
++------------+
+| 17         |
++------------+
+1 row selected (0.056 seconds)
+</code></pre></div>
+<p>What is the seconds component of this timestamp: 2001-02-16 20:38:40</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(SECOND FROM TIMESTAMP &#39;2001-02-16 20:38:40&#39;) FROM (VALUES(1));
++------------+
+|   EXPR$0   |
++------------+
+| 40.0       |
++------------+
+1 row selected (0.062 seconds)
+</code></pre></div>
+<h2 id="date,-time,-and-interval-arithmetic-functions">Date, Time, and Interval Arithmetic Functions</h2>
+
+<p>Is the day returned from the NOW function the same as the day returned from the CURRENT_DATE function?</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(day FROM NOW()) = EXTRACT(day FROM CURRENT_DATE) FROM (VALUES(1));
++------------+
+|   EXPR$0   |
++------------+
+| true       |
++------------+
+1 row selected (0.092 seconds)
+</code></pre></div>
+<p>Every 23 hours, a 4 hour task started. What time does the task end? </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIME &#39;04:00:00&#39; + interval &#39;23:00:00&#39; hour to second FROM (VALUES(1));
++------------+
+|   EXPR$0   |
++------------+
+| 03:00:00   |
++------------+
+1 row selected (0.097 seconds)
+</code></pre></div>
+<p>Is the time 2:00 PM?</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(hour FROM CURRENT_DATE) = 2 FROM (VALUES(1));
++------------+
+|   EXPR$0   |
++------------+
+| false      |
++------------+
+1 row selected (0.033 seconds)
+</code></pre></div>
+<h2 id="unix_timestamp">UNIX_TIMESTAMP</h2>
+
+<p>Returns UNIX Epoch time, which is the number of seconds elapsed since January 1, 1970.</p>
+
+<h3 id="unix_timestamp-syntax">UNIX_TIMESTAMP Syntax</h3>
+
+<p><code>UNIX_TIMESTAMP()</code><br>
+<code>UNIX_TIMESTAMP(string date)</code><br>
+<code>UNIX_TIMESTAMP(string date, string pattern)</code>  </p>
+
+<p>These functions perform the following operations, respectively:</p>
+
+<ul>
+<li>Gets current Unix timestamp in seconds if given no arguments.<br></li>
+<li>Converts the time string in format yyyy-MM-dd HH:mm:ss to a Unix timestamp in seconds using the default timezone and locale.<br></li>
+<li>Converts the time string with the given pattern to a Unix time stamp in seconds.<br></li>
+</ul>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT UNIX_TIMESTAMP() FROM (VALUES(1));
++-------------+
+|   EXPR$0    |
++-------------+
+| 1435711031  |
++-------------+
+1 row selected (0.749 seconds)
+
+SELECT UNIX_TIMESTAMP(&#39;2009-03-20 11:15:55&#39;) FROM (VALUES(1));
++-------------+
+|   EXPR$0    |
++-------------+
+| 1237572955  |
++-------------+
+1 row selected (1.848 seconds)
+
+SELECT UNIX_TIMESTAMP(&#39;2009-03-20&#39;, &#39;yyyy-MM-dd&#39;) FROM (VALUES(1));
++-------------+
+|   EXPR$0    |
++-------------+
+| 1237532400  |
++-------------+
+1 row selected (0.181 seconds)
+
+SELECT UNIX_TIMESTAMP(&#39;2015-05-29 08:18:53.0&#39;, &#39;yyyy-MM-dd HH:mm:ss.SSS&#39;) FROM (VALUES(1));
++-------------+
+|   EXPR$0    |
++-------------+
+| 1432912733  |
++-------------+
+1 row selected (0.171 seconds)
+</code></pre></div>
+    
+      
+        <div class="doc-nav">
+  
+  <span class="previous-toc"><a href="/docs/data-type-conversion/">← Data Type Conversion</a></span><span class="next-toc"><a href="/docs/string-manipulation/">String Manipulation →</a></span>
+</div>
+
+    
+    </div>
+  </div>
+</div>
+
+  </div>
+  <p class="push"></p>
+<div id="footer" class="mw">
+<div class="wrapper">
+Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
+</div>
+</div>
+
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-53379651-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-548b2caa33765e8d" async="async"></script>
+</body>
+</html>
