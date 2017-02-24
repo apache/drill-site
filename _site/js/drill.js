@@ -59,7 +59,7 @@ Drill.Site = {
     $("#menu .search-bar #drill-search-form").on("submit", function(e){
       e.preventDefault();
       var search_val = $("#drill-search-term").val();
-      var search_url = "/search/?q="+search_val;
+      var search_url = "/drill/search/?q="+search_val;
       document.location.href = search_url;
     });
   },
