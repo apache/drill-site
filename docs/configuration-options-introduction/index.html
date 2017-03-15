@@ -257,6 +257,10 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/starting-the-web-console/">Starting the Web Console</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/identifying-multiple-drill-versions-in-a-cluster/">Identifying Multiple Drill Versions in a Cluster</a></li>
+            
+          
           </ul>
         
       
@@ -303,6 +307,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-web-console-and-rest-api-security/">Configuring Web Console and REST API Security</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-drill-to-read-web-server-logs/">Configuring Drill to Read Web Server Logs</a></li>
             
           
             
@@ -765,6 +773,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-table-as-ctas/">CREATE TABLE AS (CTAS)</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/create-temporary-table-as-cttas/">CREATE TEMPORARY TABLE AS (CTTAS)</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-function-using-jar/">CREATE FUNCTION USING JAR</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/partition-by-clause/">PARTITION BY Clause</a></li>
@@ -970,6 +980,10 @@
           <ul style="display: none">
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-10-0-release-notes/">Apache Drill 1.10.0 Release Notes</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-9-0-release-notes/">Apache Drill 1.9.0 Release Notes</a></li>
             
           
@@ -1097,13 +1111,13 @@
 
     </div>
 
-     Oct 3, 2016
+     Mar 14, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Drill provides many configuration options that you can enable, disable, or modify. Modifying certain configuration options can impact Drill performance. Many of the configuration options reside in the <code>drill-env.sh</code> script and the <code>drill-override.conf</code> configuration file located in the <code>$DRILL_HOME/conf</code> directory. Drill loads these files from <code>/etc/drill/conf</code>, if it exists. Otherwise, Drill loads the files from the <code>$DRILL_HOME/conf</code> directory.  </p>
+        <p>Drill provides many configuration options that you can enable, disable, or modify. Modifying certain configuration options can impact performance. Many of the configuration options reside in the <code>drill-env.sh</code> script and the <code>drill-override.conf</code> configuration file located in the <code>$DRILL_HOME/conf</code> directory. Drill loads these files from <code>/etc/drill/conf</code>, if it exists. Otherwise, Drill loads the files from the <code>$DRILL_HOME/conf</code> directory.  </p>
 
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
@@ -1116,7 +1130,7 @@
 
 <h2 id="system-options">System Options</h2>
 
-<p>The sys.options table lists the following options that you can set as a system or session option as described in the section, <a href="/docs/planning-and-execution-options">&quot;Planning and Execution Options&quot;</a>. </p>
+<p>The sys.options table lists the following options that you can set as a system or session option as described in the section, <a href="/docs/planning-and-execution-options">&quot;Planning and Execution Options&quot;</a>.  </p>
 
 <table><thead>
 <tr>
@@ -1125,6 +1139,31 @@
 <th>Comments</th>
 </tr>
 </thead><tbody>
+<tr>
+<td>drill.exec.default_temporary_workspace</td>
+<td>dfs.tmp</td>
+<td>Available as of Drill 1.10. Sets   the workspace for temporary tables. The workspace must be writable,   file-based, and point to a location that already exists. This option requires   the following format: <code>&lt;schema&gt;.&lt;workspace</code></td>
+</tr>
+<tr>
+<td>drill.exec.storage.implicit.filename.column.label</td>
+<td>filename</td>
+<td>Available as of Drill 1.10. Sets   the implicit column name for the filename column.</td>
+</tr>
+<tr>
+<td>drill.exec.storage.implicit.filepath.column.label</td>
+<td>filepath</td>
+<td>Available as of Drill 1.10. Sets   the implicit column name for the filepath column.</td>
+</tr>
+<tr>
+<td>drill.exec.storage.implicit.fqn.column.label</td>
+<td>fqn</td>
+<td>Available as of Drill 1.10. Sets   the implicit column name for the fqn column.</td>
+</tr>
+<tr>
+<td>drill.exec.storage.implicit.suffix.column.label</td>
+<td>suffix</td>
+<td>Available as of Drill 1.10. Sets   the implicit column name for the suffix column.</td>
+</tr>
 <tr>
 <td>drill.exec.functions.cast_empty_string_to_null</td>
 <td>FALSE</td>
@@ -1313,12 +1352,12 @@
 <tr>
 <td>planner.filter.max_selectivity_estimate_factor</td>
 <td>1</td>
-<td>Available as of Drill 1.8. Sets the maximum filter  selectivity estimate. The selectivity can vary between 0 and 1. For more  details, see planner.filter.min_selectivity_estimate_factor.</td>
+<td>Available   as of Drill 1.8. Sets the maximum filter selectivity estimate. The   selectivity can vary between 0 and 1. For more details, see   planner.filter.min_selectivity_estimate_factor.</td>
 </tr>
 <tr>
 <td>planner.filter.min_selectivity_estimate_factor</td>
 <td>0</td>
-<td>Available as of Drill 1.8. Sets the minimum filter   selectivity estimate to increase the parallelization of the major fragment   performing a join. This option is useful for deeply nested queries with   complicated predicates and serves as a workaround when statistics are   insufficient or unavailable. The selectivity can vary between 0 and 1. The   value of this option caps the estimated SELECTIVITY. The estimated ROWCOUNT   is derived by multiplying the estimated SELECTIVITY by the estimated ROWCOUNT   of the upstream operator. The estimated ROWCOUNT displays when you use the   EXPLAIN PLAN INCLUDING ALL ATTRIBUTES FOR command. This option does not   control the estimated ROWCOUNT of downstream operators (post FILTER).   However, estimated ROWCOUNTs may change because the operator ROWCOUNTs depend   on their downstream operators. The FILTER operator relies on the input of its   immediate upstream operator, for example SCAN, AGGREGATE. If two filters are   present in a plan, each filter may have a different estimated ROWCOUNT based   on the immediate upstream operator&#39;s estimated ROWCOUNT.</td>
+<td>Available   as of Drill 1.8. Sets the minimum filter selectivity estimate to increase the   parallelization of the major fragment performing a join. This option is   useful for deeply nested queries with complicated predicates and serves as a   workaround when statistics are insufficient or unavailable. The selectivity   can vary between 0 and 1. The value of this option caps the estimated   SELECTIVITY. The estimated ROWCOUNT is derived by multiplying the estimated   SELECTIVITY by the estimated ROWCOUNT of the upstream operator. The estimated   ROWCOUNT displays when you use the EXPLAIN PLAN INCLUDING ALL ATTRIBUTES FOR   command. This option does not control the estimated ROWCOUNT of downstream   operators (post FILTER). However, estimated ROWCOUNTs may change because the   operator ROWCOUNTs depend on their downstream operators. The FILTER operator   relies on the input of its immediate upstream operator, for example SCAN,   AGGREGATE. If two filters are present in a plan, each filter may have a   different estimated ROWCOUNT based on the immediate upstream operator&#39;s   estimated ROWCOUNT.</td>
 </tr>
 <tr>
 <td>planner.identifier_max_length</td>
@@ -1474,6 +1513,11 @@
 <td>store.parquet.dictionary.page-size</td>
 <td>1048576</td>
 <td></td>
+</tr>
+<tr>
+<td>store.parquet.int96_as_timestamp</td>
+<td>FALSE</td>
+<td>Enables Drill to implicitly   interpret the INT96 timestamp data type in Parquet files.</td>
 </tr>
 <tr>
 <td>store.parquet.use_new_reader</td>

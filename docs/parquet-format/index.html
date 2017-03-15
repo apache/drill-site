@@ -257,6 +257,10 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/starting-the-web-console/">Starting the Web Console</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/identifying-multiple-drill-versions-in-a-cluster/">Identifying Multiple Drill Versions in a Cluster</a></li>
+            
+          
           </ul>
         
       
@@ -303,6 +307,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-web-console-and-rest-api-security/">Configuring Web Console and REST API Security</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-drill-to-read-web-server-logs/">Configuring Drill to Read Web Server Logs</a></li>
             
           
             
@@ -765,6 +773,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-table-as-ctas/">CREATE TABLE AS (CTAS)</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/create-temporary-table-as-cttas/">CREATE TEMPORARY TABLE AS (CTTAS)</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/create-function-using-jar/">CREATE FUNCTION USING JAR</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/partition-by-clause/">PARTITION BY Clause</a></li>
@@ -970,6 +980,10 @@
           <ul style="display: none">
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-10-0-release-notes/">Apache Drill 1.10.0 Release Notes</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-9-0-release-notes/">Apache Drill 1.9.0 Release Notes</a></li>
             
           
@@ -1095,7 +1109,7 @@
 
     </div>
 
-     
+     Mar 13, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1126,10 +1140,27 @@
 
 <h2 id="writing-parquet-files">Writing Parquet Files</h2>
 
-<p>CREATE TABLE AS (CTAS) can use any data source provided by the storage plugin. To write Parquet data using the CTAS command, set the session store.format option as shown in the next section. Alternatively, configure the storage plugin to point to the directory containing the Parquet files.</p>
+<p>CREATE TABLE AS (CTAS) can use any data source provided by the storage plugin. To write Parquet data using the CTAS command, set the <code>session store.format</code> option as shown in <a href="/docs/parquet-format/#configuring-the-parquet-storage-format">Configuring the Parquet Storage Format</a>. Alternatively, configure the storage plugin to point to the directory containing the Parquet files.</p>
 
-<p>Although the data resides in a single table, Parquet output generally consists of multiple files that resemble MapReduce output having numbered file names,  such as 0_0_0.parquet in a directory.</p>
+<p>Although the data resides in a single table, Parquet output generally consists of multiple files that resemble MapReduce output having numbered file names,  such as 0_0_0.parquet in a directory.  </p>
 
+<h3 id="date-value-auto-correction">Date Value Auto-Correction</h3>
+
+<p>As of Drill 1.10, Drill writes standard Parquet date values. Drill also has an automatic correction feature that automatically detects and corrects corrupted date values that Drill wrote into Parquet files prior to Drill 1.10. </p>
+
+<p>By default, the automatic correction feature is turned on and works for dates up to 5,000 years into the future. In the unlikely event that Drill needs to write dates thousands of years into the future, turn the auto-correction feature off.  </p>
+
+<p>To disable the auto-correction feature, navigate to the storage plugin configuration and change the <code>autoCorrectCorruptDates</code> option in the Parquet configuration to “false”, as shown in the example below:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   &quot;formats&quot;: {
+       &quot;parquet&quot;: {
+         &quot;type&quot;: &quot;parquet&quot;,
+         &quot;autoCorrectCorruptDates&quot;: false
+       }  
+</code></pre></div>
+<p>Alternatively, you can set the option to false when you issue a query, as shown in the following example:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT l_shipdate, l_commitdate FROM table(dfs.`/drill/testdata/parquet_date/dates_nodrillversion/drillgen2_lineitem` 
+   (type =&gt; &#39;parquet&#39;, autoCorrectCorruptDates =&gt; false)) LIMIT 1; 
+</code></pre></div>
 <h3 id="configuring-the-parquet-storage-format">Configuring the Parquet Storage Format</h3>
 
 <p>To read or write Parquet data, you need to include the Parquet format in the storage plugin format definitions. The <code>dfs</code> plugin definition includes the Parquet format. </p>
@@ -1273,21 +1304,30 @@ FROM dfs.tmp.`sampleparquet` t;
 </tr>
 </tbody></table>
 
-<p>* Drill 1.2 and later supports reading the Parquet INT96 type.</p>
+<p>* Drill 1.10 and later can implicitly interpret the Parquet INT96 type as TIMESTAMP (with standard 8 byte/millisecond precision) when the <code>store.parquet.int96_as_timestamp</code> option is enabled. In earlier versions of Drill (1.2 through 1.9) or when the <code>store.parquet.int96_as_timestamp</code> option is disabled, you must use the CONVERT_FROM function for Drill to correctly interpret INT96 values as TIMESTAMP values.</p>
 
 <h2 id="about-int96-support">About INT96 Support</h2>
 
-<p>Drill 1.2 and later supports reading the Parquet INT96 type. For example, to decode a timestamp from Hive or Impala, which is of type INT96, use the CONVERT_FROM function and the <a href="/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">TIMESTAMP_IMPALA</a> type argument:</p>
+<p>As of Drill 1.10, Drill can implicitly interpret the INT96 timestamp data type in Parquet files when the <code>store.parquet.int96_as_timestamp</code> option is enabled. For earlier versions of Drill,  or when the <code>store.parquet.int96_as_timestamp</code> option is disabled, you must use the CONVERT_FROM function,   </p>
 
-<p><code>SELECT CONVERT_FROM(timestamp_field, &#39;TIMESTAMP_IMPALA&#39;) as timestamp_field FROM `dfs.file_with_timestamp.parquet`;</code></p>
+<p>The <code>store.parquet.int96_as_timestamp</code> option is disabled by default. Use the <a href="/docs/alter-system/">ALTER SYSTEM|SESSION SET</a> command to enable the option. Unnecessarily enabling this option can cause queries to fail because the CONVERT_FROM(col, &#39;TIMESTAMP_IMPALA&#39;) function does not work when <code>store.parquet.int96_as_timestamp</code> is enabled.  </p>
 
-<p>Because INT96 is supported for reads only, you cannot use the TIMESTAMP_IMPALA as a data type argument with CONVERT_TO.</p>
+<h3 id="using-convert_from-to-interpret-int96">Using CONVERT_FROM to Interpret INT96</h3>
 
-<p>You can convert a SQL TIMESTAMP to VARBINARY using the CAST function, but the resultant VARBINARY is not the same as the INT96. For example, create a Drill table after reading an INT96 and converting some data to a timestamp.</p>
+<p>In earlier versions of Drill (1.2 through 1.9), you must use the CONVERT_FROM function for Drill to interpret the Parquet INT96 type. For example, to decode a timestamp from Hive or Impala, which is of type INT96, use the CONVERT_FROM function and the <a href="/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">TIMESTAMP_IMPALA</a> type argument:  </p>
 
-<p><code>CREATE TABLE t2(c1) AS SELECT CONVERT_FROM(created_ts, &#39;TIMESTAMP_IMPALA&#39;) FROM t1 ORDER BY 1 LIMIT 1;</code></p>
+<p><code>SELECT CONVERT_FROM(timestamp_field, &#39;TIMESTAMP_IMPALA&#39;) as timestamp_field FROM `dfs.file_with_timestamp.parquet`;</code>  </p>
 
-<p>t1.created_ts is an INT96 (or Hive/Impala timestamp) , t2.created_ts is a SQL timestamp. These types are not comparable--you cannot use a condition like t1.created_ts = t2.created_ts.</p>
+<p>Because INT96 is supported for reads only, you cannot use the TIMESTAMP_IMPALA as a data type argument with CONVERT_TO. You can convert a SQL TIMESTAMP to VARBINARY using the CAST function, but the resultant VARBINARY is not the same as INT96. </p>
+
+<p>For example, create a Drill table after reading INT96 and converting some data to a timestamp.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE t2(c1) AS SELECT CONVERT_FROM(created_ts, &#39;TIMESTAMP_IMPALA&#39;) FROM t1 ORDER BY 1 LIMIT 1;
+</code></pre></div>
+<p>t1.created_ts is an INT96 (or Hive/Impala timestamp) , t2.created_ts is a SQL timestamp. These types are not comparable. You cannot use a condition like t1.created_ts = t2.created_ts.</p>
+
+<h3 id="configuring-the-timezone">Configuring the Timezone</h3>
+
+<p>By default, INT96 timestamp values represent the local date and time, which is similar to Hive. To get INT96 timestamp values in UTC, configure Drill for <a href="/docs/data-type-conversion/#time-zone-limitation">UTC time</a>.  </p>
 
 <h3 id="sql-types-to-parquet-logical-types">SQL Types to Parquet Logical Types</h3>
 
