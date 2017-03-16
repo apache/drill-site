@@ -277,6 +277,33 @@
             
           
             
+              <li class="toctree-l2"><a href="javascript: void(0);">Securing Drill</a></li>
+              <ul style="">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/securing-drill-introduction/">Securing Drill Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/secure-communication-paths/">Secure Communication Paths</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/roles-and-privileges/">Roles and Privileges</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-user-impersonation/">Configuring User Impersonation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-inbound-impersonation/">Configuring Inbound Impersonation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+              
+                <li class="toctree-l3 current"><a class="reference internal" href="/docs/configuring-user-authentication/">Configuring User Authentication</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-plain-authentication/">Configuring Plain Authentication</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-kerberos-authentication/">Configuring Kerberos Authentication</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-web-console-and-rest-api-security/">Configuring Web Console and REST API Security</a></li>
+              
+            </ul>
+            
+          
+            
               <li class="toctree-l2"><a href="javascript: void(0);">Configuring a Multitenant Cluster</a></li>
               <ul style="display: none">
               
@@ -287,26 +314,6 @@
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-resources-for-a-shared-drillbit/">Configuring Resources for a Shared Drillbit</a></li>
               
             </ul>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-user-impersonation/">Configuring User Impersonation</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-inbound-impersonation/">Configuring Inbound Impersonation</a></li>
-            
-          
-            
-              <li class="toctree-l2 current"><a class="reference internal" href="/docs/configuring-user-authentication/">Configuring User Authentication</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
-            
-          
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-web-console-and-rest-api-security/">Configuring Web Console and REST API Security</a></li>
             
           
             
@@ -907,6 +914,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/manually-adding-custom-functions-to-drill/">Manually Adding Custom Functions to Drill</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/creating-custom-authenticators/">Creating Custom Authenticators</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/dynamic-udfs/">Dynamic UDFs</a></li>
               
             </ul>
@@ -1094,6 +1103,8 @@
   
     <li><a href="/docs/configure-drill/">Configure Drill</a></li>
   
+    <li><a href="/docs/securing-drill/">Securing Drill</a></li>
+  
   <li>Configuring User Authentication</li>
 </nav>
 
@@ -1101,7 +1112,7 @@
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/configure-drill/075-configuring-user-authentication.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/configure-drill/securing-drill/070-configuring-user-authentication.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
@@ -1109,199 +1120,35 @@
 
     </div>
 
-     Mar 2, 2016
+     Mar 16, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Authentication is the process of proving a user’s identity to access a process running on a system. Drill currently supports username/password based authentication through the use of the Linux Pluggable Authentication Module (PAM). The authentication option is available through JDBC and ODBC interfaces. Linux PAM provides authentication modules that interface with any installed PAM authentication entity, such as the local operating system password file (passwd or login) or LDAP. </p>
-
-<p>If user impersonation is enabled, Drill executes the client requests as the authenticated user. Otherwise, Drill executes client requests as the user that started the Drillbit process. You can enable both authorization and impersonation to improve Drill security. See <a href="/docs/configuring-user-impersonation/">Configuring User Impersonation</a>.</p>
-
-<p>When using PAM for authentication, each user that has permission to run Drill queries must exist in the list of users that resides on each Drill node in the cluster. The username (including uid) and password for each user must be identical across all of the Drill nodes. </p>
-
-<p>If you use PAM with /etc/passwd for authentication, verify that the users with permission to start the Drill process are part of the shadow user group on all nodes in the cluster. This enables Drill to read the /etc/shadow file for authentication.  </p>
-
-<h2 id="administrator-privileges">Administrator Privileges</h2>
-
-<p>When authentication is enabled, only Drill users who are assigned Drill cluster administrator privileges can perform the following tasks:</p>
+        <p>Authentication is the process of establishing confidence of authenticity. A Drill client user is authenticated when a drillbit process running in a Drill cluster confirms the identity it is presented with.  Drill 1.10 supports several authentication mechanisms through which users can prove their identity before accessing cluster data: </p>
 
 <ul>
-<li>Change a system-level option by issuing an ALTER SYSTEM command</li>
-<li>Update a storage plugin configuration through the REST API or Web Console</li>
-<li>View profiles of all queries that all users have run or are currently running in a cluster</li>
-<li>Cancel running queries that were launched by any user in the cluster</li>
+<li><strong>Kerberos</strong> - New in Drill 1.10. See <a href="/docs/configuring-kerberos-authentication/">Configuring Kerberos Authentication</a>.</li>
+<li><strong>Plain</strong> [also known as basic authentication (auth), which is username and password-based authentication, through the Linux Pluggable Authentication Module (PAM)] - See <a href="/docs/configuring-plain-authentication/">Configuring Plain Authentication</a>.</li>
+<li><strong>Custom authenticators</strong> - See <a href="/docs/creating-custom-authenticators">Creating Custom Authenticators</a>.</li>
 </ul>
 
-<h2 id="user-authentication-process">User Authentication Process</h2>
+<p>These authentication options are available through JDBC and ODBC interfaces.</p>
 
-<p>When user authentication is enabled, each user that accesses the Drillbit process through a client, such as SQLLine, must provide their username and password for access. </p>
+<hr>
 
-<p>A user can include the <code>–n</code> and <code>–p</code> parameters with their username and password when launching SQLLine, as shown in the following example:<br>
-       <code>sqlline –u jdbc:drill:zk=10.10.11.112:5181 –n bob –p bobdrill</code></p>
+<p><strong>Note</strong></p>
 
-<p>Alternatively, a user can launch SQLLine and then issue the <code>!connect</code> command to hide the password, as shown in the following procedure:  </p>
+<p>If user impersonation is enabled, Drill executes the client requests as the authenticated user. Otherwise, Drill executes client requests as the user that started the drillbit process. You can enable both authentication and impersonation to improve Drill security. See <a href="/docs/configuring-user-impersonation/">Configuring User Impersonation</a> for more information.</p>
 
-<ol>
-<li><p>Start SQLLine, by running the sqlline script. On Linux, for example:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">      bobsmachine:~$ /etc/drill/bin/sqlline
-      apache drill 1.2.0
-      &quot;a drill in the hand is better than two in the bush&quot;  
-</code></pre></div></li>
-<li><p>At the sqlline prompt, enter the <code>!connect</code> command followed by <code>jdbc:drill:zk=zk=&lt;zk name&gt;[:&lt;port&gt;][,&lt;zk name2&gt;[:&lt;port&gt;]... ]</code>. For example:</p></li>
-<li><div class="highlight"><pre><code class="language-text" data-lang="text">      sqlline&gt; !connect jdbc:drill:zk=localhost:2181
-      scan complete in 1385ms
-</code></pre></div></li>
-<li><p>At the prompts, enter a user name and password.</p></li>
-<li><div class="highlight"><pre><code class="language-text" data-lang="text">      Enter username for jdbc:drill:zk=localhost:2181: bob
-      Enter password for jdbc:drill:zk=localhost:2181: *************
-</code></pre></div>
-<p>The password is hidden as it is typed.</p></li>
-</ol>
-
-<p>When a user connects to Drill from a BI tool, such as Tableau, the MapR Drill ODBC driver prompts the user for their username and password:</p>
-
-<p><img src="/docs/img/UserAuth_ODBC_Driver.png" alt="ODBC Driver"></p>
-
-<p>The client passes the username and password to a Drillbit as part of the connection request, which then passes the credentials to PAM. If PAM can verify that the user is authorized to access Drill, the connection is successful, and the user can issues queries against the file system or other storage plugins, such as Hive or HBase. However, if PAM cannot verify that the user is authorized to access Drill, the connection is terminated as AUTH_FAILED.</p>
-
-<p>The following image illustrates the user authentication process in Drill:</p>
-
-<p><img src="/docs/img/UserAuthProcess.PNG" alt=""></p>
-
-<h3 id="installing-and-configuring-pam">Installing and Configuring PAM</h3>
-
-<p>Install and configure the provided Drill PAM. Drill only supports the PAM provided here. Optionally, you can <a href="/docs/configuring-user-authentication/#implementing-and-configuring-a-custom-authenticator">build and implement a custom authenticator</a>. </p>
-
-<div class="admonition note">
-  <p class="first admonition-title">Note</p>
-  <p class="last">Do not point to an existing directory where other Hadoop components are installed. Other file system libraries can conflict with the Drill libraries and cause system errors.  </p>
-</div>
- 
-
-<p>Complete the following steps to install and configure PAM for Drill:</p>
-
-<ol>
-<li>Download the <code>tar.gz</code> file for the Linux platform:<br>
-<a href="http://sourceforge.net/projects/jpam/files/jpam/jpam-1.1/">http://sourceforge.net/projects/jpam/files/jpam/jpam-1.1/</a></li>
-<li>Untar the file, and copy the <code>libjpam.so</code> file into a directory that does not contain other Hadoop components.<br>
-Example:<code>/opt/pam/</code></li>
-<li><p>Add the following line to <code>&lt;DRILL_HOME&gt;/conf/drill-env.sh</code>, including the directory where the <code>libjpam.so</code> file is located:  </p>
-
-<p><code>export DRILLBIT_JAVA_OPTS=&quot;-Djava.library.path=&lt;directory&gt;&quot;</code>  </p>
-
-<p>Example: <code>export DRILLBIT_JAVA_OPTS=&quot;-Djava.library.path=/opt/pam/&quot;</code>  </p></li>
-<li><p>Add the following configuration to the <code>drill.exec</code> block in <code>&lt;DRILL_HOME&gt;/conf/drill-override.conf</code>:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">  drill.exec {
-   security.user.auth {
-         enabled: true,
-         packages += &quot;org.apache.drill.exec.rpc.user.security&quot;,
-         impl: &quot;pam&quot;,
-         pam_profiles: [ &quot;sudo&quot;, &quot;login&quot; ]
-   } 
-  }
-</code></pre></div></li>
-<li><p>(Optional) To add or remove different PAM profiles, add or delete the profile names in the <code>“pam_profiles”</code> array shown above.  </p></li>
-<li><p>Restart the Drillbit process on each Drill node. </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;DRILLINSTALL_HOME&gt;/bin/drillbit.sh restart
-</code></pre></div></li>
-</ol>
-
-<h3 id="implementing-and-configuring-a-custom-authenticator">Implementing and Configuring a Custom Authenticator</h3>
-
-<p>Administrators can use the template provided here to develop and implement a custom username/password based authenticator.</p>
-
-<p>Complete the following steps to build and implement a custom authenticator:</p>
-
-<ol>
-<li><p>Build the following Java file into a JAR file: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   MyCustomDrillUserAuthenticatorImpl.java 
-
-   package myorg.dept.drill.security;
-
-   import org.apache.drill.common.config.DrillConfig;
-   import org.apache.drill.exec.exception.DrillbitStartupException;
-
-   import java.io.IOException;
-
-   /*
-   * Implement {@link org.apache.drill.exec.rpc.user.security.UserAuthenticator} for illustraing how to develop a custom authenticator and use it in Drill
-   */
-   @UserAuthenticatorTemplate(type = “myCustomAuthenticatorType”)
-   public class MyCustomDrillUserAuthenticatorImpl implements UserAuthenticator {
-
-    public static final String TEST_USER_1 = &quot;testUser1&quot;;
-    public static final String TEST_USER_2 = &quot;testUser2&quot;;
-    public static final String TEST_USER_1_PASSWORD = &quot;testUser1Password&quot;;
-    public static final String TEST_USER_2_PASSWORD = &quot;testUser2Password&quot;;
-
-   /**
-   * Setup for authenticating user credentials.
-   */
-    @Override
-    public void setup(DrillConfig drillConfig) throws DrillbitStartupException {
-      // If the authenticator has any setup such as making sure authenticator provider servers are up and running or 
-      // needed libraries are available, it should be added here.
-    }
-
-   /**
-   * Authenticate the given &lt;i&gt;user&lt;/i&gt; and &lt;i&gt;password&lt;/i&gt; combination.
-   *
-   * @param userName
-   * @param password
-   * @throws UserAuthenticationException if authentication fails for given user and password.
-   */
-    @Override
-    public void authenticate(String userName, String password) throws UserAuthenticationException {
-
-      if (!(TEST_USER_1.equals(user) &amp;&amp; TEST_USER_1_PASSWORD.equals(password)) &amp;&amp;
-      !(TEST_USER_2.equals(user) &amp;&amp; TEST_USER_2_PASSWORD.equals(password))) {
-    throw new UserAuthenticationException(“custom failure message if the admin wants to show it to user”);
-      }
-    }
-
-   /**
-   * Close the authenticator. Used to release resources. Ex. LDAP authenticator opens connections to LDAP server,
-   * such connections resources are released in a safe manner as part of close.
-   *
-   * @throws IOException
-   */
-    @Override
-    public void close() throws IOException {
-      // Any clean up such as releasing files/network resources should be done here
-    }
-   }  
-</code></pre></div></li>
-<li><p>Create a file named <code>drill-module.conf</code> with the following configuration code and then add this file to the root of the JAR file: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">      drill {
-        classpath.scanning {
-          packages += &quot;myorg.dept.drill.security&quot;
-        }
-      }  
-</code></pre></div>
-<p>This enables the custom classpath scanner to locate the new class. </p></li>
-<li><p>Add the JAR file that you built to the following directory on each Drill node:<br>
-<code>&lt;DRILLINSTALL_HOME&gt;/jars</code></p></li>
-<li><p>Add the following configuration to the <code>drill.exec</code> block in the <code>drill-override.conf</code> file located in <code>&lt;DRILLINSTALL_HOME&gt;/conf/</code>:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">      drill.exec {
-       security.user.auth {
-            enabled: true,
-            packages += &quot;myorg.dept.drill.security&quot;,
-            impl: &quot;myCustomAuthenticatorType&quot;
-       }
-      }  
-</code></pre></div></li>
-<li><p>Restart the Drillbit process on each Drill node.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;DRILLINSTALL_HOME&gt;/bin/drillbit.sh restart
-</code></pre></div></li>
-</ol>
+<hr>
 
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/configuring-inbound-impersonation/">← Configuring Inbound Impersonation</a></span><span class="next-toc"><a href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization →</a></span>
+  <span class="previous-toc"><a href="/docs/configuring-user-impersonation-with-hive-authorization/">← Configuring User Impersonation with Hive Authorization</a></span><span class="next-toc"><a href="/docs/configuring-plain-authentication/">Configuring Plain Authentication →</a></span>
 </div>
 
     
