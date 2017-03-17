@@ -1120,15 +1120,15 @@
 
     </div>
 
-     Mar 16, 2017
+     Mar 17, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>As of version 1.10, Drill supports Kerberos v5 network security authentication.  Kerberos allows trusted hosts to prove their identity over a network to an information system.  A Kerberos realm is unique authentication domain. A centralized key distribution center (KDC) coordinates authentication between a clients and servers. Clients and servers obtain and use tickets from the KDC using a special keytab file to communicate with the KDC and prove their identity to gain access to a drillbit.  Administrators must create principal (user or server) identities and passwords to ensure the secure exchange of mutual authentication information passed to and from the drillbit. </p>
+        <p>In release 1.10, Drill supports Kerberos v5 network security authentication.  To use Kerberos with Drill and establish connectivity, use the JDBC driver packaged with Drill 1.10.</p>
 
-<p>To use Kerberos with Drill and establish connectivity, use the JDBC driver packaged with Drill 1.10.</p>
+<p>Kerberos allows trusted hosts to prove their identity over a network to an information system.  A Kerberos <em>realm</em> is unique authentication domain. A centralized <em>key distribution center (KDC)</em> coordinates authentication between a clients and servers. Clients and servers obtain and use tickets from the KDC using a special <em>keytab</em> file to communicate with the KDC and prove their identity to gain access to a drillbit.  Administrators must create <em>principal</em> (user or server) identities and passwords to ensure the secure exchange of mutual authentication information passed to and from the drillbit. </p>
 
 <hr>
 
@@ -1140,11 +1140,13 @@
 
 <h2 id="prerequisites">Prerequisites</h2>
 
-<p>The required Kerberos plugin is part of the 1.10 Drill package. You must have a working Kerberos infrastructure, which Drill does not provide. You must be working in a Linux-based or Windows Active Directory (AD) Kerberos environment and have a Drill server configured for Kerberos. See also <a href="/docs/configuring-kerberos-authentication/#enabling-authentication">Enabling Authentication</a></p>
+<p>The required Kerberos (JDBC) plugin is part of the 1.10 Drill package. To use it, you must have a working Kerberos infrastructure, which Drill does not provide. You must be working in a Linux-based or Windows Active Directory (AD) Kerberos environment with secure clusters and have a Drill server configured for Kerberos. See <a href="/docs/configuring-kerberos-authentication/#enabling-authentication">Enabling Authentication</a>.</p>
 
 <h2 id="client-authentication-process">Client Authentication Process</h2>
 
-<p>This section shows a high-level overview of the client authentication process in Kerberos. It is assumed that Kerberos credentials are present in the client.</p>
+<p>This section provides a high-level overview of the Kerberos client authentication process. It is assumed that Kerberos credentials are present in the client.</p>
+
+<p><img src="/docs/img/kerberos-auth-process.png" alt="kerberos auth process"></p>
 
 <ol>
 <li><p>The client sends a request for a ticket granting ticket that contains the user principal to the Kerberos KDC, a network service that supplies tickets and temporary session keys. </p></li>
@@ -1155,8 +1157,6 @@
 <li><p>The drillbit service has access to the keytab, a file that contains a list of keys for principals.  The key allows the service to decrypt the client’s ticket granting service ticket, identify the principal, and grant access.  </p></li>
 </ol>
 
-<p><img src="/docs/img/kerberos-auth-process.png" alt="kerberos auth process"></p>
-
 <h2 id="server-authentication-process">Server Authentication Process</h2>
 
 <p>For Kerberos server authentication information, see the <a href="http://web.mit.edu/kerberos/" title="MIT Kerberos">MIT Kerberos</a> administration documentation. </p>
@@ -1165,19 +1165,9 @@
 
 <p>During startup, a drillbit service must authenticate. At runtime, Drill uses the keytab file. Trust is based on the keytab file; its secrets are shared with the KDC. The drillbit service also uses this keytab credential to validate service tickets from clients. Based on this information, the drillbit determines whether the client’s identity can be verified to use its service. </p>
 
-<hr>
+<p><img src="/docs/img/kerberos-client-server.png" alt="kerberos client server"></p>
 
-<p><strong>NOTE</strong></p>
-
-<p>Drill must  run as a user capable of impersonation. The Kerberos provider in the SASL framework maps from the Kerberos identity to an OS user name. Drill impersonates the OS username when running queries. </p>
-
-<hr>
-
-<p><img src="/docs/img/kerberos-client-server.png" alt="kerberos client server">  </p>
-
-<ol>
-<li>Create a Kerberos principal identity and a keytab file.  You can create one principal for each drillbit or one principal for all drillbits in a cluster. The drill.keytab file must be owned by and readable by the administrator user.<br></li>
-</ol>
+<p>&nbsp;1. Create a Kerberos principal identity and a keytab file.  You can create one principal for each drillbit or one principal for all drillbits in a cluster. The <code>drill.keytab</code> file must be owned by and readable by the administrator user.  </p>
 
 <ul>
 <li><p>For a single principal per node in cluster:</p>
@@ -1188,13 +1178,12 @@
 <li><p>For a single principal per cluster, use <code>&lt;clustername&gt;</code> instead of <code>&lt;FQDN&gt;</code>: </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">    # kadmin  
     : addprinc -randkey &lt;username&gt;/&lt;clustername&gt;@&lt;REALM&gt;.COM  
-    : ktadd -k /opt/mapr/conf/drill.keytab &lt;username&gt;/&lt;FQDN&gt;@&lt;REALM&gt;.COM  
+    : ktadd -k /opt/mapr/conf/drill.keytab &lt;username&gt;/&lt;FQDN&gt;@&lt;REALM&gt;.COM
 </code></pre></div></li>
 </ul>
 
-<ol>
-<li>Add the Kerberos principal identity and keytab file to the <code>drill-override.conf</code> file.<br></li>
-</ol>
+<p>&nbsp;
+2.  Add the Kerberos principal identity and keytab file to the <code>drill-override.conf</code> file.  </p>
 
 <ul>
 <li><p>The instance name must be lowercase. Also, if _HOST is set as the instance name in the principal, it is replaced with the fully qualified domain name of that host for the instance name. For example, if a drillbit running on <code>host01.aws.lab</code> uses <code>drill/_HOST@&lt;EXAMPLE&gt;.COM</code> as the principal, the canonicalized principal is <code>drill/host01.aws.lab@&lt;EXAMPLE&gt;.COM</code>. </p>
@@ -1207,7 +1196,7 @@
         }  
     }  
 </code></pre></div></li>
-<li><p>To configure multiple mechanisms, extend the mechanisms list and provide additional configuration parameters. For example, the following configuration enables Kerberos and Plain (username and password) mechanisms. See Installing and Configuring Plain Authentication for PAM configuration instructions. </p>
+<li><p>To configure multiple mechanisms, extend the mechanisms list and provide additional configuration parameters. For example, the following configuration enables Kerberos and Plain (username and password) mechanisms. See <a href="/docs/configuring-plain-authentication/#installing-and-configuring-plain-authentication">Installing and Connfiguring Plain Authentication</a> for Plain PAM configuration instructions. </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">     drill.exec: {  
         security: {  
            user.auth.enabled:true,  
@@ -1221,19 +1210,197 @@
 </code></pre></div></li>
 </ul>
 
-<ol>
-<li><p>Restart the drillbit process on each Drill node.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">      &lt;DRILLINSTALL_HOME&gt;/bin/drillbit.sh restart 
-</code></pre></div></li>
-</ol>
+<p>&nbsp;
+3. Restart the drillbit process on each Drill node.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">    &lt;DRILLINSTALL_HOME&gt;/bin/drillbit.sh restart 
+</code></pre></div>
+<p>&nbsp;
+4. Configure the mapping from a Kerberos principal to a user account used by Drill. </p>
+
+<ul>
+<li><p>Drill uses a Hadoop Kerberos name and rules to transform the Kerberos principal provided by client to the one it will use internally as the client’s identity. By default, this mapping rule extracts the first part from the provided principal. For example, if the principal format is <code>&lt;Name1&gt;/&lt;Name2&gt;@realm</code>, the default rule will extract only <code>Name1</code> from the principal and <code>Name1</code> as the client’s identity on server side.</p></li>
+<li><p>Administrators can configure custom rules by setting the <code>drill.exec.security.auth.auth_to_local</code> property in <code>drill-override.conf</code> file. </p></li>
+</ul>
+
+<p>See <a href="https://hadoop.apache.org/docs/r2.7.2/hadoop-project-dist/hadoop-common/SecureMode.html#Mapping_from_Kerberos_principal_to_OS_user_account" title="Mapping from Kerberos Principal">Mapping from Kerberos Principal to OS user account</a> in the <a href="https://hadoop.apache.org/docs/r2.7.2/hadoop-project-dist/hadoop-common/SecureMode.html" title="Secure Mode Hadoop">Hadoop in Secure Mode</a> documentation for details about how the rule works.</p>
 
 <h2 id="using-connection-urls">Using Connection URLs</h2>
 
-<p>In Drill 1.10, Kerberos authentication introduces new URL parameters. The simplest way to connect using Kerberos is to generate a TGT on the client side. In the JDBC connection string, only specify the service principal. For example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> jdbc:drill:  
- drillbit=10.10.10.10;  
- principal=drill/&lt;serverhostname&gt;@&lt;REALM&gt;.COM  
+<p>New client side connection URL parameters are introduced for Kerberos authentication in Drill 1.10. You can use these parameters in multiple combinations to authenticate a client with Drill. </p>
+
+<h3 id="client-credentials">Client Credentials</h3>
+
+<p>A client can provide its credentials in two ways:</p>
+
+<ul>
+<li><p>With a ticket granting ticket (TGT) generated on client side. The TGT must be present on client node; Drill does not generate the TGT. </p></li>
+<li><p>With a keytab file and the client principal provided in the user property of the connection URL.</p></li>
+</ul>
+
+<h3 id="configuration-options">Configuration Options</h3>
+
+<p>The following table lists configuration options for connection URLs. See the <a href="/docs/configuring-kerberos-authentication/#Connection-URL-Examples">Connection URL Examples</a> section for sample URLs.</p>
+
+<table><thead>
+<tr>
+<th>Connection Parameter</th>
+<th>Description</th>
+<th>Mandatory/Optional</th>
+<th>Default Value</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>auth</td>
+<td>Authentication mechanism. The value is deduced if not specified. Kerberos if principal is provided. Plain  if a user and password is provided. A Drill client can also explicitly specify a particular authentication mechanism to use using this parameter. For example, <auth=kerberos> for Kerberos along with service_name, service_host or principal and <auth=plain> for the Plain authentication with username and password.</td>
+<td>Optional</td>
+<td>The preference order is Kerberos and Plain.</td>
+</tr>
+<tr>
+<td>principal</td>
+<td>Drillbit service principal. The format of the principal is primary/<a href="mailto:instance@realm">instance@realm</a>. For Kerberos, the Drill service principal is derived if the value is not provided using this configuration. service_name (primary) and service_host (instance) are used to generate a valid principal. Since the ticket or keytab contains the realm information, the realm is optional.</td>
+<td>Optional</td>
+<td></td>
+</tr>
+<tr>
+<td>keytab</td>
+<td>For Kerberos, if the client chooses to authenticate using a keytab rather than a ticket, set the keytab parameter to the location of the keytab file. The client principal must be provided through the user parameter. A Kerberos ticket is used as the default credential (It is assumed to be present on client-side. The Drill client does not generate the required credentials.)</td>
+<td>Optional</td>
+<td></td>
+</tr>
+<tr>
+<td>service_name</td>
+<td>Primary name of the drillbit service principal.</td>
+<td>Optional</td>
+<td>drill</td>
+</tr>
+<tr>
+<td>service_host</td>
+<td>Instance name of the drillbit service principal.</td>
+<td>Optional</td>
+<td>Since this value is usually the hostname of the node where a drillbit is running, the default value is the drillbit hostname is  provided either through ZooKeeper or through a direct connection string.</td>
+</tr>
+<tr>
+<td>realm</td>
+<td>Kerberos realm name for the drillbit service principal. The ticket or keytab contains the realm information.</td>
+<td>Optional</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="connection-url-examples">Connection URL Examples</h3>
+
+<p>Five examples in this section show the JDBC connection URL that the embedded JDBC client uses for Kerberos authentication. The first section, <a href="/docs/configuring-kerberos-authentication/#Example-of-a-Simple-Connection-URL">Example of a Simple Connection URL</a>, includes a simple connection string and the second section, <a href="/docs/configuring-kerberos-authentication/#Examples-of-Connection-URLs-Used-with-Previously-Generated-TGTs">Examples of Connection URLs Used with Previously Generated TGTs</a>, includes examples to use with previously generated TGTs.</p>
+
+<ul>
+<li><p><a href="/docs/configuring-kerberos-authentication/#Example-1:-TGT-for-Client-Credentials">Example 1:  TGT for Client Credentials</a></p></li>
+<li><p><a href="/docs/configuring-kerberos-authentication/#Example-2:-Drillbit-Provided-by-Direct-Connection-String-and-Configured-with-a-Unique-Service-Principal">Example 2:  Drillbit Provided by Direct Connection String and Configured with a Unique Service Principal</a></p></li>
+<li><p><a href="/docs/configuring-kerberos-authentication/#Example-3:-Drillbit-Selected-by-ZooKeeper-and-Configured-with-a-Unique-Service-Principal">Example 3:  Drillbit Selected by ZooKeeper and Configured with a Unique Service Principal</a></p></li>
+<li><p><a href="/docs/Example-4:-Drillbit-Selected-by-Zookeeper-and-Configured-with-a-Common-Service-Principal">Example 4:  Drillbit Selected by Zookeeper and Configured with a Common Service Principal</a></p></li>
+<li><p><a href="/docs/configuring-plain-authentication/#Example-5:-Keytab-for-Client-Credentials">Example 5:  Keytab for Client Credentials</a></p></li>
+</ul>
+
+<h4 id="example-of-a-simple-connection-url">Example of a Simple Connection URL</h4>
+
+<h5 id="example-1:-tgt-for-client-credentials">Example 1:  TGT for Client Credentials</h5>
+
+<p>The simplest way to connect using Kerberos is to generate a TGT on the client side. Only specify the service principal in the JDBC connection string for the drillbit the user wants to connect to.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">jdbc:drill:drillbit=10.10.10.10;principal=&lt;principal for host 10.10.10.10&gt;
 </code></pre></div>
+<p>In this example, the Drill client uses the:</p>
+
+<ul>
+<li>Default <code>service_name</code>, which is <strong><code>drill</code></strong>.</li>
+<li><code>service_host</code> from the drillbit name provided in the connection URL, which is <strong><code>10.10.10.10</code></strong>.</li>
+</ul>
+
+<p>The service principal format is <code>&lt;primary&gt;/&lt;instance&gt;@&lt;realm from TGT&gt;</code>. The service principal is <strong><code>principal for host 10.10.10.10</code></strong>.</p>
+
+<h4 id="examples-of-connection-urls-used-with-previously-generated-tgts">Examples of Connection URLs Used with Previously Generated TGTs</h4>
+
+<p>If you do not provide a service principal in the connection string when using Kerberos authentication, then use the <code>service_name</code> or <code>service_host</code> parameters. Since these parameters are optional, their default values will be used internally (if not provided) to create a valid principal.</p>
+
+<p>Examples 2 through 4 show a valid connection string for Kerberos authentication if a client has previously generated a TGT.  Realm information will be extracted from the TGT if it is not provided. </p>
+
+<hr>
+
+<p><strong>Note</strong></p>
+
+<p>For end-to-end authentication to function, it is assumed that the proper principal for the drillbit service is configured in the KDC.</p>
+
+<hr>
+
+<h5 id="example-2:-drillbit-provided-by-direct-connection-string-and-configured-with-a-unique-service-principal">Example 2:  Drillbit Provided by Direct Connection String and Configured with a Unique Service Principal</h5>
+
+<p>This type of connection string is used when:</p>
+
+<ul>
+<li>Each drillbit in the cluster is configured with its own service principal.</li>
+<li><p>The instance component is the host address of the drillbit.</p>
+
+<p><code>jdbc:drill:drillbit=host1;auth=kerberos</code></p></li>
+</ul>
+
+<p>In this example, the Drill client uses the:</p>
+
+<ul>
+<li>Default <code>service_name</code>, which is <strong><code>drill</code></strong>.</li>
+<li><code>service_host</code>, which is the drillbit name provided in the connection URL (<strong><code>host1</code></strong>).</li>
+</ul>
+
+<p>The internally created service principal will be <strong><code>drill/host1@&lt;realm from TGT&gt;</code></strong>.</p>
+
+<h5 id="example-3:-drillbit-selected-by-zookeeper-and-configured-with-unique-service-principal">Example 3:  Drillbit Selected by ZooKeeper and Configured with Unique Service Principal</h5>
+
+<p>This type of connection string is used when the drillbit is chosen by ZooKeeper instead of directly from the connection string.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">jdbc:drill:zk=host01.aws.lab:5181;auth=kerberos;service_name=myDrill
+</code></pre></div>
+<p>In this example, the Drill client uses the:</p>
+
+<ul>
+<li>Provided <code>service_name</code>, which is <strong><code>myDrill</code></strong> as the primary name of the principal.</li>
+<li><code>service_host</code> as the address of the drillbit, which is chosen from the list of active drillbits that ZooKeeper provides (<strong><code>host01.aws.lab:5181</code></strong>).</li>
+</ul>
+
+<p>The internally created service principal will be <strong><code>myDrill/&lt;host address from zk&gt;@&lt;realm from TGT&gt;</code></strong>.</p>
+
+<h5 id="example-4:-drillbit-selected-by-zookeeper-and-configured-with-a-common-service-principal">Example 4:  Drillbit Selected by Zookeeper and Configured with a Common Service Principal</h5>
+
+<p>This type of connection string is used when all drillbits in a cluster use the same principal.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">jdbc:drill:zk=host01.aws.lab:5181;auth=kerberos;service_name=myDrill;service_host=myDrillCluster
+</code></pre></div>
+<p>In this example, the Drill client uses the:</p>
+
+<ul>
+<li>Provided <code>service_name</code>, which is <strong><code>myDrill</code></strong>.</li>
+<li><code>service_host</code>, which is <strong><code>myDrillCluster</code></strong>.</li>
+</ul>
+
+<p>The internally created service principal, which will be <strong><code>myDrill/myDrillCluster@&lt;realm from TGT&gt;</code></strong>.</p>
+
+<h5 id="example-5:-keytab-for-client-credentials">Example 5:  Keytab for Client Credentials</h5>
+
+<p>If a client chooses to provide its credentials in a keytab instead of a TGT, it must also provide a principal in the user parameter.  In this case, realm information will be extracted from the <code>/etc/krb5.conf</code> file on the node if it is not provided in the connection URL. All other parameters can be used as shown in the preceding examples (1-4). This connection string is for the case when all drillbits in a cluster use the same principal.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">jdbc:drill:zk=host01.aws.lab:5181;auth=kerberos;service_name=myDrill;service_host=myDrillCluster;keytab=&lt;path to keytab file&gt;;user=&lt;client principal&gt;
+</code></pre></div>
+<p>In this example, the Drill client:</p>
+
+<ul>
+<li>Will authenticate itself with the:
+
+<ul>
+<li>keytab (<strong><code>path to keytab file</code></strong>) and </li>
+<li>Principal provided in the user parameter (<strong><code>client principal</code></strong>)</li>
+</ul></li>
+<li>Uses the: 
+
+<ul>
+<li>Provided <code>service_name</code>, which is <strong><code>myDrill</code></strong>.</li>
+<li><code>service_host</code>, which is <strong><code>myDrillCluster</code></strong>.</li>
+</ul></li>
+</ul>
+
+<p>The internally created service principal will be <strong><code>myDrill/myDrillCluster@&lt;realm from krb5.conf&gt;</code></strong>.</p>
+
     
       
         <div class="doc-nav">
