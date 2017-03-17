@@ -1126,7 +1126,7 @@
 
     <div class="int_text" align="left">
       
-        <p>In release 1.10, Drill supports Kerberos v5 network security authentication.  To use Kerberos with Drill and establish connectivity, use the JDBC driver packaged with Drill 1.10.</p>
+        <p>In release 1.10 Drill supports Kerberos v5 network security authentication.  To use Kerberos with Drill and establish connectivity, use the JDBC driver packaged with Drill 1.10.</p>
 
 <p>Kerberos allows trusted hosts to prove their identity over a network to an information system.  A Kerberos <em>realm</em> is unique authentication domain. A centralized <em>key distribution center (KDC)</em> coordinates authentication between a clients and servers. Clients and servers obtain and use tickets from the KDC using a special <em>keytab</em> file to communicate with the KDC and prove their identity to gain access to a drillbit.  Administrators must create <em>principal</em> (user or server) identities and passwords to ensure the secure exchange of mutual authentication information passed to and from the drillbit. </p>
 
@@ -1239,7 +1239,7 @@
 
 <h3 id="configuration-options">Configuration Options</h3>
 
-<p>The following table lists configuration options for connection URLs. See the <a href="/docs/configuring-kerberos-authentication/#Connection-URL-Examples">Connection URL Examples</a> section for sample URLs.</p>
+<p>The following table lists configuration options for connection URLs. See the Connection URL Examples section for sample URLs.</p>
 
 <table><thead>
 <tr>
@@ -1289,19 +1289,19 @@
 
 <h3 id="connection-url-examples">Connection URL Examples</h3>
 
-<p>Five examples in this section show the JDBC connection URL that the embedded JDBC client uses for Kerberos authentication. The first section, <a href="/docs/configuring-kerberos-authentication/#Example-of-a-Simple-Connection-URL">Example of a Simple Connection URL</a>, includes a simple connection string and the second section, <a href="/docs/configuring-kerberos-authentication/#Examples-of-Connection-URLs-Used-with-Previously-Generated-TGTs">Examples of Connection URLs Used with Previously Generated TGTs</a>, includes examples to use with previously generated TGTs.</p>
+<p>The following five examples show the JDBC connection URL that the embedded JDBC client uses for Kerberos authentication. The first section, Example of a Simple Connection URL, includes a simple connection string and the second section, Examples of Connection URLs Used with Previously Generated TGTs, includes examples to use with previously generated TGTs.</p>
 
 <ul>
-<li><p><a href="/docs/configuring-kerberos-authentication/#Example-1:-TGT-for-Client-Credentials">Example 1:  TGT for Client Credentials</a></p></li>
-<li><p><a href="/docs/configuring-kerberos-authentication/#Example-2:-Drillbit-Provided-by-Direct-Connection-String-and-Configured-with-a-Unique-Service-Principal">Example 2:  Drillbit Provided by Direct Connection String and Configured with a Unique Service Principal</a></p></li>
-<li><p><a href="/docs/configuring-kerberos-authentication/#Example-3:-Drillbit-Selected-by-ZooKeeper-and-Configured-with-a-Unique-Service-Principal">Example 3:  Drillbit Selected by ZooKeeper and Configured with a Unique Service Principal</a></p></li>
-<li><p><a href="/docs/Example-4:-Drillbit-Selected-by-Zookeeper-and-Configured-with-a-Common-Service-Principal">Example 4:  Drillbit Selected by Zookeeper and Configured with a Common Service Principal</a></p></li>
-<li><p><a href="/docs/configuring-plain-authentication/#Example-5:-Keytab-for-Client-Credentials">Example 5:  Keytab for Client Credentials</a></p></li>
+<li>Example 1:  TGT for Client Credentials<br></li>
+<li>Example 2:  Drillbit Provided by Direct Connection String and Configured with a Unique Service Principal<br></li>
+<li>Example 3:  Drillbit Selected by ZooKeeper and Configured with a Unique Service Principal<br></li>
+<li>Example 4:  Drillbit Selected by Zookeeper and Configured with a Common Service Principal<br></li>
+<li>Example 5:  Keytab for Client Credentials</li>
 </ul>
 
 <h4 id="example-of-a-simple-connection-url">Example of a Simple Connection URL</h4>
 
-<h5 id="example-1:-tgt-for-client-credentials">Example 1:  TGT for Client Credentials</h5>
+<h5 id="example-1:-tgt-for-client-credentials">Example 1: TGT for Client Credentials</h5>
 
 <p>The simplest way to connect using Kerberos is to generate a TGT on the client side. Only specify the service principal in the JDBC connection string for the drillbit the user wants to connect to.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">jdbc:drill:drillbit=10.10.10.10;principal=&lt;principal for host 10.10.10.10&gt;
@@ -1329,7 +1329,7 @@
 
 <hr>
 
-<h5 id="example-2:-drillbit-provided-by-direct-connection-string-and-configured-with-a-unique-service-principal">Example 2:  Drillbit Provided by Direct Connection String and Configured with a Unique Service Principal</h5>
+<h5 id="example-2:-drillbit-provided-by-direct-connection-string-and-configured-with-a-unique-service-principal">Example 2: Drillbit Provided by Direct Connection String and Configured with a Unique Service Principal</h5>
 
 <p>This type of connection string is used when:</p>
 
@@ -1349,7 +1349,7 @@
 
 <p>The internally created service principal will be <strong><code>drill/host1@&lt;realm from TGT&gt;</code></strong>.</p>
 
-<h5 id="example-3:-drillbit-selected-by-zookeeper-and-configured-with-unique-service-principal">Example 3:  Drillbit Selected by ZooKeeper and Configured with Unique Service Principal</h5>
+<h5 id="example-3:-drillbit-selected-by-zookeeper-and-configured-with-unique-service-principal">Example 3: Drillbit Selected by ZooKeeper and Configured with Unique Service Principal</h5>
 
 <p>This type of connection string is used when the drillbit is chosen by ZooKeeper instead of directly from the connection string.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">jdbc:drill:zk=host01.aws.lab:5181;auth=kerberos;service_name=myDrill
@@ -1363,7 +1363,7 @@
 
 <p>The internally created service principal will be <strong><code>myDrill/&lt;host address from zk&gt;@&lt;realm from TGT&gt;</code></strong>.</p>
 
-<h5 id="example-4:-drillbit-selected-by-zookeeper-and-configured-with-a-common-service-principal">Example 4:  Drillbit Selected by Zookeeper and Configured with a Common Service Principal</h5>
+<h5 id="example-4:-drillbit-selected-by-zookeeper-and-configured-with-a-common-service-principal">Example 4: Drillbit Selected by Zookeeper and Configured with a Common Service Principal</h5>
 
 <p>This type of connection string is used when all drillbits in a cluster use the same principal.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">jdbc:drill:zk=host01.aws.lab:5181;auth=kerberos;service_name=myDrill;service_host=myDrillCluster
@@ -1377,7 +1377,7 @@
 
 <p>The internally created service principal, which will be <strong><code>myDrill/myDrillCluster@&lt;realm from TGT&gt;</code></strong>.</p>
 
-<h5 id="example-5:-keytab-for-client-credentials">Example 5:  Keytab for Client Credentials</h5>
+<h5 id="example-5:-keytab-for-client-credentials">Example 5: Keytab for Client Credentials</h5>
 
 <p>If a client chooses to provide its credentials in a keytab instead of a TGT, it must also provide a principal in the user parameter.  In this case, realm information will be extracted from the <code>/etc/krb5.conf</code> file on the node if it is not provided in the connection URL. All other parameters can be used as shown in the preceding examples (1-4). This connection string is for the case when all drillbits in a cluster use the same principal.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">jdbc:drill:zk=host01.aws.lab:5181;auth=kerberos;service_name=myDrill;service_host=myDrillCluster;keytab=&lt;path to keytab file&gt;;user=&lt;client principal&gt;
@@ -1388,7 +1388,7 @@
 <li>Will authenticate itself with the:
 
 <ul>
-<li>keytab (<strong><code>path to keytab file</code></strong>) and </li>
+<li>Keytab (<strong><code>path to keytab file</code></strong>) and </li>
 <li>Principal provided in the user parameter (<strong><code>client principal</code></strong>)</li>
 </ul></li>
 <li>Uses the: 
