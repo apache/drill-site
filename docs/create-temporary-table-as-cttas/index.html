@@ -1120,7 +1120,7 @@
 
     </div>
 
-     Mar 15, 2017
+     Mar 27, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1150,9 +1150,7 @@
 
 <h3 id="workspace-for-temporary-tables">Workspace for Temporary Tables</h3>
 
-<p>By default, Drill creates temporary tables within the default temporary workspace, <code>dfs.tmp</code>. The default temporary workspace must be writable, file-based, and point to a location that</p>
-
-<p>already exists, otherwise temporary tables creation will fail. You cannot create a temporary table outside of the default temporary workspace.</p>
+<p>By default, Drill creates temporary tables within the default temporary workspace, <code>dfs.tmp</code>. The default temporary workspace must be writable, file-based, and point to a location that already exists, otherwise temporary table creation fails. You cannot create a temporary table outside of the default temporary workspace.</p>
 
 <p>Example dfs.tmp workspace in the dfs storage plugin:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">{
@@ -1217,9 +1215,11 @@
 <p>When you mention a table name in a SELECT statement, any temporary table with that name takes priority over a table with the same name in the current workspace.</p>
 
 <p>For example, when you issue a SELECT statement on a table name that is common among the default temporary tables workspace and the current workspace, the temporary table is returned:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">USE dfs.json;
+<div class="highlight"><pre><code class="language-text" data-lang="text">   USE dfs.json;
 
-SELECT * FROM donuts; //returns table from dfs.tmp SELECT* FROM dfs.json.donuts; //returns table from dfs.json
+   SELECT * FROM donuts; //returns table from dfs.tmp  
+
+   SELECT* FROM dfs.json.donuts; //returns table from dfs.json
 </code></pre></div>
 <h3 id="drop-a-temporary-table">Drop a Temporary Table</h3>
 
