@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Develop Drill - Apache Drill</title>
+<title>HTTPD Storage Plugin - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -265,8 +265,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Configure Drill</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Configure Drill</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configure-drill-introduction/">Configure Drill Introduction</a></li>
@@ -340,7 +340,7 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-storage-plugin/">HTTPD Storage Plugin</a></li>
+              <li class="toctree-l2 current"><a class="reference internal" href="/docs/httpd-storage-plugin/">HTTPD Storage Plugin</a></li>
             
           
           </ul>
@@ -939,16 +939,16 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Developer Information</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">Developer Information</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/rest-api/">REST API</a></li>
             
           
             
-              <li class="toctree-l2 current"><a href="javascript: void(0);">Develop Drill</a></li>
-              <ul style="">
+              <li class="toctree-l2"><a href="javascript: void(0);">Develop Drill</a></li>
+              <ul style="display: none">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/compiling-drill-from-source/">Compiling Drill from Source</a></li>
               
@@ -1103,40 +1103,293 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/developer-information/">Developer Information</a></li>
+    <li><a href="/docs/configure-drill/">Configure Drill</a></li>
   
-  <li>Develop Drill</li>
+  <li>HTTPD Storage Plugin</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/developer-information/010-develop-drill.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/connect-a-data-source/plugins/111-httpd-storage-plugin.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>Develop Drill</h1>
+      <h1>HTTPD Storage Plugin</h1>
 
     </div>
 
-     
+     Mar 15, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <ul>
-        
-          <li><a href="/docs/compiling-drill-from-source/">Compiling Drill from Source</a></li>
-        
-      
-      </ul>
+        <p>As of version 1.9, Drill can natively ingest and query web server logs. To configure Drill to read server logs, you must modify the extensions section in the dfs storage plugin configuration, as shown below:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;httpd&quot;: {
+  &quot;type&quot;: &quot;httpd&quot;,
+  &quot;logFormat&quot;: &quot;%h %t \&quot;%r\&quot; %&gt;s %b \&quot;%{Referer}i\&quot; \&quot;%{user-agent}i\&quot;&quot;,
+  &quot;timestampFormat&quot;: null
+}  
+</code></pre></div>
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">The logFormat section must match the format of the log files, otherwise Drill cannot correctly parse the logs.  </p>
+</div>
+
+<h2 id="httpd-format-strings">HTTPD Format Strings</h2>
+
+<p>The following table lists the fields that log files can include. The <code>timestampformat</code> is optional, but you can include a format for the time stamp and Drill will parse the times in the log files into Drill dates.</p>
+
+<table><thead>
+<tr>
+<th>Format String</th>
+<th>Variable Name</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>%a</td>
+<td>connection.client.ip</td>
+</tr>
+<tr>
+<td>%{c}a</td>
+<td>connection.client.peerip</td>
+</tr>
+<tr>
+<td>%A</td>
+<td>connection.server.ip</td>
+</tr>
+<tr>
+<td>%B</td>
+<td>response.body.bytes</td>
+</tr>
+<tr>
+<td>%b</td>
+<td>response.body.bytesclf</td>
+</tr>
+<tr>
+<td>%{Foobar}C</td>
+<td>request.cookies.*</td>
+</tr>
+<tr>
+<td>%D</td>
+<td>server.process.time</td>
+</tr>
+<tr>
+<td>%{Foobar}e</td>
+<td>server.environment.*</td>
+</tr>
+<tr>
+<td>%f</td>
+<td>server.filename</td>
+</tr>
+<tr>
+<td>%h</td>
+<td>connection.client.host</td>
+</tr>
+<tr>
+<td>%H</td>
+<td>request.protocol</td>
+</tr>
+<tr>
+<td>%{Foobar}i</td>
+<td>request.header.</td>
+</tr>
+<tr>
+<td>%k</td>
+<td>connection.keepalivecount</td>
+</tr>
+<tr>
+<td>%l</td>
+<td>connection.client.logname</td>
+</tr>
+<tr>
+<td>%L</td>
+<td>request.errorlogid    STRING</td>
+</tr>
+<tr>
+<td>%m</td>
+<td>request.method</td>
+</tr>
+<tr>
+<td>%{Foobar}n</td>
+<td>server.module_note.*</td>
+</tr>
+<tr>
+<td>%{Foobar}o</td>
+<td>response.header.*</td>
+</tr>
+<tr>
+<td>%p</td>
+<td>request.server.port.canonical</td>
+</tr>
+<tr>
+<td>%{canonical}p</td>
+<td>connection.server.port.canonical</td>
+</tr>
+<tr>
+<td>%{local}p</td>
+<td>connection.server.port</td>
+</tr>
+<tr>
+<td>%{remote}p</td>
+<td>connection.client.port</td>
+</tr>
+<tr>
+<td>%P</td>
+<td>connection.server.child.processid</td>
+</tr>
+<tr>
+<td>%{pid}P</td>
+<td>connection.server.child.processid</td>
+</tr>
+<tr>
+<td>%{tid}P</td>
+<td>connection.server.child.threadid</td>
+</tr>
+<tr>
+<td>%{hextid}P</td>
+<td>connection.server.child.hexthreadid</td>
+</tr>
+<tr>
+<td>%q</td>
+<td>request.querystring</td>
+</tr>
+<tr>
+<td>%r</td>
+<td>request.firstline</td>
+</tr>
+<tr>
+<td>%R</td>
+<td>request.handler</td>
+</tr>
+<tr>
+<td>%s</td>
+<td>request.status.original</td>
+</tr>
+<tr>
+<td>%&gt;s</td>
+<td>request.status.last</td>
+</tr>
+<tr>
+<td>%t</td>
+<td>request.receive.time</td>
+</tr>
+<tr>
+<td>%{msec}t</td>
+<td>request.receive.time.begin.msec</td>
+</tr>
+<tr>
+<td>%{begin:msec}t</td>
+<td>request.receive.time.begin.msec</td>
+</tr>
+<tr>
+<td>%{end:msec}t</td>
+<td>request.receive.time.end.msec</td>
+</tr>
+<tr>
+<td>%{usec}t</td>
+<td>request.receive.time.begin.usec</td>
+</tr>
+<tr>
+<td>%{begin:usec}t</td>
+<td>request.receive.time.begin.usec</td>
+</tr>
+<tr>
+<td>%{end:usec}t</td>
+<td>request.receive.time.end.usec</td>
+</tr>
+<tr>
+<td>%{msec_frac}t</td>
+<td>request.receive.time.begin.msec_frac</td>
+</tr>
+<tr>
+<td>%{begin:msec_frac}t</td>
+<td>request.receive.time.begin.msec_frac TIME.EPOCH</td>
+</tr>
+<tr>
+<td>%{end:msec_frac}t</td>
+<td>request.receive.time.end.msec_frac</td>
+</tr>
+<tr>
+<td>%{usec_frac}t</td>
+<td>request.receive.time.begin.usec_frac</td>
+</tr>
+<tr>
+<td>%{begin:usec_frac}t</td>
+<td>request.receive.time.begin.usec_frac</td>
+</tr>
+<tr>
+<td>%{end:usec_frac}t</td>
+<td>request.receive.time.end.usec_frac</td>
+</tr>
+<tr>
+<td>%T</td>
+<td>response.server.processing.time</td>
+</tr>
+<tr>
+<td>%u</td>
+<td>connection.client.user</td>
+</tr>
+<tr>
+<td>%U</td>
+<td>request.urlpath</td>
+</tr>
+<tr>
+<td>%v</td>
+<td>connection.server.name.canonical</td>
+</tr>
+<tr>
+<td>%V</td>
+<td>connection.server.name</td>
+</tr>
+<tr>
+<td>%X</td>
+<td>response.connection.status</td>
+</tr>
+<tr>
+<td>%I</td>
+<td>request.bytes</td>
+</tr>
+<tr>
+<td>%O</td>
+<td>response.bytes</td>
+</tr>
+<tr>
+<td>%{cookie}i</td>
+<td>request.cookies</td>
+</tr>
+<tr>
+<td>%{set-cookie}o</td>
+<td>response.cookies</td>
+</tr>
+<tr>
+<td>%{user-agent}i</td>
+<td>request.user-agent</td>
+</tr>
+<tr>
+<td>%{referer}i</td>
+<td>request.referer</td>
+</tr>
+</tbody></table>
+
+<h2 id="additional-functionality">Additional Functionality</h2>
+
+<p>In addition to reading raw log files, the following functions are also useful when analyzing log files:  </p>
+
+<ul>
+<li><code>parse_url(&lt;url&gt;)</code>:  This function accepts a URL as an argument and returns a map of the URL&#39;s protocol, authority, host, and path.</li>
+<li><code>parse_query( &lt;query_string&gt; )</code>:  This function accepts a query string and returns a key/value pairing of the variables submitted in the request.</li>
+</ul>
+
+<p>A function that parses User Agent strings and returns a map of all the pertinent information is available at: <a href="https://github.com/cgivre/drill-useragent-function">https://github.com/cgivre/drill-useragent-function</a></p>
+
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/rest-api/">← REST API</a></span><span class="next-toc"><a href="/docs/compiling-drill-from-source/">Compiling Drill from Source →</a></span>
+  <span class="previous-toc"><a href="/docs/configuring-the-drill-shell/">← Configuring the Drill Shell</a></span><span class="next-toc"><a href="/docs/connect-a-data-source/">Connect a Data Source →</a></span>
 </div>
 
     
