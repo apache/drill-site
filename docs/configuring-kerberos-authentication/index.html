@@ -1122,7 +1122,7 @@
 
     </div>
 
-     Mar 17, 2017
+     May 17, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1130,15 +1130,12 @@
       
         <p>In release 1.10 Drill supports Kerberos v5 network security authentication.  To use Kerberos with Drill and establish connectivity, use the JDBC driver packaged with Drill 1.10.</p>
 
-<p>Kerberos allows trusted hosts to prove their identity over a network to an information system.  A Kerberos <em>realm</em> is unique authentication domain. A centralized <em>key distribution center (KDC)</em> coordinates authentication between a clients and servers. Clients and servers obtain and use tickets from the KDC using a special <em>keytab</em> file to communicate with the KDC and prove their identity to gain access to a drillbit.  Administrators must create <em>principal</em> (user or server) identities and passwords to ensure the secure exchange of mutual authentication information passed to and from the drillbit. </p>
+<p>Kerberos allows trusted hosts to prove their identity over a network to an information system.  A Kerberos <em>realm</em> is unique authentication domain. A centralized <em>key distribution center (KDC)</em> coordinates authentication between a clients and servers. Clients and servers obtain and use tickets from the KDC using a special <em>keytab</em> file to communicate with the KDC and prove their identity to gain access to a drillbit.  Administrators must create <em>principal</em> (user or server) identities and passwords to ensure the secure exchange of mutual authentication information passed to and from the drillbit.   </p>
 
-<hr>
-
-<p><strong>NOTE</strong></p>
-
-<p>Proper setup, configuration, administration, and usage of a Kerberos environment is beyond the scope of this documentation.  See the <a href="http://web.mit.edu/kerberos/" title="MIT Kerberos">MIT Kerberos</a> documentation for information about Kerberos.</p>
-
-<hr>
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">Proper setup, configuration, administration, and usage of a Kerberos environment is beyond the scope of this documentation.  See the [MIT Kerberos](http://web.mit.edu/kerberos/ "MIT Kerberos") documentation for information about Kerberos.  </p>
+</div>  
 
 <h2 id="prerequisites">Prerequisites</h2>
 
@@ -1188,27 +1185,44 @@
 2.  Add the Kerberos principal identity and keytab file to the <code>drill-override.conf</code> file.  </p>
 
 <ul>
-<li><p>The instance name must be lowercase. Also, if _HOST is set as the instance name in the principal, it is replaced with the fully qualified domain name of that host for the instance name. For example, if a drillbit running on <code>host01.aws.lab</code> uses <code>drill/_HOST@&lt;EXAMPLE&gt;.COM</code> as the principal, the canonicalized principal is <code>drill/host01.aws.lab@&lt;EXAMPLE&gt;.COM</code>. </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">     drill.exec {  
+<li><p>The instance name must be lowercase. Also, if _HOST is set as the instance name in the principal, it is replaced with the fully qualified domain name of that host for the instance name. For example, if a drillbit running on <code>host01.aws.lab</code> uses <code>drill/_HOST@&lt;EXAMPLE&gt;.COM</code> as the principal, the canonicalized principal is <code>drill/host01.aws.lab@&lt;EXAMPLE&gt;.COM</code>.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">      drill.exec: {
+        cluster-id: &quot;drillbits1&quot;,
+        zk.connect: &quot;qa102-81.qa.lab:2181,qa102-82.qa.lab:2181,qa102-83.qa.lab:2181&quot;,
+        impersonation: {
+          enabled: true,
+          max_chained_user_hops: 3
+        },
         security: {  
-          user.auth.enabled:true,  
-          auth.mechanisms:[“KERBEROS”],  
-          auth.principal:“drill/&lt;clustername&gt;@&lt;REALM&gt;.COM”,  
-          auth.keytab:“/etc/drill/conf/drill.keytab”  
-        }  
-    }  
+                user.auth.enabled:true,  
+                auth.mechanisms:[“KERBEROS”],  
+                auth.principal:“drill/&lt;clustername&gt;@&lt;REALM&gt;.COM”,  
+                auth.keytab:“/etc/drill/conf/drill.keytab”  
+        }
+
+      }
 </code></pre></div></li>
-<li><p>To configure multiple mechanisms, extend the mechanisms list and provide additional configuration parameters. For example, the following configuration enables Kerberos and Plain (username and password) mechanisms. See <a href="/docs/configuring-plain-authentication/#installing-and-configuring-plain-authentication">Installing and Connfiguring Plain Authentication</a> for Plain PAM configuration instructions. </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">     drill.exec: {  
+<li><p>To configure multiple mechanisms, extend the mechanisms list and provide additional configuration parameters. For example, the following configuration enables Kerberos and Plain (username and password) mechanisms. See <a href="/docs/configuring-plain-authentication/#installing-and-configuring-plain-authentication">Installing and Connfiguring Plain Authentication</a> for Plain PAM configuration instructions.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">      drill.exec: {
+        cluster-id: &quot;drillbits1&quot;,
+        zk.connect: &quot;qa102-81.qa.lab:2181,qa102-82.qa.lab:2181,qa102-83.qa.lab:2181&quot;,
+        impersonation: {
+          enabled: true,
+          max_chained_user_hops: 3
+        },
         security: {  
-           user.auth.enabled:true,  
-           user.auth.impl:&quot;pam&quot;,  
-           user.auth.pam_profile:[&quot;sudo&quot;, &quot;login&quot;],  
-           auth.mechanisms:[&quot;KERBEROS&quot;,&quot;PLAIN&quot;],  
-           auth.principal:&quot;drill/&lt;clustername&gt;@&lt;REALM&gt;.COM&quot;,  
-           auth.keytab:&quot;/etc/drill/conf/drill.keytab&quot;  
-            }  
-        }  
+                user.auth.enabled:true,  
+                auth.mechanisms:[&quot;KERBEROS&quot;,&quot;PLAIN&quot;],  
+                auth.principal:“drill/&lt;clustername&gt;@&lt;REALM&gt;.COM”,  
+                auth.keytab:“/etc/drill/conf/drill.keytab”  
+              }  
+        security.user.auth: {
+                enabled: true,
+                packages += &quot;org.apache.drill.exec.rpc.user.security&quot;,
+                impl: &quot;pam&quot;,
+                pam_profiles: [&quot;sudo&quot;, &quot;login&quot;]
+               }   
+        }
 </code></pre></div></li>
 </ul>
 

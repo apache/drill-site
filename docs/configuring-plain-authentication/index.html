@@ -1122,7 +1122,7 @@
 
     </div>
 
-     Mar 16, 2017
+     May 17, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1212,14 +1212,23 @@ Enter password for jdbc:drill:zk=localhost:2181: *************
 <div class="highlight"><pre><code class="language-text" data-lang="text">`export DRILLBIT_JAVA_OPTS=&quot;-Djava.library.path=/opt/pam/&quot;` 
 </code></pre></div></li>
 <li><p>Add the following configuration to the drill.exec block in <code>&lt;DRILL_HOME&gt;/conf/drill-override.conf</code>: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">  drill.exec {
-   security.user.auth {
-         enabled: true,
-         packages += &quot;org.apache.drill.exec.rpc.user.security&quot;,
-         impl: &quot;pam&quot;,
-         pam_profiles: [ &quot;sudo&quot;, &quot;login&quot; ]
-   } 
-  }
+<div class="highlight"><pre><code class="language-text" data-lang="text">      drill.exec: {
+        cluster-id: &quot;drillbits1&quot;,
+        zk.connect: &quot;qa102-81.qa.lab:5181,qa102-82.qa.lab:5181,qa102-83.qa.lab:5181&quot;,
+        impersonation: {
+          enabled: true,
+          max_chained_user_hops: 3
+        },
+        security: {          
+                auth.mechanisms : [&quot;PLAIN&quot;],
+                 },
+        security.user.auth: {
+                enabled: true,
+                packages += &quot;org.apache.drill.exec.rpc.user.security&quot;,
+                impl: &quot;pam&quot;,
+                pam_profiles: [ &quot;sudo&quot;, &quot;login&quot; ]
+         }
+       }
 </code></pre></div></li>
 <li><p>(Optional) To add or remove different PAM profiles, add or delete the profile names in the “pam_profiles” array shown above. </p></li>
 <li><p>Restart the Drillbit process on each Drill node. </p>
