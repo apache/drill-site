@@ -1122,47 +1122,46 @@
 
     </div>
 
-     Jan 24, 2017
+     May 30, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
         <p>ODBC driver managers use configuration files to define and configure ODBC data
-sources and drivers. To configure an ODBC connection for Linux or Mac OS X, complete the following
-steps:</p>
+sources and drivers. To configure an ODBC connection for Mac OS X, note the following
+procedure:</p>
 
 <ul>
-<li><a href="/docs/configuring-odbc-on-mac-os-x/#step-1:-copy-sample-configuration-files">Step 1: Copy Sample Configuration Files</a></li>
+<li><a href="/docs/configuring-odbc-on-mac-os-x/#step-1:-driver-installer-updates-sample-configuration-files">Step 1: Driver Installer Updates Sample Configuration Files</a></li>
 <li><a href="/docs/configuring-odbc-on-mac-os-x/#step-2:-set-environment-variables">Step 2: Set Environment Variables</a></li>
 <li><a href="/docs/configuring-odbc-on-mac-os-x/#step-3:-define-the-odbc-data-sources-in-.odbc.ini">Step 3: Define the ODBC Data Sources in odbc.ini</a></li>
 <li><a href="/docs/configuring-odbc-on-mac-os-x/#step-4:-configure-the-mapr-drill-odbc-driver">Step 4: Configure the MapR Drill ODBC Driver</a></li>
 </ul>
 
-<h2 id="step-1:-copy-sample-configuration-files">Step 1: Copy Sample Configuration Files</h2>
+<h2 id="step-1:-driver-installer-updates-sample-configuration-files">Step 1: Driver Installer Updates Sample Configuration Files</h2>
 
-<p>Before you connect to Drill through an ODBC client tool
-on Mac OS X, copy the following configuration files in <code>/opt/mapr/drill/Setup</code> to your home directory unless the files already exist in your home directory:</p>
+<p>Before you connect to Drill through an ODBC client tool on Mac OS X, the driver installer copies the following configuration files in <code>/Library/mapr/drill/Setup</code> to your home directory unless the files already exist in your home directory:</p>
 
 <ul>
 <li><code>mapr.drillodbc.ini</code></li>
-<li><code>.odbc.ini</code></li>
-<li><code>.odbcinst.ini</code></li>
+<li><code>odbc.ini</code></li>
+<li><code>odbcinst.ini</code></li>
 </ul>
 
 <p>In your home directory, rename the files as hidden files. Use sudo if necessary:</p>
 
 <ul>
-<li>.mapr.drillodbc.ini</li>
-<li>.odbc.ini</li>
-<li>.odbcinst.ini</li>
+<li><code>.mapr.drillodbc.ini</code></li>
+<li><code>.odbc.ini</code></li>
+<li><code>.odbcinst.ini</code></li>
 </ul>
 
-<p>The installer for Mac OS X creates a sample user DSN in odbc.ini in either of the following locations:</p>
+<p>The installer for Mac OS X creates a sample user DSN in <code>odbc.ini</code> in either of the following locations:</p>
 
 <ul>
-<li>~/Library/ODBC/odbc.ini</li>
-<li>~/.odbc.ini</li>
+<li><code>~/Library/ODBC/odbc.ini</code></li>
+<li><code>~/.odbc.ini</code></li>
 </ul>
 
 <p>Depending on the driver manager you use, the user DSN in one of these files will be effective.</p>
@@ -1176,9 +1175,9 @@ on Mac OS X, copy the following configuration files in <code>/opt/mapr/drill/Set
 
 <h2 id="step-2:-set-environment-variables">Step 2: Set Environment Variables</h2>
 
-<p>Create or modify the <code>/etc/launchd.conf</code> file to set environment variables. Set the MAPRDRILLINI variable to point to the <code>.mapr.drillodbc.ini</code> file. </p>
+<p>The driver installer installs the <code>.mapr.drillodbc.ini</code> file to your home directory and adds an entry to the <code>$HOME/.odbc.ini</code> file. </p>
 
-<p>If you installed the iODBC driver manager using the DMG, the dynamic linker (DYLD) libraries are installed in <code>/usr/local/iODBC/lib</code>. The launchd.conf file should look something like this:</p>
+<p>If you installed the iODBC driver manager using the DMG, the dynamic linker (DYLD) libraries are installed in <code>/usr/local/iODBC/lib</code>. The <code>launchd.conf</code> file contains contents such as the following:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">setenv MAPRDRILLINI /Users/joeuser/.mapr.drillodbc.ini
 setenv ODBCINI /Users/joeuser/.odbc.ini
 </code></pre></div>
@@ -1206,7 +1205,29 @@ ZKClusterID=&lt;cluster name in `drill-override.conf`&gt;
 </code></pre></div>
 <h3 id="authentication-properties">Authentication Properties</h3>
 
-<p>If the Drillbit requires a username and password for authentication, uncomment the AuthenticationType, select Basic Authentication for the AuthenticationType, and configure UID and PWD properties.</p>
+<p>If the Drillbit requires authentication, uncomment the AuthenticationType, add an AuthenticationType, and configure properties. If the Drillbit does not require authentication (or to configure no password protection), you can use the No Authentication option; you do not need to configure additional settings.</p>
+
+<ul>
+<li><p><strong>MapRSASL</strong> </p>
+
+<ul>
+<li>The MapR login utility must be used to obtain a MapR ticket for MapR SASL authentication. </li>
+<li>You must install and configure the MapR login utility before you can use the MapR SASL authentication mechanism. See <a href="http://maprdocs.mapr.com/home/SecurityGuide/SecurityArchitecture-AuthenticationArchitecture.html" title="MapR Login Utilty">Authentication Architecture: The maprlogin Utility</a> and <a href="http://maprdocs.mapr.com/home/SecurityGuide/Tickets.html/">Tickets</a>.</li>
+</ul>
+
+<p><strong>Kerberos</strong> 
+*  See the <a href="http://web.mit.edu/kerberos/" title="MIT Kerberos">MIT Kerberos</a> documentation for installing and configuring a Kerberos environment, which is beyond the scope of the information provided here.
+* To specify the Kerberos mechanism:
+    * Set the AuthenticationType to Kerberos.
+    * Set the KrbServiceHost property to the FQDN of the Drill server host.
+    * Set the KrbServiceName property to the Kerberos service principal name of the Drill server.</p>
+
+<p><strong>Plain (or Basic Authentication)</strong>
+* Configure the UID to an appropriate name for accessing the Drill server. 
+* Set the PWD property to the password corresponding to the UID. </p></li>
+</ul>
+
+<p>To configure no password protection, select No Authentication.</p>
 
 <h3 id="direct-and-zookeeper-quorum-properties">Direct and ZooKeeper Quorum Properties</h3>
 
@@ -1223,7 +1244,7 @@ ZKClusterID=&lt;cluster name in `drill-override.conf`&gt;
 <p>To use Drill in local mode, do not define the ZKQuorum and ZKClusterID properties. Start Drill using the drill-localhost command, set ConnectionType to Direct, and define HOST and PORT properties. For example:</p>
 
 <ul>
-<li><code>HOST=centos32.lab:5181</code><br></li>
+<li><code>HOST=&lt;IP address of drillbit&gt;:5181</code><br></li>
 <li><code>PORT=31010</code></li>
 </ul>
 
@@ -1243,36 +1264,42 @@ behavior of DSNs using the MapR Drill ODBC Driver.</p>
 # Specify any global ODBC configuration here such as ODBC tracing.
 
 [ODBC Data Sources]
-Sample MapR Drill=MapR Drill ODBC Driver
+MapR Drill=MapR Drill ODBC Driver
 
-[Sample MapR Drill]
+[MapR Drill]
 # Description: DSN Description.
 # This key is not necessary and only describes the data source.
-Description=Sample MapR Drill ODBC Driver DSN
+Description=MapR Drill ODBC Driver
 # Driver: The location where the ODBC driver is installed.
 Driver=/Library/mapr/drill/lib/libdrillodbc_sbu.dylib
 
-# The DriverUnicodeEncoding setting is only used for SimbaDM
-# When set to 1, SimbaDM runs in UTF-16 mode.
-# When set to 2, SimbaDM runs in UTF-8 mode.
+# The DriverUnicodeEncoding setting is only used for MapRDM
+# When set to 1, MapRDM runs in UTF-16 mode.
+# When set to 2, MapRDM runs in UTF-8 mode.
 #DriverUnicodeEncoding=2
 
 # Values for ConnectionType, AdvancedProperties, Catalog, Schema should be set here.
 
 # If ConnectionType is Direct, include Host and Port. If ConnectionType is ZooKeeper, include ZKQuorum and ZKClusterID
 # They can also be specified on the connection string.
-# AuthenticationType: No authentication; Basic Authentication
+# AuthenticationType: No authentication; Plain; Kerberos; MapRSASL
 ConnectionType=Direct
 HOST=localhost
 PORT=31010
 ZKQuorum=[Zookeeper Quorum]
 ZKClusterID=[Cluster ID]
-AuthenticationType=No Authentication
+AuthenticationType=Plain
 UID=[USERNAME]
 PWD=[PASSWORD] 
-AdvancedProperties=CastAnyToVarchar=true;HandshakeTimeout=5;QueryTimeout=180;TimestampTZDisplayTimezone=utc;ExcludedSchemas=sys,INFORMATION_SCHEMA;NumberOfPrefetchBuffers=5;
+DelegationUID=
+KrbServiceHost=
+KrbServiceName=
+AdvancedProperties=CastAnyToVarchar=true;HandshakeTimeout=30;QueryTimeout=180;TimestampTZDisplayTimezone=utc;
+ExcludedSchemas=sys,INFORMATION_SCHEMA;NumberOfPrefetchBuffers=5;
 Catalog=DRILL
 Schema=  
+
+# The DriverUnicodeEncoding setting is only used for MapRDM
 </code></pre></div>
 <hr>
 

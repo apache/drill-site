@@ -1122,13 +1122,115 @@
 
     </div>
 
-     Jan 24, 2017
+     May 30, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>The procedure for testing the ODBC connection differs depending on your platform, as described in the following sections:</p>
+        <p>You can use DSN connection strings and DSN-less connection strings for your connections.</p>
+
+<ul>
+<li><a href="/docs/testing-the-odbc-connection/#example-connection-string-with-DSN">Example Connection String with DSN</a></li>
+<li><a href="/docs/testing-the-odbc-connection/#example-connection-strings-without-DSN">Example Connection Strings without DSN</a></li>
+</ul>
+
+<h2 id="example-connection-string-with-dsn">Example Connection String with DSN</h2>
+
+<p>The following is an example of a connection string for a connection that uses a DSN:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">DSN=[DataSourceName]    
+</code></pre></div>
+<p>[<em>DataSourceName</em>] is the DSN that you are using for the connection.</p>
+
+<p>You can set additional configuration options by appending key-value pairs to the connection string. Configuration options that are passed in using a connection string take precedence over configuration options that are set in the DSN.</p>
+
+<h2 id="example-connection-strings-without-dsn">Example Connection Strings without DSN</h2>
+
+<p>Some applications provide support for connecting to a data source using a driver without a DSN. To connect to a data source without using a DSN, use a connection string instead.
+The placeholders in the examples are defined as follows, in alphabetical order:</p>
+
+<ul>
+<li>[<em>ClusterName</em>] is the name of the ZooKeeper cluster to which you are connecting.</li>
+<li>[<em>DomainName</em>] is the fully qualified domain name of the Drill server host.</li>
+<li>[<em>PortNumber</em>] is the number of the TCP port that the Drill server uses to listen for client connections.</li>
+<li>[<em>Server</em>] is the IP address or host name of the Drill server to which you are connecting.</li>
+<li>[<em>ServiceName</em>] is the Kerberos service principal name of the Drill server.</li>
+<li>[<em>YourPassword</em>] is the password corresponding to your user name.</li>
+<li>[<em>YourUserName</em>] is the user name that you use to access the Drill server.</li>
+</ul>
+
+<h3 id="drillbit-connections">Drillbit Connections</h3>
+
+<p>The following is the format of a DSN-less connection string for a Drillbit that does not require authentication:</p>
+
+<p>Driver=MapR Drill ODBC Driver;ConnectionType=Direct; Host=[<em>Server</em>];Port=[<em>PortNumbe</em>r]</p>
+
+<p>For example:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Driver=MapR Drill ODBC Driver;ConnectionType=Direct; Host=192.168.222.160;Port=31010
+</code></pre></div>
+<h3 id="zookeeper-connections">ZooKeeper Connections</h3>
+
+<p>The following is the format of a DSN-less connection string for a ZooKeeper cluster that does not require authentication:</p>
+
+<p>Driver=MapR Drill ODBC Driver;
+ConnectionType=ZooKeeper; 
+ZKQuorum=[<em>Server1</em>]:[<em>PortNumber*1], [*Server2</em>]:[<em>PortNumber2</em>], [<em>Server3</em>]:[<em>PortNumber3</em>];
+ZKClusterID=[<em>ClusterName</em>]</p>
+
+<p>For example:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Driver=MapR Drill ODBC Driver;
+ConnectionType=ZooKeeper; 
+ZKQuorum=192.168.222.160:31010, 192.168.222.165:31010, 192.168.222.231:31010;
+ZKClusterID=drill;
+</code></pre></div>
+<h3 id="kerberos-authentication-connections">Kerberos Authentication Connections</h3>
+
+<p>The following is the format of a DSN-less connection string for a Drillbit that requires Kerberos authentication:</p>
+
+<p>Driver=MapR Drill ODBC Driver;
+ConnectionType=Direct; 
+Host=[<em>Server</em>];Port=[<em>PortNumber</em>];
+AuthenticationType=Kerberos; 
+KrbServiceHost=[<em>DomainName</em>];KrbServiceName=[<em>ServiceName</em>]</p>
+
+<p>For example:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Driver=MapR Drill ODBC Driver;
+ConnectionType=Direct; 
+Host=192.168.222.160;Port=31010;
+AuthenticationType=Kerberos; 
+KrbServiceHost=maprdriverdemo.example.com;  KrbServiceName=drill
+</code></pre></div>
+<h3 id="mapr-sasl-authentication-connections">MapR-SASL Authentication Connections</h3>
+
+<p>The following is the format of a DSN-less connection string for a Drillbit that requires MapR-SASL authentication:</p>
+
+<p>Driver=MapR Drill ODBC Driver;ConnectionType=Direct; Host=[<em>Server</em>];Port=[<em>PortNumber</em>];AuthenticationType=MapRSASL</p>
+
+<p>For example:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Driver=MapR Drill ODBC Driver;
+ConnectionType=Direct; 
+Host=192.168.227.169;
+Port=31010;
+AuthenticationType=MapRSASL
+</code></pre></div>
+<h3 id="plain-authentication-connections">Plain Authentication Connections</h3>
+
+<p>The following is the format of a DSN-less connection string for a Drillbit that requires Plain authentication:</p>
+
+<p>Driver=MapR Drill ODBC Driver;ConnectionType=Direct; 
+Host=[<em>Server</em>];Port=[<em>PortNumber</em>];<br>
+AuthenticationType=Plain;
+UID=[<em>YourUserName</em>];PWD=[<em>YourPassword</em>]</p>
+
+<p>For example:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Driver=MapR Drill ODBC Driver;ConnectionType=Direct; 
+Host=192.168.227.169;Port=31010;
+AuthenticationType=Plain;
+UID=username;PWD=mapr999
+</code></pre></div>
+<h2 id="testing-the-odbc-connection">Testing the ODBC Connection</h2>
+
+<p>The procedure for testing the ODBC connection differs depending on your platform, as described in the following sections:</p>
 
 <ul>
 <li><a href="/docs/testing-the-odbc-connection/#testing-the-odbc-connection-on-linux">Testing the ODBC Connection on Linux</a></li>
@@ -1138,23 +1240,20 @@
 
 <h2 id="testing-the-odbc-connection-on-linux">Testing the ODBC Connection on Linux</h2>
 
-<p>To test the ODBC connection on Linux use the test utilities in the <code>samples</code> directory of the driver manager installation: <code>iodbctest</code> and <code>iodbctestw</code>. Use <code>iodbctest</code> to
-test how your driver works with an ANSI application. Use <code>iodbctestw</code> to test
-how your driver works with a Unicode application.</p>
+<p>To test the ODBC connection on Linux use the test utilities in the <code>samples</code> directory of the driver manager installation: <code>iodbctest</code> and <code>iodbctestw</code>. Use <code>iodbctest</code> to test how your driver works with an ANSI application. Use <code>iodbctestw</code> to test how your driver works with a Unicode application.</p>
 
 <p>There are 32-bit and 64-bit installations of the iODBC driver manager available. If you have only one or the other installed, then the appropriate version of iodbctest (or iodbctestw) is available. However, if you have both 32- and 64-bit versions installed, then you need to be careful that you are running the version from the correct installation directory.</p>
 
-<p>Visit <a href="http://www.iodbc.org/">http://www.iodbc.org</a> for further details on
-using the iODBC driver manager.</p>
+<p>See <a href="http://www.iodbc.org/">http://www.iodbc.org</a> for further details on using the iODBC driver manager.</p>
 
 <h3 id="example-of-a-test-on-linux">Example of a Test on Linux</h3>
 
 <p>To test the ODBC connection on a Linux cluster, follow these steps:</p>
 
 <ol>
-<li><p><a href="/docs/starting-drill-on-linux-and-mac-os-x/">Start Drill</a>. For example, to start Drill in local mode on a linux cluster:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">[root@centos23 drill-1.2.0]# bin/drill-localhost
-apache drill 1.2.0 
+<li><p><a href="/docs/starting-drill-on-linux-and-mac-os-x/">Start Drill</a>. For example, to start Drill in local mode on a Linux cluster:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">[root@centos23 drill-1.10.0]# bin/drill-localhost
+apache drill 1.10.0 
 &quot;the only truly happy people are children, the creative minority and drill users&quot;
 </code></pre></div></li>
 <li><p>In the <code>samples</code> directory of the driver manager installation, run <code>iodbctest</code> or <code>iodbctestw</code>.  </p>
@@ -1162,55 +1261,70 @@ apache drill 1.2.0
   iODBC Demonstration program
 This program shows an interactive SQL processor
 Driver Manager: 03.52.0709.0909
-</code></pre></div>
-<p>The prompt for an ODBC connection string appears.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">Enter ODBC connect string (? shows list): ?
 </code></pre></div></li>
-<li><p>Type ? to see the DSN name.<br>
-Output is:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">DSN                              | Driver                                  
+</ol>
+
+<p>The prompt for an ODBC connection string appears.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">    Enter ODBC connect string (? shows list): ?
+</code></pre></div>
+<ol>
+<li><p>Type <code>?</code> to see the DSN name.  The output is:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">DSN                                          | Driver                                  
 ------------------------------------------------------------------------------
-Sample MapR Drill DSN 64         | MapR Drill ODBC Driver 64-bit           
+Sample MapR Drill (64-bit)                   | MapR Drill ODBC Driver 64-bit           
 Enter ODBC connect string (? shows list):
 </code></pre></div></li>
-<li><p>If you are connecting directly to a Drillbit, type an ODBC connection string using the following format:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">DSN=&lt;DSN name&gt;;ConnectionType=Direct;Host=&lt;Host Name&gt;;Port=&lt;Port Number&gt;
+<li><p>To test the connection if the DSN was previously configured in the <code>.odbc.ini</code>, type the following connection string:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">DSN=&lt;DSN name&gt;
+</code></pre></div>
+<p>However, if you are connecting directly to a Drillbit and the DSN was not previously configured in the .odbc.ini, type an ODBC connection string using the following format:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">DSN=&lt;DSN name&gt;;
+ConnectionType=Direct;
+Host=&lt;Host Name&gt;;Port=&lt;Port Number&gt;
 </code></pre></div>
 <p>OR</p>
 
 <p>If you are connecting to a ZooKeeper cluster, type an ODBC connection string using the following format:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">DSN=&lt;DSN Name&gt;;ConnectionType=ZooKeeper;ZKQuorum=&lt;Server1:Port1&gt;,&lt;Server2:Port2&gt;;ZKClusterID=&lt;Cluster Name&gt;`
+<div class="highlight"><pre><code class="language-text" data-lang="text">DSN=&lt;DSN Name&gt;;
+ConnectionType=ZooKeeper;
+ZKQuorum=&lt;Server1:Port1&gt;,&lt;Server2:Port2&gt;;
+ZKClusterID=&lt;Cluster Name&gt;
 </code></pre></div>
-<p>The output of a successful test is:<br>
- <code>Driver: 1.2.0.1001 (MapR Drill ODBC Driver)  
- SQL&gt;</code><br>
- After the <code>SQL&gt;</code> prompt appears, type <code>quit;</code>, and go to the Drill shell to run commands. Do not attempt to run SQL commands from this prompt.</p></li>
+<p>The output of a successful test is:  </p>
+
+<p><code>Driver: 1.3.8.&lt;version&gt; (MapR Drill ODBC Driver)  
+ SQL&gt;</code>  </p>
+
+<p>After the <code>SQL&gt;</code> prompt appears, type <code>quit;</code>.
+ Go to the Drill shell to run commands. Do not attempt to run SQL commands from this prompt.</p></li>
 </ol>
 
-<h3 id="example-connection-strings">Example Connection Strings</h3>
-
-<p>The following example shows a connection string for a direct connection:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">    DSN=Sample MapR Drill DSN 64;ConnectionType=Direct;Host=localhost;Port=31010
+<p>This example shows a connection string for a direct connection:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">    DSN=Sample MapR Drill 64-bit;
+    ConnectionType=Direct;
+    Host=localhost;Port=31010
 </code></pre></div>
-<p>The following example shows a connection string for a ZooKeeper cluster connection:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">    DSN=Sample MapR Drill DSN 64;ConnectionType=ZooKeeper;ZKQuorum=centos23.lab:5181;ZKClusterID=docs41cluster-drillbits
+<p>This example shows a connection string for a ZooKeeper cluster connection:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">    DSN=Sample MapR Drill 64-bit 64;
+    ConnectionType=ZooKeeper;
+    ZKQuorum=centos23.lab:5181;
+    ZKClusterID=docs60cluster-drillbits
 </code></pre></div>
 <h2 id="testing-the-odbc-connection-on-mac-os-x">Testing the ODBC Connection on Mac OS X</h2>
 
 <p>To test the ODBC connection on Mac OS X, follow these steps.</p>
 
 <ol>
-<li><a href="/docs/starting-drill-on-linux-and-mac-os-x/">Start Drill</a>.<br></li>
-<li>Start the iODBC Administrator.app in <code>/Applications</code>.<br>
-The iODBC Data Source Administrator dialog appears. </li>
-<li>On the User DSN tab, select the MapR Drill.<br>
-<img src="/docs/img/odbc_data_source_names.png" alt=""><br></li>
-<li>Click <strong>Test</strong>.<br>
-The Login for Sample MapR Drill dialog appears.<br>
-<img src="/docs/img/odbc_login.png" alt=""><br></li>
-<li>If you configured Basic Authentication in the <code>.odbc.ini</code>, enter the user name and password you also configured; otherwise, click <strong>OK</strong>.<br>
-The success message appears.<br>
-<img src="/docs/img/success.png" alt=""><br></li>
+<li><p><a href="/docs/starting-drill-on-linux-and-mac-os-x/">Start Drill</a>. </p></li>
+<li><p>Start the iODBC Administrator.app in <code>/Applications</code>.<br>
+The iODBC Data Source Administrator dialog appears. </p></li>
+<li><p>On the User DSN tab, select <strong>MapR Drill</strong>.<br>
+<img src="/docs/img/odbc_data_source_names.png" alt=""> </p></li>
+<li><p>Click <strong>Test</strong>.<br>
+The Login for the MapR Drill dialog appears.<br>
+<img src="/docs/img/odbc_login.png" alt="">  </p></li>
+<li><p>If you configured Plain (or Basic) authentication in the <code>.odbc.ini</code>, enter the user name and password you also configured; otherwise, click <strong>OK</strong>.  The success message displays.<br>
+<img src="/docs/img/success.png" alt=""></p></li>
 </ol>
 
 <h2 id="testing-the-odbc-connection-on-windows">Testing the ODBC Connection on Windows</h2>
@@ -1218,11 +1332,10 @@ The success message appears.<br>
 <p>To test the ODBC connection on Windows, follow these steps:</p>
 
 <ol>
-<li><p>Follow instructions to configure the ODBC connection on Windows.<br>
+<li><p>Follow instructions to configure the ODBC connection on Windows. 
 The MapR Drill ODBC Driver DSN Setup dialog is displayed.
 <img src="/docs/img/odbc-configure2.png" alt=""></p></li>
-<li><p>Click the Test Button.
-<img src="/docs/img/odbc-test.png" alt=""></p></li>
+<li><p>Click <strong>Test</strong>. A Test Results popup will display that states you have successfully connected to the data source. </p></li>
 </ol>
 
     

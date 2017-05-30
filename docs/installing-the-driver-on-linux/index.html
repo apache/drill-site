@@ -1122,7 +1122,7 @@
 
     </div>
 
-     Dec 24, 2016
+     May 30, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1150,16 +1150,16 @@ application that you use to access Drill. The 64-bit editions of Linux support
 <li>One of the following distributions (32- and 64-bit editions are supported):
 
 <ul>
-<li>Red Hat® Enterprise Linux® (RHEL) 5.0/6.0</li>
-<li>CentOS 5.0/6.0</li>
-<li>SUSE Linux Enterprise Server (SLES) 11</li>
+<li>Red Hat® Enterprise Linux® (RHEL) 5, 6, or 7</li>
+<li>CentOS 5, 6, or 7</li>
+<li>SUSE Linux Enterprise Server (SLES) 11 or 12</li>
 </ul></li>
 <li>90 MB of available disk space.</li>
 <li>An installed ODBC driver manager:
 
 <ul>
 <li>iODBC 3.52.7 or above<br>
-OR </li>
+or </li>
 <li>unixODBC 2.2.14 or above<br>
 On Linux, 3.52.7 is available as a tarball. After unpacking the tarball, see the README for instructions about building the driver manager.</li>
 </ul></li>
@@ -1170,16 +1170,11 @@ If not, create an entry in <code>/etc/hosts</code> for each node in the followin
 Example: <code>127.0.0.1 localhost</code></p></li>
 </ul>
 
-<p>To install the driver, you need Administrator privileges on the computer.</p>
+<p>To install the driver, you need Administrator privileges on the computer. </p>
 
 <h2 id="step-1:-download-the-mapr-drill-odbc-driver">Step 1: Download the MapR Drill ODBC Driver</h2>
 
-<p>Download either the 32 or 64-bit driver:</p>
-
-<ul>
-<li><a href="http://package.mapr.com/tools/MapR-ODBC/MapR_Drill/MapRDrill_odbc_v1.3.0.1009/maprdrill-1.3.0.1009-1.i686.rpm">MapR Drill ODBC Driver (32-bit)</a></li>
-<li><a href="http://package.mapr.com/tools/MapR-ODBC/MapR_Drill/MapRDrill_odbc_v1.3.0.1009/maprdrill-1.3.0.1009-1.x86_64.rpm">MapR Drill ODBC Driver (64-bit)</a></li>
-</ul>
+<p>Download the driver from the <a href="http://package.mapr.com/tools/MapR-ODBC/MapR_Drill/">download site</a>. The current version is 1.3.8.</p>
 
 <h2 id="step-2:-install-the-mapr-drill-odbc-driver">Step 2: Install the MapR Drill ODBC Driver</h2>
 
@@ -1187,7 +1182,7 @@ Example: <code>127.0.0.1 localhost</code></p></li>
 
 <ol>
 <li>Login as the root user.</li>
-<li>Navigate to the folder that contains the driver RPM packages to install.</li>
+<li>Navigate to the directory that contains the driver RPM packages to install.</li>
 <li>Enter the following command where <em>RPMFileName</em> is the file name of the RPM package containing the version of the driver that you want to install:<br>
 
 <ul>
@@ -1197,14 +1192,6 @@ Example: <code>127.0.0.1 localhost</code></p></li>
 <code>zypper install RPMFileName</code></li>
 </ul></li>
 </ol>
-
-<p>The MapR Drill ODBC Driver depends on the following resources:</p>
-
-<ul>
-<li><code>cyrus-sasl-2.1.22-7</code> or above</li>
-<li><code>cyrus-sasl-gssapi-2.1.22-7</code> or above</li>
-<li><code>cyrus-sasl-plain-2.1.22-7</code> or above</li>
-</ul>
 
 <p>The MapR Drill ODBC Driver typically resolves dependencies automatically. If not, error messages during the installation indicate that the package manager in your Linux distribution cannot resolve the
 dependencies automatically. In this case, manually install the packages.</p>
@@ -1219,20 +1206,20 @@ locations and descriptions:</p>
 </tr>
 </thead><tbody>
 <tr>
-<td><code>/opt/mapr/drillodbc/ErrorMessages</code></td>
+<td><code>/opt/mapr/drill/ErrorMessages</code></td>
 <td>Error messages files directory.</td>
 </tr>
 <tr>
-<td><code>/opt/mapr/drillodbc/Setup</code></td>
+<td><code>/opt/mapr/drill/Setup</code></td>
 <td>Sample configuration files directory.</td>
 </tr>
 <tr>
-<td><code>/opt/mapr/drillodbc/lib/32</code></td>
-<td>32-bit shared libraries directory.</td>
+<td><code>/opt/mapr/drill/lib/32</code></td>
+<td>32-bit shared libraries directory (will be created if you install the 32-bit driver).</td>
 </tr>
 <tr>
-<td><code>/opt/mapr/drillodbc/lib/64</code></td>
-<td>64-bit shared libraries directory.</td>
+<td><code>/opt/mapr/drill/lib/64</code></td>
+<td>64-bit shared libraries directory (will be created if you install the 64-bit driver)..</td>
 </tr>
 </tbody></table>
 
@@ -1240,11 +1227,11 @@ locations and descriptions:</p>
 
 <p>To check the version of the driver you installed, use the following case-sensitive command on the terminal command line:</p>
 
-<p><code>yum list | grep MapRDrillODBC</code></p>
+<p><code>yum list | grep MapRDrill</code></p>
 
 <p>or</p>
 
-<p><code>rpm -qa | grep MapRDrillodbc</code></p>
+<p><code>rpm -qa | grep MapRDrill</code></p>
 
 <h3 id="next-step">Next Step</h3>
 

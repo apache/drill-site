@@ -1122,7 +1122,7 @@
 
     </div>
 
-     Dec 24, 2016
+     May 30, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1143,86 +1143,111 @@ Drill ODBC Driver. You can use these options in a connection string or in the
 
 <table><thead>
 <tr>
-<th>Property</th>
-<th>Valid Values</th>
+<th>﻿Property</th>
+<th>Default Values</th>
 <th>Brief Description</th>
 </tr>
 </thead><tbody>
 <tr>
+<td>AdvancedProperties</td>
+<td>CastAnyToVarchar=true;  HandshakeTimeout=5; QueryTimeout=180;TimestampTZDisplayTimezone=local; ExcludedSchemas=sys,INFORMATION_SCHEMA; NumberOfPrefetchBuffers=5</td>
+<td>Not required. Advanced properties for configuring the driver. You can set custom connection properties by specifying them as advanced properties. If you specify a property that the driver does not explicitly support, the driver still accepts the property, and passes it to the server for processing.  Separate advanced properties using a semi-colon (;) and then surround all advanced properties in a connection string using braces { and }. For example,  {<property>;<property>; . . .}  In addition, the following Advanced Properties string excludes the schemas named test and abc, sets the timeout to 30 seconds, and sets the time zone to Coordinated Universal Time: HandshakeTimeout=30;QueryTimeout=30;TimestampTZDisplayTimezone=utc;ExcludedSchemas=test,abc</td>
+</tr>
+<tr>
+<td>AuthenticationType</td>
+<td>No Authentication</td>
+<td>Not required.  This option specifies how the driver authenticates the connection to Drill. No Authentication: The driver does not authenticate the connection to Drill. Kerberos: The driver authenticates the connection using the Kerberos protocol. Plain: The driver authenticates the connection using a user name and apassword. MapRSASL: The driver authenticates the connection using the MapR-SASL protocol.</td>
+</tr>
+<tr>
 <td>Catalog</td>
-<td>DRILL</td>
-<td>The   name of the synthetic catalog under which all of the schemas/databases are   organized.</td>
+<td>The default catalog name specified in the driver&#39;s .did file (typically, DRILL).</td>
+<td>Not required. The name of the synthetic catalog under which all of the schemas/databases are organized. This catalog name is used as the value for SQL_DATABASE_NAME or CURRENT CATALOG.</td>
 </tr>
 <tr>
 <td>ConnectionType</td>
-<td>Direct   or ZooKeeper</td>
-<td>Direct   connects to a Drill server using Host and Port properties. ZooKeeper connects   to a ZooKeeper cluster using ZKQuorum and ZKClusterID properties.</td>
+<td>Direct to Drillbit (Direct)</td>
+<td>Required. This option specifies whether the driver connects to a single server or a ZooKeeper cluster. Direct to Drillbit (Direct): The driver connects to a single Drill server. ZooKeeper Quorum (ZooKeeper): The driver connects to a ZooKeeper cluster.</td>
+</tr>
+<tr>
+<td>DelegationUID</td>
+<td>none</td>
+<td>Not required. If a value is specified for this setting, the driver delegates all operations against Drill to the specified user, rather than to the authenticated user for the connection. This option is applicable only when Plain authentication is enabled.</td>
+</tr>
+<tr>
+<td>DisableAsync</td>
+<td>Clear (0)</td>
+<td>Not required. This option specifies whether the driver supports asynchronous queries. Enabled (1): The driver does not support asynchronous queries. Disabled (0): The driver supports asynchronous queries. This option is not supported in connection strings or DSNs. Instead, it must be set as a driver-wide property in the mapr.drillodbc.ini file. Settings in that file apply to all connections that use the driver.</td>
 </tr>
 <tr>
 <td>Driver</td>
-<td>MapR   Drill ODBC Driver</td>
-<td>The   name of the installed driver.</td>
+<td>MapR Drill ODBC Driver on Windows machines or the absolute path of the driver shared object file when installed on a non-Windows machine</td>
+<td>On Windows, the name of the installed driver (MapR Drill ODBC Driver). On other platforms, the name of the installed driver as specified in odbcinst.ini, or the absolute path of the driver shared object file.</td>
 </tr>
 <tr>
 <td>Host</td>
-<td><code>&lt;host   name&gt;</code></td>
-<td>If   the ConnectionType property is set to Direct, set the host name of the Drill   server using the Host property.</td>
+<td>localhost</td>
+<td>Required if the ConnectionType property is set to Direct to Drillbit. The IP address or host name of the Drill server.</td>
+</tr>
+<tr>
+<td>KrbServiceHost</td>
+<td>none</td>
+<td>Required for Kerberos authentication. The fully qualified domain name of the Drill server host.</td>
+</tr>
+<tr>
+<td>KrbServiceName</td>
+<td>mapr (default)</td>
+<td>Required for Kerberos authentication. The Kerberos service principal name of the Drill server. mapr is the default for the MapR Drill ODBC driver.</td>
+</tr>
+<tr>
+<td>LogLevel</td>
+<td>OFF (0)</td>
+<td>Not required. Use this property to enable or disable logging in the driver and to specify the amount of detail included in log files. Only enable logging long enough to capture an issue. Logging decreases performance and can consume a large quantity of disk space. This option is not supported in connection strings. To configure logging for the Windows driver, you must use the Logging Options dialog box. To configure logging for a non-Windows driver, you must use the mapr.drillodbc.ini file.</td>
+</tr>
+<tr>
+<td>LogPath</td>
+<td>none</td>
+<td>Required if logging is enabled. The full path to the folder where the driver saves log files when logging is enabled. When logging is enabled, the driver produces two log files at the location that youspecify in the LogPath property:  driver.log provides a log of driver activities, and  drillclient.log provides a log of Drill client activities.  This option is not supported in connection strings. To configure logging for the Windows driver, you must use the Logging Options dialog box. To configure logging for a non-Windows driver, you must use the mapr.drillodbc.ini file.</td>
 </tr>
 <tr>
 <td>Port</td>
 <td>31010</td>
-<td>If   the ConnectionType property is set to Direct, set the e TCP port on which the   Drill server is listening.</td>
+<td>Required if the ConnectionType property is set to Direct to Drillbit. The TCP port that the Drill server uses to listen for client connections. Set the TCP port on which the Drill server is listening.</td>
+</tr>
+<tr>
+<td>PWD</td>
+<td>none</td>
+<td>Required if AuthenticationType is Plain (also known as Basic Authentication). The password corresponding to the user name that you provided in the User field (the UID key).</td>
 </tr>
 <tr>
 <td>Schema</td>
-<td><code>&lt;schema   name&gt;</code></td>
-<td>The   name of the database schema or storage plugin name to use when the query does   not explicitly specify the schema or storage plugin.</td>
+<td>none</td>
+<td>Not required. The name of the database schema to use when a schema is not explicitly specified in a query. You can still issue queries on other schemas by explicitly specifying the schema in the query.</td>
+</tr>
+<tr>
+<td>UID</td>
+<td>none</td>
+<td>Required if AuthenticationType is Plain (also known as Basic authentication). Set UID to a user name.</td>
+</tr>
+<tr>
+<td>UseOnlySSPI (on Windows only)</td>
+<td>Clear (0)</td>
+<td>Not required. This option is available only in the Windows driver. This option specifies how the driver handles Kerberos authentication: either with theSSPI plugin or with MIT Kerberos.  Enabled (1): The driver handles Kerberos authentication by using the SSPI plugin instead of MIT Kerberos by default. Disabled (0): The driver uses MIT Kerberos to handle Kerberos authentication, and only uses the SSPI plugin if the GSSAPI library is not available.</td>
 </tr>
 <tr>
 <td>ZKClusterID</td>
 <td>drillbits1</td>
-<td>If   the ConnectionType property is set to ZooKeeper, then set ZKClusterID to the   name of the Drillbit cluster to use.</td>
+<td>Required if the ConnectionType property is set to ZooKeeper Quorum. Set ZKClusterID to the name of the Drillbit cluster to use.</td>
 </tr>
 <tr>
 <td>ZKQuorum</td>
-<td><code>&lt;IP   address&gt;</code>,<code>&lt;IP address&gt;</code> . . .</td>
-<td>If   the ConnectionType property is set to ZooKeeper, then use ZKQuorum to   indicate the server(s) in your ZooKeeper cluster. Separate multiple servers   using a comma (,).</td>
-</tr>
-<tr>
-<td>AuthenticationType</td>
-<td>No   Authentication or Basic Authentication</td>
-<td>Basic Authentication   <a href="https://drill.apache.org/docs/configuring-user-impersonation/">enables impersonation</a>.</td>
-</tr>
-<tr>
-<td>UID</td>
-<td><code>&lt;user   name&gt;</code></td>
-<td>If   AuthenticationType is Basic Authentication, set the UID to a user name.</td>
-</tr>
-<tr>
-<td>PWD</td>
-<td><code>&lt;password&gt;</code></td>
-<td>If   AuthenticationType is Basic Authentication, set the PWD to a password.</td>
-</tr>
-<tr>
-<td>DelegationUID</td>
-<td><code>&lt;impersonation_target&gt;</code></td>
-<td>The impersonation target for the   authorized proxy user. See <a href="https://drill.apache.org/docs/configuring-inbound-impersonation/">Configuring Inbound Impersonation</a>.</td>
-</tr>
-<tr>
-<td>AdvancedProperties</td>
-<td>{<code>&lt;property&gt;</code>;<code>&lt;property&gt;</code>;   . . .}</td>
-<td>Separate   advanced properties using a semi-colon (;) and then surround all advanced   properties in a connection string using braces { and }.</td>
-</tr>
-<tr>
-<td>DisableAsync</td>
-<td>0   or 1</td>
-<td>Disables   asynchronous ODBC connection and enables a synchronous connection. A change   in state occurs during driver initialization and is propagated to all driver   DSNs.</td>
+<td>none</td>
+<td>Required if the ConnectionType property is set to ZooKeeper. Set  ZKQuorum to indicate the server(s) in your ZooKeeper cluster. Separate multiple servers using a comma (,). For example, <IP address>,<IP address>.</td>
 </tr>
 </tbody></table>
 
 <h3 id="catalog">Catalog</h3>
 
-<p>This value defaults to DRILL and cannot be changed. The driver adds a synthetic catalog named DRILL under which all of the schemas and databases are organized. The driver maps the ODBC schema to the DRILL catalog.</p>
+<p>This value defaults to DRILL and should not be changed. The driver adds a synthetic catalog named DRILL under which all of the schemas and databases are organized. The driver maps the ODBC schema to the DRILL catalog.</p>
 
 <h3 id="connection-type">Connection Type</h3>
 
@@ -1323,40 +1348,85 @@ set when using the MapR Drill ODBC Driver.</p>
 
 <table><thead>
 <tr>
-<th>Property Name</th>
-<th>Default Value</th>
-<th>Description</th>
+<th>﻿Property</th>
+<th>Default Values</th>
+<th>Brief Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>HandshakeTimeout</td>
-<td>5</td>
-<td>An integer value representing the number of seconds that the driver waits before aborting an attempt to connect to a data source. When set to a value of 0, the driver does not abort connection attempts.</td>
+<td>CastAnyToVarchar</td>
+<td>TRUE</td>
+<td>Not required. When this property is set to true, if SQLColumns returns columns of type ANY, then the driver casts the columns to VARCHAR. When this property is set to false, the driver does not change the returned columns.</td>
 </tr>
 <tr>
-<td>QueryTimeout</td>
-<td>180</td>
-<td>An integer value representing the number of seconds for the driver to wait before automatically stopping a query. When set to a value of 0, the driver does not stop queries automatically.</td>
+<td>ConvertToCast</td>
+<td>FALSE</td>
+<td>Not required. When activated this enables the Cast Query Translation function. This function helps optimize your queries for Power BI.</td>
 </tr>
 <tr>
-<td>TimestampTZDisplayTimezone</td>
-<td>local</td>
-<td>Two values are possible: local—Timestamps are dependent on the time zone of the user. utc—Timestamps appear in Coordinated Universal Time (UTC).</td>
+<td>DefaultDecimalScale</td>
+<td>10</td>
+<td>The default scale for DECIMAL columns that are returned through SQLColumns. The driver uses this value only if SQLColumns does not return a scale value or a numeric precision value that the driver can use to determine the scale.</td>
 </tr>
 <tr>
 <td>ExcludedSchemas</td>
-<td>sys, INFORMATION_SCHEMA</td>
-<td>The value of ExcludedSchemas is a list of schemas that do not appear in client applications such as Drill Explorer, Tableau, and Excel. Separate schemas in the list using a comma (,).</td>
+<td>sys,INFORMATION_SCHEMA</td>
+<td>Not required. A list of schemas that do not appear in client applications such as Drill Explorer, Tableau, and Excel. Separate schemas in the list using a comma (,).This property should not be used at the same time as IncludedSchemas. If both IncludedSchemas and ExcludedSchemas are specified, IncludedSchemas takes precedence and ExcludedSchemas is ignored.</td>
 </tr>
 <tr>
-<td>CastAnyToVarchar</td>
-<td>true</td>
-<td>Casts the ANY data type returned from SQL column calls into type “VARCHAR”.</td>
+<td>GetMetadataWithQueries</td>
+<td>None</td>
+<td>Not required. This property specifies whether the driver uses queries or native API calls when retrieving metadata, preparing statements, or executing statements. The driver can only use native API calls if it detects that the server is running a version of Drill that supports those calls. If this property is set to True, the driver uses queries to retrieve metadata,prepare statements, and execute statements. l If this property is set to False, the driver instead uses native API calls when it is connected to a server that supports native API calls.</td>
+</tr>
+<tr>
+<td>HandshakeTimeout</td>
+<td>5</td>
+<td>Not required. An integer value representing the number of seconds that the driver waits before stopping an attempt to connect to a data source. If this property is set to 0, the driver does not stop connection attempts.</td>
+</tr>
+<tr>
+<td>HeartBeatFreqSec</td>
+<td>15</td>
+<td>Not required. The number of seconds of inactivity before the Drill client sends a heartbeat to the server in order to check the status of the connection. If this property is set to 0, the Drill client does not send any heartbeats.</td>
+</tr>
+<tr>
+<td>IncludedSchemas</td>
+<td>None</td>
+<td>Not required. A list of schemas that appear in client applications such as Drill Explorer, Tableau, and Excel. Separate schemas in the list using a comma (,). If this option is set, then schemas that are not in this list are not queried by the driver.</td>
+</tr>
+<tr>
+<td>NonZeroNameMaxLen</td>
+<td>FALSE</td>
+<td>Not required. The MapR Drill ODBC Driver does not enforce a maximum length for schema, catalog, table, and column names. By default, the driver reports these lengths as 0, which typically indicates that there is no maximum length. However, some BI tools interpret a length of 0 literally. To make sure that the names are displayed correctly in your BI tool,set the NonZeroNameMaxLen property. When this property is set to true, the driver reports an appropriate non-zero value for the maximum length of schema, catalog, table, and column names. When this property is set to false, the driver reports 0 as the maximum length of schema, catalog, table, and column names.</td>
 </tr>
 <tr>
 <td>NumberOfPrefetchBuffers</td>
 <td>5</td>
-<td>The size of the record batch queue in the driver. When set to a value below 1, the value defaults to 1.</td>
+<td>Not required. The size of the record batch queue in the driver. When set to a value below 1, the value defaults to 1.</td>
+</tr>
+<tr>
+<td>QueryTimeout</td>
+<td>180</td>
+<td>Not required. The number of seconds that the driver waits before stopping a query. If this property is set to 0, the driver does not stop queries.</td>
+</tr>
+<tr>
+<td>RemoveQryCatalog</td>
+<td>TRUE</td>
+<td>Not required. When this property is set to true, the driver removes catalog names from queries. Enable this option if you are working with a server that does not accept queries containing catalog names. When this property is set to false, the driver does not remove catalog names before executing queries.</td>
+</tr>
+<tr>
+<td>SaslPluginDir</td>
+<td>None</td>
+<td>Not required. Allows you to override the default SASL plugin directory with a custom directory path.</td>
+</tr>
+<tr>
+<td>StringColumnLength</td>
+<td>1024</td>
+<td>Not required.  The maximum column length that the driver reports for string columns.</td>
+</tr>
+<tr>
+<td>TimestampTZDisplayTimezone</td>
+<td>local</td>
+<td>Not required. Two values are possible: local and utc. When set to local, timestamps use the time zone of the user. When set to utc, timestamps appear in Coordinated Universal Time (UTC).</td>
 </tr>
 </tbody></table>
 
@@ -1364,11 +1434,11 @@ set when using the MapR Drill ODBC Driver.</p>
 
 <p>If you want to connect to a Drill data source from an application that does
 not require a DSN, you can use an ODBC connection string. The following is an example connection string for the Direct connection type:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">    DRIVER=MapR Drill ODBC Driver;AdvancedProperties={HandshakeTimeout=0;QueryTimeout=0;TimestampTZDisplayTimezone=utc;ExcludedSchemas=sys,INFORMATION_SCHEMA;};Catalog=DRILL;Schema=hivestg;ConnectionType=Direct;Host=192.168.202.147;Port=31010
+<div class="highlight"><pre><code class="language-text" data-lang="text">DRIVER=MapR Drill ODBC Driver;AdvancedProperties={HandshakeTimeout=0;QueryTimeout=0;TimestampTZDisplayTimezone=utc;ExcludedSchemas=sys,INFORMATION_SCHEMA;};Catalog=DRILL;Schema=hivestg;ConnectionType=Direct;Host=192.168.202.147;Port=31010
 </code></pre></div>
 <p>The following is an example connection string for the Zookeeper connection
 type:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">    DRIVER=MapR Drill ODBC Driver;AdvancedProperties={HandshakeTimeout=0;QueryTimeout=0;TimestampTZDisplayTimezone=utc;ExcludedSchemas=sys, INFORMATION_SCHEMA;};Catalog=DRILL;Schema=;ConnectionType=ZooKeeper;ZKQuorum=192.168.39.43:5181;ZKClusterID=drillbits1
+<div class="highlight"><pre><code class="language-text" data-lang="text">DRIVER=MapR Drill ODBC Driver;AdvancedProperties={HandshakeTimeout=0;QueryTimeout=0;TimestampTZDisplayTimezone=utc;ExcludedSchemas=sys, INFORMATION_SCHEMA;};Catalog=DRILL;Schema=;ConnectionType=ZooKeeper;ZKQuorum=192.168.39.43:5181;ZKClusterID=drillbits1
 </code></pre></div>
 <h2 id="logging-options">Logging Options</h2>
 
@@ -1380,8 +1450,8 @@ and a log path.</p>
 files in the log path that you configure:</p>
 
 <ul>
-<li>driver.log: A log of driver events</li>
-<li>drillclient.log: A log of the Drill client events.</li>
+<li><code>driver.log</code> provides a log of driver events.</li>
+<li><code>drillclient.log</code> provides a log of the Drill client events.</li>
 </ul>
 
 <h3 id="logging-levels">Logging Levels</h3>
@@ -1389,13 +1459,13 @@ files in the log path that you configure:</p>
 <p>The following log levels are available:</p>
 
 <ul>
-<li>OFF: Disables logging.</li>
-<li>FATAL: Logs severe error events that may cause the driver to stop running.</li>
-<li>ERROR: Logs error events that may allow the driver to continue running.</li>
-<li>WARNING: Logs events about potentially harmful situations.</li>
-<li>INFO: Logs high-level events about driver processes.</li>
-<li>DEBUG: Logs detailed events that may help to debug issues.</li>
-<li>TRACE: Logs finer-grained events than the DEBUG level.</li>
+<li>(0) OFF: Disables logging.</li>
+<li>(1) FATAL: Logs severe error events that may cause the driver to stop running.</li>
+<li>(2) ERROR: Logs error events that may allow the driver to continue running.</li>
+<li>(3) WARNING: Logs events about potentially harmful situations.</li>
+<li>(4) INFO: Logs high-level events about driver processes.</li>
+<li>(5) DEBUG: Logs detailed events that may help to debug issues.</li>
+<li>(6) TRACE: Logs finer-grained events than the DEBUG level.</li>
 </ul>
 
 <h3 id="enabling-logging">Enabling Logging</h3>
@@ -1403,18 +1473,20 @@ files in the log path that you configure:</p>
 <p>To enable logging:</p>
 
 <ol>
-<li>Open the mapr.drillodbc.ini configuration file in a text editor.<br></li>
-<li>Set the LogLevel key to the desired level of information to include in log files. For
-example:<br>
-<code>LogLevel=2</code></li>
-<li>Set the LogPath key to the full path to the folder where you want to save log files. For example:<br>
-<code>LogPath=/localhome/employee/Documents</code></li>
-<li>Save the mapr.drillodbc.ini configuration file.<br>
-The Simba ODBC Driver for Apache Drill produces two log files at the location you specify using the Log Path field:<br>
+<li>Open the <code>.mapr.drillodbc.ini</code> configuration file in a text editor. (On Mac OS X, the default installation will install a .mapr.drillodbc.ini to $HOME.)</li>
+<li><p>Set the LogLevel key to the desired level of information to include in log files. 
+For example:</p>
+
+<p><code>LogLevel=2</code></p></li>
+<li><p>Set the LogPath key to the full path to the folder where you want to save log files. 
+For example:  </p>
+
+<p><code>LogPath=/localhome/employee/Documents</code></p></li>
+<li><p>Save the <code>.mapr.drillodbc.ini</code> configuration file. The MapR Drill ODBC Driver produces two log files at the location you specify using the Log Path field:  </p>
 
 <ul>
-<li>driver.log provides a log of driver activities</li>
-<li>drillclient.log provides a log of Drill client activities</li>
+<li><code>driver.log</code> provides a log of driver activities.</li>
+<li><code>drillclient.log</code> provides a log of Drill client activities.</li>
 </ul></li>
 </ol>
 
@@ -1423,9 +1495,9 @@ The Simba ODBC Driver for Apache Drill produces two log files at the location yo
 <p>To disable logging:</p>
 
 <ol>
-<li>Open the mapr.drillodbc.ini configuration file in a text editor.</li>
-<li>Set the LogLevel key to 0</li>
-<li>Save the mapr.drillodbc.ini configuration file.</li>
+<li>Open the <code>.mapr.drillodbc.ini</code> configuration file in a text editor.</li>
+<li>Set the LogLevel key to zero (<code>0</code>).</li>
+<li>Save the <code>.mapr.drillodbc.ini</code> configuration file.</li>
 </ol>
 
 <h4 id="what&#39;s-next?-go-to-connecting-to-odbc-data-sources.">What&#39;s Next? Go to <a href="/docs/connecting-to-odbc-data-sources">Connecting to ODBC Data Sources</a>.</h4>

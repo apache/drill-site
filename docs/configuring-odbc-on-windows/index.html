@@ -1122,7 +1122,7 @@
 
     </div>
 
-     
+     May 30, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1136,27 +1136,41 @@ sources:</p>
 <li>Create an ODBC Connection String</li>
 </ul>
 
-<h2 id="sample-odbc-configuration-(dsn)">Sample ODBC Configuration (DSN)</h2>
+<h2 id="sample-odbc-configuration">Sample ODBC Configuration</h2>
 
-<p>You can see how to create a DSN to connect to Drill data sources by taking a look at the preconfigured sample that the installer sets up. If
-you want to create a DSN for a 32-bit application, you must use the 32-bit
+<p>You can see how to create a DSN to connect to Drill data sources by taking a look at the preconfigured sample that the installer sets up. If you want to create a DSN for a 32-bit application, you must use the 32-bit
 version of the ODBC Administrator to create the DSN.</p>
 
 <ol>
-<li><p>Click <strong>Start</strong>, and locate the ODBC Administrator app that you installed, and click  ODBC Administrator to start the app.
+<li><p>Click <strong>Start</strong> and locate the ODBC Administrator app that you installed. Then click ODBC Administrator to start the app.
 The ODBC Data Source Administrator dialog appears.
 <img src="/docs/img/odbc-user-dsn.png" alt=""></p></li>
-<li><p>On the <strong>System DSN</strong> tab in System Data Sources, select the sample MapR ODBC Driver for Drill DSN.
+<li><p>On the <strong>System DSN</strong> tab in System Data Sources, select the sample MapR Drill.
 <img src="/docs/img/odbc-configure1.png" alt="">
-The system DSN is available for all users who log in to the machine. You can set up a user DSN is available only to the user who creates the DSN.  </p></li>
+The system DSN is available for all users who log in to the machine. You can set up a user DSN is available only to the user who creates the DSN on the <strong>User DSN</strong> tab.  </p></li>
 <li><p>Click <strong>Configure</strong>.<br>
-The MapR Drill ODBC Driver DSN Setup dialog appears with a preconfigured sample DSN. The following screenshot shows a possible DSN configuration for using Drill in embedded mode.
+The MapR Drill setup dialog appears with a preconfigured sample DSN. The following screenshot shows a possible DSN configuration for using Drill in embedded mode.
 <img src="/docs/img/odbc-configure2.png" alt=""></p></li>
 </ol>
 
 <h3 id="authentication-options">Authentication Options</h3>
 
-<p>To password protect the DSN, uncomment the AuthenticationType, select Basic Authentication in the Authentication Type dropdown, and configure UID and PWD properties. To configure no password protection, select No Authentication.</p>
+<p>To password protect the DSN, select the appropriate AuthenticationType in the dropdown.  If the Drillbit does not require authentication (or to configure no password protection), you can use the No Authentication option; you do not need to configure additional settings.</p>
+
+<ul>
+<li><strong>MapR-SASL</strong>
+
+<ul>
+<li>The maprlogin utility must be used to obtain a MapR ticket. To install and use the MapR login utility, see <a href="http://maprdocs.mapr.com/home/SecurityGuide/SecurityArchitecture-AuthenticationArchitecture.html" title="MapR Login Utilty">Authentication Architecture: The maprlogin Utility</a> and <a href="http://maprdocs.mapr.com/home/SecurityGuide/Tickets.html/">Tickets</a>.</li>
+</ul></li>
+<li><strong>Kerberos</strong> - configure Host FQDN and Service Name properties.
+
+<ul>
+<li>To specify the default Kerberos mechanism, select the Use Only SSPI checkbox.</li>
+<li>To use MIT Kerberos by default and only use the SSPI plugin if the GSSAPI library is not available, clear the Use Only SSPI checkbox.</li>
+</ul></li>
+<li><strong>Plain Authentication</strong> - configure UID and PWD properties. </li>
+</ul>
 
 <h3 id="direct-to-drillbit-and-zookeeper-quorum-options">Direct to Drillbit and ZooKeeper Quorum Options</h3>
 
@@ -1174,10 +1188,10 @@ The MapR Drill ODBC Driver DSN Setup dialog appears with a preconfigured sample 
 <p>If you select ZooKeeper Quorum, provide values for the following properties:</p>
 
 <ul>
-<li>Quorum
+<li>Quorum - 
 A comma separated list of ZooKeeper nodes in the following format:
 <code>&lt;host name/ip address&gt; : &lt;port number&gt;, &lt;host name/ip address&gt; : &lt;port number&gt;, . . .</code></li>
-<li>Cluster ID
+<li>Cluster ID - 
 Name of the drillbit cluster. Check the drill-override.conf file for ZooKeeper node information and for any cluster name changes.</li>
 </ul>
 
