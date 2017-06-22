@@ -1122,7 +1122,7 @@
 
     </div>
 
-     Mar 2, 2016
+     Jun 22, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1136,17 +1136,20 @@
 <li><p>Build the following Java file into a JAR file: </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   MyCustomDrillUserAuthenticatorImpl.java 
 
-   package myorg.dept.drill.security;
+   package myorg.dept.drill.security;     
 
    import org.apache.drill.common.config.DrillConfig;
    import org.apache.drill.exec.exception.DrillbitStartupException;
+   import org.apache.drill.exec.rpc.user.security.UserAuthenticator;
+   import org.apache.drill.exec.rpc.user.security.UserAuthenticationException;
+   import org.apache.drill.exec.rpc.user.security.UserAuthenticatorTemplate;
 
    import java.io.IOException;
 
    /*
-   * Implement {@link org.apache.drill.exec.rpc.user.security.UserAuthenticator} for illustraing how to develop a custom authenticator and use it in Drill
+   * Implement {@link org.apache.drill.exec.rpc.user.security.UserAuthenticator} for illustrating how to develop a custom authenticator and use it in Drill
    */
-   @UserAuthenticatorTemplate(type = “myCustomAuthenticatorType”)
+   @UserAuthenticatorTemplate(type = &quot;myCustomAuthenticatorType&quot;)
    public class MyCustomDrillUserAuthenticatorImpl implements UserAuthenticator {
 
     public static final String TEST_USER_1 = &quot;testUser1&quot;;
@@ -1173,9 +1176,9 @@
     @Override
     public void authenticate(String userName, String password) throws UserAuthenticationException {
 
-      if (!(TEST_USER_1.equals(user) &amp;&amp; TEST_USER_1_PASSWORD.equals(password)) &amp;&amp;
-      !(TEST_USER_2.equals(user) &amp;&amp; TEST_USER_2_PASSWORD.equals(password))) {
-    throw new UserAuthenticationException(“custom failure message if the admin wants to show it to user”);
+      if (!(TEST_USER_1.equals(userName) &amp;&amp; TEST_USER_1_PASSWORD.equals(password)) &amp;&amp;
+      !(TEST_USER_2.equals(userName) &amp;&amp; TEST_USER_2_PASSWORD.equals(password))) {
+    throw new UserAuthenticationException(&quot;custom failure message if the admin wants to show it to user&quot;);
       }
     }
 
