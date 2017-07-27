@@ -1172,17 +1172,25 @@
   target_principals: { users : [“...”, “...”], groups : [“...”, “...”] } }
 </code></pre></div></li>
 </ul></li>
-<li><p>Ensure that the proxy user (application) passes the username of the impersonation target user to Drill when creating a connection through the <code>impersonation_target</code> connection property. The following examples show you how to do this for JDBC and ODBC:  </p></li>
+<li><p>Ensure that the proxy user (application) passes the username of the impersonation target user to Drill when creating a connection through the <code>impersonation_target</code> connection property. </p></li>
 </ol>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   *  For JDBC, through SQLLine:
 
-           bin/sqlline –u “jdbc:drill:schema=dfs;zk=myclusterzk;impersonation_target=euser1” -n puser1 -p ppass1    
-</code></pre></div>
+<p>The following examples show you how to do this for JDBC and ODBC:  </p>
+
+<ul>
+<li><p>For JDBC, through SQLLine:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">    bin/sqlline –u “jdbc:drill:schema=dfs;zk=myclusterzk;impersonation_target=euser1” -n puser1 -p ppass1  
+</code></pre></div></li>
+</ul>
+
 <p>In this example, <code>puser1</code> is the user submitting the queries. This user is authenticated. Since this user is authorized to impersonate any user, queries through the established connection are run as <code>euser1</code>.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   * For ODBC on Linux or Mac, you can pass the username through the `DelegationUID` property in the odbc.ini file. See [Configuring ODBC on Linux](/docs/configuring-odbc-on-linux/) for more information.  
 
-          DelegationUID=euser1  
-</code></pre></div>
+<ul>
+<li><p>For ODBC on Linux or Mac, you can pass the username through the <code>DelegationUID</code> property in the odbc.ini file. See <a href="/docs/configuring-odbc-on-linux/">Configuring ODBC on Linux</a> for more information. </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">      DelegationUID=euser1  
+</code></pre></div></li>
+</ul>
+
 <p>If you are using ODBC on Windows, you can use the <strong>ODBC Data Source Administrator</strong> to provide the username through the <code>Delegation UID</code> field in the MapR Drill ODBC Driver DSN Setup dialog box. See <a href="/docs/configuring-odbc-on-windows/">Configuring ODBC on Windows</a> for more information.</p>
 
     
