@@ -1126,13 +1126,13 @@
 
     </div>
 
-     May 17, 2017
+     Jul 31, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>In release 1.10 Drill supports Kerberos v5 network security authentication.  To use Kerberos with Drill and establish connectivity, use the JDBC driver packaged with Drill 1.10.</p>
+        <p>In release 1.11 Drill supports Kerberos v5 network security authentication and client-to-drillbit encryption.  To use Kerberos with Drill and establish connectivity, use the JDBC driver packaged with Drill 1.11.</p>
 
 <p>Kerberos allows trusted hosts to prove their identity over a network to an information system.  A Kerberos <em>realm</em> is unique authentication domain. A centralized <em>key distribution center (KDC)</em> coordinates authentication between a clients and servers. Clients and servers obtain and use tickets from the KDC using a special <em>keytab</em> file to communicate with the KDC and prove their identity to gain access to a drillbit.  Administrators must create <em>principal</em> (user or server) identities and passwords to ensure the secure exchange of mutual authentication information passed to and from the drillbit.   </p>
 
@@ -1145,7 +1145,7 @@
 
 <h2 id="prerequisites">Prerequisites</h2>
 
-<p>The required Kerberos (JDBC) plugin is part of the 1.10 Drill package. To use it, you must have a working Kerberos infrastructure, which Drill does not provide. You must be working in a Linux-based or Windows Active Directory (AD) Kerberos environment with secure clusters and have a Drill server configured for Kerberos. See <a href="/docs/configuring-kerberos-authentication/#enabling-authentication">Enabling Authentication</a>.</p>
+<p>The required Kerberos (JDBC) plugin is part of the 1.11 Drill package. To use it, you must have a working Kerberos infrastructure, which Drill does not provide. You must be working in a Linux-based or Windows Active Directory (AD) Kerberos environment with secure clusters and have a Drill server configured for Kerberos. See <a href="/docs/configuring-kerberos-authentication/#enabling-authentication">Enabling Authentication</a>.</p>
 
 <h2 id="client-authentication-process">Client Authentication Process</h2>
 
@@ -1166,9 +1166,16 @@
 
 <p>For Kerberos server authentication information, see the <a href="http://web.mit.edu/kerberos/" title="MIT Kerberos">MIT Kerberos</a> administration documentation. </p>
 
-<h2 id="enabling-authentication">Enabling Authentication</h2>
+<h2 id="enabling-authentication-and-encryption">Enabling Authentication and Encryption</h2>
 
 <p>During startup, a drillbit service must authenticate. At runtime, Drill uses the keytab file. Trust is based on the keytab file; its secrets are shared with the KDC. The drillbit service also uses this keytab credential to validate service tickets from clients. Based on this information, the drillbit determines whether the client’s identity can be verified to use its service. </p>
+
+<p>To enable encryption,set the following parameters in the <code>drill-override.conf</code> file (as shown in the second example below): </p>
+
+<ul>
+<li><p><code>security.user.encryption.sasl.enabled</code> to true. This parameter determines if the drillbit is enabled for encryption. Only Drill 1.11 drillbits support encryption. </p></li>
+<li><p><code>security.user.encryption.sasl.max_wrapped_size</code>. This parameter specifies the maximum size of encoded buffer in bytes (maxbuffer parameter in sasl) that the client and server will receive. Using this the SASL framework exposes maximum buffer size that the wrap function will accept, so that Drill client/server can chop the Outbound RPC message with the size. The maximum recommended value is 16777215. The default is 65536.</p></li>
+</ul>
 
 <p><img src="/docs/img/kerberos-client-server.png" alt="kerberos client server"></p>
 
@@ -1222,11 +1229,13 @@
                 auth.principal:“drill/&lt;clustername&gt;@&lt;REALM&gt;.COM”,  
                 auth.keytab:“/etc/drill/conf/drill.keytab”  
               }  
-        security.user.auth: {
-                enabled: true,
-                packages += &quot;org.apache.drill.exec.rpc.user.security&quot;,
-                impl: &quot;pam&quot;,
-                pam_profiles: [&quot;sudo&quot;, &quot;login&quot;]
+        security.user: {
+                auth.enabled: true,
+                auth.packages += &quot;org.apache.drill.exec.rpc.user.security&quot;,
+                auth.impl: &quot;pam&quot;,
+                auth.pam_profiles: [&quot;sudo&quot;, &quot;login&quot;],
+                encryption.sasl.enabled: true,
+                encryption.sasl.max_wrapped_size: 65536,
                }   
         }
 </code></pre></div></li>
@@ -1290,6 +1299,12 @@
 <td></td>
 </tr>
 <tr>
+<td>sasl_encrypt</td>
+<td>When set to true, ensures that a client connects to a server with encryption capabilities. For example, Drill 1.11 drillbits, which support client-to-drillbit encryption.</td>
+<td>Optional</td>
+<td>false</td>
+</tr>
+<tr>
 <td>service_name</td>
 <td>Primary name of the drillbit service principal.</td>
 <td>Optional</td>
@@ -1309,6 +1324,19 @@
 </tr>
 </tbody></table>
 
+<h3 id="client-encryption">Client Encryption</h3>
+
+<p>A client can specify that it requires a server with encryption capabilities only by setting the  <code>sasl_encrypt</code> connection parameter to <strong>true</strong>. If the cluster to which client is connecting has encryption disabled, the client will fail to connect to that server.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">drill.exec {
+ security:  {
+      user.auth.enabled: true,
+      auth.mechanisms: [&quot;KERBEROS&quot;],
+      auth.principal: &quot;drill/serverhostname@REALM.COM&quot;,
+      auth.keytab: &quot;/etc/drill/conf/drill.keytab&quot;,
+      user.encryption.sasl.enabled: true
+          }
+}
+</code></pre></div>
 <h3 id="connection-url-examples">Connection URL Examples</h3>
 
 <p>The following five examples show the JDBC connection URL that the embedded JDBC client uses for Kerberos authentication. The first section, Example of a Simple Connection URL, includes a simple connection string and the second section, Examples of Connection URLs Used with Previously Generated TGTs, includes examples to use with previously generated TGTs.</p>
