@@ -292,11 +292,11 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-user-authentication/">Configuring User Authentication</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-user-security/">Configuring User Security</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-plain-authentication/">Configuring Plain Authentication</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-plain-security/">Configuring Plain Security</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-kerberos-authentication/">Configuring Kerberos Authentication</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-kerberos-security/">Configuring Kerberos Security</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-web-console-and-rest-api-security/">Configuring Web Console and REST API Security</a></li>
               
@@ -1126,7 +1126,7 @@
 
     </div>
 
-     
+     Aug 7, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1146,6 +1146,26 @@ Body (bytes), RawBody (bytes).</p>
 <p>RpcHeader has the following fields:</p>
 
 <p>Drillbits communicate through the BitCom intermediary. BitCom manages...</p>
+
+<h2 id="drill-channel-pipeline-with-handlers">Drill Channel Pipeline with Handlers</h2>
+
+<p>The Drill RPC layer is built on <a href="http://netty.io/index.html" title="Netty project">Netty</a>, an asynchronous network application framework that makes it easy to develop network-related components (such as, client and server) in an application. Within Netty, each connection is represented as a <em>Channel</em> that consists of its own <em>Pipeline</em>. The Pipeline is created when a Channel is created.  A Channel Pipeline consists of one or more inbound and/or outbound ChannelHandlers, which act on I/O events sent and/or received by an application. (For reference, see <a href="https://netty.io/4.0/api/io/netty/channel/Channel.html" title="Interface Channel">Interface Channel</a>, <a href="https://netty.io/4.0/api/io/netty/channel/ChannelPipeline.html" title="Interface ChannelPipeline">Interface ChannelPipeline</a>, and <a href="https://netty.io/4.0/api/io/netty/channel/ChannelHandler.html" title="Interface ChannelHandler">Interface ChannelHandler</a>.)</p>
+
+<p>In the Drill ecosystem, UserClient (on the client side) and UserServer (on the server side) represent the wrapper for each connection between client and server, respectively.  They define the Pipeline and various handlers added for the communication path. </p>
+
+<p>For encryption support, both UserClient and UserServer require modification since new handlers will be added for encryption and decryption if privacy is negotiated as part of the handshake. </p>
+
+<h3 id="encryption,-decryption,-and-chunkcreation-handlers">Encryption, Decryption, and ChunkCreation Handlers</h3>
+
+<p>In addition to an Encryption/Decryption handler, a ChunkCreation handler on the sender side and LengthFieldBasedFrameDecoder on the receiver side should be added. </p>
+
+<p>The ChunkCreation handler helps divide the Outgoing RPC message into smaller chunk units for encryption, whereas the LengthFieldBasedFrameDecoder helps to accumulate all  bytes of an encrypted payload on the receiver side before calling the decrypt module on it. </p>
+
+<p>The following diagram shows the existing handlers as well as the new handlers added in the Drill Channel Pipeline for client-to-drillbit encryption support in Drill 1.11. </p>
+
+<p><img src="/docs/img/drill-channel-pipeline-with-handlers.png" alt="drillpipeline">  </p>
+
+<h6 id="drill-channel-pipeline-with-handlers">Drill Channel Pipeline with Handlers</h6>
 
     
       

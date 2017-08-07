@@ -292,11 +292,11 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-user-authentication/">Configuring User Authentication</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-user-security/">Configuring User Security</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-plain-authentication/">Configuring Plain Authentication</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-plain-security/">Configuring Plain Security</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-kerberos-authentication/">Configuring Kerberos Authentication</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-kerberos-security/">Configuring Kerberos Security</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-web-console-and-rest-api-security/">Configuring Web Console and REST API Security</a></li>
               
@@ -1124,7 +1124,7 @@
 
     </div>
 
-     
+     Aug 7, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1204,29 +1204,28 @@
 
 <p>If you have dates and times in other formats, use a <a href="/data-type-conversion/#other-data-type-conversions">data type conversion function</a> in your queries.</p>
 
-<h3 id="identifier">Identifier</h3>
+<h3 id="identifiers">Identifiers</h3>
 
-<p>An identifier is a letter followed by any sequence of letters, digits, or the underscore. For example, names of tables, columns, and aliases are identifiers. Maximum length is 1024 characters. Enclose the following identifiers in back ticks:</p>
+<p>An identifier is a letter followed by any sequence of letters, digits, or the underscore. For example, names of tables, columns, and aliases are identifiers. Maximum length is 1024 characters. Enclose the following identifiers with identifier quotes:</p>
 
 <ul>
 <li>Keywords</li>
-<li>Identifiers that SQL cannot parse. </li>
+<li>Identifiers that SQL cannot parse</li>
 </ul>
 
-<p>For example, enclose the SQL keywords date and time in back ticks when referring to column names, but not when referring to data types:</p>
+<p>For example, enclose the SQL keywords date and time in identifier quotes when referring to column names, but not when referring to data types:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE dfs.tmp.sampleparquet AS 
 (SELECT trans_id, 
 cast(`date` AS date) transdate, 
 cast(`time` AS time) transtime, 
 cast(amount AS double) amountm,
 user_info, marketing_info, trans_info 
-FROM dfs.`/Users/drilluser/sample.json`);
+FROM dfs.`/Users/drilluser/sample.json`);    
 </code></pre></div>
-<p>Table and column names are case-insensitive. Use back ticks to enclose names that contain special characters. Special characters are those other than the 52 Latin alphabet characters. For example, space and @ are special characters. </p>
+<p>Table and column names are case-insensitive. Use identifier quotes to enclose names that contain special characters. Special characters are those other than the 52 Latin alphabet characters. For example, space and @ are special characters. </p>
 
-<p>The following example shows the keyword Year enclosed in back ticks. Because the column alias contains the special space character, also enclose the alias in back ticks, as shown in the following example:</p>
+<p>The following example shows the keyword Year enclosed in identifier quotes. Because the column alias contains the special space character, also enclose the alias in back ticks, as shown in the following example:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT extract(year from transdate) AS `Year`, t.user_info.cust_id AS `Customer Number` FROM dfs.tmp.`sampleparquet` t;
-
 +------------+-----------------+
 |    Year    | Customer Number |
 +------------+-----------------+
@@ -1236,7 +1235,66 @@ FROM dfs.`/Users/drilluser/sample.json`);
 | 2013       | 666             |
 | 2013       | 999             |
 +------------+-----------------+
-5 rows selected (0.051 seconds)
+5 rows selected (0.051 seconds)  
+</code></pre></div>
+<h3 id="identifier-quotes">Identifier Quotes</h3>
+
+<p>Prior to Drill 1.11, the SQL parser in Drill only supported back ticks as identifier quotes. As of Drill 1.11, the SQL parser can also use double quotes and square brackets. The default setting for identifier quotes is back ticks. You can configure the type of identifier quotes used with the  <code>planner.parser.quoting_identifiers</code> configuration option, at the system or session level, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   ALTER SYSTEM|SESSION SET planner.parser.quoting_identifiers = &#39;&quot;&#39;;  
+   ALTER SYSTEM|SESSION SET planner.parser.quoting_identifiers = &#39;[&#39;;  
+   ALTER SYSTEM|SESSION SET planner.parser.quoting_identifiers = &#39;`&#39;;  
+</code></pre></div>
+<p>The following table lists the supported identifier quotes with their corresponding Unicode character:   </p>
+
+<table><thead>
+<tr>
+<th>Quoting   Identifier</th>
+<th>Unicode   Character</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Back ticks</td>
+<td>&#39;GRAVE   ACCENT&#39; (U+0060)</td>
+</tr>
+<tr>
+<td>Double quotes</td>
+<td>&#39;QUOTATION   MARK&#39; (U+0022)</td>
+</tr>
+<tr>
+<td>Square brackets</td>
+<td>&#39;LEFT   SQUARE BRACKET&#39; (U+005B) and &#39;RIGHT SQUARE BRACKET&#39; (U+005D;)</td>
+</tr>
+</tbody></table>
+
+<p>Alternatively, you can set the type of identifier using the <code>quoting_identifiers</code> property in the jdbc connection URL, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   jdbc:drill:zk=local;quoting_identifiers=[  
+</code></pre></div>
+<p><strong>Note:</strong> The identifier quotes used in queries must match the <code>planner.parser.quoting_identifiers</code> setting. If you use another type of identifier quotes, Drill returns an error.  </p>
+
+<p>The following queries show the use of each type of identifier quotes:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; select `employee_id`, `full_name` from cp.`employee.json` limit 1;
+   +--------------+---------------+
+   | employee_id  |   full_name   |
+   +--------------+---------------+
+   | 1            | Sheri Nowmer  |
+   +--------------+---------------+
+   1 row selected (0.148 seconds)  
+
+   0: jdbc:drill:zk=local&gt; select &quot;employee_id&quot;, &quot;full_name&quot; from cp.&quot;employee.json&quot; limit 1;
+   +--------------+---------------+
+   | employee_id  |   full_name   |
+   +--------------+---------------+
+   | 1            | Sheri Nowmer  |
+   +--------------+---------------+
+   1 row selected (0.129 seconds)  
+
+   0: jdbc:drill:zk=local&gt; select [employee_id], [full_name] from cp.[employee.json] limit 1;
+   +--------------+---------------+
+   | employee_id  |   full_name   |
+   +--------------+---------------+
+   | 1            | Sheri Nowmer  |
+   +--------------+---------------+
+   1 row selected (0.14 seconds)  
 </code></pre></div>
 <h3 id="integer">Integer</h3>
 

@@ -292,11 +292,11 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-user-authentication/">Configuring User Authentication</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-user-security/">Configuring User Security</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-plain-authentication/">Configuring Plain Authentication</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-plain-security/">Configuring Plain Security</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-kerberos-authentication/">Configuring Kerberos Authentication</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-kerberos-security/">Configuring Kerberos Security</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-web-console-and-rest-api-security/">Configuring Web Console and REST API Security</a></li>
               
@@ -1126,20 +1126,20 @@
 
     </div>
 
-     Jul 31, 2017
+     Aug 7, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>As illustrated in the following figure, Drill 1.10 features five secure communication paths. Security features for each communication path are described their respective  sections.</p>
+        <p>As illustrated in the following figure, Drill features five secure communication paths. Drill 1.11 introduces encryption between a Drill client and Drillbit. </p>
 
 <ol>
-<li>Web client to drillbit</li>
-<li>C++ client to drillbit</li>
-<li>Java client to drillbit</li>
-<li>Java client and drillbit to ZooKeeper</li>
-<li>Drillbit to storage plugin</li>
+<li><a href="/docs/server-communication-paths/#web-client-to-drillbit">Web Client to Drillbit</a></li>
+<li><a href="/docs/server-communication-paths/#c++-client-to-drillbit">C++ Client to Drillbit</a></li>
+<li><a href="/docs/server-communication-paths/#java-client-to-drillbit">Java Client to Drillbit</a></li>
+<li><a href="/docs/server-communication-paths/#java-client-and-drillbit-to-zookeeper">Java Client and Drillbit to ZooKeeper</a></li>
+<li><a href="/docs/server-communication-paths/#drillbit-to-hive-storage-plugin">Drillbit to Hive Storage Plugin</a></li>
 </ol>
 
 <p><img src="/docs/img/secure-communication-paths.png" alt="secure comm paths"></p>
@@ -1157,7 +1157,7 @@
 
 <p><strong>Note</strong></p>
 
-<p>Impersonation, authorization, and encryption are available through the web clients only when authentication and encryption are enabled. Otherwise, the user identity is unknown and encryption is not used.</p>
+<p>Impersonation and authorization are available through the web clients only when authentication is enabled. Otherwise, the user identity is unknown.</p>
 
 <hr>
 
@@ -1175,8 +1175,8 @@
 </tr>
 <tr>
 <td>Encryption</td>
-<td>Drill 1.11 supports encryption between a Drill client and Drillbit using the Kerberos mechanism over a Java SASL framework. Encrypting the client-to-drillbit communication pathway ensures data integrity and prevents data tampering as well as snooping.   On the server side, enable encryption in the drill-override.conf file with the security.user.encryption.sasl.enabled parameter. On the client side, use the sasl_encrypt parameter in the connection string.</td>
-<td><a href="/docs/configuring-kerberos-authentication/">Configuring Kerberos Authentication</a></td>
+<td>Drill usese SSL for HTTPS access to the Web Console.</td>
+<td><a href="/docs/configuring-web-console-and-rest-api-security">Configuring Web Console and REST API Security</a></td>
 </tr>
 <tr>
 <td>Impersonation</td>
@@ -1204,7 +1204,12 @@
 <tr>
 <td>Authentication</td>
 <td>Users authenticate to a drillbit using Kerberos, Plain (username and password through PAM), and Custom authenticator (username and password). By default, user authentication is disabled.</td>
-<td><a href="/docs/configuring-user-authentication">Configuring User Authentication</a></td>
+<td><a href="/docs/configuring-user-security">Configuring User Security</a></td>
+</tr>
+<tr>
+<td>Encryption</td>
+<td>Drill 1.11 supports encryption between a Drill client and a Drillbit with the Kerberos mechanism over a Java SASL framework. Encrypting the client-to-drillbit communication path ensures data integrity and privacy and prevents data tampering and snooping. If encryption is enabled on a drillbit, it will not allow a client without encryption capabilities to connect. By default, encryption is disabled.</td>
+<td><a href="/docs/configuring-kerberos-security">Configuring Kerberos Security</a></td>
 </tr>
 <tr>
 <td>Impersonation</td>
@@ -1232,7 +1237,7 @@
 <tr>
 <td>Authentication</td>
 <td>Not fully supported.</td>
-<td><a href="/docs/configuring-user-authentication">Configuring User Authentication</a></td>
+<td><a href="/docs/configuring-user-security">Configuring User Security</a></td>
 </tr>
 <tr>
 <td>Authorization</td>
