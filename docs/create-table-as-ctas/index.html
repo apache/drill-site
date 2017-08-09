@@ -1126,36 +1126,55 @@
 
     </div>
 
-     
+     Aug 9, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>You can create tables in Drill by using the CTAS command.</p>
+        <p>Use the CTAS command to create tables in Drill.</p>
 
 <h2 id="syntax">Syntax</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE name [ (column list) ] AS query;
+<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE name [ (column list) ] AS query;  
 </code></pre></div>
-<p><em>name</em> is a unique directory name, optionally prefaced by a storage plugin name, such as dfs, and a workspace, such as tmp using <a href="/docs/workspaces">dot notation</a>.<br>
-<em>column list</em> is an optional list of column names or aliases in the new table.<br>
-<em>query</em> is a SELECT statement that needs to include aliases for ambiguous column names, such as COLUMNS[0]. Using SELECT * is <a href="/docs/text-files-csv-tsv-psv/#tips-for-performant-querying">not recommended</a> when selecting CSV, TSV, and PSV data.</p>
+<h2 id="parameters">Parameters</h2>
 
-<p>You can use the <a href="/docs/partition-by-clause">PARTITION BY</a> clause in a CTAS command.</p>
+<p><em>name</em><br>
+A unique directory name, optionally prefaced by a storage plugin name, such as dfs, and a workspace, such as tmp using <a href="/docs/workspaces">dot notation</a>.  </p>
 
-<p>Drill writes files having names, such as 0_0_0.parquet, to the directory named in the CTAS command or to the workspace that is in use when you run the CTAS statement. You query the directory as you would query a table.</p>
+<p><em>column list</em><br>
+An optional list of column names or aliases in the new table.  </p>
 
-<p>The following command writes Parquet data from <code>nation.parquet</code>, installed with Drill, to the <code>/tmp/name_key</code> directory.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">USE dfs;
-CREATE TABLE tmp.`name_key` (N_NAME, N_NATIONKEY) AS SELECT N_NATIONKEY, N_NAME FROM dfs.`/Users/drilluser/apache-drill-1.0/sample-data/nation.parquet`;
+<p><em>query</em><br>
+A SELECT statement that needs to include aliases for ambiguous column names, such as COLUMNS[0]. Using SELECT * is <a href="/docs/text-files-csv-tsv-psv/#tips-for-performant-querying">not recommended</a> when selecting CSV, TSV, and PSV data.  </p>
+
+<h2 id="usage-notes">Usage Notes</h2>
+
+<ul>
+<li><p>You can use the <a href="/docs/partition-by-clause">PARTITION BY</a> clause in a CTAS command.  </p></li>
+<li><p>Drill writes files having names, such as 0_0_0.parquet, to the directory named in the CTAS command or to the workspace that is in use when you run the CTAS statement. You query the directory as you would query a table.</p>
+
+<ul>
+<li><p>The following command writes Parquet data from <code>nation.parquet</code>, installed with Drill, to the <code>/tmp/name_key</code> directory.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">  USE dfs;
+  CREATE TABLE tmp.`name_key` (N_NAME, N_NATIONKEY) AS SELECT N_NATIONKEY, N_NAME FROM dfs.`/Users/drilluser/apache-drill-1.0/sample-data/nation.parquet`;  
+</code></pre></div></li>
+<li><p>To query the data, use this command:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">  SELECT * FROM tmp.`name_key`;
+</code></pre></div></li>
+<li><p>This example writes a JSON table to the <code>/tmp/by_yr</code> directory that contains <a href="/docs/partition-by-clause/#partioning-example">Google Ngram data</a>.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">  Use dfs.tmp;
+  CREATE TABLE by_yr (yr, ngram, occurrances) AS SELECT COLUMNS[0] ngram, COLUMNS[1] yr, COLUMNS[2] occurrances FROM `googlebooks-eng-all-5gram-20120701-zo.tsv` WHERE (columns[1] = &#39;1993&#39;);
+</code></pre></div></li>
+</ul></li>
+<li><p>Drill 1.11 introduces the <code>exec.persistent_table.umask</code> option, which enables you to set permissions on tables and directories that result from running the CTAS command. By default, the option is set to 002, which sets the default directory permissions to 775 and default file permissions to 664. Use the <a href="/docs/set/">SET</a> command to change the setting for this option at the system or session level, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SYSTEM|SESSION SET `exec.persistent_table.umask` = &#39;000&#39;;  
 </code></pre></div>
-<p>To query the data, use this command:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM tmp.`name_key`;
-</code></pre></div>
-<p>This example writes a JSON table to the <code>/tmp/by_yr</code> directory that contains <a href="/docs/partition-by-clause/#partioning-example">Google Ngram data</a>.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">Use dfs.tmp;
-CREATE TABLE by_yr (yr, ngram, occurrances) AS SELECT COLUMNS[0] ngram, COLUMNS[1] yr, COLUMNS[2] occurrances FROM `googlebooks-eng-all-5gram-20120701-zo.tsv` WHERE (columns[1] = &#39;1993&#39;);
-</code></pre></div>
+<ul>
+<li>Setting the option to &#39;000&#39; sets the folder permissions to 777 and the file permissions to 666. This setting gives full access to folders and files when you create a table.</li>
+</ul></li>
+</ul>
+
 <h2 id="setting-the-storage-format">Setting the Storage Format</h2>
 
 <p>Before using CTAS, set the <code>store.format</code> option for the table to one of the following formats:</p>
