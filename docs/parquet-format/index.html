@@ -1124,7 +1124,7 @@
 
     </div>
 
-     Mar 27, 2017
+     Aug 9, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1184,8 +1184,7 @@
 
 <p>Use the ALTER command to set the <code>store.format</code> option.  </p>
 
-<p><code>ALTER SESSION SET `store.format` = &#39;parquet&#39;;</code><br>
-<code>ALTER SYSTEM SET `store.format` = &#39;parquet&#39;;</code>  </p>
+<p><code>ALTER SYSTEM|SESSION SET `store.format` = &#39;parquet&#39;;</code>  </p>
 
 <h3 id="configuring-the-size-of-parquet-files">Configuring the Size of Parquet Files</h3>
 
@@ -1193,13 +1192,17 @@
 
 <p>The larger the block size, the more memory Drill needs for buffering data. Parquet files that contain a single block maximize the amount of data Drill stores contiguously on disk. Given a single row group per file, Drill stores the entire Parquet file onto the block, avoiding network I/O.</p>
 
-<p>To maximize performance, set the target size of a Parquet row group to the number of bytes less than or equal to the block size of MFS, HDFS, or the file system by using the <code>store.parquet.block-size</code>:  </p>
+<p>To maximize performance, set the target size of a Parquet row group to the number of bytes less than or equal to the block size of MFS, HDFS, or the file system using the <code>store.parquet.block-size</code> option, as shown:  </p>
 
-<p><code>ALTER SESSION SET `store.parquet.block-size` = 536870912;</code><br>
-<code>ALTER SYSTEM SET `store.parquet.block-size` = 536870912</code>  </p>
+<p><code>ALTER SYSTEM|SESSION SET `store.parquet.block-size` = 536870912;</code>  </p>
 
-<p>The default block size is 536870912 bytes.</p>
+<p>The default block size is 536870912 bytes.  </p>
 
+<h3 id="configuring-the-hdfs-block-size-for-parquet-files">Configuring the HDFS Block Size for Parquet Files</h3>
+
+<p>Drill 1.11 introduces the <code>store.parquet.writer.use_single_fs_block</code> option, which enables Drill to write a Parquet file as a single file system block without changing the default file system block size. Query performance improves when Drill reads Parquet files as a single block on the file system. When the <code>store.parquet.writer.use_single_fs_block</code> option is enabled, the <code>store.parquet.block-size</code> setting determines the block size of the Parquet files created. The default setting for the <code>store.parquet.writer.use_single_fs_block</code> option is &#39;false&#39;. Use the SET command to enable or disable the option, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SYSTEM|SESSION SET store.parquet.writer.use_single_fs_block = &#39;true|false&#39;;  
+</code></pre></div>
 <h3 id="type-mapping">Type Mapping</h3>
 
 <p>The high correlation between Parquet and SQL data types makes reading Parquet files effortless in Drill. Writing to Parquet files takes more work than reading. Because SQL does not support all Parquet data types, to prevent Drill from inferring a type other than one you want, use the <a href="/docs/data-type-conversion/#cast">cast function</a> Drill offers more liberal casting capabilities than SQL for Parquet conversions if the Parquet data is of a logical type. </p>
