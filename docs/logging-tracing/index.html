@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Analyzing Highly Dynamic Datasets - Apache Drill</title>
+<title>Logging Tracing - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -160,8 +160,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Tutorials</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">Tutorials</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/tutorials-introduction/">Tutorials Introduction</a></li>
@@ -197,7 +197,7 @@
             
           
             
-              <li class="toctree-l2 current"><a class="reference internal" href="/docs/analyzing-highly-dynamic-datasets/">Analyzing Highly Dynamic Datasets</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/analyzing-highly-dynamic-datasets/">Analyzing Highly Dynamic Datasets</a></li>
             
           
             
@@ -403,8 +403,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">ODBC/JDBC Interfaces</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">ODBC/JDBC Interfaces</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/interfaces-introduction/">Interfaces Introduction</a></li>
@@ -433,11 +433,11 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">Configuring ODBC</a></li>
-              <ul style="display: none">
+              <ul style="">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/odbc-configuration-reference/">ODBC Configuration Reference</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/logging-tracing/">Logging Tracing</a></li>
+                <li class="toctree-l3 current"><a class="reference internal" href="/docs/logging-tracing/">Logging Tracing</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-linux/">Configuring ODBC on Linux</a></li>
               
@@ -1109,203 +1109,214 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/tutorials/">Tutorials</a></li>
+    <li><a href="/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces</a></li>
   
-  <li>Analyzing Highly Dynamic Datasets</li>
+    <li><a href="/docs/configuring-odbc/">Configuring ODBC</a></li>
+  
+  <li>Logging Tracing</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/tutorials/050-analyzing-highly-dynamic-datasets.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/odbc-jdbc-interfaces/configuring-odbc/011-logging-tracing.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>Analyzing Highly Dynamic Datasets</h1>
+      <h1>Logging Tracing</h1>
 
     </div>
 
-     Mar 15, 2017
+     Aug 17, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Today’s data is dynamic and application-driven. The growth of a new era of business applications driven by industry trends such as web, social, mobile, and Internet of Things are generating datasets with new data types and new data models. These applications are iterative, and the associated data models typically are semi-structured, schema-less and constantly evolving. Semi-structured data models can be complex/nested, schema-less, and capable of having varying fields in every single row and of constantly evolving as fields get added and removed frequently to meet business requirements. </p>
+        <h2 id="logging-options">Logging Options</h2>
 
-<p>This tutorial shows you how to natively query dynamic datasets, such as JSON, and derive insights from any type of data in minutes. The dataset used in the example is from the Yelp check-ins dataset, which has the following structure:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">check-in
-{
-    &#39;type&#39;: &#39;checkin&#39;,
-    &#39;business_id&#39;: (encrypted business id),
-    &#39;checkin_info&#39;: {
-        &#39;0-0&#39;: (number of checkins from 00:00 to 01:00 on all Sundays),
-        &#39;1-0&#39;: (number of checkins from 01:00 to 02:00 on all Sundays),
-        ...
-        &#39;14-4&#39;: (number of checkins from 14:00 to 15:00 on all Thursdays),
-        ...
-        &#39;23-6&#39;: (number of checkins from 23:00 to 00:00 on all Saturdays)
-    }, # if there was no checkin for a hour-day block it will not be in the dataset
-}
-</code></pre></div>
-<p>It is worth repeating the comment at the bottom of this snippet:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> # if there was no checkin for a hour-day block it will not be in the dataset. 
-</code></pre></div>
-<p>The element names that you see in the <code>checkin_info</code> are unknown upfront and can vary for every row. The data, although simple, is highly dynamic data. To analyze the data there is no need to first represent this dataset in a flattened relational structure, as you would using any other SQL on Hadoop technology.</p>
+<p>Only enable logging long enough to capture information required to resolve an issue. Logging decreases performance and can consume a large quantity of disk space.</p>
 
-<hr>
+<p>If logging is enabled, the Drill ODBC driver logs events in the following log files in the log path that you configure:</p>
 
-<p>Step 1: First download Drill, if you have not yet done so, onto your machine</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">http://drill.apache.org/download/
-tar -xvf apache-drill-1.10.0.tar
-</code></pre></div>
-<p>Install Drill locally on your desktop (embedded mode). You don’t need Hadoop.</p>
+<ul>
+<li><code>driver.log</code> provides a log of driver events.</li>
+<li><code>drillclient.log</code> provides a log of the Drill client events.</li>
+</ul>
 
-<hr>
+<h3 id="logging-levels">Logging Levels</h3>
 
-<p>Step 2: Start the Drill shell.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">bin/drill-embedded
-</code></pre></div>
-<hr>
+<p>The following log levels are available:</p>
 
-<p>Step 3: Start analyzing the data using SQL</p>
+<ul>
+<li>(0) OFF: Disables logging.</li>
+<li>(1) FATAL: Logs severe error events that may cause the driver to stop running.</li>
+<li>(2) ERROR: Logs error events that may allow the driver to continue running.</li>
+<li>(3) WARNING: Logs events that might result in an error if action is not taken.</li>
+<li>(4) INFO: Logs general information that describes the progress of the driver.</li>
+<li>(5) DEBUG: Logs detailed events that may help to debug issues.</li>
+<li>(6) TRACE: Logs all driver activity, which includes more fine-grained events than the DEBUG level.</li>
+</ul>
 
-<p>First, let’s take a look at the dataset:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json` limit 2;
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------+------------------------+
-|                                                                 checkin_info                                                                                                                                                             |    type    |      business_id       |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------+------------------------+
-| {&quot;3-4&quot;:1,&quot;13-5&quot;:1,&quot;6-6&quot;:1,&quot;14-5&quot;:1,&quot;14-6&quot;:1,&quot;14-2&quot;:1,&quot;14-3&quot;:1,&quot;19-0&quot;:1,&quot;11-5&quot;:1,&quot;13-2&quot;:1,&quot;11-6&quot;:2,&quot;11-3&quot;:1,&quot;12-6&quot;:1,&quot;6-5&quot;:1,&quot;5-5&quot;:1,&quot;9-2&quot;:1,&quot;9-5&quot;:1,&quot;9-6&quot;:1,&quot;5-2&quot;:1,&quot;7-6&quot;:1,&quot;7-5&quot;:1,&quot;7-4&quot;:1,&quot;17-5&quot;:1,&quot;8-5&quot;:1,&quot;10-2&quot;:1,&quot;10-5&quot;:1,&quot;10-6&quot;:1} | checkin    | JwUE5GmEO-sH1FuwJgKBlQ |
-| {&quot;6-6&quot;:2,&quot;6-5&quot;:1,&quot;7-6&quot;:1,&quot;7-5&quot;:1,&quot;8-5&quot;:2,&quot;10-5&quot;:1,&quot;9-3&quot;:1,&quot;12-5&quot;:1,&quot;15-3&quot;:1,&quot;15-5&quot;:1,&quot;15-6&quot;:1,&quot;16-3&quot;:1,&quot;10-0&quot;:1,&quot;15-4&quot;:1,&quot;10-4&quot;:1,&quot;8-2&quot;:1}                                                                                               | checkin    | uGykseHzyS5xAMWoN6YUqA |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------+------------------------+
-</code></pre></div>
-<div class="admonition note">
-  <p class="first admonition-title">Note</p>
-  <p class="last">This document aligns Drill output for example purposes. Drill output is not aligned in this case.  </p>
+<h3 id="non-windows-platforms">Non-Windows Platforms</h3>
+
+<p>On non-Windows platforms, logging is configured through the driver-wide settings in the <code>mapr.drillodbc.ini</code> file, which apply to all connections using the driver. </p>
+
+<h4 id="enable-logging">Enable Logging</h4>
+
+<p>To enable logging:</p>
+
+<ol>
+<li><p>Open the <code>.mapr.drillodbc.ini</code> configuration file in a text editor. (On Mac OS X, the default installation will install a .mapr.drillodbc.ini to $HOME.)</p></li>
+<li><p>Set the <strong>LogLevel</strong> key to the desired level of information to include in log files. 
+For example:</p>
+
+<p><code>LogLevel=2</code></p></li>
+<li><p>Set the <strong>LogPath</strong> key to the full path to the folder where you want to save log files. 
+For example:  </p>
+
+<p><code>LogPath=/localhome/employee/logs</code></p></li>
+<li><p>Save the <code>.mapr.drillodbc.ini</code> configuration file. The Drill ODBC Driver produces two log files at the location you specify using the <strong>Log Path</strong> field:  </p>
+
+<ul>
+<li><code>driver.log</code> provides a log of driver activities.</li>
+<li><code>drillclient.log</code> provides a log of Drill client activities.</li>
+</ul></li>
+<li><p>Restart the applciation to make sure that the new settings take effect. Configuration changes will not be picked up until the application reloads the driver.</p></li>
+</ol>
+
+<h4 id="disable-logging">Disable Logging</h4>
+
+<p>To disable logging:</p>
+
+<ol>
+<li>Open the <code>.mapr.drillodbc.ini</code> configuration file in a text editor.</li>
+<li>Set the <strong>LogLevel</strong> key to zero (<code>0</code>).</li>
+<li>Save the <code>.mapr.drillodbc.ini</code> configuration file.<br></li>
+<li>Restart your ODBC application to make sure that the new settings take effect.</li>
+</ol>
+
+<h3 id="windows-platforms">Windows Platforms</h3>
+
+<p>On Windows, logging is available in the Windows <strong>ODBC Data Source Administrator</strong> where you created the DSN. You must run <code>C:\Windows\SysWOW64\odbcad32.exe</code> to access and modify 32-bit DSNs on 64-bit Windows.</p>
+
+<h4 id="enable-logging">Enable Logging</h4>
+
+<p>To enable logging:</p>
+
+<ol>
+<li><p>Click <strong>Start</strong>, <strong>All Programs</strong>, and then click the program group corresponding to the driver. </p></li>
+<li><p>Select the DSN for which you want to log activity.  </p></li>
+<li><p>Click <strong>Configure</strong>. </p></li>
+<li><p>In the <strong>DSN Setup</strong> dialog box, click <strong>Logging Options</strong>.</p></li>
+<li><p>From the <strong>Log Level</strong> drop-down list, select the logging level corresponding to the amount of information that you want to include in log files.</p></li>
+<li><p>In the <strong>Log Path</strong> (or Log Directory) field, specify the full path to the folder where you want to save log files. </p></li>
+<li><p>If necessary (for example, if requested by a Support team), type the name of the component for which to log messages in the <strong>Log Namespace</strong> field. Otherwise, do not type a value in the field.</p></li>
+<li><p>Click <strong>OK</strong> to close the Logging Options dialog box.</p></li>
+<li><p>Click <strong>OK</strong> to save your settings and close the <strong>DSN Configuration</strong> dialog box. Configuration changes will not be saved of picked up by the driver until you have clicked <strong>OK</strong> in the <strong>DSN Configuration *<em>dialog box. Click *</em>Cancel</strong> (or the X button) to discard changes.</p></li>
+<li><p>Restart the application to make sure that the new settings take effect. Configuration changes will not be picked up by until the application reloads the driver.</p></li>
+</ol>
+
+<h4 id="disable-logging">Disable Logging</h4>
+
+<p>To disable logging:</p>
+
+<ol>
+<li>Select the DSN. </li>
+<li>Click <strong>Configure</strong>. </li>
+<li>Click <strong>Logging Options</strong>.</li>
+<li>From the <strong>Log Level</strong> drop-down list, select <strong>LOG_OFF</strong>.</li>
+<li>Click <strong>OK</strong>. </li>
+<li>Restart your ODBC application to make sure that the new settings take effect. </li>
+</ol>
+
+<h2 id="driver-manager-tracing">Driver Manager Tracing</h2>
+
+<p>The driver manager trace facility, is a useful way to troubleshoot ODBC driver issues.You can choose from several driver managers, depending on which platform you use.</p>
+
+<div class="admonition important">
+  <p class="first admonition-title">Important</p>
+  <p class="last">Tracing is active only for applications started after tracing has started. Currently-executing applications will not have tracing enabled. You must restart applications to enable tracing. You may need to restart services for applications, or you may have to restart the machine to properly enable tracing.  </p>
 </div>
 
-<p>You query the data in JSON files directly. Schema definitions in Hive store are not necessary. The names of the elements within the <code>checkin_info</code> column are different between the first and second row.</p>
+<h3 id="osx-and-other-non-windows-platforms">OSX and Other Non-Windows Platforms</h3>
 
-<p>Drill provides a function called KVGEN (Key Value Generator) which is useful when working with complex data that contains arbitrary maps consisting of dynamic and unknown element names such as checkin_info. KVGEN turns the dynamic map into an array of key-value pairs where keys represent the dynamic element names.</p>
+<p>iODBC is the default driver manager on OSX and can sometimes be found on other non-Windows platforms. </p>
 
-<p>Let’s apply KVGEN on the <code>checkin_info</code> element to generate key-value pairs.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT KVGEN(checkin_info) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json` LIMIT 2;
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|                                                                    checkins                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [{&quot;key&quot;:&quot;3-4&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;13-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;6-6&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;14-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;14-6&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;14-2&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;14-3&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;19-0&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;11-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;13-2&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;11-6&quot;,&quot;value&quot;:2},{&quot;key&quot;:&quot;11-3&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;12-6&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;6-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;5-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;9-2&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;9-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;9-6&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;5-2&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;7-6&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;7-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;7-4&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;17-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;8-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;10-2&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;10-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;10-6&quot;,&quot;value&quot;:1}] |
-| [{&quot;key&quot;:&quot;6-6&quot;,&quot;value&quot;:2},{&quot;key&quot;:&quot;6-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;7-6&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;7-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;8-5&quot;,&quot;value&quot;:2},{&quot;key&quot;:&quot;10-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;9-3&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;12-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;15-3&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;15-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;15-6&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;16-3&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;10-0&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;15-4&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;10-4&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;8-2&quot;,&quot;value&quot;:1}]                                                                                                                                                                                                                                                                               |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-</code></pre></div>
-<p>Drill provides another function to operate on complex data called ‘Flatten’ to break the list of key-value pairs resulting from ‘KVGen’ into separate rows to further apply analytic functions on it.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT FLATTEN(KVGEN(checkin_info)) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json` LIMIT 20;
-+--------------------------+
-|         checkins         |
-+--------------------------+
-| {&quot;key&quot;:&quot;3-4&quot;,&quot;value&quot;:1}  |
-| {&quot;key&quot;:&quot;13-5&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;6-6&quot;,&quot;value&quot;:1}  |
-| {&quot;key&quot;:&quot;14-5&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;14-6&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;14-2&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;14-3&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;19-0&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;11-5&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;13-2&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;11-6&quot;,&quot;value&quot;:2} |
-| {&quot;key&quot;:&quot;11-3&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;12-6&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;6-5&quot;,&quot;value&quot;:1}  |
-| {&quot;key&quot;:&quot;5-5&quot;,&quot;value&quot;:1}  |
-| {&quot;key&quot;:&quot;9-2&quot;,&quot;value&quot;:1}  |
-| {&quot;key&quot;:&quot;9-5&quot;,&quot;value&quot;:1}  |
-| {&quot;key&quot;:&quot;9-6&quot;,&quot;value&quot;:1}  |
-| {&quot;key&quot;:&quot;5-2&quot;,&quot;value&quot;:1}  |
-| {&quot;key&quot;:&quot;7-6&quot;,&quot;value&quot;:1}  |
-+--------------------------+
-</code></pre></div>
-<p>You can get value from the data quickly by applying both KVGEN and FLATTEN functions on the datasets on the fly--no need for time-consuming schema definitions and data storage in intermediate formats.</p>
+<h4 id="enable-trace-logging">Enable Trace Logging</h4>
 
-<p>On the output of flattened data, you use standard SQL functionality such as filters , aggregates, and sort. Let’s see a few examples.</p>
+<p>To enable trace logging:</p>
 
-<h3 id="get-the-total-number-of-check-ins-recorded-in-the-yelp-dataset">Get the total number of check-ins recorded in the Yelp dataset</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT SUM(checkintbl.checkins.`value`) AS TotalCheckins FROM (
-. . . . . . . . . . . &gt;  SELECT FLATTEN(KVGEN(checkin_info)) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json` ) checkintbl
-. . . . . . . . . . . &gt;  ;
-+---------------+
-| TotalCheckins |
-+---------------+
-| 4713811       |
-+---------------+
-</code></pre></div>
-<h3 id="get-the-number-of-check-ins-specifically-for-sunday-midnights">Get the number of check-ins specifically for Sunday midnights</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT SUM(checkintbl.checkins.`value`) AS SundayMidnightCheckins FROM (
-. . . . . . . . . . . &gt;  SELECT FLATTEN(KVGEN(checkin_info)) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json` ) checkintbl WHERE checkintbl.checkins.key=&#39;23-0&#39;;
-+------------------------+
-| SundayMidnightCheckins |
-+------------------------+
-| 8575                   |
-+------------------------+
-</code></pre></div>
-<h3 id="get-the-number-of-check-ins-per-day-of-the-week">Get the number of check-ins per day of the week</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT `right`(checkintbl.checkins.key,1) WeekDay,sum(checkintbl.checkins.`value`) TotalCheckins from (
-. . . . . . . . . . . &gt;  select flatten(kvgen(checkin_info)) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json`  ) checkintbl GROUP BY `right`(checkintbl.checkins.key,1) ORDER BY TotalCheckins;
-+------------+---------------+
-|  WeekDay   | TotalCheckins |
-+------------+---------------+
-| 1          | 545626        |
-| 0          | 555038        |
-| 2          | 555747        |
-| 3          | 596296        |
-| 6          | 735830        |
-| 4          | 788073        |
-| 5          | 937201        |
-+------------+---------------+
-</code></pre></div>
-<h3 id="get-the-number-of-check-ins-per-hour-of-the-day">Get the number of check-ins per hour of the day</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT SUBSTR(checkintbl.checkins.key,1,strpos(checkintbl.checkins.key,&#39;-&#39;)-1) AS HourOfTheDay ,SUM(checkintbl.checkins.`value`) TotalCheckins FROM (
-. . . . . . . . . . . &gt;  SELECT FLATTEN(KVGEN(checkin_info)) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json` ) checkintbl GROUP BY SUBSTR(checkintbl.checkins.key,1,strpos(checkintbl.checkins.key,&#39;-&#39;)-1) ORDER BY TotalCheckins;
-+--------------+---------------+
-| HourOfTheDay | TotalCheckins |
-+--------------+---------------+
-| 3            | 20357         |
-| 4            | 21076         |
-| 2            | 28116         |
-| 5            | 33842         |
-| 1            | 45467         |
-| 6            | 54174         |
-| 0            | 74127         |
-| 7            | 96329         |
-| 23           | 102009        |
-| 8            | 130091        |
-| 22           | 140338        |
-| 9            | 162913        |
-| 21           | 211949        |
-| 10           | 220687        |
-| 15           | 261384        |
-| 14           | 276188        |
-| 16           | 292547        |
-| 20           | 293783        |
-| 13           | 328373        |
-| 11           | 338675        |
-| 17           | 374186        |
-| 19           | 385381        |
-| 12           | 399797        |
-| 18           | 422022        |
-+--------------+---------------+
-</code></pre></div>
-<hr>
+<ol>
+<li>Locate your <code>maprdrill.odbc.ini</code> file. This often located in your home directory. It might be a hidden file.</li>
+<li><p>Open the file and add the following key-value pairs under the section heading <strong>[ODBC]</strong>. If the heading does not exist, add it. For example:</p>
 
-<h2 id="summary">Summary</h2>
+<p><code>[ODBC]</code></p>
 
-<p>In this tutorial, you surf both structured and semi-structured data without any upfront schema management or ETL.</p>
+<p><code>Trace=1</code></p>
+
+<p><code>TraceFile=/path/to/file/traceFile.log</code></p>
+
+<p><code>[ODBC Data Sources]</code></p></li>
+</ol>
+
+<h4 id="disable-trace-logging">Disable Trace Logging</h4>
+
+<p>When the trace is complete, disable tracing because tracing will consume disk space and significantly impact performance.</p>
+
+<ol>
+<li>Locate your <code>maprdrill.odbc.ini</code> file. This often located in your home directory. It might be a hidden file.</li>
+<li><p>Open the file and add the following key-value pairs under the section heading <strong>[ODBC]</strong>. For example:</p>
+
+<p><code>[ODBC]</code></p>
+
+<p><code>Trace=0</code></p>
+
+<p><code>TraceFile=/path/to/file/traceFile.log</code></p>
+
+<p><code>[ODBC Data Sources]</code></p></li>
+<li><p>(Again, this action will only impact applications that have just started, not currently-executing applications.) Restart your application.</p></li>
+</ol>
+
+<h3 id="osx-and-other-non-windows-platforms">OSX and Other Non-Windows Platforms</h3>
+
+<h4 id="enable-trace-logging">Enable Trace Logging</h4>
+
+<p>To enable tracing on Windows:</p>
+
+<ol>
+<li>Open the <strong>ODBC Data Source Administrator</strong>. </li>
+<li>Go to the <strong>Tracing</strong> tab.</li>
+</ol>
+
+<p><img src="/docs/img/odbctrace.png" alt="logtrace"></p>
+
+<ol>
+<li><p>Change the <strong>Log File Path</strong> field to be the location and name of the file to which you’d like to write the trace entries.</p></li>
+<li><p>(Optional) Check <strong>Machine-wide tracing</strong> for all user identities if you want the tracing to affect all users on the machine. If you are unsure, check this box.</p></li>
+<li><p>Press <strong>Start Tracing Now</strong>. </p></li>
+</ol>
+
+<h4 id="disable-trace-logging">Disable Trace Logging</h4>
+
+<p>When the trace is complete, disable tracing because tracing will consume disk space and significantly impact performance.</p>
+
+<ol>
+<li>Open the <strong>ODBC Data Source Administrator</strong>. </li>
+<li>Go to the <strong>Tracing</strong> tab.</li>
+<li>Press Stop <strong>Tracing Now</strong>.  (Again, this action will only impact applications that have just started, not currently-executing applications.)</li>
+<li>Restart your application.</li>
+</ol>
+
+<p>For more information about generating ODBC traces, see <a href="https://support.microsoft.com/en-us/help/274551/how-to-generate-an-odbc-trace-with-odbc-data-source-administrator">How To Generate an ODBC Trace with ODBC Data Source Administrator.
+</a></p>
 
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/summary/">← Summary</a></span><span class="next-toc"><a href="/docs/analyzing-social-media/">Analyzing Social Media →</a></span>
+  <span class="previous-toc"><a href="/docs/odbc-configuration-reference/">← ODBC Configuration Reference</a></span><span class="next-toc"><a href="/docs/configuring-odbc-on-linux/">Configuring ODBC on Linux →</a></span>
 </div>
 
     
