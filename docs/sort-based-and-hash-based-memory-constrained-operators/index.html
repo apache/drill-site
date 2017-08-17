@@ -437,6 +437,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/odbc-configuration-reference/">ODBC Configuration Reference</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/odbc-configuration-reference/">ODBC Configuration Reference</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-linux/">Configuring ODBC on Linux</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-mac-os-x/">Configuring ODBC on Mac OS X</a></li>
@@ -1126,41 +1128,122 @@
 
     </div>
 
-     Feb 6, 2016
+     Aug 17, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Drill uses hash-based and sort-based operators depending on the query characteristics. Hash aggregation and hash join are hash-based operations. Streaming aggregation and merge join are sort-based operations. Both hash-based and sort-based operations consume memory, however the hash aggregate and hash join operators are the fastest and most memory intensive operators.</p>
+        <p>Drill uses hash-based and sort-based operators depending on the query characteristics. Hash aggregation and hash join are hash-based operations. Streaming aggregation and merge join are sort-based operations. Both hash-based and sort-based operations consume memory, however the hash aggregate and hash join operators are the fastest and most memory intensive operators. </p>
 
-<p>Currently, hash-based operations do not spill to disk as needed, but the sort-based operations do. When Drill plans a sort-based query, it evaluates the size of available memory multiplied by a configurable reduction constant (for parallelization purposes) and then limits the sort-based operations to the maximum of this amount of memory.</p>
+<p>When planning a query with sort- and hash-based operators, Drill evaluates the available memory multiplied by a configurable reduction constant (for parallelization purposes) and then limits the operations to the maximum of this amount of memory. Drill spills data to disk if the sort and hash aggregate operations cannot be performed in memory. Alternatively, you can disable large hash operations if they do not fit in memory on your system. When disabled, Drill creates alternative plans. You can also modify the minimum hash table size, increasing the size for very large aggregations or joins when you have large amounts of memory for Drill to use. If you have large data sets, you can increase the hash table size to improve performance. </p>
 
-<p>If the hash-based operators run out of memory during execution, the query fails. If large hash operations do not fit in memory on your system, you can disable these operations. When disabled, Drill creates alternative plans that allow spilling to disk.</p>
+<h2 id="memory-options">Memory Options</h2>
 
-<p>You can also modify the minimum hash table size, increasing the size for very large aggregations or joins when you have large amounts of memory for Drill to use. If you have large data sets, you can increase this hash table size to improve performance.</p>
+<p>The <code>planner.memory.max_query_memory_per_node</code> option sets the maximum amount of direct memory allocated to the sort and hash aggregate operators during each query on a node. The default limit is 2147483648 bytes (2GB), which is quite conservative. This memory is split between operators. If a query plan contains multiple sort and/or hash aggregate operators, the memory is divided between them.</p>
 
-<p>Use the ALTER SYSTEM or ALTER SESSION commands with the options in the table below to disable the hash aggregate and hash join operators, modify the hash table size, disable memory estimation, or set the estimated maximum amount of memory for a query. Typically, you set the options at the session level unless you want the setting to persist across all sessions.</p>
+<p>When a query is parallelized, the number of operators is multiplied, which reduces the amount of memory given to each instance of the sort and hash aggregate operators during a query. If you encounter memory issues when running queries with sort and hash aggregate operators, calculate the memory requirements for your queries and the amount of available memory on each node. Based on the information, increase the value for the <code>planner.memory.max_query_memory_per_node</code> option using the ALTER SYSTEM|SESSION SET command, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SYSTEM|SESSION SET `planner.memory.max_query_memory_per_node` = 8147483648  
+</code></pre></div>
+<p>The <code>planner.memory.enable_memory_estimation</code> option toggles the state of memory estimation and re-planning of the query. When enabled, Drill conservatively estimates memory requirements and typically excludes memory-constrained operators from the query plan, which can negatively impact performance. The default setting is false. If you want Drill to use very conservative memory estimates, use the ALTER SYSTEM|SESSION SET command to change the setting, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SYSTEM|SESSION SET `planner.memory.enable_memory_estimation` = true  
+</code></pre></div>
+<h2 id="spill-to-disk">Spill to Disk</h2>
+
+<p>The &quot;Spill to Disk&quot; feature prevents queries that use memory-intensive sort and hash aggregate operations from failing with out-of-memory errors. Drill automatically writes excess data to a temporary directory on disk when queries with sort or hash aggregate operations exceed the set memory limit on a Drill node. When the operators finish processing the in-memory data, Drill reads the spilled data back from disk, and the operators finish processing the data. When the operations complete, Drill removes the data from disk.  </p>
+
+<p>Spilling to disk enables queries to run uninterrupted while Drill performs the spill operations in the background. However, there can be performance impact due to the time required to spill data and then read the data back from disk.  </p>
+
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">Drill 1.11 and later supports spilling to disk for the Hash Aggregate operator in addition to the Sort operator. Previous releases of Drill only supported spilling to disk for the Sort operator.  </p>
+</div>  
+
+<h3 id="spill-locations">Spill Locations</h3>
+
+<p>Drill writes data to a temporary work area on disk. The default location of the temporary work area is /tmp/drill/spill on the local file system. The /tmp/drill/spill directory should suffice for small workloads or examples, however it is highly recommended that you redirect the default spill location to a location with enough disk space to support spilling for large workloads.  </p>
+
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">Spilled data may require more space than the table referenced in the query that is spilling the data. For example, if a table is 100 GB per node, the spill directory should have the capacity to hold more than 100 GB.  </p>
+</div>
+ 
+
+<p>When you configure the spill location, you can specify a single directory, or a list of directories into which the sort and hash aggregate operators both spill. Alternatively, you can set specific spill directories for each type of operator, however this is not recommended as these options will be deprecated in future releases of Drill. For more information, see the Spill to Disk Configuration Options section below.  </p>
+
+<h3 id="spill-to-disk-configuration-options">Spill to Disk Configuration Options</h3>
+
+<p>The spill to disk options reside in the drill-override.conf file on each Drill node. An administrator or someone familiar with storage and disks should manage these settings.</p>
+
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">You can see examples of these configuration options in the drill-override-example.conf file located in the <drill_installation>/conf directory.  </p>
+</div> 
+
+<p>The following table lists the configuration options for spilling data:  </p>
+
+<table><thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Default</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>drill.exe.spill.fs</td>
+<td>Introduced   in Drill 1.11. The default file system on the local machine into which the   sort and hash aggregate operators spill data. This is the recommended option   to use for spilling. You can configure this option so that data spills into a   distributed file system, such as hdfs.</td>
+<td>&quot;file:///&quot;</td>
+<td>&quot;hdfs:///&quot;</td>
+</tr>
+<tr>
+<td>drill.exec.spill.directories</td>
+<td>Introduced   in Drill 1.11. The list of directories into which the sort and hash aggregate   operators spill data. The list must be an array with directories separated by   a comma. This is the recommended option for spilling to multiple directories.</td>
+<td>[   &quot;/tmp/drill/spill&quot; ],</td>
+<td>[   &quot;/fs1/drill/spill&quot; , &quot;/fs2/drill/spill&quot; ,   &quot;/fs3/drill/spill&quot; ],</td>
+</tr>
+<tr>
+<td>drill.exec.sort.external.spill.fs</td>
+<td>Overrides   the default location into which the sort operator spills data. Instead of   spilling into the location set by the drill.exec.spill.fs   option, the sort operators spill into the location specified by this option.             Note: As of Drill   1.11, this option is supported for backward compatibility, however in future   releases, this option will be deprecated. It is highly recommended that you   use the drill.exec.spill.fs option to set the spill location instead.</td>
+<td>&quot;file:///&quot;</td>
+<td>&quot;hdfs:///&quot;</td>
+</tr>
+<tr>
+<td>drill.exec.sort.external.spill.directories</td>
+<td>Overrides   the location into which the sort operator spills data. Instead of spilling   into the location set by the drill.exec.spill.directories   option, the sort operators spill into the directories specified by this   option. The list must be an array with directories separated by a comma.             Note: As of Drill   1.11, this option is supported for backward compatibility, however in future   releases, this option will be deprecated. It is highly recommended that you   use the drill.exec.spill.directories option to set the spill location   instead.</td>
+<td>[   &quot;/tmp/drill/spill&quot; ]</td>
+<td>[&quot;/fs1/drill/spill&quot;   , &quot;/fs2/drill/spill&quot; , &quot;/fs3/drill/spill&quot; ],</td>
+</tr>
+<tr>
+<td>drill.exec.hashagg.spill.fs</td>
+<td>Overrides   the location into which the hash aggregate operator spills data. Instead of   spilling into the location set by the drill.exec.spill.fs   option, the hash aggregate operator spills into the location specified by   this option. Setting this option to 1 disables spilling for the hash   aggregate operator.           Note: As of Drill   1.11, this option is supported for backward compatibility, however in future   releases, this option will be deprecated. It is highly recommended that you   use the drill.exec.spill.fs option to set the spill location instead.</td>
+<td>&quot;file:///&quot;</td>
+<td>&quot;hdfs:///&quot;</td>
+</tr>
+<tr>
+<td>drill.exec.hashagg.spill.directories</td>
+<td>Overrides   the location into which the hash aggregate operator spills data. Instead of   spilling into the location set by the drill.exec.spill.directories   option, the hash aggregate operator spills to the directories specified by   this option. The list must be an array with directories separated by a comma.             Note: As of Drill   1.11, this option is supported for backward compatibility, however in future   releases, this option will be deprecated. It is highly recommended that you   use the drill.exec.spill. directories option to set the spill location   instead.</td>
+<td>[   &quot;/tmp/drill/spill&quot; ],</td>
+<td>[&quot;/fs1/drill/spill&quot;   , &quot;/fs2/drill/spill&quot; , &quot;/fs3/drill/spill&quot; ],</td>
+</tr>
+</tbody></table>
+
+<h2 id="hash-based-operator-settings">Hash-Based Operator Settings</h2>
+
+<p>Use the ALTER SYSTEM|SESSION SET commands with the options below to disable the hash aggregate and hash join operators, modify the hash table size, disable memory estimation, or set the estimated maximum amount of memory for a query. Typically, you set the options at the session level unless you want the setting to persist across all sessions.</p>
 
 <p>The following options control the hash-based operators:</p>
 
 <ul>
 <li><p><strong>planner.enable_hashagg</strong><br>
-Enable hash aggregation; otherwise, Drill does a sort-based aggregation. Does not write to disk. Enable is recommended. Default: true</p></li>
+Enables or disables hash aggregation; otherwise, Drill does a sort-based aggregation. This option is enabled by default.   The default setting is true, which is recommended.</p></li>
 <li><p><strong>planner.enable_hashjoin</strong><br>
-Enable the memory hungry hash join. Drill assumes that a query will have adequate memory to complete and tries to use the fastest operations possible to complete the planned inner, left, right, or full outer joins using a hash table. Does not write to disk. Disabling hash join allows Drill to manage arbitrarily large data in a small memory footprint. Default: true</p></li>
+Enables or disables the memory hungry hash join. Drill assumes that a query will have adequate memory to complete and tries to use the fastest operations possible to complete the planned inner, left, right, or full outer joins using a hash table. Currently, this operator does not write to disk. Disabling hash join allows Drill to manage arbitrarily large data in a small memory footprint. This option is enabled by default. The default setting is true.</p></li>
 <li><p><strong>exec.min_hash_table_size</strong><br>
-Starting size for hash tables. Increase according to available memory to improve performance.<br>
-Default: 65536 Range: 0 - 1073741824</p></li>
+Starting size for hash tables. Increase this setting based on the memory available to improve performance.<br>
+The default setting for this option is 65536. The setting can range from 0 to 1073741824.</p></li>
 <li><p><strong>exec.max_hash_table_size</strong><br>
-Ending size for hash tables.<br>
-Default: 1073741824 Range: 0 - 1073741824</p></li>
-<li><p><strong>planner.memory.enable_memory_estimation</strong><br>
-Toggles the state of memory estimation and re-planning of the query. When enabled, Drill conservatively estimates memory requirements and typically excludes memory-constrained operators from the plan and negatively impacts performance.<br>
-Default: false</p></li>
-<li><p><strong>planner.memory.max_query_memory_per_node</strong><br>
-Sets the maximum amount of direct memory allocated to the sort operator in each query on a node. If a query plan contains multiple sort operators, they all share this memory. If you encounter memory issues when running queries with sort operators, increase the value of this option.<br>
-Default: 2147483648 </p></li>
+Ending size for hash tables. The default setting for this option is 1073741824. The setting can range from 0 to 1073741824.</p></li>
 </ul>
 
     
