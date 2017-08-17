@@ -1180,53 +1180,26 @@
   <p class="last">You can see examples of these configuration options in the drill-override-example.conf file located in the <drill_installation>/conf directory.  </p>
 </div> 
 
-<p>The following table lists the configuration options for spilling data:  </p>
+<p>The following list describes the configuration options for spilling data to disk:  </p>
 
-<table><thead>
-<tr>
-<th>Option</th>
-<th>Description</th>
-<th>Default</th>
-<th>Example</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>drill.exe.spill.fs</td>
-<td>Introduced   in Drill 1.11. The default file system on the local machine into which the   sort and hash aggregate operators spill data. This is the recommended option   to use for spilling. You can configure this option so that data spills into a   distributed file system, such as hdfs.</td>
-<td>&quot;file:///&quot;</td>
-<td>&quot;hdfs:///&quot;</td>
-</tr>
-<tr>
-<td>drill.exec.spill.directories</td>
-<td>Introduced   in Drill 1.11. The list of directories into which the sort and hash aggregate   operators spill data. The list must be an array with directories separated by   a comma. This is the recommended option for spilling to multiple directories.</td>
-<td>[   &quot;/tmp/drill/spill&quot; ],</td>
-<td>[   &quot;/fs1/drill/spill&quot; , &quot;/fs2/drill/spill&quot; ,   &quot;/fs3/drill/spill&quot; ],</td>
-</tr>
-<tr>
-<td>drill.exec.sort.external.spill.fs</td>
-<td>Overrides   the default location into which the sort operator spills data. Instead of   spilling into the location set by the drill.exec.spill.fs   option, the sort operators spill into the location specified by this option.             Note: As of Drill   1.11, this option is supported for backward compatibility, however in future   releases, this option will be deprecated. It is highly recommended that you   use the drill.exec.spill.fs option to set the spill location instead.</td>
-<td>&quot;file:///&quot;</td>
-<td>&quot;hdfs:///&quot;</td>
-</tr>
-<tr>
-<td>drill.exec.sort.external.spill.directories</td>
-<td>Overrides   the location into which the sort operator spills data. Instead of spilling   into the location set by the drill.exec.spill.directories   option, the sort operators spill into the directories specified by this   option. The list must be an array with directories separated by a comma.             Note: As of Drill   1.11, this option is supported for backward compatibility, however in future   releases, this option will be deprecated. It is highly recommended that you   use the drill.exec.spill.directories option to set the spill location   instead.</td>
-<td>[   &quot;/tmp/drill/spill&quot; ]</td>
-<td>[&quot;/fs1/drill/spill&quot;   , &quot;/fs2/drill/spill&quot; , &quot;/fs3/drill/spill&quot; ],</td>
-</tr>
-<tr>
-<td>drill.exec.hashagg.spill.fs</td>
-<td>Overrides   the location into which the hash aggregate operator spills data. Instead of   spilling into the location set by the drill.exec.spill.fs   option, the hash aggregate operator spills into the location specified by   this option. Setting this option to 1 disables spilling for the hash   aggregate operator.           Note: As of Drill   1.11, this option is supported for backward compatibility, however in future   releases, this option will be deprecated. It is highly recommended that you   use the drill.exec.spill.fs option to set the spill location instead.</td>
-<td>&quot;file:///&quot;</td>
-<td>&quot;hdfs:///&quot;</td>
-</tr>
-<tr>
-<td>drill.exec.hashagg.spill.directories</td>
-<td>Overrides   the location into which the hash aggregate operator spills data. Instead of   spilling into the location set by the drill.exec.spill.directories   option, the hash aggregate operator spills to the directories specified by   this option. The list must be an array with directories separated by a comma.             Note: As of Drill   1.11, this option is supported for backward compatibility, however in future   releases, this option will be deprecated. It is highly recommended that you   use the drill.exec.spill. directories option to set the spill location   instead.</td>
-<td>[   &quot;/tmp/drill/spill&quot; ],</td>
-<td>[&quot;/fs1/drill/spill&quot;   , &quot;/fs2/drill/spill&quot; , &quot;/fs3/drill/spill&quot; ],</td>
-</tr>
-</tbody></table>
+<ul>
+<li><p><strong>drill.exe.spill.fs</strong><br>
+Introduced in Drill 1.11. The default file system on the local machine into which the sort and hash aggregate operators spill data. This is the recommended option to use for spilling. You can configure this option so that data spills into a distributed file system, such as hdfs. For example, &quot;hdfs:///&quot;. The default setting is &quot;file:///&quot;.  </p></li>
+<li><p><strong>drill.exec.spill.directories</strong><br>
+Introduced in Drill 1.11. The list of directories into which the sort and hash aggregate operators spill data. The list must be an array with directories separated by a comma, for example [&quot;/fs1/drill/spill&quot; , &quot;/fs2/drill/spill&quot; , &quot;/fs3/drill/spill&quot;]. This is the recommended option for spilling to multiple directories. The default setting is [&quot;/tmp/drill/spill&quot;].  </p></li>
+<li><p><strong>drill.exec.sort.external.spill.fs</strong><br>
+Overrides the default location into which the sort operator spills data. Instead of spilling into the location set by the drill.exec.spill.fs option, the sort operators spill into the location specified by this option.<br>
+<strong>Note:</strong> As of Drill 1.11, this option is supported for backward compatibility, however in future releases, this option will be deprecated. It is highly recommended that you   use the drill.exec.spill.fs option to set the spill location instead. The default setting is &quot;file:///&quot;.</p></li>
+<li><p><strong>drill.exec.sort.external.spill.directories</strong><br>
+Overrides the location into which the sort operator spills data. Instead of spilling into the location set by the drill.exec.spill.directories option, the sort operators spill into the directories specified by this option. The list must be an array with directories separated by a comma, for example [&quot;/fs1/drill/spill&quot; , &quot;/fs2/drill/spill&quot; , &quot;/fs3/drill/spill&quot;].<br>
+<strong>Note:</strong> As of Drill 1.11, this option is supported for backward compatibility, however in future releases, this option will be deprecated. It is highly recommended that you use the drill.exec.spill.directories option to set the spill location instead. The default setting is [&quot;/tmp/drill/spill&quot;].  </p></li>
+<li><p><strong>drill.exec.hashagg.spill.fs</strong><br>
+Overrides the location into which the hash aggregate operator spills data. Instead of spilling into the location set by the drill.exec.spill.fs option, the hash aggregate operator spills into the location specified by this option. Setting this option to 1 disables spilling for the hash aggregate operator.<br>
+<strong>Note:</strong> As of Drill 1.11, this option is supported for backward compatibility, however in future releases, this option will be deprecated. It is highly recommended that you use the drill.exec.spill.fs option to set the spill location instead. The default setting is &quot;file:///&quot;.  </p></li>
+<li><p><strong>drill.exec.hashagg.spill.directories</strong><br>
+Overrides the location into which the hash aggregate operator spills data. Instead of spilling into the location set by the drill.exec.spill.directories option, the hash aggregate operator spills to the directories specified by this option. The list must be an array with directories separated by a comma, for example [&quot;/fs1/drill/spill&quot; , &quot;/fs2/drill/spill&quot; , &quot;/fs3/drill/spill&quot;].<br>
+<strong>Note:</strong> As of Drill 1.11, this option is supported for backward compatibility, however in future releases, this option will be deprecated. It is highly recommended that you use the drill.exec.spill. directories option to set the spill location instead.  </p></li>
+</ul>
 
 <h2 id="hash-based-operator-settings">Hash-Based Operator Settings</h2>
 
