@@ -1126,30 +1126,31 @@
 
     </div>
 
-     Nov 1, 2016
+     Aug 17, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>You can configure the amount of direct memory allocated to a Drillbit for query processing in any Drill cluster, multitenant or not. The default memory for a Drillbit is 8G, but Drill prefers 16G or more depending on the workload. The total amount of direct memory that a Drillbit allocates to query operations cannot exceed the limit set.</p>
+        <p>You can configure the amount of direct memory allocated to a Drillbit for query processing in any Drill cluster, multitenant or not. The default memory for a drillbit is 8G, but Drill prefers 16G or more depending on the workload. The total amount of direct memory that a drillbit allocates to query operations cannot exceed the limit set.</p>
 
-<p>Drill uses Java direct memory and performs well when executing
-operations in memory instead of storing the operations on disk. Drill does not
-write to disk unless absolutely necessary, unlike MapReduce where everything
-is written to disk during each phase of a job.</p>
+<p>Drill uses Java direct memory and performs well when executing operations in memory instead of storing the operations on disk. Drill does not write to disk unless absolutely necessary, unlike MapReduce where everything is written to disk during each phase of a job.</p>
 
 <p>The JVM’s heap memory does not limit the amount of direct memory available in
-a Drillbit. The on-heap memory for Drill is typically set at 4-8G (default is 4), which should
+a drillbit. The on-heap memory for Drill is typically set at 4-8G (default is 4), which should
 suffice because Drill avoids having data sit in heap memory.</p>
 
-<p>As of Drill 1.5, Drill uses a new allocator that improves an operator’s use of direct memory and tracks the memory use more accurately. Due to this change, the sort operator (in queries that ran successfully in previous releases) may not have enough memory, resulting in a failed query and out of memory error instead of spilling to disk.</p>
+<p>As of Drill 1.5, Drill uses a new allocator that improves an operator’s use of direct memory and tracks the memory use more accurately. Due to this change, the sort operator (in queries that ran successfully in previous releases) may not have enough memory, resulting in a failed query and out of memory error instead of spilling to disk.     </p>
 
-<p>The <a href="/docs/configuration-options-introduction/#system-options"><code>planner.memory.max_query_memory_per_node</code></a> system option value sets the maximum amount of direct memory allocated to the sort operator in each query on a node. If a query plan contains multiple sort operators, they all share this memory. If you encounter memory issues when running queries with sort operators, increase the value of this option. If you continue to encounter memory issues after increasing this value, you can also reduce the value of the <a href="/docs/configuration-options-introduction/"><code>planner.width.max_per_node</code></a> option to reduce the level of parallelism per node. However, this may increase the amount of time required for a query to complete.  </p>
+<h2 id="drillbit-memory">Drillbit Memory</h2>
 
-<h2 id="modifying-drillbit-memory">Modifying Drillbit Memory</h2>
+<p>The value set for the <a href="/docs/configuration-options-introduction/#system-options"><code>planner.memory.max_query_memory_per_node</code></a> system option sets the maximum amount of direct memory allocated to the Sort and Hash Aggreate operators in each query on a node. If a query plan contains multiple Sort and/or Hash Aggregate operators, they all share this memory. If you encounter memory issues when running queries with Sort and/or Hash Aggregate operators, increase the value of this option. See <a href="https://drill.apache.org/docs/sort-based-and-hash-based-memory-constrained-operators/">Sort-Based and Hash-Based Memory Constrained Operators</a> for more information.  </p>
 
-<p>You can modify memory for each Drillbit node in your cluster. To modify the memory for a Drillbit, set the DRILL_MAX_DIRECT_MEMORY variable in the Drillbit startup script, <code>drill-env.sh</code>, located in <code>&lt;drill_installation_directory&gt;/conf</code>, as follows:</p>
+<p>If you continue to encounter memory issues after increasing this value, you can also reduce the value of the <a href="/docs/configuration-options-introduction/"><code>planner.width.max_per_node</code></a> option to reduce the level of parallelism per node. However, this may increase the amount of time required for a query to complete. </p>
+
+<h3 id="modifying-drillbit-memory">Modifying Drillbit Memory</h3>
+
+<p>You can modify memory for each drillbit node in your cluster. To modify the memory for a drillbit, set the DRILL_MAX_DIRECT_MEMORY variable in the drillbit startup script, <code>drill-env.sh</code>, located in <code>&lt;drill_installation_directory&gt;/conf</code>, as follows:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">export DRILL_MAX_DIRECT_MEMORY=${DRILL_MAX_DIRECT_MEMORY:-&quot;&lt;value&gt;&quot;}
 </code></pre></div>
 <div class="admonition note">
@@ -1157,9 +1158,9 @@ suffice because Drill avoids having data sit in heap memory.</p>
   <p class="last">If DRILL_MAX_DIRECT_MEMORY is not set, the limit depends on the amount of available system memory.  </p>
 </div>
 
-<p>After you edit <code>&lt;drill_installation_directory&gt;/conf/drill-env.sh</code>, <a href="/docs/starting-drill-in-distributed-mode">restart the Drillbit</a> on the node.</p>
+<p>After you edit <code>&lt;drill_installation_directory&gt;/conf/drill-env.sh</code>, <a href="/docs/starting-drill-in-distributed-mode">restart the drillbit</a> on the node.</p>
 
-<h2 id="about-the-drillbit-startup-script">About the Drillbit startup script</h2>
+<h2 id="about-the-drillbit-startup-script">About the Drillbit Startup Script</h2>
 
 <p>The <code>drill-env.sh</code> file contains the following options:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">#export DRILL_HEAP=${DRILL_HEAP:-&quot;4G”}  
