@@ -437,7 +437,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/odbc-configuration-reference/">ODBC Configuration Reference</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/logging-tracing/">Logging Tracing</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/logging-and-tracing/">Logging and Tracing</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-linux/">Configuring ODBC on Linux</a></li>
               
@@ -1128,7 +1128,7 @@
 
     </div>
 
-     Aug 17, 2017
+     Aug 18, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1140,7 +1140,7 @@
 
 <h2 id="memory-options">Memory Options</h2>
 
-<p>The <code>planner.memory.max_query_memory_per_node</code> option sets the maximum amount of direct memory allocated to the Sort and Hash Aggregate operators during each query on a node. The default limit is set to 2147483648 bytes (2GB), which is too small for queries on large data sets and should be increased. This memory is split between operators. If a query plan contains multiple Sort and/or Hash Aggregate operators, the memory is divided between them.</p>
+<p>The <code>planner.memory.max_query_memory_per_node</code> option sets the maximum amount of direct memory allocated to the Sort and Hash Aggregate operators during each query on a node. The default limit is set to 2147483648 bytes (2GB), which should be increased for queries on large data sets. This memory is split between operators. If a query plan contains multiple Sort and/or Hash Aggregate operators, the memory is divided between them.</p>
 
 <p>When a query is parallelized, the number of operators is multiplied, which reduces the amount of memory given to each instance of the Sort and Hash Aggregate operators during a query. If you encounter memory issues when running queries with Sort and Hash Aggregate operators, calculate the memory requirements for your queries and the amount of available memory on each node. Based on the information, increase the value of the <code>planner.memory.max_query_memory_per_node</code> option using the ALTER SYSTEM|SESSION SET command, as shown:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SYSTEM|SESSION SET `planner.memory.max_query_memory_per_node` = &lt;new_value&gt;  

@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>REPEATED_CONTAINS - Apache Drill</title>
+<title>Logging and Tracing - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -403,8 +403,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">ODBC/JDBC Interfaces</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">ODBC/JDBC Interfaces</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/interfaces-introduction/">Interfaces Introduction</a></li>
@@ -433,11 +433,11 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">Configuring ODBC</a></li>
-              <ul style="display: none">
+              <ul style="">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/odbc-configuration-reference/">ODBC Configuration Reference</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/logging-and-tracing/">Logging and Tracing</a></li>
+                <li class="toctree-l3 current"><a class="reference internal" href="/docs/logging-and-tracing/">Logging and Tracing</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-linux/">Configuring ODBC on Linux</a></li>
               
@@ -683,8 +683,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">SQL Reference</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">SQL Reference</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sql-reference-introduction/">SQL Reference Introduction</a></li>
@@ -751,7 +751,7 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">Nested Data Functions</a></li>
-              <ul style="">
+              <ul style="display: none">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/nested-data-limitations/">Nested Data Limitations</a></li>
               
@@ -761,7 +761,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/repeated-count/">REPEATED_COUNT</a></li>
               
-                <li class="toctree-l3 current"><a class="reference internal" href="/docs/repeated-contains/">REPEATED_CONTAINS</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/repeated-contains/">REPEATED_CONTAINS</a></li>
               
             </ul>
             
@@ -1109,121 +1109,214 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/sql-reference/">SQL Reference</a></li>
+    <li><a href="/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces</a></li>
   
-    <li><a href="/docs/nested-data-functions/">Nested Data Functions</a></li>
+    <li><a href="/docs/configuring-odbc/">Configuring ODBC</a></li>
   
-  <li>REPEATED_CONTAINS</li>
+  <li>Logging and Tracing</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/sql-reference/nested-data-functions/040-repeated-contains.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/odbc-jdbc-interfaces/configuring-odbc/011-logging-and-tracing.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>REPEATED_CONTAINS</h1>
+      <h1>Logging and Tracing</h1>
 
     </div>
 
-     
+     Aug 17, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>REPEATED CONTAINS searches for a keyword in an array. </p>
+        <h2 id="logging-options">Logging Options</h2>
 
-<h2 id="syntax">Syntax</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">REPEATED_CONTAINS(array_name, keyword)
-</code></pre></div>
-<ul>
-<li><p>array_name is a simple array, such as topping:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{
-. . .
-    &quot;topping&quot;:
-        [
-            &quot;None&quot;,
-            &quot;Glazed&quot;,
-            &quot;Sugar&quot;,
-            &quot;Powdered Sugar&quot;,
-            &quot;Chocolate with Sprinkles&quot;,
-            &quot;Chocolate&quot;,
-            &quot;Maple&quot;
-        ]
-}
-</code></pre></div></li>
-<li><p>keyword is a value in the array, such as &#39;Glazed&#39;.</p></li>
-</ul>
+<p>Only enable logging long enough to capture information required to resolve an issue. Logging decreases performance and can consume a large quantity of disk space.</p>
 
-<h2 id="usage-notes">Usage Notes</h2>
-
-<p>REPEATED_CONTAINS returns true if Drill finds a match; otherwise, the function returns false. The function supports regular expression wildcards, but not at the beginning of the keyword:</p>
+<p>If logging is enabled, the Drill ODBC driver logs events in the following log files in the log path that you configure:</p>
 
 <ul>
-<li>Asterisk (*)</li>
-<li>Period (.)</li>
-<li>Question mark (?)</li>
-<li>Square bracketed ranges [a-z]</li>
-<li>Square bracketed characters [ch]</li>
-<li>Negated square bracketed ranges or characters [!ch].</li>
+<li><code>driver.log</code> provides a log of driver events.</li>
+<li><code>drillclient.log</code> provides a log of the Drill client events.</li>
 </ul>
 
-<p>Enclose keyword string values in single quotation marks. Do not enclose numerical keyword values in single quotation marks.</p>
+<h3 id="logging-levels">Logging Levels</h3>
 
-<h2 id="examples">Examples</h2>
+<p>The following log levels are available:</p>
 
-<p>The examples in this section use <code>testRepeatedWrite.json</code>. To download this file, go to <a href="https://github.com/apache/drill/tree/master/exec/java-exec/src/test/resources">Drill test resources</a> page, locate testRepeatedWrite.json in the list of files, and download it.</p>
+<ul>
+<li>(0) OFF: Disables logging.</li>
+<li>(1) FATAL: Logs severe error events that may cause the driver to stop running.</li>
+<li>(2) ERROR: Logs error events that may allow the driver to continue running.</li>
+<li>(3) WARNING: Logs events that might result in an error if action is not taken.</li>
+<li>(4) INFO: Logs general information that describes the progress of the driver.</li>
+<li>(5) DEBUG: Logs detailed events that may help to debug issues.</li>
+<li>(6) TRACE: Logs all driver activity, which includes more fine-grained events than the DEBUG level.</li>
+</ul>
 
-<p>Which donuts have glazed or glaze toppings?</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">    SELECT name, REPEATED_CONTAINS(topping, &#39;Glaze?&#39;) AS `Glazed?` FROM  dfs.`/Users/drilluser/testRepeatedWrite.json` WHERE type=&#39;donut&#39;;
+<h3 id="non-windows-platforms">Non-Windows Platforms</h3>
 
-    +------------+------------+
-    |    name    |  Glazed?   |
-    +------------+------------+
-    | Cake       | true       |
-    | Raised     | true       |
-    | Old Fashioned | true       |
-    | Filled     | true       |
-    | Apple Fritter | true       |
-    +------------+------------+
-    5 rows selected (0.072 seconds)
-</code></pre></div>
-<p>Which objects have powdered sugar toppings? Use the asterisk wildcard instead of typing the entire keyword pair.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT name, REPEATED_CONTAINS(topping, &#39;P*r&#39;) AS `Powdered Sugar?` FROM  dfs.`/Users/drilluser/testRepeatedWrite.json` WHERE type=&#39;donut&#39;;
+<p>On non-Windows platforms, logging is configured through the driver-wide settings in the <code>mapr.drillodbc.ini</code> file, which apply to all connections using the driver. </p>
 
-+------------+-----------------+
-|    name    | Powdered Sugar? |
-+------------+-----------------+
-| Cake       | true            |
-| Raised     | true            |
-| Old Fashioned | false           |
-| Filled     | true            |
-| Apple Fritter | false           |
-+------------+-----------------+
-5 rows selected (0.089 seconds)
-</code></pre></div>
-<p>Which donuts have toppings beginning with the letters &quot;Map&quot; and ending in any two letters?</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT name, REPEATED_CONTAINS(topping, &#39;Map..&#39;) AS `Maple?` FROM  dfs.`/Users/drilluser/testRepeatedWrite.json` WHERE type=&#39;donut&#39;;
+<h4 id="enable-logging">Enable Logging</h4>
 
-+------------+------------+
-|    name    |   Maple?   |
-+------------+------------+
-| Cake       | true       |
-| Raised     | true       |
-| Old Fashioned | true       |
-| Filled     | true       |
-| Apple Fritter | false      |
-+------------+------------+
-5 rows selected (0.085 seconds)
-</code></pre></div>
+<p>To enable logging:</p>
+
+<ol>
+<li><p>Open the <code>.mapr.drillodbc.ini</code> configuration file in a text editor. (On Mac OS X, the default installation will install a .mapr.drillodbc.ini to $HOME.)</p></li>
+<li><p>Set the <strong>LogLevel</strong> key to the desired level of information to include in log files. 
+For example:</p>
+
+<p><code>LogLevel=2</code></p></li>
+<li><p>Set the <strong>LogPath</strong> key to the full path to the folder where you want to save log files. 
+For example:  </p>
+
+<p><code>LogPath=/localhome/employee/logs</code></p></li>
+<li><p>Save the <code>.mapr.drillodbc.ini</code> configuration file. The Drill ODBC Driver produces two log files at the location you specify using the <strong>Log Path</strong> field:  </p>
+
+<ul>
+<li><code>driver.log</code> provides a log of driver activities.</li>
+<li><code>drillclient.log</code> provides a log of Drill client activities.</li>
+</ul></li>
+<li><p>Restart the applciation to make sure that the new settings take effect. Configuration changes will not be picked up until the application reloads the driver.</p></li>
+</ol>
+
+<h4 id="disable-logging">Disable Logging</h4>
+
+<p>To disable logging:</p>
+
+<ol>
+<li>Open the <code>.mapr.drillodbc.ini</code> configuration file in a text editor.</li>
+<li>Set the <strong>LogLevel</strong> key to zero (<code>0</code>).</li>
+<li>Save the <code>.mapr.drillodbc.ini</code> configuration file.<br></li>
+<li>Restart your ODBC application to make sure that the new settings take effect.</li>
+</ol>
+
+<h3 id="windows-platforms">Windows Platforms</h3>
+
+<p>On Windows, logging is available in the Windows <strong>ODBC Data Source Administrator</strong> where you created the DSN. You must run <code>C:\Windows\SysWOW64\odbcad32.exe</code> to access and modify 32-bit DSNs on 64-bit Windows.</p>
+
+<h4 id="enable-logging">Enable Logging</h4>
+
+<p>To enable logging:</p>
+
+<ol>
+<li><p>Click <strong>Start</strong>, <strong>All Programs</strong>, and then click the program group corresponding to the driver. </p></li>
+<li><p>Select the DSN for which you want to log activity.  </p></li>
+<li><p>Click <strong>Configure</strong>. </p></li>
+<li><p>In the <strong>DSN Setup</strong> dialog box, click <strong>Logging Options</strong>.</p></li>
+<li><p>From the <strong>Log Level</strong> drop-down list, select the logging level corresponding to the amount of information that you want to include in log files.</p></li>
+<li><p>In the <strong>Log Path</strong> (or Log Directory) field, specify the full path to the folder where you want to save log files. </p></li>
+<li><p>If necessary (for example, if requested by a Support team), type the name of the component for which to log messages in the <strong>Log Namespace</strong> field. Otherwise, do not type a value in the field.</p></li>
+<li><p>Click <strong>OK</strong> to close the Logging Options dialog box.</p></li>
+<li><p>Click <strong>OK</strong> to save your settings and close the <strong>DSN Configuration</strong> dialog box. Configuration changes will not be saved of picked up by the driver until you have clicked <strong>OK</strong> in the <strong>DSN Configuration *<em>dialog box. Click *</em>Cancel</strong> (or the X button) to discard changes.</p></li>
+<li><p>Restart the application to make sure that the new settings take effect. Configuration changes will not be picked up by until the application reloads the driver.</p></li>
+</ol>
+
+<h4 id="disable-logging">Disable Logging</h4>
+
+<p>To disable logging:</p>
+
+<ol>
+<li>Select the DSN. </li>
+<li>Click <strong>Configure</strong>. </li>
+<li>Click <strong>Logging Options</strong>.</li>
+<li>From the <strong>Log Level</strong> drop-down list, select <strong>LOG_OFF</strong>.</li>
+<li>Click <strong>OK</strong>. </li>
+<li>Restart your ODBC application to make sure that the new settings take effect. </li>
+</ol>
+
+<h2 id="driver-manager-tracing">Driver Manager Tracing</h2>
+
+<p>The driver manager trace facility, is a useful way to troubleshoot ODBC driver issues.You can choose from several driver managers, depending on which platform you use.</p>
+
+<div class="admonition important">
+  <p class="first admonition-title">Important</p>
+  <p class="last">Tracing is active only for applications started after tracing has started. Currently-executing applications will not have tracing enabled. You must restart applications to enable tracing. You may need to restart services for applications, or you may have to restart the machine to properly enable tracing.  </p>
+</div>
+
+<h3 id="osx-and-other-non-windows-platforms">OSX and Other Non-Windows Platforms</h3>
+
+<p>iODBC is the default driver manager on OSX and can sometimes be found on other non-Windows platforms. </p>
+
+<h4 id="enable-trace-logging">Enable Trace Logging</h4>
+
+<p>To enable trace logging:</p>
+
+<ol>
+<li>Locate your <code>maprdrill.odbc.ini</code> file. This often located in your home directory. It might be a hidden file.</li>
+<li><p>Open the file and add the following key-value pairs under the section heading <strong>[ODBC]</strong>. If the heading does not exist, add it. For example:</p>
+
+<p><code>[ODBC]</code></p>
+
+<p><code>Trace=1</code></p>
+
+<p><code>TraceFile=/path/to/file/traceFile.log</code></p>
+
+<p><code>[ODBC Data Sources]</code></p></li>
+</ol>
+
+<h4 id="disable-trace-logging">Disable Trace Logging</h4>
+
+<p>When the trace is complete, disable tracing because tracing will consume disk space and significantly impact performance.</p>
+
+<ol>
+<li>Locate your <code>maprdrill.odbc.ini</code> file. This often located in your home directory. It might be a hidden file.</li>
+<li><p>Open the file and add the following key-value pairs under the section heading <strong>[ODBC]</strong>. For example:</p>
+
+<p><code>[ODBC]</code></p>
+
+<p><code>Trace=0</code></p>
+
+<p><code>TraceFile=/path/to/file/traceFile.log</code></p>
+
+<p><code>[ODBC Data Sources]</code></p></li>
+<li><p>(Again, this action will only impact applications that have just started, not currently-executing applications.) Restart your application.</p></li>
+</ol>
+
+<h3 id="osx-and-other-non-windows-platforms">OSX and Other Non-Windows Platforms</h3>
+
+<h4 id="enable-trace-logging">Enable Trace Logging</h4>
+
+<p>To enable tracing on Windows:</p>
+
+<ol>
+<li>Open the <strong>ODBC Data Source Administrator</strong>. </li>
+<li>Go to the <strong>Tracing</strong> tab.</li>
+</ol>
+
+<p><img src="/docs/img/odbctrace.png" alt="logtrace"></p>
+
+<ol>
+<li><p>Change the <strong>Log File Path</strong> field to be the location and name of the file to which you’d like to write the trace entries.</p></li>
+<li><p>(Optional) Check <strong>Machine-wide tracing</strong> for all user identities if you want the tracing to affect all users on the machine. If you are unsure, check this box.</p></li>
+<li><p>Press <strong>Start Tracing Now</strong>. </p></li>
+</ol>
+
+<h4 id="disable-trace-logging">Disable Trace Logging</h4>
+
+<p>When the trace is complete, disable tracing because tracing will consume disk space and significantly impact performance.</p>
+
+<ol>
+<li>Open the <strong>ODBC Data Source Administrator</strong>. </li>
+<li>Go to the <strong>Tracing</strong> tab.</li>
+<li>Press Stop <strong>Tracing Now</strong>.  (Again, this action will only impact applications that have just started, not currently-executing applications.)</li>
+<li>Restart your application.</li>
+</ol>
+
+<p>For more information about generating ODBC traces, see <a href="https://support.microsoft.com/en-us/help/274551/how-to-generate-an-odbc-trace-with-odbc-data-source-administrator">How To Generate an ODBC Trace with ODBC Data Source Administrator.
+</a></p>
+
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/repeated-count/">← REPEATED_COUNT</a></span><span class="next-toc"><a href="/docs/query-directory-functions/">Query Directory Functions →</a></span>
+  <span class="previous-toc"><a href="/docs/odbc-configuration-reference/">← ODBC Configuration Reference</a></span><span class="next-toc"><a href="/docs/configuring-odbc-on-linux/">Configuring ODBC on Linux →</a></span>
 </div>
 
     

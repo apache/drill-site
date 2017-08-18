@@ -437,7 +437,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/odbc-configuration-reference/">ODBC Configuration Reference</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/logging-tracing/">Logging Tracing</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/logging-and-tracing/">Logging and Tracing</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-odbc-on-linux/">Configuring ODBC on Linux</a></li>
               
@@ -1128,7 +1128,7 @@
 
     </div>
 
-     Aug 17, 2017
+     Aug 18, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1147,7 +1147,7 @@
 
 <h2 id="prerequisites">Prerequisites</h2>
 
-<p>The required Kerberos (JDBC) plugin is part of the Drill 1.11 package. To use it, you must have a working Kerberos infrastructure, which Drill does not provide. You must be working in a Linux-based or Windows Active Directory (AD) Kerberos environment with secure clusters and have a Drill server configured for Kerberos. See <a href="/docs/configuring-kerberos-authentication/#enabling-authentication">Enabling Authentication</a>.</p>
+<p>The required Kerberos (JDBC) plugin is part of the Drill 1.11 package. To use it, you must have a working Kerberos infrastructure, which Drill does not provide. You must be working in a Linux-based or Windows Active Directory (AD) Kerberos environment with secure clusters and have a Drill server configured for Kerberos. See <a href="/docs/configuring-kerberos-authentication/#enabling-authentication-and-encryption">Enabling Authentication and Encryption</a>.</p>
 
 <h2 id="client-authentication-process">Client Authentication Process</h2>
 
@@ -1172,7 +1172,7 @@
 
 <p>During startup, a drillbit service must authenticate. At runtime, Drill uses the keytab file. Trust is based on the keytab file; its secrets are shared with the KDC. The drillbit service also uses this keytab credential to validate service tickets from clients. Based on this information, the drillbit determines whether the client’s identity can be verified to use its service. </p>
 
-<p>With encryption enabled, negotiation occurs for the most secure level of encryption. A strong cipher is used from the available KDC-supported encryption types. Set the <code>security.user.encryption.sasl.enabled</code> property to <strong>true</strong> as shown in step 3.  This property facilitates the SASL negotiation with the Kerberos mechanism between the client and drillbit with the quality of protection (qop) set to the authentication with confidentiality (auth-conf) value.               </p>
+<p>With encryption enabled, negotiation occurs for the most secure level of encryption. A strong cipher is used from the available KDC-supported encryption types. Set the <code>security.user.encryption.sasl.enabled</code> property to <strong>true</strong> as shown in step 2a.  This property facilitates the SASL negotiation with the Kerberos mechanism between the client and drillbit with the quality of protection (qop) set to the authentication with confidentiality (auth-conf) value.               </p>
 
 <p>&nbsp;1. Create a Kerberos principal identity and a keytab file.  You can create one principal for each drillbit or one principal for all drillbits in a cluster. The <code>drill.keytab</code> file must be owned by and readable by the administrator user.  </p>
 
@@ -1192,7 +1192,7 @@
 <p>&nbsp;
 2. Add the Kerberos principal identity and keytab file to the <code>drill-override.conf</code> file. The instance name must be lowercase. Also, if _HOST is set as the instance name in the principal, it is replaced with the fully qualified domain name of that host for the instance name. For example, if a drillbit running on <code>host01.aws.lab</code> uses <code>drill/_HOST@&lt;EXAMPLE&gt;.COM</code> as the principal, the canonicalized principal is <code>drill/host01.aws.lab@&lt;EXAMPLE&gt;.COM</code>.</p>
 
-<p>To configure multiple mechanisms, extend the mechanisms list and provide additional configuration parameters. For example, the following configuration enables Kerberos and Plain (username and password) mechanisms. See <a href="/docs/configuring-plain-authentication/#installing-and-configuring-plain-authentication">Installing and Connfiguring Plain Authentication</a> for Plain PAM configuration instructions.  </p>
+<p>To configure multiple mechanisms, extend the mechanisms list and provide additional configuration parameters. For example, the following configuration enables Kerberos and Plain (username and password) mechanisms. See <a href="/docs/configuring-plain-authentication/#installing-and-configuring-plain-authentication">Installing and Configuring Plain Authentication</a> for Plain PAM configuration instructions.  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">          drill.exec: {
             cluster-id: &quot;drillbits1&quot;,
             zk.connect: &quot;qa102-81.qa.lab:2181,qa102-82.qa.lab:2181,qa102-83.qa.lab:2181&quot;,
