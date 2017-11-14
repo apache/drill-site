@@ -1126,7 +1126,7 @@
 
     </div>
 
-     Aug 8, 2017
+     Nov 14, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1212,7 +1212,7 @@
 
 <ul>
 <li>Keywords</li>
-<li>Identifiers that SQL cannot parse</li>
+<li>Identifiers that SQL cannot parse<br></li>
 </ul>
 
 <p>For example, enclose the SQL keywords date and time in identifier quotes when referring to column names, but not when referring to data types:</p>
@@ -1226,7 +1226,7 @@ FROM dfs.`/Users/drilluser/sample.json`);
 </code></pre></div>
 <p>Table and column names are case-insensitive. Use identifier quotes to enclose names that contain special characters. Special characters are those other than the 52 Latin alphabet characters. For example, space and @ are special characters. </p>
 
-<p>The following example shows the keyword Year enclosed in identifier quotes. Because the column alias contains the special space character, also enclose the alias in back ticks, as shown in the following example:</p>
+<p>The following example shows the keyword Year enclosed in identifier quotes. Because the column alias contains the special space character, also enclose the alias in backticks, as shown in the following example:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT extract(year from transdate) AS `Year`, t.user_info.cust_id AS `Customer Number` FROM dfs.tmp.`sampleparquet` t;
 +------------+-----------------+
 |    Year    | Customer Number |
@@ -1241,7 +1241,7 @@ FROM dfs.`/Users/drilluser/sample.json`);
 </code></pre></div>
 <h3 id="identifier-quotes">Identifier Quotes</h3>
 
-<p>Prior to Drill 1.11, the SQL parser in Drill only supported back ticks as identifier quotes. As of Drill 1.11, the SQL parser can also use double quotes and square brackets. The default setting for identifier quotes is back ticks. You can configure the type of identifier quotes used with the  <code>planner.parser.quoting_identifiers</code> configuration option, at the system or session level, as shown:  </p>
+<p>Prior to Drill 1.11, the SQL parser in Drill only supported backticks as identifier quotes. As of Drill 1.11, the SQL parser can also use double quotes and square brackets. The default setting for identifier quotes is backticks. You can configure the type of identifier quotes used with the  <code>planner.parser.quoting_identifiers</code> configuration option, at the system or session level, as shown:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   ALTER SYSTEM|SESSION SET planner.parser.quoting_identifiers = &#39;&quot;&#39;;  
    ALTER SYSTEM|SESSION SET planner.parser.quoting_identifiers = &#39;[&#39;;  
    ALTER SYSTEM|SESSION SET planner.parser.quoting_identifiers = &#39;`&#39;;  
@@ -1255,7 +1255,7 @@ FROM dfs.`/Users/drilluser/sample.json`);
 </tr>
 </thead><tbody>
 <tr>
-<td>Back ticks</td>
+<td>Backticks</td>
 <td>&#39;GRAVE   ACCENT&#39; (U+0060)</td>
 </tr>
 <tr>
@@ -1298,6 +1298,24 @@ FROM dfs.`/Users/drilluser/sample.json`);
    +--------------+---------------+
    1 row selected (0.14 seconds)  
 </code></pre></div>
+<h3 id="dots-in-column-names">Dots in Column Names</h3>
+
+<p>As of Drill 1.12, Drill supports dots in column names if the data source itself allows dots in column names, such as JSON and Parquet , as shown in the following example:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT * FROM `test.json`;
+
+   +--------------------------------------------------------+----------------------------------------------------------+
+   |                      0.0.1                             |                      0.1.2                               |             
+   +--------------------------------------------------------+----------------------------------------------------------+
+   | {&quot;version&quot;:&quot;0.0.1&quot;,&quot;date_created&quot;:&quot;2014-03-15&quot;}        | {&quot;version&quot;:&quot;0.1.2&quot;,&quot;date_created&quot;:&quot;2014-05-21&quot;}          |
+   +--------------------------------------------------------+----------------------------------------------------------+  
+</code></pre></div>
+<p>When referencing column names with dots in queries, you must escape the dots with <a href="/docs/lexical-structure/#identifier-quotes">identifier quotes</a>, as shown in the following query:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT t.`0.1.2`.version FROM dfs.tmp.`test.json` t WHERE t.`0.1.2`.date_created=&#39;2014-05-21&#39;  
+</code></pre></div>
+<p>Drill also supports associative array indexing, for example <code>SELECT a, b.c, b[&#39;d.e&#39;]...</code>.  </p>
+
+<p>Note that in this example, the <code>“d.e”</code> field is selected, not a map <code>“d”</code> with field <code>“e”</code> inside of it.   </p>
+
 <h3 id="integer">Integer</h3>
 
 <p>An integer value consists of an optional minus sign, -, followed by one or more digits.</p>
