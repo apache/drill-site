@@ -6,9 +6,82 @@
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 14 Nov 2017 13:38:54 -0800</pubDate>
-    <lastBuildDate>Tue, 14 Nov 2017 13:38:54 -0800</lastBuildDate>
+    <pubDate>Fri, 15 Dec 2017 22:30:09 -0800</pubDate>
+    <lastBuildDate>Fri, 15 Dec 2017 22:30:09 -0800</lastBuildDate>
     <generator>Jekyll v2.5.2</generator>
+    
+      <item>
+        <title>Drill 1.12 Released</title>
+        <description>&lt;p&gt;Today, we&amp;#39;re happy to announce the availability of Drill 1.12.0. You can download it &lt;a href=&quot;https://drill.apache.org/download/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The release provides the following bug fixes and improvements:&lt;/p&gt;
+
+&lt;h2 id=&quot;kafka-and-opentsdb-storage-plugins-(drill-4779,-drill-5337)&quot;&gt;Kafka and OpenTSDB Storage Plugins (DRILL-4779, DRILL-5337)&lt;/h2&gt;
+
+&lt;p&gt;You can configure Kafka and OpenTSDB as Drill data sources.  &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;For Kafka storage plugin information, see the &lt;a href=&quot;https://github.com/apache/drill/blob/master/contrib/storage-kafka/README.md&quot;&gt;README&lt;/a&gt; file. &lt;/li&gt;
+&lt;li&gt;&lt;p&gt;For OpenTSDB storage plugin information, see the &lt;a href=&quot;https://github.com/apache/drill/blob/master/contrib/storage-opentsdb/README.md&quot;&gt;README&lt;/a&gt; file. Configure the OpenTSDB storage plugin in the Storage tab of the Drill Web Console, as shown:  &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{
+ &amp;quot;storage&amp;quot;: {
+   openTSDB: {
+     type: &amp;quot;openTSDB&amp;quot;,
+     connection: &amp;quot;http://localhost:10000&amp;quot;,
+     enabled: false
+      }
+   }
+ }   
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;queue-based-memory-assignment-for-buffering-operators-(throttling)-(drill-5716)&quot;&gt;Queue-Based Memory Assignment for Buffering Operators (Throttling) (DRILL-5716)&lt;/h2&gt;
+
+&lt;p&gt;Throttling limits the number of concurrent queries that run to prevent queries from failing with out-of-memory errors. When you enable throttling, you configure the number of concurrent queries that can run and the resource requirements for each query. Drill calculates the amount of memory to assign per query per node. See &lt;a href=&quot;/docs/throttling/&quot;&gt;Throttling&lt;/a&gt; for more information. &lt;/p&gt;
+
+&lt;h2 id=&quot;networking-functions&quot;&gt;Networking Functions&lt;/h2&gt;
+
+&lt;p&gt;Drill supports the following networking functions to facilitate network analysis using Drill:  &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;inet_aton(&amp;lt;ip&amp;gt;)&lt;/code&gt;: Converts an IPv4 address into an integer&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;inet_ntoa( &amp;lt;int&amp;gt;)&lt;/code&gt;: Converts an integer IP into dotted decimal notation&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;in_network( &amp;lt;ip&amp;gt;,&amp;lt;cidr&amp;gt; )&lt;/code&gt;: Returns true if the IP address is in the given CIDR block&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;address_count( &amp;lt;cidr&amp;gt; )&lt;/code&gt;: Returns the number of IPs in a given CIDR block&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;broadcast_address( &amp;lt;cidr&amp;gt; )&lt;/code&gt;: Returns the broadcast address for a given CIDR block&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;netmask(&amp;lt;cidr&amp;gt; )&lt;/code&gt;: Returns the netmask for a given CIDR block&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;low_address(&amp;lt;cidr&amp;gt;)&lt;/code&gt;: Returns the first address in a given CIDR block&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;high_address(&amp;lt;cidr&amp;gt;)&lt;/code&gt;: Returns the last address in a given CIDR block&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;url_encode( &amp;lt;url&amp;gt; )&lt;/code&gt;: Returns a URL encoded string&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;url_decode( &amp;lt;url&amp;gt; )&lt;/code&gt;: Decodes ``a URL encoded string&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;is_valid_IP(&amp;lt;ip&amp;gt;)&lt;/code&gt;: Returns true if the IP is a valid IP address&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;is_private_ip(&amp;lt;ip&amp;gt;)&lt;/code&gt;: Returns true if the IP is a private IPv4 address&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;is_valid_IPv4(&amp;lt;ip&amp;gt;)&lt;/code&gt;: Returns true if the IP is a valid IPv4 address&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;is_valid_IPv6(&amp;lt;ip&amp;gt;)&lt;/code&gt;: Returns true if the IP is a valid IPv6 address&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;ssl-support&quot;&gt;SSL Support&lt;/h2&gt;
+
+&lt;p&gt;Drill supports SSL to encrypt data passed between the Drill client and Drillbit. SSL also provides one-way authentication through which the Drill client verifies the identity of the Drillbit. The SASL feature in Drill provides authentication and an option to encrypt data, however the encryption feature is not available when using Plain authentication. If you need to use Plain authentication (certain BI tools only use Plain authentication), you can enable SSL to encrypt data. You can have both SASL and SSL enabled when using Plain authentication only. For any other scenario, using SSL and SASL encryption together is strongly discouraged. The Drill server requires an SSL certificate. The certificate can be self-signed or signed by a CA (Certificate Authority). SSL is not supported for communication between Drillbits.  &lt;/p&gt;
+
+&lt;h2 id=&quot;network-encryption-support&quot;&gt;Network Encryption Support&lt;/h2&gt;
+
+&lt;p&gt;Drill 1.10 provided authentication support through Plain and Kerberos authentication mechanisms to authenticate the Drill client to Drillbit and Drillbit to Drillbit communication channels. Drill 1.11 extends that support to include encryption. Drill uses the Kerberos mechanism over the SASL framework to encrypt the communication channels. &lt;/p&gt;
+
+&lt;h2 id=&quot;access-to-paths-outside-the-current-workspace-(drill-5964)&quot;&gt;Access to Paths Outside the Current Workspace (DRILL-5964)&lt;/h2&gt;
+
+&lt;p&gt;A new parameter, allowAccessOutsideWorkspace, in the dfs storage plugin configuration prevents users from accessing paths outside the root of a workspace. The default value for the parameter is false. Set the parameter to true to allow users access outside of a workspace. If existing storage plugin configurations do not specify the parameter, users cannot access paths outside the configured workspaces.&lt;/p&gt;
+
+&lt;p&gt;You can find a complete list of JIRAs resolved in the 1.12.0 release &lt;a href=&quot;https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12341087&amp;amp;styleName=Html&amp;amp;projectId=12313820&amp;amp;Create=Create&amp;amp;atl_token=A5KQ-2QAV-T4JA-FDED%7Cd194b12b906cd370f36d15e8af60a94592b89038%7Clin&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 15 Dec 2017 00:00:00 -0800</pubDate>
+        <link>/blog/2017/12/15/drill-1.12-released/</link>
+        <guid isPermaLink="true">/blog/2017/12/15/drill-1.12-released/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Drill 1.11 Released</title>
@@ -388,60 +461,6 @@ Jacques Nadeau&lt;/p&gt;
         <pubDate>Mon, 23 Nov 2015 00:00:00 -0800</pubDate>
         <link>/blog/2015/11/23/drill-1.3-released/</link>
         <guid isPermaLink="true">/blog/2015/11/23/drill-1.3-released/</guid>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Drill 1.2 Released</title>
-        <description>&lt;p&gt;Today I&amp;#39;m happy to announce the availability of the Drill 1.2 release. This release addresses &lt;a href=&quot;https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12332042&amp;amp;projectId=12313820&quot;&gt;217 JIRAs&lt;/a&gt; on top of the 1.1 release. Highlights include:&lt;/p&gt;
-
-&lt;h2 id=&quot;relational-database-support&quot;&gt;Relational Database Support&lt;/h2&gt;
-
-&lt;p&gt;Drill now includes a JDBC storage plugin for querying relational databases (RDBMSs). Users can run SQL queries that join data between non-relational datastores (eg, MongoDB, HBase, HDFS, S3) and relational databases (eg, MySQL, Oracle). For example, a single query can join log files in HDFS with a users table in MySQL. Drill automatically pushes execution (projections, filters, partial joins, etc.) down into the RDBMS whenever possible.&lt;/p&gt;
-
-&lt;h2 id=&quot;new-window-functions&quot;&gt;New Window Functions&lt;/h2&gt;
-
-&lt;p&gt;The 1.2 release adds additional window functions: &lt;code&gt;NTILE&lt;/code&gt;, &lt;code&gt;FIRST_VALUE&lt;/code&gt;, &lt;code&gt;LAST_VALUE&lt;/code&gt;, &lt;code&gt;LEAD&lt;/code&gt; and &lt;code&gt;LAG&lt;/code&gt;. Drill now supports &lt;a href=&quot;/docs/sql-window-functions-introduction/&quot;&gt;15 different window functions&lt;/a&gt;:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Value Functions: &lt;code&gt;FIRST_VALUE&lt;/code&gt;, &lt;code&gt;LAST_VALUE&lt;/code&gt;, &lt;code&gt;LEAD&lt;/code&gt;, &lt;code&gt;LAG&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Aggregate Functions: &lt;code&gt;AVG&lt;/code&gt;, &lt;code&gt;COUNT&lt;/code&gt;, &lt;code&gt;MAX&lt;/code&gt;, &lt;code&gt;MIN&lt;/code&gt;, &lt;code&gt;SUM&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Ranking Functions: &lt;code&gt;CUME_DIST&lt;/code&gt;, &lt;code&gt;DENSE_RANK&lt;/code&gt;, &lt;code&gt;NTILE&lt;/code&gt;, &lt;code&gt;PERCENT_RANK&lt;/code&gt;, &lt;code&gt;RANK&lt;/code&gt;, &lt;code&gt;ROW_NUMBER&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In addition to supporting new window functions, Drill 1.2 adds support for multiple window functions in a single query. A query can contain multiple window functions that slice up the data in different ways by means of different &lt;code&gt;OVER&lt;/code&gt; clauses, but they all act on the same collection of rows.&lt;/p&gt;
-
-&lt;h2 id=&quot;parquet-metadata-caching&quot;&gt;Parquet Metadata Caching&lt;/h2&gt;
-
-&lt;p&gt;When running a query against a directory tree with Parquet files, Drill scans the directory and reads the footers of the files during the planning phase. This allows Drill to prune partitions and optimize query execution for data locality. However, this process can be time consuming for directory trees with thousands of files. Drill 1.2 includes &lt;a href=&quot;/docs/optimizing-parquet-reading/&quot;&gt;a new feature&lt;/a&gt; that caches the metadata information so that subsequent queries don&amp;#39;t need to scan all the files. The cache is automatically maintained based on the directory timestamps.&lt;/p&gt;
-
-&lt;h2 id=&quot;performance-improvements-on-hbase-and-hive-tables&quot;&gt;Performance Improvements on HBase and Hive Tables&lt;/h2&gt;
-
-&lt;p&gt;Drill 1.2 introduces a faster read path for HBase and Hive tables. When querying Hive tables backed by Parquet files, Drill now uses a high-performance Parquet reader rather than the Hive SerDe.&lt;/p&gt;
-
-&lt;h2 id=&quot;drop-table-for-files-and-directories&quot;&gt;&lt;code&gt;DROP TABLE&lt;/code&gt; for Files and Directories&lt;/h2&gt;
-
-&lt;p&gt;Drill 1.2 allows users to drop file- and directory-based tables with a SQL command (&lt;code&gt;DROP TABLE&lt;/code&gt;).&lt;/p&gt;
-
-&lt;h2 id=&quot;enhanced-mongodb-integration&quot;&gt;Enhanced MongoDB Integration&lt;/h2&gt;
-
-&lt;p&gt;Drill 1.2 supports extended JSON types, addressing previous issues with queries on MongoDB collections. &lt;/p&gt;
-
-&lt;h2 id=&quot;many-more-fixes&quot;&gt;Many More Fixes&lt;/h2&gt;
-
-&lt;p&gt;Drill 1.2 includes hundreds of &lt;a href=&quot;https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12332042&amp;amp;projectId=12313820&quot;&gt;other fixes and enhancements&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Download the &lt;a href=&quot;https://drill.apache.org/download/&quot;&gt;Drill 1.2 release&lt;/a&gt; now and let us know your thoughts.&lt;/p&gt;
-
-&lt;p&gt;Drill On!
-Jacques Nadeau&lt;/p&gt;
-</description>
-        <pubDate>Fri, 16 Oct 2015 00:00:00 -0700</pubDate>
-        <link>/blog/2015/10/16/drill-1.2-released/</link>
-        <guid isPermaLink="true">/blog/2015/10/16/drill-1.2-released/</guid>
         
         
         <category>blog</category>
