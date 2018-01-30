@@ -1143,7 +1143,7 @@
 
     </div>
 
-     Aug 18, 2017
+     Jan 30, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1177,7 +1177,7 @@ suffice because Drill avoids having data sit in heap memory.</p>
 
 <p>After you edit <code>&lt;drill_installation_directory&gt;/conf/drill-env.sh</code>, <a href="/docs/starting-drill-in-distributed-mode">restart the drillbit</a> on the node.</p>
 
-<h2 id="about-the-drillbit-startup-script">About the Drillbit Startup Script</h2>
+<h3 id="about-the-drillbit-startup-script">About the Drillbit Startup Script</h3>
 
 <p>The <code>drill-env.sh</code> file contains the following options:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">#export DRILL_HEAP=${DRILL_HEAP:-&quot;4G”}  
@@ -1191,7 +1191,13 @@ export DRILL_MAX_DIRECT_MEMORY=${DRILL_MAX_DIRECT_MEMORY:-“&lt;limit&gt;&quot;
 DRILL_MAX_DIRECT_MEMORY is the Java direct memory limit per node.  </p>
 
 <p>If performance is an issue, add -Dbounds=false, as shown in the following example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">export DRILL_JAVA_OPTS=&quot;$DRILL_JAVA_OPTS -Dbounds=false&quot;
+<div class="highlight"><pre><code class="language-text" data-lang="text">export DRILL_JAVA_OPTS=&quot;$DRILL_JAVA_OPTS -Dbounds=false&quot;  
+</code></pre></div>
+<p>As of Drill 1.13, bounds checking for direct memory is disabled by default. To enable bounds checking for direct memory, use the DRILLBIT_JAVA_OPTS variable to pass the <code>drill.exec.memory.enable_unsafe_bounds_check</code> parameter in $DRILL_HOME/conf/drill-env.sh, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">export DRILL_JAVA_OPTS=&quot;$DRILL_JAVA_OPTS -Ddrill.exec.memory.enable_unsafe_bounds_check=true  
+</code></pre></div>
+<p>For earlier versions of Drill (prior to 1.13), bounds checking is enabled by default. To disable bounds checking, set the <code>drill.enable_unsafe_memory_access property</code> to true, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">export DRILL_JAVA_OPTS=&quot;$DRILL_JAVA_OPTS -Ddrill.enable_unsafe_memory_access =true
 </code></pre></div>
     
       

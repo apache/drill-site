@@ -1143,7 +1143,7 @@
 
     </div>
 
-     Jan 7, 2016
+     Jan 30, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1172,13 +1172,19 @@
 <ul>
 <li>Array: ordered values, separated by commas, enclosed in square brackets</li>
 <li>Boolean: true or false</li>
-<li>Number: double-precision floating point number, including exponential numbers. No octal, hexadecimal, NaN, or Infinity</li>
 <li>null: empty value</li>
 <li>Object: unordered key/value collection enclosed in curly braces</li>
 <li>String: Unicode enclosed in double quotation marks</li>
 <li>Value: a string, number, true, false, null</li>
-<li>Whitespace: used between tokens</li>
+<li>Whitespace: used between tokens </li>
+<li>Number: double-precision floating point number, including exponential numbers, NaN, and Infinity. Octal and hexadecimal are not supported.<br></li>
 </ul>
+
+<p>Drill 1.13 and later supports NaN (Not-a-Number) and Infinity as numeric values. This support introduces the following options, which are set to “true” by default:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   store.json.writer.allow_nan_inf
+   store.json.reader.allow_nan_inf  
+</code></pre></div>
+<p>Drill writes NaN and Infinity values as literals to a JSON file when <code>store.json.writer.allow_nan_inf</code> is set to true. When set to false, Drill writes NaN and Infinity values as string values to a JSON file. If a query selects NaN or Infinity values in a JSON file, and <code>store.json.reader.allow_nan_inf</code> is set to false, Drill returns an error message.</p>
 
 <p>The following table shows SQL-JSON data type mapping:</p>
 
