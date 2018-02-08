@@ -1147,7 +1147,7 @@
 
     </div>
 
-     Dec 16, 2017
+     Feb 8, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1171,7 +1171,7 @@
 }
 </code></pre></div>
 <p>It is worth repeating the comment at the bottom of this snippet:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> # if there was no checkin for a hour-day block it will not be in the dataset. 
+<div class="highlight"><pre><code class="language-text" data-lang="text">   If there was no checkin for a hour-day block it will not be in the dataset. 
 </code></pre></div>
 <p>The element names that you see in the <code>checkin_info</code> are unknown upfront and can vary for every row. The data, although simple, is highly dynamic data. To analyze the data there is no need to first represent this dataset in a flattened relational structure, as you would using any other SQL on Hadoop technology.</p>
 
@@ -1250,7 +1250,7 @@ tar -xvf apache-drill-1.12.0.tar
 
 <p>On the output of flattened data, you use standard SQL functionality such as filters , aggregates, and sort. Let’s see a few examples.</p>
 
-<h3 id="get-the-total-number-of-check-ins-recorded-in-the-yelp-dataset">Get the total number of check-ins recorded in the Yelp dataset</h3>
+<p><strong>Get the total number of check-ins recorded in the Yelp dataset</strong></p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT SUM(checkintbl.checkins.`value`) AS TotalCheckins FROM (
 . . . . . . . . . . . &gt;  SELECT FLATTEN(KVGEN(checkin_info)) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json` ) checkintbl
 . . . . . . . . . . . &gt;  ;
@@ -1260,7 +1260,7 @@ tar -xvf apache-drill-1.12.0.tar
 | 4713811       |
 +---------------+
 </code></pre></div>
-<h3 id="get-the-number-of-check-ins-specifically-for-sunday-midnights">Get the number of check-ins specifically for Sunday midnights</h3>
+<p><strong>Get the number of check-ins specifically for Sunday midnights</strong></p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT SUM(checkintbl.checkins.`value`) AS SundayMidnightCheckins FROM (
 . . . . . . . . . . . &gt;  SELECT FLATTEN(KVGEN(checkin_info)) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json` ) checkintbl WHERE checkintbl.checkins.key=&#39;23-0&#39;;
 +------------------------+
@@ -1269,7 +1269,7 @@ tar -xvf apache-drill-1.12.0.tar
 | 8575                   |
 +------------------------+
 </code></pre></div>
-<h3 id="get-the-number-of-check-ins-per-day-of-the-week">Get the number of check-ins per day of the week</h3>
+<p><strong>Get the number of check-ins per day of the week</strong>  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT `right`(checkintbl.checkins.key,1) WeekDay,sum(checkintbl.checkins.`value`) TotalCheckins from (
 . . . . . . . . . . . &gt;  select flatten(kvgen(checkin_info)) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json`  ) checkintbl GROUP BY `right`(checkintbl.checkins.key,1) ORDER BY TotalCheckins;
 +------------+---------------+
@@ -1284,7 +1284,7 @@ tar -xvf apache-drill-1.12.0.tar
 | 5          | 937201        |
 +------------+---------------+
 </code></pre></div>
-<h3 id="get-the-number-of-check-ins-per-hour-of-the-day">Get the number of check-ins per hour of the day</h3>
+<p><strong>Get the number of check-ins per hour of the day</strong></p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT SUBSTR(checkintbl.checkins.key,1,strpos(checkintbl.checkins.key,&#39;-&#39;)-1) AS HourOfTheDay ,SUM(checkintbl.checkins.`value`) TotalCheckins FROM (
 . . . . . . . . . . . &gt;  SELECT FLATTEN(KVGEN(checkin_info)) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json` ) checkintbl GROUP BY SUBSTR(checkintbl.checkins.key,1,strpos(checkintbl.checkins.key,&#39;-&#39;)-1) ORDER BY TotalCheckins;
 +--------------+---------------+
