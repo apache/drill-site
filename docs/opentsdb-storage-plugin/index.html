@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Installing Drill on Linux and Mac OS X - Apache Drill</title>
+<title>OpenTSDB Storage Plugin - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -212,8 +212,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Install Drill</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">Install Drill</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/install-drill-introduction/">Install Drill Introduction</a></li>
@@ -225,11 +225,11 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">Installing Drill in Embedded Mode</a></li>
-              <ul style="">
+              <ul style="display: none">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3 current"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
               
@@ -347,8 +347,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Connect a Data Source</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Connect a Data Source</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/connect-a-data-source-introduction/">Connect a Data Source Introduction</a></li>
@@ -404,7 +404,7 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
+              <li class="toctree-l2 current"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
           </ul>
@@ -1130,55 +1130,130 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/install-drill/">Install Drill</a></li>
+    <li><a href="/docs/connect-a-data-source/">Connect a Data Source</a></li>
   
-    <li><a href="/docs/installing-drill-in-embedded-mode/">Installing Drill in Embedded Mode</a></li>
-  
-  <li>Installing Drill on Linux and Mac OS X</li>
+  <li>OpenTSDB Storage Plugin</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/install/installing-drill-in-embedded-mode/020-installing-drill-on-linux-and-mac-os-x.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/connect-a-data-source/plugins/112-opentsdb-storage-plugin.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>Installing Drill on Linux and Mac OS X</h1>
+      <h1>OpenTSDB Storage Plugin</h1>
 
     </div>
 
-     Dec 16, 2017
+     Feb 6, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>First, check that you <a href="/docs/embedded-mode-prerequisites">meet the prerequisites</a>, and then install Apache Drill on Linux or Mac OS X:</p>
+        <p>As of Drill 1.12, Drill provides a storage plugin for OpenTSDB. The OpenTSDB storage plugin uses the REST API with OpenTSDB. </p>
 
-<p>Complete the following steps to install Drill:  </p>
+<p>When you install Drill, a preconfigured OpenTSDB storage plugin is available on the Storage page in the Drill Web Console. Once you enable the storage plugin, you can query OpenTSDB from Drill.</p>
 
-<ol>
-<li>In a terminal window, change to the directory where you want to install Drill.<br></li>
-<li>Download the latest version of Apache Drill <a href="http://apache.mirrors.hoobly.com/drill/drill-1.12.0/apache-drill-1.12.0.tar.gz">here</a> or from the <a href="http://www.apache.org/dyn/closer.cgi/drill/drill-1.12.0/apache-drill-1.12.0.tar.gz">Apache Drill mirror site</a> with the command appropriate for your system:<br>
+<p>The following sections describe how to enable the OpenTSDB storage plugin in Drill and the types of queries Drill currently supports on OpenTSDB. You can refer to the <a href="https://github.com/apache/drill/blob/master/contrib/storage-opentsdb/README.md">README</a> and <a href="http://opentsdb.net/">OpenTSDB</a> for additional information.  </p>
 
-<ul>
-<li><code>wget http://apache.mirrors.hoobly.com/drill/drill-1.12.0/apache-drill-1.12.0.tar.gz</code><br></li>
-<li><code>curl -o apache-drill-1.12.0.tar.gz http://www.apache.org/dyn/closer.cgi/drill/drill-1.12.0/apache-drill-1.12.0.tar.gz</code><br></li>
-</ul></li>
-<li>Copy the downloaded file to the directory where you want to install Drill.<br></li>
-<li>Extract the contents of the Drill <code>.tar.gz</code> file. Use sudo only if necessary:<br>
-<code>tar -xvzf &lt;.tar.gz file name&gt;</code><br></li>
-</ol>
+<h2 id="enabling-the-opentsdb-storage-plugin">Enabling the OpenTSDB Storage Plugin</h2>
 
-<p>The extraction process creates the installation directory containing the Drill software. You can now <a href="/docs/starting-drill-on-linux-and-mac-os-x">start Drill</a>.</p>
+<p>To enable the OpenTSDB storage plugin, enter the following URL in the address bar of your browser to access the Storage page in the Drill Web Console:
+http://<drill-node-ip-address>:8047/storage/</p>
 
+<p>In the Disabled Storage Plugins section, click <strong>Enable</strong> next to OpenTSDB. OpenTSDB moves to the Enabled Storage Plugins section. Click <strong>Update</strong> to see the default configuration:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   {
+     &quot;type&quot;: &quot;openTSDB&quot;,
+     &quot;connection&quot;: &quot;http://localhost:4242&quot;,
+     &quot;enabled&quot;: true
+   }
+</code></pre></div>
+<p>The URL, <a href="http://localhost:4242">http://localhost:4242</a>, works for TSD running locally. If you have TSD running on another machine, change the URL to reflect that. Verify that “enabled” is set to true.
+Click <strong>Update</strong> if you edit the configuration and then click <strong>Back</strong> to return to the Storage page.  </p>
+
+<h2 id="querying-opentsdb">Querying OpenTSDB</h2>
+
+<p>When querying OpenTSDB, you must include the required request parameters in the FROM clause of queries, using commas to separate the parameters, as shown in the following example: </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT * FROM openTSDB.`(metric=warp.speed.test, start=47y-ago, aggregator=sum)`;  
+</code></pre></div>
+<p>In addition to the required request parameters, you can also include some optional request parameters in queries.  </p>
+
+<h3 id="required-request-parameters">Required Request Parameters</h3>
+
+<p>The following table lists the required request parameters:  </p>
+
+<table><thead>
+<tr>
+<th><strong>Name</strong></th>
+<th><strong>Data Type</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead><tbody>
+<tr>
+<td>metric</td>
+<td>string</td>
+<td>The name of a metric stored in the system</td>
+</tr>
+<tr>
+<td>start</td>
+<td>string, integer</td>
+<td>The start time for the query; a relative or   absolute timestamp.</td>
+</tr>
+<tr>
+<td>aggregator</td>
+<td>string</td>
+<td>The name of an aggregation function to use.</td>
+</tr>
+</tbody></table>
+
+<h3 id="optional-request-parameters">Optional Request Parameters</h3>
+
+<p>The following table lists optional request parameters:<br>
+| <strong>Name</strong>       | <strong>Data Type</strong>       | <strong>Description</strong>                                                                                                                                                                                                                                                          |
+|------------|-----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| downsample | string          | An optional downsampling function to reduce the   amount of data returned.                                                                                                                                                                                           |
+| end        | string, integer | An end time for the query. If not supplied, the   TSD assumes the local system time on the server. If this parameter is not   specified, null is sent to the database in this field, but in this case the   database assumes the local system time on the server.    |  </p>
+
+<h3 id="supported-aggregators">Supported Aggregators</h3>
+
+<p>For a list of supported aggegrators, see <a href="http://opentsdb.net/docs/build/html/user_guide/query/aggregators.html">Aggregators</a>.    </p>
+
+<h3 id="supported-dates-and-times">Supported Dates and Times</h3>
+
+<p>For a list of supported dates and times, see <a href="http://opentsdb.net/docs/build/html/user_guide/query/dates.html">Dates</a>.  </p>
+
+<h2 id="examples-of-queries-that-drill-supports-on-opentsdb">Examples of Queries that Drill Supports on OpenTSDB</h2>
+
+<p>Drill currently supports the following types of queries on the OpenTSDB:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   USE openTSDB;
+   //Switches Drill to the OpenTSDB schema so that Drill only queries OpenTSDB.
+
+   SHOW tables; 
+   //Prints the available metrics. The max number of the printed results is an Integer.MAX value.  
+
+   SELECT * FROM openTSDB.`(metric=warp.speed.test, start=47y-ago, aggregator=sum)`;
+   //Returns aggregated elements from the warp.speed.test table from 47y-ago.  
+
+   SELECT * FROM openTSDB.`(metric=warp.speed.test, aggregator=avg, start=47y-ago)`;
+   //Returns aggregated elements from the warp.speed.test table.  
+
+   SELECT `timestamp`, sum(`aggregated value`) FROM openTSDB.`(metric=warp.speed.test, aggregator=avg, start=47y-ago)` GROUP BY `timestamp`;
+   //Returns aggregated and grouped value by standard Drill functions from the warp.speed.test table with the custom aggregator.  
+
+   SELECT * FROM openTSDB.`(metric=warp.speed.test, aggregator=avg, start=47y-ago, downsample=5m-avg)`;
+   //Returns aggregated data limited by the downsample.  
+
+   SELECT * FROM openTSDB.`(metric=warp.speed.test, aggregator=avg, start=47y-ago, end=1407165403000)`;
+   //Returns aggregated data limited by the end time.
+</code></pre></div>
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/embedded-mode-prerequisites/">← Embedded Mode Prerequisites</a></span><span class="next-toc"><a href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X →</a></span>
+  <span class="previous-toc"><a href="/docs/httpd-storage-plugin/">← HTTPD Storage Plugin</a></span><span class="next-toc"><a href="/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces →</a></span>
 </div>
 
     
