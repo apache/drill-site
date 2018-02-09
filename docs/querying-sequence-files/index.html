@@ -1149,32 +1149,27 @@
 
     </div>
 
-     Nov 21, 2016
+     Feb 9, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Sequence files are flat files storing binary key value pairs.
-Drill projects sequence files as table with two columns &#39;binary_key&#39;, &#39;binary_value&#39;.</p>
+        <p>Sequence files are flat files that store binary key value pairs.
+Drill projects sequence files as a table with two columns &#39;binary_key&#39;, &#39;binary_value&#39;.</p>
 
-<h3 id="querying-sequence-file.">Querying sequence file.</h3>
+<h2 id="querying-a-sequence-file">Querying a Sequence File</h2>
 
-<p>Start drill shell</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">    SELECT *
-    FROM dfs.tmp.`simple.seq`
-    LIMIT 1;
+<p>Start the Drill shell and enter your query.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">    SELECT * FROM dfs.tmp.`simple.seq` LIMIT 1;
     +--------------+---------------+
     |  binary_key  | binary_value  |
     +--------------+---------------+
     | [B@70828f46  | [B@b8c765f    |
     +--------------+---------------+
 </code></pre></div>
-<p>Since simple.seq contains byte serialized strings as keys and values, we can convert them to strings.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">    SELECT CONVERT_FROM(binary_key, &#39;UTF8&#39;), CONVERT_FROM(binary_value, &#39;UTF8&#39;)
-    FROM dfs.tmp.`simple.seq`
-    LIMIT 1
-    ;
+<p>Since simple.seq contains byte serialized strings as keys and values, you can convert them to strings.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">    SELECT CONVERT_FROM(binary_key, &#39;UTF8&#39;), CONVERT_FROM(binary_value, &#39;UTF8&#39;) FROM dfs.tmp.`simple.seq` LIMIT 1;
     +-----------+-------------+
     |  EXPR$0   |   EXPR$1    |
     +-----------+-------------+

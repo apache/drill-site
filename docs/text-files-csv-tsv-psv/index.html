@@ -1147,7 +1147,7 @@
 
     </div>
 
-     Mar 21, 2016
+     Feb 9, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1161,7 +1161,7 @@
 <li>Use a distributed file system<br></li>
 </ul>
 
-<h3 id="select-data-from-particular-columns">Select Data from Particular Columns</h3>
+<h2 id="select-data-from-particular-columns">Select Data from Particular Columns</h2>
 
 <p>Converting text files to another format, such as Parquet, using the CTAS command and a SELECT * statement is not recommended. Instead, you should select data from particular columns. If your text files have no headers, use the <a href="/docs/querying-plain-text-files">COLUMN[n] syntax</a>, and then assign meaningful column names using aliases. For example:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE parquet_users AS SELECT CAST(COLUMNS[0] AS INT) AS user_id,
@@ -1175,7 +1175,7 @@ FROM `users.csv1`;
 username, CAST(registration_date AS TIMESTAMP) AS registration_date
 FROM `users.csv1`;
 </code></pre></div>
-<h3 id="cast-data">Cast data</h3>
+<h2 id="cast-data">Cast Data</h2>
 
 <p>You can also improve performance by casting the VARCHAR data in a text file to INT, FLOAT, DATETIME, and so on when you read the data from a text file. Drill performs better reading fixed-width than reading VARCHAR data. </p>
 
@@ -1194,11 +1194,11 @@ FROM `users.csv1`;
 </code></pre></div></li>
 </ul>
 
-<h3 id="use-a-distributed-file-system">Use a Distributed File System</h3>
+<h2 id="use-a-distributed-file-system">Use a Distributed File System</h2>
 
 <p>Using a distributed file system, such as HDFS, instead of a local file system to query files improves performance because Drill attempts to split files on block boundaries.</p>
 
-<h2 id="configuring-drill-to-read-text-files">Configuring Drill to Read Text Files</h2>
+<p><strong>Configuring Drill to Read Text Files</strong> </p>
 
 <p>In the storage plugin configuration, you <a href="/docs/plugin-configuration-basics/#list-of-attributes-and-definitions">set the attributes</a> that affect how Drill reads CSV, TSV, PSV (comma-, tab-, pipe-separated) files:  </p>
 
@@ -1213,7 +1213,7 @@ FROM `users.csv1`;
 
 <p>Set the <code>sys.options</code> property setting <code>exec.storage.enable_new_text_reader</code> to true (the default) before attempting to use these attributes. </p>
 
-<h3 id="using-quotation-marks">Using Quotation Marks</h3>
+<p><strong>Using Quotation Marks</strong> </p>
 
 <p>CSV files typically enclose text fields in double quotation marks, and Drill treats the double quotation mark in CSV files as a special character accordingly. By default, Drill treats double quotation marks as a special character in TSV files also. If you want Drill <em>not</em> to treat double quotation marks as a special character, configure the storage plugin to set the <code>quote</code> attribute to the unicode null <code>&quot;\u0000&quot;</code>. For example:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   . . .
@@ -1229,11 +1229,11 @@ FROM `users.csv1`;
 </code></pre></div>
 <p>As mentioned previously, set the <code>sys.options</code> property setting <code>exec.storage.enable_new_text_reader</code> to true (the default).</p>
 
-<h2 id="examples-of-querying-text-files">Examples of Querying Text Files</h2>
+<p>*<em>Examples of Querying Text Files *</em></p>
 
 <p>The examples in this section show the results of querying CSV files that use and do not use a header, include comments, and use an escape character:</p>
 
-<h3 id="not-using-a-header-in-a-file">Not Using a Header in a File</h3>
+<p><strong>Not Using a Header in a File</strong></p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">&quot;csv&quot;: {
   &quot;type&quot;: &quot;text&quot;,
   &quot;extensions&quot;: [
@@ -1258,7 +1258,7 @@ FROM `users.csv1`;
 +------------------------+
 7 rows selected (0.112 seconds)
 </code></pre></div>
-<h3 id="using-a-header-in-a-file">Using a Header in a File</h3>
+<p><strong>Using a Header in a File</strong></p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">&quot;csv&quot;: {
   &quot;type&quot;: &quot;text&quot;,
   &quot;extensions&quot;: [
@@ -1284,7 +1284,7 @@ FROM `users.csv1`;
 +-------+------+------+------+
 7 rows selected (0.12 seconds)
 </code></pre></div>
-<h3 id="file-with-no-header">File with no Header</h3>
+<p><strong>File with no Header</strong></p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">&quot;csv&quot;: {
   &quot;type&quot;: &quot;text&quot;,
   &quot;extensions&quot;: [
@@ -1310,7 +1310,7 @@ FROM `users.csv1`;
 +------------------------+
 7 rows selected (0.112 seconds)
 </code></pre></div>
-<h3 id="escaping-a-character-in-a-file">Escaping a Character in a File</h3>
+<p><strong>Escaping a Character in a File</strong></p>
 
 <p><img src="/docs/img/csv_with_escape.png" alt="CSV with escape"></p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/csv_with_escape.csv`;
@@ -1327,7 +1327,7 @@ FROM `users.csv1`;
 +------------------------------------------------------------------------+
 7 rows selected (0.104 seconds)
 </code></pre></div>
-<h3 id="adding-comments-to-a-file">Adding Comments to a File</h3>
+<p><strong>Adding Comments to a File</strong></p>
 
 <p><img src="/docs/img/csv_with_comments.png" alt="CSV with comments"></p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/csv_with_comments.csv2`;
@@ -1350,7 +1350,7 @@ FROM `users.csv1`;
 
 <p>You can deal with a mix of text files with and without headers either by creating two separate format plugins or by creating two format plugins within the same storage plugin. The former approach is typically easier than the latter.</p>
 
-<h3 id="creating-two-separate-storage-plugin-configurations">Creating Two Separate Storage Plugin Configurations</h3>
+<p><strong>Creating Two Separate Storage Plugin Configurations</strong></p>
 
 <p>A storage plugin configuration defines a root directory that Drill targets. You can use a different configuration for each root directory that sets attributes to match the files stored below that directory. All files can use the same extension, such as .csv, as shown in the following example:</p>
 
@@ -1376,7 +1376,7 @@ FROM `users.csv1`;
   &quot;delimiter&quot;: &quot;,&quot;
 },
 </code></pre></div>
-<h3 id="creating-one-storage-plugin-configuration-to-handle-multiple-formats">Creating One Storage Plugin Configuration to Handle Multiple Formats</h3>
+<p><strong>Creating One Storage Plugin Configuration to Handle Multiple Formats</strong>  </p>
 
 <p>You can use a different extension for files with and without a header, and use a storage plugin that looks something like the following example. This method requires renaming some files to use the csv2 extension.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">&quot;csv&quot;: {
@@ -1401,7 +1401,7 @@ FROM `users.csv1`;
 
 <p>A common use case when working with Hadoop is to store and query text files, such as CSV and TSV. To get better performance and efficient storage, you convert these files into Parquet. You can use code to achieve this, as you can see in the <a href="https://github.com/Parquet/parquet-compatibility/blob/master/parquet-compat/src/test/java/parquet/compat/test/ConvertUtils.java">ConvertUtils</a> sample/test class. A simpler way to convert these text files to Parquet is to query the text files using Drill, and save the result to Parquet files.</p>
 
-<h3 id="how-to-convert-csv-to-parquet">How to Convert CSV to Parquet</h3>
+<p><strong>How to Convert CSV to Parquet</strong></p>
 
 <p>This example uses the <a href="http://media.flysfo.com/media/sfo/media/air-traffic/Passenger_4.zip">Passenger Dataset</a> from SFO Air Traffic Statistics.</p>
 
