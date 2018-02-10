@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>DROP TABLE - Apache Drill</title>
+<title>Kafka Storage Plugin - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -347,8 +347,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Connect a Data Source</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Connect a Data Source</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/connect-a-data-source-introduction/">Connect a Data Source Introduction</a></li>
@@ -408,7 +408,7 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/kafka-storage-plugin/">Kafka Storage Plugin</a></li>
+              <li class="toctree-l2 current"><a class="reference internal" href="/docs/kafka-storage-plugin/">Kafka Storage Plugin</a></li>
             
           
           </ul>
@@ -697,8 +697,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">SQL Reference</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">SQL Reference</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sql-reference-introduction/">SQL Reference Introduction</a></li>
@@ -786,7 +786,7 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">SQL Commands</a></li>
-              <ul style="">
+              <ul style="display: none">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/supported-sql-commands/">Supported SQL Commands</a></li>
               
@@ -810,7 +810,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/drop-function-using-jar/">DROP FUNCTION USING JAR</a></li>
               
-                <li class="toctree-l3 current"><a class="reference internal" href="/docs/drop-table/">DROP TABLE</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/drop-table/">DROP TABLE</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/drop-view/">DROP VIEW</a></li>
               
@@ -1134,346 +1134,277 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/sql-reference/">SQL Reference</a></li>
+    <li><a href="/docs/connect-a-data-source/">Connect a Data Source</a></li>
   
-    <li><a href="/docs/sql-commands/">SQL Commands</a></li>
-  
-  <li>DROP TABLE</li>
+  <li>Kafka Storage Plugin</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/sql-reference/sql-commands/055-drop-table.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/connect-a-data-source/plugins/113-kafka-storage-plugin.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>DROP TABLE</h1>
+      <h1>Kafka Storage Plugin</h1>
 
     </div>
 
-     Aug 4, 2016
+     Feb 8, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>As of Drill 1.2, you can use the DROP TABLE command to remove tables (files or directories) from a file system when the file system is configured as a DFS storage plugin. See <a href="/docs/storage-plugin-registration/">Storage Plugin Registration</a>. As of Drill 1.8, you can include the IF EXISTS parameter with the DROP TABLE command. Currently, you can only issue the DROP TABLE command against file system data sources.</p>
+        <p>As of Drill 1.12, Drill provides a storage plugin for Kafka. The Kafka storage plugin enables you to run SQL queries on Apache Kafka and perform interactive analysis on the data. When you install Drill, a preconfigured Kafka storage plugin is available on the Storage page in the Drill Web Console. Once you enable and configure the storage plugin, you can query Kafka from Drill. </p>
 
-<h2 id="syntax">Syntax</h2>
+<p>The following sections provide information about the Kafka storage plugin, how to enable and configure the Kafka storage plugin in Drill, options that you can set at the system or session level, and example queries on a Kafka data source. You can refer to the <a href="https://github.com/apache/drill/tree/master/contrib/storage-kafka#drill-kafka-plugin">README</a> and <a href="https://kafka.apache.org/">Apache Kafka</a> for additional information.  </p>
 
-<p>The DROP TABLE command supports the following syntax: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">DROP TABLE [IF EXISTS] [workspace.]name;  
+<h2 id="kafka-support">Kafka Support</h2>
+
+<p>Currently, the Kafka storage plugin supports: </p>
+
+<ul>
+<li>Kafka-0.10 and above</li>
+<li>Reading Kafka messages of type JSON only</li>
+<li>The following message reader to read the Kafka messages:<br></li>
+</ul>
+
+<table><thead>
+<tr>
+<th><strong>MessageReader</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Key DeSerializer</strong></th>
+<th><strong>Value DeSerializer</strong></th>
+</tr>
+</thead><tbody>
+<tr>
+<td>JsonMessageReader</td>
+<td>To read Json messages</td>
+<td>org.apache.kafka.common.serialization.ByteArrayDeserializer</td>
+<td>org.apache.kafka.common.serialization.ByteArrayDeserializer</td>
+</tr>
+</tbody></table>
+
+<h2 id="about-the-kafka-storage-plugin">About the Kafka Storage Plugin</h2>
+
+<p>In Drill, each Kafka topic is mapped to an SQL table. When run a query on a table, the query scans all the messages from the earliest offset to the latest offset of that topic at that point in time. The Kafka storage plugin automatically discovers all the topics (tables), so you can perform analysis without executing DDL statements.  </p>
+
+<p>The Kafka storage plugin also fetches the following metadata for each message:  </p>
+
+<ul>
+<li>kafkaTopic</li>
+<li>kafkaPartitionId</li>
+<li>kafkaMsgOffset</li>
+<li>kafkaMsgTimestamp</li>
+<li>kafkaMsgKey, unless it is not null<br></li>
+</ul>
+
+<p>The following examples show Kafka topics and message offsets:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   $bin/kafka-topics --list --zookeeper localhost:2181
+   clicks
+   clickstream
+   clickstream-json-demo
+
+   $ bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic clickstream-json-demo --from-beginning | more
+   {&quot;userID&quot;:&quot;055e9af4-8c3c-4834-8482-8e05367a7bef&quot;,&quot;sessionID&quot;:&quot;7badf08e-1e1d-4aeb-b853-7df2df4431ac&quot;,&quot;pageName&quot;:&quot;shoes&quot;,&quot;refferalUrl&quot;:&quot;yelp&quot;,&quot;ipAddress&quot;:&quot;20.44.183.126&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1&quot;,&quot;client_ts&quot;:1509926023099}
+   {&quot;userID&quot;:&quot;a29454b3-642d-481e-9dd8-0e0d7ef32ef5&quot;,&quot;sessionID&quot;:&quot;b4a89204-b98c-4b4b-a1a9-f28f22d5ead3&quot;,&quot;pageName&quot;:&quot;books&quot;,&quot;refferalUrl&quot;:&quot;yelp&quot;,&quot;ipAddress&quot;:&quot;252.252.113.190&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36 OPR/38.0.2220.41&quot;,&quot;client_ts&quot;:1509926023100}
+   {&quot;userID&quot;:&quot;8c53b1c6-da47-4b5a-989d-61b5594f3a1d&quot;,&quot;sessionID&quot;:&quot;baae3a1d-25b2-4955-8d07-20191f29ab32&quot;,&quot;pageName&quot;:&quot;login&quot;,&quot;refferalUrl&quot;:&quot;yelp&quot;,&quot;ipAddress&quot;:&quot;110.170.214.255&quot;,&quot;userAgent&quot;:&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0&quot;,&quot;client_ts&quot;:1509926023100}
+
+   $ bin/kafka-run-class kafka.tools.GetOffsetShell --broker-list localhost:9092 --topic clickstream-json-demo --time -2
+   clickstream-json-demo:2:2765000
+   clickstream-json-demo:1:2765000
+   clickstream-json-demo:3:2765000
+   clickstream-json-demo:0:2765000
+
+   $ bin/kafka-run-class kafka.tools.GetOffsetShell --broker-list localhost:9092 --topic clickstream-json-demo --time -1
+   clickstream-json-demo:2:2765245
+   clickstream-json-demo:1:2765245
+   clickstream-json-demo:3:2765245
+   clickstream-json-demo:0:2765245  
 </code></pre></div>
-<h2 id="parameters">Parameters</h2>
+<h2 id="enabling-and-configuring-the-kafka-storage-plugin">Enabling and Configuring the Kafka Storage Plugin</h2>
 
-<p>IF EXISTS<br>
-Drill does not throw an error if the table does not exist. Instead, Drill returns &quot;<code>Table [name] not found.</code>&quot;  </p>
+<p>Enable the Kafka storage plugin on the Storage page of the Drill Web Console and then edit the configuration as needed. </p>
 
-<p><em>workspace</em><br>
-The location of the table in subdirectories of a local or distributed file system.</p>
+<p>The Kafka storage plugin configuration contains the <code>kafkaConsumerProps</code> property which  supports typical Kafka consumer properties, as described in <a href="https://kafka.apache.org/documentation/#consumerconfigs">Kafka Consumer Configs</a>.  </p>
 
-<p><em>name</em><br>
-A unique directory or file name, optionally prefaced by a storage plugin name, such as <code>dfs</code>, and a workspace, such as <code>tmp</code> using dot notation.  </p>
+<p>To enable the Kafka storage plugin, enter the following URL in the address bar of your browser to access the Storage page in the Drill Web Console:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   http://&lt;drill-node-ip-address&gt;:8047/storage/  
+</code></pre></div>
+<p>In the Disabled Storage Plugins section, click <strong>Enable</strong> next to Kafka. Kafka moves to the Enabled Storage Plugins section. Click <strong>Update</strong> to see the default configuration. Modify the configuration, as needed, click <strong>Update</strong> again to save the changes. Click <strong>Back</strong> to return to the Storage page.  </p>
 
-<h2 id="usage-notes">Usage Notes</h2>
-
-<h3 id="schema">Schema</h3>
-
-<ul>
-<li>You must identify the schema in which a table exists to successfully drop the table. You can identify the schema before dropping the table with the USE <schema_name> command (see <a href="/docs/use/">USE command</a>) or when you issue the DROP TABLE command. See <a href="/docs/drop-table/#example-1:-identifying-a-schema">Example 1: Identifying a schema</a>.<br></li>
-<li>The schema must be mutable. For example, to drop a table from a schema named <code>dfs.sales</code>, the <code>&quot;writable&quot;</code> attribute for the <code>&quot;sales&quot;</code> workspace in the DFS storage plugin configuration must be set to <code>true</code>. See <a href="/docs/plugin-configuration-basics/#storage-plugin-attributes">Storage Plugin Attributes</a>. </li>
-</ul>
-
-<h3 id="file-type">File Type</h3>
-
-<ul>
-<li>The DROP TABLE command only works against file types that Drill can read. File types are identified as supported file formats, such as Parquet, JSON, or Text. See <a href="/docs/querying-a-file-system-introduction/">Querying a File System Introduction</a> for a complete list of supported file types. </li>
-<li>Text formats must be configured in the DFS storage plugin configuration. For example, to support CSV files, the <code>&quot;formats&quot;</code> attribute in the configuration must include <code>&quot;csv&quot;</code> as a value. See <a href="/docs/plugin-configuration-basics/#storage-plugin-attributes">Storage Plugin Attributes</a>.</li>
-<li>The directory on which you issue the DROP TABLE command must contain files of the same type. For example, if you have a workspace configured, such as <code>dfs.sales</code>, that points to a directory containing subdirectories, such as <code>/2012</code> and <code>/2013</code>, files in all of the directories must be of the same type to successfully issue the DROP TABLE command against the directory.<br></li>
-</ul>
-
-<h3 id="permissions">Permissions</h3>
-
-<ul>
-<li>A user must have the appropriate permissions on the file system to successfully issue the DROP TABLE command. Inadequate permissions result in a failed drop and can potentially remove a subset of the files in a directory.<br></li>
-</ul>
-
-<h3 id="user-impersonation">User Impersonation</h3>
-
-<ul>
-<li>When user impersonation is enabled in Drill, Drill impersonates the user issuing the DROP TABLE command. Therefore, the user must have sufficient permissions on the file system for the command to succeed. See <a href="/docs/configuring-user-impersonation/">Configuring User Impersonation</a>.</li>
-<li>When user impersonation is not enabled in Drill, Drill accesses the file system as the user running the Drillbit. This user is typically a super user who has permission to delete most files. In this scenario, use the DROP TABLE command with caution to avoid deleting critical files and directories.<br></li>
-</ul>
-
-<h3 id="views">Views</h3>
-
-<ul>
-<li>Views are independent of tables. Views that reference dropped tables become invalid. You must explicitly drop any view that references a dropped table using the <a href="/docs/drop-view/">DROP VIEW command</a>.<br></li>
-</ul>
-
-<h3 id="concurrency">Concurrency</h3>
-
-<ul>
-<li>Concurrency occurs when two processes try to access and/or change data at the same time. Currently, Drill does not have a mechanism in place, such as read locks on files, to address concurrency issues. For example, if one user runs a query that references a table that another user simultaneously issues the DROP TABLE command against, there is no mechanism in place to prevent a collision of the two processes. In such a scenario, Drill may return partial query results or a system error to the user running the query when the table is dropped. </li>
-</ul>
-
-<h2 id="examples">Examples</h2>
-
-<p>The following examples show results for several DROP TABLE scenarios.  </p>
-
-<h3 id="example-1:-identifying-a-schema">Example 1:  Identifying a schema</h3>
-
-<p>This example shows you how to identify a schema with the USE and DROP TABLE commands and successfully drop a table named <code>donuts_json</code> in the <code>&quot;donuts&quot;</code> workspace configured within the DFS storage plugin configuration.  </p>
-
-<p>The <code>&quot;donuts&quot;</code> workspace is configured within the following DFS configuration:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">    {
-     &quot;type&quot;: &quot;file&quot;,
-     &quot;enabled&quot;: true,
-     &quot;connection&quot;: &quot;file:///&quot;,
-     &quot;workspaces&quot;: {
-       &quot;root&quot;: {
-         &quot;location&quot;: &quot;/&quot;,
-         &quot;writable&quot;: false,
-         &quot;defaultInputFormat&quot;: null
-       },
-       &quot;donuts&quot;: {
-         &quot;location&quot;: &quot;/Users/user1/donuts&quot;,
-         &quot;writable&quot;: true,
-         &quot;defaultInputFormat&quot;: null
-       }
+<p>The following configuration is an example Kafka storage plugin configuration:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   {
+     &quot;type&quot;: &quot;kafka&quot;,
+     &quot;kafkaConsumerProps&quot;: {
+       &quot;key.deserializer&quot;:   &quot;org.apache.kafka.common.serialization.ByteArrayDeserializer&quot;,
+       &quot;auto.offset.reset&quot;: &quot;earliest&quot;,
+       &quot;bootstrap.servers&quot;: &quot;localhost:9092&quot;,
+       &quot;group.id&quot;: &quot;drill-query-consumer-1&quot;,
+       &quot;enable.auto.commit&quot;: &quot;true&quot;,
+       &quot;value.deserializer&quot;: &quot;org.apache.kafka.common.serialization.ByteArrayDeserializer&quot;,
+       &quot;session.timeout.ms&quot;: &quot;30000&quot;
      },
-</code></pre></div>
-<p>Issuing the USE command changes the schema to the <code>dfs.donuts</code> schema before dropping the <code>donuts_json</code> table.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; use dfs.donuts;
-   +-------+-----------------------------------------+
-   |  ok   |                 summary                 |
-   +-------+-----------------------------------------+
-   | true  | Default schema changed to [dfs.donuts]  |
-   +-------+-----------------------------------------+
-   1 row selected (0.096 seconds)
-
-   0: jdbc:drill:zk=local&gt; drop table donuts_json;
-   +-------+------------------------------+
-   |  ok   |           summary            |
-   +-------+------------------------------+
-   | true  | Table [donuts_json] dropped  |
-   +-------+------------------------------+
-   1 row selected (0.094 seconds) 
-</code></pre></div>
-<p>Alternatively, instead of issuing the USE command to change the schema, you can include the schema name when you drop the table.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; drop table dfs.donuts.donuts_json;
-   +-------+------------------------------+
-   |  ok   |           summary            |
-   +-------+------------------------------+
-   | true  | Table [donuts_json] dropped  |
-   +-------+------------------------------+
-   1 row selected (1.189 seconds)
-</code></pre></div>
-<p>If you do not identify the schema prior to issuing the DROP TABLE command, Drill returns the following error:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; drop table donuts_json;
-
-   Error: PARSE ERROR: Root schema is immutable. Creating or dropping tables/views is not allowed in root schema.Select a schema using &#39;USE schema&#39; command.
-   [Error Id: 8c42cb6a-27eb-48fd-b42a-671a6fb58c14 on 10.250.56.218:31010] (state=,code=0)
-</code></pre></div>
-<h3 id="example-2:-dropping-a-table-created-from-a-file">Example 2: Dropping a table created from a file</h3>
-
-<p>In the following example, the <code>donuts_json</code> table is removed from the <code>/tmp</code> workspace using the DROP TABLE command. This example assumes that the steps in the <a href="/docs/create-table-as-ctas/#complete-ctas-example">Complete CTAS Example</a> were already completed. </p>
-
-<p>Running an <code>ls</code> on <code>/donuts_json</code> lists the files in the directory.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   $ pwd
-   /tmp
-   $ cd donuts_json
-   $ ls
-   0_0_0.json
-   $ more 0_0_0.json
-   {
-    &quot;id&quot; : &quot;0001&quot;,
-     &quot;type&quot; : &quot;donut&quot;,
-     &quot;name&quot; : &quot;Cake&quot;,
-     &quot;ppu&quot; : 0.55
+     &quot;enabled&quot;: true
    }  
 </code></pre></div>
-<p>Issuing the USE command changes the schema to <code>dfs.tmp</code>.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; use dfs.tmp;
-   +-------+-----------------------------------------+
-   |  ok   |                 summary                 |
-   +-------+-----------------------------------------+
-   | true  | Default schema changed to [dfs.tmp]  |
-   +-------+-----------------------------------------+
-   1 row selected (0.085 seconds)  
-</code></pre></div>
-<p>Running the <code>DROP TABLE</code> command removes the table from the <code>dfs.tmp</code> schema.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; drop table donuts_json;
-   +-------+------------------------------+
-   |  ok   |           summary            |
-   +-------+------------------------------+
-   | true  | Table [donuts_json] dropped  |
-   +-------+------------------------------+
-   1 row selected (0.107 seconds)  
-</code></pre></div>
-<h3 id="example-3:-dropping-a-table-created-as-a-directory">Example 3: Dropping a table created as a directory</h3>
+<h2 id="system|session-options">System|Session Options</h2>
 
-<p>When you create a table that writes files to a directory, you can issue the <code>DROP TABLE</code> command against the table to remove the directory. All files and subdirectories are deleted. For example, the following CTAS command writes Parquet data from the <code>nation.parquet</code> file, installed with Drill, to the <code>/tmp/name_key</code> directory.  </p>
+<p>You can modify the following options in Drill at the system or session level using the <a href="/docs/alter-system/">ALTER SYSTEM</a>|<a href="/docs/set/">SESSION SET</a> commands:  </p>
 
-<p>Issuing the USE command changes the schema to the <code>dfs</code> schema.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; USE dfs;
-</code></pre></div>
-<p>Issuing the CTAS command creates a <code>tmp.name_key</code> table.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; CREATE TABLE tmp.`name_key` (N_NAME, N_NATIONKEY) AS SELECT N_NATIONKEY, N_NAME FROM dfs.`/Users/drilluser/apache-drill-1.2.0/sample-data/nation.parquet`;
-   +-----------+----------------------------+
-   | Fragment  | Number of records written  |
-   +-----------+----------------------------+
-   | 0_0       | 25                         |
-   +-----------+----------------------------+
-</code></pre></div>
-<p>Querying the directory shows the data. </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; select * from tmp.`name_key`;
-   +---------+-----------------+
-   | N_NAME  |   N_NATIONKEY   |
-   +---------+-----------------+
-   | 0       | ALGERIA         |
-   | 1       | ARGENTINA       |
-   | 2       | BRAZIL          |
-   | 3       | CANADA          |
-   | 4       | EGYPT           |
-   | 5       | ETHIOPIA        |
-   | 6       | FRANCE          |
-   | 7       | GERMANY         |
-   | 8       | INDIA           |
-   | 9       | INDONESIA       |
-   | 10      | IRAN            |
-   | 11      | IRAQ            |
-   | 12      | JAPAN           |
-   | 13      | JORDAN          |
-   | 14      | KENYA           |
-   | 15      | MOROCCO         |
-   | 16      | MOZAMBIQUE      |
-   | 17      | PERU            |
-   | 18      | CHINA           |
-   | 19      | ROMANIA         |
-   | 20      | SAUDI ARABIA    |
-   | 21      | VIETNAM         |
-   | 22      | RUSSIA          |
-   | 23      | UNITED KINGDOM  |
-   | 24      | UNITED STATES   |
-   +---------+-----------------+
-   25 rows selected (0.183 seconds)
-</code></pre></div>
-<p>Issuing the DROP TABLE command against the directory removes the directory and deletes all the files and subdirectories that existed within the directory.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; drop table name_key;
-   +-------+---------------------------+
-   |  ok   |          summary          |
-   +-------+---------------------------+
-   | true  | Table [name_key] dropped  |
-   +-------+---------------------------+
-   1 row selected (0.086 seconds)
-</code></pre></div>
-<h3 id="example-4:-dropping-a-table-that-does-not-exist">Example 4: Dropping a table that does not exist</h3>
+<table><thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>store.kafka.record.reader</td>
+<td>Message   Reader implementation to use while reading messages from Kafka. Default value   is set to org.apache.drill.exec.store.kafka.decoders.JsonMessageReader. You   can implement a custom record reader by extending   org.apache.drill.exec.store.kafka.decoders.MessageReader and setting   store.kafka.record.reader accordinlgy.</td>
+<td>ALTER   SESSION SET <code>store.kafka.record.reader</code> =   &#39;org.apache.drill.exec.store.kafka.decoders.JsonMessageReader&#39;;</td>
+</tr>
+<tr>
+<td>store.kafka.poll.timeout</td>
+<td>Polling timeout used by Kafka client while   fetching messages from Kafka cluster. Default value is 200 milliseconds.</td>
+<td>ALTER SESSION SET <code>store.kafka.poll.timeout</code> =   200;</td>
+</tr>
+<tr>
+<td>exec.enable_union_type</td>
+<td>Enable support for JSON union type. Default is   false.</td>
+<td>ALTER SESSION SET <code>exec.enable_union_type</code> =   true;</td>
+</tr>
+<tr>
+<td>store.kafka.all_text_mode</td>
+<td>Reads all data from JSON files as VARCHAR.   Default is false.</td>
+<td>ALTER SESSION SET <code>store.kafka.all_text_mode</code> =   true;</td>
+</tr>
+<tr>
+<td>store.kafka.read_numbers_as_double</td>
+<td>Reads numbers from JSON files with or without a   decimal point as DOUBLE. Default is false.</td>
+<td>ALTER SESSION SET   <code>store.kafka.read_numbers_as_double</code> = true;</td>
+</tr>
+</tbody></table>
 
-<p>The following example shows the result of dropping a table that does not exist because it was either already dropped or never existed. </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; use dfs.tmp;
-   +-------+--------------------------------------+
-   |  ok   |               summary                |
-   +-------+--------------------------------------+
-   | true  | Default schema changed to [dfs.tmp]  |
-   +-------+--------------------------------------+
-   1 row selected (0.289 seconds)
+<p>See <a href="https://drill.apache.org/docs/json-data-model/">Drill JSON Model</a> and <a href="https://drill.apache.org/docs/configuration-options-introduction/">Drill system options configuration</a>s for more information.  </p>
 
-   0: jdbc:drill:zk=local&gt; drop table name_key;
+<h2 id="examples-of-drill-queries-on-kafka">Examples of Drill Queries on Kafka</h2>
 
-   Error: VALIDATION ERROR: Table [name_key] not found
-   [Error Id: fc6bfe17-d009-421c-8063-d759d7ea2f4e on 10.250.56.218:31010] (state=,code=0)  
-</code></pre></div>
-<h3 id="example-5:-dropping-a-table-that-does-not-exist-using-the-if-exists-parameter">Example 5: Dropping a table that does not exist using the IF EXISTS parameter</h3>
+<p>The following examples show queries on Kafka and the use of the ALTER SESSION SET command to change Kafka related options at the session level:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   $ bin/sqlline -u jdbc:drill:zk=localhost:2181
+   Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=512M; support was removed in 8.0
+   apache drill 1.12.0-SNAPSHOT
+   &quot;json ain&#39;t no thang&quot;  
 
-<p>The following example shows the result of dropping a table that does not exist (because it was already dropped or never existed) using the IF EXISTS parameter with the DROP TABLE command:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; use dfs.tmp;
-   +-------+--------------------------------------+
-   |  ok   |               summary                |
-   +-------+--------------------------------------+
-   | true  | Default schema changed to &#39;dfs.tmp&#39;  |
-   +-------+--------------------------------------+
-   1 row selected (0.289 seconds)  
 
-   0: jdbc:drill:zk=local&gt; drop table if exists name_key;
-   +-------+-----------------------------+
-   |  ok   |         summary             |
-   +-------+-----------------------------+
-   | true  | Table &#39;name_key&#39; not found  |
-   +-------+-----------------------------+
-   1 row selected (0.083 seconds)  
-</code></pre></div>
-<h3 id="example-6:-dropping-a-table-that-exists-using-the-if-exists-parameter">Example 6: Dropping a table that exists using the IF EXISTS parameter</h3>
+   0: jdbc:drill:zk=localhost:2181&gt; use kafka;
+   +-------+------------------------------------+
+   |  ok   |              summary               |
+   +-------+------------------------------------+
+   | true  | Default schema changed to [kafka]  |
+   +-------+------------------------------------+
+   1 row selected (0.564 seconds)  
 
-<p>The following example shows the result of dropping a table that exists using the IF EXISTS parameter with the DROP TABLE command.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; use dfs.tmp;
-   +-------+--------------------------------------+
-   |  ok   |               summary                |
-   +-------+--------------------------------------+
-   | true  | Default schema changed to &#39;dfs.tmp&#39;  |
-   +-------+--------------------------------------+
-   1 row selected (0.289 seconds)
+   0: jdbc:drill:zk=localhost:2181&gt; show tables;
+   +---------------+------------------------------+
+   | TABLE_SCHEMA  |          TABLE_NAME          |
+   +---------------+------------------------------+
+   | kafka         | clickstream-json-demo        |
+   | kafka         | clickstream                  |
+   | kafka         | clicks                       |
+   +---------------+------------------------------+
+   17 rows selected (1.908 seconds)
 
-   0: jdbc:drill:zk=local&gt; drop table if exists name_key;
-   +-------+---------------------------+
-   |  ok   |        summary            |
-   +-------+---------------------------+
-   | true  | Table &#39;name_key&#39; dropped  |
-   +-------+---------------------------+  
-</code></pre></div>
-<h3 id="example-7:-dropping-a-table-without-permissions">Example 7: Dropping a table without permissions</h3>
+   0: jdbc:drill:zk=localhost:2181&gt; ALTER SESSION SET `store.kafka.poll.timeout` = 200;
+   +-------+------------------------------------+
+   |  ok   |              summary               |
+   +-------+------------------------------------+
+   | true  | store.kafka.poll.timeout updated.  |
+   +-------+------------------------------------+
+   1 row selected (0.102 seconds)
+   0: jdbc:drill:zk=localhost:2181&gt; ALTER SESSION SET `store.kafka.record.reader` = &#39;org.apache.drill.exec.store.kafka.decoders.JsonMessageReader&#39;;
+   +-------+-------------------------------------+
+   |  ok   |               summary               |
+   +-------+-------------------------------------+
+   | true  | store.kafka.record.reader updated.  |
+   +-------+-------------------------------------+
+   1 row selected (0.082 seconds)
 
-<p>The following example shows the result of dropping a table without the appropriate permissions in the file system.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; drop table name_key;
+   0: jdbc:drill:zk=localhost:2181&gt; select * from kafka.`clickstream-json-demo` limit 2;
+   +---------------------------------------+---------------------------------------+-------------+--------------+------------------+-----------------------------------------------------------------------------------+----------------+------------------------+-------------------+-----------------+--------------------+
+   |                userID                 |               sessionID               |  pageName   | refferalUrl  |    ipAddress     |                                     userAgent                                     |   client_ts    |       kafkaTopic       | kafkaPartitionId  | kafkaMsgOffset  | kafkaMsgTimestamp  |
+   +---------------------------------------+---------------------------------------+-------------+--------------+------------------+-----------------------------------------------------------------------------------+----------------+------------------------+-------------------+-----------------+--------------------+
+   | 6b55a8fa-d0fd-41f0-94e3-7f6b551cdede  | e3bd34a8-b546-4cd5-a0c6-5438589839fc  | categories  | bing         | 198.105.119.221  | Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0  | 1509926023098  | clickstream-json-demo  | 2                 | 2765000         | 1509926023098      |
+   | 74cffc37-2df0-4db4-aff9-ed0027a12d03  | 339e3821-5254-4d79-bbae-69bc12808eca  | furniture   | bing         | 161.169.50.60    | Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0     | 1509926023099  | clickstream-json-demo  | 2                 | 2765001         | 1509926023099      |
+   +---------------------------------------+---------------------------------------+-------------+--------------+------------------+-----------------------------------------------------------------------------------+----------------+------------------------+-------------------+-----------------+--------------------+
+   2 rows selected (1.18 seconds)
 
-   Error: PERMISSION ERROR: Unauthorized to drop table
-   [Error Id: 36f6b51a-786d-4950-a4a7-44250f153c55 on 10.10.30.167:31010] (state=,code=0)  
-</code></pre></div>
-<h3 id="example-8:-dropping-and-querying-a-table-concurrently">Example 8: Dropping and querying a table concurrently</h3>
+   0: jdbc:drill:zk=localhost:2181&gt; select count(*) from kafka.`clickstream-json-demo`;
+   +---------+
+   | EXPR$0  |
+   +---------+
+   | 980     |
+   +---------+
+   1 row selected (0.732 seconds)
 
-<p>The result of this scenario depends on the delta in time between one user dropping a table and another user issuing a query against the table. Results can also vary. In some instances the drop may succeed and the query fails completely or the query completes partially and then the table is dropped returning an exception in the middle of the query results.</p>
+   0: jdbc:drill:zk=localhost:2181&gt; select kafkaPartitionId, MIN(kafkaMsgOffset) as minOffset, MAX(kafkaMsgOffset) as maxOffset from kafka.`clickstream-json-demo` group by kafkaPartitionId;
+   +-------------------+------------+------------+
+   | kafkaPartitionId  | minOffset  | maxOffset  |
+   +-------------------+------------+------------+
+   | 2                 | 2765000    | 2765244    |
+   | 1                 | 2765000    | 2765244    |
+   | 3                 | 2765000    | 2765244    |
+   | 0                 | 2765000    | 2765244    |
+   +-------------------+------------+------------+
+   4 rows selected (3.081 seconds)
 
-<p>The following example shows the result of dropping a table and issuing a query against the table simultaneously. In this example, the table is dropped before the query can run against it. </p>
+   0: jdbc:drill:zk=localhost:2181&gt; select kafkaPartitionId, from_unixtime(MIN(kafkaMsgTimestamp)/1000) as minKafkaTS, from_unixtime(MAX(kafkaMsgTimestamp)/1000) as maxKafkaTs from kafka.`clickstream-json-demo` group by kafkaPartitionId;
+   +-------------------+----------------------+----------------------+
+   | kafkaPartitionId  |      minKafkaTS      |      maxKafkaTs      |
+   +-------------------+----------------------+----------------------+
+   | 2                 | 2017-11-05 15:53:43  | 2017-11-05 15:53:43  |
+   | 1                 | 2017-11-05 15:53:43  | 2017-11-05 15:53:43  |
+   | 3                 | 2017-11-05 15:53:43  | 2017-11-05 15:53:43  |
+   | 0                 | 2017-11-05 15:53:43  | 2017-11-05 15:53:43  |
+   +-------------------+----------------------+----------------------+
+   4 rows selected (2.758 seconds)
 
-<p><strong>User 1 issues the DROP TABLE command.</strong>  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; drop table name_key;
-   +-------+------------------------------+
-   |  ok   |           summary            |
-   +-------+------------------------------+
-   | true  | Table [droptable34] dropped  |
-   +-------+------------------------------+
-   1 row selected (12.35 seconds)
-</code></pre></div>
-<p><strong>User 2 issues a query against the table.</strong>  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; select * from name_key;
+   0: jdbc:drill:zk=localhost:2181&gt; select distinct(refferalUrl) from kafka.`clickstream-json-demo`;
+   +--------------+
+   | refferalUrl  |
+   +--------------+
+   | bing         |
+   | yahoo        |
+   | yelp         |
+   | google       |
+   +--------------+
+   4 rows selected (2.944 seconds)
 
-   Error: SYSTEM ERROR: FileNotFoundException: Requested file does not exist.
-   Fragment 1:0
-   [Error Id: 6e3c6a8d-8cfd-4033-90c4-61230af80573 on 10.10.30.167:31010] (state=,code=0)
-</code></pre></div>
-<h3 id="example-9:-dropping-a-table-with-different-file-formats">Example 9: Dropping a table with different file formats</h3>
-
-<p>The following example shows the result of dropping a table when multiple file formats exists in the directory. In this scenario, the <code>sales_dir</code> table resides in the <code>dfs.sales</code> workspace and contains Parquet, CSV, and JSON files.</p>
-
-<p>Running <code>ls</code> on <code>sales_dir</code> shows the different file types that exist in the directory.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   $ cd sales_dir/
-   $ ls
-   0_0_0.parquet    sales_a.csv sales_b.json    sales_c.parquet
-</code></pre></div>
-<p>Issuing the DROP TABLE command on the directory results in an error.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; drop table dfs.sales.sales_dir;
-
-   Error: VALIDATION ERROR: Table contains different file formats. 
-   Drop Table is only supported for directories that contain homogeneous file formats consumable by Drill
-   [Error Id: 062f68c9-f2cd-4033-9b3d-182146a96904 on 10.250.56.218:31010] (state=,code=0)
+   0: jdbc:drill:zk=localhost:2181&gt; select pageName, count(*) from kafka.`clickstream-json-demo` group by pageName;
+   +--------------+---------+
+   |   pageName   | EXPR$1  |
+   +--------------+---------+
+   | categories   | 89      |
+   | furniture    | 89      |
+   | mobiles      | 89      |
+   | clothing     | 89      |
+   | sports       | 89      |
+   | offers       | 89      |
+   | shoes        | 89      |
+   | books        | 89      |
+   | login        | 90      |
+   | electronics  | 89      |
+   | toys         | 89      |
+   +--------------+---------+
+   11 rows selected (2.493 seconds)
 </code></pre></div>
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/drop-function-using-jar/">← DROP FUNCTION USING JAR</a></span><span class="next-toc"><a href="/docs/drop-view/">DROP VIEW →</a></span>
+  <span class="previous-toc"><a href="/docs/opentsdb-storage-plugin/">← OpenTSDB Storage Plugin</a></span><span class="next-toc"><a href="/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces →</a></span>
 </div>
 
     
