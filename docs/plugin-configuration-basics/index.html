@@ -1153,7 +1153,7 @@
 
     </div>
 
-     Aug 8, 2017
+     Feb 13, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1172,7 +1172,7 @@ restart any of the Drillbits when you add or update a storage plugin configurati
 
 <ol>
 <li><a href="/docs/starting-drill-on-linux-and-mac-os-x/">Start the Drill shell</a>.</li>
-<li><a href="/docs/starting-the-web-console/">Start the Web Console</a>.<br></li>
+<li><a href="/docs/starting-the-web-console/">Start the Web Console</a>. The Storage tab appears in the Web Console if you are <a href="/docs/configuring-web-console-and-rest-api-security/">authorized</a> to view, update, or add storage plugins. </li>
 <li><p>On the Storage tab, enter a name in <strong>New Storage Plugin</strong>.
 Each configuration registered with Drill must have a distinct
 name. Names are case-sensitive.<br>
@@ -1188,12 +1188,10 @@ Using a copy of an existing configuration reduces the risk of JSON coding errors
 <li><p>Click <strong>Create</strong>.</p></li>
 </ol>
 
-<!-- Add to step 3 when the feature goes into 1.5: The Storage tab appears on the Web Console if you are [authorized](/docs/configuring-web-console-and-rest-api-security/) to view, update, or add storage plugins.   -->
-
 <h2 id="storage-plugin-attributes">Storage Plugin Attributes</h2>
 
 <p>The following graphic shows key attributes of a typical <code>dfs</code>-based storage plugin configuration:<br>
-<img src="/docs/img/connect-plugin.png" alt="dfs plugin"></p>
+<img src="/docs/img/connect-plugin.png" alt="dfs plugin">  </p>
 
 <h2 id="list-of-attributes-and-definitions">List of Attributes and Definitions</h2>
 
@@ -1246,6 +1244,12 @@ Using a copy of an existing configuration reduces the risk of JSON coding errors
     <td>null<br>&quot;parquet&quot;<br>&quot;csv&quot;<br>&quot;json&quot;</td>
     <td>no</td>
     <td>Format for reading data, regardless of extension. Default = &quot;parquet&quot;</td>
+  </tr>
+  <tr>
+    <td>&quot;workspaces&quot;. . . &quot;allowAccessOutsideWorkspace&quot;</td>
+    <td>false<br>true<br></td>
+    <td>yes</td>
+    <td>Introduced in Drill 1.12. Prevents users from accessing paths outside the root of a workspace. Set to false by default to disallow access outside the root of a workspace. To allow access to paths outside the root of a workspace, change the value to true. Dfs storage plugins configured prior to Drill 1.12 (that do not have the parameter specified) cannot access paths outside of the workspace unless this parameter is included in the workspace configuration and set to true.</td>
   </tr>
   <tr>
     <td>&quot;formats&quot;</td>

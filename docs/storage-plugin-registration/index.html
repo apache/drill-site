@@ -1151,17 +1151,17 @@
 
     </div>
 
-     
+     Feb 13, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>You connect Drill to a file system, Hive, HBase, or other data source through a storage plugin. On the Storage tab of the Drill Web Console, you can view and reconfigure a storage plugin. If <a href="/docs/configuring-web-console-and-rest-api-security/#https-support">HTTPS support</a> is not enabled (the default), go to <code>http://&lt;IP address&gt;:8047/storage</code> to view and configure a storage plugin. IP address is the host name or IP address of one of the installed Drillbits in a distributed system or <code>localhost</code> in an embedded system. If HTTPS support is enabled, go to <code>https://&lt;IP address&gt;:8047/storage</code>. </p>
+        <p>You connect Drill to data sources, such as a file system, Hive, or HBase through storage plugins. You can see the default enabled and disabled storage plugins on the Storage page in the Drill Web Console. You can easily enable and disable storage plugins, reconfigure storage plugins, and create new storage plugin configurations.</p>
 
-<!--  DOC NOTE: change when feature added in 1.5?: If HTTPS support is enabled and you are [authorized](/docs/configuring-web-console-and-rest-api-security/) to view and configure a storage plugin, go to -->
+<p>If <a href="/docs/configuring-web-console-and-rest-api-security/#https-support">HTTPS support</a> is not enabled (the default), go to <code>http://&lt;IP address&gt;:8047/storage</code> to view and configure a storage plugin. IP address is the host name or IP address of one of the installed Drillbits in a distributed system or <code>localhost</code> in an embedded system. If HTTPS support is enabled and you are <a href="/docs/configuring-web-console-and-rest-api-security/">authorized</a> to view and configure a storage plugin, go to <code>https://&lt;IP address&gt;:8047/storage</code>. </p>
 
-<p>The Drill installation registers the <code>cp</code>, <code>dfs</code>, <code>hbase</code>, <code>hive</code>, and <code>mongo</code> default storage plugin configurations.</p>
+<p>The Drill installation registers the following storage plugin configurations, with the cp and dfs storage plugins enabled by default; you must enable the other storage plugins:</p>
 
 <ul>
 <li><code>cp</code><br>
@@ -1175,6 +1175,12 @@ Provides a connection to HBase.</li>
 Integrates Drill with the Hive metadata abstraction of files, HBase, and libraries to read data and operate on SerDes and UDFs.</li>
 <li><code>mongo</code><br>
 Provides a connection to MongoDB data.</li>
+<li><code>kafka</code><br>
+Provides a connection to Kafka.</li>
+<li><code>kudu</code><br>
+Provides a connection to Kudu.</li>
+<li><code>opentsdb</code><br>
+Provides a connectin to OpenTSDB.</li>
 </ul>
 
 <p>In the <a href="/docs/about-the-mapr-sandbox/">Drill sandbox</a>, the <code>dfs</code> storage plugin configuration connects you to a Hadoop environment pre-configured with Drill. If you install Drill, <code>dfs</code> connects you to the root of your file system.</p>
@@ -1183,7 +1189,7 @@ Provides a connection to MongoDB data.</li>
 
 <p>To register a new storage plugin configuration, enter a storage name, click <strong>CREATE</strong>, provide a configuration in JSON format, and click <strong>UPDATE</strong>. </p>
 
-<!-- In Drill 1.2 and later, updating a storage plugin configuration and other storage plugin tasks require [authorization](/docs/configuring-web-console-and-rest-api-security/) if security is enabled. -->
+<p>In Drill 1.2 and later, updating a storage plugin configuration and other storage plugin tasks require <a href="/docs/configuring-web-console-and-rest-api-security/">authorization</a> if security is enabled.</p>
 
 <h2 id="storage-plugin-configuration-persistence">Storage Plugin Configuration Persistence</h2>
 
@@ -1192,13 +1198,9 @@ Provides a connection to MongoDB data.</li>
     cluster-id: &quot;drillbits1&quot;,
     zk.connect: &quot;localhost:2181&quot;,
     sys.store.provider.local.path=&quot;/mypath&quot;
- }
+ }  
 </code></pre></div>
-<!-- Enabling authorization to protect this data through the Web Console and REST API does not include protection for the data in the tmp directory or in ZooKeeper. 
-
-DOCS NOTE: See Drill-3780 and 3949
-
-The storage plugin configuration persists after upgrading, so authorized users can see a configuration that you created in one version of Drill in the Drill Web Console of an upgraded version of Drill. To revert to the default storage plugins for a particular version, in embedded mode, delete the contents of this directory and restart the Drill shell. -->
+<p>See <a href="/docs/persistent-configuration-storage/">Persistent Configuration Storage</a> for more information.</p>
 
     
       
