@@ -1153,7 +1153,7 @@
 
     </div>
 
-     Feb 5, 2018
+     Mar 14, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1172,19 +1172,24 @@
 
 <h2 id="system-options">System Options</h2>
 
-<p>The sys.options table lists ptions that you can set at the system or session level, as described in the section, <a href="/docs/planning-and-execution-options">&quot;Planning and Execution Options&quot;</a>.  </p>
+<p>The sys.options table lists options that you can set at the system or session level, as described in the section, <a href="/docs/planning-and-execution-options">&quot;Planning and Execution Options&quot;</a>.  </p>
 
 <table><thead>
 <tr>
-<th><strong>Name</strong></th>
-<th><strong>Default</strong></th>
-<th><strong>Description</strong></th>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>drill.exec.default_temporary_workspace</td>
 <td>dfs.tmp</td>
 <td>Available as of Drill 1.10. Sets the   workspace for temporary tables. The workspace must be writable, file-based,   and point to a location that already exists. This option requires the   following format: .&lt;workspace</td>
+</tr>
+<tr>
+<td>drill.exec.memory.operator.output_batch_size</td>
+<td>16777216   (16 MB)</td>
+<td>Available as of Drill 1.13. Limits the   amount of memory that the Flatten, Merge Join, and External Sort operators   allocate to outgoing batches.</td>
 </tr>
 <tr>
 <td>drill.exec.storage.implicit.filename.column.label</td>
@@ -1210,6 +1215,16 @@
 <td>drill.exec.functions.cast_empty_string_to_null</td>
 <td>FALSE</td>
 <td>In a text file, treat empty fields as NULL   values instead of empty string.</td>
+</tr>
+<tr>
+<td>drill.exe.spill.fs</td>
+<td>&quot;file:///&quot;</td>
+<td>Introduced   in Drill 1.11. The default file system on the local machine into which the   Sort, Hash Aggregate, and Hash Join operators spill data.</td>
+</tr>
+<tr>
+<td>drill.exec.spill.directories</td>
+<td>[&quot;/tmp/drill/spill&quot;]</td>
+<td>Introduced   in Drill 1.11. The list of directories into which the Sort, Hash Aggregate,   and Hash Join operators spill data. The list must be an array with   directories separated by a comma, for example [&quot;/fs1/drill/spill&quot; ,   &quot;/fs2/drill/spill&quot; , &quot;/fs3/drill/spill&quot;].</td>
 </tr>
 <tr>
 <td>drill.exec.storage.file.partition.column.label</td>
@@ -1239,7 +1254,7 @@
 <tr>
 <td>exec.java.compiler.exp_in_method_size</td>
 <td>50</td>
-<td>Introduced in Drill 1.8. For queries with complex or multiple expressions in the query logic, this option   limits the number of expressions allowed in each method to prevent Drill from   generating code that exceeds the Java limit of 64K bytes. If a method   approaches the 64K limit, the Java compiler returns a message stating that   the code is too large to compile. If queries return such a message, reduce   the value of this option at the session level. The default value for this option is 50. The value is the count of   expressions allowed in a method. Expressions are added to a method until they   hit the Java 64K limit, when a new inner method is created and called from   the existing method.          <strong>Note:</strong> This logic has not   been implemented for all operators. If a query uses operators for which the   logic is not implemented, reducing the setting for this option may not   resolve the error. Setting this option at the system level impacts all   queries and can degrade query performance.</td>
+<td>Introduced in Drill 1.8. For queries with   complex or multiple expressions in the query logic, this option limits the   number of expressions allowed in each method to prevent Drill from generating   code that exceeds the Java limit of 64K bytes. If a method approaches the 64K   limit, the Java compiler returns a message stating that the code is too large   to compile. If queries return such a message, reduce the value of this option   at the session level. The default value for this option is 50. The value is   the count of expressions allowed in a method. Expressions are added to a   method until they hit the Java 64K limit, when a new inner method is created   and called from the existing method. Note: This logic has not been implemented for all operators. If   a query uses operators for which the logic is not implemented, reducing the   setting for this option may not resolve the error. Setting this option at the   system level impacts all queries and can degrade query performance.</td>
 </tr>
 <tr>
 <td>exec.java_compiler_janino_maxsize</td>
@@ -1455,6 +1470,11 @@
 <td>planner.memory_limit</td>
 <td>268435456 bytes</td>
 <td>Defines the maximum amount of direct memory   allocated to a query for planning. When multiple queries run concurrently,   each query is allocated the amount of memory set by this parameter.Increase   the value of this parameter and rerun the query if partition pruning failed   due to insufficient memory.</td>
+</tr>
+<tr>
+<td>planner.memory.percent_per_query</td>
+<td>0.05</td>
+<td>Sets   the memory as a percentage of the total direct memory.</td>
 </tr>
 <tr>
 <td>planner.nestedloopjoin_factor</td>
