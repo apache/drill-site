@@ -49,6 +49,8 @@
       
         <li><a href="/docs/tutorials/">Tutorials</a></li>
       
+        <li><a href="/docs/drill-on-yarn/">Drill-on-YARN</a></li>
+      
         <li><a href="/docs/install-drill/">Install Drill</a></li>
       
         <li><a href="/docs/configure-drill/">Configure Drill</a></li>
@@ -206,6 +208,61 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/analyzing-data-using-window-functions/">Analyzing Data Using Window Functions</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Drill-on-YARN</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/drill-on-yarn-introduction/">Drill-on-YARN Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/creating-a-basic-drill-cluster/">Creating a Basic Drill Cluster</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/launch-drill-under-yarn/">Launch Drill Under YARN</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuration-reference/">Configuration Reference</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/drill-on-yarn-command-line-tool/">Drill-on-YARN Command-Line Tool</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/using-the-drill-on-yarn-web-ui/">Using the Drill-on-YARN Web UI</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/multiple-drill-clusters/">Multiple Drill Clusters</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/enabling-web-ui-security/">Enabling Web UI Security</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/appendix-a-release-note-issues/">Appendix A: Release Note Issues</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/appendix-b-drill-env-sh-settings/">Appendix B: drill-env.sh Settings</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/appendix-c-troubleshooting/">Appendix C: Troubleshooting</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/appendix-d-recreate-the-drill-archive/">Appendix D: Recreate the Drill Archive</a></li>
             
           
           </ul>
@@ -1014,6 +1071,10 @@
           <ul style="display: none">
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-13-0-release-notes/">Apache Drill 1.13.0 Release Notes</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-12-0-release-notes/">Apache Drill 1.12.0 Release Notes</a></li>
             
           
@@ -1151,7 +1212,7 @@
 
     </div>
 
-     Dec 16, 2017
+     Mar 18, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1163,6 +1224,29 @@ the semi-structured and rapidly evolving data coming from modern Big Data
 applications, while still providing the familiarity and ecosystem of ANSI SQL,
 the industry-standard query language. Drill provides plug-and-play integration
 with existing Apache Hive and Apache HBase deployments.  </p>
+
+<h2 id="what&#39;s-new-in-apache-drill-1.13">What&#39;s New in Apache Drill 1.13</h2>
+
+<ul>
+<li>JDK 8 support. (<a href="https://issues.apache.org/jira/browse/DRILL-1491">DRILL-1491</a>)<br></li>
+<li>Upgrade to <a href="https://calcite.apache.org/docs/history.html#v1-15-0">Calcite version 1.15</a>. (<a href="https://issues.apache.org/jira/browse/DRILL-3993">DRILL-3993</a>) </li>
+<li>JDBC Statement.setQueryTimeout(int) support to cancel queries if they do not complete within the specified time. (<a href="https://issues.apache.org/jira/browse/DRILL-3640">DRILL-3640</a>)<br></li>
+<li>Batch processing improvements that enable you to <a href="/docs/configuring-drill-memory/#modifying-memory-allocated-to-queries">limit the amount of memory</a> that the Flatten, Merge Join, and External Sort operators allocate to outgoing batches. (<a href="https://issues.apache.org/jira/browse/DRILL-6123">DRILL-6123</a>)<br></li>
+<li>Enhanced DESCRIBE command. (<a href="https://issues.apache.org/jira/browse/DRILL-4559">DRILL-4559</a>)<br></li>
+<li>Support for SPNEGO to extend Kerberos to Web applications through HTTP. (<a href="https://issues.apache.org/jira/browse/DRILL-5425">DRILL-5425</a>)<br></li>
+<li>Ability to run <a href="/docs/drill-on-yarn/">Drill under YARN</a>. (<a href="https://issues.apache.org/jira/browse/DRILL-1170">DRILL-1170</a>)<br></li>
+<li>Parquet filter pushdown support for IS [NOT] NULL, TRUE, and FALSE operators and implicit and explicit casts for timestamp, date, and time data types. (<a href="https://issues.apache.org/jira/browse/DRILL-6174">DRILL-6174</a>)<br></li>
+<li>Performance improvements with support for project push down, filter push down, and partition pruning on dynamically expanded columns when represented as a star in the ITEM operator. (<a href="https://issues.apache.org/jira/browse/DRILL-6118">DRILL-6118</a>)<br></li>
+<li>Updated Hive libraries and the Drill Hive client updated to 2.3.2 with support for querying Hive transactional ORC bucketed tables. (<a href="https://issues.apache.org/jira/browse/DRILL-5978">DRILL-5978</a>)</li>
+<li>Ability to automatically manage memory allocations during Drill startup. (<a href="https://issues.apache.org/jira/browse/DRILL-5741">DRILL-5741</a>)<br></li>
+<li>Ability to query an empty directory and use it for queries with any JOIN and UNION (UNION ALL) operators. (<a href="https://issues.apache.org/jira/browse/DRILL-4185">Drill-4185</a>)<br></li>
+<li>Non-numeric support for JSON processing. (<a href="https://issues.apache.org/jira/browse/DRILL-5919">Drill-5919</a>)<br></li>
+<li>New options to that enable you to configure the number of Jetty acceptors and selectors (<a href="https://issues.apache.org/jira/browse/DRILL-5994">DRILL-5994</a>)<br></li>
+<li>Support SQL syntax highlighting of queries, auto-complete support in SQL editors, and snippets. (<a href="https://issues.apache.org/jira/browse/DRILL-5868">DRILL-5868</a>)<br></li>
+<li>Improved performance of the Single Merge Exchange operator. (<a href="https://issues.apache.org/jira/browse/DRILL-6115">DRILL-6115</a>)<br></li>
+<li>Like operator optimization. <a href="https://issues.apache.org/jira/browse/DRILL-5879">DRILL-5879</a><br></li>
+<li>User/Distribution-specific configuration checks during startup (<a href="https://issues.apache.org/jira/browse/DRILL-5741">DRILL-5741</a>).<br></li>
+</ul>
 
 <h2 id="what&#39;s-new-in-apache-drill-1.12">What&#39;s New in Apache Drill 1.12</h2>
 

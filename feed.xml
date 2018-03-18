@@ -6,9 +6,50 @@
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 13 Mar 2018 18:24:28 -0700</pubDate>
-    <lastBuildDate>Tue, 13 Mar 2018 18:24:28 -0700</lastBuildDate>
+    <pubDate>Sun, 18 Mar 2018 13:13:40 -0700</pubDate>
+    <lastBuildDate>Sun, 18 Mar 2018 13:13:40 -0700</lastBuildDate>
     <generator>Jekyll v2.5.2</generator>
+    
+      <item>
+        <title>Drill 1.13 Released</title>
+        <description>&lt;p&gt;Today, we&amp;#39;re happy to announce the availability of Drill 1.13.0. You can download it &lt;a href=&quot;https://drill.apache.org/download/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The release provides the following bug fixes and improvements:&lt;/p&gt;
+
+&lt;h2 id=&quot;ability-to-run-drill-under-yarn-(drill-1170)&quot;&gt;Ability to Run Drill Under YARN (DRILL-1170)&lt;/h2&gt;
+
+&lt;p&gt;You can run Drill as a YARN application (&lt;a href=&quot;/docs/drill-on-yarn/&quot;&gt;Drill-on-YARN&lt;/a&gt;) if you want Drill to work alongside other applications, such as Hadoop and Spark, in a YARN-managed cluster. YARN assigns resources, such as memory and CPU, to applications in the cluster and eliminates the manual steps associated with installation and resource allocation for stand-alone applications in a multi-tenant environment. YARN automatically deploys (localizes) the Drill software onto each Drill node and manages the Drill cluster. Drill becomes a long-running application with YARN. You can monitor the Drill-on-YARN cluster using the Application Master web UI.&lt;/p&gt;
+
+&lt;h2 id=&quot;spnego-support-(drill-5425)&quot;&gt;SPNEGO Support (DRILL-5425)&lt;/h2&gt;
+
+&lt;p&gt;You can use SPNEGO to extend Kerberos authentication to Web applications through HTTP. &lt;/p&gt;
+
+&lt;h2 id=&quot;sql-syntax-support-(drill-5868)&quot;&gt;SQL Syntax Support (DRILL-5868)&lt;/h2&gt;
+
+&lt;p&gt;Query syntax appears highlighted in the Drill Web Console. In addition to syntax highlighting, auto-complete is supported in all SQL editors, including the Edit Query tab within an existing profile to rerun the query. For browsers like Chrome, you can type Ctrl+Space for a drop-down list and then use arrow keys for navigating through options. An auto-complete feature that specifies Drill keywords and functions, and the ability to write SQL from templates using snippets. &lt;/p&gt;
+
+&lt;h2 id=&quot;user/distribution-specific-configuration-checks-during-startup-(drill-5741)&quot;&gt;User/Distribution-Specific Configuration Checks During Startup (DRILL-5741)&lt;/h2&gt;
+
+&lt;p&gt;You can define the maximum amount of cumulative memory allocated to the Drill process during startup through the &lt;code&gt;DRILLBIT_MAX_PROC_MEM&lt;/code&gt; environment variable. For example, if you set &lt;code&gt;DRILLBIT_MAX_PROC_MEM to 40G&lt;/code&gt;, the total amount of memory allocated to the following memory parameters cannot exceed 40G:  &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;DRILL_HEAP=8G&lt;/code&gt; &lt;/li&gt;
+&lt;li&gt;&lt;code&gt;DRILL_MAX_DIRECT_MEMORY=10G&lt;/code&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;DRILLBIT_CODE_CACHE_SIZE=1024M&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;At startup, an auto-setup.sh script performs a check to see if these memory parameters are declared. If the parameters are declared, the script performs a check to verify that the cumulative memory of the parameters does not exceed the value specified by &lt;code&gt;DRILLBIT_MAX_PROC_MEM&lt;/code&gt;. If the cumulative memory exceeds the total amount of memory defined by &lt;code&gt;DRILLBIT_MAX_PROC_MEM&lt;/code&gt;, Drill returns an error message with instructions.&lt;/p&gt;
+
+&lt;p&gt;You can find a complete list of JIRAs resolved in the 1.13.0 release &lt;a href=&quot;/docs/apache-drill-1-13-0-release-notes/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 18 Mar 2018 00:00:00 -0700</pubDate>
+        <link>/blog/2018/03/18/drill-1.13-released/</link>
+        <guid isPermaLink="true">/blog/2018/03/18/drill-1.13-released/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Running SQL Queries on Amazon S3</title>
@@ -427,54 +468,6 @@ cp jets3t-0.9.2/jars/jets3t-0.9.2.jar &lt;span class=&quot;nv&quot;&gt;$DRILL_HO
         <pubDate>Tue, 16 Feb 2016 00:00:00 -0800</pubDate>
         <link>/blog/2016/02/16/drill-1.5-released/</link>
         <guid isPermaLink="true">/blog/2016/02/16/drill-1.5-released/</guid>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Drill 1.4 Released</title>
-        <description>&lt;p&gt;Apache Drill 1.4 (&lt;a href=&quot;https://drill.apache.org/download/&quot;&gt;available here&lt;/a&gt;) includes bug fixes and enhancements from &lt;a href=&quot;https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12332947&amp;amp;projectId=12313820&quot;&gt;32 
-JIRAs&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Here&amp;#39;s a list of highlights from this newest version of Drill:&lt;/p&gt;
-
-&lt;h2 id=&quot;select-with-options&quot;&gt;Select With Options&lt;/h2&gt;
-
-&lt;p&gt;Queries that change storage plugin configuration options can now be written. For instance, to query the file &lt;code&gt;CO.dat&lt;/code&gt;, the following can be used:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;SELECT * FROM TABLE(dfs.`/path/to/CO.dat`(type =&amp;gt; &amp;#39;text&amp;#39;));
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If a version of &lt;code&gt;CO.dat&lt;/code&gt; with a header is available, the first entries of the file can be parsed as column names by 
-passing an &lt;code&gt;extractHeader =&amp;gt; true&lt;/code&gt; argument. We can also use a pipe symbol, &amp;#39;|&amp;#39;, as the delimiter by passing 
-&lt;code&gt;fieldDelimiter&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;SELECT * FROM TABLE(dfs.`/path/to/CO.dat`(type =&amp;gt; &amp;#39;text&amp;#39;, fieldDelimiter =&amp;gt; &amp;#39;|&amp;#39;, extractHeader =&amp;gt; true));
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Additionally, &lt;code&gt;lineDelimiter&lt;/code&gt; can be used to indicate a deliminter for new lines, such as the double pipe, &amp;#39;||&amp;#39;, symbol in this example:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;SELECT * FROM TABLE(dfs.`/path/to/CO.dat`(type =&amp;gt; &amp;#39;text&amp;#39;, lineDelimiter =&amp;gt; &amp;#39;||&amp;#39;, fieldDelimiter =&amp;gt; &amp;#39;|&amp;#39;));
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;improved-behavior-for-csv-header-parsing&quot;&gt;Improved Behavior For CSV Header Parsing&lt;/h2&gt;
-
-&lt;p&gt;When header parsing is enabled, queries to CSV files no longer raise an exception if the indicated column does not 
-exist. Instead, Drill now returns &lt;code&gt;null&lt;/code&gt; values for that column.&lt;/p&gt;
-
-&lt;h2 id=&quot;json-formatting&quot;&gt;JSON Formatting&lt;/h2&gt;
-
-&lt;p&gt;For more compact results, Drill&amp;#39;s default behavior of pretty-printing JSON can now be changed by setting the variable 
-&lt;code&gt;store.json.writer.uglify&lt;/code&gt; to &lt;code&gt;true&lt;/code&gt;. As in:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;ALTER SESSION SET store.json.writer.uglify = true;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;better-logging&quot;&gt;Better Logging&lt;/h2&gt;
-
-&lt;p&gt;SQL query text is now logged to the &lt;code&gt;drillbit.log&lt;/code&gt; file.&lt;/p&gt;
-
-&lt;h2 id=&quot;other-improvements&quot;&gt;Other Improvements&lt;/h2&gt;
-
-&lt;p&gt;This version also features schema change compatible sorting, better Apache Hive support, and more efficient caching for Parquet file metadata.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 14 Dec 2015 00:00:00 -0800</pubDate>
-        <link>/blog/2015/12/14/drill-1.4-released/</link>
-        <guid isPermaLink="true">/blog/2015/12/14/drill-1.4-released/</guid>
         
         
         <category>blog</category>
