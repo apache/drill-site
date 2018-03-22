@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Analyzing Highly Dynamic Datasets - Apache Drill</title>
+<title>Configuring cgroups to Control CPU Usage - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -162,8 +162,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Tutorials</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">Tutorials</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/tutorials-introduction/">Tutorials Introduction</a></li>
@@ -199,7 +199,7 @@
             
           
             
-              <li class="toctree-l2 current"><a class="reference internal" href="/docs/analyzing-highly-dynamic-datasets/">Analyzing Highly Dynamic Datasets</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/analyzing-highly-dynamic-datasets/">Analyzing Highly Dynamic Datasets</a></li>
             
           
             
@@ -322,8 +322,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Configure Drill</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Configure Drill</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configure-drill-introduction/">Configure Drill Introduction</a></li>
@@ -401,7 +401,7 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-cgroups-to-control-cpu-usage/">Configuring cgroups to Control CPU Usage</a></li>
+              <li class="toctree-l2 current"><a class="reference internal" href="/docs/configuring-cgroups-to-control-cpu-usage/">Configuring cgroups to Control CPU Usage</a></li>
             
           
           </ul>
@@ -1199,203 +1199,108 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/tutorials/">Tutorials</a></li>
+    <li><a href="/docs/configure-drill/">Configure Drill</a></li>
   
-  <li>Analyzing Highly Dynamic Datasets</li>
+  <li>Configuring cgroups to Control CPU Usage</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/tutorials/050-analyzing-highly-dynamic-datasets.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/configure-drill/121-configuring-cgroups-to-control-cpu-usage.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>Analyzing Highly Dynamic Datasets</h1>
+      <h1>Configuring cgroups to Control CPU Usage</h1>
 
     </div>
 
-     Mar 18, 2018
+     Mar 22, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Today’s data is dynamic and application-driven. The growth of a new era of business applications driven by industry trends such as web, social, mobile, and Internet of Things are generating datasets with new data types and new data models. These applications are iterative, and the associated data models typically are semi-structured, schema-less and constantly evolving. Semi-structured data models can be complex/nested, schema-less, and capable of having varying fields in every single row and of constantly evolving as fields get added and removed frequently to meet business requirements. </p>
+        <p>Linux cgroups (control groups) enable you to limit system resources to defined user groups or processes. As of Drill 1.13, you can configure a cgroup for Drill to enforce CPU limits on the Drillbit service. You can set a CPU limit for the Drill cgroup on each Drill node in the /etc/cgconfig.conf file.</p>
 
-<p>This tutorial shows you how to natively query dynamic datasets, such as JSON, and derive insights from any type of data in minutes. The dataset used in the example is from the Yelp check-ins dataset, which has the following structure:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">check-in
-{
-    &#39;type&#39;: &#39;checkin&#39;,
-    &#39;business_id&#39;: (encrypted business id),
-    &#39;checkin_info&#39;: {
-        &#39;0-0&#39;: (number of checkins from 00:00 to 01:00 on all Sundays),
-        &#39;1-0&#39;: (number of checkins from 01:00 to 02:00 on all Sundays),
-        ...
-        &#39;14-4&#39;: (number of checkins from 14:00 to 15:00 on all Thursdays),
-        ...
-        &#39;23-6&#39;: (number of checkins from 23:00 to 00:00 on all Saturdays)
-    }, # if there was no checkin for a hour-day block it will not be in the dataset
-}
+<p>You can set the CPU limit as a soft or hard limit, or both. The hard limit takes precedence over the soft limit. When Drill hits the hard limit, in-progress queries may not complete.  </p>
+
+<h2 id="cpu-limits">CPU Limits</h2>
+
+<p>You set the soft and hard limits with parameters in the /etc/cgconfig.conf file. The following sections describe the parameters for soft and hard limits.  </p>
+
+<p><strong>Soft Limit Parameter</strong><br>
+You set the soft limit with the <code>cpu.shares</code> parameter. When you set a soft limit, Drill can exceed the CPU allocated if extra CPU is available for use on the system. Drill can continue to use CPU until there is contention with other processes over the CPU or Drill hits the hard limit.  </p>
+
+<p><strong>Hard Limit Parameters</strong><br>
+You set the hard limit with the <code>cpu.cfs_period_us</code> and <code>cpu.cfs_quota_us</code> parameters. The <code>cpu.cfs_period_us</code> and <code>cpu.cfs_quota_us</code> parameters set a hard limit on the amount of CPU time that the Drill process can use.  </p>
+
+<ul>
+<li><p><strong><code>cpu.cfs_period_us</code></strong><br>
+The <code>cpu.cfs_quota_us</code> parameter specifies a segment of time (in microseconds represented by <code>us</code> for µs) for how often the access to CPU resources should be reallocated. For example, if tasks in a cgroup can access a single CPU for 0.2 seconds out of every 1 second, set cpu.cfs_quota_us to 200000 and cpu.cfs_period_us to 1000000. The upper limit of the <code>cpu.cfs_quota_us</code> parameter is 1 second and the lower limit is 1000 microseconds.    </p></li>
+<li><p><strong><code>cpu.cfs_quota_us</code></strong><br>
+The <code>cpu.cfs_quota_us</code> parameter specifies the total amount of runtime (in microseconds represented by <code>us</code> for µs) for which all tasks in the Drill cgroup can run during one period (as defined by cpu.cfs_period_us). As soon as tasks in the Drill cgroup use the time specified by the quota, they are throttled for the remainder of the time specified by the period and not allowed to run until the next period. For example, if tasks in the Drill cgroup can access a single CPU for 0.2 seconds out of every 1 second, set <code>cpu.cfs_quota_us</code> to 200000 and <code>cpu.cfs_period_us</code> to 1000000. A value of -1 indicates that the group does not have any restrictions on CPU.  </p></li>
+</ul>
+
+<h2 id="before-you-begin">Before You Begin</h2>
+
+<p>Each Drill node must have the libcgroup package installed to configure CPU limits for a Drill cgroup. The libcgroup package installs the cgconfig service required to configure and manage the Drill cgroup.</p>
+
+<p>You can install the libcgroup package using the <code>yum install</code> command, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   yum install libcgroup  
 </code></pre></div>
-<p>It is worth repeating the comment at the bottom of this snippet:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   If there was no checkin for a hour-day block it will not be in the dataset. 
+<h2 id="configuring-cpu-limits">Configuring CPU Limits</h2>
+
+<p>Complete the following steps to set a hard and/or soft limit on Drill CPU usage for the Drill process running on the node:  </p>
+
+<p>1-Start the cgconfig service:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">    service cgconfig start
 </code></pre></div>
-<p>The element names that you see in the <code>checkin_info</code> are unknown upfront and can vary for every row. The data, although simple, is highly dynamic data. To analyze the data there is no need to first represent this dataset in a flattened relational structure, as you would using any other SQL on Hadoop technology.</p>
-
-<hr>
-
-<p>Step 1: First download Drill, if you have not yet done so, onto your machine</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">http://drill.apache.org/download/
-tar -xvf apache-drill-1.13.0.tar
+<p>2-Add a cgroup for Drill in the /etc/cgconfig.conf file:    </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">          group drillcpu {
+                 cpu {
+                        cpu.shares = 320;
+                        cpu.cfs_quota_us = 400000;
+                        cpu.cfs_period_us = 100000;
+                        }
+                 }  
 </code></pre></div>
-<p>Install Drill locally on your desktop (embedded mode). You don’t need Hadoop.</p>
+<p><strong>Note:</strong> The cgroup name is specific to the Drill cgroup and does not correlate with any other configuration. You can give this group any name you prefer. The name drillcpu is used as an example.  </p>
 
-<hr>
+<p>In the configuration example, the <code>cpu.shares</code> parameter sets the soft limit. The other two parameters, <code>cpu.cfs_quota_us</code> and <code>cpu.cfs_period_us</code>, set the hard limit. If you prefer to set only one type of limit, remove the parameters that do not apply.  </p>
 
-<p>Step 2: Start the Drill shell.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">bin/drill-embedded
+<p>To set a soft limit, allocate a specific number of CPU shares to the Drill cgroup in the configuration. Calculate the CPU shares as:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   1024 (CPU allocated to Drill/Total available CPU)
 </code></pre></div>
-<hr>
-
-<p>Step 3: Start analyzing the data using SQL</p>
-
-<p>First, let’s take a look at the dataset:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json` limit 2;
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------+------------------------+
-|                                                                 checkin_info                                                                                                                                                             |    type    |      business_id       |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------+------------------------+
-| {&quot;3-4&quot;:1,&quot;13-5&quot;:1,&quot;6-6&quot;:1,&quot;14-5&quot;:1,&quot;14-6&quot;:1,&quot;14-2&quot;:1,&quot;14-3&quot;:1,&quot;19-0&quot;:1,&quot;11-5&quot;:1,&quot;13-2&quot;:1,&quot;11-6&quot;:2,&quot;11-3&quot;:1,&quot;12-6&quot;:1,&quot;6-5&quot;:1,&quot;5-5&quot;:1,&quot;9-2&quot;:1,&quot;9-5&quot;:1,&quot;9-6&quot;:1,&quot;5-2&quot;:1,&quot;7-6&quot;:1,&quot;7-5&quot;:1,&quot;7-4&quot;:1,&quot;17-5&quot;:1,&quot;8-5&quot;:1,&quot;10-2&quot;:1,&quot;10-5&quot;:1,&quot;10-6&quot;:1} | checkin    | JwUE5GmEO-sH1FuwJgKBlQ |
-| {&quot;6-6&quot;:2,&quot;6-5&quot;:1,&quot;7-6&quot;:1,&quot;7-5&quot;:1,&quot;8-5&quot;:2,&quot;10-5&quot;:1,&quot;9-3&quot;:1,&quot;12-5&quot;:1,&quot;15-3&quot;:1,&quot;15-5&quot;:1,&quot;15-6&quot;:1,&quot;16-3&quot;:1,&quot;10-0&quot;:1,&quot;15-4&quot;:1,&quot;10-4&quot;:1,&quot;8-2&quot;:1}                                                                                               | checkin    | uGykseHzyS5xAMWoN6YUqA |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------+------------------------+
+<p>In the example, CPU shares was calculated as:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   1024 (10/32) = 320
 </code></pre></div>
-<div class="admonition note">
-  <p class="first admonition-title">Note</p>
-  <p class="last">This document aligns Drill output for example purposes. Drill output is not aligned in this case.  </p>
-</div>
+<p>To set a hard limit, add limits to the <code>cpu.cfs_quota_us</code> and <code>cpu.cfs_period_us</code> parameters. In the configuration example, the Drill process can fully utilize 4 CPU.  </p>
 
-<p>You query the data in JSON files directly. Schema definitions in Hive store are not necessary. The names of the elements within the <code>checkin_info</code> column are different between the first and second row.</p>
-
-<p>Drill provides a function called KVGEN (Key Value Generator) which is useful when working with complex data that contains arbitrary maps consisting of dynamic and unknown element names such as checkin_info. KVGEN turns the dynamic map into an array of key-value pairs where keys represent the dynamic element names.</p>
-
-<p>Let’s apply KVGEN on the <code>checkin_info</code> element to generate key-value pairs.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT KVGEN(checkin_info) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json` LIMIT 2;
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|                                                                    checkins                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [{&quot;key&quot;:&quot;3-4&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;13-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;6-6&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;14-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;14-6&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;14-2&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;14-3&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;19-0&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;11-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;13-2&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;11-6&quot;,&quot;value&quot;:2},{&quot;key&quot;:&quot;11-3&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;12-6&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;6-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;5-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;9-2&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;9-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;9-6&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;5-2&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;7-6&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;7-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;7-4&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;17-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;8-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;10-2&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;10-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;10-6&quot;,&quot;value&quot;:1}] |
-| [{&quot;key&quot;:&quot;6-6&quot;,&quot;value&quot;:2},{&quot;key&quot;:&quot;6-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;7-6&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;7-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;8-5&quot;,&quot;value&quot;:2},{&quot;key&quot;:&quot;10-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;9-3&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;12-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;15-3&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;15-5&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;15-6&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;16-3&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;10-0&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;15-4&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;10-4&quot;,&quot;value&quot;:1},{&quot;key&quot;:&quot;8-2&quot;,&quot;value&quot;:1}]                                                                                                                                                                                                                                                                               |
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+<p><strong>Note:</strong> The hard limit parameter settings persist after each cgroup service restart. Alternatively, you can set the parameters at the session level using the following commands:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   echo 400000 &gt; /cgroup/cpu/drillcpu/cpu.cfs_quota_us
+   echo 100000 &gt; /cgroup/cpu/drillcpu/cpu.cfs_period_us
 </code></pre></div>
-<p>Drill provides another function to operate on complex data called ‘Flatten’ to break the list of key-value pairs resulting from ‘KVGen’ into separate rows to further apply analytic functions on it.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT FLATTEN(KVGEN(checkin_info)) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json` LIMIT 20;
-+--------------------------+
-|         checkins         |
-+--------------------------+
-| {&quot;key&quot;:&quot;3-4&quot;,&quot;value&quot;:1}  |
-| {&quot;key&quot;:&quot;13-5&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;6-6&quot;,&quot;value&quot;:1}  |
-| {&quot;key&quot;:&quot;14-5&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;14-6&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;14-2&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;14-3&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;19-0&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;11-5&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;13-2&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;11-6&quot;,&quot;value&quot;:2} |
-| {&quot;key&quot;:&quot;11-3&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;12-6&quot;,&quot;value&quot;:1} |
-| {&quot;key&quot;:&quot;6-5&quot;,&quot;value&quot;:1}  |
-| {&quot;key&quot;:&quot;5-5&quot;,&quot;value&quot;:1}  |
-| {&quot;key&quot;:&quot;9-2&quot;,&quot;value&quot;:1}  |
-| {&quot;key&quot;:&quot;9-5&quot;,&quot;value&quot;:1}  |
-| {&quot;key&quot;:&quot;9-6&quot;,&quot;value&quot;:1}  |
-| {&quot;key&quot;:&quot;5-2&quot;,&quot;value&quot;:1}  |
-| {&quot;key&quot;:&quot;7-6&quot;,&quot;value&quot;:1}  |
-+--------------------------+
+<p>3-(Optional) If you want the cgconfig service to automatically restart upon system reboots, run the following command:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   chkconfig cgconfig on  
 </code></pre></div>
-<p>You can get value from the data quickly by applying both KVGEN and FLATTEN functions on the datasets on the fly--no need for time-consuming schema definitions and data storage in intermediate formats.</p>
+<p>4-Run the following command to add the Drill process ID (PID) to the /cgroup/cpu/drillcpu/cgroup.procs file, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   echo 25809 &gt; /cgroup/cpu/drillcpu/cgroup.procs
+</code></pre></div>
+<p><strong>Note:</strong> You must perform this step each time a Drillbit restarts.  </p>
 
-<p>On the output of flattened data, you use standard SQL functionality such as filters , aggregates, and sort. Let’s see a few examples.</p>
-
-<p><strong>Get the total number of check-ins recorded in the Yelp dataset</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT SUM(checkintbl.checkins.`value`) AS TotalCheckins FROM (
-. . . . . . . . . . . &gt;  SELECT FLATTEN(KVGEN(checkin_info)) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json` ) checkintbl
-. . . . . . . . . . . &gt;  ;
-+---------------+
-| TotalCheckins |
-+---------------+
-| 4713811       |
-+---------------+
-</code></pre></div>
-<p><strong>Get the number of check-ins specifically for Sunday midnights</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT SUM(checkintbl.checkins.`value`) AS SundayMidnightCheckins FROM (
-. . . . . . . . . . . &gt;  SELECT FLATTEN(KVGEN(checkin_info)) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json` ) checkintbl WHERE checkintbl.checkins.key=&#39;23-0&#39;;
-+------------------------+
-| SundayMidnightCheckins |
-+------------------------+
-| 8575                   |
-+------------------------+
-</code></pre></div>
-<p><strong>Get the number of check-ins per day of the week</strong>  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT `right`(checkintbl.checkins.key,1) WeekDay,sum(checkintbl.checkins.`value`) TotalCheckins from (
-. . . . . . . . . . . &gt;  select flatten(kvgen(checkin_info)) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json`  ) checkintbl GROUP BY `right`(checkintbl.checkins.key,1) ORDER BY TotalCheckins;
-+------------+---------------+
-|  WeekDay   | TotalCheckins |
-+------------+---------------+
-| 1          | 545626        |
-| 0          | 555038        |
-| 2          | 555747        |
-| 3          | 596296        |
-| 6          | 735830        |
-| 4          | 788073        |
-| 5          | 937201        |
-+------------+---------------+
-</code></pre></div>
-<p><strong>Get the number of check-ins per hour of the day</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT SUBSTR(checkintbl.checkins.key,1,strpos(checkintbl.checkins.key,&#39;-&#39;)-1) AS HourOfTheDay ,SUM(checkintbl.checkins.`value`) TotalCheckins FROM (
-. . . . . . . . . . . &gt;  SELECT FLATTEN(KVGEN(checkin_info)) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json` ) checkintbl GROUP BY SUBSTR(checkintbl.checkins.key,1,strpos(checkintbl.checkins.key,&#39;-&#39;)-1) ORDER BY TotalCheckins;
-+--------------+---------------+
-| HourOfTheDay | TotalCheckins |
-+--------------+---------------+
-| 3            | 20357         |
-| 4            | 21076         |
-| 2            | 28116         |
-| 5            | 33842         |
-| 1            | 45467         |
-| 6            | 54174         |
-| 0            | 74127         |
-| 7            | 96329         |
-| 23           | 102009        |
-| 8            | 130091        |
-| 22           | 140338        |
-| 9            | 162913        |
-| 21           | 211949        |
-| 10           | 220687        |
-| 15           | 261384        |
-| 14           | 276188        |
-| 16           | 292547        |
-| 20           | 293783        |
-| 13           | 328373        |
-| 11           | 338675        |
-| 17           | 374186        |
-| 19           | 385381        |
-| 12           | 399797        |
-| 18           | 422022        |
-+--------------+---------------+
-</code></pre></div>
-<hr>
-
-<h2 id="summary">Summary</h2>
-
-<p>In this tutorial, you surf both structured and semi-structured data without any upfront schema management or ETL.</p>
+<p>For additional information, refer to the following documentation:<br>
+- <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html">https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html</a><br>
+- <a href="resource_management_guide/sect-cpu-example_usage">resource_management_guide/sect-cpu-example_usage</a><br>
+- <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html">https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html</a>
+- <a href="resource_management_guide/sec-cpu_and_memory-use_case">resource_management_guide/sec-cpu_and_memory-use_case</a></p>
 
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/summary/">← Summary</a></span><span class="next-toc"><a href="/docs/analyzing-social-media/">Analyzing Social Media →</a></span>
+  <span class="previous-toc"><a href="/docs/configuring-the-drill-shell/">← Configuring the Drill Shell</a></span><span class="next-toc"><a href="/docs/connect-a-data-source/">Connect a Data Source →</a></span>
 </div>
 
     

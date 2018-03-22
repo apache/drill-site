@@ -265,10 +265,6 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/appendix-d-recreate-the-drill-archive/">Appendix D: Recreate the Drill Archive</a></li>
             
           
-            
-              <li class="toctree-l2"><a class="reference internal" href="/docs/appendix-e-using-cgroups-to-control-cpu-usage/">Appendix E: Using cgroups to Control CPU Usage</a></li>
-            
-          
           </ul>
         
       
@@ -402,6 +398,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-the-drill-shell/">Configuring the Drill Shell</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/configuring-cgroups-to-control-cpu-usage/">Configuring cgroups to Control CPU Usage</a></li>
             
           
           </ul>
@@ -1216,7 +1216,7 @@
 
     </div>
 
-     Mar 14, 2018
+     Mar 22, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1229,36 +1229,75 @@
 <p>The JVM heap memory does not limit the amount of direct memory available in a Drillbit. The on-heap memory for Drill is typically set at 4-8G (default is 4), which should
 suffice because Drill avoids having data sit in heap memory.  </p>
 
-<p>The following sections describe how to modify the memory allocated to each Drillbit and queries:  </p>
+<p>The following sections describe how to allocate memory to Drillbits and queries, and how to enable bounds checking if you see performance issues:  </p>
 
 <h2 id="modifying-memory-allocated-to-a-drillbit">Modifying Memory Allocated to a Drillbit</h2>
 
-<p>Modify the memory allocated to each Drillbit in a cluster in the Drillbit startup script, <code>&lt;drill_installation_directory&gt;/conf/drill-env.sh</code>. You must <a href="/docs/starting-drill-in-distributed-mode">restart Drill</a> after you modify the script.</p>
+<p>Modify the memory allocated to each Drillbit in a cluster in the Drillbit startup script, <code>&lt;drill_installation_directory&gt;/conf/drill-env.sh</code>. You must <a href="/docs/starting-drill-in-distributed-mode">restart Drill</a> after you modify the script.  </p>
 
+<p>The <code>drill-env.sh</code> file contains the following options:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#export DRILLBIT_MAX_PROC_MEM=${DRILLBIT_MAX_PROC_MEM:-&quot;13G&quot;}
+//Maximum cumulative memory allocated to the Drill process during startup. This option was introduced in Drill 1.13.
+
+#export DRILL_HEAP=${DRILL_HEAP:-&quot;4G&quot;}
+//Maximum theoretical heap limit for the JVM per node.
+
+#export DRILL_MAX_DIRECT_MEMORY=${DRILL_MAX_DIRECT_MEMORY:-&quot;8G&quot;}  
+//Java direct memory limit per node.
+
+#export DRILLBIT_CODE_CACHE_SIZE=${DRILLBIT_CODE_CACHE_SIZE:-&quot;1G&quot;} 
+//Do not modify the DRILLBIT_CODE_CACHE_SIZE. The value for this parameter is auto-computed based on the heap size and cannot exceed 1GB. 
+</code></pre></div>
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
   <p class="last">If DRILL_MAX_DIRECT_MEMORY is not set, the limit depends on the amount of available direct memory.  </p>
 </div>
 
-<p>The <code>drill-env.sh</code> file contains the following options:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">#export DRILL_HEAP=${DRILL_HEAP:-&quot;4G”}  
-#export DRILL_MAX_DIRECT_MEMORY=${DRILL_MAX_DIRECT_MEMORY:-&quot;8G&quot;}
-</code></pre></div>
 <p>To customize memory limits, uncomment the line needed and change the setting:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">export DRILL_HEAP=${DRILL_HEAP:-&quot;&lt;limit&gt;”}
-export DRILL_MAX_DIRECT_MEMORY=${DRILL_MAX_DIRECT_MEMORY:-“&lt;limit&gt;&quot;}  
+<div class="highlight"><pre><code class="language-text" data-lang="text">export DRILLBIT_MAX_PROC_MEM=${DRILLBIT_MAX_PROC_MEM:-&quot;&lt;limit&gt;&quot;}
+export DRILL_HEAP=${DRILL_HEAP:-&quot;&lt;limit&gt;&quot;}
+export DRILL_MAX_DIRECT_MEMORY=${DRILL_MAX_DIRECT_MEMORY:-&quot;&lt;limit&gt;&quot;}   
 </code></pre></div>
-<p>DRILL_MAX_HEAP is the maximum theoretical heap limit for the JVM per node.<br>
-DRILL_MAX_DIRECT_MEMORY is the Java direct memory limit per node.  </p>
+<p>For example, if you set <code>DRILLBIT_MAX_PROC_MEM</code> to 40G, the total amount of memory allocated to the following memory parameters cannot exceed 40G:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   DRILL_HEAP=8G
+   DRILL_MAX_DIRECT_MEMORY=10G
+   DRILLBIT_CODE_CACHE_SIZE=1024M
+</code></pre></div>
+<p>At startup, the auto-setup.sh script (introduced in Drill 1.13) performs a check to see if these memory parameters are declared. If the parameters are declared, the script performs a check to verify that the cumulative memory of the parameters does not exceed the value specified by <code>DRILLBIT_MAX_PROC_MEM</code>. If the cumulative memory exceeds the total amount of memory defined by <code>DRILLBIT_MAX_PROC_MEM</code>, Drill returns an error message with instructions. See the example below.</p>
 
-<p>If performance is an issue, add -Dbounds=false, as shown in the following example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">export DRILL_JAVA_OPTS=&quot;$DRILL_JAVA_OPTS -Dbounds=false&quot;  
+<p>If any of the memory parameters are undefined, the script adjusts the settings for the undefined parameters to ensure that the total memory allocated is within the value defined by <code>DRILLBIT_MAX_PROC_MEM</code>.</p>
+
+<p>By default, <code>DRILLBIT_MAX_PROC_MEM</code> is not defined. You can define <code>DRILLBIT_MAX_PROC_MEM</code> in KB, MB, or GB, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   DRILLBIT_MAX_PROC_MEM=13G
+   DRILLBIT_MAX_PROC_MEM=8192M
+   DRILLBIT_MAX_PROC_MEM=4194304K
 </code></pre></div>
-<p>As of Drill 1.13, bounds checking for direct memory is disabled by default. To enable bounds checking for direct memory, use the DRILLBIT_JAVA_OPTS variable to pass the <code>drill.exec.memory.enable_unsafe_bounds_check</code> parameter in $DRILL_HOME/conf/drill-env.sh, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">export DRILL_JAVA_OPTS=&quot;$DRILL_JAVA_OPTS -Ddrill.exec.memory.enable_unsafe_bounds_check=true&quot;  
+<p>Alternatively, you can set <code>DRILLBIT_MAX_PROC_MEM</code> as a percentage of total memory:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   DRILLBIT_MAX_PROC_MEM=50%
 </code></pre></div>
-<p>For earlier versions of Drill (prior to 1.13), bounds checking is enabled by default. To disable bounds checking, set the <code>drill.enable_unsafe_memory_access</code> parameter to true, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">export DRILL_JAVA_OPTS=&quot;$DRILL_JAVA_OPTS -Ddrill.enable_unsafe_memory_access=true&quot;  
+<p>If you do not set this variable, it is disabled. If you set this variable, you can unset it to disable it.  </p>
+
+<p><strong>Example</strong>  </p>
+
+<p>If a system has 48GB of free memory and you set the following parameters in drill-env.sh:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   DRILLBIT_MAX_PROC_MEM=25%
+   DRILL_HEAP=8G
+   DRILL_MAX_DIRECT_MEMORY=10G
+   DRILLBIT_CODE_CACHE_SIZE=1024M  
+</code></pre></div>
+<p>The Drillbit fails on startup with the following messages:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   [WARN] 25% of System Memory (47 GB) translates to 12 GB
+   [ERROR] Unable to start Drillbit due to memory constraint violations Total Memory Requested : 19 GB 
+   Check and modify the settings or increase the maximum amount of memory permitted.
+</code></pre></div>
+<p>If DRILLBIT_MAX_PROC_MEM is increased to 50%; the Drillbit starts up with the following warnings:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   [WARN] 50% of the system memory (48 GB) translates to 24 GB.
+   [WARN] You have an allocation of 4 GB that is currently unused from a total of 24 GB. 
+   You can increase your existing memory configuration to use this extra memory.  
+</code></pre></div>
+<p>Additionally, if the available free memory is less than the allocation, the following additional warnings are provided under the assumption that the operating system will reclaim more free memory when required:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   [WARN] Total Memory Allocation for Drillbit (19GB) exceeds available free memory (11GB).
+   [WARN] Drillbit will start up, but can potentially crash due to oversubscribing of system memory.  
 </code></pre></div>
 <h2 id="modifying-memory-allocated-to-queries">Modifying Memory Allocated to Queries</h2>
 
@@ -1266,7 +1305,7 @@ DRILL_MAX_DIRECT_MEMORY is the Java direct memory limit per node.  </p>
 
 <p>If you modify the memory allocated per query and continue to experience out-of-memory errors, you can try reducing the value of the <a href="/docs/configuration-options-introduction/"><code>planner.width.max_per_node</code></a> option. Reducing the value of this option reduces the level of parallelism per node. However, this may increase the amount of time required for a query to complete.  </p>
 
-<p>Another option you can modify is the <code>drill.exec.memory.operator.output_batch_size</code> option, introduced in Drill 1.13. The  <code>drill.exec.memory.operator.output_batch_size</code> option limits the amount of memory that the Flatten, Merge Join, and External Sort operators allocate to outgoing batches. Limiting the memory allocated to outgoing batches can improve concurrency and prevent queries from failing with out-of-memory errors.</p>
+<p>You can also modify the <code>drill.exec.memory.operator.output_batch_size</code> option, introduced in Drill 1.13. The <code>drill.exec.memory.operator.output_batch_size</code> option limits the amount of memory that the Flatten, Merge Join, and External Sort operators allocate to outgoing batches. Limiting the memory allocated to outgoing batches can improve concurrency and prevent queries from failing with out-of-memory errors.</p>
 
 <p>The average row size of the outgoing batch (calculated from the incoming batch size) determines the number of rows that can fit into the available memory for the batch. If your queries fail with memory errors, reduce the value of the <code>drill.exec.memory.operator.output_batch_size</code> option to reduce the output batch size. </p>
 
@@ -1275,7 +1314,18 @@ DRILL_MAX_DIRECT_MEMORY is the Java direct memory limit per node.  </p>
 <p><strong>Note:</strong> Configuring a batch size less than 1 MB is not recommended, as it could lead to performance issues. </p>
 
 <p>Use the ALTER SYSTEM SET command to change the settings, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   ALTER SYSTEM SET `drill.exec.memory.operator.output_batch_size` = &lt;value&gt;;
+<div class="highlight"><pre><code class="language-text" data-lang="text">   ALTER SYSTEM SET `drill.exec.memory.operator.output_batch_size` = &lt;value&gt;;  
+</code></pre></div>
+<h2 id="bounds-checking">Bounds Checking</h2>
+
+<p>If performance is an issue, add -Dbounds=false, as shown in the following example:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">export DRILL_JAVA_OPTS=&quot;$DRILL_JAVA_OPTS -Dbounds=false&quot;  
+</code></pre></div>
+<p>As of Drill 1.13, bounds checking for direct memory is disabled by default. To enable bounds checking for direct memory, use the DRILLBIT_JAVA_OPTS variable to pass the <code>drill.exec.memory.enable_unsafe_bounds_check</code> parameter in $DRILL_HOME/conf/drill-env.sh, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">export DRILL_JAVA_OPTS=&quot;$DRILL_JAVA_OPTS -Ddrill.exec.memory.enable_unsafe_bounds_check=true&quot;  
+</code></pre></div>
+<p>For earlier versions of Drill (prior to 1.13), bounds checking is enabled by default. To disable bounds checking, set the <code>drill.enable_unsafe_memory_access</code> parameter to true, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">export DRILL_JAVA_OPTS=&quot;$DRILL_JAVA_OPTS -Ddrill.enable_unsafe_memory_access=true&quot;
 </code></pre></div>
     
       
