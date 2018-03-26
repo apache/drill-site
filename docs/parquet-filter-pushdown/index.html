@@ -1216,7 +1216,7 @@
 
     </div>
 
-     Nov 21, 2016
+     Mar 26, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1225,6 +1225,13 @@
         <p>Drill 1.9 introduces the Parquet filter pushdown option. Parquet filter pushdown is a performance optimization that prunes extraneous data from a Parquet file to reduce the amount of data that Drill scans and reads when a query on a Parquet file contains a filter expression. Pruning data reduces the I/O, CPU, and network overhead to optimize Drill’s performance.</p>
 
 <p>Parquet filter pushdown is enabled by default. When a query contains a filter expression, you can run the <a href="/docs/explain-commands/">EXPLAIN PLAN command</a> to see if Drill applies Parquet filter pushdown to the query. You can enable and disable this feature using the <a href="/docs/alter-system/">ALTER SYSTEM|SESSION SET</a> command with the <code>planner.store.parquet.rowgroup.filter.pushdown</code> option.  </p>
+
+<p>As of Drill 1.13, the query planner in Drill can apply project push down, filter push down, and partition pruning to star queries in common table expressions (CTEs), views, and subqueries, for example:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   select col1 from (select * from t)  
+</code></pre></div>
+<p>When a CTE, view, or subquery contains a star filter condition, the query planner in Drill can apply the filter and prune extraneous data, further reducing the amount of data that the scanner reads and improving performance. </p>
+
+<p><strong>Note:</strong> Currently, Drill only supports pushdown for simple star subselect queries without filters. See <a href="https://www.google.com/url?q=https://issues.apache.org/jira/browse/DRILL-6219&amp;sa=D&amp;ust=1522084453671000&amp;usg=AFQjCNFXp-nWMRXzM466BSRFlV3F63_ZYA">DRILL-6219</a> for more information.  </p>
 
 <h2 id="how-parquet-filter-pushdown-works">How Parquet Filter Pushdown Works</h2>
 
@@ -1273,44 +1280,46 @@
 
 <h2 id="support">Support</h2>
 
-<p>The following table lists the supported and unsupported clauses, operators, data types, and scenarios for Parquet filter pushdown:  </p>
+<p>The following table lists the supported and unsupported clauses, operators, data types, function, and scenarios for Parquet filter pushdown:  </p>
+
+<p><strong>Note:</strong> An asterisk (*) indicates support as of Drill 1.13</p>
 
 <table><thead>
 <tr>
 <th></th>
-<th>Supported</th>
-<th>Not Supported</th>
+<th><strong>Supported</strong></th>
+<th><strong>Not Supported</strong></th>
 </tr>
 </thead><tbody>
 <tr>
-<td>Clauses</td>
-<td>WHERE,   HAVING (HAVING is supported if Drill can pass the filter through GROUP   BY.)</td>
-<td></td>
-</tr>
-<tr>
-<td>Operators</td>
-<td>AND,   OR, IN (An IN list is converted to OR if the number in the IN list is within   a certain threshold, for example 20. If greater than the threshold, pruning   cannot occur.)</td>
-<td>NOT,   ITEM (Drill does not push the filter past the ITEM operator, which is used   for complex fields.)</td>
-</tr>
-<tr>
-<td>Comparison Operators</td>
-<td>&lt;&gt;,   &lt;, &gt;, &lt;=, &gt;=, =</td>
-<td>IS [NOT] NULL</td>
-</tr>
-<tr>
-<td>Data Types</td>
-<td>INT,   BIGINT, FLOAT, DOUBLE, DATE, TIMESTAMP, TIME</td>
-<td>CHAR,   VARCHAR columns, Hive TIMESTAMP</td>
-</tr>
-<tr>
-<td>Function</td>
-<td>CAST   is supported among these four numeric types only: int, bigint, float, double</td>
-<td></td>
-</tr>
-<tr>
-<td>Other</td>
+<td><strong>Clauses</strong></td>
+<td>WHERE, *WITH, HAVING (HAVING is   supported if Drill can pass the filter through GROUP BY.)</td>
 <td>--</td>
-<td>Joins,   Files with multiple row groups, Enabled Native Hive reader</td>
+</tr>
+<tr>
+<td><strong>Operators</strong></td>
+<td>AND, OR, NOT, *IS [NOT] NULL, *IS   [NOT] TRUE</td>
+<td>FALSE, IN (An IN list is converted to OR if the number in the IN   list is within a certain threshold, for example 20. If greater than the   threshold, pruning cannot occur.)</td>
+</tr>
+<tr>
+<td>Comparison   Operators</td>
+<td>&lt;&gt;, &lt;, &gt;, &lt;=, &gt;=, =</td>
+<td>--</td>
+</tr>
+<tr>
+<td><strong>Data   Types</strong></td>
+<td>INT, BIGINT, FLOAT, DOUBLE, DATE,   TIMESTAMP, TIME, *BOOLEAN (true</td>
+<td>false)</td>
+</tr>
+<tr>
+<td><strong>Function</strong></td>
+<td>CAST is supported among the following   types only: int, bigint, float, double, *date, *timestamp, and *time</td>
+<td>--</td>
+</tr>
+<tr>
+<td><strong>Other</strong></td>
+<td>Files with multiple row groups</td>
+<td>Joins, Enabled Native Hive reader</td>
 </tr>
 </tbody></table>
 

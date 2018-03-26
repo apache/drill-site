@@ -1218,7 +1218,7 @@
 
     </div>
 
-     
+     Mar 26, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1377,13 +1377,18 @@ CONVERT_FROM(column, type)
 
 <h3 id="convert_to-and-convert_from-usage-notes">CONVERT_TO and CONVERT_FROM Usage Notes</h3>
 
-<p>CONVERT_FROM and CONVERT_TO methods transform a known binary representation/encoding to a Drill internal format. Use CONVERT_TO and CONVERT_FROM instead of the CAST function for converting binary data types. CONVERT_TO/FROM functions work for data in a binary representation and are more efficient to use than CAST. </p>
-
-<p>Drill can optimize scans of HBase tables when you use the *_BE encoded types shown in section  <a href="/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">&quot;Data Types for CONVERT_TO and CONVERT_FROM Functions&quot;</a> on big endian-encoded data. You need to use the HBase storage plugin and query data as described in <a href="/docs/querying-hbase">&quot;Querying Hbase&quot;</a>. To write Parquet binary data, convert SQL data <em>to</em> binary data and store the data in a Parquet table while creating a table as a selection (CTAS).</p>
-
-<p>CONVERT_TO also converts an SQL data type to complex types, including HBase byte arrays, JSON and Parquet arrays, and maps. CONVERT_FROM converts from complex types, including HBase arrays, JSON and Parquet arrays and maps to an SQL data type. </p>
-
-<p>You can use <a href="/docs/data-type-conversion/#string_binary-function">STRING_BINARY</a> and <a href="/docs/data-type-conversion/#binary_string-function">BINARY_STRING</a> custom Drill functions with CONVERT_TO and CONVERT_FROM to get meaningful results.</p>
+<ul>
+<li><p>CONVERT_FROM and CONVERT_TO methods transform a known binary representation/encoding to a Drill internal format. Use CONVERT_TO and CONVERT_FROM instead of the CAST function for converting binary data types. CONVERT_TO/FROM functions work for data in a binary representation and are more efficient to use than CAST. </p></li>
+<li><p>Drill can optimize scans on HBase tables when you use the *_BE encoded types shown in section  <a href="/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">&quot;Data Types for CONVERT_TO and CONVERT_FROM Functions&quot;</a> on big endian-encoded data. You need to use the HBase storage plugin and query data as described in <a href="/docs/querying-hbase">&quot;Querying Hbase&quot;</a>. To write Parquet binary data, convert SQL data <em>to</em> binary data and store the data in a Parquet table while creating a table as a selection (CTAS).  </p></li>
+<li><p>CONVERT_TO also converts an SQL data type to complex types, including HBase byte arrays, JSON and Parquet arrays, and maps. CONVERT_FROM converts from complex types, including HBase arrays, JSON and Parquet arrays and maps to an SQL data type. </p></li>
+<li><p>You can use <a href="/docs/data-type-conversion/#string_binary-function">STRING_BINARY</a> and <a href="/docs/data-type-conversion/#binary_string-function">BINARY_STRING</a> custom Drill functions with CONVERT_TO and CONVERT_FROM to get meaningful results.  </p></li>
+<li><p>Drill 1.13 and later supports <a href="/docs/json-data-model/">NaN and Infinity values as numeric data types</a>. 
+You can use the convert_to and convert_from functions in queries on JSON data with NaN and Infinity values, as shown in the following query examples:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">    select convert_fromJSON(&#39;{&quot;num&quot;: 55, &quot;nan&quot;: NaN, &quot;inf&quot;: -Infinity}&#39;); 
+    select convert_fromJSON(jsonColumn) from mysql.someTable;  
+    select string_binary(convert_toJSON(convert_fromJSON(jsonColumn) from mysql.someTable;
+</code></pre></div></li>
+</ul>
 
 <h3 id="conversion-of-data-types-examples">Conversion of Data Types Examples</h3>
 
