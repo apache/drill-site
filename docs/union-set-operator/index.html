@@ -315,6 +315,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/stopping-drill/">Stopping Drill</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/identifying-multiple-drill-versions-in-a-cluster/">Identifying Multiple Drill Versions in a Cluster</a></li>
             
           
@@ -1218,7 +1222,7 @@
 
     </div>
 
-     
+     Apr 19, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1246,9 +1250,10 @@
 <li>Multiple UNION operators in the same SELECT statement are evaluated left to right, unless otherwise indicated by parentheses.<br></li>
 <li>You can only use * on either side of UNION when the data source has a defined schema, such as data in Hive or views.</li>
 <li>You must explicitly specify columns.</li>
+<li>Drill 1.13 and later supports queries on empty directories. An empty directory in a query does not change the results; Drill returns results as if the query does not contain the UNION operator. See <a href="/docs/data-sources-and-file-formats-introduction/#schemaless-tables">Schemaless Tables</a> for more information.</li>
 </ul>
 
-<h2 id="example">Example</h2>
+<h2 id="examples">Examples</h2>
 
 <p>The following example uses the UNION ALL set operator to combine click activity data before and after a marketing campaign. The data in the example exists in the <code>dfs.clicks workspace</code>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:&gt; SELECT t.trans_id transaction, t.user_info.cust_id customer 
@@ -1265,7 +1270,12 @@
    | 37838       | 18737      |
    +-------------+------------+
 </code></pre></div>
-<p>This UNION ALL query returns rows that exist in two files (and includes any duplicate rows from those files): <code>clicks.campaign.json</code> and <code>clicks.json</code></p>
+<p>This UNION ALL query returns rows that exist in two files (and includes any duplicate rows from those files): <code>clicks.campaign.json</code> and <code>clicks.json</code>  </p>
+
+<p>If a query on either side of the UNION operator queries an empty directory, as shown in the following example where empty_DIR is an empty directory:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:schema=dfs.tmp&gt; select columns[0] from empty_DIR UNION ALL select cast(columns[0] as int) c1 from `testWindow.csv`;
+</code></pre></div>
+<p>Drill treats the empty directory as a schemaless table and returns results as if the UNION operator is not included in the query.</p>
 
     
       

@@ -315,6 +315,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/stopping-drill/">Stopping Drill</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/identifying-multiple-drill-versions-in-a-cluster/">Identifying Multiple Drill Versions in a Cluster</a></li>
             
           
@@ -1218,7 +1222,7 @@
 
     </div>
 
-     Apr 5, 2018
+     Apr 19, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1268,7 +1272,7 @@
 
 <h2 id="impersonation-and-views">Impersonation and Views</h2>
 
-<p>You can use views with impersonation to provide granular access to data and protect sensitive information. When you create a view, Drill stores the view definition in a file and suffixes the file with .drill.view. For example, if you create a view named myview, Drill creates a view file named myview.drill.view and saves it in the current workspace or the workspace specified, such as dfs.views.myview. See <a href="/docs/create-view">CREATE VIEW</a> Command.</p>
+<p>You can use views with impersonation to provide granular access to data and protect sensitive information. When you create a view, Drill stores the view definition in a file and suffixes the file with view.drill. For example, if you create a view named myview, Drill creates a view file named myview.view.drill and saves it in the current workspace or the workspace specified, such as dfs.views.myview. See <a href="/docs/create-view">CREATE VIEW</a> Command.</p>
 
 <p>You can create a view and grant read permissions on the view to give other users access to the data that the view references. When a user queries the view, Drill impersonates the view owner to access the underlying data. If the user tries to access the data directory, Drill returns a permission denied error. A user with read access to a view can create new views from the originating view to further restrict access on data.</p>
 
@@ -1288,7 +1292,7 @@
 <div class="highlight"><pre><code class="language-text" data-lang="text">hadoop fs –chmod &lt;octal code&gt; &lt;file_name&gt;
 hadoop fs –chown &lt;user&gt;:&lt;group&gt; &lt;file_name&gt;
 </code></pre></div>
-<p>Example: <code>hadoop fs –chmod 750 employees.drill.view</code></p>
+<p>Example: <code>hadoop fs –chmod 750 employees.view.drill</code></p>
 
 <h3 id="modifying-system|session-level-view-permissions">Modifying SYSTEM|SESSION Level View Permissions</h3>
 
@@ -1367,9 +1371,9 @@ emp_id, emp_name, emp_ssn, emp_salary, emp_addr, emp_phone, emp_mgr</p>
 
 <p>Frank needs to share a subset of this information with Joe who is an HR manager reporting to Frank. To share the employee data, Frank creates a view called emp_mgr_view that accesses a subset of the data. The emp_mgr_view filters out sensitive employee information, such as the employee social security numbers, and only shows data for the employees that report directly to Joe. Frank and Joe both belong to the mgr group. Managers have read permission on Frank’s directory.</p>
 
-<p>rwxr-----     frank:mgr   /user/frank/emp_mgr_view.drill.view</p>
+<p>rwxr-----     frank:mgr   /user/frank/emp_mgr_view.view.drill</p>
 
-<p>The emp_mgr_view.drill.view file contains the following view definition:</p>
+<p>The emp_mgr_view.view.drill file contains the following view definition:</p>
 
 <p>(view definition: SELECT emp_id, emp_name, emp_salary, emp_addr, emp_phone FROM `/user/frank/employee` WHERE emp_mgr = &#39;Joe&#39;)</p>
 
@@ -1379,9 +1383,9 @@ emp_id, emp_name, emp_ssn, emp_salary, emp_addr, emp_phone, emp_mgr</p>
 
 <p>Joe needs to share employee contact data with his direct reports, so he creates a special view called emp_team_view to share the employee contact information with his team. Joe creates the view and writes it to his home directory. Joe and his reports belong to a group named joeteam. The joeteam group has read permissions on Joe’s home directory so they can query the view and create new views from it.</p>
 
-<p>rwxr-----     joe:joeteam   /user/joe/emp_team_view.drill.view</p>
+<p>rwxr-----     joe:joeteam   /user/joe/emp_team_view.view.drill</p>
 
-<p>The emp_team_view.drill.view file contains the following view definition:</p>
+<p>The emp_team_view.view.drill file contains the following view definition:</p>
 
 <p>(view definition: SELECT emp_id, emp_name, emp_phone FROM `/user/frank/emp_mgr_view.drill`);</p>
 

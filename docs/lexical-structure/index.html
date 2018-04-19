@@ -315,6 +315,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/stopping-drill/">Stopping Drill</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/identifying-multiple-drill-versions-in-a-cluster/">Identifying Multiple Drill Versions in a Cluster</a></li>
             
           
@@ -1216,7 +1220,7 @@
 
     </div>
 
-     Feb 9, 2018
+     Apr 19, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1305,6 +1309,9 @@
 <li>Identifiers that SQL cannot parse<br></li>
 </ul>
 
+<p><strong>Note:</strong>  The term “user” is a reserved keyword, however if you reference a field/column named “user” in a query and you enclose the term in back ticks (`user`), Drill does not treat `user` as an identifier. Instead, Drill treats `user` as a special function that calls the current user. To work around this issue, use a table alias when referencing the field/column. The table alias informs the parser that this identifier is not a function call, but a regular identifier. For example, assume a table alias “t.” Use t.`user` instead of `user` as shown:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT operation, t.`user`, uid FROM `dfs`.`/drill/student` t;
+</code></pre></div>
 <p>For example, enclose the SQL keywords date and time in identifier quotes when referring to column names, but not when referring to data types:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE dfs.tmp.sampleparquet AS 
 (SELECT trans_id, 

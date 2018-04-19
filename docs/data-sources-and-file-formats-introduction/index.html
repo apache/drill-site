@@ -315,6 +315,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/stopping-drill/">Stopping Drill</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/identifying-multiple-drill-versions-in-a-cluster/">Identifying Multiple Drill Versions in a Cluster</a></li>
             
           
@@ -1216,20 +1220,23 @@
 
     </div>
 
-     May 5, 2016
+     Apr 19, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Included in the data sources that  Drill supports are these key data sources:</p>
+        <p>Drill supports the following key data sources:</p>
 
 <ul>
 <li>HBase</li>
 <li>Hive</li>
 <li>MapR-DB</li>
-<li>File system<br></li>
+<li>File system </li>
+<li>...<br></li>
 </ul>
+
+<p>See <a href="/docs/connect-a-data-source/">Connect a Data Source</a> for a complete list of supported data sources that you can configure in Drill. </p>
 
 <p>Drill considers data sources to have either a strong schema or a weak schema.  </p>
 
@@ -1284,7 +1291,24 @@ sources associated with each:</p>
 
 <p>You set the input format for data coming from data sources to Drill in the workspace portion of the <a href="/docs/storage-plugin-registration">storage plugin</a> definition. The default input format in Drill is Parquet. </p>
 
-<p>You change one of the <code>store</code> property in the <a href="/docs/configuration-options-introduction/">sys.options table</a> to set the output format of Drill data. The default storage format for Drill CREATE TABLE AS (CTAS) statements is Parquet.</p>
+<p>You change one of the <code>store</code> properties in the <a href="/docs/configuration-options-introduction/">sys.options table</a> to set the output format of Drill data. The default storage format for Drill CREATE TABLE AS (CTAS) statements is Parquet.  </p>
+
+<h2 id="schemaless-tables">Schemaless Tables</h2>
+
+<p>As of Drill 1.13, Drill supports queries on empty directories. Empty directories are directories that exist, but do not contain files. Currently, an empty directory in Drill is a Drill table without a schema, or a “schemaless” table. An empty directory with Parquet metadata cache files is also a schemaless table in Drill.</p>
+
+<p>Drill supports queries with JOIN and UNION [ALL] operators on empty directories. For example, if you issue the following queries with the UNION ALL operator, Drill queries the empty directory (empty_DIR) as a schemaless table and returns results for the query on the right side of the operator:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:schema=dfs.tmp&gt; select columns[0] from empty_DIR UNION ALL select cast(columns[0] as int) c1 from `testWindow.csv`;  
+</code></pre></div>
+<h3 id="usage-notes">Usage Notes</h3>
+
+<ul>
+<li>Queries with stars (*) on an empty directory return an empty result set.<br></li>
+<li>Fields indicated in the SELECT statement are returned as INT-OPTIONAL types.<br></li>
+<li>An empty directory in a query does not change the results; Drill returns results as if the query does not contain the UNION operator.<br></li>
+<li>You can use an empty directory in complex queries.<br></li>
+<li>Queries with joins return an empty result, except when using outer join clauses, when the outer table for &quot;right join&quot; or derived table for &quot;left join&quot; has data. In that case, Drill returns the data from the table with data.</li>
+</ul>
 
     
       

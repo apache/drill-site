@@ -315,6 +315,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/stopping-drill/">Stopping Drill</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/identifying-multiple-drill-versions-in-a-cluster/">Identifying Multiple Drill Versions in a Cluster</a></li>
             
           
@@ -1218,7 +1222,7 @@
 
     </div>
 
-     Mar 14, 2018
+     Apr 19, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1249,37 +1253,47 @@
 <tr>
 <td>drill.exec.default_temporary_workspace</td>
 <td>dfs.tmp</td>
-<td>Available as of Drill 1.10. Sets the   workspace for temporary tables. The workspace must be writable, file-based,   and point to a location that already exists. This option requires the   following format: .&lt;workspace</td>
+<td>Available   as of Drill 1.10. Sets the workspace for temporary tables. The workspace must   be writable, file-based, and point to a location that already exists. This   option requires the following format: .&lt;workspace</td>
+</tr>
+<tr>
+<td>drill.exec.http.jetty.server.acceptors</td>
+<td>1</td>
+<td>Available as of Drill 1.13. HTTP   connector option that limits the number of worker threads dedicated to   accepting connections. Limiting the number of acceptors also limits the   number threads needed.</td>
+</tr>
+<tr>
+<td>drill.exec.http.jetty.server.selectors</td>
+<td>2</td>
+<td>Available as of Drill1.13. HTTP   connector option that limits the number of worker threads dedicated to   sending and receiving data. Limiting the number of selectors also limits the   number threads needed.</td>
 </tr>
 <tr>
 <td>drill.exec.memory.operator.output_batch_size</td>
 <td>16777216   (16 MB)</td>
-<td>Available as of Drill 1.13. Limits the   amount of memory that the Flatten, Merge Join, and External Sort operators   allocate to outgoing batches.</td>
+<td>Available   as of Drill 1.13. Limits the amount of memory that the Flatten, Merge Join,   and External Sort operators allocate to outgoing batches.</td>
 </tr>
 <tr>
 <td>drill.exec.storage.implicit.filename.column.label</td>
 <td>filename</td>
-<td>Available as of Drill 1.10. Sets the   implicit column name for the filename column.</td>
+<td>Available   as of Drill 1.10. Sets the implicit column name for the filename column.</td>
 </tr>
 <tr>
 <td>drill.exec.storage.implicit.filepath.column.label</td>
 <td>filepath</td>
-<td>Available as of Drill 1.10. Sets the   implicit column name for the filepath column.</td>
+<td>Available   as of Drill 1.10. Sets the implicit column name for the filepath column.</td>
 </tr>
 <tr>
 <td>drill.exec.storage.implicit.fqn.column.label</td>
 <td>fqn</td>
-<td>Available as of Drill 1.10. Sets the   implicit column name for the fqn column.</td>
+<td>Available   as of Drill 1.10. Sets the implicit column name for the fqn column.</td>
 </tr>
 <tr>
 <td>drill.exec.storage.implicit.suffix.column.label</td>
 <td>suffix</td>
-<td>Available as of Drill 1.10. Sets the   implicit column name for the suffix column.</td>
+<td>Available   as of Drill 1.10. Sets the implicit column name for the suffix column.</td>
 </tr>
 <tr>
 <td>drill.exec.functions.cast_empty_string_to_null</td>
 <td>FALSE</td>
-<td>In a text file, treat empty fields as NULL   values instead of empty string.</td>
+<td>In   a text file, treat empty fields as NULL values instead of empty string.</td>
 </tr>
 <tr>
 <td>drill.exe.spill.fs</td>
@@ -1294,247 +1308,247 @@
 <tr>
 <td>drill.exec.storage.file.partition.column.label</td>
 <td>dir</td>
-<td>The column label for directory levels in   results of queries of files in a directory. Accepts a string input.</td>
+<td>The   column label for directory levels in results of queries of files in a   directory. Accepts a string input.</td>
 </tr>
 <tr>
 <td>exec.enable_union_type</td>
 <td>FALSE</td>
-<td>Enable support for Avro union type.</td>
+<td>Enable   support for Avro union type.</td>
 </tr>
 <tr>
 <td>exec.errors.verbose</td>
 <td>FALSE</td>
-<td>Toggles verbose output of executable error   messages</td>
+<td>Toggles   verbose output of executable error messages</td>
 </tr>
 <tr>
 <td>exec.java_compiler</td>
 <td>DEFAULT</td>
-<td>Switches between DEFAULT, JDK, and JANINO   mode for the current session. Uses Janino by default for generated source   code of less than exec.java_compiler_janino_maxsize; otherwise, switches to   the JDK compiler.</td>
+<td>Switches   between DEFAULT, JDK, and JANINO mode for the current session. Uses Janino by   default for generated source code of less than   exec.java_compiler_janino_maxsize; otherwise, switches to the JDK compiler.</td>
 </tr>
 <tr>
 <td>exec.java_compiler_debug</td>
 <td>TRUE</td>
-<td>Toggles the output of debug-level compiler   error messages in runtime generated code.</td>
+<td>Toggles   the output of debug-level compiler error messages in runtime generated code.</td>
 </tr>
 <tr>
 <td>exec.java.compiler.exp_in_method_size</td>
 <td>50</td>
-<td>Introduced in Drill 1.8. For queries with   complex or multiple expressions in the query logic, this option limits the   number of expressions allowed in each method to prevent Drill from generating   code that exceeds the Java limit of 64K bytes. If a method approaches the 64K   limit, the Java compiler returns a message stating that the code is too large   to compile. If queries return such a message, reduce the value of this option   at the session level. The default value for this option is 50. The value is   the count of expressions allowed in a method. Expressions are added to a   method until they hit the Java 64K limit, when a new inner method is created   and called from the existing method. Note: This logic has not been implemented for all operators. If   a query uses operators for which the logic is not implemented, reducing the   setting for this option may not resolve the error. Setting this option at the   system level impacts all queries and can degrade query performance.</td>
+<td>Introduced   in Drill 1.8. For queries with complex or multiple expressions in the query   logic, this option limits the number of expressions allowed in each method to   prevent Drill from generating code that exceeds the Java limit of 64K bytes.   If a method approaches the 64K limit, the Java compiler returns a message   stating that the code is too large to compile. If queries return such a   message, reduce the value of this option at the session level. The default   value for this option is 50. The value is the count of expressions allowed in   a method. Expressions are added to a method until they hit the Java 64K   limit, when a new inner method is created and called from the existing   method. Note: This logic has not been implemented for all operators. If a   query uses operators for which the logic is not implemented, reducing the   setting for this option may not resolve the error. Setting this option at the   system level impacts all queries and can degrade query performance.</td>
 </tr>
 <tr>
 <td>exec.java_compiler_janino_maxsize</td>
 <td>262144</td>
-<td>See the exec.java_compiler option comment.   Accepts inputs of type LONG.</td>
+<td>See   the exec.java_compiler option comment. Accepts inputs of type LONG.</td>
 </tr>
 <tr>
 <td>exec.max_hash_table_size</td>
 <td>1073741824</td>
-<td>Ending size in buckets for hash tables.   Range: 0 - 1073741824.</td>
+<td>Ending   size in buckets for hash tables. Range: 0 - 1073741824.</td>
 </tr>
 <tr>
 <td>exec.min_hash_table_size</td>
 <td>65536</td>
-<td>Starting size in bucketsfor hash tables.   Increase according to available memory to improve performance. Increasing for   very large aggregations or joins when you have large amounts of memory for   Drill to use. Range: 0 - 1073741824.</td>
+<td>Starting   size in bucketsfor hash tables. Increase according to available memory to   improve performance. Increasing for very large aggregations or joins when you   have large amounts of memory for Drill to use. Range: 0 - 1073741824.</td>
 </tr>
 <tr>
 <td>exec.queue.enable</td>
 <td>FALSE</td>
-<td>Changes the state of query queues. False   allows unlimited concurrent queries.</td>
+<td>Changes   the state of query queues. False allows unlimited concurrent queries.</td>
 </tr>
 <tr>
 <td>exec.queue.large</td>
 <td>10</td>
-<td>Sets the number of large queries that can   run concurrently in the cluster. Range: 0-1000</td>
+<td>Sets   the number of large queries that can run concurrently in the cluster. Range:   0-1000</td>
 </tr>
 <tr>
 <td>exec.queue.small</td>
 <td>100</td>
-<td>Sets the number of small queries that can   run concurrently in the cluster. Range: 0-1001</td>
+<td>Sets   the number of small queries that can run concurrently in the cluster. Range:   0-1001</td>
 </tr>
 <tr>
 <td>exec.queue.threshold</td>
 <td>30000000</td>
-<td>Sets the cost threshold, which depends on   the complexity of the queries in queue, for determining whether query is   large or small. Complex queries have higher thresholds. Range:   0-9223372036854775807</td>
+<td>Sets   the cost threshold, which depends on the complexity of the queries in queue,   for determining whether query is large or small. Complex queries have higher   thresholds. Range: 0-9223372036854775807</td>
 </tr>
 <tr>
 <td>exec.queue.timeout_millis</td>
 <td>300000</td>
-<td>Indicates how long a query can wait in queue   before the query fails. Range: 0-9223372036854775807</td>
+<td>Indicates   how long a query can wait in queue before the query fails. Range:   0-9223372036854775807</td>
 </tr>
 <tr>
 <td>exec.schedule.assignment.old</td>
 <td>FALSE</td>
-<td>Used to prevent query failure when no work   units are assigned to a minor fragment, particularly when the number of files   is much larger than the number of leaf fragments.</td>
+<td>Used   to prevent query failure when no work units are assigned to a minor fragment,   particularly when the number of files is much larger than the number of leaf   fragments.</td>
 </tr>
 <tr>
 <td>exec.storage.enable_new_text_reader</td>
 <td>TRUE</td>
-<td>Enables the text reader that complies with   the RFC 4180 standard for text/csv files.</td>
+<td>Enables   the text reader that complies with the RFC 4180 standard for text/csv files.</td>
 </tr>
 <tr>
 <td>new_view_default_permissions</td>
 <td>700</td>
-<td>Sets view permissions using an octal code in   the Unix tradition.</td>
+<td>Sets   view permissions using an octal code in the Unix tradition.</td>
 </tr>
 <tr>
 <td>planner.add_producer_consumer</td>
 <td>FALSE</td>
-<td>Increase prefetching of data from disk.   Disable for in-memory reads.</td>
+<td>Increase   prefetching of data from disk. Disable for in-memory reads.</td>
 </tr>
 <tr>
 <td>planner.affinity_factor</td>
 <td>1.2</td>
-<td>Factor by which a node with endpoint   affinity is favored while creating assignment. Accepts inputs of type DOUBLE.</td>
+<td>Factor   by which a node with endpoint affinity is favored while creating assignment.   Accepts inputs of type DOUBLE.</td>
 </tr>
 <tr>
 <td>planner.broadcast_factor</td>
 <td>1</td>
-<td>A heuristic parameter for influencing the   broadcast of records as part of a query.</td>
+<td>A   heuristic parameter for influencing the broadcast of records as part of a   query.</td>
 </tr>
 <tr>
 <td>planner.broadcast_threshold</td>
 <td>10000000</td>
-<td>The maximum number of records allowed to be   broadcast as part of a query. After one million records, Drill reshuffles   data rather than doing a broadcast to one side of the join. Range:   0-2147483647</td>
+<td>The   maximum number of records allowed to be broadcast as part of a query. After   one million records, Drill reshuffles data rather than doing a broadcast to   one side of the join. Range: 0-2147483647</td>
 </tr>
 <tr>
 <td>planner.disable_exchanges</td>
 <td>FALSE</td>
-<td>Toggles the state of hashing to a random   exchange.</td>
+<td>Toggles   the state of hashing to a random exchange.</td>
 </tr>
 <tr>
 <td>planner.enable_broadcast_join</td>
 <td>TRUE</td>
-<td>Changes the state of aggregation and join   operators. The broadcast join can be used for hash join, merge join and   nested loop join. Use to join a large (fact) table to relatively smaller   (dimension) tables. Do not disable.</td>
+<td>Changes   the state of aggregation and join operators. The broadcast join can be used   for hash join, merge join and nested loop join. Use to join a large (fact)   table to relatively smaller (dimension) tables. Do not disable.</td>
 </tr>
 <tr>
 <td>planner.enable_constant_folding</td>
 <td>TRUE</td>
-<td>If one side of a filter condition is a   constant expression, constant folding evaluates the expression in the   planning phase and replaces the expression with the constant value. For   example, Drill can rewrite WHERE age + 5 &lt; 42 as WHERE age &lt; 37.</td>
+<td>If   one side of a filter condition is a constant expression, constant folding   evaluates the expression in the planning phase and replaces the expression   with the constant value. For example, Drill can rewrite WHERE age + 5 &lt; 42   as WHERE age &lt; 37.</td>
 </tr>
 <tr>
 <td>planner.enable_decimal_data_type</td>
 <td>FALSE</td>
-<td>False disables the DECIMAL data type,   including casting to DECIMAL and reading DECIMAL types from Parquet and Hive.</td>
+<td>False   disables the DECIMAL data type, including casting to DECIMAL and reading   DECIMAL types from Parquet and Hive.</td>
 </tr>
 <tr>
 <td>planner.enable_demux_exchange</td>
 <td>FALSE</td>
-<td>Toggles the state of hashing to a   demulitplexed exchange.</td>
+<td>Toggles   the state of hashing to a demulitplexed exchange.</td>
 </tr>
 <tr>
 <td>planner.enable_hash_single_key</td>
 <td>TRUE</td>
-<td>Each hash key is associated with a single   value.</td>
+<td>Each   hash key is associated with a single value.</td>
 </tr>
 <tr>
 <td>planner.enable_hashagg</td>
 <td>TRUE</td>
-<td>Enable hash aggregation; otherwise, Drill   does a sort-based aggregation. Writes to disk. Enable is recommended.</td>
+<td>Enable   hash aggregation; otherwise, Drill does a sort-based aggregation. Writes to   disk. Enable is recommended.</td>
 </tr>
 <tr>
 <td>planner.enable_hashjoin</td>
 <td>TRUE</td>
-<td>Enable the memory hungry hash join. Drill   assumes that a query will have adequate memory to complete and tries to use   the fastest operations possible to complete the planned inner, left, right,   or full outer joins using a hash table. Does not write to disk. Disabling   hash join allows Drill to manage arbitrarily large data in a small memory   footprint.</td>
+<td>Enable   the memory hungry hash join. Drill assumes that a query will have adequate   memory to complete and tries to use the fastest operations possible to   complete the planned inner, left, right, or full outer joins using a hash   table. Does not write to disk. Disabling hash join allows Drill to manage   arbitrarily large data in a small memory footprint.</td>
 </tr>
 <tr>
 <td>planner.enable_hashjoin_swap</td>
 <td>TRUE</td>
-<td>Enables consideration of multiple join order   sequences during the planning phase. Might negatively affect the performance   of some queries due to inaccuracy of estimated row count especially after a   filter, join, or aggregation.</td>
+<td>Enables   consideration of multiple join order sequences during the planning phase.   Might negatively affect the performance of some queries due to inaccuracy of   estimated row count especially after a filter, join, or aggregation.</td>
 </tr>
 <tr>
 <td>planner.enable_hep_join_opt</td>
 <td></td>
-<td>Enables the heuristic planner for joins.</td>
+<td>Enables   the heuristic planner for joins.</td>
 </tr>
 <tr>
 <td>planner.enable_mergejoin</td>
 <td>TRUE</td>
-<td>Sort-based operation. A merge join is used   for inner join, left and right outer joins. Inputs to the merge join must be   sorted. It reads the sorted input streams from both sides and finds matching   rows. Writes to disk.</td>
+<td>Sort-based   operation. A merge join is used for inner join, left and right outer joins.   Inputs to the merge join must be sorted. It reads the sorted input streams   from both sides and finds matching rows. Writes to disk.</td>
 </tr>
 <tr>
 <td>planner.enable_multiphase_agg</td>
 <td>TRUE</td>
-<td>Each minor fragment does a local aggregation   in phase 1, distributes on a hash basis using GROUP-BY keys partially   aggregated results to other fragments, and all the fragments perform a total   aggregation using this data.</td>
+<td>Each   minor fragment does a local aggregation in phase 1, distributes on a hash   basis using GROUP-BY keys partially aggregated results to other fragments,   and all the fragments perform a total aggregation using this data.</td>
 </tr>
 <tr>
 <td>planner.enable_mux_exchange</td>
 <td>TRUE</td>
-<td>Toggles the state of hashing to a   multiplexed exchange.</td>
+<td>Toggles   the state of hashing to a multiplexed exchange.</td>
 </tr>
 <tr>
 <td>planner.enable_nestedloopjoin</td>
 <td>TRUE</td>
-<td>Sort-based operation. Writes to disk.</td>
+<td>Sort-based   operation. Writes to disk.</td>
 </tr>
 <tr>
 <td>planner.enable_nljoin_for_scalar_only</td>
 <td>TRUE</td>
-<td>Supports nested loop join planning where the   right input is scalar in order to enable NOT-IN, Inequality, Cartesian, and   uncorrelated EXISTS planning.</td>
+<td>Supports   nested loop join planning where the right input is scalar in order to enable   NOT-IN, Inequality, Cartesian, and uncorrelated EXISTS planning.</td>
 </tr>
 <tr>
 <td>planner.enable_streamagg</td>
 <td>TRUE</td>
-<td>Sort-based operation. Writes to disk.</td>
+<td>Sort-based   operation. Writes to disk.</td>
 </tr>
 <tr>
 <td>planner.filter.max_selectivity_estimate_factor</td>
 <td>1</td>
-<td>Available as of Drill 1.8. Sets the maximum   filter selectivity estimate. The selectivity can vary between 0 and 1. For   more details, see planner.filter.min_selectivity_estimate_factor.</td>
+<td>Available   as of Drill 1.8. Sets the maximum filter selectivity estimate. The   selectivity can vary between 0 and 1. For more details, see   planner.filter.min_selectivity_estimate_factor.</td>
 </tr>
 <tr>
 <td>planner.filter.min_selectivity_estimate_factor</td>
 <td>0</td>
-<td>Available as of Drill 1.8. Sets the minimum   filter selectivity estimate to increase the parallelization of the major   fragment performing a join. This option is useful for deeply nested queries   with complicated predicates and serves as a workaround when statistics are   insufficient or unavailable. The selectivity can vary between 0 and 1. The   value of this option caps the estimated SELECTIVITY. The estimated ROWCOUNT   is derived by multiplying the estimated SELECTIVITY by the estimated ROWCOUNT   of the upstream operator. The estimated ROWCOUNT displays when you use the   EXPLAIN PLAN INCLUDING ALL ATTRIBUTES FOR command. This option does not   control the estimated ROWCOUNT of downstream operators (post FILTER).   However, estimated ROWCOUNTs may change because the operator ROWCOUNTs depend   on their downstream operators. The FILTER operator relies on the input of its   immediate upstream operator, for example SCAN, AGGREGATE. If two filters are   present in a plan, each filter may have a different estimated ROWCOUNT based   on the immediate upstream operator&#39;s estimated ROWCOUNT.</td>
+<td>Available   as of Drill 1.8. Sets the minimum filter selectivity estimate to increase the   parallelization of the major fragment performing a join. This option is   useful for deeply nested queries with complicated predicates and serves as a   workaround when statistics are insufficient or unavailable. The selectivity   can vary between 0 and 1. The value of this option caps the estimated   SELECTIVITY. The estimated ROWCOUNT is derived by multiplying the estimated   SELECTIVITY by the estimated ROWCOUNT of the upstream operator. The estimated   ROWCOUNT displays when you use the EXPLAIN PLAN INCLUDING ALL ATTRIBUTES FOR   command. This option does not control the estimated ROWCOUNT of downstream   operators (post FILTER). However, estimated ROWCOUNTs may change because the   operator ROWCOUNTs depend on their downstream operators. The FILTER operator   relies on the input of its immediate upstream operator, for example SCAN,   AGGREGATE. If two filters are present in a plan, each filter may have a   different estimated ROWCOUNT based on the immediate upstream operator&#39;s   estimated ROWCOUNT.</td>
 </tr>
 <tr>
 <td>planner.identifier_max_length</td>
 <td>1024</td>
-<td>A minimum length is needed because option   names are identifiers themselves.</td>
+<td>A   minimum length is needed because option names are identifiers themselves.</td>
 </tr>
 <tr>
 <td>planner.join.hash_join_swap_margin_factor</td>
 <td>10</td>
-<td>The number of join order sequences to   consider during the planning phase.</td>
+<td>The   number of join order sequences to consider during the planning phase.</td>
 </tr>
 <tr>
 <td>planner.join.row_count_estimate_factor</td>
 <td>1</td>
-<td>The factor for adjusting the estimated row   count when considering multiple join order sequences during the planning   phase.</td>
+<td>The   factor for adjusting the estimated row count when considering multiple join   order sequences during the planning phase.</td>
 </tr>
 <tr>
 <td>planner.memory.average_field_width</td>
 <td>8</td>
-<td>Used in estimating memory requirements.</td>
+<td>Used   in estimating memory requirements.</td>
 </tr>
 <tr>
 <td>planner.memory.enable_memory_estimation</td>
 <td>FALSE</td>
-<td>Toggles the state of memory estimation and   re-planning of the query. When enabled, Drill conservatively estimates memory   requirements and typically excludes these operators from the plan and   negatively impacts performance.</td>
+<td>Toggles   the state of memory estimation and re-planning of the query. When enabled,   Drill conservatively estimates memory requirements and typically excludes   these operators from the plan and negatively impacts performance.</td>
 </tr>
 <tr>
 <td>planner.memory.hash_agg_table_factor</td>
 <td>1.1</td>
-<td>A heuristic value for influencing the size   of the hash aggregation table.</td>
+<td>A   heuristic value for influencing the size of the hash aggregation table.</td>
 </tr>
 <tr>
 <td>planner.memory.hash_join_table_factor</td>
 <td>1.1</td>
-<td>A heuristic value for influencing the size   of the hash aggregation table.</td>
+<td>A   heuristic value for influencing the size of the hash aggregation table.</td>
 </tr>
 <tr>
 <td>planner.memory.max_query_memory_per_node</td>
-<td>2147483648 bytes</td>
-<td>Sets the maximum amount of direct memory   allocated to the Sort and Hash Aggregate operators during each query on a   node. This memory is split between operators. If a query plan contains   multiple Sort and/or Hash Aggregate operators, the memory is divided between   them. The default limit should be increased for queries on large data sets.</td>
+<td>2147483648   bytes</td>
+<td>Sets   the maximum amount of direct memory allocated to the Sort and Hash Aggregate   operators during each query on a node. This memory is split between   operators. If a query plan contains multiple Sort and/or Hash Aggregate   operators, the memory is divided between them. The default limit should be   increased for queries on large data sets.</td>
 </tr>
 <tr>
 <td>planner.memory.non_blocking_operators_memory</td>
 <td>64</td>
-<td>Extra query memory per node for non-blocking   operators. This option is currently used only for memory estimation. Range:   0-2048 MB</td>
+<td>Extra   query memory per node for non-blocking operators. This option is currently   used only for memory estimation. Range: 0-2048 MB</td>
 </tr>
 <tr>
 <td>planner.memory_limit</td>
-<td>268435456 bytes</td>
-<td>Defines the maximum amount of direct memory   allocated to a query for planning. When multiple queries run concurrently,   each query is allocated the amount of memory set by this parameter.Increase   the value of this parameter and rerun the query if partition pruning failed   due to insufficient memory.</td>
+<td>268435456   bytes</td>
+<td>Defines   the maximum amount of direct memory allocated to a query for planning. When   multiple queries run concurrently, each query is allocated the amount of   memory set by this parameter.Increase the value of this parameter and rerun   the query if partition pruning failed due to insufficient memory.</td>
 </tr>
 <tr>
 <td>planner.memory.percent_per_query</td>
@@ -1544,102 +1558,102 @@
 <tr>
 <td>planner.nestedloopjoin_factor</td>
 <td>100</td>
-<td>A heuristic value for influencing the nested   loop join.</td>
+<td>A   heuristic value for influencing the nested loop join.</td>
 </tr>
 <tr>
 <td>planner.partitioner_sender_max_threads</td>
 <td>8</td>
-<td>Upper limit of threads for outbound queuing.</td>
+<td>Upper   limit of threads for outbound queuing.</td>
 </tr>
 <tr>
 <td>planner.partitioner_sender_set_threads</td>
 <td>-1</td>
-<td>Overwrites the number of threads used to   send out batches of records. Set to -1 to disable. Typically not changed.</td>
+<td>Overwrites   the number of threads used to send out batches of records. Set to -1 to   disable. Typically not changed.</td>
 </tr>
 <tr>
 <td>planner.partitioner_sender_threads_factor</td>
 <td>2</td>
-<td>A heuristic param to use to influence final   number of threads. The higher the value the fewer the number of threads.</td>
+<td>A   heuristic param to use to influence final number of threads. The higher the   value the fewer the number of threads.</td>
 </tr>
 <tr>
 <td>planner.producer_consumer_queue_size</td>
 <td>10</td>
-<td>How much data to prefetch from disk in   record batches out-of-band of query execution. The larger the queue size, the   greater the amount of memory that the queue and overall query execution   consumes.</td>
+<td>How   much data to prefetch from disk in record batches out-of-band of query   execution. The larger the queue size, the greater the amount of memory that   the queue and overall query execution consumes.</td>
 </tr>
 <tr>
 <td>planner.slice_target</td>
 <td>100000</td>
-<td>The number of records manipulated within a   fragment before Drill parallelizes operations.</td>
+<td>The   number of records manipulated within a fragment before Drill parallelizes   operations.</td>
 </tr>
 <tr>
 <td>planner.width.max_per_node</td>
-<td>70% of the total number of processors on a   node</td>
-<td>Maximum number of threads that can run in   parallel for a query on a node. A slice is an individual thread. This number   indicates the maximum number of slices per query for the query’s major   fragment on a node.</td>
+<td>70%   of the total number of processors on a node</td>
+<td>Maximum   number of threads that can run in parallel for a query on a node. A slice is   an individual thread. This number indicates the maximum number of slices per   query for the query’s major fragment on a node.</td>
 </tr>
 <tr>
 <td>planner.width.max_per_query</td>
 <td>1000</td>
-<td>Same as max per node but applies to the   query as executed by the entire cluster. For example, this value might be the   number of active Drillbits, or a higher number to return results faster.</td>
+<td>Same   as max per node but applies to the query as executed by the entire cluster.   For example, this value might be the number of active Drillbits, or a higher   number to return results faster.</td>
 </tr>
 <tr>
 <td>security.admin.user_groups</td>
 <td>n/a</td>
-<td>Unsupported as of 1.4. A comma-separated   list of administrator groups for Web Console security.</td>
+<td>Unsupported   as of 1.4. A comma-separated list of administrator groups for Web Console   security.</td>
 </tr>
 <tr>
 <td>security.admin.users</td>
 <td></td>
-<td>Unsupported as of 1.4. A comma-separated   list of user names who you want to give administrator privileges.</td>
+<td>Unsupported   as of 1.4. A comma-separated list of user names who you want to give   administrator privileges.</td>
 </tr>
 <tr>
 <td>store.format</td>
 <td>parquet</td>
-<td>Output format for data written to tables   with the CREATE TABLE AS (CTAS) command. Allowed values are parquet, json,   psv, csv, or tsv.</td>
+<td>Output   format for data written to tables with the CREATE TABLE AS (CTAS) command.   Allowed values are parquet, json, psv, csv, or tsv.</td>
 </tr>
 <tr>
 <td>store.hive.optimize_scan_with_native_readers</td>
 <td>FALSE</td>
-<td>Optimize reads of Parquet-backed external   tables from Hive by using Drill native readers instead of the Hive Serde   interface. (Drill 1.2 and later)</td>
+<td>Optimize   reads of Parquet-backed external tables from Hive by using Drill native   readers instead of the Hive Serde interface. (Drill 1.2 and later)</td>
 </tr>
 <tr>
 <td>store.json.all_text_mode</td>
 <td>FALSE</td>
-<td>Drill reads all data from the JSON files as   VARCHAR. Prevents schema change errors.</td>
+<td>Drill   reads all data from the JSON files as VARCHAR. Prevents schema change errors.</td>
 </tr>
 <tr>
 <td>store.json.extended_types</td>
 <td>FALSE</td>
-<td>Turns on special JSON structures that Drill   serializes for storing more type information than the four basic JSON types.</td>
+<td>Turns   on special JSON structures that Drill serializes for storing more type   information than the four basic JSON types.</td>
 </tr>
 <tr>
 <td>store.json.read_numbers_as_double</td>
 <td>FALSE</td>
-<td>Reads numbers with or without a decimal   point as DOUBLE. Prevents schema change errors.</td>
+<td>Reads   numbers with or without a decimal point as DOUBLE. Prevents schema change   errors.</td>
 </tr>
 <tr>
 <td>store.mongo.all_text_mode</td>
 <td>FALSE</td>
-<td>Similar to store.json.all_text_mode for   MongoDB.</td>
+<td>Similar   to store.json.all_text_mode for MongoDB.</td>
 </tr>
 <tr>
 <td>store.mongo.read_numbers_as_double</td>
 <td>FALSE</td>
-<td>Similar to   store.json.read_numbers_as_double.</td>
+<td>Similar   to store.json.read_numbers_as_double.</td>
 </tr>
 <tr>
 <td>store.parquet.block-size</td>
 <td>536870912</td>
-<td>Sets the size of a Parquet row group to the   number of bytes less than or equal to the block size of MFS, HDFS, or the   file system.</td>
+<td>Sets   the size of a Parquet row group to the number of bytes less than or equal to   the block size of MFS, HDFS, or the file system.</td>
 </tr>
 <tr>
 <td>store.parquet.compression</td>
 <td>snappy</td>
-<td>Compression type for storing Parquet output.   Allowed values: snappy, gzip, none</td>
+<td>Compression   type for storing Parquet output. Allowed values: snappy, gzip, none</td>
 </tr>
 <tr>
 <td>store.parquet.enable_dictionary_encoding</td>
 <td>FALSE</td>
-<td>For internal use. Do not change.</td>
+<td>For   internal use. Do not change.</td>
 </tr>
 <tr>
 <td>store.parquet.dictionary.page-size</td>
@@ -1649,27 +1663,27 @@
 <tr>
 <td>store.parquet.reader.int96_as_timestamp</td>
 <td>FALSE</td>
-<td>Enables Drill to implicitly interpret the   INT96 timestamp data type in Parquet files.</td>
+<td>Enables   Drill to implicitly interpret the INT96 timestamp data type in Parquet files.</td>
 </tr>
 <tr>
 <td>store.parquet.use_new_reader</td>
 <td>FALSE</td>
-<td>Not supported in this release.</td>
+<td>Not   supported in this release.</td>
 </tr>
 <tr>
 <td>store.partition.hash_distribute</td>
 <td>FALSE</td>
-<td>Uses a hash algorithm to distribute data on   partition keys in a CTAS partitioning operation. An alpha option--for   experimental use at this stage. Do not use in production systems.</td>
+<td>Uses   a hash algorithm to distribute data on partition keys in a CTAS partitioning   operation. An alpha option--for experimental use at this stage. Do not use in   production systems.</td>
 </tr>
 <tr>
 <td>store.text.estimated_row_size_bytes</td>
 <td>100</td>
-<td>Estimate of the row size in a delimited text   file, such as csv. The closer to actual, the better the query plan. Used for   all csv files in the system/session where the value is set. Impacts the   decision to plan a broadcast join or not.</td>
+<td>Estimate   of the row size in a delimited text file, such as csv. The closer to actual,   the better the query plan. Used for all csv files in the system/session where   the value is set. Impacts the decision to plan a broadcast join or not.</td>
 </tr>
 <tr>
 <td>window.enable</td>
 <td>TRUE</td>
-<td>Enable or disable window functions in Drill   1.1 and later.</td>
+<td>Enable   or disable window functions in Drill 1.1 and later.</td>
 </tr>
 </tbody></table>
 
