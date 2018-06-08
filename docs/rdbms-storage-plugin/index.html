@@ -1222,7 +1222,7 @@
 
     </div>
 
-     Feb 8, 2018
+     Jun 8, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1345,7 +1345,32 @@ Each configuration registered with Drill must have a distinct name. Names are ca
   url:&quot;jdbc:postgresql://1.2.3.4/mydatabase&quot;,
   username:&quot;user&quot;,
   password:&quot;password&quot;
-}
+}  
+</code></pre></div>
+<p>You may need to qualify a table name with a schema name for Drill to return data. For example, when querying a table named ips, you must issue the query against public.ips, as shown in the following example:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; use pgdb;          
+   +-------+-----------------------------------+
+   |  ok   |            summary             |
+   +-------+-----------------------------------+
+   | true  | Default schema changed to [pgdb]  |
+   +-------+-----------------------------------+
+
+   0: jdbc:drill:zk=local&gt; show tables;          
+   +---------------+--------------------------+
+   | TABLE_SCHEMA  |        TABLE_NAME      |
+   +---------------+--------------------------+
+   | pgdb.test  | ips                   |
+   | pgdb.test  | pg_aggregate          |
+   | pgdb.test  | pg_am                 | 
+   …  
+
+   0: jdbc:drill:zk=local&gt; select * from public.ips;          
+   +-------+----------+
+   | ipid  | ipv4dot  |
+   +-------+----------+
+   | 1  | 1.2.3.4  |
+   | 2  | 1.2.3.5  |
+   +-------+----------+
 </code></pre></div>
     
       

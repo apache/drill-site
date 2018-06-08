@@ -1224,7 +1224,7 @@
 
     </div>
 
-     Apr 5, 2018
+     Jun 8, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1234,12 +1234,13 @@
 
 <p>When a client (a web browser or a web client tool, such as curl) requests access to a secured page from the web server (Drillbit), the SPNEGO mechanism uses tokens to perform a handshake that authenticates the client browser and the web server. </p>
 
-<p>The following browsers were tested with Drill configured to use SPNEGO authentication:</p>
+<p>The following browsers were tested with Drill configured to use SPNEGO authentication:  </p>
 
 <ul>
 <li>Firefox<br></li>
 <li>Chrome<br></li>
 <li>Safari<br></li>
+<li>Internet Explorer </li>
 <li>Web client tool, such as curl<br></li>
 </ul>
 
@@ -1313,9 +1314,7 @@
 
 <p>The client should use the same web server hostname (as configured in the server-side principal) to access the Drill Web Console. If the server hostname differs, SPNEGO authentication will fail. For example, if the server principal is <code>&quot;HTTP/example.QA.LAB@QA.LAB”</code>, the client should use <code>http://example.QA.LAB:8047</code> as the Drill Web Console URL.</p>
 
-<p>The following sections provide instructions for configuring the supported client-side browsers: </p>
-
-<p><strong>Note:</strong> SPNEGO is not tested on Windows browsers in Drill 1.13.  </p>
+<p>The following sections provide instructions for configuring the supported client-side browsers:   </p>
 
 <h3 id="firefox">Firefox</h3>
 
@@ -1335,6 +1334,26 @@
 <h3 id="safari">Safari</h3>
 
 <p>No configuration is required for Safari. Safari automatically authenticates using SPNEGO when requested by the server.  </p>
+
+<h3 id="internet-explorer">Internet Explorer</h3>
+
+<p>To configure Internet Explorer to use a negotiation dialog, such as SPNEGO to authenticate, complete the following steps:  </p>
+
+<p>1-Go to Tools &gt; Options &gt; Security &gt; Local Intranet &gt; Sites, and select all options.  </p>
+
+<p>2-Select Advanced, and add one or both of the following URLs to server: </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   http://
+   https://  
+</code></pre></div>
+<p><strong>Note:</strong> Make sure you use the hostname of the Drillbit in the URL.  </p>
+
+<p>3-Close the Advanced tab, and click OK.  </p>
+
+<p>4-Go to Tools &gt; Options &gt; Advanced &gt; Security (in the checkbox list), and enable the Integrated Windows Authentication option.  </p>
+
+<p>5-Click OK.  </p>
+
+<p>6-Close and reopen IE. You can browse to your SPNEGO protected resource.  </p>
 
 <h3 id="rest-api">REST API</h3>
 
