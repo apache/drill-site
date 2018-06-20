@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>CASE - Apache Drill</title>
+<title>Useful Information for Drill Developers - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -766,8 +766,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">SQL Reference</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">SQL Reference</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sql-reference-introduction/">SQL Reference Introduction</a></li>
@@ -920,9 +920,9 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">SQL Conditional Expressions</a></li>
-              <ul style="">
+              <ul style="display: none">
               
-                <li class="toctree-l3 current"><a class="reference internal" href="/docs/case/">CASE</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/case/">CASE</a></li>
               
             </ul>
             
@@ -1024,8 +1024,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Developer Information</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Developer Information</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">REST API</a></li>
@@ -1042,11 +1042,11 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">Develop Drill</a></li>
-              <ul style="display: none">
+              <ul style="">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/compiling-drill-from-source/">Compiling Drill from Source</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/useful-information-for-drill-developers/">Useful Information for Drill Developers</a></li>
+                <li class="toctree-l3 current"><a class="reference internal" href="/docs/useful-information-for-drill-developers/">Useful Information for Drill Developers</a></li>
               
             </ul>
             
@@ -1211,83 +1211,40 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/sql-reference/">SQL Reference</a></li>
+    <li><a href="/docs/developer-information/">Developer Information</a></li>
   
-    <li><a href="/docs/sql-conditional-expressions/">SQL Conditional Expressions</a></li>
+    <li><a href="/docs/develop-drill/">Develop Drill</a></li>
   
-  <li>CASE</li>
+  <li>Useful Information for Drill Developers</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/sql-reference/sql-conditional-expressions/010-case-expression.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/developer-information/develop-drill/011-useful-information-for-drill-developers.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>CASE</h1>
+      <h1>Useful Information for Drill Developers</h1>
 
     </div>
 
-     
+     Jun 19, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Executes statements based on one or more equality conditions.</p>
+        <p>The following Apache Drill GitHub directory contains useful developer documentation that you can reference, including the information needed to work with Drill tests:  </p>
 
-<h2 id="syntax">Syntax</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">CASE
-    WHEN expression [, expression [ ... ]] THEN
-      statements
-  [ WHEN expression [, expression [ ... ]] THEN
-      statements
-    ... ]
-  [ ELSE
-      statements ]
-END;
-</code></pre></div>
-<h2 id="usage-notes">Usage Notes</h2>
+<p><a href="https://github.com/apache/drill/tree/master/docs/dev">https://github.com/apache/drill/tree/master/docs/dev</a></p>
 
-<p>Drill processes the CASE expression as follows:</p>
-
-<ol>
-<li>Evaluates the Boolean expression in each WHEN clause that returns true, or falls through to the ELSE statement for each WHEN clause that returns false.If ELSE is not present and a WHEN clause returns false, an exception occurs.</li>
-<li>Executes each statement in the WHEN clause that returns true or executes each ELSE statement for a WHEN clause that returns false. </li>
-<li>Exits the CASE statement.</li>
-</ol>
-
-<h2 id="example">Example</h2>
-
-<p>The Drill installation includes <a href="/docs/querying-json-files/"><code>employee.json</code></a> in the Drill classpath that this example queries. You use the classpath (cp) storage plugin point to this file. </p>
-
-<p>The employee having an ID of 99 is Elizabeth Horne. The employee having a ID of 100 is Mary Hunt. The example CASE statement gets the first name of the employee 99 and the last name of employee 100. Any other employee ID does not meet the condition; the ID is too high.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">USE cp;  
-SELECT employee_id, 
-  CASE 
-    WHEN employee_id &lt; 100 THEN first_name 
-    WHEN employee_id = 100 THEN last_name 
-      ELSE &#39;ID too high&#39; 
-  END from cp.`employee.json` 
-  WHERE employee_id = 99 
-    OR employee_id = 100 
-    OR employee_id = 101;
-+-------------+------------+
-| employee_id |   EXPR$1   |
-+-------------+------------+
-| 99          | Elizabeth  |
-| 100         | Hunt       |
-| 101         | ID too high |
-+-------------+------------+
-3 rows selected (0.199 seconds)
-</code></pre></div>
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/sql-conditional-expressions/">← SQL Conditional Expressions</a></span><span class="next-toc"><a href="/docs/reserved-keywords/">Reserved Keywords →</a></span>
+  <span class="previous-toc"><a href="/docs/compiling-drill-from-source/">← Compiling Drill from Source</a></span><span class="next-toc"><a href="/docs/contribute-to-drill/">Contribute to Drill →</a></span>
 </div>
 
     
