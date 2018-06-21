@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Query Audit Logging - Apache Drill</title>
+<title>Data Type Functions - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -739,8 +739,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Log and Debug</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">Log and Debug</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/log-and-debug-introduction/">Log and Debug Introduction</a></li>
@@ -759,15 +759,15 @@
             
           
             
-              <li class="toctree-l2 current"><a class="reference internal" href="/docs/query-audit-logging/">Query Audit Logging</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/query-audit-logging/">Query Audit Logging</a></li>
             
           
           </ul>
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">SQL Reference</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">SQL Reference</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sql-reference-introduction/">SQL Reference Introduction</a></li>
@@ -796,7 +796,7 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">SQL Functions</a></li>
-              <ul style="display: none">
+              <ul style="">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/about-sql-function-examples/">About SQL Function Examples</a></li>
               
@@ -804,7 +804,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/data-type-conversion/">Data Type Conversion</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/data-type-functions/">Data Type Functions</a></li>
+                <li class="toctree-l3 current"><a class="reference internal" href="/docs/data-type-functions/">Data Type Functions</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/date-time-functions-and-arithmetic/">Date/Time Functions and Arithmetic</a></li>
               
@@ -1213,101 +1213,94 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/log-and-debug/">Log and Debug</a></li>
+    <li><a href="/docs/sql-reference/">SQL Reference</a></li>
   
-  <li>Query Audit Logging</li>
+    <li><a href="/docs/sql-functions/">SQL Functions</a></li>
+  
+  <li>Data Type Functions</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/log-and-debug/005-query-audit-logging.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/sql-reference/sql-functions/021-data-type-functions.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>Query Audit Logging</h1>
+      <h1>Data Type Functions</h1>
 
     </div>
 
-     Jun 29, 2016
+     Jun 20, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>The query log provides audit log functionality for the queries executed by various drillbits in the cluster. The log records important information about queries executed on the Drillbit where Drill runs. The log includes the following information:  </p>
+        <p>Starting in Drill 1.14, Drill supports the following functions that return data type information:  </p>
 
-<ul>
-<li>query text</li>
-<li>start/end time</li>
-<li>status</li>
-<li>schema</li>
-<li>query id</li>
-<li>name of the user that launched the query</li>
-<li>client IP address from which the query was launched </li>
-</ul>
-
-<p>You can query the following log files to get audit logging information:</p>
-
-<ul>
-<li><code>sqlline_queries.json</code> (embedded mode) </li>
-<li><code>drillbit_queries.json</code> (distributed mode)</li>
-</ul>
-
-<h2 id="checking-the-most-recent-queries">Checking the Most Recent Queries</h2>
-
-<p>For example, to check the most recent queries, query the log using this command:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM dfs.`default`.`/Users/drill-user/apache-drill-1.1.0/log/sqlline_queries.json` t ORDER BY `start` LIMIT 5;
-
-+----------------+------------+---------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------+----------------+------------+
-|     finish     |  outcome   |                queryId                |                                                            queryText                                                                                                                                         | schema  |     start      |  username  |
-+----------------+------------+---------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------+----------------+------------+
-| 1431752662216  | FAILED     |  2aa9302b-bf6f-a378-d66e-151834e87b16 | select * from dfs.`default`.`/Users/nrentachintala/Downloads/testgoogle.json` t limit 1                                                                                                                      |         | 1431752660376  |  anonymous |
-| 1431752769079  | COMPLETED  |  2aa92fc1-b722-c27a-10f7-57a1cf0dd366 | SELECT KVGEN(checkin_info) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json` LIMIT 2                                                                               |         | 1431752765303  |  anonymous |
-| 1431752786341  | COMPLETED  |  2aa92faf-2103-047b-9761-32eedefba1e6 | SELECT FLATTEN(KVGEN(checkin_info)) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json` LIMIT 20                                                                     |         | 1431752784532  |  anonymous |
-| 1431752809084  | FAILED     |  2aa92f97-61d3-1e9a-97b0-c754f5b568d5 | SELECT SUM(checkintbl.checkins.`value`) AS TotalCheckins FROM (SELECT FLATTEN(KVGEN(checkin_info)) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json` ) checkintbl  |         | 1431752808923  |  anonymous |
-| 1431752853992  | COMPLETED  |  2aa92f87-0250-c6ac-3700-9ae1f98435b8 | SELECT SUM(checkintbl.checkins.`value`) AS TotalCheckins FROM (SELECT FLATTEN(KVGEN(checkin_info)) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json` ) checkintbl  |         | 1431752824947  |  anonymous |
-+----------------+------------+---------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------+----------------+------------+
-5 rows selected (0.532 seconds)
+<p><strong>sqlTypeOf()</strong><br>
+Returns the data type of a column (using the SQL names) whether the column is NULL or not. You can use the SQL name in a CAST statement, for example:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">          sqlTypeOf( CAST(x AS &lt;data type&gt; ))  
+          //Returns &lt;data type&gt; as the type name.  
 </code></pre></div>
-<div class="admonition note">
-  <p class="first admonition-title">Note</p>
-  <p class="last">This document aligns Drill output for example purposes. Drill output is not aligned in this case.  </p>
-</div>
-
-<h2 id="checking-drillbit-traffic">Checking Drillbit Traffic</h2>
-
-<p>To check the total number of queries executed since the session started on the Drillbit, use the following command:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT COUNT(*) FROM dfs.`default`.`/Users/drill-user/apache-drill-1.1.0/log/sqlline_queries.json`;
-
-+---------+
-| EXPR$0  |
-+---------+
-| 32      |
-+---------+
-1 row selected (0.144 seconds)
+<p>If the type is DECIMAL, the type also includes precision and scale, for example:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">          DECIMAL(6, 3)  
 </code></pre></div>
-<h2 id="getting-query-success-statistics">Getting Query Success Statistics</h2>
+<p><strong>modeOf()</strong><br>
+Returns the cardinality (mode) of the column as &quot;NOT NULL&quot;, &quot;NULLABLE&quot;, or &quot;ARRAY&quot;. Drill data types include a cardinality, for example <code>Optional Int</code> or <code>Required VarChar</code>.  </p>
 
-<p>To get the total number of successful and failed executions, run the following command:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT outcome, COUNT(*) FROM dfs.`default`.`/Users/drill-user/apache-drill-1.1.0/log/sqlline_queries.json` GROUP BY outcome;
+<p><strong>drillTypeOf()</strong><br>
+Similar to typeOf(), but returns the internal Drill names even if the value is NULL.  </p>
 
-+------------+---------+
-|  outcome   | EXPR$1  |
-+------------+---------+
-| COMPLETED  | 18      |
-| FAILED     | 14      |
-+------------+---------+
-2 rows selected (0.219 seconds)
+<hr>
+
+<h3 id="usage-notes">Usage Notes</h3>
+
+<p>The data type functions are useful for data conversions. For example, if you know a column value is <code>Nullable Int</code>, you can assume that the data type is one that Drill derived. You can then merge the Drill-derived data type with the data type from another file that has actual values.  </p>
+
+<hr>
+
+<h3 id="usage-examples">Usage Examples</h3>
+
+<p>The follow examples show you how you can use the data type functions:  </p>
+
+<p><strong>Example 1</strong><br>
+This example shows the Drill internal type, nullable int, for a missing column:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT sqlTypeOf(a) AS a_type, modeOf(a) AS a_mode FROM `json/all-null.json`;
+
+   +----------+-----------+
+   |  a_type  |  a_mode   |
+   +----------+-----------+
+   | INTEGER  | NULLABLE  |
+   +----------+-----------+
 </code></pre></div>
-<p>Note the queryid column in the audit can be correlated with the profiles of the queries for troubleshooting/diagnostics purposes.</p>
+<p><strong>Example 2</strong><br>
+This example shows arrays (repeated) types:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT sqlTypeOf(columns) as col_type, modeOf(columns) as col_mode
+   FROM `csv/cust.csv`;
 
+   +--------------------+-----------+
+   |      col_type      | col_mode  |
+   +--------------------+-----------+
+   | CHARACTER VARYING  | ARRAY     |
+   +--------------------+-----------+
+   Example 3: This example shows non-null types:
+   SELECT sqlTypeOf(`name`) AS name_type, 
+   modeOf(`name`) AS name_mode FROM `csvh/cust.csvh`;
+
+   +--------------------+------------+
+   |     name_type      | name_mode  |
+   +--------------------+------------+
+   | CHARACTER VARYING  | NOT NULL   |
+   +--------------------+------------+
+</code></pre></div>
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/review-the-java-stack-trace/">← Review the Java Stack Trace</a></span><span class="next-toc"><a href="/docs/sql-reference/">SQL Reference →</a></span>
+  <span class="previous-toc"><a href="/docs/data-type-conversion/">← Data Type Conversion</a></span><span class="next-toc"><a href="/docs/date-time-functions-and-arithmetic/">Date/Time Functions and Arithmetic →</a></span>
 </div>
 
     
