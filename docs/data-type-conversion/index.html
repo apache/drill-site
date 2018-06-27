@@ -1232,7 +1232,7 @@
 
     </div>
 
-     Mar 26, 2018
+     Jun 27, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1280,12 +1280,9 @@
 
 <h3 id="casting-a-character-string-to-a-number">Casting a Character String to a Number</h3>
 
-<p>You cannot cast a character string that includes a decimal point to an INT or BIGINT. For example, if you have &quot;1200.50&quot; in a JSON file, attempting to select and cast the string to an INT fails. As a workaround, cast to a FLOAT or DOUBLE type, and then cast to an INT, assuming you want to lose digits to the right of the decimal point. </p>
+<p>You can cast strings or numeric values to decimals, even if they contain decimal points. In cases where a value has a scale and precision greater than the scale and precision specified in the query, the value is rounded to fit the specified scale and precision.</p>
 
-<div class="admonition note">
-  <p class="first admonition-title">Note</p>
-  <p class="last">In this release, Drill disables the DECIMAL data type. To enable, set the planner.enable_decimal_data_type option to true.  </p>
-</div>
+<p>You cannot cast a character string that includes a decimal point to an INT or BIGINT. For example, if you have &quot;1200.50&quot; in a JSON file, attempting to select and cast the string to an INT fails. As a workaround, cast to a FLOAT or DOUBLE type, and then cast to an INT, assuming you want to lose digits to the right of the decimal point.  </p>
 
 <p>The following example shows how to cast a character to a DECIMAL having two decimal places.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT CAST(&#39;1&#39; as DECIMAL(28, 2)) FROM (VALUES(1));
@@ -1322,13 +1319,8 @@ SELECT CAST(456 as CHAR(3)) FROM (VALUES(1));
 |     EXPR$0      |
 +-----------------+
 | -2.147483648E9  |
-+-----------------+
++-----------------+  
 </code></pre></div>
-<div class="admonition note">
-  <p class="first admonition-title">Note</p>
-  <p class="last">In this release, Drill disables the DECIMAL data type. To enable, set the planner.enable_decimal_data_type option to true.  </p>
-</div>
-
 <h3 id="casting-intervals">Casting Intervals</h3>
 
 <p>To cast interval data to interval types you can query from a data source such as JSON, for example, use the following syntax, respectively:</p>
