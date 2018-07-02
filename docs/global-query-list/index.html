@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Installing the ODBC Driver - Apache Drill</title>
+<title>Global Query List - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -326,8 +326,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Configure Drill</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Configure Drill</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configure-drill-introduction/">Configure Drill Introduction</a></li>
@@ -383,7 +383,7 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">Configuration Options</a></li>
-              <ul style="display: none">
+              <ul style="">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuration-options-introduction/">Configuration Options Introduction</a></li>
               
@@ -393,7 +393,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/persistent-configuration-storage/">Persistent Configuration Storage</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/global-query-list/">Global Query List</a></li>
+                <li class="toctree-l3 current"><a class="reference internal" href="/docs/global-query-list/">Global Query List</a></li>
               
             </ul>
             
@@ -486,8 +486,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">ODBC/JDBC Interfaces</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">ODBC/JDBC Interfaces</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/interfaces-introduction/">Interfaces Introduction</a></li>
@@ -502,8 +502,8 @@
             
           
             
-              <li class="toctree-l2 current"><a href="javascript: void(0);">Installing the ODBC Driver</a></li>
-              <ul style="">
+              <li class="toctree-l2"><a href="javascript: void(0);">Installing the ODBC Driver</a></li>
+              <ul style="display: none">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-the-driver-on-linux/">Installing the Driver on Linux</a></li>
               
@@ -1215,46 +1215,59 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces</a></li>
+    <li><a href="/docs/configure-drill/">Configure Drill</a></li>
   
-  <li>Installing the ODBC Driver</li>
+    <li><a href="/docs/configuration-options/">Configuration Options</a></li>
+  
+  <li>Global Query List</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/odbc-jdbc-interfaces/030-installing-the-odbc-driver.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/configure-drill/configuration-options/041-global-query-list.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>Installing the ODBC Driver</h1>
+      <h1>Global Query List</h1>
 
     </div>
 
-     
+     Jul 1, 2017
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <ul>
-        
-          <li><a href="/docs/installing-the-driver-on-linux/">Installing the Driver on Linux</a></li>
-        
-      
-          <li><a href="/docs/installing-the-driver-on-mac-os-x/">Installing the Driver on Mac OS X</a></li>
-        
-      
-          <li><a href="/docs/installing-the-driver-on-windows/">Installing the Driver on Windows</a></li>
-        
-      
-      </ul>
+        <p>A query profile is a summary of metrics collected for each query that Drill executes. Query profiles provide important information that you can use to monitor and analyze query performance. You can view query profiles in the Drill Web UI at <code>http(s)://&lt;drill-hostname&gt;:8047</code>. </p>
+
+<p>By default, you can only see the queries that run on the Drill node from which you access the Drill Web UI. For example, if you access the Drill Web UI at <code>http://10.10.20.56:8047</code>, you can only see the queries that have run on node 10.10.20.56. To see a global query list (view of profiles for queries run on all Drill nodes), you must configure the ZooKeeper <a href="/docs/persistent-configuration-storage/">PStore (persistent configuration storage)</a> to point to a location on the distributed file system. </p>
+
+<p><strong>Note:</strong> On MapR-FS, the query profiles are written to the distributed file system by default. You do not need to configure the ZooKeeper PStore.  </p>
+
+<h2 id="query-profile-storage-location">Query Profile Storage Location</h2>
+
+<p>Drill uses ZooKeeper to store persistent configuration data. The ZooKeeper PStore provider stores all of the persistent configuration data in ZooKeeper, except for query profile data. The ZooKeeper PStore provider offloads query profile data to the Drill log directory on each Drill node, for example <code>&lt;drill_installation_directory&gt;/logs/profiles</code>. </p>
+
+<p>Configure the ZooKeeper PStore location when you have Drill running on multiple nodes in a cluster, and you want to monitor query profiles for all of the queries in the Drill Web UI. Configuring a ZooKeeper PStore is also beneficial when space is limited on the local file system because you do not to have to frequently purge or archive the query profiles due to the limited space.  </p>
+
+<h2 id="configuring-the-zookeeper-pstore-location">Configuring the ZooKeeper PStore Location</h2>
+
+<p>To configure the PStore, set the <code>sys.store.provider.zk.blobroot</code> property in the <code>drill.exec</code> block of the <code>&lt;drill_installation_directory&gt;/conf/drill-override.conf</code> file on each Drill node and then <a href="/docs/starting-drill-in-distributed-mode/">restart the Drillbit service</a>. </p>
+
+<p>The following example shows the configuration in <code>drill-override.conf</code> when you set the <code>/apps/drill/pstore/</code> directory in the Hadoop distributed file system as the ZooKeeper PStore location:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   drill.exec: {
+    cluster-id: &quot;my_cluster_com-drillbits&quot;,
+    zk.connect: &quot;&lt;zkhostname&gt;:&lt;port&gt;&quot;,
+    sys.store.provider.zk.blobroot: &quot;hdfs:///apps/drill/pstore/&quot;
+   }
+</code></pre></div>
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/using-jdbc-with-squirrel-on-windows/">← Using JDBC with SQuirreL on Windows</a></span><span class="next-toc"><a href="/docs/installing-the-driver-on-linux/">Installing the Driver on Linux →</a></span>
+  <span class="previous-toc"><a href="/docs/persistent-configuration-storage/">← Persistent Configuration Storage</a></span><span class="next-toc"><a href="/docs/ports-used-by-drill/">Ports Used by Drill →</a></span>
 </div>
 
     
