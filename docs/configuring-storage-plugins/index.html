@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Starting Drill on Windows - Apache Drill</title>
+<title>Configuring Storage Plugins - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -269,8 +269,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Install Drill</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">Install Drill</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/install-drill-introduction/">Install Drill Introduction</a></li>
@@ -282,7 +282,7 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">Installing Drill in Embedded Mode</a></li>
-              <ul style="">
+              <ul style="display: none">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
@@ -292,7 +292,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-windows/">Installing Drill on Windows</a></li>
               
-                <li class="toctree-l3 current"><a class="reference internal" href="/docs/starting-drill-on-windows/">Starting Drill on Windows</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-windows/">Starting Drill on Windows</a></li>
               
             </ul>
             
@@ -414,8 +414,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Connect a Data Source</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Connect a Data Source</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/connect-a-data-source-introduction/">Connect a Data Source Introduction</a></li>
@@ -427,11 +427,11 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">Storage Plugin Configuration</a></li>
-              <ul style="display: none">
+              <ul style="">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/plugin-configuration-basics/">Plugin Configuration Basics</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-storage-plugins/">Configuring Storage Plugins</a></li>
+                <li class="toctree-l3 current"><a class="reference internal" href="/docs/configuring-storage-plugins/">Configuring Storage Plugins</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/workspaces/">Workspaces</a></li>
               
@@ -1217,62 +1217,123 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/install-drill/">Install Drill</a></li>
+    <li><a href="/docs/connect-a-data-source/">Connect a Data Source</a></li>
   
-    <li><a href="/docs/installing-drill-in-embedded-mode/">Installing Drill in Embedded Mode</a></li>
+    <li><a href="/docs/storage-plugin-configuration/">Storage Plugin Configuration</a></li>
   
-  <li>Starting Drill on Windows</li>
+  <li>Configuring Storage Plugins</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/install/installing-drill-in-embedded-mode/050-starting-drill-on-windows.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/connect-a-data-source/036-configuring-storage-plugins.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>Starting Drill on Windows</h1>
+      <h1>Configuring Storage Plugins</h1>
 
     </div>
 
-     
+     Jul 6, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Start the Drill shell using the <strong>sqlline command</strong>. Complete the following steps to launch the Drill shell:</p>
+        <p>Storage plugins enable Drill to access data sources. Drill provides a default set of storage plugin configurations upon installation. However, you can modify the storage plugin configurations, as  described in following sections. When you modify storage plugin configurations on one Drill node in a Drill cluster, Drill broadcasts the information to the other Drill nodes to synchronize the storage plugin configurations across all of the Drill nodes.  </p>
+
+<p>Starting in Drill 1.14, you can use the <code>storage-plugins-override.conf</code> file to store your custom storage plugin configurations, as described in the Storage Plugins Configurations File topic below. </p>
+
+<p>Once you decide how you want to configure storage plugins in Drill, you may also want to reference <a href="/docs/plugin-configuration-basics/">Plugin Configuration Basics</a> for configuration details, such as supported data sources and file formats. </p>
+
+<p>The following sections describe each of these storage plugin configuration methods in more detail.  </p>
+
+<h2 id="configuring-storage-plugins-in-the-drill-web-ui">Configuring Storage Plugins in the Drill Web UI</h2>
+
+<p>You can use the Drill Web UI to update or add a new storage plugin configuration. The Drill shell needs to be running to start the Web UI. </p>
+
+<p>To create a name and new configuration:</p>
 
 <ol>
-<li>Open Command Prompt.<br></li>
-<li>Navigate to the Drill installation folder. </li>
-<li>Go to the <code>bin</code> directory. For example:<br>
-<code>cd bin</code></li>
-<li>Type the following command on the command line:
-<code>sqlline.bat -u &quot;jdbc:drill:zk=local&quot;</code>
-<img src="/docs/img/sqlline1.png" alt="drill install dir"></li>
+<li><a href="/docs/starting-drill-on-linux-and-mac-os-x/">Start the Drill shell</a>.</li>
+<li><a href="/docs/starting-the-web-console/">Start the Web Console</a>. The Storage tab appears in the Web Console if you are <a href="/docs/configuring-web-console-and-rest-api-security/">authorized</a> to view, update, or add storage plugins. </li>
+<li><p>On the Storage tab, enter a name in <strong>New Storage Plugin</strong>.
+Each configuration registered with Drill must have a distinct
+name. Names are case-sensitive.<br>
+ <img src="/docs/img/storage_plugin_config.png" alt="sandbox plugin"></p>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The URL differs depending on your installation and configuration.  </p>
+</div>  </li>
+<li><p>Click <strong>Create</strong>.  </p></li>
+<li><p>In Configuration, use JSON formatting to modify a copy of an existing configuration if possible.<br>
+Using a copy of an existing configuration reduces the risk of JSON coding errors. Use the Storage Plugin Attributes table in the next section as a guide for making typical modifications.  </p></li>
+<li><p>Click <strong>Create</strong>.  </p></li>
 </ol>
 
-<p>The <a href="/docs/starting-drill-on-linux-and-mac-os-x/#about-the-drill-prompt">Drill prompt</a> appears. You can <a href="/docs/drill-in-10-minutes/#query-sample-data">submit queries</a> to Drill.</p>
+<p><strong>Note:</strong> Drill 1.12 and later provides syntax highlighting and error checking for plugin configurations to prevent syntax errors, such as missing commas or curly brackets, when configuring storage plugins. </p>
 
-<p>You can use the schema option in the <strong>sqlline</strong> command to specify a storage plugin. Specifying the storage plugin when you start up eliminates the need to specify the storage plugin in the query. For example, this command specifies the <code>dfs</code> storage plugin:</p>
+<p>You can see an example of syntax highlighting for a storage plugin configuration in the following image:  </p>
 
-<p><code>C:\bin\sqlline sqlline.bat –u &quot;jdbc:drill:zk=local;schema=dfs&quot;</code></p>
+<p><img src="https://i.imgur.com/LdiQC7E.png" alt="">  </p>
 
-<p>If you start Drill on one network, and then want to use Drill on another network, such as your home network, restart Drill.</p>
+<p>A red box with an x indicates that the syntax contains an error, as shown in the following image:  </p>
 
-<h2 id="exiting-the-drill-shell">Exiting the Drill Shell</h2>
+<p><img src="https://i.imgur.com/cFDCH0v.png" alt=""> </p>
 
-<p>To exit the Drill shell, issue the following command:</p>
+<h2 id="configuring-storage-plugins-using-rest-api">Configuring Storage Plugins Using REST API</h2>
 
-<p><code>!quit</code></p>
+<p>If you need to add a storage plugin configuration to Drill and do not want to use a web browser, you can use the <a href="/docs/rest-api/#get-status-threads">Drill REST API</a> to create a storage plugin configuration. Use a POST request and pass the following two properties:</p>
+
+<ul>
+<li><p>name<br>
+The storage plugin configuration name. </p></li>
+<li><p>config<br>
+The attribute settings as entered in the Web Console.</p></li>
+</ul>
+
+<p>For example, this command creates a storage plugin named myplugin for reading files of an unknown type located on the root of the file system:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">curl -X POST -H &quot;Content-Type: application/json&quot; -d &#39;{&quot;name&quot;:&quot;myplugin&quot;, &quot;config&quot;: {&quot;type&quot;: &quot;file&quot;, &quot;enabled&quot;: false, &quot;connection&quot;: &quot;file:///&quot;, &quot;workspaces&quot;: { &quot;root&quot;: { &quot;location&quot;: &quot;/&quot;, &quot;writable&quot;: false, &quot;defaultInputFormat&quot;: null}}, &quot;formats&quot;: null}}&#39; http://localhost:8047/storage/myplugin.json
+</code></pre></div>
+<p>This example assumes HTTPS has not been enabled. </p>
+
+<h2 id="configuring-storage-plugins-with-a-bootstrap-file">Configuring Storage Plugins with a Bootstrap File</h2>
+
+<p>You can create a <a href="https://github.com/apache/drill/blob/master/contrib/storage-hbase/src/main/resources/bootstrap-storage-plugins.json"><code>bootstrap-storage-plugins.json</code></a> file and include the file in the classpath when you start Drill. Drill loads the storage plugin configuration from the bootstrap file into the <a href="/docs/persistent-configuration-storage/">PStore</a> (persistent configuration storage) when Drill starts; ZooKeeper is the default PStore for Drill in distributed mode. You can then use the REST API, Drill Web UI, or <code>storage-plugins-override.conf</code> file to modify the storage plugins configurations.</p>
+
+<p>Bootstrapping a storage plugin configuration only works for the first Drillbit in the cluster that starts. Drill cannot pick up the configuration from the <code>bootstrap-storage-plugins.json</code> file during a restart; however, this can be achieved with a <code>storage-plugins-override.conf</code> file. See <a href="/docs/configuring-storage-plugins/configuring-storage-plugins-with-the-storage-plugins-override.conf-file">Configuring Storage Plugins with the storage-plugins-override.conf File</a>.  </p>
+
+<p>Alternatively, you can modify the entry in ZooKeeper directly, by uploading the configuration for a plugin into the <code>/drill</code> directory of the ZooKeeper installation, or by deleting the <code>/drill</code> directory (if you do not have configuration properties to preserve).</p>
+
+<p><strong>Note:</strong> If you load an HBase storage plugin configuration using the <code>bootstrap-storage-plugins.json</code> file and HBase is not installed, you might experience a delay when executing the queries. Configure the <a href="http://hbase.apache.org/book.html/#config.files">HBase client timeout</a> and retry settings in the <code>config</code> block of the HBase plugin configuration.  </p>
+
+<h2 id="configuring-storage-plugins-with-the-storage-plugins-override.conf-file">Configuring Storage Plugins with the storage-plugins-override.conf File</h2>
+
+<p>Starting in Drill 1.14, you can manage storage plugin configurations in the Drill configuration file, <code>storage-plugins-override.conf</code>, located in the <code>&lt;drill-installation&gt;/conf</code> directory. When you provide the storage plugin configurations in the <code>storage-plugins-override.conf</code> file, Drill reads the file and configures the plugins during start-up. </p>
+
+<p>For the configurations in the <code>storage-plugins-override.conf</code> file to take effect, you must restart Drill. After applying the new storage plugins configurations, the <code>storage-plugins-override.conf</code> file remains in the <code>/conf</code> directory. Drill will apply the configurations again, after the next Drill restart.  </p>
+
+<p>The <code>drill.exec.storage.action_on_plugins_override_file</code> <a href="/docs/start-up-options/#configuring-start-up-options">start-up option</a> in the <code>&lt;drill_home&gt;/conf/drill-override.conf</code> file determines what happens to the file after Drill successfully updates storage plugin configurations. If you do not want Drill to apply the configurations after restarting, set the option to <code>“rename”</code> or <code>“remove”</code>.  </p>
+
+<p>You can set the <code>drill.exec.storage.action_on_plugins_override_file</code> option to one of the following values:  </p>
+
+<ul>
+<li><code>&quot;none&quot;</code><br>
+(Default) The file remains in the directory after Drill uses the file.<br></li>
+<li><code>&quot;rename&quot;</code><br>
+The <code>storage-plugins-override.conf</code> file name is changed to <code>storage-plugins-override-[current_timestamp].conf</code> after Drill uses the file.<br></li>
+<li><code>&quot;remove&quot;</code><br>
+The file is removed after Drill uses the file for the first time.</li>
+</ul>
 
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/installing-drill-on-windows/">← Installing Drill on Windows</a></span><span class="next-toc"><a href="/docs/installing-drill-in-distributed-mode/">Installing Drill in Distributed Mode →</a></span>
+  <span class="previous-toc"><a href="/docs/plugin-configuration-basics/">← Plugin Configuration Basics</a></span><span class="next-toc"><a href="/docs/workspaces/">Workspaces →</a></span>
 </div>
 
     

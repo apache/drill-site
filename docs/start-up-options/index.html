@@ -431,6 +431,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/plugin-configuration-basics/">Plugin Configuration Basics</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-storage-plugins/">Configuring Storage Plugins</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/workspaces/">Workspaces</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/drill-default-input-format/">Drill Default Input Format</a></li>
@@ -1234,7 +1236,7 @@
 
     </div>
 
-     Jun 20, 2018
+     Jul 6, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1281,7 +1283,7 @@ file tells Drill to scan that JAR file or associated object and include it.</p>
 
 <ul>
 <li><p><strong>drill.exec.http.ssl_enabled</strong><br>
-Available in Drill 1.2. Enables or disables <a href="/docs/configuring-web-console-and-rest-api-security/#https-support">HTTPS support</a>. Settings are TRUE and FALSE, respectively. The default is FALSE.  </p></li>
+Introduced in Drill 1.2. Enables or disables <a href="/docs/configuring-web-console-and-rest-api-security/#https-support">HTTPS support</a>. Settings are TRUE and FALSE, respectively. The default is FALSE.  </p></li>
 <li><p><strong>drill.exec.sys.store.provider.class</strong><br>
 Defines the persistent storage (PStore) provider. The <a href="/docs/persistent-configuration-storage">PStore</a> holds configuration and profile data.  </p></li>
 <li><p><strong>drill.exec.buffer.size</strong><br>
@@ -1293,9 +1295,17 @@ Introduced in Drill 1.11. The list of directories into which the Sort, Hash Aggr
 <li><p><strong>drill.exec.zk.connect</strong><br>
 Provides Drill with the ZooKeeper quorum to use to connect to data sources. Change this setting to point to the ZooKeeper quorum that you want Drill to use. You must configure this option on each Drillbit node.  </p></li>
 <li><p><strong>drill.exec.profiles.store.inmemory</strong><br>
-Available as of Drill 1.11. When set to TRUE, enables Drill to store query profiles in memory instead of writing the query profiles to disk. When set to FALSE, Drill writes the profile for each query to disk, which is either the local file system or a distributed file system, such as HDFS. For sub-second queries, writing the query profile to disk is expensive due to the interactions with the file system. Enable this option if you want Drill to store the profiles of sub-second queries in memory instead of writing them to disk. When you enable this option, Drill stores the profiles in memory for as long as the drillbit runs. When the drillbit restarts, the profiles no longer exist. You can set the maximum number of most recent profiles to retain in memory through the <code>drill.exec.profiles.store.capacity</code> option. Settings are TRUE and FALSE. Default is FALSE. See <a href="/docs/persistent-configuration-storage/">Persistent Configuration Storage</a> for more information.  </p></li>
+Introduced in Drill 1.11. When set to TRUE, enables Drill to store query profiles in memory instead of writing the query profiles to disk. When set to FALSE, Drill writes the profile for each query to disk, which is either the local file system or a distributed file system, such as HDFS. For sub-second queries, writing the query profile to disk is expensive due to the interactions with the file system. Enable this option if you want Drill to store the profiles of sub-second queries in memory instead of writing them to disk. When you enable this option, Drill stores the profiles in memory for as long as the drillbit runs. When the drillbit restarts, the profiles no longer exist. You can set the maximum number of most recent profiles to retain in memory through the <code>drill.exec.profiles.store.capacity</code> option. Settings are TRUE and FALSE. Default is FALSE. See <a href="/docs/persistent-configuration-storage/">Persistent Configuration Storage</a> for more information.  </p></li>
 <li><p><strong>drill.exec.profiles.store.capacity</strong><br>
-Available as of Drill 1.11. Sets the maximum number of most recent profiles to retain in memory when the <code>drill.exec.profiles.store.inmemory</code> option is enabled. Default is 1000.  </p></li>
+Introduced in Drill 1.11. Sets the maximum number of most recent profiles to retain in memory when the <code>drill.exec.profiles.store.inmemory</code> option is enabled. Default is 1000.  </p></li>
+<li><p><strong>drill.exec.storage.action_on_plugins_override_file</strong><br>
+Introduced in Drill 1.14. Determines what happens to the <a href="/docs/configuring-storage-plugins/configuring-storage-plugins-with-the-storage-plugins-override.conf-file"><code>storage-plugins-override.conf</code></a> file after Drill successfully updates storage plugin configurations. If you do not want Drill to apply the configurations after restarting, set the option to <code>&quot;rename&quot;</code> or <code>&quot;remove&quot;</code>.  This option accepts the following values:  </p>
+
+<ul>
+<li><code>&quot;none&quot;</code> - (Default) The file remains in the directory after Drill uses the file.<br></li>
+<li><code>&quot;rename&quot;</code> - The <code>storage-plugins-override.conf</code> file name is changed to <code>storage-plugins-override-[current_timestamp].conf</code> after Drill uses the file.<br></li>
+<li><code>&quot;remove&quot;</code> - The file is removed after Drill uses the file for the first time.</li>
+</ul></li>
 </ul>
 
     

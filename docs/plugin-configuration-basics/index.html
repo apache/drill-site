@@ -431,6 +431,8 @@
               
                 <li class="toctree-l3 current"><a class="reference internal" href="/docs/plugin-configuration-basics/">Plugin Configuration Basics</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-storage-plugins/">Configuring Storage Plugins</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/workspaces/">Workspaces</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/drill-default-input-format/">Drill Default Input Format</a></li>
@@ -1234,50 +1236,17 @@
 
     </div>
 
-     Jun 12, 2018
+     Jul 6, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>When you add or update storage plugin configurations on one Drill node in a 
-cluster having multiple installations of Drill, Drill broadcasts the information to other Drill nodes 
-to synchronize the storage plugin configurations. You do not need to
-restart any of the Drillbits when you add or update a storage plugin configuration.</p>
+        <p>There are several ways you can configure storage plugins. For example, you can configure storage plugins in the Drill Web UI,  using REST API, or through configuration files. See <a href="/docs/configuring-storage-plugins/">Configuring Storage Plugins</a> for more information.</p>
 
-<h2 id="using-the-drill-web-console">Using the Drill Web Console</h2>
+<p>When you configure storage plugins, you use a set of storage plugin attributes, such as the storage plugin type, formats that the plugin type supports, and connection parameters.   </p>
 
-<p>You can use the Drill Web Console to update or add a new storage plugin configuration. The Drill shell needs to be running to start the Web Console. </p>
-
-<p>To create a name and new configuration:</p>
-
-<ol>
-<li><a href="/docs/starting-drill-on-linux-and-mac-os-x/">Start the Drill shell</a>.</li>
-<li><a href="/docs/starting-the-web-console/">Start the Web Console</a>. The Storage tab appears in the Web Console if you are <a href="/docs/configuring-web-console-and-rest-api-security/">authorized</a> to view, update, or add storage plugins. </li>
-<li><p>On the Storage tab, enter a name in <strong>New Storage Plugin</strong>.
-Each configuration registered with Drill must have a distinct
-name. Names are case-sensitive.<br>
- <img src="/docs/img/storage_plugin_config.png" alt="sandbox plugin"></p>
-
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The URL differs depending on your installation and configuration.  </p>
-</div>  </li>
-<li><p>Click <strong>Create</strong>.  </p></li>
-<li><p>In Configuration, use JSON formatting to modify a copy of an existing configuration if possible.<br>
-Using a copy of an existing configuration reduces the risk of JSON coding errors. Use the Storage Plugin Attributes table in the next section as a guide for making typical modifications.  </p></li>
-<li><p>Click <strong>Create</strong>.  </p></li>
-</ol>
-
-<p>Note: Drill 1.12 and later provides syntax highlighting and error checking for plugin configurations to prevent syntax errors, such as missing commas or curly brackets, when configuring storage plugins. </p>
-
-<p>You can see an example of syntax highlighting for a storage plugin configuration in the following image:  </p>
-
-<p><img src="https://i.imgur.com/LdiQC7E.png" alt="">  </p>
-
-<p>A red box with an x indicates that the syntax contains an error, as shown in the following image:  </p>
-
-<p><img src="https://i.imgur.com/cFDCH0v.png" alt=""> </p>
+<p>The following sections describe the attributes that you can use in your storage plugin configurations and provide information related to the use of attributes. </p>
 
 <h2 id="storage-plugin-attributes">Storage Plugin Attributes</h2>
 
@@ -1427,42 +1396,13 @@ fieldDelimiter =&gt; &#39;,&#39;, extractHeader =&gt; true))</code></p>
 <p>As previously mentioned, workspace and storage plugin names are case-sensitive. For example, the following query uses a storage plugin name <code>dfs</code> and a workspace name <code>clicks</code>. When you refer to <code>dfs.clicks</code> in an SQL statement, use the defined case:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; USE dfs.clicks;
 </code></pre></div>
-<p>For example, using uppercase letters in the query after defining the storage plugin and workspace names using lowercase letters does not work. </p>
-
-<h2 id="storage-plugin-rest-api">Storage Plugin REST API</h2>
-
-<p>If you need to add a storage plugin configuration to Drill and do not want to use a web browser, you can use the <a href="/docs/rest-api/#get-status-threads">Drill REST API</a> to create a storage plugin configuration. Use a POST request and pass two properties:</p>
-
-<ul>
-<li><p>name<br>
-The storage plugin configuration name. </p></li>
-<li><p>config<br>
-The attribute settings as entered in the Web Console.</p></li>
-</ul>
-
-<p>For example, this command creates a storage plugin named myplugin for reading files of an unknown type located on the root of the file system:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">curl -X POST -H &quot;Content-Type: application/json&quot; -d &#39;{&quot;name&quot;:&quot;myplugin&quot;, &quot;config&quot;: {&quot;type&quot;: &quot;file&quot;, &quot;enabled&quot;: false, &quot;connection&quot;: &quot;file:///&quot;, &quot;workspaces&quot;: { &quot;root&quot;: { &quot;location&quot;: &quot;/&quot;, &quot;writable&quot;: false, &quot;defaultInputFormat&quot;: null}}, &quot;formats&quot;: null}}&#39; http://localhost:8047/storage/myplugin.json
-</code></pre></div>
-<p>This example assumes HTTPS has not been enabled. </p>
-
-<h2 id="bootstrapping-a-storage-plugin">Bootstrapping a Storage Plugin</h2>
-
-<p>The REST API is recommended for programmatically adding a storage plugin configuration to Drill. An alternative for use in a distributed environment only is bootstrapping. You can create a <a href="https://github.com/apache/drill/blob/master/contrib/storage-hbase/src/main/resources/bootstrap-storage-plugins.json">bootstrap-storage-plugins.json</a> file and include it on the classpath when starting Drill. The storage plugin configuration loads when Drill starts up.</p>
-
-<p>Currently, bootstrapping a storage plugin configuration works only when the first Drillbit in the cluster first starts up. The configuration is
-stored in ZooKeeper, preventing Drill from picking up the bootstrap-storage-plugins.json again.</p>
-
-<p>After cluster startup, you have to use the REST API or Drill Web Console to add a storage plugin configuration. Alternatively, you
-can modify the entry in ZooKeeper by uploading the json file for
-that plugin to the /drill directory of the zookeeper installation, or by just deleting the /drill directory if you do not have configuration properties to preserve.</p>
-
-<p>If you load an HBase storage plugin configuration using bootstrap-storage-plugins.json file and HBase is not installed, you might experience a delay when executing the queries. Configure the <a href="http://hbase.apache.org/book.html/#config.files">HBase client timeout</a> and retry settings in the config block of the HBase plugin configuration.</p>
+<p>For example, using uppercase letters in the query after defining the storage plugin and workspace names using lowercase letters does not work.  </p>
 
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/storage-plugin-configuration/">← Storage Plugin Configuration</a></span><span class="next-toc"><a href="/docs/workspaces/">Workspaces →</a></span>
+  <span class="previous-toc"><a href="/docs/storage-plugin-configuration/">← Storage Plugin Configuration</a></span><span class="next-toc"><a href="/docs/configuring-storage-plugins/">Configuring Storage Plugins →</a></span>
 </div>
 
     
