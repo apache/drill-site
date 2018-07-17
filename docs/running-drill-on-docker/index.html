@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>SHOW TABLES - Apache Drill</title>
+<title>Running Drill on Docker - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -269,8 +269,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Install Drill</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Install Drill</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/install-drill-introduction/">Install Drill Introduction</a></li>
@@ -282,11 +282,11 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">Installing Drill in Embedded Mode</a></li>
-              <ul style="display: none">
+              <ul style="">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
+                <li class="toctree-l3 current"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
@@ -774,8 +774,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">SQL Reference</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">SQL Reference</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sql-reference-introduction/">SQL Reference Introduction</a></li>
@@ -865,7 +865,7 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">SQL Commands</a></li>
-              <ul style="">
+              <ul style="display: none">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/supported-sql-commands/">Supported SQL Commands</a></li>
               
@@ -921,7 +921,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/show-files/">SHOW FILES</a></li>
               
-                <li class="toctree-l3 current"><a class="reference internal" href="/docs/show-tables/">SHOW TABLES</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/show-tables/">SHOW TABLES</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/use/">USE</a></li>
               
@@ -1221,159 +1221,143 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/sql-reference/">SQL Reference</a></li>
+    <li><a href="/docs/install-drill/">Install Drill</a></li>
   
-    <li><a href="/docs/sql-commands/">SQL Commands</a></li>
+    <li><a href="/docs/installing-drill-in-embedded-mode/">Installing Drill in Embedded Mode</a></li>
   
-  <li>SHOW TABLES</li>
+  <li>Running Drill on Docker</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/sql-reference/sql-commands/110-show-tables.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/install/installing-drill-in-embedded-mode/011-running-drill-on-docker.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>SHOW TABLES</h1>
+      <h1>Running Drill on Docker</h1>
 
     </div>
 
-     Feb 9, 2018
+     Mar 18, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>The SHOW TABLES command returns a list of views created within a schema. It
-also returns the tables that exist in Hive and HBase when you use storage plugin configurations for these data sources. See <a href="/docs/storage-plugin-registration">Storage Plugin
-Registration</a>.</p>
+        <p>Starting in Drill 1.14, you can run Drill in a <a href="https://www.docker.com/what-container#/package_software">Docker container</a>. Running Drill in a container is the simplest way to start using Drill; all you need is the Docker client installed on your machine. You simply run a Docker command, and your Docker client downloads the Drill Docker image from the apache-drill repository on <a href="https://docs.docker.com/docker-hub/">Docker Hub</a> and then brings up a container with Apache Drill  running in embedded mode.</p>
 
-<h2 id="syntax">Syntax</h2>
+<p><strong>Note:</strong> Currently, you can only run Drill in embedded mode in a Docker container. Embedded mode is when a single instance of Drill runs on a node or in a container. You do not have to perform any configuration tasks when Drill runs in embedded mode.  </p>
 
-<p>The SHOW TABLES command supports the following syntax:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SHOW TABLES;
-</code></pre></div>
-<h2 id="usage-notes">Usage Notes</h2>
+<h2 id="prerequisite">Prerequisite</h2>
 
-<p>First issue the USE command to identify the schema for which you want to view
-tables or views. For example, the following USE statement tells Drill that you
-only want information from the <code>dfs.myviews</code> schema:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">USE dfs.myviews;
-</code></pre></div>
-<p>In this example, “<code>myviews</code>” is a workspace created within the
-<code>dfs</code> storage plugin configuration.</p>
-
-<p>When you use a particular schema and then issue the SHOW TABLES command, Drill
-returns the tables and views within that schema.</p>
-
-<h2 id="limitations">Limitations</h2>
+<p>You must have the Docker client (version 18 or later) installed on your machine.  </p>
 
 <ul>
-<li><p>You can create and query tables within the file system, however Drill does not return these tables when you issue the SHOW TABLES command. You can issue the <a href="/docs/show-files-command">SHOW FILES </a>command to see a list of all files, tables, and views, including those created in Drill. </p></li>
-<li><p>You cannot create Hive or HBase tables in Drill. </p></li>
+<li><a href="https://www.docker.com/docker-mac">Docker for Mac</a><br></li>
+<li><a href="https://www.docker.com/docker-windows">Docker for Windows</a><br></li>
+<li><a href="https://www.docker.com/docker-oracle-linux">Docker for Oracle Linux</a><br></li>
 </ul>
 
-<h2 id="examples">Examples</h2>
+<h2 id="running-drill-in-a-docker-container">Running Drill in a Docker Container</h2>
 
-<p>The following examples demonstrate the steps that you can follow when you want
-to issue the SHOW TABLES command on the file system, Hive, and HBase.  </p>
+<p>You can start and run a Docker container in “detached” mode or “foreground” mode. Foreground is the default mode. Foreground mode runs the Drill process in the container and attaches the console to Drill’s standard input, output, and standard error. Detached mode runs the container in the background.</p>
 
-<p>Complete the following steps to see views that exist in a file system and
-tables that exist in Hive and HBase data sources:</p>
+<p>Whether you run the Docker container in detached or foreground mode, you start Drill in a container by issuing the docker run command with some options. </p>
 
-<ol>
-<li><p>Issue the SHOW SCHEMAS command to see a list of available schemas.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=drilldemo:5181&gt; show schemas;
-+-------------+
-| SCHEMA_NAME |
-+-------------+
-| hive.default |
-| dfs.reviews |
-| dfs.flatten |
-| dfs.default |
-| dfs.root  |
-| dfs.logs  |
-| dfs.myviews   |
-| dfs.clicks  |
-| dfs.tmp   |
-| sys       |
-| hbase     |
-| INFORMATION_SCHEMA |
-| s3.twitter  |
-| s3.reviews  |
-| s3.default  |
-+-------------+
-15 rows selected (0.072 seconds)
-</code></pre></div></li>
-<li><p>Issue the USE command to switch to a particular schema. When you use a particular schema, Drill searches or queries within that schema only. </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=drilldemo:5181&gt; use dfs.myviews;
-+------------+------------+
-|   ok  |  summary   |
-+------------+------------+
-| true      | Default schema changed to &#39;dfs.myviews&#39; |
-+------------+------------+
-1 row selected (0.025 seconds)
-</code></pre></div></li>
-<li><p>Issue the SHOW TABLES command to see the views or tables that exist within workspace.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=drilldemo:5181&gt; show tables;
-+--------------+------------+
-| TABLE_SCHEMA | TABLE_NAME |
-+--------------+------------+
-| dfs.myviews   | logs_vw   |
-| dfs.myviews   | customers_vw |
-| dfs.myviews   | s3_review_vw |
-| dfs.myviews   | clicks_vw  |
-| dfs.myviews   | nestedclickview |
-| dfs.myviews   | s3_user_vw |
-| dfs.myviews   | s3_bus_vw  |
-+--------------+------------+
-7 rows selected (0.499 seconds)
-0: jdbc:drill:zk=drilldemo:5181&gt;
-</code></pre></div></li>
-<li><p>Switch to the Hive schema and issue the SHOW TABLES command to see the Hive tables that exist.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=drilldemo:5181&gt; use hive;
-+------------+------------+
-|   ok  |  summary   |
-+------------+------------+
-| true      | Default schema changed to &#39;hive&#39; |
-+------------+------------+
-1 row selected (0.043 seconds)
+<p>The following table describes the options:  </p>
 
-0: jdbc:drill:zk=drilldemo:5181&gt; show tables;
-+--------------+------------+
-| TABLE_SCHEMA | TABLE_NAME |
-+--------------+------------+
-| hive.default | orders     |
-| hive.default | products   |
-+--------------+------------+
-2 rows selected (0.552 seconds)
-</code></pre></div></li>
-<li><p>Switch to the HBase schema and issue the SHOW TABLES command to see the HBase tables that exist within the schema.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=drilldemo:5181&gt; use hbase;
-+------------+------------+
-|   ok  |  summary   |
-+------------+------------+
-| true      | Default schema changed to &#39;hbase&#39; |
-+------------+------------+
-1 row selected (0.043 seconds)
+<table><thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>-i</code></td>
+<td>Keeps STDIN open. STDIN is standard input, an   input stream where data is sent to and read by a program.</td>
+</tr>
+<tr>
+<td><code>-t</code></td>
+<td>Allocates a pseudo-tty (a shell).</td>
+</tr>
+<tr>
+<td><code>--name</code></td>
+<td>Identifies the container. If you do not use this   option to identify a name for the container, the daemon generates a random   string name for you. When you use this option to identify a container name,   you can use the name to reference the container within a Docker network in   foreground or detached mode.</td>
+</tr>
+<tr>
+<td>-p</td>
+<td>The TCP port for the Drill Web UI. If needed, you can   change this port using the <code>drill.exec.http.port</code> <a href="/docs/start-up-options/">start-up option</a>.</td>
+</tr>
+<tr>
+<td><code>drill/apache-drill:&lt;version&gt;</code></td>
+<td>The GitHub repository and tag. In the following   example, <code>drill/apache-drill</code> is   the repository and <code>1.14.0</code>   is the tag:     <code>drill/apache-drill:1.14.0</code>     The tag correlates with the version of Drill. When a new version of Drill   is available, you can use the new version as the tag.</td>
+</tr>
+<tr>
+<td><code>bin/bash</code></td>
+<td>Runs the Drill image downloaded from the   <code>apache-drill</code> repository.</td>
+</tr>
+</tbody></table>
 
-0: jdbc:drill:zk=drilldemo:5181&gt; show tables;
-+--------------+------------+
-| TABLE_SCHEMA | TABLE_NAME |
-+--------------+------------+
-| hbase     | customers  |
-+--------------+------------+
-1 row selected (0.412 seconds)
-</code></pre></div></li>
-</ol>
+<h3 id="running-the-drill-docker-container-in-foreground-mode">Running the Drill Docker Container in Foreground Mode</h3>
+
+<p>Open a terminal window (Command Prompt or PowerShell, but not PowerShell ISE) and then issue the following command and opitons to connect to SQLLine (the Drill shell):   </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   docker run -i --name drill-1.14.0 -p 8047:8047 -t drill/apache-drill:1.14.0 /bin/bash  
+</code></pre></div>
+<p>When you issue the docker run command, the Drill process starts in a container. SQLLine prints a message, and the prompt appears:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   Jun 29, 2018 3:28:21 AM org.glassfish.jersey.server.ApplicationHandler initialize
+   INFO: Initiating Jersey application, version Jersey: 2.8 2014-04-29 01:25:26...
+   apache drill 1.14.0 
+   &quot;json ain&#39;t no thang&quot;
+   0: jdbc:drill:zk=local&gt;  
+</code></pre></div>
+<p>At the prompt, you can enter the following simple query to verify that Drill is running:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT version FROM sys.version;  
+</code></pre></div>
+<h3 id="running-the-drill-docker-container-in-detached-mode">Running the Drill Docker Container in Detached Mode</h3>
+
+<p>Open a terminal window (Command Prompt or PowerShell, but not PowerShell ISE) and then issue the following commands and options to connect to SQLLine (the Drill shell):  </p>
+
+<p><strong>Note:</strong> When you run the Drill Docker container in Detached mode, you connect to SQLLine (the Drill shell) using drill-localhost.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   $ docker run -i --name drill-1.14.0 -p 8047:8047 --detach -t drill/apache-drill:1.14.0 /bin/bash
+   &lt;displays container ID&gt;
+
+   $ docker exec -it drill-1.14.0 bash
+   &lt;connects to container&gt;
+
+   $ /opt/drill/bin/drill-localhost  
+</code></pre></div>
+<p>After you issue the commands, the Drill process starts in a container. SQLLine prints a message, and the prompt appears:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   apache drill 1.14.0 
+   &quot;json ain&#39;t no thang&quot;
+   0: jdbc:drill:drillbit=localhost&gt;  
+</code></pre></div>
+<p>At the prompt, you can enter the following simple query to verify that Drill is running:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT version FROM sys.version;  
+</code></pre></div>
+<h2 id="querying-data">Querying Data</h2>
+
+<p>By default, you can only query files that are accessible within the container. For example, you can query the sample data packaged with Drill, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT first_name, last_name FROM cp.`employee.json` LIMIT 1;
+   +-------------+------------+
+   | first_name  | last_name  |
+   +-------------+------------+
+   | Sheri       | Nowmer     |
+   +-------------+------------+
+   1 row selected (0.256 seconds)  
+</code></pre></div>
+<p>To query files outside of the container, you can configure <a href="https://docs.docker.com/storage/volumes/#start-a-service-with-volumes">Docker volumes</a>.  </p>
+
+<h2 id="drill-web-ui">Drill Web UI</h2>
+
+<p>You can access the Drill web UI at <code>http://localhost:8047</code> when the Drill Docker container is running. On Windows, you may need to specify the IP address of your system instead of using &quot;localhost&quot;.</p>
 
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/show-files/">← SHOW FILES</a></span><span class="next-toc"><a href="/docs/use/">USE →</a></span>
+  <span class="previous-toc"><a href="/docs/embedded-mode-prerequisites/">← Embedded Mode Prerequisites</a></span><span class="next-toc"><a href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X →</a></span>
 </div>
 
     
