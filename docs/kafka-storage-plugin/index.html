@@ -1313,37 +1313,27 @@
 </code></pre></div>
 <h2 id="filter-pushdown-support">Filter Pushdown Support</h2>
 
-<p>Prior to Drill 1.14, Drill scanned all of the data in a topic before applying filters. Starting in Drill 1.14, the Drill kafka storage plugin supports filter pushdown for query conditions on the following Kafka metadata fields in messages:  </p>
+<p>Pushing down filters to the Kafka data source reduces the number of messages that Drill scans and significantly decrease query time. Prior to Drill 1.14, Drill scanned all of the data in a topic before applying filters. Starting in Drill 1.14, Drill transforms the filter conditions on metadata fields to limit the range of offsets scanned from the topic. </p>
+
+<p>The Drill kafka storage plugin supports filter pushdown for query conditions on the following Kafka metadata fields in messages:  </p>
 
 <ul>
-<li>kafkaPartitionId<br></li>
-<li>kafkaMsgOffset<br></li>
-<li>kafkaMsgTimestamp<br></li>
+<li><p><strong>kafkaPartitionId</strong><br>
+Conditions on the kafkaPartitionId metadata field limit the number of partitions that Drill scans, which is useful for data exploration.
+Drill can push down filters when a query contains the following conditions on the kafkaPartitionId metadata field:<br>
+=, &gt;, &gt;=, &lt;, &lt;=</p></li>
+<li><p><strong>kafkaMsgOffset</strong><br>
+Drill can push down filters when a query contains the  following conditions on the kafkaMsgOffset metadata field:<br>
+=, &gt;, &gt;=, &lt;, &lt;=  </p></li>
+<li><p><strong>kafkaMsgTimestamp</strong><br>
+The kafkaMsgTimestamp field maps to the timestamp stored for each Kafka message. Drill can push down filters when a query contains the  following conditions on the kafkaMsgTimestamp metadata field:<br>
+=, &gt;, &gt;=  </p></li>
 </ul>
 
-<p>Pushing down filters to the Kafka data source reduces the number of messages that Drill scans and significantly decrease query time. Drill transforms the filter conditions on the metadata fields to limit the range of offsets scanned from the topic.  </p>
-
-<p>The following table describes filter pushdown support for Kafka metadata message fields:  </p>
-
-<table><thead>
-<tr>
-<th>Metadata Field</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>kafkaPartitionId</td>
-<td>Conditions on the kafkaPartitionId metadata field limit the number of partitions that Drill scans, which is useful for data exploration. Drill can push down filters when a query contains these conditions on the kafkaPartitionId metadata field: =, &gt;, &gt;=, &lt;, &lt;=</td>
-</tr>
-<tr>
-<td>kafkaMsgOffset</td>
-<td>Drill can push down filters when a query contains these conditions on the kafkaMsgOffset metadata field: =, &gt;, &gt;=, &lt;, &lt;=</td>
-</tr>
-<tr>
-<td>kafkaMsgTimestamp</td>
-<td>The kafkaMsgTimestamp field maps to the timestamp stored for each Kafka message. Drill can push down filters when a query contains these conditions on the kafkaMsgTimestamp metadata field: =, &gt;, &gt;=          Kafka exposes the following <a href="https://kafka.apache.org/11/javadoc/org/apache/kafka/clients/consumer/MockConsumer.html">Consumer API</a> to obtain the earliest offset for a given timestamp value:          <code>public java.util.Map&lt;TopicPartition,OffsetAndTimestamp&gt;offsetsForTimes(java.util.Map&lt;TopicPartition,java.lang.Long&gt; timestampsToSearch)</code>        This API is used to determine the startOffset for each partition in a topic. Note that the timestamps may not appear in increasing order when reading from a Kafka topic if you have defined the timestamp for a message. However, the API returns the first offset (from the beginning of a topic partition) where the timestamp is greater or equal to the timestamp requested. Therefore, Drill does not support pushdown on &lt; or &lt;= because an earlier timestamp may exist beyond endOffsetcomputed.</td>
-</tr>
-</tbody></table>
+<p>Kafka exposes the following Consumer API to obtain the earliest offset for a given timestamp value:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   public java.util.Map&lt;TopicPartition,OffsetAndTimestamp&gt; offsetsForTimes(java.util.Map&lt;TopicPartition,java.lang.Long&gt; timestampsToSearch)  
+</code></pre></div>
+<p>This API is used to determine the startOffset for each partition in a topic. Note that the timestamps may not appear in increasing order when reading from a Kafka topic if you have defined the timestamp for a message. However, the API returns the first offset (from the beginning of a topic partition) where the timestamp is greater or equal to the timestamp requested. Therefore, Drill does not support pushdown on &lt; or &lt;= because an earlier timestamp may exist beyond endOffsetcomputed.     </p>
 
 <h2 id="enabling-and-configuring-the-kafka-storage-plugin">Enabling and Configuring the Kafka Storage Plugin</h2>
 
