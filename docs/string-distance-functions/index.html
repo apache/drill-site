@@ -1244,7 +1244,7 @@
 
     </div>
 
-     Jul 17, 2018
+     Jul 18, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1253,61 +1253,49 @@
         <p>String distance functions measure the difference between two strings. Starting in version 1.14, Drill supports the following string distance functions: </p>
 
 <ul>
-<li><code>cosine_distance(string1,string2)</code></li>
-<li><code>fuzzy_score(string1,string2)</code></li>
-<li><code>hamming_distance(string1,string2)</code></li>
-<li><code>jaccard_distance(string1,string2)</code></li>
-<li><code>jaro_distance(string1,string2)</code></li>
-<li><code>levenshtein_distance(string1,string2)</code></li>
-<li><code>longest_common_substring_distance(string1,string2)</code><br></li>
+<li><a href="/docs/string-distance-functions/#cosine_distance(string1,string2)"><code>cosine_distance(string1,string2)</code></a></li>
+<li><a href="/docs/string-distance-functions/#fuzzy_score(string1,string2)"><code>fuzzy_score(string1,string2)</code></a></li>
+<li><a href="/docs/string-distance-functions/#hamming_distance-(string1,string2)"><code>hamming_distance(string1,string2)</code></a></li>
+<li><a href="/docs/string-distance-functions/#jaccard_distance-(string1,string2)"><code>jaccard_distance(string1,string2)</code></a></li>
+<li><a href="/docs/string-distance-functions/#jaro_distance-(string1,string2)"><code>jaro_distance(string1,string2)</code></a></li>
+<li><a href="/docs/string-distance-functions/#levenshtein_distance-(string1,string2)"><code>levenshtein_distance(string1,string2)</code></a></li>
+<li><a href="/docs/string-distance-functions/#longest_common_substring_distance(string1,string2)"><code>longest_common_substring_distance(string1,string2)</code></a><br></li>
 </ul>
 
+<h2 id="syntax">Syntax</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT &lt;string-distance-function&gt;( string1, string2 ) FROM…
+</code></pre></div>
+<h2 id="example-usage">Example Usage</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT fuzzy_score( string1, string2 ) AS fuzzy_score FROM…
+</code></pre></div>
 <h2 id="function-descriptions">Function Descriptions</h2>
 
-<p>The following sections describe each of the phonetic functions that Drill supports.   </p>
+<p>The following sections describe each of the string distance functions that Drill supports.   </p>
 
 <h3 id="cosine_distance(string1,string2)">cosine_distance(string1,string2)</h3>
 
 <p>Calculates the cosine distance between two strings.  </p>
 
-<p><strong>Usage Example</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT cosine_distance( string1, string2 ) AS cosine_distance FROM…
-</code></pre></div>
 <h3 id="fuzzy_score(string1,string2)">fuzzy_score(string1,string2)</h3>
 
 <p>Calculates the cosine distance between two strings. A matching algorithm that is similar to the searching algorithms implemented in editors such as Sublime Text, TextMate, Atom, and others. One point is given for every matched character. Subsequent matches yield two bonus points. A higher score indicates a higher similarity. </p>
 
-<p><strong>Usage Example</strong>  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT fuzzy_score( string1, string2 ) AS fuzzy_score FROM…
-</code></pre></div>
 <h3 id="hamming_distance-(string1,string2)">hamming_distance (string1,string2)</h3>
 
 <p>The hamming distance between two strings of equal length is the number of positions at which the corresponding symbols are different. For further explanation about the Hamming Distance, refer to <a href="http://en.wikipedia.org/wiki/Hamming_distance">http://en.wikipedia.org/wiki/Hamming_distance</a>.   </p>
 
-<p><strong>Usage Example</strong>  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT hamming_distance( string1, string2 ) FROM…
-</code></pre></div>
 <h3 id="jaccard_distance-(string1,string2)">jaccard_distance (string1,string2)</h3>
 
 <p>Measures the Jaccard distance of two sets of character sequence. <a href="https://en.wikipedia.org/wiki/Jaccard_index">Jaccard distance</a> is the dissimilarity between two sets. It is the complementary of Jaccard similarity.   </p>
 
-<p><strong>Usage Example</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT jaccard_distance( string1, string2 ) FROM … 
-</code></pre></div>
 <h3 id="jaro_distance-(string1,string2)">jaro_distance (string1,string2)</h3>
 
 <p>A similarity algorithm indicating the percentage of matched characters between two character sequences. The Jaro measure is the weighted sum of percentage of matched characters from each file and transposed characters. Winkler increased this measure for matching initial characters. This implementation is based on the <a href="https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance">Jaro Winkler similarity algorithm</a>.  </p>
 
-<p><strong>Usage Example</strong>  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT jaro_distance( string1, string2 ) FROM…
-</code></pre></div>
 <h3 id="levenshtein_distance-(string1,string2)">levenshtein_distance (string1,string2)</h3>
 
 <p>An algorithm for measuring the difference between two character sequences. This is the number of changes needed to change one sequence into another, where each change is a single character modification (deletion, insertion, or substitution).</p>
 
-<p><strong>Usage Example</strong>  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT levenshtein_distance( string1, string2 ) FROM...
-</code></pre></div>
 <h3 id="longest_common_substring_distance(string1,string2)">longest_common_substring_distance(string1,string2)</h3>
 
 <p>Returns the length of the longest sub-sequence that two strings have in common.
@@ -1316,9 +1304,6 @@ Two strings that are entirely different, return a value of 0, and two strings th
 <p><strong>Note:</strong> Generally this algorithm is fairly inefficient, as for length m, n of the input
 CharSequence&#39;s left and right respectively, the runtime of the algorithm is O(m*n).  </p>
 
-<p><strong>Usage Example</strong>  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT longest_common_substring_distance( string1, string2 ) FROM...
-</code></pre></div>
     
       
         <div class="doc-nav">
