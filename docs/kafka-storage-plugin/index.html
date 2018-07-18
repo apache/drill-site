@@ -822,6 +822,10 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/functions-for-handling-nulls/">Functions for Handling Nulls</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/phonetic-functions/">Phonetic Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/string-distance-functions/">String Distance Functions</a></li>
+              
             </ul>
             
           
@@ -1238,7 +1242,7 @@
 
     </div>
 
-     Jul 17, 2018
+     Jul 18, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1330,7 +1334,7 @@ The kafkaMsgTimestamp field maps to the timestamp stored for each Kafka message.
 =, &gt;, &gt;=  </p></li>
 </ul>
 
-<p>Kafka exposes the following Consumer API to obtain the earliest offset for a given timestamp value:  </p>
+<p>Kafka exposes the following <a href="https://kafka.apache.org/11/javadoc/org/apache/kafka/clients/consumer/MockConsumer.html">Consumer API</a> to obtain the earliest offset for a given timestamp value:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   public java.util.Map&lt;TopicPartition,OffsetAndTimestamp&gt; offsetsForTimes(java.util.Map&lt;TopicPartition,java.lang.Long&gt; timestampsToSearch)  
 </code></pre></div>
 <p>This API is used to determine the startOffset for each partition in a topic. Note that the timestamps may not appear in increasing order when reading from a Kafka topic if you have defined the timestamp for a message. However, the API returns the first offset (from the beginning of a topic partition) where the timestamp is greater or equal to the timestamp requested. Therefore, Drill does not support pushdown on &lt; or &lt;= because an earlier timestamp may exist beyond endOffsetcomputed.     </p>
