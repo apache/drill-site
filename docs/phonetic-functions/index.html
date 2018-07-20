@@ -1244,13 +1244,18 @@
 
     </div>
 
-     Jul 18, 2018
+     Jul 20, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Starting in version 1.14, Drill supports phonetic functions. You can use phonetic functions to match similar sounding words. For example, the names “Jayme” and “Jamie” have the same soundex values.  </p>
+        <p>Starting in version 1.14, Drill supports phonetic functions. Typically, you use phonetic functions in the WHERE clause of a query to find words that sound similar. For example, to find all the people named Jaime in a data source, you could issue the following query on the data source: </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT first_name
+   FROM name_data
+   WHERE soundex( `first_name` ) = soundex( “Jayme” );
+</code></pre></div>
+<p>The search would return data from rows where the first name field contains names that sound similar to Jayme, such as Jaime, Jaymee, and so on.   </p>
 
 <p>Drill supports the following phonetic matching functions that map text to a number or string based on how a word sounds:  </p>
 
@@ -1267,15 +1272,9 @@
 <li><a href="/docs/phonetic-functions/#soundex(string)"><code>soundex(string)</code></a><br></li>
 </ul>
 
-<h2 id="syntax">Syntax</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT &lt;phonetic-function&gt;(string) FROM…    
-</code></pre></div>
-<h2 id="usage-example">Usage Example</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT match_rating_encoder(&#39;Boston&#39;) AS MR FROM (VALUES(1));  
-</code></pre></div>
 <h2 id="function-descriptions">Function Descriptions</h2>
 
-<p>The following sections describe each of the phonetic functions that Drill supports.  </p>
+<p>The following sections describe each of the phonetic functions that Drill supports. Each function has a different algorithm that may work better for certain words.  </p>
 
 <h3 id="caverphone1(string)">caverphone1(string)</h3>
 

@@ -1244,13 +1244,22 @@
 
     </div>
 
-     Jul 18, 2018
+     Jul 20, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>String distance functions measure the difference between two strings. Starting in version 1.14, Drill supports the following string distance functions: </p>
+        <p>Starting in version 1.14, Drill supports string distance functions. Typically, you use string distance functions in the WHERE clause of a query to measure the difference between two strings. For example, if you want to match a street address, but do not know how to spell a street name, you could issue a query on the data source with the street addresses:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT street_address
+   FROM address-data
+   WHERE cosine_distance( `street_address`, “1234 North Quail Ln” ) &lt;  0.5; 
+</code></pre></div>
+<p>The search would return addresses from rows with street addresses similar to 1234 North Quail Ln, such as:   </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   1234 N. Quail Lane
+   1234 N Quaile Lan  
+</code></pre></div>
+<p>Drill supports the following string distance functions:   </p>
 
 <ul>
 <li><a href="/docs/string-distance-functions/#cosine_distance(string1,string2)"><code>cosine_distance(string1,string2)</code></a></li>
@@ -1262,12 +1271,6 @@
 <li><a href="/docs/string-distance-functions/#longest_common_substring_distance(string1,string2)"><code>longest_common_substring_distance(string1,string2)</code></a><br></li>
 </ul>
 
-<h2 id="syntax">Syntax</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT &lt;string-distance-function&gt;( string1, string2 ) FROM…
-</code></pre></div>
-<h2 id="example-usage">Example Usage</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT fuzzy_score( string1, string2 ) AS fuzzy_score FROM…
-</code></pre></div>
 <h2 id="function-descriptions">Function Descriptions</h2>
 
 <p>The following sections describe each of the string distance functions that Drill supports.   </p>
