@@ -903,6 +903,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/explain/">EXPLAIN</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/lateral-join/">LATERAL Join</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/select/">SELECT</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/select-list/">SELECT List</a></li>
@@ -1246,13 +1248,13 @@
 
     </div>
 
-     Jul 19, 2018
+     Aug 2, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Starting in Drill 1.14, you can configure a Logfile plugin that enables Drill to directly read and query log files of any format. For example, you can configure a Logfile plugin to query MySQL log files like the following:  </p>
+        <p>Starting in Drill 1.14, you can configure a Logfile plugin that enables Drill to directly read and query log files of any format. For example, you can configure a Logfile plugin to query MySQL log files like the one shown in the following example:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   070823 21:00:32       1 Connect     root@localhost on test1
    070823 21:00:48       1 Query       show tables
    070823 21:00:56       1 Query       select * from category
@@ -1261,14 +1263,14 @@
 </code></pre></div>
 <p>To configure the Logfile plugin, you must first add the <code>drill-logfile-plugin-1.0.0</code> JAR file to Drill and then add the Logfile configuration to a <code>dfs</code> storage plugin, as described in the following sections.  </p>
 
-<h2 id="adding-drill-logfile-plugin-1.0.0.jar-to-drill">Adding <code>drill-logfile-plugin-1.0.0.jar</code> to Drill</h2>
+<h2 id="adding-drill-logfile-plugin-1.0.0.jar-to-drill">Adding drill-logfile-plugin-1.0.0.jar to Drill</h2>
 
 <p>You can either <a href="https://github.com/cgivre/drill-logfile-plugin/releases/download/v1.0/drill-logfile-plugin-1.0.0.jar">download</a> or build the <code>drill-logfile-plugin-1.0.0</code> JAR file with Maven, by running the following commands:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   git clone https://github.com/cgivre/drill-logfile-plugin.git 
    cd drill-logfile-plugin
    mvn clean install -DskipTests 
 
-   //The JAR file builds to targets/.  
+   //The JAR file installs to targets/.  
 </code></pre></div>
 <p>Add the JAR file to the <code>&lt;DRILL_INSTALL&gt;/jars/3rdParty/</code> directory.  </p>
 
@@ -1276,7 +1278,7 @@
 
 <p>To configure the Logfile plugin, update or create a new <code>dfs</code> storage plugin instance and then add the Logfile configuration to the <code>&lt;extensions&gt;</code> section of the <code>dfs</code> storage plugin configuration.  </p>
 
-<p>The following configuration shows a Logfile configuration that you could use if you wanted Drill to query MySQL log files (like the one in the log sample above):   </p>
+<p>The following example shows a Logfile configuration that you could use if you want Drill to query MySQL log files (like the one in the MySQL log file example above):   </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   &quot;log&quot; : {
          &quot;type&quot; : &quot;log&quot;,
          &quot;extensions&quot; : [ &quot;log&quot; ],
@@ -1291,6 +1293,8 @@
 <p>Refer to <a href="/docs/storage-plugin-configuration/">Storage Plugin Configuration</a> for information about how to configure storage plugins.</p>
 
 <h3 id="logfile-configuration-options">Logfile Configuration Options</h3>
+
+<p>The following list describes each of the Logfile plugin options that you can use in the Logfile configuration:</p>
 
 <ul>
 <li><strong><code>pattern</code></strong>:  This is the regular expression which defines how the log file lines will be split.  You must enclose the parts of the regex in grouping parentheses that you wish to extract.  Note that this plugin uses Java regular expressions and requires that shortcuts such as <code>\d</code> have an additional slash:  ie <code>\\d</code>.</li>

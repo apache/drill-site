@@ -903,6 +903,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/explain/">EXPLAIN</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/lateral-join/">LATERAL Join</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/select/">SELECT</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/select-list/">SELECT List</a></li>
@@ -1248,7 +1250,7 @@
 
     </div>
 
-     
+     Aug 3, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1268,10 +1270,27 @@
 <p>Includes one or more <em>table_references</em> and is typically followed by the WHERE, GROUP BY, ORDER BY, or HAVING clause. </p>
 
 <p><em>table_reference</em></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   with_subquery_table_name [ [ AS ] alias [ ( column_alias [, ...] ) ] ]
-   table_name [ [ AS ] alias [ ( column_alias [, ...] ) ] ]
-   ( subquery ) [ AS ] alias [ ( column_alias [, ...] ) ]
-   table_reference [ ON join_condition ]
+<div class="highlight"><pre><code class="language-text" data-lang="text">   tableReference:
+
+   with_subquery_table_name [ [ AS ] alias [ ( column_alias [, ...] ) ] ]
+      | table_name [ [ AS ] alias [ ( column_alias [, ...] ) ] ]
+      | ( subquery ) [ AS ] alias [ ( column_alias [, ...] ) ]
+      | &lt;join_clause&gt;
+      | [ LATERAL ] [&lt;lateral_join_type&gt;] &lt;lateral_subquery&gt; [ON TRUE]
+
+   join_clause:
+        tableReference &lt;join_type&gt; tableReference [ON &lt;join_condition&gt;]
+
+   lateral_subquery:
+         &lt;unnest_table_expr&gt;
+      | ( SELECT_clause FROM &lt;unnest_table_expr&gt; [,...] )
+
+   lateral_join_type:
+   [INNER] JOIN
+   LEFT [OUTER] JOIN
+
+   unnest_table_expr:
+    UNNEST &#39;(&#39; expression &#39;)&#39;  [AS] &lt;alias_table_name&gt;(&lt;alias_column_name&gt;)
 </code></pre></div>
 <ul>
 <li><p><em>with_subquery_table_name</em><br>
@@ -1301,16 +1320,35 @@ A query expression that evaluates to a table. The table exists only for the dura
 <li>SOME<br></li>
 </ul>
 
-<p>In general, correlated subqueries are supported. EXISTS and NOT EXISTS subqueries that do not contain a correlation join are not yet supported.</p></li>
+<p>In general, correlated subqueries are supported. EXISTS and NOT EXISTS subqueries that do not contain a correlation join are not yet supported.  </p></li>
+<li><p><em>join_clause</em><br>
+ Identifies the tables with the data you want to join, the type of join to be performed on the tables, and the conditions on which to join the tables. Starting in Drill 1.14, Drill supports lateral joins. </p>
+
+<p><strong>NOTE:</strong> See <a href="/docs/lateral-join/">Lateral Join</a> for additional information and examples of queries with lateral joins.  </p></li>
+<li><p><em>LATERAL</em><br>
+ Keyword that represents a lateral join. A lateral join is essentially a foreach loop in SQL. A lateral join combines the results of the outer query with the results of a lateral subquery. When you use the UNNEST relational operator, Drill infers the LATERAL keyword. </p></li>
+<li><p><em>lateral_sub_query</em><br>
+ A lateral subquery is like correlated subqueries except that you use a lateral subquery in the FROM clause instead of the WHERE clause. Also, lateral subqueries can return any number of rows; correlated subqueries return exactly one row.</p></li>
+<li><p><em>unnest_table_expr</em><br>
+ References the table produced by the UNNEST relational operator. UNNEST converts a collection to a relation. You must use the UNNEST relational operator with LATERAL subqueries when a field contains repeated types, like an array of maps. You must also indicate an alias for the table produced by UNNEST. </p></li>
+<li><p><em>lateral_join_type</em><br>
+ The type of join used with the lateral subquery. Lateral subqueries support [INNER] JOIN and LEFT [OUTER] JOIN, for example:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">...FROM table1 LEFT OUTER JOIN LATERAL (select a from t2) ON TRUE;  
+</code></pre></div>
+<p>If you do not indicate the join type, Drill infers an INNER JOIN.  </p></li>
+<li><p><em>ON TRUE</em><br>
+ The join condition when the results of a lateral subquery are joined with fields in rows of the table referenced. This condition is implicit. You do not have to include the condition in the query.  </p></li>
 <li><p><em>join_type</em><br>
-Specifies one of the following join types:<br>
-   [INNER] JOIN<br>
-   LEFT [OUTER] JOIN<br>
-   RIGHT [OUTER] JOIN<br>
-   FULL [OUTER] JOIN</p></li>
+Specifies the type of join between two tables in the join clause when you do not use a lateral join. The join clause supports the following join types:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">[INNER] JOIN  
+LEFT [OUTER] JOIN  
+RIGHT [OUTER] JOIN  
+FULL [OUTER] JOIN
+</code></pre></div></li>
 <li><p><em>ON join_condition</em><br>
-A type of join specification where the joining columns are stated as a condition that follows the ON keyword.<br>
-   Example:  <code>homes join listing on homes.listid=listing.listid and homes.homeid=listing.homeid</code></p></li>
+A type of join specification where the joining columns are stated as a condition that follows the ON keyword, for example:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">homes join listing on homes.listid=listing.listid and homes.homeid=listing.homeid
+</code></pre></div></li>
 </ul>
 
 <h2 id="join-types">Join Types</h2>
@@ -1319,7 +1357,10 @@ A type of join specification where the joining columns are stated as a condition
 Return matching rows only, based on the join condition or list of joining columns.  </p>
 
 <p>OUTER JOIN<br>
-Return all of the rows that the equivalent inner join would return plus non-matching rows from the &quot;left&quot; table, &quot;right&quot; table, or both tables. The left table is the first-listed table, and the right table is the second-listed table. The non-matching rows contain NULL values to fill the gaps in the output columns.</p>
+Return all of the rows that the equivalent inner join would return plus non-matching rows from the &quot;left&quot; table, &quot;right&quot; table, or both tables. The left table is the first-listed table, and the right table is the second-listed table. The non-matching rows contain NULL values to fill the gaps in the output columns.  </p>
+
+<p>LATERAL<br>
+A lateral join is essentially a foreach loop in SQL. A lateral join is represented by the keyword LATERAL with an inner subquery in the FROM clause. See <a href="/docs/lateral-join/">Lateral Join</a>.</p>
 
 <h2 id="usage-notes">Usage Notes</h2>
 
