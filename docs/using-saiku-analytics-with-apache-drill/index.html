@@ -39,6 +39,9 @@
   <a href="javascript:void(0);"><span class='menu-text'>Menu</span><span class='expand-icon'><i class="fa fa-bars"></i></span></a>
   </li>
   <li class='clear-float'></li>
+  <li class="apache-link">
+    <a href="/apacheASF/">Apache</a>
+  </li>
   <li class="documentation-menu">
     <a href="/docs/">Documentation</a>
     <ul>
@@ -1265,13 +1268,199 @@
 
     </div>
 
-     Aug 20, 2018
+     Aug 21, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
         <p>You can connect <a href="https://meteorite.bi/">Saiku Analytics</a> to Apache Drill and explore multiple data sources including, CSV, Log Files, SQL data sources, Hadoop, S3 data and more. Apache Drill and Saiku Analytics are a perfect combination for data discovery on an Enterprise Level.</p>
+
+<p>This document provides you with the procedures to install Saiku Analytics and connect it to Apache Drill.</p>
+
+<p>To use Saiku Analytics with Apache Drill you just need to complete the following steps:</p>
+
+<ol>
+<li>Configure a connection in Saiku Analytics.</li>
+<li>Authenticate.</li>
+<li>Select datasource and load the data model.</li>
+<li>Analyse data with Saiku Analytics and Apache Drill.</li>
+</ol>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<ul>
+<li>Apache Drill installed. See <a href="https://drill.apache.org/docs/install-drill-introduction/">Install Drill</a>.</li>
+<li>Saiku Analytics installed. See <a href="http://saiku-documentation.readthedocs.io/en/latest/installation_guide.html">Install Saiku</a>.</li>
+</ul>
+
+<h2 id="configure-a-connection-in-saiku-analytics">Configure a connection in Saiku Analytics</h2>
+
+<p>You will need to sign into Saiku as an <code>admin</code> user and go to the <strong>Admin Console</strong> using the button on the top menu bar:</p>
+
+<p><img src="/docs/img/docs/img/saiku_admin_screen.png" alt=""></p>
+
+<p>Then on the side menu under the <code>Data Source Management</code> section, click <code>Add Data Source</code> and fill in the form with the following information:</p>
+
+<ul>
+<li>Name - (This can be anything you like)</li>
+<li>Connection Type - Mondrian</li>
+<li>URL - <code>jdbc:drill:zk=&lt;IP ADDRESS&gt;:&lt;PORT&gt;/drill/drill-cluster</code></li>
+<li>Schema - (Leave blank. Will auto fill once you have created a schema)</li>
+<li>JDBC Driver - <code>org.apache.drill.jdbc.Driver</code></li>
+<li>Username - (If you haven&#39;t enabled authentication then leave blank)</li>
+<li>Password - (If you haven&#39;t enabled authentication then leave blank)</li>
+</ul>
+
+<p><img src="/docs/img/docs/img/saiku_datasource.png" alt=""></p>
+
+<p>So it should look something like this.</p>
+
+<p>For more information on using the JDBC driver click <a href="https://drill.apache.org/docs/using-the-jdbc-driver/">here</a>.</p>
+
+<h2 id="select-datasource-and-load-the-data-model">Select datasource and load the data model</h2>
+
+<h3 id="what-is-a-schema?">What is a schema?</h3>
+
+<p>A schema in its raw form is an XML document that defines how the data is laid out in your database. Within Saiku you might have multiple schemas, each containing multiple cubes. Within a cube are collections of Dimensions and Measures. The schema allows Saiku to display the UI elements that lets users discover answers to their data in a drag and drop format.</p>
+
+<h3 id="how-the-schema-designer-works">How the Schema Designer works</h3>
+
+<p><strong>Enterprise Only</strong></p>
+
+<p>The schema designer is designed to allow users to get started in a much simpler fashion with minimal understanding of schema design and creation.</p>
+
+<p><strong><em>Please be aware the schema designer is not foolproof and whilst it will attempt to create a functional schema, some user interaction may be required to complete the schema itself.</em></strong></p>
+
+<p>Once you have set up a connection in Saiku Analytics, next click on the Create Schema button at the bottom of the window.</p>
+
+<p>This should then popup a dialog asking you to select the database and schema you want to use to create your schema. Like this:</p>
+
+<p><img src="/docs/img/saiku_choose_database.png" alt=""></p>
+
+<p>Next you&#39;ll be displayed a new window that lists all the tables available to you in the left most column. The centre column is where you will define your dimensions and measures and the right hand column currently asks you to select a fact table. See the image below:</p>
+
+<p><img src="/docs/img/saiku_schema_designer_1.png" alt=""></p>
+
+<p>The fact table is the table you will select to create your Measures.</p>
+
+<p><img src="/docs/img/saiku_schema_designer_2.png" alt=""></p>
+
+<p>Once you select a fact table you should see a green icon  appear in the table list next to that table name. Example:</p>
+
+<p><img src="/docs/img/saiku_schema_designer_3.png" alt=""></p>
+
+<p>Saiku Schema Designer incorporates an automatic schema designer which will attempt to build a usable schema automatically for you. Of course this depends on your underlying data and how it is structured in the database but it&#39;s a pretty good way of getting started.</p>
+
+<p>If you click the auto generate button it will perform the following scans to try and build a functioning schema:</p>
+
+<ul>
+<li>Create measures from all numeric fields in the selected fact table. Out of the box these will all be simple sums, but you can of course change these to suit your metric. Similarly, if it creates a measure that makes no sense you can remove it afterwards.</li>
+<li>Create dimensions from all tables that aren&#39;t the defined fact table, unless you are using a single table database or CSV datasource in which case it will create degenerate dimensions from the fact table.</li>
+<li>Create dimension attributes for all text fields in your dimension table.</li>
+<li>Scan all the created dimensions for matching column names in the fact table and define the join. For example, if you have a dimension table with a column named <code>customer_id</code> and a field in your fact table that is also called <code>customer_id</code>, Saiku will consider this field to be a match and assign the various keys to make the joins.</li>
+<li>Lastly Saiku will remove any dimensions it did not find a match for so you aren&#39;t left with unusable dimensions.</li>
+</ul>
+
+<p><img src="/docs/img/saiku_schema_designer_4.png" alt=""></p>
+
+<p>Once this has run you are free to manipulate the generated schema as you desire to finish off any additional functionality or change names, attribute definitions and so forth.</p>
+
+<p><em>If you don&#39;t want to use the schema designer that&#39;s not a problem. To create a schema you just need to define 1 or more measure and 1 or more  dimension from your database.</em></p>
+
+<p>Once you are happy with the schema, all you have to do is hit the save button which will save it to the repo and make it available to the users.</p>
+
+<h2 id="analyse-data-with-saiku-analytics-and-apache-drill">Analyse data with Saiku Analytics and Apache Drill</h2>
+
+<p>To interrogate your data within Saiku you simply need to create a new query, select the cube you have created using the schema designer and you&#39;re good to go. To find out more about how to use Saiku Analytics click <a href="http://saiku-documentation.readthedocs.io/en/latest/">here</a> or watch these short videos:</p>
+
+<ul>
+<li><a href="https://www.youtube.com/watch?v=6KeP7NOZAlI">Drill on the Anssr Platform</a></li>
+<li><a href="https://www.youtube.com/watch?v=ijb0NP6oZ58">Saiku Analytics over Apache Drill</a></li>
+</ul>
+
+<h2 id="using-juju-to-deploy-apache-drill">Using Juju to deploy Apache Drill</h2>
+
+<p>You can utilise the power of Juju to allow for a straight forward deployment with zero configuration, enabling you to discover data, faster.</p>
+
+<ul>
+<li>Sign in to <a href="https://jujucharms.com/">jujucharms.com</a>.</li>
+<li><a href="https://jujucharms.com/u/spiculecharms/apache-drill/25">Click here</a> to view the Apache Drill charm.</li>
+<li>Click <code>Add to Model</code>.</li>
+<li>Search for the Zookeeper charm and click the result.</li>
+<li>Click <code>Add to Model</code>.</li>
+<li>Go to the Juju canvas.</li>
+<li>Use the relationship handle to create the relation between Zookeeper and Apache Drill.</li>
+</ul>
+
+<p><img src="/docs/img/saiku_relation.png" alt=""></p>
+
+<ul>
+<li>Click <code>Deploy changes</code>.</li>
+</ul>
+
+<p>Once all of the charms have deployed (this will be highlighted when the rings around the charms turn grey) simply follow these next steps:</p>
+
+<h2 id="adding-data-to-apache-drill">Adding Data To Apache Drill</h2>
+
+<p>To access the Apache Drill user interface run the following command from your terminal:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">juju expose apache-drill
+</code></pre></div>
+<p>Then navigate to the machine IP address on port 8047 on your browser.</p>
+
+<h2 id="testing-apache-drill">Testing Apache Drill</h2>
+
+<p>Apache Drill is supplied with a sample dataset that allows you to test its functionality quickly and easily. To use this dataset you can run a query similar to the following within the Apache Drill UI:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM cp.`employee.json` LIMIT 20
+</code></pre></div>
+<p>or:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT full_name, salary, gender FROM cp.`employee.json` where gender = &#39;F&#39;
+</code></pre></div>
+<p>As you can see from the query, this is infact running SQL directly over a JSON file.</p>
+
+<h2 id="importing-data">Importing Data</h2>
+
+<p>Now is a good time to start importing your data. For this guide we will supply some test data which is available <a href="https://www.dropbox.com/s/wx9pzx7n4dpxp89/sales.tar.bz2?dl=1">here</a>.</p>
+
+<p>To upload it to the server you can run the following command from your terminal:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">juju scp sales.tar.bz2 apache-drill/0:~
+</code></pre></div>
+<p>This has uploaded the test CSV file to the server. Next we unzip it and place iy within the data storage pool.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">juju ssh apache-drill/0
+sudo mv sales.tar.bz2 /var/snap/apache-drill-spicule/common
+cd /var/snap/apache-drill-spicule/common
+sudo bunzip2 sales.tar.bz2
+sudo tar xvf sales.tar
+</code></pre></div>
+<p>It is now available for interrogation.</p>
+
+<h2 id="querying-data">Querying Data</h2>
+
+<p>You&#39;ll have noticed in the previous operation we unzipped multiple CSV files. One great feature of Drill is directory level querying of identically formatted files. Let&#39;s take a look.</p>
+
+<p>Firstly in Drill click on the storage tab and update the DFS plugin.</p>
+
+<p>Below the tmp block add the following:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">,&quot;test&quot;: {
+      &quot;location&quot;: &quot;/var/snap/apache-drill-spicule/common&quot;,
+      &quot;writable&quot;: true,
+      &quot;defaultInputFormat&quot;: null,
+      &quot;allowAccessOutsideWorkspace&quot;: false
+    }
+</code></pre></div>
+<p>And below it set:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;skipFirstLine&quot;: false,
+&quot;extractHeader&quot;: true,
+</code></pre></div>
+<p>within the CSV block. Then click the update button.</p>
+
+<p>Let&#39;s start with a query like:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM dfs.test.`/sales` limit 10
+</code></pre></div>
+<p>This should return the first 10 rows of sales data. The files are chunked by year so lets try another query:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT distinct `Year` FROM dfs.test.`/sales`
+</code></pre></div>
+<p>As you can see we&#39;re now running SQL over multiple CSV files in a single query as it should return 2012, 2013, 2014. This allows you to chunk up your data into smaller CSV blocks and still interrogate the data as one.</p>
 
     
       
