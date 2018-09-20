@@ -497,6 +497,10 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
+            
+          
           </ul>
         
       
@@ -1319,7 +1323,17 @@
            &lt;name&gt;fs.s3a.endpoint&lt;/name&gt;
            &lt;value&gt;s3.REGION.amazonaws.com&lt;/value&gt;
        &lt;/property&gt;
-   &lt;/configuration&gt;   
+   &lt;/configuration&gt;  
+</code></pre></div>
+<h3 id="configuring-drill-to-use-aws-iam-roles-for-accessing-s3">Configuring Drill to use AWS IAM Roles for Accessing S3</h3>
+
+<p>If you use IAM roles/Instance profiles, to access data in s3, use the following settings in your core-site.xml. Do not specify the secret key or access key properties. As an example:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   &lt;configuration&gt;
+    &lt;property&gt;
+        &lt;name&gt;fs.s3a.aws.credentials.provider&lt;/name&gt;
+        &lt;value&gt;com.amazonaws.auth.InstanceProfileCredentialsProvider&lt;/value&gt;
+    &lt;/property&gt;
+   &lt;/configuration&gt;            
 </code></pre></div>
 <p><strong>Note:</strong> When you rename the file, Hadoop support breaks if <code>$HADOOP_HOME</code> was in the path because Drill pulls in the Drill core-site.xml file instead of the Hadoop core-site.xml file. In this situation, make the changes in the Hadoop core-site.xml file. Do not create a core-site.xml file for Drill.  </p>
 
