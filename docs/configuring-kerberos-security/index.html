@@ -1495,7 +1495,7 @@
 
 <h4 id="example-of-a-simple-connection-url">Example of a Simple Connection URL</h4>
 
-<h5 id="example-1:-tgt-for-client-credentials">Example 1: TGT for Client Credentials</h5>
+<h5 id="example-1-tgt-for-client-credentials">Example 1: TGT for Client Credentials</h5>
 
 <p>The simplest way to connect using Kerberos is to generate a TGT on the client side. Only specify the service principal in the JDBC connection string for the drillbit the user wants to connect to.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">jdbc:drill:drillbit=10.10.10.10;principal=&lt;principal for host 10.10.10.10&gt;
@@ -1520,7 +1520,7 @@
   <p class="last">For end-to-end authentication to function, it is assumed that the proper principal for the drillbit service is configured in the KDC.  </p>
 </div>
 
-<h5 id="example-2:-drillbit-provided-by-direct-connection-string-and-configured-with-a-unique-service-principal">Example 2: Drillbit Provided by Direct Connection String and Configured with a Unique Service Principal</h5>
+<h5 id="example-2-drillbit-provided-by-direct-connection-string-and-configured-with-a-unique-service-principal">Example 2: Drillbit Provided by Direct Connection String and Configured with a Unique Service Principal</h5>
 
 <p>This type of connection string is used when:</p>
 
@@ -1540,7 +1540,7 @@
 
 <p>The internally created service principal will be <strong><code>drill/host1@&lt;realm from TGT&gt;</code></strong>.</p>
 
-<h5 id="example-3:-drillbit-selected-by-zookeeper-and-configured-with-unique-service-principal">Example 3: Drillbit Selected by ZooKeeper and Configured with Unique Service Principal</h5>
+<h5 id="example-3-drillbit-selected-by-zookeeper-and-configured-with-unique-service-principal">Example 3: Drillbit Selected by ZooKeeper and Configured with Unique Service Principal</h5>
 
 <p>This type of connection string is used when the drillbit is chosen by ZooKeeper instead of directly from the connection string.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">jdbc:drill:zk=host01.aws.lab:5181;auth=kerberos;service_name=myDrill
@@ -1554,7 +1554,7 @@
 
 <p>The internally created service principal will be <strong><code>myDrill/&lt;host address from zk&gt;@&lt;realm from TGT&gt;</code></strong>.</p>
 
-<h5 id="example-4:-drillbit-selected-by-zookeeper-and-configured-with-a-common-service-principal">Example 4: Drillbit Selected by Zookeeper and Configured with a Common Service Principal</h5>
+<h5 id="example-4-drillbit-selected-by-zookeeper-and-configured-with-a-common-service-principal">Example 4: Drillbit Selected by Zookeeper and Configured with a Common Service Principal</h5>
 
 <p>This type of connection string is used when all drillbits in a cluster use the same principal.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">jdbc:drill:zk=host01.aws.lab:5181;auth=kerberos;service_name=myDrill;service_host=myDrillCluster
@@ -1568,7 +1568,7 @@
 
 <p>The internally created service principal, which will be <strong><code>myDrill/myDrillCluster@&lt;realm from TGT&gt;</code></strong>.</p>
 
-<h5 id="example-5:-keytab-for-client-credentials">Example 5: Keytab for Client Credentials</h5>
+<h5 id="example-5-keytab-for-client-credentials">Example 5: Keytab for Client Credentials</h5>
 
 <p>If a client chooses to provide its credentials in a keytab instead of a TGT, it must also provide a principal in the user parameter.  In this case, realm information will be extracted from the <code>/etc/krb5.conf</code> file on the node if it is not provided in the connection URL. All other parameters can be used as shown in the preceding examples (1-4). This connection string is for the case when all drillbits in a cluster use the same principal.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">jdbc:drill:zk=host01.aws.lab:5181;auth=kerberos;service_name=myDrill;service_host=myDrillCluster;keytab=&lt;path to keytab file&gt;;user=&lt;client principal&gt;

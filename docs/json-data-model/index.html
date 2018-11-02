@@ -1373,7 +1373,7 @@ Reads all data from JSON files as VARCHAR. You need to cast numbers from VARCHAR
 
 <p>Drill uses these types internally for reading complex and nested data structures from data sources such as JSON.</p>
 
-<h3 id="experimental-feature:-heterogeneous-types">Experimental Feature: Heterogeneous types</h3>
+<h3 id="experimental-feature-heterogeneous-types">Experimental Feature: Heterogeneous types</h3>
 
 <p>The Union type allows storing different types in the same field. This new feature is still considered experimental, and must be explicitly enabled by setting the <code>exec.enabel_union_type</code> option to true.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SESSION SET `exec.enable_union_type` = true;
@@ -1469,11 +1469,11 @@ y[z].x because these references are not ambiguous. Observe the following guideli
 <li>Generate key/value pairs for loosely structured data</li>
 </ul>
 
-<h2 id="example:-flatten-and-generate-key-values-for-complex-json">Example: Flatten and Generate Key Values for Complex JSON</h2>
+<h2 id="example-flatten-and-generate-key-values-for-complex-json">Example: Flatten and Generate Key Values for Complex JSON</h2>
 
 <p>This example uses the following data that represents unit sales of tickets to events that were sold over a period of several days in December:</p>
 
-<h3 id="ticket_sales.json-contents">ticket_sales.json Contents</h3>
+<h3 id="ticket_sales-json-contents">ticket_sales.json Contents</h3>
 <div class="highlight"><pre><code class="language-text" data-lang="text">{
   &quot;type&quot;: &quot;ticket&quot;,
   &quot;venue&quot;: 123455,
@@ -1504,7 +1504,7 @@ y[z].x because these references are not ambiguous. Observe the following guideli
 +---------+---------+---------------------------------------------------------------+
 2 rows selected (1.343 seconds)
 </code></pre></div>
-<h3 id="generate-key/value-pairs">Generate Key/Value Pairs</h3>
+<h3 id="generate-key-value-pairs">Generate Key/Value Pairs</h3>
 
 <p>Continuing with the data from <a href="/docs/json-data-model/#example:-flatten-and-generate-key-values-for-complex-json">previous example</a>, use the KVGEN (Key Value Generator) function to generate key/value pairs from complex data. Generating key/value pairs is often helpful when working with data that contains arbitrary maps consisting of dynamic and unknown element names, such as the ticket sales data in this example. For example purposes, take a look at how kvgen breaks the sales data into keys and values representing the key dates and number of tickets sold:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT KVGEN(tkt.sales) AS `key dates:tickets sold` FROM dfs.`/Users/drilluser/ticket_sales.json` tkt;
@@ -1538,7 +1538,7 @@ FROM dfs.`/Users/drilluser/drill/ticket_sales.json`;
 +--------------------------------+
 8 rows selected (0.171 seconds)
 </code></pre></div>
-<h3 id="example:-aggregate-loosely-structured-data">Example: Aggregate Loosely Structured Data</h3>
+<h3 id="example-aggregate-loosely-structured-data">Example: Aggregate Loosely Structured Data</h3>
 
 <p>Use flatten and kvgen together to aggregate the data from the <a href="/docs/json-data-model/#example:-flatten-and-generate-key-values-for-complex-json">previous example</a>. Make sure all text mode is set to false to sum numbers. Drill returns an error if you attempt to sum data in all text mode.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SESSION SET `store.json.all_text_mode` = false;
@@ -1553,7 +1553,7 @@ FROM dfs.`/Users/drilluser/drill/ticket_sales.json`;
 +--------------+
 1 row selected (0.244 seconds)
 </code></pre></div>
-<h3 id="example:-aggregate-and-sort-data">Example: Aggregate and Sort Data</h3>
+<h3 id="example-aggregate-and-sort-data">Example: Aggregate and Sort Data</h3>
 
 <p>Sum and group the ticket sales by date and sort in ascending order of total tickets sold.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT `right`(tkt.tot_sales.key,2) `December Date`,
@@ -1574,7 +1574,7 @@ ORDER BY TotalSales;
 +----------------+-------------+
 5 rows selected (0.252 seconds)
 </code></pre></div>
-<h3 id="example:-access-a-map-field-in-an-array">Example: Access a Map Field in an Array</h3>
+<h3 id="example-access-a-map-field-in-an-array">Example: Access a Map Field in an Array</h3>
 
 <p>To access a map field in an array, use dot notation to drill down through the hierarchy of the JSON data to the field. Examples are based on the following <a href="https://github.com/zemirco/sf-city-lots-json">City Lots San Francisco in .json</a>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">{
@@ -1638,7 +1638,7 @@ FROM dfs.`/Users/drilluser/citylots.json`;
 
 <p>More examples of drilling down into an array are shown in <a href="/docs/selecting-nested-data-for-a-column">&quot;Selecting Nested Data for a Column&quot;</a>.</p>
 
-<h3 id="example:-flatten-an-array-of-maps-using-a-subquery">Example: Flatten an Array of Maps using a Subquery</h3>
+<h3 id="example-flatten-an-array-of-maps-using-a-subquery">Example: Flatten an Array of Maps using a Subquery</h3>
 
 <p>By flattening the following JSON file, which contains an array of maps, you can evaluate the records of the flattened data.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">{&quot;name&quot;:&quot;classic&quot;,&quot;fillings&quot;:[ {&quot;name&quot;:&quot;sugar&quot;,&quot;cal&quot;:500} , {&quot;name&quot;:&quot;flour&quot;,&quot;cal&quot;:300} ] }
@@ -1654,7 +1654,7 @@ SELECT flat.fill FROM (SELECT FLATTEN(t.fillings) AS fill FROM dfs.flatten.`test
 </code></pre></div>
 <p>Use a table alias for column fields and functions when working with complex data sets. Currently, you must use a subquery when operating on a flattened column. Eliminating the subquery and table alias in the WHERE clause, for example <code>flat.fillings[0].cal &gt; 300</code>, does not evaluate all records of the flattened data against the predicate and produces the wrong results.</p>
 
-<h3 id="example:-access-map-fields-in-a-map">Example: Access Map Fields in a Map</h3>
+<h3 id="example-access-map-fields-in-a-map">Example: Access Map Fields in a Map</h3>
 
 <p>This example uses a WHERE clause to drill down to a third level of the following JSON hierarchy to get the max_hdl greater than 160:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">{

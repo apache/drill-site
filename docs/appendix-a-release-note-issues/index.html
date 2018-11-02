@@ -1281,7 +1281,7 @@
         <p>Drill-on-YARN creates a tighter coupling between Drill and Hadoop than did previous Drill
 versions. You should be aware of the following compatibility issues:</p>
 
-<h2 id="migrating-the-$drill_home/conf/drill-env.sh-script">Migrating the $DRILL_HOME/conf/drill-env.sh Script</h2>
+<h2 id="migrating-the-drill_home-conf-drill-env-sh-script">Migrating the $DRILL_HOME/conf/drill-env.sh Script</h2>
 
 <p>Prior to Drill 1.8, the drill-env.sh script contained Drill defaults, distribution-specific
 settings, and configuration specific to your application (“site”.) In Drill 1.8, the Drill and distribution settings are moved to other locations. The site-specific settings change in format to allow YARN to override them. The following section details the changes you must make if you reuse a drill-env.sh file from a prior release. (If you create a new file, you can skip this section.)  </p>
@@ -1334,7 +1334,7 @@ $DRILL_HOME/jars/3rdparty directory. Although YARN offers Drill a Java class-pat
 the Hadoop jars, Drill uses its own copies instead to ensure Drill runs under the same
 configuration with which it was tested. Drill distributions that are part of a complete Hadoop distribution (such as the MapR distribution) have already verified version compatibility for you. If you are assembling your own Hadoop and Drill combination, you should verify that the Hadoop version packaged with Drill is compatible with the version running our YARN cluster.  </p>
 
-<h2 id="$drill_home/conf/core-site.xml-issue">$DRILL_HOME/conf/core-site.xml Issue</h2>
+<h2 id="drill_home-conf-core-site-xml-issue">$DRILL_HOME/conf/core-site.xml Issue</h2>
 
 <p>Prior versions of Drill included a file in the $DRILL_HOME/conf directory called
 core-site.xml. YARN relies on a file with the same name in the Hadoop configuration directory. The Drill copy hides the YARN copy, preventing YARN from operating correctly. For this reason, version 1.8 of Drill renames the example file to core-site-example.xml. When upgrading an existing Drill installation, do not copy the file from your current version of Drill to the new version. If you modified core-site.xml, you should merge your changes with Hadoop’s core-site.xml file.  </p>
