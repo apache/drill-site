@@ -1272,7 +1272,7 @@
 
     </div>
 
-     Nov 2, 2018
+     Nov 7, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1291,6 +1291,7 @@ context. You can query the following INFORMATION_SCHEMA tables:</p>
 <li>TABLES</li>
 <li>COLUMNS </li>
 <li>VIEWS</li>
+<li>FILES</li>
 </ul>
 
 <h2 id="schemata">SCHEMATA</h2>
@@ -1325,15 +1326,16 @@ can also return a list of schemas by running the SHOW DATABASES command:</p>
 </code></pre></div>
 <h2 id="catalogs">CATALOGS</h2>
 
-<p>The CATALOGS table returns only one row, with the hardcoded DRILL catalog name
+<p>The CATALOGS table returns only one row, with the hard-coded DRILL catalog name
 and description.</p>
 
 <h2 id="tables">TABLES</h2>
 
 <p>The TABLES table returns the table name and type for each table or view in
-your databases. (Type means TABLE or VIEW.) Note that Drill does not return
-files available for querying in file-based data sources. Instead, use SHOW
-FILES to explore these data sources.</p>
+your databases. (Type means TABLE or VIEW.) Starting in Drill 1.15, Drill returns
+files available for querying in file-based data sources. You no longer have to use the SHOW
+FILES command to explore these data sources. You can query the FILES table for directory and 
+file information. </p>
 
 <h2 id="columns">COLUMNS</h2>
 
@@ -1345,9 +1347,156 @@ type) for each column in each table or view.</p>
 <p>The VIEWS table returns the name and definition for each view in your
 databases. Note that file schemas are the canonical repository for views in
 Drill. Depending on how you create a view, the may only be displayed in Drill
-after it has been used.</p>
+after it has been used.  </p>
 
+<h2 id="files">FILES</h2>
+
+<p>Starting in Drill 1.15, the INFORMATION_SCHEMA contains a FILES table that you can query for information about directories and files stored in the <a href="/docs/workspaces/">workspaces</a> configured within your <a href="/docs/s3-storage-plugin/#configuring-the-s3-storage-plugin">S3</a> and <a href="/docs/file-system-storage-plugin/">file system</a> storage plugin configurations. </p>
+
+<p>The FILES table is useful for analyzing folders and files before you run queries against data sources configured in Drill. When you query the FILES table, the FILES table lists the directories and files based on the permissions set for the current or impersonated user.  </p>
+
+<p>The FILES table stores the following information about directories and files in workspaces:  </p>
+
+<ul>
+<li><strong>SCHEMA_NAME</strong><br>
+The file system storage plugin name with the schema name. For example, dfs.tmp.<br></li>
+<li><strong>ROOT_SCHEMA_NAME</strong><br>
+The file system storage plugin name. For example, dfs.<br></li>
+<li><strong>WORKSPACE_NAME</strong><br>
+The workspace name. For example, tmp.<br></li>
+<li><strong>FILE_NAME</strong><br>
+The name of the directories and files. For example, sample.txt. Drill lists directories and files based on the permissions set for the current or impersonated user.<br></li>
+<li><strong>RELATIVE_PATH</strong><br>
+The relative path to a file. For example, <code>sample_folder/sample.txt</code>; assuming that the full file path is <code>/tmp/sample_folder/sample.txt</code>, and the workspace path is <code>/tmp</code>.<br></li>
+<li><strong>IS_DIRECTORY</strong><br>
+Lists true if the object is a directory. Lists false if the object is a file.<br></li>
+<li><strong>IS_FILE</strong><br>
+Lists true if the object is a file. Lists false if the object is a directory.<br></li>
+<li><strong>LENGTH</strong><br>
+Size of the directory or file in bytes. For example, 1210.<br></li>
+<li><strong>OWNER</strong><br>
+File or directory owner. For example, root.<br></li>
+<li><strong>GROUP</strong><br>
+Group to which the file or directory belongs. For example, root.<br></li>
+<li><strong>PERMISSION</strong><br>
+Permission that the current or impersonated user has on the file. For example, rw-rw-rw.<br></li>
+<li><strong>ACCESS_TIME</strong><br>
+Timestamp denoting the last time the file or directory was accessed.<br></li>
+<li><strong>MODIFICATION_TIME</strong><br>
+Timestamp denoting the last time the file or directory was changed.<br></li>
+</ul>
+
+<h3 id="listing-files-recursively">Listing Files Recursively</h3>
+
+<p>The FILES table can list files recursively; however, listing files recursively can negatively impact performance. When you enable the <code>storage.list_files_recursively</code> option, the FILES table lists all the directories and files nested under the current workspace directory. The <code>storage.list_files_recursively</code> option is disabled (set to false) by default. Issue the SET command to enable recursive listing, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SET `storage.list_files_recursively` = true;      
+</code></pre></div>
 <h2 id="useful-queries">Useful Queries</h2>
+
+<p>The following sections demonstrate how to query the FILES table and TABLES table in the INFORMATION_SCHEMA:  </p>
+
+<h3 id="files-queries">FILES Queries</h3>
+
+<p>This example demonstrates how to use the FILES table to explore workspaces and identify duplicate files across the workspaces that are configured in different S3 storage plugins. </p>
+
+<p>For this example, S3 buckets were configured as data sources in Drill. Storage plugins were configured to connect Drill to each of the S3 buckets. The storage plugin named <code>s3_home_bucket</code> contains personal files, and the storage plugin named <code>s3_work_bucket</code> contains work files. Naming the storage plugins with the s3 prefix simplifies the listing of available schemas in the SCHEMATA table, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select * from information_schema.schemata where schema_name like &#39;s3%&#39;;
++---------------+--------------------------+---------------+-------+-------------+
+| CATALOG_NAME  |       SCHEMA_NAME        | SCHEMA_OWNER  | TYPE  | IS_MUTABLE  |
++---------------+--------------------------+---------------+-------+-------------+
+| DRILL         | s3_home_bucket.default   | &lt;owner&gt;       | file  | NO          |
+| DRILL         | s3_home_bucket.root      | &lt;owner&gt;       | file  | NO          |
+| DRILL         | s3_work_bucket.default   | &lt;owner&gt;       | file  | NO          |
+| DRILL         | s3_work_bucket.root      | &lt;owner&gt;       | file  | NO          |
+| DRILL         | s3_years_bucket.default  | &lt;owner&gt;       | file  | NO          |
+| DRILL         | s3_years_bucket.root     | &lt;owner&gt;       | file  | NO          |
++---------------+--------------------------+---------------+-------+-------------+  
+</code></pre></div>
+<p>Querying the FILES table and filtering on the SCHEMA_NAME provides information about the files that exist within a workspace:  </p>
+
+<p><strong>Note:</strong> The word “files” is a reserved word in Drill and requires backticks (``).   </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select * from information_schema.`files` where schema_name = &#39;s3_home_bucket.root&#39;;
++----------------------+-------------------+-----------------+-----------------------------+-----------------------------+---------------+----------+---------+--------+--------+-------------+------------------------+------------------------+
+|     SCHEMA_NAME      | ROOT_SCHEMA_NAME  | WORKSPACE_NAME  |          FILE_NAME          |        RELATIVE_PATH        | IS_DIRECTORY  | IS_FILE  | LENGTH  | OWNER  | GROUP  | PERMISSION  |      ACCESS_TIME       |   MODIFICATION_TIME    |
++----------------------+-------------------+-----------------+-----------------------------+-----------------------------+---------------+----------+---------+--------+--------+-------------+------------------------+------------------------+
+| s3_home_bucket.root  | s3_home_bucket    | root            | date_dim.txt                | date_dim.txt                | false         | true     | 0       | root   | root   | rw-r--r--   | 1969-12-31 16:00:00.0  | 2018-11-06 16:38:16.0  |
+| s3_home_bucket.root  | s3_home_bucket    | root            | household_demographics.txt  | household_demographics.txt  | false         | true     | 0       | root   | root   | rw-r--r--   | 1969-12-31 16:00:00.0  | 2018-11-06 16:38:28.0  |
+| s3_home_bucket.root  | s3_home_bucket    | root            | promotion.txt               | promotion.txt               | false         | true     | 0       | root   | root   | rw-r--r--   | 1969-12-31 16:00:00.0  | 2018-11-06 16:38:35.0  |
+| s3_home_bucket.root  | s3_home_bucket    | root            | time_dim.txt                | time_dim.txt                | false         | true     | 0       | root   | root   | rw-r--r--   | 1969-12-31 16:00:00.0  | 2018-11-06 16:38:43.0  |
++----------------------+-------------------+-----------------+-----------------------------+-----------------------------+---------------+----------+---------+--------+--------+-------------+------------------------+------------------------+  
+
+0: jdbc:drill:zk=local&gt; select * from information_schema.`files` where schema_name = &#39;s3_work_bucket.root&#39;;
++----------------------+-------------------+-----------------+-----------------------------+-----------------------------+---------------+----------+---------+--------+--------+-------------+------------------------+------------------------+
+|     SCHEMA_NAME      | ROOT_SCHEMA_NAME  | WORKSPACE_NAME  |          FILE_NAME          |        RELATIVE_PATH        | IS_DIRECTORY  | IS_FILE  | LENGTH  | OWNER  | GROUP  | PERMISSION  |      ACCESS_TIME       |   MODIFICATION_TIME    |
++----------------------+-------------------+-----------------+-----------------------------+-----------------------------+---------------+----------+---------+--------+--------+-------------+------------------------+------------------------+
+| s3_work_bucket.root  | s3_work_bucket    | root            | customer.txt                | customer.txt                | false         | true     | 0       | root   | root   | rw-r--r--   | 1969-12-31 16:00:00.0  | 2018-11-06 16:55:36.0  |
+| s3_work_bucket.root  | s3_work_bucket    | root            | household_demographics.txt  | household_demographics.txt  | false         | true     | 0       | root   | root   | rw-r--r--   | 1969-12-31 16:00:00.0  | 2018-11-06 16:55:59.0  |
+| s3_work_bucket.root  | s3_work_bucket    | root            | item.txt                    | item.txt                    | false         | true     | 0       | root   | root   | rw-r--r--   | 1969-12-31 16:00:00.0  | 2018-11-06 16:56:13.0  |
+| s3_work_bucket.root  | s3_work_bucket    | root            | promotion.txt               | promotion.txt               | false         | true     | 0       | root   | root   | rw-r--r--   | 1969-12-31 16:00:00.0  | 2018-11-06 16:56:29.0  |
++----------------------+-------------------+-----------------+-----------------------------+-----------------------------+---------------+----------+---------+--------+--------+-------------+------------------------+------------------------+
+</code></pre></div>
+<p>Notice that the FILE_NAME column lists the files stored in the workspaces. You can see that duplicate files exist in the work and home buckets. Alternatively, you can see the duplicate files by querying the FILE_NAME column directly and filtering on SCHEMA_NAME and IS_FILE, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select file_name from information_schema.`files` where schema_name = &#39;s3_home_bucket.root&#39; and is_file is true;
++-----------------------------+
+|          file_name          |
++-----------------------------+
+| date_dim.txt                |
+| household_demographics.txt  |
+| promotion.txt               |
+| time_dim.txt                |
++-----------------------------+
+
+0: jdbc:drill:zk=local&gt; Select file_name from information_schema.`files` where schema_name = &#39;s3_work_bucket.root&#39; and is_file is true;
++-----------------------------+
+|          file_name          |
++-----------------------------+
+| customer.txt                |
+| household_demographics.txt  |
+| item.txt                    |
+| promotion.txt               |
++-----------------------------+  
+</code></pre></div>
+<p>Issuing a slightly more complex query on the FILES table reveals the duplicate files across the two schemas:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select file_name from information_schema.`files` where schema_name in (&#39;s3_work_bucket.root&#39;, &#39;s3_home_bucket.root&#39;) and is_file is true group by file_name having count(file_name) &gt; 1;
++-----------------------------+
+|          file_name          |
++-----------------------------+
+| household_demographics.txt  |
+| promotion.txt               |
++-----------------------------+  
+</code></pre></div>
+<p>By default, the FILES table does not list the files recursively. Another schema named <code>s3_years_bucket.root</code> contains three folders with files in it, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; Select file_name, is_directory from information_schema.`files` where schema_name = &#39;s3_years_bucket.root&#39;;
++------------+---------------+
+| file_name  | is_directory  |
++------------+---------------+
+| 2016       | true          |
+| 2017       | true          |
+| 2018       | true          |
++------------+---------------+  
+</code></pre></div>
+<p>Though the folders contain files, the FILES table does not list the files nested inside the folders unless we enable the <code>storage.list_files_recursively</code> option, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SET `storage.list_files_recursively` = true;
++-------+------------------------------------------+
+|  ok   |                 summary                  |
++-------+------------------------------------------+
+| true  | storage.list_files_recursively updated.  |
++-------+------------------------------------------+  
+</code></pre></div>
+<p>With recursive listing enabled, you can see that the same query run against the schema reveals the nested files in the folders:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select file_name, relative_path, is_directory, is_file from information_schema.`files` where schema_name = &#39;s3_years_bucket.root&#39;;
++--------------------------+-------------------------------+---------------+----------+
+|        file_name         |         relative_path         | is_directory  | is_file  |
++--------------------------+-------------------------------+---------------+----------+
+| 2016                     | 2016                          | true          | false    |
+| profile_2016_01_01.json  | 2016/profile_2016_01_01.json  | false         | true     |
+| 2017                     | 2017                          | true          | false    |
+| profile_2017_01_01.json  | 2017/profile_2017_01_01.json  | false         | true     |
+| 2018                     | 2018                          | true          | false    |
+| profile_2018_01_01.json  | 2018/profile_2018_01_01.json  | false         | true     |
++--------------------------+-------------------------------+---------------+----------+
+</code></pre></div>
+<h3 id="tables-queries">TABLES Queries</h3>
 
 <p>Run an <code>INFORMATION_SCHEMA.`TABLES`</code>query to view all of the tables and views
 within a database. TABLES is a reserved word in Drill and requires back ticks
