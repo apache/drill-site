@@ -1272,15 +1272,15 @@
 
     </div>
 
-     Nov 10, 2018
+     Nov 13, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>The Metrics page in the Drill Web UI (<code>http(s)://&lt;drillbit-ip-address&gt;:8047/metrics</code>) lists JVM and operating system metrics. You can use these metrics to debug the state of the cluster. The Drill-specific metrics are prepended with <code>drill</code>, for example <code>drill.fragments.running</code>. The other metrics relate specifically to the JVM.</p>
+        <p>The Metrics page in the Drill Web UI (<code>http(s)://&lt;drillbit-ip-address&gt;:8047/metrics</code>) lists JVM, operating system, and certain Drill-specific metrics. You can use these metrics to debug the state of the cluster. The Drill-specific metrics are prepended with <code>drill</code>, for example <code>drill.fragments.running</code>. </p>
 
-<p>Drill uses JMX (<a href="https://docs.oracle.com/javase/tutorial/jmx/">Java Management Extensions</a>) to monitor queries at runtime. JMX provides the architecture to dynamically manage and monitor applications. JMX collects Drill system-level metrics that you can see in the Metrics tab in the Drill Web UI or a remote JMX monitoring tool, such as JConsole or the VisualVM + MBeans plugin.   </p>
+<p>Drill uses JMX (<a href="https://docs.oracle.com/javase/tutorial/jmx/">Java Management Extensions</a>) to expose metrics at runtime. JMX provides the architecture to dynamically manage and monitor applications. JMX collects Drill system-level metrics that you can see in the Metrics tab in the Drill Web UI or a remote JMX monitoring tool, such as JConsole or the VisualVM + MBeans plugin.   </p>
 
 <p>Metrics collected by JMX are divided into the following categories on the Metrics page in the Drill Web UI:  </p>
 
@@ -1292,7 +1292,7 @@ A counter is a snapshot of the count of metrics at a particular point in time. (
 <li><strong>Histograms</strong><br>
 A histogram measures the statistical distribution of values in a stream of data.<br></li>
 <li><strong>Meters</strong><br>
-A meter measures the rate of events over time, for example requests per second.<br></li>
+A meter measures the rate of events over time, for example requests per second. Drill currently does not use meters to report system-level metrics.<br></li>
 <li><strong>Timers</strong><br>
 A timer measures the rate that a particular piece of code is called and the distribution of its duration.<br></li>
 </ul>
@@ -1343,11 +1343,11 @@ A timer measures the rate that a particular piece of code is called and the dist
 </tr>
 <tr>
 <td>drill.allocator.rpc.bit.control.used</td>
-<td>The total number of bytes currently used across all outgoing   and incoming control connections for this Drillbit.</td>
+<td>The total number of   bytes currently used across all outgoing and incoming control connections for   this Drillbit.</td>
 </tr>
 <tr>
 <td>drill.allocator.rpc.bit.data.peak</td>
-<td>The maximum amount of memory used between all outgoing and   incoming data connections for this Drillbit up to this moment.</td>
+<td>The maximum amount of   memory used between all outgoing and incoming data connections for this   Drillbit up to this moment.</td>
 </tr>
 <tr>
 <td>drill.allocator.rpc.bit.data.used</td>
@@ -1355,35 +1355,31 @@ A timer measures the rate that a particular piece of code is called and the dist
 </tr>
 <tr>
 <td>drill.allocator.rpc.bit.user.peak</td>
-<td>The maximum amount of memory used across all incoming Drill   client connections to this Drillbit up to this moment.</td>
+<td>The maximum amount of   memory used across all incoming Drill client connections to this Drillbit up   to this moment.</td>
 </tr>
 <tr>
 <td>drill.allocator.rpc.bit.user.used</td>
-<td>The total amount of memory used across all incoming Drill   client connections to this Drillbit.</td>
+<td>The total amount of   memory used across all incoming Drill client connections to this Drillbit.</td>
 </tr>
 <tr>
 <td>drill.allocator.huge.size</td>
-<td>Total size in bytes of huge (greater than   16MB) direct buffers allocated until now</td>
+<td>Total size in bytes of   huge (greater than 16MB) direct buffers allocated until now</td>
 </tr>
 <tr>
 <td>drill.allocator.huge.count</td>
-<td>Number of allocations done for direct buffer of size greater   than 16MB. Each of these allocation happens from OS which comes with an   overhead rather from Netty&#39;s buffer pool.</td>
+<td>Number of allocations   done for direct buffer of size greater than 16MB. Each of these allocation   happens from OS which comes with an overhead rather from Netty&#39;s buffer pool.</td>
 </tr>
 <tr>
 <td>drill.allocator.normal.count</td>
-<td>Number of allocations done for direct buffer of size less than   equal to 16MB. Each of these allocation happens from Netty&#39;s buffer pool.   This counter is only updated in debug environment when asserts are enabled to   avoid overhead for each allocation during normal execution.</td>
+<td>Number of allocations   done for direct buffer of size less than equal to 16MB. Each of these   allocation happens from Netty&#39;s buffer pool. This counter is only updated in   debug environment when asserts are enabled to avoid overhead for each   allocation during normal execution.</td>
 </tr>
 <tr>
 <td>drill.allocator.normal.size</td>
-<td>Total size in bytes of normal (less than and equal to 16MB)   direct buffers allocated until now. This counter is only updated in debug   environment when asserts are enabled to avoid overhead for each allocation   during normal execution.</td>
-</tr>
-<tr>
-<td>drill.allocator.normal.size</td>
-<td>Total size in bytes of normal (less than and equal to 16MB)   direct buffers allocated until now. This counter is only updated in debug   environment when asserts are enabled to avoid overhead for each allocation   during normal execution.</td>
+<td>Total size in bytes of   normal (less than and equal to 16MB) direct buffers allocated until now. This   counter is only updated in debug environment when asserts are enabled to   avoid overhead for each allocation during normal execution.</td>
 </tr>
 <tr>
 <td>count</td>
-<td>The number of   live threads, including daemon and non-daemon threads.</td>
+<td>The number of live   threads, including daemon and non-daemon threads.</td>
 </tr>
 <tr>
 <td>heap.used</td>
@@ -1411,11 +1407,11 @@ A timer measures the rate that a particular piece of code is called and the dist
 </tr>
 <tr>
 <td>load.avg</td>
-<td>Returns the &quot;recent cpu usage&quot; for the Drillbit   process. This value is a double in the [0.0,1.0] interval. A value of 0.0   means that none of the CPUs were running threads from the Drillbit process   during the recent period of time observed, while a value of 1.0 means that   all CPUs were actively running threads from the Drillbit process 100% of the   time during the recent period being observed. Threads from the Drillbit   process includes the application threads as well as the JVM internal threads.   All values betweens 0.0 and 1.0 are possible depending of the activities   going on in the Drillbit process and the whole system. If the recent CPU   usage is not available, the method returns a negative value. See <a href="https://docs.oracle.com/javase/7/docs/jre/api/management/extension/com/sun/management/OperatingSystemMXBean.html#getProcessCpuLoad()">getProcesCpuLoad()</a>.</td>
+<td>Returns the   &quot;recent cpu usage&quot; for the Drillbit process. This value is a double   in the [0.0,1.0] interval. A value of 0.0 means that none of the CPUs were   running threads from the Drillbit process during the recent period of time   observed, while a value of 1.0 means that all CPUs were actively running   threads from the Drillbit process 100% of the time during the recent period   being observed. Threads from the Drillbit process includes the application   threads as well as the JVM internal threads. All values betweens 0.0 and 1.0   are possible depending of the activities going on in the Drillbit process and   the whole system. If the recent CPU usage is not available, the method   returns a negative value. See <a href="https://docs.oracle.com/javase/7/docs/jre/api/management/extension/com/sun/management/OperatingSystemMXBean.html#getProcessCpuLoad()">getProcesCpuLoad()</a>.</td>
 </tr>
 <tr>
 <td>uptime</td>
-<td>Total uptime of Drillbit JVM in miliseconds. See <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/management/RuntimeMXBean.html#getUptime()">getUptime()</a>.</td>
+<td>Total uptime of   Drillbit JVM in miliseconds. See <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/management/RuntimeMXBean.html#getUptime()">getUptime()</a>.</td>
 </tr>
 </tbody></table>
 
@@ -1430,12 +1426,56 @@ A timer measures the rate that a particular piece of code is called and the dist
 </tr>
 </thead><tbody>
 <tr>
-<td>drill.queries.running</td>
-<td>The number of queries running for which this drillbit is the Foreman.</td>
+<td>drill.connections.rpc.control.encrypted</td>
+<td>The   total number of encrypted incoming and outgoing control connections to and   from this Drillbit. This includes both the control client and server   connections.</td>
+</tr>
+<tr>
+<td>drill.connections.rpc.control.unencrypted</td>
+<td>The   total number of unencrypted incoming and outgoing control connections to and   from this Drillbit. This includes both the control client and server   connections.</td>
+</tr>
+<tr>
+<td>drill.connections.rpc.data.encrypted</td>
+<td>The   total number of encrypted incoming and outgoing data connections to and from   this Drillbit. This includes both the data client and data server   connections.</td>
+</tr>
+<tr>
+<td>drill.connections.rpc.data.unencrypted</td>
+<td>The   total number of unencrypted incoming and outgoing data connections to and   from this Drillbit. This includes both the data client and data server   connections.</td>
+</tr>
+<tr>
+<td>drill.connections.rpc.user.encrypted</td>
+<td>The   total number of encrypted connections from the all the Drill clients to this   Drillbit.</td>
+</tr>
+<tr>
+<td>drill.connections.rpc.user.unencrypted</td>
+<td>The   total number of unencrypted connections from the all the Drill clients to   this Drillbit.</td>
+</tr>
+<tr>
+<td>drill.queries.canceled</td>
+<td>The   number of canceled queries for which this Drillbit was the Foreman.</td>
 </tr>
 <tr>
 <td>drill.queries.completed</td>
-<td>The number of queries completed, canceled, or failed for which this drillbit was the Foreman.</td>
+<td>The number of queries completed, canceled, or   failed for which this Drillbit was the Foreman.</td>
+</tr>
+<tr>
+<td>drill.queries.enqueued</td>
+<td>The   number of queries waiting in one of the configured queues for which this Drillbit is the Foreman.</td>
+</tr>
+<tr>
+<td>drill.queries.failed</td>
+<td>The   number of failed queries for which this Drillbit was the Foreman.</td>
+</tr>
+<tr>
+<td>drill.queries.planning</td>
+<td>The   number of queries that are in the planning stage for which the Drillbit is   the Foreman.</td>
+</tr>
+<tr>
+<td>drill.queries.running</td>
+<td>The number of queries running for which this   Drillbit is the Foreman.</td>
+</tr>
+<tr>
+<td>drill.queries.succeeded</td>
+<td>The   number of successful queries for which this Drillbit was the Foreman.</td>
 </tr>
 </tbody></table>
 
@@ -1445,7 +1485,7 @@ A timer measures the rate that a particular piece of code is called and the dist
 
 <table><thead>
 <tr>
-<th>Metric</th>
+<th>Reporting Class</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
@@ -1461,11 +1501,25 @@ A timer measures the rate that a particular piece of code is called and the dist
 
 <h2 id="meters">Meters</h2>
 
-<p>No Drill-specific meters.</p>
+<p>Not available. </p>
 
 <h2 id="timers">Timers</h2>
 
-<p>No Drill-specific timers.</p>
+<table><thead>
+<tr>
+<th>Reporting Class</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>org.apache.drill.exec.cache.VectorAccessibleSerializable.writerTime</td>
+<td>Measures the distribution of the   time taken to serialize a record batch to the output stream. Mainly used to   measure the time taken to spill a record batch.</td>
+</tr>
+<tr>
+<td>org.apache.drill.exec.store.schedule.BlockMapBuilder.blockMapBuilderTimer</td>
+<td>Measures the distribution of the   time taken to build a mapping of block locations for a given file byte range.   Mainly used during the planning phase to determine a set of endpoints where   all the data is located.</td>
+</tr>
+</tbody></table>
 
     
       
