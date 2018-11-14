@@ -1272,63 +1272,91 @@
 
     </div>
 
-     Aug 2, 2018
+     Nov 14, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Starting in Drill 1.14, you can configure a Logfile plugin that enables Drill to directly read and query log files of any format. For example, you can configure a Logfile plugin to query MySQL log files like the one shown in the following example:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   070823 21:00:32       1 Connect     root@localhost on test1
-   070823 21:00:48       1 Query       show tables
-   070823 21:00:56       1 Query       select * from category
-   070917 16:29:01      21 Query       select * from location
-   070917 16:29:12      21 Query       select * from location where id = 1 LIMIT 1  
+        <h1 id="drill-regex-logfile-plugin">Drill Regex/Logfile Plugin</h1>
+
+<p>Starting in Drill 1.14, the Regex/Logfile Plugin for Apache Drill allows Drill to read and query arbitrary files where the schema can be defined by a regex.  The original intent was for this to be used for log files, however, it can be used for any structured data.</p>
+
+<h2 id="example-use-case-mysql-log">Example Use Case:  MySQL Log</h2>
+
+<p>If you wanted to analyze log files such as the MySQL log sample shown below using Drill, it may be possible using various string fucntions, or you could write a UDF specific to this data however, this is time consuming, difficult and not reusable.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">070823 21:00:32       1 Connect     root@localhost on test1
+070823 21:00:48       1 Query       show tables
+070823 21:00:56       1 Query       select * from category
+070917 16:29:01      21 Query       select * from location
+070917 16:29:12      21 Query       select * from location where id = 1 LIMIT 1
 </code></pre></div>
-<p>To configure the Logfile plugin, you must first add the <code>drill-logfile-plugin-1.0.0</code> JAR file to Drill and then add the Logfile configuration to a <code>dfs</code> storage plugin, as described in the following sections.  </p>
+<p>This plugin will allow you to configure Drill to directly query logfiles of any configuration.</p>
 
-<h2 id="adding-drill-logfile-plugin-1-0-0-jar-to-drill">Adding drill-logfile-plugin-1.0.0.jar to Drill</h2>
-
-<p>You can either <a href="https://github.com/cgivre/drill-logfile-plugin/releases/download/v1.0/drill-logfile-plugin-1.0.0.jar">download</a> or build the <code>drill-logfile-plugin-1.0.0</code> JAR file with Maven, by running the following commands:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   git clone https://github.com/cgivre/drill-logfile-plugin.git 
-   cd drill-logfile-plugin
-   mvn clean install -DskipTests 
-
-   //The JAR file installs to targets/.  
-</code></pre></div>
-<p>Add the JAR file to the <code>&lt;DRILL_INSTALL&gt;/jars/3rdParty/</code> directory.  </p>
-
-<h2 id="configuring-the-logfile-plugin">Configuring the Logfile Plugin</h2>
-
-<p>To configure the Logfile plugin, update or create a new <code>dfs</code> storage plugin instance and then add the Logfile configuration to the <code>&lt;extensions&gt;</code> section of the <code>dfs</code> storage plugin configuration.  </p>
-
-<p>The following example shows a Logfile configuration that you could use if you want Drill to query MySQL log files (like the one in the MySQL log file example above):   </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   &quot;log&quot; : {
-         &quot;type&quot; : &quot;log&quot;,
-         &quot;extensions&quot; : [ &quot;log&quot; ],
-         &quot;fieldNames&quot; : [ &quot;date&quot;, &quot;time&quot;, &quot;pid&quot;, &quot;action&quot;, &quot;query&quot; ],
-         &quot;dataTypes&quot; : [ &quot;DATE&quot;, &quot;TIME&quot;, &quot;INT&quot;, &quot;VARCHAR&quot;, &quot;VARCHAR&quot; ],
-         &quot;dateFormat&quot; : &quot;yyMMdd&quot;,
-         &quot;timeFormat&quot; : &quot;HH:mm:ss&quot;,
-         &quot;pattern&quot; : &quot;(\\d{6})\\s(\\d{2}:\\d{2}:\\d{2})\\s+(\\d+)\\s(\\w+)\\s+(.+)&quot;,
-         &quot;errorOnMismatch&quot; : false
-         }  
-</code></pre></div>
-<p>Refer to <a href="/docs/storage-plugin-configuration/">Storage Plugin Configuration</a> for information about how to configure storage plugins.</p>
-
-<h3 id="logfile-configuration-options">Logfile Configuration Options</h3>
-
-<p>The following list describes each of the Logfile plugin options that you can use in the Logfile configuration:</p>
+<h2 id="configuration-options">Configuration Options</h2>
 
 <ul>
-<li><strong><code>pattern</code></strong>:  This is the regular expression which defines how the log file lines will be split.  You must enclose the parts of the regex in grouping parentheses that you wish to extract.  Note that this plugin uses Java regular expressions and requires that shortcuts such as <code>\d</code> have an additional slash:  ie <code>\\d</code>.</li>
-<li><strong><code>fieldNames</code></strong>:  This is a list of field names which you are extracting. Note that you must have the same number of fields as extracting groups in your pattern.</li>
-<li><strong><code>dataTypes</code></strong>:  This field allows you to define the data types for all the fields extracted from your log.  You may either leave the list blank entirely, in which case all fields will be interpreted as <code>VARCHAR</code> or you must define a data tyoe for every field.  At this time, it supports: <code>INT</code> or <code>INTEGER</code>, <code>DOUBLE</code> or <code>FLOAT8</code>, <code>FLOAT</code> or  <code>FLOAT4</code>, <code>VARCHAR</code>, <code>DATE</code>, <code>TIME</code>, and <code>TIMESTAMP</code>.</li>
-<li><strong><code>dateFormat</code></strong>:   This defines the default date format which will be used to parse dates.  Leave blank if not needed.</li>
-<li><strong><code>timeFormat</code></strong>:   This defines the default time format which will be used to parse time.  Leave blank if not needed.</li>
-<li><strong><code>type</code></strong>:  This tells Drill which extension to use.  In this case, it must be <code>log</code>.</li>
-<li><strong><code>extensions</code></strong>:  This option tells Drill which file extensions should be mapped to this configuration.  Note that you can have multiple configurations of this plugin to allow you to query various log files.</li>
-<li><strong><code>errorOnMismatch</code></strong>:  False by default, but allows the option of either throwing an error on lines that don&#39;t match the pattern or dumping the line to a field called <code>unmatched_lines</code> when false.</li>
+<li><strong><code>type</code></strong>:  This tells Drill which extension to use.  In this case, it must be <code>logRegex</code>.  This field is mandatory.</li>
+<li><strong><code>regex</code></strong>:  This is the regular expression which defines how the log file lines will be split.  You must enclose the parts of the regex in grouping parentheses that you wish to extract.  Note that this plugin uses Java regular expressions and requires that shortcuts such as <code>\d</code> have an additional slash:  ie <code>\\d</code>.  This field is mandatory.</li>
+<li><strong><code>extension</code></strong>:  This option tells Drill which file extensions should be mapped to this configuration.  Note that you can have multiple configurations of this plugin to allow you to query various log files.  This field is mandatory.</li>
+<li><strong><code>maxErrors</code></strong>:  Log files can be inconsistent and messy.  The <code>maxErrors</code> variable allows you to set how many errors the reader will ignore before halting execution and throwing an error.  Defaults to 10.</li>
+<li><strong><code>schema</code></strong>:  The <code>schema</code> field is where you define the structure of the log file.  This section is optional.  If you do not define a schema, all fields will be assigned a column name of <code>field_n</code> where <code>n</code> is the index of the field. The undefined fields will be assigned a default data type of <code>VARCHAR</code>.</li>
+</ul>
+
+<h3 id="defining-a-schema">Defining a Schema</h3>
+
+<p>The schema variable is an JSON array of fields which have at the moment, three possible variables:
+* <strong><code>fieldName</code></strong>:  This is the name of the field.
+* <strong><code>fieldType</code></strong>:  Defines the data type.  Defaults to <code>VARCHAR</code> if undefined. At the time of writing, the reader supports: <code>VARCHAR</code>, <code>INT</code>, <code>SMALLINT</code>, <code>BIGINT</code>, <code>FLOAT4</code>, <code>FLOAT8</code>, <code>DATE</code>, <code>TIMESTAMP</code>, <code>TIME</code>.
+* <strong><code>format</code></strong>: Defines the for date/time fields.  This is mandatory if the field is a date/time field.</p>
+
+<p>In the future, it is my hope that the schema section will allow for data masking, validation and other transformations that are commonly used for analysis of log files.</p>
+
+<h3 id="example-configuration">Example Configuration:</h3>
+
+<p>The configuration below demonstrates how to configure Drill to query the example MySQL log file shown above.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;log&quot; : {
+      &quot;type&quot; : &quot;logRegex&quot;,
+      &quot;extension&quot; : &quot;log&quot;,
+      &quot;regex&quot; : &quot;(\\d{6})\\s(\\d{2}:\\d{2}:\\d{2})\\s+(\\d+)\\s(\\w+)\\s+(.+)&quot;,
+      &quot;maxErrors&quot;: 10,
+      &quot;schema&quot;: [
+        {
+          &quot;fieldName&quot;: &quot;eventDate&quot;,
+          &quot;fieldType&quot;: &quot;DATE&quot;,
+          &quot;format&quot;: &quot;yyMMdd&quot;
+        },
+        {
+          &quot;fieldName&quot;: &quot;eventTime&quot;,
+          &quot;fieldType&quot;: &quot;TIME&quot;,
+          &quot;format&quot;: &quot;HH:mm:ss&quot;
+        },
+        {
+          &quot;fieldName&quot;: &quot;PID&quot;,
+          &quot;fieldType&quot;: &quot;INT&quot;
+        },
+        {
+          &quot;fieldName&quot;: &quot;action&quot;
+        },
+        {
+          &quot;fieldName&quot;: &quot;query&quot;
+        }
+      ]
+   }
+</code></pre></div>
+<h2 id="example-usage">Example Usage</h2>
+
+<p>This format plugin gives you two options for querieng fields.  If you define the fields, you can query them as you would any other data source.  If you do nof define a field in the column <code>schema</code> variable, Drill will extract all fields and give them the name <code>field_n</code>.  The fields are indexed from <code>0</code>.  Therefore if you have a dataset with 5 fields the following query would be valid:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT field_0, field_1, field_2, field_3, field_4
+FROM ..
+</code></pre></div>
+<h3 id="implicit-fields">Implicit Fields</h3>
+
+<p>In addition to the fields which the user defines, the format plugin has two implicit fields whcih can be useful for debugging your regex.  These fields do not appear in <code>SELECT *</code> queries and only will be retrieved when included in a query.</p>
+
+<ul>
+<li><strong><code>_raw</code></strong>:  This field returns the complete lines which matched your regex.</li>
+<li><strong><code>_unmatched_rows</code></strong>:  This field returns rows which <strong>did not</strong> match the regex.  Note: This field ONLY returns the unmatching rows, so if you have a data file of 10 lines, 8 of which match, <code>SELECT _unmatched_rows</code> will return 2 rows.  If however, you combine this with another field, such as <code>_raw</code>, the <code>_unmatched_rows</code> will be <code>null</code> when the rows match and have a value when it does not.</li>
 </ul>
 
     
