@@ -1274,7 +1274,7 @@
 
     </div>
 
-     Aug 3, 2018
+     Dec 4, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1384,7 +1384,23 @@ Return matching rows only, based on the join condition or list of joining column
 Return all of the rows that the equivalent inner join would return plus non-matching rows from the &quot;left&quot; table, &quot;right&quot; table, or both tables. The left table is the first-listed table, and the right table is the second-listed table. The non-matching rows contain NULL values to fill the gaps in the output columns.  </p>
 
 <p>LATERAL<br>
-A lateral join is essentially a foreach loop in SQL. A lateral join is represented by the keyword LATERAL with an inner subquery in the FROM clause. See <a href="/docs/lateral-join/">Lateral Join</a>.</p>
+A lateral join is essentially a foreach loop in SQL. A lateral join is represented by the keyword LATERAL with an inner subquery in the FROM clause. See <a href="/docs/lateral-join/">Lateral Join</a>.  </p>
+
+<p>CROSS JOIN<br>
+Starting in Drill 1.15, Drill supports cross joins. A cross join returns the cartesian product of two tables. Cross joins are disabled by default because they can produce extremely large result sets that cause out of memory errors. </p>
+
+<p>To enable cross joins, disable the <code>planner.enable_nljoin_for_scalar_only</code> option, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">set `planner.enable_nljoin_for_scalar_only` = false;  
++-------+-------------------------------------------------+
+|  ok   |                   summary                       | 
++-------+-------------------------------------------------+
+| true  | planner.enable_nljoin_for_scalar_only updated.  |
++-------+-------------------------------------------------+  
+</code></pre></div>
+<p>Before you enable the cross join functionality, verify that Drill has enough memory to process the query. Also note the following limitation related to the use of aggregate functions with cross joins.</p>
+
+<p><strong>Limitation</strong><br>
+If the input row count for an aggregate function is larger than the value set for the <code>planner.slice_target</code> option, Drill cannot plan the query. As a workaround, set the <code>planner.enable_multiphase_agg</code> option to false. This limitation will be resolved with <a href="https://issues.apache.org/jira/browse/DRILL-6839">DRILL-6839</a>.</p>
 
 <h2 id="usage-notes">Usage Notes</h2>
 
