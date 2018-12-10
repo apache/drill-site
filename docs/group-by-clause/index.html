@@ -318,7 +318,7 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/starting-the-web-console/">Starting the Web Console</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/starting-the-web-ui/">Starting the Web UI</a></li>
             
           
             
@@ -372,7 +372,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-drill-to-use-spnego-for-http-authentication/">Configuring Drill to use SPNEGO for HTTP Authentication</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-web-console-and-rest-api-security/">Configuring Web Console and REST API Security</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-web-ui-and-rest-api-security/">Configuring Web UI and REST API Security</a></li>
               
             </ul>
             
@@ -662,7 +662,7 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/monitoring-and-canceling-queries-in-the-drill-web-console/">Monitoring and Canceling Queries in the Drill Web Console</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/monitoring-and-canceling-queries-in-the-drill-web-ui/">Monitoring and Canceling Queries in the Drill Web UI</a></li>
             
           
           </ul>
@@ -1274,13 +1274,13 @@
 
     </div>
 
-     Nov 2, 2018
+     Dec 8, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>The GROUP BY clause identifies the grouping columns for the query. You typically use a GROUP BY clause in conjunction with an aggregate expression. Grouping columns must be declared when the query computes aggregates with standard functions such as SUM, AVG, and COUNT. Currently, Drill does not support grouping on aliases.</p>
+        <p>The GROUP BY clause identifies the grouping columns for the query. You typically use a GROUP BY clause in conjunction with an aggregate expression. Grouping columns must be declared when the query computes aggregates with standard functions such as SUM, AVG, and COUNT. Starting in 1.15, Drill supports aliases in the GROUP BY clause.</p>
 
 <h2 id="syntax">Syntax</h2>
 
@@ -1319,7 +1319,27 @@
    | February | 532901 |
    | September | 373100 |
    | January | 346536 |
-   +------------+------------+
+   +------------+------------+  
+</code></pre></div>
+<p>The following query extracts the year from the date_hired column and groups the years in an aliased column, yrs_hired:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">USE cp;
++-------+---------------------------------+
+|  ok   |             summary             |
++-------+---------------------------------+
+| true  | Default schema changed to [cp]  |
++-------+---------------------------------+     
+
+SELECT EXTRACT(year FROM hire_date) AS yrs_hired FROM `employee.json` GROUP BY yrs_hired;
++------------+
+| yrs_hired  |
++------------+
+| 1994       |
+| 1998       |
+| 1996       |
+| 1995       |
+| 1997       |
+| 1993       |
++------------+
 </code></pre></div>
     
       
