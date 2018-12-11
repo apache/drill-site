@@ -1215,10 +1215,6 @@
           <ul style="display: none">
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/aol-search/">AOL Search</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/enron-emails/">Enron Emails</a></li>
             
           
@@ -1274,13 +1270,13 @@
 
     </div>
 
-     Aug 9, 2017
+     Dec 11, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Use the CTAS command to create tables in Drill.</p>
+        <p>Use the CREATE TABLE AS (CTAS) command to create tables in Drill.</p>
 
 <h2 id="syntax">Syntax</h2>
 <div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE name [ (column list) ] AS query;  
@@ -1299,8 +1295,13 @@ A SELECT statement that needs to include aliases for ambiguous column names, suc
 <h2 id="usage-notes">Usage Notes</h2>
 
 <ul>
+<li><p>By default, Drill returns a result set when you issue DDL statements, such as CTAS. If the client tool from which you connect to Drill (via JDBC) does not expect a result set when you issue DDL statements, set the <code>exec.return_result_set_for_ddl</code> option to false, as shown, to prevent the client from canceling queries:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SET `exec.return_result_set_for_ddl` = false  
+//This option is available in Drill 1.15 and later.   
+</code></pre></div>
+<p>When set to false, Drill returns the affected rows count, and the result set is null.  </p></li>
 <li><p>You can use the <a href="/docs/partition-by-clause">PARTITION BY</a> clause in a CTAS command.  </p></li>
-<li><p>Drill writes files having names, such as 0_0_0.parquet, to the directory named in the CTAS command or to the workspace that is in use when you run the CTAS statement. You query the directory as you would query a table.</p>
+<li><p>Drill writes files having names, such as 0_0_0.parquet, to the directory named in the CTAS command or to the workspace that is in use when you run the CTAS statement. You query the directory as you would query a table.  </p>
 
 <ul>
 <li><p>The following command writes Parquet data from <code>nation.parquet</code>, installed with Drill, to the <code>/tmp/name_key</code> directory.</p>
@@ -1312,14 +1313,14 @@ A SELECT statement that needs to include aliases for ambiguous column names, suc
 </code></pre></div></li>
 <li><p>This example writes a JSON table to the <code>/tmp/by_yr</code> directory that contains <a href="/docs/partition-by-clause/#partioning-example">Google Ngram data</a>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">  Use dfs.tmp;
-  CREATE TABLE by_yr (yr, ngram, occurrances) AS SELECT COLUMNS[0] ngram, COLUMNS[1] yr, COLUMNS[2] occurrances FROM `googlebooks-eng-all-5gram-20120701-zo.tsv` WHERE (columns[1] = &#39;1993&#39;);
+  CREATE TABLE by_yr (yr, ngram, occurrances) AS SELECT COLUMNS[0] ngram, COLUMNS[1] yr, COLUMNS[2] occurrances FROM `googlebooks-eng-all-5gram-20120701-zo.tsv` WHERE (columns[1] = &#39;1993&#39;);  
 </code></pre></div></li>
 </ul></li>
 <li><p>Drill 1.11 introduces the <code>exec.persistent_table.umask</code> option, which enables you to set permissions on tables and directories that result from running the CTAS command. By default, the option is set to 002, which sets the default directory permissions to 775 and default file permissions to 664. Use the <a href="/docs/set/">SET</a> command to change the setting for this option at the system or session level, as shown:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SYSTEM|SESSION SET `exec.persistent_table.umask` = &#39;000&#39;;  
 </code></pre></div>
 <ul>
-<li>Setting the option to &#39;000&#39; sets the folder permissions to 777 and the file permissions to 666. This setting gives full access to folders and files when you create a table.</li>
+<li>Setting the option to &#39;000&#39; sets the folder permissions to 777 and the file permissions to 666. This setting gives full access to folders and files when you create a table.<br></li>
 </ul></li>
 </ul>
 

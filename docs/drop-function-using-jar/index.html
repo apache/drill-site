@@ -1215,10 +1215,6 @@
           <ul style="display: none">
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/aol-search/">AOL Search</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/enron-emails/">Enron Emails</a></li>
             
           
@@ -1274,7 +1270,7 @@
 
     </div>
 
-     Nov 22, 2016
+     Dec 11, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1294,7 +1290,14 @@ The name of the JAR file that contains the UDFs.</p>
 
 <h2 id="usage-notes">Usage Notes</h2>
 
-<p>When you issue the DROP FUNCTION USING JAR command, Drill unregisters the UDFs based on the JAR file name and removes the JAR file from the UDF directory. Drill deletes all UDFs associated with the JAR file from the Dynamic UDF registry (<a href="/docs/persistent-configuration-storage/">persistent store</a>). Drill returns a message with the list of unregistered UDFs. </p>
+<ul>
+<li><p>When you issue the DROP FUNCTION USING JAR command, Drill unregisters the UDFs based on the JAR file name and removes the JAR file from the UDF directory. Drill deletes all UDFs associated with the JAR file from the Dynamic UDF registry (<a href="/docs/persistent-configuration-storage/">persistent store</a>). Drill returns a message with the list of unregistered UDFs.  </p></li>
+<li><p>By default, Drill returns a result set when you issue DDL statements, such as DROP FUNCTION USING JAR. If the client tool from which you connect to Drill (via JDBC) does not expect a result set when you issue DDL statements, set the <code>exec.return_result_set_for_ddl</code> option to false, as shown, to prevent the client from canceling queries:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SET `exec.return_result_set_for_ddl` = false  
+//This option is available in Drill 1.15 and later.   
+</code></pre></div>
+<p>When set to false, Drill returns the affected rows count, and the result set is null. </p></li>
+</ul>
 
 <h2 id="example">Example</h2>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; DROP FUNCTION USING JAR &#39;simple_functions.jar&#39;;  

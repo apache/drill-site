@@ -1215,10 +1215,6 @@
           <ul style="display: none">
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/aol-search/">AOL Search</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/enron-emails/">Enron Emails</a></li>
             
           
@@ -1274,7 +1270,7 @@
 
     </div>
 
-     Aug 4, 2016
+     Dec 11, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1299,6 +1295,12 @@ The location of the table in subdirectories of a local or distributed file syste
 A unique directory or file name, optionally prefaced by a storage plugin name, such as <code>dfs</code>, and a workspace, such as <code>tmp</code> using dot notation.  </p>
 
 <h2 id="usage-notes">Usage Notes</h2>
+
+<p>By default, Drill returns a result set when you issue DDL statements, such as DROP TABLE. If the client tool from which you connect to Drill (via JDBC) does not expect a result set when you issue DDL statements, set the <code>exec.return_result_set_for_ddl</code> option to false, as shown, to prevent the client from canceling queries:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SET `exec.return_result_set_for_ddl` = false  
+//This option is available in Drill 1.15 and later.   
+</code></pre></div>
+<p>When set to false, Drill returns the affected rows count, and the result set is null.</p>
 
 <h3 id="schema">Schema</h3>
 
