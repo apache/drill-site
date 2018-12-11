@@ -1274,7 +1274,7 @@
 
     </div>
 
-     Dec 8, 2018
+     Dec 11, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1301,7 +1301,7 @@
 <p>SPNEGO authentication for Drill requires the following:  </p>
 
 <ul>
-<li>Drill 1.13 installed on each node.<br></li>
+<li>Drill 1.13 or later installed on each node.<br></li>
 <li>To use SPNEGO, you must have a working Kerberos infrastructure, which Drill does not provide.<br></li>
 <li>You must be working in a Linux-based or Windows Active Directory (AD) Kerberos environment with secure clusters and have a Drill server configured for Kerberos.<br></li>
 <li>Kerberos principal and keytab on each Drillbit (web server) that will use SPNEGO for authentication.<br></li>
@@ -1327,10 +1327,10 @@
 <ul>
 <li><p>To enable SPNEGO, add the following configuration to <code>drill-override.conf</code>:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">      drill.exec.http: {
-              spnego.auth.principal:&quot;HTTP/hostname@realm&quot;,
-              spnego.auth.keytab:&quot;path/to/keytab&quot;,
-              auth.mechanisms: [“SPNEGO”]    
-        }   
+                    auth.spnego.principal:&quot;HTTP/hostname@realm&quot;,
+                    auth.spnego.keytab:&quot;path/to/keytab&quot;,
+                    auth.mechanisms: [“SPNEGO”]    
+                 }   
 
       //The default authentication mechanism is “FORM”.   
 </code></pre></div></li>
@@ -1377,10 +1377,18 @@
 
 <h3 id="chrome">Chrome</h3>
 
-<p>For MacOS or Linux, add the <code>--auth-server-whitelist</code> parameter to the <code>google-chrome</code> command. For example, to run Chrome from a Linux prompt, run the <code>google-chrome</code> command, as follows:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   google-chrome --auth-server-whitelist = &quot;hostname/domain&quot;  
-   Example: google-chrome --auth-server-whitelist = &quot;example.QA.LAB&quot;  
+<p>For Linux, add the <code>--auth-server-whitelist</code> parameter to the <code>google-chrome</code> command. For example, to run Chrome from a Linux prompt, run the <code>google-chrome</code> command, as follows:       </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">google-chrome --auth-server-whitelist=&quot;domain&quot;  
+
+example: google-chrome --auth-server-whitelist=&quot;machine.example.com&quot;
+example: google-chrome --auth-server-whitelist=&quot;*.example.com&quot;
 </code></pre></div>
+<p>For MacOS, use the following directories:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">cd /Applications/Google Chrome.app/Contents/MacOS
+./&quot;Google Chrome&quot; --auth-server-whitelist=&quot;*.example.com&quot;  
+</code></pre></div>
+<p><strong>Note:</strong> The URL given to Chrome to access the Web UI should match the domain specified in <code>auth-server-whitelist</code>. If the domain is used in <code>auth-server-whitelist</code>, use the domain with Chrome. If the IP address is used in <code>auth-server-whitelist</code>, use the IP address with Chrome.  </p>
+
 <h3 id="safari">Safari</h3>
 
 <p>No configuration is required for Safari. Safari automatically authenticates using SPNEGO when requested by the server.  </p>

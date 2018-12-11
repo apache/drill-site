@@ -1272,7 +1272,7 @@
 
     </div>
 
-     Dec 8, 2018
+     Dec 11, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1284,11 +1284,16 @@
 <li>Drill shell</li>
 <li>Drill Web UI</li>
 <li><a href="/docs/installing-the-odbc-driver/">ODBC</a>*</li>
-<li><a href="/docs/using-jdbc-with-squirrel-on-windows/">JDBC</a></li>
+<li><a href="/docs/using-jdbc-with-squirrel-on-windows/">JDBC</a>**</li>
 <li>C++ API</li>
 </ul>
 
 <p>*Apache Drill does not have an open source ODBC driver. However, MapR provides an <a href="https://package.mapr.com/tools/MapR-ODBC/MapR_Drill/">ODBC driver</a> developed specifically for connecting Apache Drill to BI tools. MapR also provides a <a href="https://package.mapr.com/tools/MapR-JDBC/MapR_Drill/">JDBC driver</a>.  </p>
+
+<p>**By default, Drill returns a result set when you issue DDL statements, such as CTAS and CREATE VIEW. If the client tool from which you connect to Drill (via JDBC) does not expect a result set when you issue DDL statements, set the <code>exec.return_result_set_for_ddl</code> option (Drill 1.15 and later) to false, as shown, to prevent the client from canceling queries:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SET `exec.return_result_set_for_ddl` = false
+</code></pre></div>
+<p>When set to false, Drill returns the affected rows count, and the result set is null.    </p>
 
 <h2 id="using-odbc-to-access-apache-drill-from-bi-tools">Using ODBC to Access Apache Drill from BI Tools</h2>
 
