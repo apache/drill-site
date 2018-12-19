@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Dynamic UDFs - Apache Drill</title>
+<title>Configuring Custom ACLs to Secure znodes - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -333,8 +333,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Configure Drill</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Configure Drill</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configure-drill-introduction/">Configure Drill Introduction</a></li>
@@ -346,7 +346,7 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">Securing Drill</a></li>
-              <ul style="display: none">
+              <ul style="">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/securing-drill-introduction/">Securing Drill Introduction</a></li>
               
@@ -374,7 +374,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-web-ui-and-rest-api-security/">Configuring Web UI and REST API Security</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-custom-acls-to-secure-znodes/">Configuring Custom ACLs to Secure znodes</a></li>
+                <li class="toctree-l3 current"><a class="reference internal" href="/docs/configuring-custom-acls-to-secure-znodes/">Configuring Custom ACLs to Secure znodes</a></li>
               
             </ul>
             
@@ -1026,8 +1026,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Develop Custom Functions</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">Develop Custom Functions</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/develop-custom-functions-introduction/">Develop Custom Functions Introduction</a></li>
@@ -1047,7 +1047,7 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">Adding Custom Functions to Drill</a></li>
-              <ul style="">
+              <ul style="display: none">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/adding-custom-functions-to-drill-introduction/">Adding Custom Functions to Drill Introduction</a></li>
               
@@ -1055,7 +1055,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/creating-custom-authenticators/">Creating Custom Authenticators</a></li>
               
-                <li class="toctree-l3 current"><a class="reference internal" href="/docs/dynamic-udfs/">Dynamic UDFs</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/dynamic-udfs/">Dynamic UDFs</a></li>
               
             </ul>
             
@@ -1274,210 +1274,67 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/develop-custom-functions/">Develop Custom Functions</a></li>
+    <li><a href="/docs/configure-drill/">Configure Drill</a></li>
   
-    <li><a href="/docs/adding-custom-functions-to-drill/">Adding Custom Functions to Drill</a></li>
+    <li><a href="/docs/securing-drill/">Securing Drill</a></li>
   
-  <li>Dynamic UDFs</li>
+  <li>Configuring Custom ACLs to Secure znodes</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/develop-custom-functions/adding-custom-functions-to-drill/020-dynamic-udfs.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/configure-drill/securing-drill/093-configuring-custom-acls-to-secure-znodes.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>Dynamic UDFs</h1>
+      <h1>Configuring Custom ACLs to Secure znodes</h1>
 
     </div>
 
-     Nov 22, 2016
+     Dec 8, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Drill 1.9 introduces support for Dynamic UDFs. The Dynamic UDF feature enables users to register and unregister UDFs on their own using the CREATE FUNCTION USING JAR and DROP FUNCTION USING JAR commands.  </p>
+        <p>Drill uses ZooKeeper for dynamic service discovery in a cluster; ZooKeeper uses the Curator framework and Service Discovery recipe to discover services. In addition to discovering services, Drill uses ZooKeeper to store certain cluster-level configuration and query profile information in znodes. A znode is an internal data tree in ZooKeeper that stores coordination- and execution-related information. Each time a Drillbit starts up and establish a new session with Zookeeper (using the Curator framework), a new znode is created. If information in the znodes is not properly secured, cluster privacy and/or security is compromised. You can create a custom ACL on the znodes to secure data.</p>
 
-<p>The Dynamic UDF feature eliminates the need to restart drillbits, which can disrupt users, when administrators manually load and unload UDFs in a multi-tenant environment. Users can issue the CREATE FUNCTION USING JAR command to register manually loaded (built-in) UDFs. Also, users can migrate registered UDFs to built-in UDFs.  </p>
+<p>ZooKeeper uses ACLs (access control lists) to control access to znodes and secure the information they store. ACLs specify sets of ids and permissions that are associated with the ids. The ZooKeeper ACLs are set such that only the Drillbit process user can access (create, delete, read, write, administer) all the ZooKeeper nodes in a Drill cluster, except for the service discovery znodes. When a Drillbit shuts-down, the ZooKeeper session ends and the znode is removed.  </p>
 
-<p>The Dynamic UDF feature is enabled by default. An administrator can enable or disable the feature using the ALTER SYSTEM SET command with the <code>exec.udf.enable_dynamic_support option</code>. When the feature is enabled, users must upload their UDF (source and binary) JAR files to a staging directory in the distributed file system before issuing the CREATE FUNCTION USING JAR command to register a UDF.  </p>
+<p>Prior to Drill 1.15, ZooKeeper ACLs in secure and unsecure clusters were set to [world:all], meaning that all users had create, delete, read, write, and administrator access to the zknodes. Starting in Drill 1.15, ACLs in unsecure clusters are set to [world:all]. ACLs in secure clusters are set to [authid: all], which provides only the authenticated user that created the znode with full access. Discovery znodes (znodes with the list of Drillbits) have an additional ACL set to [world:read] making the list of Drillbits readable by any user.</p>
 
-<p>If users do not have write access to the staging directory, the registration attempt fails. When a user issues the CREATE FUNCTION USING JAR command to register a UDF, Drill uses specific directories while validating and registering the UDFs. The <a href="/docs/persistent-configuration-storage/">persistent configuration store</a> stores the list of UDFs and associated JAR files. Drillbits refer to this list when registering and unregistering UDFs.  </p>
+<h2 id="securing-znodes">Securing znodes</h2>
 
-<h2 id="udf-directories">UDF Directories</h2>
-
-<p>The directories that Drill uses when registering UDFs are configured in the <code>drill.exec.udf</code> stanza of the <code>drill-override.conf</code> file. Upon startup, Drill verifies that these directories exist in the file system.  If the directories do not exist, Drill creates them. If Drill is unable to create the directories, the start-up attempt fails. An administrator can modify the directory locations in <code>drill-override.conf</code>.</p>
-
-<p>The configuration file contains the following default properties and directories required to use the Dynamic UDF feature:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   drill.exec.udf: {
-                retry-attempts: 5,  
-   directory: {
-            base: ${drill.exec.zk.root}&quot;/udf&quot;,
-                local: ${drill.exec.udf.directory.base}&quot;/local&quot;,
-                staging: ${drill.exec.udf.directory.base}&quot;/staging&quot;,
-                registry: ${drill.exec.udf.directory.base}&quot;/registry&quot;,
-                tmp: ${drill.exec.udf.directory.base}&quot;/tmp&quot;
-                }
-   }  
-</code></pre></div>
-<p>The following table describes the configuration properties and UDF directories, where <code>drill.exec.udf.directory.base</code> is the relative directory used to generate all of the UDF directories (local and remote):  </p>
-
-<table><thead>
-<tr>
-<th>Property</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>retry-attempts</td>
-<td>The   number of times that the UDF registry update can fail before Drill returns an   error. Drill checks the registry version before updating the remote function   registry to avoid overriding changes made by another user. If the registry   version has changed, Drill validates the functions among the updated registry   again. The default is 5.</td>
-</tr>
-<tr>
-<td>base: ${drill.exec.zk.root}&quot;/udf&quot;</td>
-<td>The   property used to separate the UDF directories between clusters that use the   same file system.</td>
-</tr>
-<tr>
-<td>local:   ${drill.exec.udf.directory.base}&quot;/local&quot;</td>
-<td>The relative path concatenated   to the Drill temporary directory to indicate the local UDF directory. The   local UDF directory is used as a temporary directory for the Dynamic UDF JAR   files. Drill cleans this directory out upon exiting.</td>
-</tr>
-<tr>
-<td>staging:   ${drill.exec.udf.directory.base}&quot;/staging&quot;</td>
-<td>The   location to which users copy their binary and source JAR files. This   directory must be accessible to users in order to register their UDFs. When a   UDF is registered, Drill deletes both of the JAR files (source and binary)   from this directory. If Drill fails to register the UDFs from the JAR files,   the JAR files remain here. You can change the location of this   directory.</td>
-</tr>
-<tr>
-<td>registry:   ${drill.exec.udf.directory.base}&quot;/registry&quot;</td>
-<td>The   location to which Drill copies the source and binary JAR files after   validating the UDFs. Drill copies the JAR files from the registry directory   to a local UDF directory on each drillbit. When you unregister UDFs, Drill   deletes the appropriate JAR files from the local UDF directory on each   drillbit. DO NOT delete the JAR files from the registry directory. Deleting   JAR files from the registry directory results in inconsistencies in the   Dynamic UDF registry that point to the directory where JAR files are stored.   You can change the location of this directory.</td>
-</tr>
-<tr>
-<td>tmp:   ${drill.exec.udf.directory.base}&quot;/tmp&quot;</td>
-<td>The   location to which Drill backs up the binary and source JAR files before   starting the registration process. Drill places each binary and source file   in a unique folder in this directory. At the end of registration, Drill   deletes both JAR files from this directory. You can change the location of   this directory.</td>
-</tr>
-</tbody></table>
-
-<p>The following table lists optional directories that you can add:  </p>
-
-<table><thead>
-<tr>
-<th>Property</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>drill.exec.udf.directory.fs</td>
-<td>Changes the file system from the   default. If there are multiple drillbits in the cluster, and the default file   system is not distributed, you must include this property, and set it to a   distributed file system. For example, file:///, hdfs:///, or maprfs:///, as   shown below:          drill.exec.udf.directory.fs: &quot;hdfs:///&quot;</td>
-</tr>
-<tr>
-<td>drill.exec.udf.directory.root</td>
-<td>Changes   the root directory for remote UDF directories. By default, this property is   set to the home directory of the user that started the drillbit. For example,   on Linux the location is /home/some_user. On DFS, the location is   /user/<user_name>. And, on Windows, the location is   /C:/User/<user_name>.</td>
-</tr>
-</tbody></table>
-
-<h2 id="security-and-authentication-impact">Security and Authentication Impact</h2>
-
-<p>Currently, any user can register UDFs if they
-have access to the staging directory. Since Drill does not provide full
-authorization and authentication support, an administrator may want to disable
-the Dynamic UDF feature. See <a href="/docs/dynamic-udfs/#enabling-and-disabling-the-dynamic-udf-feature">Enabling and Disabling the Dynamic UDF Feature</a>.</p>
-
-<p>Drill moves all JAR files from the staging directory to the other UDF directories as the user that started the drillbit, not as the user that submitted the JAR files. Drill behaves this way even if impersonation is enabled.  </p>
-
-<h2 id="before-using-the-dynamic-udf-feature">Before Using the Dynamic UDF Feature</h2>
-
-<p>Before users can successfully register and unregister their UDFs using the Dynamic UDF feature, administrators and users must complete certain prerequisites. The prerequisites for each role are listed below.  </p>
-
-<h3 id="administrators">Administrators</h3>
-
-<p>Before users can issue the CREATE FUNCTION USING JAR or DROP FUNCTION USING JAR commands to register or unregister UDFs, verify that the <code>exec.udf.enable_dynamic_support</code> option is enabled and the staging directory is accessible to users. See <a href="/docs/dynamic-udfs/#enabling-and-disabling-the-dynamic-udf-feature">Enabling and Disabling the Dynamic UDF Feature</a>.  </p>
-
-<h3 id="users">Users</h3>
-
-<p>Create a UDF using Drill’s <a href="/docs/developing-a-simple-function/">simple</a> or <a href="/docs/developing-an-aggregate-function/">aggregate</a> function interface. Add a <code>drill-module.conf</code> file to the root of the class JAR file. The <code>drill-module.conf</code> file should contain the packages to scan for the functions <code>drill.classpath.scanning.packages+= &quot;com.mydomain.drill.fn&quot;</code>, as shown in the following example:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   drill.classpath.scanning.package+= &quot;com.mydomain.drill.fn&quot;  
-</code></pre></div>
-<p>Replace <code>com.mydomain.drill.fn</code> with the package name(s) of your UDF(s). If there are multiple packages, separate package names with a comma.</p>
-
-<p>Once the UDF is created, copy the source and binary JAR files to the staging directory. If you do not know the location of the staging directory, contact your administrator. Now, you can register your UDF using the CREATE FUNCTION USING JAR command. See <a href="/docs/dynamic-udfs/#registering-a-udf">Registering a UDF</a>.  </p>
-
-<h2 id="enabling-and-disabling-the-dynamic-udf-feature">Enabling and Disabling the Dynamic UDF Feature</h2>
-
-<p>An administrator can enable or disable the Dynamic UDF feature. The feature is enabled by default.  The <code>exec.udf.enable_dynamic_support</code> option turns the Dynamic UDF feature on and off. If security is a concern, the administrator can disable the feature to prevent users from registering and unregistering UDFs.</p>
-
-<p>Use the <a href="/docs/alter-system/">ALTER SYSTEM SET</a> command with the  <code>exec.udf.enable_dynamic_support</code> system option to turn the feature on or off.  </p>
-
-<h2 id="registering-a-udf">Registering a UDF</h2>
-
-<p>Copy the UDF source and binary JAR files to the DFS staging directory and then issue the CREATE FUNCTION USING JAR command to register the UDF, as follows:   </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   CREATE FUNCTION USING JAR ‘&lt;jar_name&gt;.jar’  
-</code></pre></div>
-<p>If you do not know the location of the staging directory or you need access to the directory, contact your administrator.</p>
-
-<p>When you issue the command, Drill uses the JAR file name to register the JAR name in the Dynamic UDF registry (<a href="/docs/persistent-configuration-storage/">persistent store</a>) and then copies the source and binary JAR files to the local UDF directory on each drillbit.  </p>
-
-<p>Upon successful registration, Drill returns a message with a list of registered UDFs:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   +---------------+-----------------------------------------------------------------------------------------------------------+
-   | ok           |    summary                                                                                         |
-   +---------------+-----------------------------------------------------------------------------------------------------------+
-   | true          | The following UDFs in jar %s have been registered: %s                           |
-   +---------------+-----------------------------------------------------------------------------------------------------------+  
-</code></pre></div>
-<h2 id="unregistering-a-udf">Unregistering a UDF</h2>
-
-<p>Issue the DROP FUNCTION USING JAR command to unregister a UDF, as follows:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   DROP FUNCTION USING JAR ‘&lt;jar_name&gt;.jar’  
-</code></pre></div>
-<p>When you issue the command, Drill unregisters UDFs based on the JAR file name and removes the JAR files from the UDF directory. Drill deletes all UDFs associated with the JAR file from the UDF registry (<a href="/docs/persistent-configuration-storage/">persistent store</a>, signaling drillbits to start the local unregistering process.  </p>
-
-<p>Drill returns a message with the list of unregistered UDFs:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   +---------------+-----------------------------------------------------------------------------------------------------------+
-   | ok           |    summary                                                                                         |
-   +---------------+-----------------------------------------------------------------------------------------------------------+
-   | true          | The following UDFs in jar %s have been unregistered: %s                          |
-   +---------------+-----------------------------------------------------------------------------------------------------------+  
-</code></pre></div>
-<h2 id="migrating-udfs-from-dynamic-to-built-in">Migrating UDFs from Dynamic to Built-In</h2>
-
-<p>You can migrate UDFs registered using the Dynamic UDF feature to built-in UDFs to free up space in the UDF directories and the Dynamic UDF registry (<a href="/docs/persistent-configuration-storage/">persistent store</a>). You can migrate all of the UDFs or you can migrate a portion of the UDFs. If you migrate all of the UDFs, you cannot issue the DROP FUNCTION USING JAR command to unregister the UDFs that have been migrated from dynamic to built-in.  </p>
-
-<h3 id="migrating-all-registered-udfs-to-built-in-udfs">Migrating All Registered UDFs to Built-In UDFs</h3>
-
-<p>To migrate all registered UDFs to built-in UDFs, complete the following steps:  </p>
+<p>Complete the following steps to create a custom ACL and secure znodes:  </p>
 
 <ol>
-<li>Stop all drillbits in the cluster.<br></li>
-<li>Move the UDF source and binary JAR files to the $DRILL_SITE/jars directory on each drillbit. (Must be included in the classpath.)</li>
-<li>Remove the remote function registry from ZooKeeper.</li>
-<li>Start all drillbits in the cluster.</li>
+<li>Write a class that implements the <code>ZKACLProvider</code> interface. This class will contain the ACLs that need to be set on the znodes. You can use  the <a href="https://github.com/apache/drill/blob/master/exec/java-exec/src/main/java/org/apache/drill/exec/coord/zk/ZKSecureACLProvider.java"><code>ZKSecureACLProvider</code> class as a sample reference</a>.<br></li>
+<li><p>Add the following dependency to the <code>pom</code> file of the project module created:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;groupId&gt;org.apache.drill.exec&lt;/groupId&gt;
+&lt;artifactId&gt;drill-java-exec&lt;/artifactId&gt;  
+</code></pre></div></li>
+<li><p>Refer to the steps listed at <a href="/docs/manually-adding-custom-functions-to-drill/">https://drill.apache.org/docs/manually-adding-custom-functions-to-drill/</a> to create a JAR and then add the JAR to Drill&#39;s classpath.  </p></li>
+<li><p>In <code>$DRILL_HOME/conf/drill-override.conf</code>, set <code>zk.acl_provider</code> to the <code>ZKACLProviderTemplate</code> type.  </p></li>
+<li><p>Restart Drill.</p></li>
 </ol>
 
-<h3 id="migrating-some-of-the-registered-udf-jar-files-to-built-in-udfs">Migrating Some of the Registered UDF JAR Files to Built-In UDFs</h3>
+<p>When you restart Drill, the ACL, as mentioned in your custom class, is applied to the znode created when Drill starts.</p>
 
-<p>To migrate a portion of the UDF JAR files to built-in UDFs, complete the following steps:</p>
-
-<ol>
-<li>Copy (not move) the JAR files from the UDF registry directory to the $DRILL_SITE/jars directory on each drillbit. (Must be included in the classpath.)</li>
-<li>Issue the DROP FUNCTION USING JAR command for each JAR file.</li>
-<li>Stop all drillbits in the cluster.</li>
-<li>Start all drillbits in the cluster.<br></li>
-</ol>
-
-<h2 id="limitations">Limitations</h2>
-
-<p>The Dynamic UDF feature has the following known limitations:  </p>
+<p>For additional information, refer to:  </p>
 
 <ul>
-<li>If a user drops a UDF while a query that references the UDF is running, the query may fail. Users should verify that no queries reference a UDF prior to issuing the DROP command.</li>
-<li>The DROP command only operates at the JAR level name. A user cannot unregister only one UDF from a JAR where several UDFs are present. To avoid this situation, a user can create one UDF per jar.</li>
-<li>All UDF directories (remote or local) are created upon drillbit startup, even if Dynamic UDF support is disabled. Drillbit startup fails if the user who started the drillbit does not have write access to these directories.</li>
+<li><a href="https://zookeeper.apache.org/doc/trunk/zookeeperOver.html">https://zookeeper.apache.org/doc/trunk/zookeeperOver.html</a><br></li>
+<li><a href="https://zookeeper.apache.org/doc/r3.1.2/zookeeperProgrammers.html#sc_ZooKeeperAccessControl">https://zookeeper.apache.org/doc/r3.1.2/zookeeperProgrammers.html#sc_ZooKeeperAccessControl</a><br></li>
+<li><a href="https://cwiki.apache.org/confluence/display/ZOOKEEPER/Zookeeper+and+SASL">https://cwiki.apache.org/confluence/display/ZOOKEEPER/Zookeeper+and+SASL</a></li>
 </ul>
 
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/creating-custom-authenticators/">← Creating Custom Authenticators</a></span><span class="next-toc"><a href="/docs/using-custom-functions-in-queries/">Using Custom Functions in Queries →</a></span>
+  <span class="previous-toc"><a href="/docs/configuring-web-ui-and-rest-api-security/">← Configuring Web UI and REST API Security</a></span><span class="next-toc"><a href="/docs/configuring-a-multitenant-cluster/">Configuring a Multitenant Cluster →</a></span>
 </div>
 
     
