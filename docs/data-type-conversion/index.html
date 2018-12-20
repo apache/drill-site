@@ -1308,13 +1308,13 @@
 <li><a href="/docs/data-type-conversion/#other-data-type-conversions">Other Data Type Conversions</a><br></li>
 </ul>
 
-<p><strong>Note:</strong> Starting in Drill 1.15, all cast and data type conversion functions return an empty string (&#39;&#39;) as null when the <code>drill.exec.functions.cast_empty_string_to_null</code> option is enabled, for example:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT CAST(&#39;&#39; AS DATE) FROM (VALUES(1));
-+---------+
-| EXPR$0  |
-+---------+
-| null    |
-+---------+  
+<p><strong>Note:</strong> Starting in Drill 1.15, all cast and data type conversion functions return null for an empty string (&#39;&#39;) when the <code>drill.exec.functions.cast_empty_string_to_null</code> option is enabled, for example:    </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT CAST(&#39;&#39; AS DATE), TO_TIMESTAMP(&#39;&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;) FROM (VALUES(2));
++---------+---------+
+| EXPR$0  | EXPR$1  |
++---------+---------+
+| null    | null    |
++---------+---------+
 </code></pre></div>
 <p>Prior to 1.15, casting an empty string to null only worked for numeric types; in Drill 1.15 and later casting an empty string to null also works for date and time data types, including DATE, TIME, TIMESTAMP, INTERVAL YEAR, INTERVAL MONTH, and INTERVAL DAY.</p>
 
