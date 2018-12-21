@@ -1291,19 +1291,28 @@
 
     </div>
 
-     Nov 21, 2016
+     Dec 21, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>After <a href="/docs/starting-drill-on-linux-and-mac-os-x/">starting the Drill shell</a>, you can type queries on the shell command line. At the Drill shell command prompt, typing &quot;help&quot; lists the configuration and other options you can set to manage shell functionality. Apache Drill 1.0 and later formats the resultset output tables for readability if possible. In this release, columns having 70 characters or more cannot be formatted. This document formats all output for readability and example purposes.</p>
+        <p>Drill uses SQLLine as the Drill shell. SQLLine is a pure-Java console-based utility for connecting to relational databases and running SQL commands. </p>
 
-<p>Formatting tables takes time, which you might notice if running a huge query using the default <code>outputFormat</code> setting, which is <code>table</code> of the Drill shell. You can set another, more performant table formatting such as <code>csv</code>, as shown in the <a href="/docs/configuring-the-drill-shell/#examples-of-configuring-the-drill-shell">examples</a>. </p>
+<p>Starting in Drill 1.15, Drill uses SQLLine 1.6, which you can customize through the Drill <a href="/docs/configuring-the-drill-shell/#customizing-sqlline-in-the-drill-sqlline-override.conf-file">configuration file, drill-sqlline-override.conf</a>. Before installing and running Drill with SQLLine 1.6, delete the old SQLLine history file The history file is located in the following location:  </p>
+
+<ul>
+<li>$HOME/.sqlline/history (UNIX, Linux, Mac OS)</li>
+<li>$HOME/sqlline/history (Windows) </li>
+</ul>
+
+<p>After <a href="/docs/starting-drill-on-linux-and-mac-os-x/">starting the Drill shell</a>, you can run Drill shell commands and queries from the command line. Typing the shell command &quot;!help&quot; lists configuration and other options that you can set to manage shell functionality. </p>
+
+<p>Formatting tables takes time, which you may notice when running a huge query using the default outputFormat. The default outputFormat is “table.” You can set the outputFormat to a more performant table formatting, such as csv, as shown in the <a href="/docs/configuring-the-drill-shell/#examples-of-configuring-the-drill-shell">examples</a>.  </p>
 
 <h2 id="drill-shell-commands">Drill Shell Commands</h2>
 
-<p>The following table lists the commands that you can run on the Drill command line.</p>
+<p>The following table lists the Drill shell commands that you can run from the command line:</p>
 
 <table><thead>
 <tr>
@@ -1385,15 +1394,7 @@
 </tr>
 </tbody></table>
 
-<h2 id="example-of-hiding-the-password-when-starting-drill">Example of Hiding the Password When Starting Drill</h2>
-
-<p>When starting Drill in authentication mode, you can use the <strong>!connect</strong> command as shown in the section, <a href="/docs/configuring-user-authentication/#user-authentication-process">&quot;User Authentication Process&quot;</a>, instead of using a command such as <strong>sqlline</strong>, <strong>drill-embedded</strong>, or <strong>drill-conf</strong> commands. For example, after running the sqlline script, you enter this command to connect to Drill:</p>
-
-<p><code>sqlline&gt; !connect jdbc:drill:zk=localhost:2181</code>  </p>
-
-<p>When prompted you enter a user name and password, which is hidden as you type it.</p>
-
-<h2 id="examples-of-configuring-the-drill-shell">Examples of Configuring the Drill Shell</h2>
+<h3 id="examples-of-configuring-the-drill-shell">Examples of Configuring the Drill Shell</h3>
 
 <p>For example, quit the Drill shell:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; !quit
@@ -1401,15 +1402,19 @@
 <p>List the current connections. </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; !list
 1 active connection:
- #0  open     jdbc:drill:zk=local
+ #0  open     jdbc:drill:zk=local  
 </code></pre></div>
-<p>Set the maximum width of the Drill shell to 10000.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> 0: jdbc:drill:zk=local&gt; !set maxwidth 10000
-</code></pre></div>
-<p>Set the output format to CSV to improve performance of a huge query.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> 0: jdbc:drill:zk=local&gt; !set outputFormat csv
-</code></pre></div>
-<h2 id="the-set-command-variables">The Set Command Variables</h2>
+<h3 id="example-of-hiding-the-password-when-starting-drill">Example of Hiding the Password When Starting Drill</h3>
+
+<p>When starting Drill in authentication mode, you can use the <strong>!connect</strong> command as shown in the section, <a href="/docs/configuring-user-authentication/#user-authentication-process">&quot;User Authentication Process&quot;</a>, instead of using a command such as <strong>sqlline</strong>, <strong>drill-embedded</strong>, or <strong>drill-conf</strong> commands. For example, after running the sqlline script, you enter this command to connect to Drill:</p>
+
+<p><code>sqlline&gt; !connect jdbc:drill:zk=localhost:2181</code>  </p>
+
+<p>When prompted you enter a user name and password, which is hidden as you type it.</p>
+
+<h2 id="set-command-variables">Set Command Variables</h2>
+
+<p>The following table lists the set command variables that you can use with the !set command:</p>
 
 <table><thead>
 <tr>
@@ -1421,7 +1426,7 @@
 <tr>
 <td>autoCommit</td>
 <td>true/false</td>
-<td>Enable/disable automatic transaction commit. Should remain enabled (true).</td>
+<td>Enable/disable automatic transaction commit. Should remain enabled (true). Drill performs read-only operations primarily, and autocommit writes. Drill JDBC throws an exception if autoCommit is disabled.</td>
 </tr>
 <tr>
 <td>autoSave</td>
@@ -1540,9 +1545,23 @@
 </tr>
 </tbody></table>
 
-<h3 id="autocommit">autoCommit</h3>
+<h3 id="examples-of-the-set-command-with-variables">Examples of the set Command with Variables</h3>
 
-<p>Drill performs read-only operations primarily, and autocommits writes. Drill JDBC throws an exception if autoCommit is disabled.</p>
+<p>Set the maximum width of the Drill shell to 10000.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text"> 0: jdbc:drill:zk=local&gt; !set maxwidth 10000
+</code></pre></div>
+<p>Set the output format to CSV to improve performance of a huge query.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text"> 0: jdbc:drill:zk=local&gt; !set outputFormat csv  
+</code></pre></div>
+<h2 id="customizing-sqlline-in-the-drill-sqlline-override-conf-file">Customizing SQLLine in the drill-sqlline-override.conf File</h2>
+
+<p>Starting in Drill 1.15, SQLLine (the Drill shell) is upgraded to version 1.6. You can customize SQLLine through the Drill configuration file, <code>drill-sqlline-override.conf</code>, located in the <code>&lt;drill-installation&gt;/conf</code> directory. </p>
+
+<p>You can customize quotes of the day; the quotes you see at the command prompt when starting Drill, such as “Just Drill it,” and you can override the SQLLine default properties. The SQLLine default properties are those that print when you run <code>!set</code> from the Drill shell. </p>
+
+<p>Drill reads the <code>drill-sqlline-override.conf</code> file and applies the customizations during start-up. You must restart Drill for the changes to take effect. The file remains in the directory and Drill applies the customizes at each restart.  </p>
+
+<p><strong>Note:</strong> The SQLLine configuration file in the <code>&lt;drill-installation&gt;/conf</code> directory is named <code>drill-sqlline-override-example.conf</code>. Use this file and the information provided in the file as guidance for the <code>drill-sqlline-override.conf</code> file you create and store in the directory with your customizations.</p>
 
     
       
