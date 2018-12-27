@@ -1293,7 +1293,7 @@
 
     </div>
 
-     Nov 2, 2018
+     Dec 27, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1360,6 +1360,18 @@
 <tr>
 <td><a href="/docs/date-time-functions-and-arithmetic/#unix_timestamp">UNIX_TIMESTAMP</a></td>
 <td>BIGINT</td>
+</tr>
+<tr>
+<td><a href="/docs/date-time-functions-and-arithmetic/#TIMESTAMPADD">TIMESTAMPADD</a></td>
+<td>Inferred based on unit of time</td>
+</tr>
+<tr>
+<td><a href="/docs/date-time-functions-and-arithmetic/#TIMESTAMPDIFF">TIMESTAMPDIFF</a></td>
+<td>Inferred based on unit of time</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
 </tr>
 </tbody></table>
 
@@ -1879,7 +1891,114 @@ SELECT UNIX_TIMESTAMP(&#39;2015-05-29 08:18:53.0&#39;, &#39;yyyy-MM-dd HH:mm:ss.
 +-------------+
 | 1432912733  |
 +-------------+
-1 row selected (0.171 seconds)
+1 row selected (0.171 seconds)  
+</code></pre></div>
+<h2 id="timestampadd">TIMESTAMPADD</h2>
+
+<p>Adds an interval of time, in the given time units, to the date expression.   </p>
+
+<h3 id="timestampadd-syntax">TIMESTAMPADD Syntax</h3>
+
+<p>TIMESTAMPADD(<em>time_unit,interval,date_expression</em>)  </p>
+
+<h3 id="timestampadd-usage-notes">TIMESTAMPADD Usage Notes</h3>
+
+<ul>
+<li>A date expressions is in the format YYYY-MM-DD.</li>
+<li>Supports the following time units: Day, Week, Month, Quarter, Year</li>
+<li>Drill uses the unit of time to infer the return type.</li>
+<li><p>You can include the SQL_TSI_ prefix with the any of the supported time units, as shown: </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPADD(SQL_TSI_YEAR,3,&#39;1982-05-06&#39;);  
+</code></pre></div></li>
+</ul>
+
+<h3 id="timestampadd-examples">TIMESTAMPADD Examples</h3>
+
+<p>Add three years to the given date:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPADD(YEAR,3,&#39;1982-05-06&#39;);
++------------------------+
+|         EXPR$0         |
++------------------------+
+| 1985-05-06 00:00:00.0  |
++------------------------+   
+</code></pre></div>
+<p>Add one quarter of a year (3 months) to the given date:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPADD(QUARTER,1,&#39;1982-05-06&#39;);
++------------------------+
+|         EXPR$0         |
++------------------------+
+| 1982-08-06 00:00:00.0  |
++------------------------+    
+</code></pre></div>
+<p>Add three months to the given date:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPADD(MONTH,3,&#39;1982-05-06&#39;);
++------------------------+
+|         EXPR$0         |
++------------------------+
+| 1982-08-06 00:00:00.0  |
++------------------------+  
+</code></pre></div>
+<p>Add three weeks to the given date:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPADD(WEEK,3,&#39;1982-05-06&#39;);
++------------------------+
+|         EXPR$0         |
++------------------------+
+| 1982-05-27 00:00:00.0  |
++------------------------+  
+</code></pre></div>
+<p>Add three days to the given date:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPADD(DAY,3,&#39;1982-05-06&#39;);
++------------------------+
+|         EXPR$0         |
++------------------------+
+| 1982-05-09 00:00:00.0  |
++------------------------+
+</code></pre></div>
+<h2 id="timestampdiff">TIMESTAMPDIFF</h2>
+
+<p>Calculates an interval of time, in the given time units, by subtracting <em>datetime_expression2</em> from <em>datetime_expression1</em>.    </p>
+
+<h3 id="timestampdiff-syntax">TIMESTAMPDIFF Syntax</h3>
+
+<p>TIMESTAMPDIFF(<em>time_unit,datetime_expression1,datetime_expression2</em>)  </p>
+
+<h3 id="timestampdiff-usage-notes">TIMESTAMPDIFF Usage Notes</h3>
+
+<ul>
+<li>Datetime expressions are date (YYYY-MM-DD) or datetime (YYYY-MM-DD HH:MM:SS) expressions.</li>
+<li>You can include two date expressions, or one date expression with one datetime expression, as shown in the examples that follow.</li>
+<li>Supports the following time units: Nanosecond, Microsecond, Second, Minute, Hour, Day, Month, Year, Week, Quarter</li>
+<li>Drill uses the unit of time to infer the return type.</li>
+<li><p>You can include the SQL_TSI_ prefix with the any of the supported time units, as shown: </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(SQL_TSI_YEAR,&#39;1982-05-06&#39;, &#39;1986-05-06&#39;);  
+</code></pre></div></li>
+</ul>
+
+<h3 id="timestampdiff-examples">TIMESTAMPDIFF Examples</h3>
+
+<p>Subtracts 1982-05-06 from 2018-12-26 and returns the difference in months:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(MONTH,&#39;1982-05-06&#39;,&#39;2018-12-26&#39;);
++---------+
+| EXPR$0  |
++---------+
+| 439     |
++---------+   
+</code></pre></div>
+<p>Subtracts 2003-02-01 12:05:55 from 2018-05-01 and returns the difference in minutes: </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(MINUTE,&#39;2003-02-01 12:05:55&#39;,&#39;2018-05-01&#39;);
++----------+
+|  EXPR$0  |
++----------+
+| 8017920  |
++----------+  
+</code></pre></div>
+<p>Subtracts 2003-02-01 from 2018-05-01 12:05:35 and returns the difference in microseconds:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(MICROSECOND,&#39;2003-02-01&#39;,&#39;2018-05-01 12:05:35&#39;);
++------------------+
+|      EXPR$0      |
++------------------+
+| 481075200000000  |
++------------------+
 </code></pre></div>
     
       
