@@ -1964,44 +1964,56 @@ SELECT UNIX_TIMESTAMP(&#39;2015-05-29 08:18:53.0&#39;, &#39;yyyy-MM-dd HH:mm:ss.
 
 <h3 id="timestampdiff-syntax">TIMESTAMPDIFF Syntax</h3>
 
-<p>TIMESTAMPDIFF(<em>time_unit,datetime_expression1,datetime_expression2</em>)  </p>
+<p>TIMESTAMPDIFF(<em>time_unit, keyword datetime_expression1, keyword datetime_expression2</em>)  </p>
 
 <h3 id="timestampdiff-usage-notes">TIMESTAMPDIFF Usage Notes</h3>
 
 <ul>
-<li>Datetime expressions are date (YYYY-MM-DD) or datetime (YYYY-MM-DD HH:MM:SS) expressions.</li>
+<li><em>Keyword</em> is the type of <em>date_expression</em>: date, time, or timestamp</li>
+<li>Supports date, time, and timestamp values in the following formats:
+
+<ul>
+<li>Date format: YYYY-MM-DD</li>
+<li>Time format: HH:MI:SS</li>
+<li>Timestamp format: YYYY-MM-DD HH:MI:SS</li>
+</ul></li>
 <li>You can include two date expressions, or one date expression with one datetime expression, as shown in the examples that follow.</li>
 <li>Supports the following time units: Nanosecond, Microsecond, Second, Minute, Hour, Day, Month, Year, Week, Quarter</li>
 <li>Drill uses the unit of time to infer the return type.</li>
 <li><p>You can include the SQL_TSI_ prefix with the any of the supported time units, as shown: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(SQL_TSI_YEAR,&#39;1982-05-06&#39;, &#39;1986-05-06&#39;);  
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(SQL_TSI_YEAR, DATE &#39;1982-05-06&#39;, DATE &#39;1986-05-06&#39;);
++---------+
+| EXPR$0  |
++---------+
+| 4       |
++---------+
 </code></pre></div></li>
 </ul>
 
 <h3 id="timestampdiff-examples">TIMESTAMPDIFF Examples</h3>
 
 <p>Subtracts 1982-05-06 from 2018-12-26 and returns the difference in months:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(MONTH,&#39;1982-05-06&#39;,&#39;2018-12-26&#39;);
+<div class="highlight"><pre><code class="language-text" data-lang="text"> SELECT TIMESTAMPDIFF(MONTH, DATE&#39;1982-05-06&#39;, DATE &#39;2018-12-26&#39;);
 +---------+
 | EXPR$0  |
 +---------+
 | 439     |
-+---------+   
++---------+
 </code></pre></div>
 <p>Subtracts 2003-02-01 12:05:55 from 2018-05-01 and returns the difference in minutes: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(MINUTE,&#39;2003-02-01 12:05:55&#39;,&#39;2018-05-01&#39;);
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(MINUTE, TIMESTAMP &#39;2003-02-01 12:05:55&#39;, DATE &#39;2018-05-01&#39;);
 +----------+
 |  EXPR$0  |
 +----------+
-| 8017920  |
-+----------+  
+| 8017194  |
++----------+
 </code></pre></div>
-<p>Subtracts 2003-02-01 from 2018-05-01 12:05:35 and returns the difference in microseconds:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(MICROSECOND,&#39;2003-02-01&#39;,&#39;2018-05-01 12:05:35&#39;);
+<p>Subtracts 2003-02-01 from 2018-05-01 12:05:35 and returns the difference in microseconds:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(MICROSECOND, DATE &#39;2003-02-01&#39;, TIMESTAMP &#39;2018-05-01 12:05:35&#39;);
 +------------------+
 |      EXPR$0      |
 +------------------+
-| 481075200000000  |
+| 481118735000000  |
 +------------------+
 </code></pre></div>
     
