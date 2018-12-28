@@ -1293,7 +1293,7 @@
 
     </div>
 
-     Jul 6, 2018
+     Dec 28, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1334,11 +1334,20 @@ file tells Drill to scan that JAR file or associated object and include it.</p>
 </code></pre></div>
 <h2 id="configuring-start-up-options">Configuring Start-Up Options</h2>
 
-<p>You can configure start-up options for each drillbit in <code>&lt;drill_home&gt;/conf/drill-override.conf</code> .</p>
+<p>You can configure start-up options for each Drillbit in <code>&lt;drill_home&gt;/conf/drill-override.conf</code>.</p>
 
 <p>The summary of start-up options, also known as boot options, lists default values. The following descriptions provide more detail on key options that are frequently reconfigured:</p>
 
 <ul>
+<li><p><strong>store.parquet.complex.batch.num_records</strong><br>
+Introduced in Drill 1.15. Sets batch sizing (number of rows per batch) for the Parquet reader. The default value is 4,000 rows. If rows are large and queries return out-of-memory errors, reduce the value. You can set this option at the system level in <code>&lt;drill_home&gt;/conf/drill-override.conf</code> or at the session level using the SET command, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SET `store.parquet.complex.batch.num_records`=2000;
++-------+---------------------------------------------------+
+|  ok   |                      summary                      |
++-------+---------------------------------------------------+
+| true  | store.parquet.complex.batch.num_records updated.  |
++-------+---------------------------------------------------+
+</code></pre></div></li>
 <li><p><strong>drill.exec.http.ssl_enabled</strong><br>
 Introduced in Drill 1.2. Enables or disables <a href="/docs/configuring-web-console-and-rest-api-security/#https-support">HTTPS support</a>. Settings are TRUE and FALSE, respectively. The default is FALSE.  </p></li>
 <li><p><strong>drill.exec.sys.store.provider.class</strong><br>
