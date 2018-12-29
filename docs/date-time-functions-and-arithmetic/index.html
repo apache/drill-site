@@ -1293,7 +1293,7 @@
 
     </div>
 
-     Dec 28, 2018
+     Dec 29, 2018
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1895,26 +1895,20 @@ SELECT UNIX_TIMESTAMP(&#39;2015-05-29 08:18:53.0&#39;, &#39;yyyy-MM-dd HH:mm:ss.
 </code></pre></div>
 <h2 id="timestampadd">TIMESTAMPADD</h2>
 
-<p>Adds an interval of time, in the given time units, to the date expression.   </p>
+<p>Adds an interval of time, in the given time units, to a datetime expression.   </p>
 
 <h3 id="timestampadd-syntax">TIMESTAMPADD Syntax</h3>
 
-<p>TIMESTAMPADD(<em>time_unit,interval, keyword date_expression</em>)  </p>
+<p>TIMESTAMPADD(<em>time_unit,interval,datetime_expression</em>)  </p>
 
 <h3 id="timestampadd-usage-notes">TIMESTAMPADD Usage Notes</h3>
 
 <ul>
-<li><em>Keyword</em> is the type of <em>date_expression</em>: date, time, or timestamp</li>
-<li>Supports date, time, and timestamp values in the following formats:
-
-<ul>
-<li>Date format: YYYY-MM-DD</li>
-<li>Time format: HH:MI:SS</li>
-<li>Timestamp format: YYYY-MM-DD HH:MI:SS</li>
-</ul></li>
-<li>Supports the following time units: Nanosecond, Microsecond, Second, Minute, Hour, Day, Month, Year, Week, Quarter </li>
-<li>Drill uses the unit of time to infer the return type.</li>
-<li><p>You can include the SQL_TSI_ prefix with the any of the supported time units, as shown: </p>
+<li><em>datetime_expression</em> is a column or literal with date, time, or timestamp values. </li>
+<li><em>time_unit</em> is any of the following: Nanosecond, Microsecond, Second, Minute, Hour, Day, Month, Year, Week, Quarter</li>
+<li><em>interval</em> is the amount of <em>time_unit</em> to add. </li>
+<li>Drill uses the <em>time_unit</em> to infer the return type.</li>
+<li><p>You can include the <code>SQL_TSI_</code> prefix with the any of the supported time units, as shown: </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPADD(SQL_TSI_MINUTE,5,TIME &#39;05:05:05&#39;);
 +-----------+
 |  EXPR$0   |
@@ -1926,37 +1920,33 @@ SELECT UNIX_TIMESTAMP(&#39;2015-05-29 08:18:53.0&#39;, &#39;yyyy-MM-dd HH:mm:ss.
 
 <h3 id="timestampadd-examples">TIMESTAMPADD Examples</h3>
 
-<p>Add three years to the given date:  </p>
+<p>Add three years to a date literal:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPADD(YEAR,3,DATE &#39;1982-05-06&#39;);
 +------------------------+
 |         EXPR$0         |
 +------------------------+
 | 1985-05-06 00:00:00.0  |
-+------------------------+   
-</code></pre></div>
-<p>Add one quarter of a year (3 months) to the given date:   </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPADD(QUARTER,1,DATE&#39;1982-05-06&#39;);
 +------------------------+
-|         EXPR$0         |
+</code></pre></div>
+<p>Add a quarter (3 months) to the date values in the first column of the dates.csv file:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPADD(QUARTER, 1, COLUMNS[0]) q1 FROM dfs.`/quarter/dates.csv`;
 +------------------------+
-| 1982-08-06 00:00:00.0  |
-+------------------------+    
+|           q1           |
++------------------------+
+| 2018-04-01 00:00:00.0  |
+| 2017-05-02 00:00:00.0  |
+| 2000-08-06 00:00:00.0  |
++------------------------+
 </code></pre></div>
-<p>Add 225 seconds to the given time: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPADD(SECOND,225,TIME &#39;02:02:02&#39;);
-+-----------+
-|  EXPR$0   |
-+-----------+
-| 02:05:47  |
-+-----------+  
-</code></pre></div>
-<p>Add 5555500000 microseconds to the given timestamp value:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPADD(MICROSECOND,5555500000, TIMESTAMP &#39;2003-02-01 12:05:35&#39;);  
-+--------------------------+
-|          EXPR$0          |
-+--------------------------+
-| 2003-02-01 12:26:35.532  |
-+--------------------------+
+<p>Dates in column[0] before applying the TIMESTAMPADD function:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT COLUMNS[0] FROM dfs.`/quarter/dates.csv`;
++-------------+
+|   EXPR$0    |
++-------------+
+| 2018-01-01  |
+| 2017-02-02  |
+| 2000-05-06  |
++-------------+
 </code></pre></div>
 <h2 id="timestampdiff">TIMESTAMPDIFF</h2>
 
@@ -1964,57 +1954,55 @@ SELECT UNIX_TIMESTAMP(&#39;2015-05-29 08:18:53.0&#39;, &#39;yyyy-MM-dd HH:mm:ss.
 
 <h3 id="timestampdiff-syntax">TIMESTAMPDIFF Syntax</h3>
 
-<p>TIMESTAMPDIFF(<em>time_unit, keyword datetime_expression1, keyword datetime_expression2</em>)  </p>
+<p>TIMESTAMPDIFF(<em>time_unit, keyword datetime_expression1, datetime_expression2</em>)  </p>
 
 <h3 id="timestampdiff-usage-notes">TIMESTAMPDIFF Usage Notes</h3>
 
 <ul>
-<li><em>Keyword</em> is the type of <em>date_expression</em>: date, time, or timestamp</li>
-<li>Supports date, time, and timestamp values in the following formats:
-
-<ul>
-<li>Date format: YYYY-MM-DD</li>
-<li>Time format: HH:MI:SS</li>
-<li>Timestamp format: YYYY-MM-DD HH:MI:SS</li>
-</ul></li>
-<li>You can include two date expressions, or one date expression with one datetime expression, as shown in the examples that follow.</li>
-<li>Supports the following time units: Nanosecond, Microsecond, Second, Minute, Hour, Day, Month, Year, Week, Quarter</li>
-<li>Drill uses the unit of time to infer the return type.</li>
-<li><p>You can include the SQL_TSI_ prefix with the any of the supported time units, as shown: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(SQL_TSI_YEAR, DATE &#39;1982-05-06&#39;, DATE &#39;1986-05-06&#39;);
-+---------+
-| EXPR$0  |
-+---------+
-| 4       |
-+---------+
+<li><em>datetime_expression</em> is a column or literal with date, time, or timestamp values. </li>
+<li><em>time_unit</em> is any of the following: Nanosecond, Microsecond, Second, Minute, Hour, Day, Month, Year, Week, Quarter</li>
+<li><em>interval</em> is the amount of <em>time_unit</em> to add.</li>
+<li>You can include two date expressions, or one date expression with one datetime expression. </li>
+<li>Drill uses the <em>time_unit</em> to infer the return type.</li>
+<li><p>You can include the <code>SQL_TSI_</code> prefix with the any of the supported time units, as shown: </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPADD(SQL_TSI_MINUTE,5,TIME &#39;05:05:05&#39;);
++-----------+
+|  EXPR$0   |
++-----------+
+| 05:10:05  |
++-----------+  
 </code></pre></div></li>
 </ul>
 
 <h3 id="timestampdiff-examples">TIMESTAMPDIFF Examples</h3>
 
-<p>Subtracts 1982-05-06 from 2018-12-26 and returns the difference in months:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> SELECT TIMESTAMPDIFF(MONTH, DATE&#39;1982-05-06&#39;, DATE &#39;2018-12-26&#39;);
+<p>Subtracts date literal 1982-05-06 from date literal 2018-12-26 and returns the difference in months:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(MONTH, DATE&#39;1982-05-06&#39;, DATE &#39;2018-12-26&#39;);
 +---------+
 | EXPR$0  |
 +---------+
 | 439     |
 +---------+
 </code></pre></div>
-<p>Subtracts 2003-02-01 12:05:55 from 2018-05-01 and returns the difference in minutes: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(MINUTE, TIMESTAMP &#39;2003-02-01 12:05:55&#39;, DATE &#39;2018-05-01&#39;);
-+----------+
-|  EXPR$0  |
-+----------+
-| 8017194  |
-+----------+
+<p>Subtracts the date literal &#39;1970-01-15&#39; from the dates in the first column of the dates.csv file and returns the difference in seconds:    </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(SECOND, DATE &#39;1970-01-15&#39;, columns[0]) a from dfs.`/quarter/dates.csv`;     
++-------------+
+|      a      |
++-------------+
+| 1513555200  |
+| 1484784000  |
+| 956361600   |
++-------------+
 </code></pre></div>
-<p>Subtracts 2003-02-01 from 2018-05-01 12:05:35 and returns the difference in microseconds:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(MICROSECOND, DATE &#39;2003-02-01&#39;, TIMESTAMP &#39;2018-05-01 12:05:35&#39;);
-+------------------+
-|      EXPR$0      |
-+------------------+
-| 481118735000000  |
-+------------------+
+<p>Subtracts the date in the third column from the date in the first column (columns[0]-columns[2]) of the dates.csv file and returns the difference in seconds:   </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(SECOND, columns[2], columns[0]) a from dfs.`/quarter/dates.csv`;
++------------+
+|     a      |
++------------+
+| 0          |
+| 0          |
+| -92016000  |
++------------+
 </code></pre></div>
     
       
