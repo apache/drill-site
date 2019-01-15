@@ -1297,7 +1297,7 @@
 
     </div>
 
-     Jun 26, 2018
+     Jan 15, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1315,6 +1315,16 @@ Drill queries:  </p>
 <th><strong>Return Type</strong></th>
 </tr>
 </thead><tbody>
+<tr>
+<td>ANY_VALUE(expression)</td>
+<td>Bit, Int, BigInt, Float4, Float8, Date, Timestamp, Time, VarChar, VarBinary, List, Map, Interval, IntervalDay, IntervalYear, VarDecimal</td>
+<td>same as argument type</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
 <tr>
 <td>AVG(expression)</td>
 <td>SMALLINT,   INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL, INTERVAL</td>
@@ -1347,12 +1357,151 @@ Drill queries:  </p>
 </tr>
 </tbody></table>
 
-<p>Starting in Drill 1.14, the DECIMAL data type is enabled by default. </p>
+<ul>
+<li>Drill 1.14 and later supports the ANY_VALUE function. </li>
+<li>Starting in Drill 1.14, the DECIMAL data type is enabled by default.<br></li>
+<li>AVG, COUNT, MIN, MAX, and SUM accept ALL and DISTINCT keywords. The default is ALL.<br></li>
+<li>The aggregate function examples use the <code>cp</code> storage plugin to access the <a href="/docs/querying-json-files/"><code>employee.json</code></a> file installed with Drill. By default, JSON reads numbers as double-precision floating point numbers. These examples assume that you are using the default option <a href="/docs/json-data-model/#handling-type-differences">all_text_mode</a> set to false.<br></li>
+</ul>
 
-<p>AVG, COUNT, MIN, MAX, and SUM accept ALL and DISTINCT keywords. The default is ALL.</p>
+<h2 id="any_value">ANY_VALUE</h2>
 
-<p>These examples of aggregate functions use the <code>cp</code> storage plugin to access a the <a href="/docs/querying-json-files/"><code>employee.json</code></a> file installed with Drill. By default, JSON reads numbers as double-precision floating point numbers. These examples assume that you are using the default option <a href="/docs/json-data-model/#handling-type-differences">all_text_mode</a> set to false.</p>
+<p>Supported in Drill 1.14 and later. Returns one of the values of value across all input values. This function is NOT specified in the SQL standard.  </p>
 
+<h3 id="any_value-syntax">ANY_VALUE Syntax</h3>
+
+<p>ANY_VALUE( [ ALL | DISTINCT ] value)  </p>
+
+<h3 id="any_value-examples">ANY_VALUE Examples</h3>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT ANY_VALUE(employee_id) AS anyemp FROM cp.`employee.json`;
++---------+
+| anyemp  |
++---------+
+| 1156    |
++---------+  
+
+SELECT ANY_VALUE(ALL employee_id) AS anyemp FROM cp.`employee.json`;
++---------+
+| anyemp  |
++---------+
+| 1156    |
++---------+
+
+SELECT ANY_VALUE(DISTINCT employee_id) AS anyemp FROM cp.`employee.json`;
++---------+
+| anyemp  |
++---------+
+| 1156    |
++---------+  
+
+SELECT ANY_VALUE(employee_id) as anyemp, salary as empsal FROM cp.`employee.json` GROUP BY salary;
++---------+----------+
+| anyemp  |  empsal  |
++---------+----------+
+| 1155    | 20.0     |
+| 197     | 3700.0   |
+| 1115    | 4200.0   |
+| 589     | 4300.0   |
+| 403     | 4400.0   |
+| 204     | 4500.0   |
+| 201     | 4550.0   |
+| 206     | 4600.0   |
+| 264     | 4650.0   |
+| 267     | 4700.0   |
+| 632     | 4800.0   |
+| 42      | 5000.0   |
+| 590     | 5200.0   |
+| 733     | 5900.0   |
+| 1144    | 6100.0   |
+| 625     | 6200.0   |
+| 1141    | 6400.0   |
+| 588     | 6500.0   |
+| 46      | 6600.0   |
+| 1075    | 6700.0   |
+| 1079    | 6800.0   |
+| 1028    | 6900.0   |
+| 900     | 7000.0   |
+| 63      | 7100.0   |
+| 60      | 7200.0   |
+| 69      | 7500.0   |
+| 764     | 7900.0   |
+| 957     | 8000.0   |
+| 566     | 8100.0   |
+| 171     | 8200.0   |
+| 489     | 8500.0   |
+| 226     | 8900.0   |
+| 490     | 9000.0   |
+| 8       | 10000.0  |
+| 35      | 11000.0  |
+| 53      | 12000.0  |
+| 484     | 13000.0  |
+| 31      | 14000.0  |
+| 13      | 15000.0  |
+| 27      | 16000.0  |
+| 33      | 17000.0  |
+| 6       | 25000.0  |
+| 20      | 30000.0  |
+| 21      | 35000.0  |
+| 4       | 40000.0  |
+| 36      | 45000.0  |
+| 10      | 50000.0  |
+| 1       | 80000.0  |
++---------+----------+  
+
+SELECT ANY_VALUE(employee_id) as anyemp FROM cp.`employee.json` GROUP BY salary ORDER BY anyemp;
++-----------+
+| anyemp    |
++-----------+
+| 1         |
+| 4         |
+| 6         |
+| 8         |
+| 10        |
+| 13        |
+| 20        |
+| 21        |
+| 27        |
+| 31        |
+| 33        |
+| 35        |
+| 36        |
+| 42        |
+| 46        |
+| 53        |
+| 60        |
+| 63        |
+| 69        |
+| 171       |
+| 197       |
+| 201       |
+| 204       |
+| 206       |
+| 226       |
+| 264       |
+| 267       |
+| 403       |
+| 484       |
+| 489       |
+| 490       |
+| 566       |
+| 588       |
+| 589       |
+| 590       |
+| 625       |
+| 632       |
+| 733       |
+| 764       |
+| 900       |
+| 957       |
+| 1028      |
+| 1075      |
+| 1079      |
+| 1115      |
+| 1141      |
+| 1144      |
+| 1155      |
++-----------+  
+</code></pre></div>
 <h2 id="avg">AVG</h2>
 
 <p>Averages a column of all records in a data source. Averages a column of one or more groups of records. Which records to include in the calculation can be based on a condition.</p>
