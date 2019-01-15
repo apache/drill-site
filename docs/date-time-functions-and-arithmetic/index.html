@@ -1297,7 +1297,7 @@
 
     </div>
 
-     Jan 4, 2019
+     Jan 15, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1335,6 +1335,10 @@
 </tr>
 <tr>
 <td><a href="/docs/date-time-functions-and-arithmetic/#date_add">DATE_ADD</a></td>
+<td>DATE, TIMESTAMP</td>
+</tr>
+<tr>
+<td><a href="/docs/date-time-functions-and-arithmetic/#date_diff">DATE_DIFF</a></td>
 <td>DATE, TIMESTAMP</td>
 </tr>
 <tr>
@@ -1433,10 +1437,12 @@
 
 <h3 id="date_add-syntax">DATE_ADD Syntax</h3>
 
-<p><code>DATE_ADD(keyword literal, integer)</code><br>
-<code>DATE_ADD(keyword literal, interval expr)</code><br>
-<code>DATE_ADD(column, integer)</code><br>
-<code>DATE_ADD(column, interval expr)</code>  </p>
+<ul>
+<li><code>DATE_ADD(keyword literal, integer)</code><br></li>
+<li><code>DATE_ADD(keyword literal, interval expr)</code><br></li>
+<li><code>DATE_ADD(column, integer)</code><br></li>
+<li><code>DATE_ADD(column, interval expr)</code><br></li>
+</ul>
 
 <p><em>keyword</em> is the word date, time, or timestamp.<br>
 <em>literal</em> is a date, time, or timestamp literal.  For example, a date in yyyy-mm-dd format enclosed in single quotation marks.<br>
@@ -1540,7 +1546,112 @@
 +---------------+
 | 01:26:40.100  |
 +---------------+
-1 row selected (0.106 seconds)
+1 row selected (0.106 seconds)  
+</code></pre></div>
+<h2 id="date_diff">DATE_DIFF</h2>
+
+<p>Returns the difference of a date/time and a number of days/hours, or of a date/time and date/time interval.  </p>
+
+<p><strong>NOTE:</strong> You can use the Hive <code>DATEDIFF()</code> function in Drill with string values, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATEDIFF(&#39;1996-03-01&#39;, &#39;1997-02-10 17:32:00.0&#39;), TIMEOFDAY() FROM (VALUES(1));
++---------+----------------------------------------------+
+| EXPR$0  |                    EXPR$1                    |
++---------+----------------------------------------------+
+| -346    | 2019-01-15 14:54:21.455 America/Los_Angeles  |
++---------+----------------------------------------------+    
+</code></pre></div>
+<p>However, for date and timestamp values, use the <code>DATE_DIFF</code> function and convert the interval returned to a number, as shown:    </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TO_NUMBER(DATE_DIFF(DATE &#39;1996-03-01&#39;, TIMESTAMP &#39;1997-02-10 17:32:00.0&#39;), &#39;#&#39;), TIMEOFDAY() FROM (VALUES(1));
++---------+----------------------------------------------+
+| EXPR$0  |                    EXPR$1                    |
++---------+----------------------------------------------+
+| -346.0  | 2019-01-15 14:52:15.247 America/Los_Angeles  |
++---------+----------------------------------------------+
+</code></pre></div>
+<h3 id="date_diff-syntax">DATE_DIFF Syntax</h3>
+
+<ul>
+<li><code>DATE_DIFF(keyword literal, integer)</code><br></li>
+<li><code>DATE_DIFF(keyword literal, interval expr)</code><br></li>
+<li><code>DATE_DIFF(column, integer)</code><br></li>
+<li><code>DATE_DIFF(column, interval expr)</code><br></li>
+</ul>
+
+<p><em>keyword</em> is the word date, time, or timestamp.<br>
+<em>literal</em> is a date, time, or timestamp literal.  For example, a date in yyyy-mm-dd format enclosed in single quotation marks.<br>
+<em>integer</em> is a number of days to subtract from the date/time.<br>
+<em>column</em> is date, time, or timestamp data in a data source column.<br>
+<em>interval</em> is the keyword interval.<br>
+<em>expr</em> is an interval expression, such as the name of a data source column containing interval data.  </p>
+
+<h3 id="date_diff-examples">DATE_DIFF Examples</h3>
+
+<p>The following examples show how to use the syntax variations.  </p>
+
+<p><strong>DATE_DIFF(keyword literal, integer) Syntax Example</strong>  </p>
+
+<p>Subtract two days from the date May 15, 2015.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_DIFF(date &#39;2015-05-15&#39;, 2) FROM (VALUES(1));
++-------------+
+|   EXPR$0    |
++-------------+
+| 2015-05-13  |
++-------------+  
+</code></pre></div>
+<p><strong>DATE_DIFF(keyword literal, interval expr) Syntax Example</strong>  </p>
+
+<p>Using the example data from the <a href="/docs/data-type-conversion/#casting-intervals">&quot;Casting Intervals&quot;</a>  section, subtract intervals from the <code>intervals.json</code> file from a literal timestamp. Create an interval expression that casts the INTERVALDAY_col column, which contains P1D, P2D, and P3D, to a timestamp.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_DIFF(timestamp &#39;2015-04-15 22:55:55&#39;, CAST(INTERVALDAY_col as interval second)) FROM dfs.`/home/bee/intervals.json`;  
++------------------------+
+|         EXPR$0         |
++------------------------+
+| 2015-04-14 22:55:55.0  |
+| 2015-04-13 22:55:55.0  |
+| 2015-04-12 22:55:55.0  |
++------------------------+  
+</code></pre></div>
+<p>The query output is the difference of the timestamp and 1, 2, and 3 days corresponding to P1D, P2D, and P3D.  </p>
+
+<p><strong>DATE_DIFF(column, integer) Syntax Example</strong>  </p>
+
+<p>Subtract two days from the value in the birth_date column.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_DIFF(CAST(birth_date AS date), 2) as a FROM cp.`employee.json` LIMIT 1;
++-------------+
+|      a      |
++-------------+
+| 1961-08-24  |
++-------------+  
+</code></pre></div>
+<p><strong>DATE_DIFF(column, interval expr) Syntax Example</strong>  </p>
+
+<p>Subtract a 10 hour interval from the hire dates of employees listed in the <code>employee.json</code> file, which Drill includes in the installation.</p>
+
+<p>Cast the hire_dates of the employees 578 and 761 to a timestamp, and subtract 10 hours from the hire_date timestamp. Drill reads data from JSON as VARCHAR; therefore, cast the hire_date to the TIMESTAMP type.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_DIFF(CAST(hire_date AS TIMESTAMP), interval &#39;10&#39; hour) FROM cp.`employee.json` where employee_id IN( &#39;578&#39;,&#39;761&#39;);
++------------------------+
+|         EXPR$0         |
++------------------------+
+| 1995-12-31 14:00:00.0  |
+| 1997-12-31 14:00:00.0  |
++------------------------+  
+</code></pre></div>
+<p><strong>DATE_DIFF(keyword literal, integer) Syntax Example</strong>  </p>
+
+<p>Subtract 1 year and 2 months from the timestamp 2015-04-15 22:55:55.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_DIFF(timestamp &#39;2015-04-15 22:55:55&#39;, interval &#39;1-2&#39; year to month) FROM (VALUES(1));
++------------------------+
+|         EXPR$0         |
++------------------------+
+| 2014-02-15 22:55:55.0  |
++------------------------+  
+</code></pre></div>
+<p>Subtract 1 day 2 and 1/2 hours and 45.100 seconds from the time 22:55:55.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_DIFF(time &#39;22:55:55&#39;, interval &#39;1 2:30:45.100&#39; day to second) FROM (VALUES(1));
++---------------+
+|    EXPR$0     |
++---------------+
+| 20:25:09.900  |
++---------------+    
 </code></pre></div>
 <h2 id="date_part">DATE_PART</h2>
 
@@ -1971,7 +2082,6 @@ SELECT UNIX_TIMESTAMP(&#39;2015-05-29 08:18:53.0&#39;, &#39;yyyy-MM-dd HH:mm:ss.
 <ul>
 <li><em>datetime_expression</em> is a column or literal with date, time, or timestamp values. </li>
 <li><em>time_unit</em> is any of the following: Nanosecond, Microsecond, Second, Minute, Hour, Day, Month, Year, Week, Quarter</li>
-<li><em>interval</em> is the amount of <em>time_unit</em> to add.</li>
 <li>You can include two date expressions, or one date expression with one datetime expression. </li>
 <li>Drill uses the <em>time_unit</em> to infer the return type.</li>
 <li><p>You can include the <code>SQL_TSI_</code> prefix with the any of the supported time units, as shown: </p>
