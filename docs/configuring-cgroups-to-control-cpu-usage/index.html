@@ -1295,7 +1295,7 @@
 
     </div>
 
-     Jun 8, 2018
+     Jan 18, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1305,9 +1305,8 @@
 
 <p>In Drill 1.13, you had to update the <code>cgroup.procs</code> file with the Drill process ID (PID) each time a Drillbit restarted in order to enforce the CPU limit for the Drillbit service.  As of Drill 1.14, Drill can directly manage the CPU resources through the Drill start-up script, <code>drill-env.sh</code>. You no longer have to manually add the PID to the <code>cgroup.procs</code> file each time a Drillbit restarts. This step occurs automatically upon restart. The start-up script checks for the specified cgroup, such as drillcpu, and then applies the cgroup to the launched Drillbit JVM. The Drillbit CPU resource usage is then managed under the cgroup, drillcpu. </p>
 
-<p>Note: The Linux kernel version must support cgroups v2 to use this feature. Version 4.5 officially supports cgroups v2. You can run the following command to get the kernel version:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">uname -r  
-</code></pre></div>
+<p>Note: Cgroups V2 is recommended.  </p>
+
 <p>The <code>drill-env.sh</code> script contains variables that you must enable for Drill to directly manage the CPU resources. Uncomment the following variables in drill-env.sh to enable the feature:  </p>
 
 <table><thead>
@@ -1357,9 +1356,6 @@ The <code>cpu.cfs_quota_us</code> parameter specifies the total amount of runtim
 
 <p>You can install the libcgroup package using the <code>yum install</code> command, as shown:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   yum install libcgroup  
-</code></pre></div>
-<p>For Drill to directly manage the CPU resources through the Drill start-up script, <code>drill-env.sh</code>, the Linux kernel version must support cgroups v2. Version 4.5 of the kernel officially supports cgroups v2. You can run the following command to get the kernel version:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   uname -r
 </code></pre></div>
 <h2 id="configuring-cpu-limits">Configuring CPU Limits</h2>
 
