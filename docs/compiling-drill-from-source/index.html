@@ -1297,7 +1297,7 @@
 
     </div>
 
-     Dec 20, 2018
+     Jan 25, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1308,27 +1308,43 @@ in Eclipse for use as your development environment. To review or contribute to
 Drill code, you must complete the steps required to install and use the Drill
 patch review tool.</p>
 
+<p>Starting in Drill 1.15, you can build and deploy Apache Drill on the MapR platform. </p>
+
 <h2 id="prerequisites">Prerequisites</h2>
 
+<p>Apache Drill requires:  </p>
+
 <ul>
-<li>Apache Maven 3.3.1 or later</li>
-<li>Oracle or OpenJDK 8 </li>
+<li>Apache Maven 3.3.1 or later<br></li>
+<li>Oracle or OpenJDK 8<br></li>
 </ul>
 
-<p>Run the following commands to verify that you have the correct versions of
-Maven and JDK installed:</p>
+<p>Apache Drill on the MapR platform also requires:  </p>
+
+<ul>
+<li>MapR 6.x<br></li>
+<li>RedHat/CentOS 7.x<br></li>
+</ul>
+
+<p>Run the following commands to verify that the correct versions of Maven and JDK are installed:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">java -version
-mvn -version
+mvn -version  
 </code></pre></div>
 <h2 id="1-clone-the-repository">1. Clone the Repository</h2>
 <div class="highlight"><pre><code class="language-text" data-lang="text">git clone https://gitbox.apache.org/repos/asf/drill.git
 </code></pre></div>
 <h2 id="2-compile-the-code">2. Compile the Code</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">cd drill
-mvn clean install -DskipTests
+
+<p>Change to the drill directory:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">cd drill  
 </code></pre></div>
-<p>The tarball appears in distribution/target. Move the tarball to a directory for unpacking, unpack, and then you can connect to Drill and query sample
-data or you can connect Drill to your data sources.</p>
+<p>Build Apache Drill:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">mvn clean install -DskipTests  
+</code></pre></div>
+<p>If you want to deploy Apache Drill on the MapR platform, include the <code>-Pmapr</code> option to build Drill under the MapR profile:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">mvn clean install -DskipTests -Pmapr  
+</code></pre></div>
+<p>A tarball is built and appears in the distribution/target directory. Move the tarball to another directory for unpacking. Unpack the tarball and then connect to Drill and query sample data, or connect Drill to your data sources.</p>
 
 <ul>
 <li>To connect Drill to your data sources, refer to <a href="/docs/connect-a-data-source-introduction">Connect to Data Sources</a> for instructions.</li>
