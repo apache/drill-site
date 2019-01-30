@@ -1295,7 +1295,7 @@
 
     </div>
 
-     Jan 11, 2019
+     Jan 30, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1354,16 +1354,14 @@
 </code></pre></div>
 <h3 id="configuring-drill-to-use-aws-iam-roles-for-accessing-s3">Configuring Drill to use AWS IAM Roles for Accessing S3</h3>
 
-<p>If you use IAM roles/Instance profiles, to access data in s3, use the following settings in your core-site.xml. Do not specify the secret key or access key properties. For example:</p>
+<p>If you use IAM roles/instance profiles, to access data in s3, use the following settings in your core-site.xml. Do not specify the secret key or access key properties. For example:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   &lt;configuration&gt;
     &lt;property&gt;
         &lt;name&gt;fs.s3a.aws.credentials.provider&lt;/name&gt;
         &lt;value&gt;com.amazonaws.auth.InstanceProfileCredentialsProvider&lt;/value&gt;
     &lt;/property&gt;
-   &lt;/configuration&gt;            
+   &lt;/configuration&gt;    
 </code></pre></div>
-<p><strong>Note:</strong> When you rename the file, Hadoop support breaks if <code>$HADOOP_HOME</code> was in the path because Drill pulls in the Drill core-site.xml file instead of the Hadoop core-site.xml file. In this situation, make the changes in the Hadoop core-site.xml file. Do not create a core-site.xml file for Drill.  </p>
-
 <h2 id="configuring-the-s3-storage-plugin">Configuring the S3 Storage Plugin</h2>
 
 <p>The <strong>Storage</strong> page in the Drill Web UI provides an S3 storage plugin that you configure to connect Drill to the S3 distributed file system registered in <code>core-site.xml</code>. If you did not define your AWS credentials in the <code>core-site.xml</code> file, you can define them in the storage plugin configuration. You can define the credentials directly in the S3 storage plugin configuration, or you can configure the S3 storage plugin to use an external provider.</p>
