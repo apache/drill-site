@@ -1295,47 +1295,60 @@
 
     </div>
 
-     Jan 25, 2019
+     Feb 5, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Starting in Drill 1.13, you can configure a Linux cgroup to enforce CPU limits on the Drillbit service running on a node. Linux cgroups (control groups) enable you to limit system resources to defined user groups or processes. You can use the cgconfig service to configure a Drill cgroup to control CPU usage and then set the CPU limits for the Drill cgroup on each Drill node in the <code>/etc/cgconfig.conf</code> file.  </p>
-
-<p>In Drill 1.13, you had to update the <code>cgroup.procs</code> file with the Drill process ID (PID) each time a Drillbit restarted in order to enforce the CPU limit for the Drillbit service.  As of Drill 1.14, Drill can directly manage the CPU resources through the Drill start-up script, <code>drill-env.sh</code>. You no longer have to manually add the PID to the <code>cgroup.procs</code> file each time a Drillbit restarts. This step occurs automatically upon restart. The start-up script checks for the specified cgroup, such as drillcpu, and then applies the cgroup to the launched Drillbit JVM. The Drillbit CPU resource usage is then managed under the cgroup, drillcpu. </p>
+        <p>Starting in Drill 1.13, you can configure a Linux cgroup (control group) to enforce CPU limits on the Drillbit service running on a node. Linux cgroups enable you to limit system resources to defined user groups or processes. You can use the cgconfig service to configure a Drill cgroup to control CPU usage and then set the CPU limits for the Drill cgroup on each Drill node in the <code>/etc/cgconfig.conf</code> file.  </p>
 
 <p><strong>Note:</strong> cgroups V2 is recommended.  </p>
 
-<p>The <code>drill-env.sh</code> script contains variables that you must enable for Drill to directly manage the CPU resources. Uncomment the following variables in drill-env.sh to enable the feature:  </p>
+<h2 id="before-you-begin">Before You Begin</h2>
+
+<p>Each Drill node must have the <code>libcgroup</code> package installed to configure CPU limits for a Drill cgroup. The <code>libcgroup</code> package installs the cgconfig service required to configure and manage the Drill cgroup.</p>
+
+<p>Install the <code>libcgroup</code> package using the <code>yum install</code> command, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   yum install libcgroup  
+</code></pre></div>
+<h2 id="enable-drill-to-directly-manage-cpu-resources">Enable Drill to Directly Manage CPU Resources</h2>
+
+<p>Starting in Drill 1.14, Drill can directly manage CPU resources through the start-up script, <code>drill-env.sh</code>, which means that you no longer have to manually add the PID (Drill process ID) to the <code>cgroup.procs</code> file each time a Drillbit restarts. This step occurs automatically upon restart. The start-up script checks for the specified cgroup, such as drillcpu, and then applies the cgroup to the launched Drillbit JVM. The Drillbit CPU resource usage is then managed under the cgroup, drillcpu.  </p>
+
+<p>For Drill to directly manage CPU resources, you must enable (uncomment) the following variables in the <code>drill-env.sh</code> script:  </p>
 
 <table><thead>
 <tr>
 <th>Variable</th>
 <th>Description</th>
-<th></th>
 </tr>
 </thead><tbody>
 <tr>
-<td>export DRILLBIT_CGROUP=${DRILLBIT_CGROUP:-&quot;drillcpu&quot;}</td>
-<td>Sets the cgroup to which the Drillbit belongs when running as a daemon using drillbit.sh start. Drill uses the cgroup for CPU enforcement only.</td>
-<td></td>
+<td>export   DRILLBIT_CGROUP=${DRILLBIT_CGROUP:-&quot;drillcpu&quot;}</td>
+<td>Sets   the cgroup to which the Drillbit belongs when running as a daemon using   drillbit.sh start. Drill uses the cgroup for CPU enforcement only.</td>
 </tr>
 <tr>
-<td>export SYS_CGROUP_DIR=${SYS_CGROUP_DIR:-&quot;/sys/fs/cgroup&quot;}</td>
-<td>Drill assumes the default cgroup mount location set by systemd (the system and service manager for Linux operating systems). If your cgroup mount location is in a different location, change the setting to match your location.</td>
-<td></td>
+<td>export   SYS_CGROUP_DIR=${SYS_CGROUP_DIR:-&quot;/sys/fs/cgroup&quot;}</td>
+<td>Drill   assumes the default cgroup mount location set by systemd (the system and   service manager for Linux operating systems). If your cgroup mount location   is in a different location, change the setting to match your location.</td>
 </tr>
 <tr>
-<td>export DRILL_PID_DIR=${DRILL_PID_DIR:-$DRILL_HOME}</td>
-<td>The location of the Drillbit PID file when Drill is running as a daemon using drillbit.sh start. By default, this location is set to $DRILL_HOME.</td>
-<td></td>
+<td>export   DRILL_PID_DIR=${DRILL_PID_DIR:-$DRILL_HOME}</td>
+<td>The   location of the Drillbit PID file when Drill is running as a daemon using   drillbit.sh start. By default, this location is set to $DRILL_HOME.</td>
 </tr>
 </tbody></table>
 
-<h2 id="cpu-limits">CPU Limits</h2>
+<hr>
 
-<p>You can set the CPU limit as a soft or hard limit, or both. You set the limits with parameters in the <code>/etc/cgconfig.conf</code> file. The hard limit takes precedence over the soft limit. When Drill hits the hard limit, in-progress queries may not complete. The following sections describe the parameters for soft and hard limits.  </p>
+<p><strong>NOTE</strong><br>
+If you have Drill 1.13 running on the node, or you have Drill 1.14 running on the node and you do not want to enable Drill to directly manage the CPU resources through <code>drill-env.sh</code>, you must manually update the <code>/cgroup/cpu/drillcpu/cgroup.procs</code> file with the PID (Drill process ID), as shown, each time a Drillbit restarts to enforce the CPU limit for the Drillbit service:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">echo 25809 &gt; /cgroup/cpu/drillcpu/cgroup.procs      
+</code></pre></div>
+<hr>
+
+<h2 id="set-the-cpu-limit-for-the-drillbit-service">Set the CPU Limit for the Drillbit Service</h2>
+
+<p>You can set the CPU limit as a soft or hard limit, or both. You set the limits with parameters in the <code>/etc/cgconfig.conf</code> file. The hard limit takes precedence over the soft limit. When Drill hits the hard limit, in-progress queries may not complete. Review the following sections that describe the soft and hard limit parameters and then configure CPU limits.  </p>
 
 <p><strong>Soft Limit Parameter</strong><br>
 You set the soft limit with the <code>cpu.shares</code> parameter. When you set a soft limit, Drill can exceed the CPU allocated if extra CPU is available for use on the system. Drill can continue to use CPU until there is contention with other processes over the CPU or Drill hits the hard limit.  </p>
@@ -1347,24 +1360,17 @@ You set the hard limit with the <code>cpu.cfs_period_us</code> and <code>cpu.cfs
 <li><p><strong><code>cpu.cfs_period_us</code></strong><br>
 The <code>cpu.cfs_quota_us</code> parameter specifies a segment of time (in microseconds represented by <code>us</code> for µs) for how often the access to CPU resources should be reallocated. For example, if tasks in a cgroup can access a single CPU for 0.2 seconds out of every 1 second, set cpu.cfs_quota_us to 200000 and cpu.cfs_period_us to 1000000. The upper limit of the <code>cpu.cfs_quota_us</code> parameter is 1 second and the lower limit is 1000 microseconds.    </p></li>
 <li><p><strong><code>cpu.cfs_quota_us</code></strong><br>
-The <code>cpu.cfs_quota_us</code> parameter specifies the total amount of runtime (in microseconds represented by <code>us</code> for µs) for which all tasks in the Drill cgroup can run during one period (as defined by cpu.cfs_period_us). As soon as tasks in the Drill cgroup use the time specified by the quota, they are throttled for the remainder of the time specified by the period and not allowed to run until the next period. For example, if tasks in the Drill cgroup can access a single CPU for 0.2 seconds out of every 1 second, set <code>cpu.cfs_quota_us</code> to 200000 and <code>cpu.cfs_period_us</code> to 1000000. A value of -1 indicates that the group does not have any restrictions on CPU.  </p></li>
+The <code>cpu.cfs_quota_us</code> parameter specifies the total amount of runtime (in microseconds represented by <code>us</code> for µs) for which all tasks in the Drill cgroup can run during one period (as defined by cpu.cfs_period_us). As soon as tasks in the Drill cgroup use the time specified by the quota, they are throttled for the remainder of the time specified by the period and not allowed to run until the next period. For example, if tasks in the Drill cgroup can access a single CPU for 0.2 seconds out of every 1 second, set <code>cpu.cfs_quota_us</code> to 200000 and <code>cpu.cfs_period_us</code> to 1000000. A value of -1 indicates that the group does not have any restrictions on CPU.   </p></li>
 </ul>
 
-<h2 id="before-you-begin">Before You Begin</h2>
+<h3 id="configuring-cpu-limits">Configuring CPU Limits</h3>
 
-<p>Each Drill node must have the libcgroup package installed to configure CPU limits for a Drill cgroup. The libcgroup package installs the cgconfig service required to configure and manage the Drill cgroup.</p>
-
-<p>You can install the libcgroup package using the <code>yum install</code> command, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   yum install libcgroup  
-</code></pre></div>
-<h2 id="configuring-cpu-limits">Configuring CPU Limits</h2>
-
-<p>Complete the following steps to set a hard and/or soft limit on Drill CPU usage for the Drill process running on the node:  </p>
+<p>Complete the following steps to set a hard and/or soft CPU limit for the Drill process running on the node:  </p>
 
 <p>1-Start the cgconfig service:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">    service cgconfig start
 </code></pre></div>
-<p>2-Add a cgroup for Drill in the /etc/cgconfig.conf file:    </p>
+<p>2-Add a cgroup for Drill in the <code>/etc/cgconfig.conf</code> file:    </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">          group drillcpu {
                  cpu {
                         cpu.shares = 320;
@@ -1373,17 +1379,15 @@ The <code>cpu.cfs_quota_us</code> parameter specifies the total amount of runtim
                         }
                  }  
 </code></pre></div>
-<p><strong>Note:</strong> The cgroup name is specific to the Drill cgroup and does not correlate with any other configuration.   </p>
+<p>In the configuration example above, the <code>cpu.shares</code> parameter sets the soft limit. The other two parameters, <code>cpu.cfs_quota_us</code> and <code>cpu.cfs_period_us</code>, set the hard limit. If you prefer to set only one type of limit, remove the parameters that do not apply.  </p>
 
-<p>In the configuration example, the <code>cpu.shares</code> parameter sets the soft limit. The other two parameters, <code>cpu.cfs_quota_us</code> and <code>cpu.cfs_period_us</code>, set the hard limit. If you prefer to set only one type of limit, remove the parameters that do not apply.  </p>
-
-<p>To set a soft limit, allocate a specific number of CPU shares to the Drill cgroup in the configuration. Calculate the CPU shares as:  </p>
+<p>When setting a soft limit, allocate a specific number of CPU shares to the Drill cgroup in the configuration. Calculate the CPU shares as:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   1024 (CPU allocated to Drill/Total available CPU)
 </code></pre></div>
-<p>In the example, CPU shares was calculated as:  </p>
+<p>In the example, CPU shares is calculated as:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   1024 (10/32) = 320
 </code></pre></div>
-<p>To set a hard limit, add limits to the <code>cpu.cfs_quota_us</code> and <code>cpu.cfs_period_us</code> parameters. In the configuration example, the Drill process can fully utilize 4 CPU.  </p>
+<p>When setting a hard limit, add limits to the <code>cpu.cfs_quota_us</code> and <code>cpu.cfs_period_us</code> parameters. In the example, the Drill process can fully utilize 4 CPU.  </p>
 
 <p><strong>Note:</strong> The hard limit parameter settings persist after each cgroup service restart. Alternatively, you can set the parameters at the session level using the following commands:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   echo 400000 &gt; /cgroup/cpu/drillcpu/cpu.cfs_quota_us
@@ -1392,12 +1396,7 @@ The <code>cpu.cfs_quota_us</code> parameter specifies the total amount of runtim
 <p>3-(Optional) If you want the cgconfig service to automatically restart upon system reboots, run the following command:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">   chkconfig cgconfig on  
 </code></pre></div>
-<p><strong>Note:</strong> Only complete step 4 if you have Drill 1.13 running on the node, or you have Drill 1.14 running on the node and you have not enabled Drill to directly manage the CPU resources through the start-up script, <code>drill-env.sh</code>.   </p>
-
-<p>4-Run the following command to add the Drill process ID (PID) to the /cgroup/cpu/drillcpu/cgroup.procs file, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   echo 25809 &gt; /cgroup/cpu/drillcpu/cgroup.procs
-</code></pre></div>
-<p><strong>Note:</strong> You must perform this step each time a Drillbit restarts.  </p>
+<hr>
 
 <p>For additional information, refer to the following documentation:<br>
 - <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html">https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html</a><br>
