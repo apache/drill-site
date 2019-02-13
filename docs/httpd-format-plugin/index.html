@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>HTTPD Storage Plugin - Apache Drill</title>
+<title>HTTPD Format Plugin - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -484,7 +484,7 @@
             
           
             
-              <li class="toctree-l2 current"><a class="reference internal" href="/docs/httpd-storage-plugin/">HTTPD Storage Plugin</a></li>
+              <li class="toctree-l2 current"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
             
           
             
@@ -1280,18 +1280,18 @@
   
     <li><a href="/docs/connect-a-data-source/">Connect a Data Source</a></li>
   
-  <li>HTTPD Storage Plugin</li>
+  <li>HTTPD Format Plugin</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/connect-a-data-source/plugins/111-httpd-storage-plugin.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/connect-a-data-source/plugins/111-httpd-format-plugin.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>HTTPD Storage Plugin</h1>
+      <h1>HTTPD Format Plugin</h1>
 
     </div>
 
@@ -1301,12 +1301,36 @@
 
     <div class="int_text" align="left">
       
-        <p>As of version 1.9, Drill can natively ingest and query web server logs. To configure Drill to read server logs, you must modify the extensions section in the dfs storage plugin configuration, as shown below:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;httpd&quot;: {
-  &quot;type&quot;: &quot;httpd&quot;,
-  &quot;logFormat&quot;: &quot;%h %t \&quot;%r\&quot; %&gt;s %b \&quot;%{Referer}i\&quot; \&quot;%{user-agent}i\&quot;&quot;,
-  &quot;timestampFormat&quot;: null
-}  
+        <p>As of version 1.9, Drill can natively ingest and query web server logs. To configure Drill to read server logs, add the httpd format configuration to the formats section of a dfs storage plugin configuration, as shown below:   </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">{
+  &quot;storage&quot;:{
+    dfs: {
+      type: &quot;file&quot;,
+      connection: &quot;file:///&quot;,
+      workspaces: {
+        &quot;root&quot; : {
+          location: &quot;/&quot;,
+          writable: false,
+          allowAccessOutsideWorkspace: false
+        },
+        &quot;tmp&quot; : {
+          location: &quot;/tmp&quot;,
+          writable: true,
+          allowAccessOutsideWorkspace: false
+        }
+      },
+      formats: {
+        &quot;csv&quot; : {
+          type: &quot;text&quot;,
+          extensions: [ &quot;csv&quot; ],
+          delimiter: &quot;,&quot;
+        },
+        &quot;httpd&quot; : {
+          type: &quot;httpd&quot;,
+          logFormat: &quot;%h %t \&quot;%r\&quot; %&gt;s %b \&quot;%{Referer}i\&quot; \&quot;%{user-agent}i\&quot;&quot;,
+          timestampFormat: &quot;dd/MMM/yyyy:HH:mm:ss ZZ&quot; 
+        },
+    ...
 </code></pre></div>
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
@@ -1315,12 +1339,12 @@
 
 <h2 id="httpd-format-strings">HTTPD Format Strings</h2>
 
-<p>The following table lists the fields that log files can include. The <code>timestampformat</code> is optional, but you can include a format for the time stamp and Drill will parse the times in the log files into Drill dates.</p>
+<p>The following table lists the fields that log files can include. The <code>timestampformat</code> is optional, but you can include a format for the time stamp, and Drill will parse the times in the log files into Drill dates.</p>
 
 <table><thead>
 <tr>
-<th>Format String</th>
-<th>Variable Name</th>
+<th><strong>Format String</strong></th>
+<th><strong>Variable Name</strong></th>
 </tr>
 </thead><tbody>
 <tr>
