@@ -1300,7 +1300,7 @@
 
     </div>
 
-     Nov 21, 2016
+     Apr 5, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1355,38 +1355,61 @@ records in all of the files inside the <code>2013</code> directory:</p>
 +------------+
 | 24000      |
 +------------+
-1 row selected (2.607 seconds)
+1 row selected (2.607 seconds)  
 </code></pre></div>
-<p>You can also use variables <code>dir0</code>, <code>dir1</code>, and so on, to refer to
-subdirectories in your workspace path. For example, assume that <code>bob.logdata</code>
-is a workspace that points to the <code>logs</code> directory, which contains multiple
-subdirectories: <code>2012</code>, <code>2013</code>, and <code>2014</code>. The following query constrains
-files inside the subdirectory named <code>2013</code>. The variable <code>dir0</code> refers to the
-first level down from logs, <code>dir1</code> to the next level, and so on.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:&gt; USE bob.logdata;
-+------------+-----------------------------------------+
-|     ok     |              summary                    |
-+------------+-----------------------------------------+
-| true       | Default schema changed to &#39;bob.logdata&#39; |
-+------------+-----------------------------------------+
-1 row selected (0.305 seconds)
+<h2 id="querying-partitioned-directories">Querying Partitioned Directories</h2>
 
-0: jdbc:drill:&gt; SELECT * FROM logs WHERE dir0=&#39;2013&#39; LIMIT 10;
-+------------+------------+------------+------------+------------+------------+------------+------------+------------+-------------+
-|    dir0    |    dir1    |  trans_id  |    date    |    time    |  cust_id   |   device   |   state    |  camp_id   |  keywords   |
-+------------+------------+------------+------------+------------+------------+------------+------------+------------+-------------+
-| 2013       | 2          | 12115      | 02/23/2013 | 19:48:24   | 3          | IOS5       | az         | 5          | who&#39;s       |
-| 2013       | 2          | 12127      | 02/26/2013 | 19:42:03   | 11459      | IOS5       | wa         | 10         | for         |
-| 2013       | 2          | 12138      | 02/09/2013 | 05:49:01   | 1          | IOS6       | ca         | 7          | minutes     |
-| 2013       | 2          | 12139      | 02/23/2013 | 06:58:20   | 1          | AOS4.4     | ms         | 7          | i           |
-| 2013       | 2          | 12145      | 02/10/2013 | 10:14:56   | 10         | IOS5       | mi         | 6          | wrong       |
-| 2013       | 2          | 12157      | 02/15/2013 | 02:49:22   | 102        | IOS5       | ny         | 5          | want        |
-| 2013       | 2          | 12176      | 02/19/2013 | 08:39:02   | 28         | IOS5       | or         | 0          | and         |
-| 2013       | 2          | 12194      | 02/24/2013 | 08:26:17   | 125445     | IOS5       | ar         | 0          | say         |
-| 2013       | 2          | 12236      | 02/05/2013 | 01:40:05   | 10         | IOS5       | nj         | 2          | sir         |
-| 2013       | 2          | 12249      | 02/03/2013 | 04:45:47   | 21725      | IOS5       | nj         | 5          | no          |
-+------------+------------+------------+------------+------------+------------+------------+------------+------------+-------------+
-10 rows selected (0.583 seconds)
+<p>You can use special variables in Drill to refer to subdirectories in your
+workspace path:</p>
+
+<ul>
+<li>dir0</li>
+<li>dir1</li>
+<li>…</li>
+</ul>
+
+<p>Note that these variables are dynamically determined based on the partitioning
+of the file system. No up-front definitions are required to identify the partitions
+that exist. </p>
+
+<p>The following image provides a visual example of a partitioned directory and a query
+on the directory using variables:</p>
+
+<p><img src="/docs/img/example_query.png" alt="drill query flow">  </p>
+
+<p>When you use directory variables in a query, note that the variables are relative to the root directory used in the FROM clause.</p>
+
+<p>For example, let&#39;s say you create a workspace within the dfs storage plugin named logs (dfs.logs) that points
+to the /tmp directory in the file system. The /tmp directory contains a /logs directory (/tmp/logs)
+with the same subdirectories shown in the example image above. You can query the data in the /logs directory using variables, as shown in the following examples:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">use dfs.logs;
++------+--------------------------------------+
+|  ok  |               summary                |
++------+--------------------------------------+
+| true | Default schema changed to [dfs.logs] |
++------+--------------------------------------+  
+
+//The following query constrains files inside the subdirectory named 2013. The variable dir0 refers to the first level down from logs (root directory).  
+
+select * from logs where dir0=&#39;2013&#39; limit 3;
++------+------+--------------------------------------+----+------------+-----------+-------------------------+--------+----------------+------------------+-----------+-----------+-----------+---------------------+----------+
+| dir0 | dir1 |          registration_dttm           | id | first_name | last_name |          email          | gender |   ip_address   |        cc        |  country  | birthdate |  salary   |        title        | comments |
++------+------+--------------------------------------+----+------------+-----------+-------------------------+--------+----------------+------------------+-----------+-----------+-----------+---------------------+----------+
+| 2013 | 1    | \x00*\xE9l\xF2\x19\x00\x00N\x7F%\x00 | 1  | Amanda     | Jordan    | ajordan0@com.com        | Female | 1.197.201.2    | 6759521864920116 | Indonesia | 3/8/1971  | 49756.53  | Internal Auditor    | 1E+02    |
+| 2013 | 1    | \x00^0\xD0\xE17\x00\x00N\x7F%\x00    | 2  | Albert     | Freeman   | afreeman1@is.gd         | Male   | 218.111.175.34 |                  | Canada    | 1/16/1968 | 150280.17 | Accountant IV       |          |
+| 2013 | 1    | \x00.\xF9&quot;\xCB\x03\x00\x00N\x7F%\x00 | 3  | Evelyn     | Morgan    | emorgan2@altervista.org | Female | 7.161.136.94   | 6767119071901597 | Russia    | 2/1/1960  | 144972.51 | Structural Engineer |          |
++------+------+--------------------------------------+----+------------+-----------+-------------------------+--------+----------------+------------------+-----------+-----------+-----------+---------------------+----------+  
+
+//The following query constrains files inside the subdirectory named 1. The variable dir0 refers to the first level down from 2013 (the root directory now).  
+
+select * from `logs/2013` where dir0=&#39;1&#39; limit 3;
++------+--------------------------------------+----+------------+-----------+-------------------------+--------+----------------+------------------+-----------+-----------+-----------+---------------------+----------+
+| dir0 |          registration_dttm           | id | first_name | last_name |          email          | gender |   ip_address   |        cc        |  country  | birthdate |  salary   |        title        | comments |
++------+--------------------------------------+----+------------+-----------+-------------------------+--------+----------------+------------------+-----------+-----------+-----------+---------------------+----------+
+| 1    | \x00*\xE9l\xF2\x19\x00\x00N\x7F%\x00 | 1  | Amanda     | Jordan    | ajordan0@com.com        | Female | 1.197.201.2    | 6759521864920116 | Indonesia | 3/8/1971  | 49756.53  | Internal Auditor    | 1E+02    |
+| 1    | \x00^0\xD0\xE17\x00\x00N\x7F%\x00    | 2  | Albert     | Freeman   | afreeman1@is.gd         | Male   | 218.111.175.34 |                  | Canada    | 1/16/1968 | 150280.17 | Accountant IV       |          |
+| 1    | \x00.\xF9&quot;\xCB\x03\x00\x00N\x7F%\x00 | 3  | Evelyn     | Morgan    | emorgan2@altervista.org | Female | 7.161.136.94   | 6767119071901597 | Russia    | 2/1/1960  | 144972.51 | Structural Engineer |          |
++------+--------------------------------------+----+------------+-----------+-------------------------+--------+----------------+------------------+-----------+-----------+-----------+---------------------+----------+  
 </code></pre></div>
 <p>You can use <a href="/docs/query-directory-functions/">query directory functions</a> to restrict a query to one of a number of subdirectories and to prevent Drill from scanning all data in directories.</p>
 
