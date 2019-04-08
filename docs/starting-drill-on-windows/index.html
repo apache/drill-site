@@ -1300,38 +1300,63 @@
 
     </div>
 
-     Nov 2, 2018
+     Apr 8, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Start the Drill shell using the <strong>sqlline command</strong>. Complete the following steps to launch the Drill shell:</p>
+        <p>Complete the following steps to launch the Drill:</p>
 
 <ol>
-<li>Open Command Prompt.<br></li>
-<li>Navigate to the Drill installation folder. </li>
-<li>Go to the <code>bin</code> directory. For example:<br>
+<li>Open the Windows command prompt.<br></li>
+<li>Navigate to the Drill installation folder, for example:<br>
+<code>cd \Users\Bridget Bevens\drill_repo\apache-drill-1.16.0-SNAPSHOT</code> </li>
+<li>Go to the <code>bin</code> directory, for example:<br>
 <code>cd bin</code></li>
-<li>Type the following command on the command line:
-<code>sqlline.bat -u &quot;jdbc:drill:zk=local&quot;</code>
-<img src="/docs/img/sqlline1.png" alt="drill install dir"></li>
+<li>Enter either of the following commands to start Drill:<br>
+
+<ul>
+<li><code>sqlline.bat -u &quot;jdbc:drill:zk=local&quot;</code><br></li>
+<li><code>drill-embedded.bat</code> (Supported in Drill 1.16 and later.)<br></li>
+</ul></li>
 </ol>
 
-<p>The <a href="/docs/starting-drill-on-linux-and-mac-os-x/#about-the-drill-prompt">Drill prompt</a> appears. You can <a href="/docs/drill-in-10-minutes/#query-sample-data">submit queries</a> to Drill.</p>
+<p>The Drill prompt appears:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;A Drill is a terrible thing to waste.&quot;
+apache drill&gt; 
+</code></pre></div>
+<p>You can run a test query to verify that Drill is running, for example:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">//Drill&#39;s classpath contains sample data, including an employees.json file that you can query. Switch schema to cp, for classpath.  
 
-<p>You can use the schema option in the <strong>sqlline</strong> command to specify a storage plugin. Specifying the storage plugin when you start up eliminates the need to specify the storage plugin in the query. For example, this command specifies the <code>dfs</code> storage plugin:</p>
+apache drill&gt;use cp;
++------+--------------------------------+
+|  ok  |            summary             |
++------+--------------------------------+
+| true | Default schema changed to [cp] |
++------+--------------------------------+  
 
-<p><code>C:\bin\sqlline sqlline.bat –u &quot;jdbc:drill:zk=local;schema=dfs&quot;</code></p>
+//Query the employee.json file in the classpath.
 
+apache drill (cp)&gt;SELECT * FROM cp.`employee.json` LIMIT 1;
++-------------+--------------+------------+-----------+-------------+----------------+----------+---------------+------------+-----------------------+---------+---------------+-----------------+----------------+--------+-------------------+
+| employee_id |  full_name   | first_name | last_name | position_id | position_title | store_id | department_id | birth_date |       hire_date       | salary  | supervisor_id | education_level | marital_status | gender |  management_role  |
++-------------+--------------+------------+-----------+-------------+----------------+----------+---------------+------------+-----------------------+---------+---------------+-----------------+----------------+--------+-------------------+
+| 1           | Sheri Nowmer | Sheri      | Nowmer    | 1           | President      | 0        | 1             | 1961-08-26 | 1994-12-01 00:00:00.0 | 80000.0 | 0             | Graduate Degree | S              | F      | Senior Management |
++-------------+--------------+------------+-----------+-------------+----------------+----------+---------------+------------+-----------------------+---------+---------------+-----------------+----------------+--------+-------------------+
+</code></pre></div>
+<p>For a short tutorial that you can run in Drill, see <a href="/docs/drill-in-10-minutes/#query-sample-data">Drill in 10 Minutes</a>.</p>
+
+<p>Note that you can use the schema option in the <strong>sqlline</strong> command to specify a storage plugin. Specifying the storage plugin when you start up eliminates the need to specify the storage plugin in the query. For example, this command specifies the <code>dfs</code> storage plugin:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">sqlline.bat –u &quot;jdbc:drill:zk=local;schema=dfs&quot;
+</code></pre></div>
 <p>If you start Drill on one network, and then want to use Drill on another network, such as your home network, restart Drill.</p>
 
 <h2 id="exiting-the-drill-shell">Exiting the Drill Shell</h2>
 
 <p>To exit the Drill shell, issue the following command:</p>
-
-<p><code>!quit</code></p>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">!quit   
+</code></pre></div>
     
       
         <div class="doc-nav">

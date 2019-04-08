@@ -1298,7 +1298,7 @@
 
     </div>
 
-     Dec 30, 2018
+     Apr 8, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1316,11 +1316,11 @@ without having to perform any setup tasks.</p>
 
 <p>This installation procedure includes how to download the Apache Drill archive file and extract the contents to a directory on your machine. The Apache Drill archive contains sample JSON and Parquet files that you can query immediately.</p>
 
-<p>After installing Drill, you start the Drill shell. The Drill shell is a pure-Java console-based utility for connecting to relational databases and executing SQL commands. Drill follows the SQL:2011 standard with <a href="/docs/sql-extensions/">extensions</a> for nested data formats and other capabilities.</p>
+<p>After installing Drill, you start the Drill shell. The <a href="/docs/configuring-the-drill-shell/">Drill shell</a> is a pure-Java console-based utility for connecting to relational databases and executing SQL commands. Drill follows the SQL:2011 standard with <a href="/docs/sql-extensions/">extensions</a> for nested data formats and other capabilities.</p>
 
 <h2 id="embedded-mode-installation-prerequisites">Embedded Mode Installation Prerequisites</h2>
 
-<p>You need to meet the following prerequisites to run Drill:</p>
+<p>Your machine must meet the following prerequisites to run Drill in embedded mode:</p>
 
 <ul>
 <li>Linux, Mac OS X, and Windows: Oracle JDK <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">version 8</a>.</li>
@@ -1344,7 +1344,7 @@ without having to perform any setup tasks.</p>
 Java(TM) SE Runtime Environment (build 1.8.0_7965-b15)
 Java HotSpot(TM) 64-Bit Server VM (build 24.79-b02, mixed mode)
 </code></pre></div>
-<h2 id="install-drill-on-linux-or-mac-os-x">Install Drill on Linux or Mac OS X</h2>
+<h2 id="installing-drill-on-linux-or-mac-os-x">Installing Drill on Linux or Mac OS X</h2>
 
 <p>Complete the following steps to install Drill:  </p>
 
@@ -1363,9 +1363,9 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.79-b02, mixed mode)
 
 <p>The extraction process creates an installation directory containing the Drill software.</p>
 
-<p>At this point, you can start Drill.</p>
+<p>You can start Drill.</p>
 
-<h2 id="start-drill-on-linux-and-mac-os-x">Start Drill on Linux and Mac OS X</h2>
+<h3 id="starting-drill-on-linux-and-mac-os-x">Starting Drill on Linux and Mac OS X</h3>
 
 <p>Start Drill in embedded mode using the <code>drill-embedded</code> command:</p>
 
@@ -1382,45 +1382,18 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.79-b02, mixed mode)
 
 <p>At this point, you can <a href="/docs/drill-in-10-minutes/#query-sample-data">submit queries</a> to Drill.</p>
 
-<h3 id="install-drill-on-windows">Install Drill on Windows</h3>
+<h2 id="installing-and-starting-drill-on-windows">Installing and Starting Drill on Windows</h2>
 
-<p>You can install Drill on Windows. First, set the JAVA_HOME environment variable, and then install Drill. Complete the following steps to install Drill:</p>
-
-<ol>
-<li>Download the latest version of Apache Drill <a href="http://apache.mirrors.hoobly.com/drill/drill-1.15.0/apache-drill-1.15.0.tar.gz">here</a> or from the <a href="http://www.apache.org/dyn/closer.cgi/drill/drill-1.15.0/apache-drill-1.15.0.tar.gz">Apache Drill mirror site</a>.<br></li>
-<li>Move the <code>apache-drill-&lt;version&gt;.tar.gz</code> file to a directory where you want to install Drill.<br></li>
-<li>Unzip the <code>TAR.GZ</code> file using a third-party tool. If the tool you use does not unzip the TAR file as well as the <code>TAR.GZ</code> file, unzip the <code>apache-drill-&lt;version&gt;.tar</code> to extract the Drill software. The extraction process creates the installation directory named apache-drill-<version> containing the Drill software. </li>
-</ol>
-
-<p>At this point, you can start Drill.  </p>
-
-<h2 id="start-drill-on-windows">Start Drill on Windows</h2>
-
-<p>Start Drill by running the sqlline.bat file and typing a connection string, as shown in the following procedure. The <code>zk=local</code> in the connection string means the local node is the ZooKeeper node:</p>
-
-<p>Start the Drill shell using the <strong>sqlline command</strong>. Complete the following steps to launch the Drill shell:</p>
-
-<ol>
-<li>Open Command Prompt.<br></li>
-<li>Open the apache-drill-<version> folder. </li>
-<li>Go to the bin directory. For example:<br>
-<code>cd bin</code></li>
-<li>Type the following command on the command line:
-<code>sqlline.bat -u &quot;jdbc:drill:zk=local&quot;</code>
-<img src="/docs/img/sqlline1.png" alt="drill install dir"></li>
-</ol>
-
-<p>The <code>zk=local</code> means the local node is the ZooKeeper node. At this point, you can <a href="/docs/drill-in-10-minutes/#query-sample-data">run queries</a>.</p>
+<p>See <a href="/docs/installing-drill-on-windows/">Installing Drill on Windows</a>. </p>
 
 <h2 id="stopping-drill">Stopping Drill</h2>
 
-<p>Issue the following command when you want to exit the Drill shell:</p>
-
-<p><code>!quit</code></p>
-
+<p>Issue the following command to exit the Drill shell:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">!quit
+</code></pre></div>
 <h2 id="query-sample-data">Query Sample Data</h2>
 
-<p>At the root of the Drill installation, a <code>sample-data</code> directory includes JSON and
+<p>The Drill installation includes a <code>sample-data</code> directory with JSON and
 Parquet files that you can query. The default <code>dfs</code> storage plugin configuration represents the local file system on your machine when you install
 Drill in embedded mode. For more information about storage plugin
 configuration, refer to <a href="/docs/connect-a-data-source-introduction">Storage Plugin Registration</a>.</p>
@@ -1431,20 +1404,17 @@ configuration, refer to <a href="/docs/connect-a-data-source-introduction">Stora
 
 <p>A sample JSON file, <a href="/docs/querying-json-files/"><code>employee.json</code></a>, contains fictitious employee data. To view the data in the <code>employee.json</code> file, submit the following SQL query
 to Drill, using the <a href="/docs/storage-plugin-registration/">cp (classpath) storage plugin</a> configuration to point to the file.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM cp.`employee.json` LIMIT 3;
 
-<p><code>0: jdbc:drill:zk=local&gt; SELECT * FROM cp.`employee.json` LIMIT 3;</code></p>
-
-<p>The query output is:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">+--------------+------------------+-------------+------------+--------------+---------------------+-----------+----------------+-------------+------------------------+----------+----------------+------------------+-----------------+---------+--------------------+
-| employee_id  |    full_name     | first_name  | last_name  | position_id  |   position_title    | store_id  | department_id  | birth_date  |       hire_date        |  salary  | supervisor_id  | education_level  | marital_status  | gender  |  management_role   |
-+--------------+------------------+-------------+------------+--------------+---------------------+-----------+----------------+-------------+------------------------+----------+----------------+------------------+-----------------+---------+--------------------+
-| 1            | Sheri Nowmer     | Sheri       | Nowmer     | 1            | President           | 0         | 1              | 1961-08-26  | 1994-12-01 00:00:00.0  | 80000.0  | 0              | Graduate Degree  | S               | F       | Senior Management  |
-| 2            | Derrick Whelply  | Derrick     | Whelply    | 2            | VP Country Manager  | 0         | 1              | 1915-07-03  | 1994-12-01 00:00:00.0  | 40000.0  | 1              | Graduate Degree  | M               | M       | Senior Management  |
-| 4            | Michael Spence   | Michael     | Spence     | 2            | VP Country Manager  | 0         | 1              | 1969-06-20  | 1998-01-01 00:00:00.0  | 40000.0  | 1              | Graduate Degree  | S               | M       | Senior Management  |
-+--------------+------------------+-------------+------------+--------------+---------------------+-----------+----------------+-------------+------------------------+----------+----------------+------------------+-----------------+---------+--------------------+
-3 rows selected (0.827 seconds)
+    +--------------+------------------+-------------+------------+--------------+---------------------+-----------+----------------+-------------+------------------------+----------+----------------+------------------+-----------------+---------+--------------------+
+    | employee_id  |    full_name     | first_name  | last_name  | position_id  |   position_title    | store_id  | department_id  | birth_date  |       hire_date        |  salary  | supervisor_id  | education_level  | marital_status  | gender  |  management_role   |
+    +--------------+------------------+-------------+------------+--------------+---------------------+-----------+----------------+-------------+------------------------+----------+----------------+------------------+-----------------+---------+--------------------+
+    | 1            | Sheri Nowmer     | Sheri       | Nowmer     | 1            | President           | 0         | 1              | 1961-08-26  | 1994-12-01 00:00:00.0  | 80000.0  | 0              | Graduate Degree  | S               | F       | Senior Management  |
+    | 2            | Derrick Whelply  | Derrick     | Whelply    | 2            | VP Country Manager  | 0         | 1              | 1915-07-03  | 1994-12-01 00:00:00.0  | 40000.0  | 1              | Graduate Degree  | M               | M       | Senior Management  |
+    | 4            | Michael Spence   | Michael     | Spence     | 2            | VP Country Manager  | 0         | 1              | 1969-06-20  | 1998-01-01 00:00:00.0  | 40000.0  | 1              | Graduate Degree  | S               | M       | Senior Management  |
+    +--------------+------------------+-------------+------------+--------------+---------------------+-----------+----------------+-------------+------------------------+----------+----------------+------------------+-----------------+---------+--------------------+
 </code></pre></div>
-<h3 id="querying-a-parquet-file">Querying a Parquet File</h3>
+<h3 id="querying-parquet-files">Querying Parquet Files</h3>
 
 <p>Query the <code>region.parquet</code> and <code>nation.parquet</code> files in the <code>sample-data</code>
 directory on your local file system.</p>
@@ -1456,11 +1426,11 @@ in embedded mode, the path to the parquet file varies between operating
 systems.</p>
 
 <p>To view the data in the <code>region.parquet</code> file, use the actual path to your Drill installation to construct this query:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">//SELECT * FROM dfs.`&lt;path-to-installation&gt;/apache-drill-&lt;version&gt;/sample-data/region.parquet`;
 
-<p><code>SELECT * FROM dfs.`&lt;path-to-installation&gt;/apache-drill-&lt;version&gt;/sample-data/region.parquet`;</code></p>
+SELECT * FROM dfs.`Users/drilluser/apache-drill/sample-data/region.parquet`;
 
-<p>The query returns the following results:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">+--------------+--------------+-----------------------+
++--------------+--------------+-----------------------+
 | R_REGIONKEY  |    R_NAME    |       R_COMMENT       |
 +--------------+--------------+-----------------------+
 | 0            | AFRICA       | lar deposits. blithe  |
@@ -1469,17 +1439,14 @@ systems.</p>
 | 3            | EUROPE       | ly final courts cajo  |
 | 4            | MIDDLE EAST  | uickly special accou  |
 +--------------+--------------+-----------------------+
-5 rows selected (0.409 seconds)
 </code></pre></div>
 <h4 id="nation-file">Nation File</h4>
 
 <p>The path to the parquet file varies between operating
 systems. Use the actual path to your Drill installation to construct this query:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">//SELECT * FROM dfs.`&lt;path-to-installation&gt;/apache-drill-&lt;version&gt;/sample-data/nation.parquet`;``
 
-<p><code>SELECT * FROM dfs.`&lt;path-to-installation&gt;/apache-drill-&lt;version&gt;/sample-data/nation.parquet`;</code></p>
-
-<p>The query returns the following results:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM dfs.`Users/drilluser/apache-drill/sample-data/nation.parquet`;
+SELECT * FROM dfs.`Users/drilluser/apache-drill/sample-data/nation.parquet`;
 +--------------+-----------------+--------------+-----------------------+
 | N_NATIONKEY  |     N_NAME      | N_REGIONKEY  |       N_COMMENT       |
 +--------------+-----------------+--------------+-----------------------+
@@ -1509,11 +1476,10 @@ systems. Use the actual path to your Drill installation to construct this query:
 | 23           | UNITED KINGDOM  | 3            | eans boost carefully  |
 | 24           | UNITED STATES   | 1            | y final packages. sl  |
 +--------------+-----------------+--------------+-----------------------+
-25 rows selected (0.101 seconds)
 </code></pre></div>
 <h2 id="summary">Summary</h2>
 
-<p>Apache Drill supports nested data, schema-less execution, and decentralized metadata. At this point, you know how to create a simple query on a JSON or Parquet file.</p>
+<p>Apache Drill supports nested data, schema-less execution, and decentralized metadata. You can now use Drill to run simple queries on JSON or Parquet data.</p>
 
 <h2 id="next-steps">Next Steps</h2>
 
