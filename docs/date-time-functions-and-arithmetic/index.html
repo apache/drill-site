@@ -1304,7 +1304,7 @@
 
     </div>
 
-     Jan 15, 2019
+     Apr 10, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1377,6 +1377,10 @@
 <td>BIGINT</td>
 </tr>
 <tr>
+<td><a href="/docs/date-time-functions-and-arithmetic/#nearestdate">NEARESTDATE</a>**</td>
+<td>TIMESTAMP</td>
+</tr>
+<tr>
 <td><a href="/docs/date-time-functions-and-arithmetic/#timestampadd">TIMESTAMPADD</a>*</td>
 <td>Inferred based on unit of time</td>
 </tr>
@@ -1390,7 +1394,8 @@
 </tr>
 </tbody></table>
 
-<p>*Supported in Drill 1.15 and later.</p>
+<p>*Supported in Drill 1.15 and later.
+**Supported in Drill 1.16 and later.</p>
 
 <h2 id="age">AGE</h2>
 
@@ -2016,6 +2021,63 @@ SELECT UNIX_TIMESTAMP(&#39;2015-05-29 08:18:53.0&#39;, &#39;yyyy-MM-dd HH:mm:ss.
 | 1432912733  |
 +-------------+
 1 row selected (0.171 seconds)  
+</code></pre></div>
+<h2 id="nearestdate">NEARESTDATE</h2>
+
+<p>Quickly and easily aggregates timestamp data by various units of time.   </p>
+
+<p><strong>Note:</strong> Drill 1.16 and later supports the NEARESTDATE function.</p>
+
+<h3 id="nearestdate-syntax">NEARESTDATE Syntax</h3>
+
+<p>NEARESTDATE(<em>column</em>, &#39;<em>interval</em>&#39; )   </p>
+
+<h3 id="nearestdate-usage-notes">NEARESTDATE Usage Notes</h3>
+
+<ul>
+<li>Use with COUNT and GROUP BY to aggregate timestamp data. </li>
+<li><em>column</em> is a data source column with timestamp values.<br></li>
+<li><em>interval</em> is any of the following units of time: 
+
+<ul>
+<li>YEAR</li>
+<li>QUARTER</li>
+<li>MONTH</li>
+<li>WEEK_SUNDAY</li>
+<li>WEEK_MONDAY</li>
+<li>DAY</li>
+<li>HOUR</li>
+<li>HALF_HOUR</li>
+<li>QUARTER_HOUR</li>
+<li>MINUTE</li>
+<li>30SECOND</li>
+<li>15SECOND</li>
+<li>SECOND<br></li>
+</ul></li>
+</ul>
+
+<h3 id="nearestdate-examples">NEARESTDATE Examples</h3>
+
+<p>The following example uses the NEARESTDATE function to aggregate hire dates by year:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT NEARESTDATE(hire_date, &#39;YEAR&#39; ) AS hireDate, COUNT(*) AS `count` FROM cp.`employee.json` GROUP BY NEARESTDATE(hire_date, &#39;YEAR&#39;);
++-----------------------+-------+
+|       hireDate        | count |
++-----------------------+-------+
+| 1994-01-01 00:00:00.0 | 23    |
+| 1998-01-01 00:00:00.0 | 539   |
+| 1996-01-01 00:00:00.0 | 503   |
+| 1995-01-01 00:00:00.0 | 12    |
+| 1997-01-01 00:00:00.0 | 74    |
+| 1993-01-01 00:00:00.0 | 4     |
++-----------------------+-------+   
+</code></pre></div>
+<p>The following example applies the NEARESTDATE function to a timestamp value (2019-02-01 07:22:00) and returns the timestamp value for each time unit indicated:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT nearestDate( TO_TIMESTAMP(&#39;2019-02-01 07:22:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;YEAR&#39;) AS nearest_year, nearestDate( TO_TIMESTAMP(&#39;2019-02-01 07:22:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;QUARTER&#39;) AS nearest_quarter, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:22:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;MONTH&#39;) AS nearest_month, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:22:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;DAY&#39;) AS nearest_day, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:22:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;WEEK_SUNDAY&#39;) AS nearest_week_sunday, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:22:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;WEEK_MONDAY&#39;) AS nearest_week_monday, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:22:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;HOUR&#39;) AS nearest_hour, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:42:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;HALF_HOUR&#39;) AS nearest_half_hour, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:48:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;QUARTER_HOUR&#39;) AS nearest_quarter_hour, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:22:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;MINUTE&#39;) AS nearest_minute, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:22:22&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;HALF_MINUTE&#39;) AS nearest_30second, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:22:22&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;QUARTER_MINUTE&#39;) AS nearest_15second, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:22:31&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;SECOND&#39;) AS nearest_second FROM (VALUES(1));
++-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+
+|     nearest_year      |    nearest_quarter    |     nearest_month     |      nearest_day      |  nearest_week_sunday  |  nearest_week_monday  |     nearest_hour      |   nearest_half_hour   | nearest_quarter_hour  |    nearest_minute     |   nearest_30second    |   nearest_15second    |    nearest_second     |
++-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+
+| 2019-01-01 00:00:00.0 | 2019-01-01 00:00:00.0 | 2019-02-01 00:00:00.0 | 2019-02-15 00:00:00.0 | 2019-02-10 00:00:00.0 | 2019-02-11 00:00:00.0 | 2019-02-15 07:00:00.0 | 2019-02-15 07:30:00.0 | 2019-02-15 07:45:00.0 | 2019-02-15 07:22:00.0 | 2019-02-15 07:22:00.0 | 2019-02-15 07:22:15.0 | 2019-02-15 07:22:31.0 |
++-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+
 </code></pre></div>
 <h2 id="timestampadd">TIMESTAMPADD</h2>
 
