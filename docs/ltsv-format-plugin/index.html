@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>ORDER BY Clause - Apache Drill</title>
+<title>LTSV Format Plugin - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -428,8 +428,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Connect a Data Source</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Connect a Data Source</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/connect-a-data-source-introduction/">Connect a Data Source Introduction</a></li>
@@ -511,7 +511,7 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2 current"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
             
           
           </ul>
@@ -821,8 +821,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">SQL Reference</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">SQL Reference</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sql-reference-introduction/">SQL Reference Introduction</a></li>
@@ -916,7 +916,7 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">SQL Commands</a></li>
-              <ul style="">
+              <ul style="display: none">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/supported-sql-commands/">Supported SQL Commands</a></li>
               
@@ -962,7 +962,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/offset-clause/">OFFSET Clause</a></li>
               
-                <li class="toctree-l3 current"><a class="reference internal" href="/docs/order-by-clause/">ORDER BY Clause</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/docs/order-by-clause/">ORDER BY Clause</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/union-set-operator/">UNION Set Operator</a></li>
               
@@ -1289,102 +1289,69 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/sql-reference/">SQL Reference</a></li>
+    <li><a href="/docs/connect-a-data-source/">Connect a Data Source</a></li>
   
-    <li><a href="/docs/sql-commands/">SQL Commands</a></li>
-  
-  <li>ORDER BY Clause</li>
+  <li>LTSV Format Plugin</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/sql-reference/sql-commands/086-order-by-clause.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/connect-a-data-source/plugins/117-ltsv-format-plugin.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>ORDER BY Clause</h1>
+      <h1>LTSV Format Plugin</h1>
 
     </div>
 
-     Nov 2, 2018
+     Apr 8, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>The ORDER BY clause sorts the result set of a query.</p>
-
-<h2 id="syntax">Syntax</h2>
-
-<p>The ORDER BY clause supports the following syntax:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   [ ORDER BY expression
-   [ ASC | DESC ]
-   [ NULLS FIRST | NULLS LAST ]
+        <p>Starting in Drill 1.16, Drill provides a LTSV (Labeled Tab-separated Values) format plugin, which enables Drill to query files with the .LTSV file extension. LTSV is a text file format. Each line in a LTSV file has the following structure:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">time:&lt;value&gt; TAB host:&lt;value&gt; TAB forwardedfor:&lt;value&gt; TAB req:&lt;value&gt; TAB status:&lt;value&gt; TAB size:&lt;value&gt; TAB referer:&lt;value&gt; TAB ua:&lt;value&gt; TAB reqtime:&lt;value&gt; TAB apptime:&lt;value&gt; TAB vhost:&lt;value&gt; NEWLINE
 </code></pre></div>
-<h2 id="parameters">Parameters</h2>
+<p>For more information about the LTSV file format, see <a href="http://ltsv.org/">LTSV (Labeled Tab-separated Values)</a>.  </p>
 
-<p><em>expression</em>  </p>
+<h2 id="configuring-the-ltsv-format-plugin">Configuring the LTSV Format Plugin</h2>
 
-<p>Defines the sort order of the query result set, typically by specifying one or more columns in the select list.  </p>
+<p>Add the LTSV format to the dfs storage plugin configuration, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;formats&quot;: {
+    &quot;ltsv&quot;: {
+      &quot;type&quot;: &quot;ltsv&quot;,
+      &quot;extensions&quot;: [
+        &quot;ltsv&quot;
+      ]
+    },
+    ...
+  }
+</code></pre></div>
+<h2 id="example-querying-a-ltsv-file">Example: Querying a LTSV File</h2>
 
-<p>You can also specify:  </p>
-
-<ul>
-<li>Columns that are not in the select list </li>
-<li>Expressions formed from one or more columns that exist in the tables referenced by the query</li>
-<li>Ordinal numbers that represent the position of select list entries (or the position of columns in the table if no select list exists)</li>
-<li>Aliases that define select list entries</li>
-</ul>
-
-<p>When the ORDER BY clause contains multiple expressions, the result set is sorted according to the first expression, then the second expression is applied to rows that have matching values from the first expression, and so on.</p>
-
-<p>ASC<br>
-Specifies that the results should be returned in ascending order. If the order is not specified, ASC is the default.</p>
-
-<p>DESC<br>
-Specifies that the results should be returned in descending order. </p>
-
-<p>NULLS FIRST<br>
-Specifies that NULL values should be returned before non-NULL values.  </p>
-
-<p>NULLS LAST<br>
-Specifies that NULL values should be returned after non-NULL values.</p>
-
-<h2 id="usage-notes">Usage Notes</h2>
-
-<ul>
-<li>NULL values are considered &quot;higher&quot; than all other values. With default ascending sort order, NULL values sort at the end.<br></li>
-<li>When a query does not contain an ORDER BY clause, the system returns result sets with no predictable ordering of the rows. The same query executed twice might return the result set in a different order.<br></li>
-<li>In any parallel system, when ORDER BY does not produce a unique ordering, the order of the rows is non-deterministic. That is, if the ORDER BY expression produces duplicate values, the return order of those rows may vary from other systems or from one run the system to the next.</li>
-</ul>
-
-<h2 id="examples">Examples</h2>
-
-<p>The following example query returns sales totals for each month in descending order, listing the highest sales month to the lowest sales month:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:&gt; select `month`, sum(order_total)
-   from orders group by `month` order by 2 desc;
-   +------------+------------+
-   | month | EXPR$1 |
-   +------------+------------+
-   | June | 950481 |
-   | May | 947796 |
-   | March | 836809 |
-   | April | 807291 |
-   | July | 757395 |
-   | October | 676236 |
-   | August | 572269 |
-   | February | 532901 |
-   | September | 373100 |
-   | January | 346536 |
-   +------------+------------+
+<p>Each line in a LTSV file has the following structure:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">time:&lt;value&gt; TAB host:&lt;value&gt; TAB forwardedfor:&lt;value&gt; TAB req:&lt;value&gt; TAB status:&lt;value&gt; TAB size:&lt;value&gt; TAB referer:&lt;value&gt; TAB ua:&lt;value&gt; TAB reqtime:&lt;value&gt; TAB apptime:&lt;value&gt; TAB vhost:&lt;value&gt; NEWLINE
+</code></pre></div>
+<p>Sample data:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">time:30/Nov/2016:00:55:08 +0900&lt;TAB&gt;host:xxx.xxx.xxx.xxx&lt;TAB&gt;forwardedfor:-&lt;TAB&gt;req:GET /v1/xxx HTTP/1.1&lt;TAB&gt;status:200&lt;TAB&gt;size:4968&lt;TAB&gt;referer:-&lt;TAB&gt;ua:Java/1.8.0_131&lt;TAB&gt;reqtime:2.532&lt;TAB&gt;apptime:2.532&lt;TAB&gt;vhost:api.example.com
+time:30/Nov/2016:00:56:37 +0900&lt;TAB&gt;host:xxx.xxx.xxx.xxx&lt;TAB&gt;forwardedfor:-&lt;TAB&gt;req:GET /v1/yyy HTTP/1.1&lt;TAB&gt;status:200&lt;TAB&gt;size:412&lt;TAB&gt;referer:-&lt;TAB&gt;ua:Java/1.8.0_201&lt;TAB&gt;reqtime:3.580&lt;TAB&gt;apptime:3.580&lt;TAB&gt;vhost:api.example.com
+</code></pre></div>
+<p>The following query selects the second row from the sample data shown:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/sample.ltsv` WHERE reqtime &gt; 3.0;
++-----------------------------+------------------+---------------+-----------------------+---------+-------+----------+-----------------+----------+----------+------------------+
+|            time             |       host       | forwardedfor  |          req          | status  | size  | referer  |       ua        | reqtime  | apptime  |      vhost       |
++-----------------------------+------------------+---------------+-----------------------+---------+-------+----------+-----------------+----------+----------+------------------+
+| 30/Nov/2016:00:56:37 +0900  | xxx.xxx.xxx.xxx  | -             | GET /v1/yyy HTTP/1.1  | 200     | 412   | -        | Java/1.8.0_201  | 3.580    | 3.580    | api.example.com  |
++-----------------------------+------------------+---------------+-----------------------+---------+-------+----------+-----------------+----------+----------+------------------+
 </code></pre></div>
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/offset-clause/">← OFFSET Clause</a></span><span class="next-toc"><a href="/docs/union-set-operator/">UNION Set Operator →</a></span>
+  <span class="previous-toc"><a href="/docs/syslog-format-plugin/">← Syslog Format Plugin</a></span><span class="next-toc"><a href="/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces →</a></span>
 </div>
 
     
