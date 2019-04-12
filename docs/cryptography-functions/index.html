@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Apache Drill 0.8.0 Release Notes - Apache Drill</title>
+<title>Cryptography Functions - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -821,8 +821,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">SQL Reference</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">SQL Reference</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sql-reference-introduction/">SQL Reference Introduction</a></li>
@@ -851,7 +851,7 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">SQL Functions</a></li>
-              <ul style="display: none">
+              <ul style="">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/about-sql-function-examples/">About SQL Function Examples</a></li>
               
@@ -873,7 +873,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/string-distance-functions/">String Distance Functions</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
+                <li class="toctree-l3 current"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
             </ul>
             
@@ -1148,8 +1148,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Release Notes</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-15-0-release-notes/">Apache Drill 1.15.0 Release Notes</a></li>
@@ -1220,7 +1220,7 @@
             
           
             
-              <li class="toctree-l2 current"><a class="reference internal" href="/docs/apache-drill-0-8-0-release-notes/">Apache Drill 0.8.0 Release Notes</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-0-8-0-release-notes/">Apache Drill 0.8.0 Release Notes</a></li>
             
           
             
@@ -1291,58 +1291,93 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/release-notes/">Release Notes</a></li>
+    <li><a href="/docs/sql-reference/">SQL Reference</a></li>
   
-  <li>Apache Drill 0.8.0 Release Notes</li>
+    <li><a href="/docs/sql-functions/">SQL Functions</a></li>
+  
+  <li>Cryptography Functions</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/rn/050-0.8.0-rn.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/sql-reference/sql-functions/063-cryptography-functions.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>Apache Drill 0.8.0 Release Notes</h1>
+      <h1>Cryptography Functions</h1>
 
     </div>
 
-     
+     Apr 10, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Apache Drill 0.8.0, continues the Drill release cycle as we drive towards general availability.
-This release includes <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12313820&version=12328812">243 resolved JIRAs</a> and numerous enhancements.</p>
-
-<p>This release is available as
-<a href="http://www.apache.org/dyn/closer.cgi/drill/drill-0.8.0/apache-drill-0.8.0.tar.gz">binary</a> and
-<a href="http://www.apache.org/dyn/closer.cgi/drill/drill-0.8.0/apache-drill-0.8.0-src.tar.gz">source</a> tarballs that are compiled against Apache Hadoop.
-Drill has been tested against MapR, Cloudera, and Hortonworks Hadoop
-distributions. There are associated build profiles and JIRAs that can help you
-run Drill against your preferred distribution</p>
-
-<p>Apache Drill 0.8.0 Key Features:</p>
+        <p>Starting in version 1.11, Drill supports cryptography-related functions. The library of cryptography-related functions generally mirrors the crypto functions in MySQL, including: </p>
 
 <ul>
-<li><strong>Bytecode rewriting</strong>. Drill now leverages code optimization techniques such as bytecode rewriting and inlining to enhance the speed of many queries by reducing overall memory usage and CPU instructions.</li>
-<li><strong>Advanced partition pruning</strong>. Drill can now prune partitions based on arbitrarily complex expressions. For example, specify WHERE dir0 LIKE &#39;2015-%&#39; and your query will look inside the directory &quot;2015-01&quot; but not inside &quot;2014-12&quot;.</li>
-<li><strong>Real-time query diagnostics</strong>. You can now see exactly what your queries are doing in real-time, making it easy to troubleshoot, optimize and manage execution.</li>
-<li><strong>Large records, large # of files</strong>. Drill was previously limited to small records of up to 128KB. It now supports records of any size. In addition, query performance has been improved when dealing with large numbers of files thanks to a variety of optimizations such as parallel metadata reads.</li>
-<li><strong>More SQL</strong>. Drill now features complete support for UNION ALL and COUNT(DISTINCT). Drill 0.8 also includes new functions such as unix_timestamp and the window functions sum, count and rank. Note that these window functions should be considered beta.</li>
-<li><strong>Better compression</strong>. Drill can now query compressed JSON files. In addition, the user can control Parquet compression in CTAS (CREATE TABLE AS) statements.</li>
-<li><strong>Performance</strong>. Drill 0.8 includes broadcast joins, disk-based joins, parallel metadata reads and many other performance-related enhancements.</li>
-<li>  <strong>Reliability</strong>. Drill 0.8 includes a variety of fixes that improve the stability of the drillbit daemon, the sqlline shell and the ODBC and JDBC drivers.</li>
-<li>  <strong>HBase 0.98 support</strong>. You can now run SQL queries on any HBase 0.98 table.</li>
+<li><p><strong><code>aes_encrypt()</code>/ <code>aes_decrypt()</code></strong>: implement encryption and decryption of data using the official AES (Advanced Encryption Standard) algorithm, previously known as “Rijndael.”
+<code>AES_ENCRYPT()</code> encrypts the string <code>str</code> using the key string <code>key_str</code> and returns a binary string containing the encrypted output. <code>AES_DECRYPT()</code> decrypts the encrypted string <code>crypt_str</code> using the key string <code>key_str</code> and returns the original cleartext string. If either function argument is NULL, the function returns NULL.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT aes_encrypt( &#39;encrypted_text&#39;, &#39;my_secret_key&#39; ) AS aes FROM (VALUES(1));
++---------------------------+
+|            aes            |
++---------------------------+
+| JkcBUNAn8ByKWCcVmNrKMA==  |
++---------------------------+
+
+SELECT aes_encrypt( &#39;encrypted_text&#39;, &#39;my_secret_key&#39; ) AS encrypted,
+aes_decrypt(aes_encrypt( &#39;encrypted_text&#39;, &#39;my_secret_key&#39; ),&#39;my_secret_key&#39;) AS decrypted 
+FROM (VALUES(1));
++---------------------------+-----------------+
+|         encrypted         |    decrypted    |
++---------------------------+-----------------+
+| JkcBUNAn8ByKWCcVmNrKMA==  | encrypted_text  |
++---------------------------+-----------------+
+</code></pre></div></li>
+<li><p><strong><code>md2(&lt;text&gt;)</code></strong>:  Returns the md2 hash of the text. (<a href="https://en.wikipedia.org/wiki/MD2_(cryptography)">https://en.wikipedia.org/wiki/MD2_(cryptography)</a>)</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">select md2( &#39;testing&#39; ) from (values(1));
++-----------------------------------+
+|              EXPR$0               |
++-----------------------------------+
+| fc134df10d6ecafceb5c75861d01b41f  |
++-----------------------------------+
+</code></pre></div></li>
+<li><p><strong><code>md5(&lt;text&gt;)</code></strong>: Returns the md5 hash of the text. (<a href="https://en.wikipedia.org/wiki/MD5">https://en.wikipedia.org/wiki/MD5</a>)</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">select md5( &#39;testing&#39; ) from (VALUES(1));
++-----------------------------------+
+|              EXPR$0               |
++-----------------------------------+
+| ae2b1fca515949e5d54fb22b8ed95575  |
++-----------------------------------+
+</code></pre></div></li>
+<li><p><strong><code>sha(&lt;text&gt;</code>) / <code>sha1(&lt;text&gt;)</code></strong>: Calculates an SHA-1 160-bit checksum for the string, as described in RFC 3174 (Secure Hash Algorithm). (<a href="https://en.wikipedia.org/wiki/SHA-1">https://en.wikipedia.org/wiki/SHA-1</a>) The value is returned as a string of 40 hexadecimal digits, or NULL if the argument was NULL. Note that <code>sha()</code> and <code>sha1()</code> are aliases for the same function. </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">select sha1( &#39;testing&#39; ) from (VALUES(1));
++-------------------------------------------+
+|                  EXPR$0                   |
++-------------------------------------------+
+| dc724af18fbdd4e59189f5fe768a5f8311527050  |
++-------------------------------------------+
+</code></pre></div></li>
+<li><p><strong><code>sha2(&lt;text&gt;</code>) / <code>sha256(&lt;text&gt;)</code></strong>: Calculates an SHA-2 256-bit checksum for the string. (<a href="https://en.wikipedia.org/wiki/SHA-2">https://en.wikipedia.org/wiki/SHA-2</a>)  The value is returned as a string of hexadecimal digits, or NULL if the argument was NULL. Note that <code>sha2()</code> and <code>sha256()</code> are aliases for the same function. </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">select sha2( &#39;testing&#39; ) from (VALUES(1));
++-------------------------------------------------------------------+
+|                              EXPR$0                               |
++-------------------------------------------------------------------+
+| cf80cd8aed482d5d1527d7dc72fceff84e6326592848447d2dc0b0e87dfc9a90  |
++-------------------------------------------------------------------+
+</code></pre></div></li>
 </ul>
+
+<p>Additionally, there are also <code>sha384(&lt;text&gt;)</code> and <code>sha512(&lt;text&gt;)</code> functions which return SHA-2 hashes with 384 and 512 bit checksums.</p>
 
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/apache-drill-0-9-0-release-notes/">← Apache Drill 0.9.0 Release Notes</a></span><span class="next-toc"><a href="/docs/apache-drill-0-7-0-release-notes/">Apache Drill 0.7.0 Release Notes →</a></span>
+  <span class="previous-toc"><a href="/docs/string-distance-functions/">← String Distance Functions</a></span><span class="next-toc"><a href="/docs/sql-window-functions/">SQL Window Functions →</a></span>
 </div>
 
     
