@@ -1308,7 +1308,7 @@
 
     </div>
 
-     Jun 26, 2018
+     Apr 16, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1316,12 +1316,21 @@
       
         <p>This is a simple exercise that provides steps for creating a Hive table and
 inserting data that you can query using Drill. Before you perform the steps,
-download the <a href="http://doc.mapr.com/download/attachments/28868943/customers.csv?version=1&modificationDate=1426874930765&api=v2">customers.csv</a> file.  </p>
+download the <a href="http://doc.mapr.com/download/attachments/28868943/customers.csv?version=1&modificationDate=1426874930765&api=v2">customers.csv</a> file.   </p>
 
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
-  <p class="last">Drill 1.8 implements the IF EXISTS parameter for the DROP TABLE and DROP VIEW commands, making IF a reserved word in Drill. As a result, you must include backticks around the Hive \``IF`` conditional function when you use it in a query on Hive tables. Alternatively, you can use the CASE statement instead of the IF function.  </p>
-</div>
+  <p class="last">Drill 1.8 implements the IF EXISTS parameter for the DROP TABLE and DROP VIEW commands, making IF a reserved word in Drill. As a result, you must include backticks around the Hive IF conditional function when you use it in a query on Hive tables. Alternatively, you can use the CASE statement instead of the IF function.  </p>
+</div>  
+
+<h2 id="hive-views">Hive Views</h2>
+
+<p>Starting in Drill 1.16, you can query Hive views from Drill like you would query Hive tables in a hive schema, for example:    </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM hive.`hive_view`;  
+</code></pre></div>
+<p>For storage-based authorization, access to Hive views depends on the user’s permissions on the underlying tables in the view definition. When a user selects from a Hive view, the view is expanded (converted into a query), and the underlying tables referenced in the query are validated for permissions.    </p>
+
+<h2 id="creating-and-querying-a-hive-table">Creating and Querying a Hive Table</h2>
 
 <p>To create a Hive table and query it with Drill, complete the following steps:</p>
 
