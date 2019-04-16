@@ -1308,7 +1308,7 @@
 
     </div>
 
-     Dec 8, 2018
+     Apr 16, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1317,7 +1317,14 @@
         <p>Prior to Drill 1.13, Drill supported Hive 1.0. Drill 1.13 and later includes version 2.3.2 of the Hive client, which adds support for queries on transactional (ACID) and non-transactional Hive bucketed ORC tables. The updated Hive libraries are backward compatible with earlier versions of the Hive server and metastore.   </p>
 
 <p>To access Hive tables using custom SerDes or InputFormat/OutputFormat, all nodes running Drillbits must have the SerDes or InputFormat/OutputFormat <code>JAR</code> files in the 
-<code>&lt;drill_installation_directory&gt;/jars/3rdparty</code> folder.  </p>
+<code>&lt;drill_installation_directory&gt;/jars/3rdparty</code> folder.   </p>
+
+<h2 id="hive-views">Hive Views</h2>
+
+<p>Starting in Drill 1.16, you can query Hive views from Drill like you would query Hive tables in a hive schema, for example:    </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM hive.`hive_view`;  
+</code></pre></div>
+<p>For storage-based authorization, access to Hive views depends on the user’s permissions on the underlying tables in the view definition. When a user selects from a Hive view, the view is expanded (converted into a query), and the underlying tables referenced in the query are validated for permissions.    </p>
 
 <h2 id="setting-hive-properties">Setting Hive Properties</h2>
 
