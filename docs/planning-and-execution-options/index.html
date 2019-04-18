@@ -1310,7 +1310,7 @@
 
     </div>
 
-     Dec 28, 2018
+     Apr 18, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1349,14 +1349,14 @@ persist across all sessions. </p>
 
 <h3 id="setting-options-from-the-drill-web-ui">Setting Options from the Drill Web UI</h3>
 
-<p>When Drill is running, you can access the Drill Web UI at <code>http://&lt;drill-hostname&gt;:8047/</code>. The Drill Web UI has an Options button located in the upper right corner that you can click to display an Options page. The Options page lists all the Drill options that you can set. When you set options from this page, you are setting the options at the system level. To override an option for the duration of a session, set the option from the Drill shell using the SET command.   </p>
+<p>When Drill is running, you can access the Drill Web UI at <code>http://&lt;drill-hostname&gt;:8047/</code>. The Drill Web UI has an Options button located in the upper right corner that you can click to display an Options page. The Options page lists all the Drill options that you can set. When you set options from this page, you are setting the options at the system level. To override an option for the duration of a session, set the option from the Drill shell using the SET command.  </p>
 
-<p><img src="https://i.imgur.com/SQH3YNT.png" alt=""> </p>
+<p><img src="https://i.imgur.com/WMij8gQ.png" alt=""> </p>
 
 <p>Starting in Drill 1.15, the Options page includes the following enhancements:  </p>
 
 <p><strong>Search Field</strong><br>
-The search field enables you to quickly search across all available Drill configuration options to quickly find options you are interested in. For example, you can search on the keyword &quot;memory&quot; for a list of all options related to configuring Drill memory.</p>
+The search field enables you to quickly search across all available Drill configuration options to quickly find options you are interested in. For example, you can search on the keyword &quot;memory&quot; for a list of all options related to configuring Drill memory. Starting in Drill 1.16, the Search field contains an x that clears the search field when clicked. </p>
 
 <p><strong>Quick Filters</strong><br>
 Next to the search field are quick filter buttons that filter options by important keywords in one click. For example, the &quot;planner&quot; quick filter button quickly lists all options related to the query planner. The query planning options are prepended by the keyword &quot;planner.&quot; Quick filters return options that include the keyword in the option name and/or description. </p>
@@ -1396,7 +1396,57 @@ Issuing <code>select timestamp &#39;2008-2-23 12:23:34&#39; from (values(1))</co
 <div class="highlight"><pre><code class="language-text" data-lang="text">2008-02-23T12:23:34  
 </code></pre></div>
 <p>Issuing the query after setting the <code>web.display_format.timestamp</code> option to the format <code>yyyy-MM-dd HH:mm:ss.SS</code> returns the following results in the Web UI:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">2008-02-23 12:23:34.00
+<div class="highlight"><pre><code class="language-text" data-lang="text">2008-02-23 12:23:34.00  
+</code></pre></div>
+<h2 id="limiting-the-number-of-rows-returned-for-result-sets">Limiting the Number of Rows Returned for Result Sets</h2>
+
+<p>The <code>exec.query.max_rows</code> option, introduced in Drill 1.16, automatically limits the number of rows that Drill returns from a result set. When you configure a limit, the limit is automatically applied by Drill when you run a query. You do not need to include the LIMIT clause. Configuring a limit on results reduces the amount of processing and streaming work for the web server when using the Drill WEb UI. </p>
+
+<p>The default setting for <code>exec.query.max_rows</code> is 0, which indicates no limit; queries will return all results. An administrator can modify the exec.query.max_rows setting at the system level (setting persists across restarts) from the Options page in the Drill Web UI or using the ALTER SYSTEM command. Alternatively, the option can be set at the session level (valid for a user session only) using the SET command or from SQLLine.  </p>
+
+<p><strong>Session Level</strong><br>
+To set the <code>exec.query.max_rows</code> option per user session, use the SET command or the SQLLine line command, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SET `exec.query.max_rows` = &lt;value&gt;;
+!set rowlimit &lt;value&gt;  
+</code></pre></div>
+<p><strong>System Level</strong><br>
+To set the <code>exec.query.max_rows</code> option such that it persists across users, change the setting in the Drill Web UI (<code>http://&lt;drill-hostname&gt;:8047/options</code>) or use the ALTER SYSTEM SET command, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SYSTEM SET `exec.query.max_rows` = &lt;value&gt;;  
+</code></pre></div>
+<hr>
+
+<p><strong>NOTE</strong><br>
+The <code>exec.query.max_rows</code> option overrides row limit settings configured in the Drill Web UI and <code>drill-override.conf</code> file, which are described below.   </p>
+
+<hr>
+
+<h3 id="drill-web-ui-row-limit-settings">Drill Web UI Row Limit Settings</h3>
+
+<p>In addition to the <code>exec.query.max_rows</code> option, the Query page in the Drill Web UI provides a field where you can enter a limit on the number of rows returned from a result set when you run a query.  </p>
+
+<p><strong>Note:</strong> You can also configure the row limit for a REST client through the <a href="/docs/rest-api-introduction/#post-query-json">autoLimit parameter in the REST API</a>.   </p>
+
+<p><img src="https://i.imgur.com/7nF0RBq.png" alt=""><br>
+When you submit the query, results display across one or multiple pages. You can set the number of results that display per page. When results span multiple pages, scroll through the pages using the links in the bottom right corner of the screen.
+<img src="https://i.imgur.com/eYn22NL.png" alt=""><br>
+Clicking the Query Profile tab at the top of the results page displays the query profile with a warning stating that the results were automatically limited.
+<img src="https://i.imgur.com/L4Yx666.png" alt=""><br>
+Note that the <code>exec.query.max_rows</code> setting overrides the setting in the Web UI. For example, if the <code>exec.query.max_rows</code> option is set to 10 and you limit results to 20 on the Query page in the Web UI, Drill only returns 10 rows from the result set.  </p>
+
+<h3 id="drill-override-conf-row-limit-settings">Drill-override.conf Row Limit Settings</h3>
+
+<p>The <code>drill-override.conf</code> file contains the same row limit setting as the Drill Web UI; however, the setting in the <code>drill-override.conf</code> file overrides the limit set in the Drill Web UI. Note that the <code>exec.query.max_rows</code> option overrides the setting in <code>drill-override.conf</code> and the Drill Web UI. You must restart the Drillbit after you modify <code>drill-override.conf</code>. </p>
+
+<p>Add the following configuration to <code>drill-override.conf</code>, changing the row limit setting and rows per page setting, as needed:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">drill.exec.http: {
+    web.client.resultset: {
+        autolimit {
+            enable: true,
+            rows: 1000
+        },
+        defaultRowsPerPage: 10
+    }
+}
 </code></pre></div>
     
       

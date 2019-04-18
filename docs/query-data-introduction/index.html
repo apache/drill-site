@@ -1308,22 +1308,48 @@
 
     </div>
 
-     Dec 8, 2018
+     Apr 18, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>You can query local and distributed file systems, Hive, HBase data, complex data, INFORMATION SCHEMA, and system tables as described in the subtopics of this section. </p>
+        <p>You can submit SQL queries against various data sources from the <a href="/docs/configuring-the-drill-shell/">Drill shell (SQLLine)</a>, <a href="/docs/starting-the-web-ui/">Drill Web UI</a>, <a href="/docs/rest-api/">REST API</a>, and tools that connect to Drill via <a href="/docs/odbc-jdbc-interfaces/">ODBC or JDBC</a>. Drill has <a href="/docs/connect-a-data-source-introduction/">several storage and format plugins</a> that enable queries against multiple data sources and data formats, including <a href="/docs/querying-complex-data">complex data</a>. </p>
 
-<p>The query specifies the data source location and includes data casting. </p>
+<p>The following sections provide some general information about Drill queries.</p>
 
 <h2 id="specifying-the-data-source-location">Specifying the Data Source Location</h2>
 
-<p>The optional <a href="/docs/use">USE statement</a> runs subsequent queries against a particular <a href="/docs/connect-a-data-source-introduction/">storage plugin</a>. The USE statement typically saves typing some of the storage plugin information in the FROM statement. If you omit the USE statement, specify a storage plugin, such as dfs, and optionally a workspace, such as default, and a path to the data source using dot notation and back ticks. For example:</p>
+<p>The optional <a href="/docs/use">USE command</a> runs subsequent queries against a particular <a href="/docs/connect-a-data-source-introduction/">storage plugin or schema</a>. When you run the USE command to switch to a particular storage plugin or schema, you do not have to include the full path to the data in the FROM clause, for example:</p>
 
-<p><code>dfs.`default`.`/Users/drill-user/apache-drill-1.1.0/log/sqlline_queries.json</code>`;</p>
-
+<p>The following query was run before switching to the dfs.schema. A workspace named &quot;samples&quot; was configured in the dfs storage plugin, creating a schema named <code>dfs.samples</code>. Notice that you have to use dot notation for the schema and back ticks around the table name. In some cases you may point to a directory or file in the schema, in which case you would put back ticks around the entire path, for example <code>dfs.samples.`/nation/data/nation.parquet/</code>`.  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">apache drill&gt; select * from dfs.samples.`nation1`;
++-------------+----------------+-------------+----------------------+
+| N_NATIONKEY |     N_NAME     | N_REGIONKEY |      N_COMMENT       |
++-------------+----------------+-------------+----------------------+
+| 0           | ALGERIA        | 0           |  haggle. carefully f |
+| 1           | ARGENTINA      | 1           | al foxes promise sly |
+...
++-------------+----------------+-------------+----------------------+
+</code></pre></div>
+<p>Running USE to switch to the <code>dfs.samples</code> schema: </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">apache drill&gt; use dfs.samples;
++------+-----------------------------------------+
+|  ok  |                 summary                 |
++------+-----------------------------------------+
+| true | Default schema changed to [dfs.samples] |
++------+-----------------------------------------+  
+</code></pre></div>
+<p>Query written without identifying the schema (without dot notation or back ticks):</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">apache drill (dfs.samples)&gt; select * from nation1;
++-------------+----------------+-------------+----------------------+
+| N_NATIONKEY |     N_NAME     | N_REGIONKEY |      N_COMMENT       |
++-------------+----------------+-------------+----------------------+
+| 0           | ALGERIA        | 0           |  haggle. carefully f |
+| 1           | ARGENTINA      | 1           | al foxes promise sly |
+...
++-------------+----------------+-------------+----------------------+
+</code></pre></div>
 <h2 id="casting-data">Casting Data</h2>
 
 <p>In some cases, Drill converts schema-less data to correctly-typed data implicitly. In this case, you do not need to <a href="/docs/supported-data-types/#casting-and-converting-data-types">cast the data</a> to another type. The file format of the data and the nature of your query determines the requirement for casting or converting. Differences in casting depend on the data source. </p>
@@ -1335,14 +1361,11 @@ or an aggregate function.</p>
 
 <h2 id="troubleshooting-queries">Troubleshooting Queries</h2>
 
-<p>In addition to testing queries interactively in the Drill shell, and examining error messages, use the <a href="/docs/explain/">EXPLAIN command</a> to analyze errors and troubleshoot queries
-that do not run. For example, if you run into a casting error, the query plan
-text may help you isolate the problem.</p>
+<p>In addition to analyzing error messages printed by the Drill shell, you can troubleshoot queries from the <a href="/docs/identifying-performance-issues/">Profiles page</a> in the Drill Web UI or run the <a href="/docs/explain/">EXPLAIN command</a> to review the query plan for issues. For example, if you run into a casting error, the query plan text may help you isolate the problem.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; !set maxwidth 10000
-0: jdbc:drill:zk=local&gt; explain plan for select ... ;
+0: jdbc:drill:zk=local&gt; explain plan for &lt;query&gt;;
 </code></pre></div>
-<p><a href="/docs/configuring-the-drill-shell/">Drill shell commands</a> include the <code>!set &lt;set variable&gt; &lt;value&gt;</code> to increase the default text display (number of characters). By
-default, most of the plan output is hidden.</p>
+<p><a href="/docs/configuring-the-drill-shell/">Drill shell commands</a> include the <code>!set &lt;set variable&gt; &lt;value&gt;</code> to increase the default text display (number of characters). By default, most of the plan output is hidden.</p>
 
 <h2 id="query-syntax-tips">Query Syntax Tips</h2>
 
