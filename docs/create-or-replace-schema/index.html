@@ -1316,13 +1316,13 @@
 
     </div>
 
-     Apr 25, 2019
+     Apr 29, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Starting in Drill 1.16, you can define a schema for text files using the CREATE OR REPLACE SCHEMA command. Running this command generates a hidden .drill.schema file in the table’s root directory. The .drill.schema file stores the schema definition in JSON format. Drill uses the schema file at runtime if the exec.storage.enable_v3_text_reader and store.table.use_schema_file options are enabled. Alternatively, you can create the schema file manually. When created manually, the file content must comply with the structure recognized by the Drill.  </p>
+        <p>Starting in Drill 1.16, you can define a schema for text files using the CREATE OR REPLACE SCHEMA command. Running this command generates a hidden <code>.drill.schema</code> file in the table’s root directory. The <code>.drill.schema</code> file stores the schema definition in JSON format. Drill uses the schema file at runtime if the <code>exec.storage.enable_v3_text_reader</code> and <code>store.table.use_schema_file</code> options are enabled. Alternatively, you can create the schema file manually. If created manually, the file content must comply with the structure recognized by the Drill.  </p>
 
 <h2 id="syntax">Syntax</h2>
 
@@ -1503,7 +1503,7 @@ A property that sets how Drill handles blank column values. Accepts the followin
 
 <p>The schema mode determines the ordering of columns returned for wildcard (*) queries. The mode is set through the <code>drill.strict</code> property. You can set this property to true (strict) or false (not strict). If you do not indicate the mode, the default is false (not strict).  </p>
 
-<p><strong>Not Strict (Default)</strong>
+<p><strong>Not Strict (Default)</strong><br>
 Columns defined in the schema are projected in the defined order. Columns not defined in the schema are appended to the defined columns, as shown:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">create or replace schema (id int, start_date date format &#39;yyyy-MM-dd&#39;) for table dfs.tmp.`text_table` properties (&#39;drill.strict&#39; = &#39;false&#39;);
 +------+-----------------------------------------+
@@ -1525,7 +1525,7 @@ select * from dfs.tmp.`text_table`;
 </code></pre></div>
 <p>Note that the “name” column, which was not included in the schema was appended to the end of the table.</p>
 
-<p><strong>Strict</strong>
+<p><strong>Strict</strong><br>
 Setting the <code>drill.strict</code> property  to “true” changes the schema mode to strict, which means that the reader ignores any columns NOT included in the schema. The query only returns the columns defined in the schema, as shown:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">create or replace schema (id int, start_date date format &#39;yyyy-MM-dd&#39;) for table dfs.tmp.`text_table` properties (&#39;drill.strict&#39; = &#39;true&#39;);
 +------+-----------------------------------------+
