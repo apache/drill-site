@@ -1316,7 +1316,7 @@
 
     </div>
 
-     Apr 29, 2019
+     Apr 30, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1354,8 +1354,9 @@ Required. The name of the table or directory for which Drill will refresh metada
 <h3 id="metadata-storage">Metadata Storage</h3>
 
 <ul>
-<li>Drill traverses directories for Parquet files and gathers the metadata from the footer of the files. Drill stores the collected metadata in a metadata cache file, <code>.drill.parquet_file_metadata.v4</code>, a summary file, <code>.drill.parquet_summary_metadata.v4</code>, and a directories file, <code>.drill.parquet_metadata_directories</code> file at each directory level.<br></li>
-<li>The metadata cache file stores metadata for files in that directory, as well as the metadata for the files in the subdirectories.<br></li>
+<li> Drill traverses directories for Parquet files and gathers the metadata from the footer of the files. Drill stores the collected metadata in a metadata cache file, <code>.drill.parquet_file_metadata.v4</code>, a summary file, <code>.drill.parquet_summary_metadata.v4</code>, and a directories file, <code>.drill.parquet_metadata_directories</code> file at each directory level.<br></li>
+<li> Introduced in Drill 1.16, the summary file, <code>.drill.parquet_summary_metadata.v4</code>, optimizes planning for certain queries, like COUNT(*) queries, such that the planner can use the summary file instead of the larger metadata cache file.<br></li>
+<li>The metadata cache file stores metadata for files in the current directory, as well as the metadata for the files in subdirectories.<br></li>
 <li>For each row group in a Parquet file, the metadata cache file stores the column names in the row group and the column statistics, such as the min/max values and null count.<br></li>
 <li>If the Parquet data is updated, for example data is added to a file, Drill automatically  refreshes the Parquet metadata when you issue the next query against the Parquet data.<br></li>
 </ul>
