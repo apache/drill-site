@@ -1316,7 +1316,7 @@
 
     </div>
 
-     Apr 30, 2019
+     May 2, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1378,9 +1378,9 @@ An integer that specifies the percentage of data on which to compute statistics.
 <li>Rowcount (total number of entries in the table)<br></li>
 <li>Nonnullrowcount (total number of non-null entries in the table)<br></li>
 <li>NDV (total distinct values in the table)<br></li>
-<li>Avgwidth (average width of a column/average number of characters in a column)<br></li>
-<li>Majortype (data type of the column values)<br></li>
-<li>Histogram (represents the frequency distribution of values (numeric data) in a column) See Histograms.<br></li>
+<li>Avgwidth (average width, in bytes, of a column)<br></li>
+<li>Majortype (data type and data mode (OPTIONAL, REQUIRED, REPEATED) of the column values)<br></li>
+<li>Histogram (represents the frequency distribution of values (numeric data) in a column) See <a href="/docs/analyze-table/#histograms">Histograms</a>.<br></li>
 <li><p>When you look at the statistics file, statistics for each column display in the following format (c_nationkey is used as an example column):  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">{&quot;column&quot;:&quot;`c_nationkey`&quot;,&quot;majortype&quot;:{&quot;type&quot;:&quot;INT&quot;,&quot;mode&quot;:&quot;REQUIRED&quot;},&quot;schema&quot;:1.0,&quot;rowcount&quot;:1500.0,&quot;nonnullrowcount&quot;:1500.0,&quot;ndv&quot;:25,&quot;avgwidth&quot;:4.0,&quot;histogram&quot;:{&quot;category&quot;:&quot;numeric-equi-depth&quot;,&quot;numRowsPerBucket&quot;:150,&quot;buckets&quot;:[0.0,2.0,4.0,7.0,9.0,12.0,15.199999999999978,17.0,19.0,22.0,24.0]}}  
 </code></pre></div></li>
@@ -1443,6 +1443,8 @@ Sample
 
 <h2 id="histograms">Histograms</h2>
 
+<p><strong>Note:</strong> Currently, histograms are supported for numeric columns only.  </p>
+
 <p>Histograms show the distribution of data to determine if data is skewed or normally distributed. Histogram statistics improve the selectivity estimates used by the optimizer to create the most efficient query plans possible. Histogram statistics are useful for range predicates to help determine how many rows belong to a particular range.   </p>
 
 <p>Running the ANALYZE TABLE statement generates equi-depth histogram statistics on each column in a table. Equi-depth histograms distribute distinct column values across buckets of varying widths, with all buckets having approximately the same number of rows. The fixed number of rows per bucket is predetermined by <code>ceil(number_rows/n)</code>, where <code>n</code> is the number of buckets. The number of distinct values in each bucket depends on the distribution of the values in a column. Equi-depth histograms are better suited for skewed data because the more frequent column values have their own bucket or span more than one bucket instead of being lumped together with less frequent values.</p>
@@ -1465,7 +1467,7 @@ Histogram statistics are generated for each column, as shown:  </p>
 
 <p>qhistogram&quot;:{&quot;category&quot;:&quot;numeric-equi-depth&quot;,&quot;numRowsPerBucket&quot;:150,&quot;buckets&quot;:[0.0,2.0,4.0,7.0,9.0,12.0,15.199999999999978,17.0,19.0,22.0,24.0]</p>
 
-<p>In this example, there are 11 buckets. Each bucket contains 150 rows, which is an approximation of the number of rows (1500)/number of buckets (11). The list of numbers for the “buckets” property indicates boundaries for each bucket. Starting from 0, the first number (0.0) denotes the end of the first bucket and the start point of the second bucket. The second number (2.0) denotes end point for the second bucket and starting point for the third bucket, and so on.  </p>
+<p>In this example, there are 10 buckets. Each bucket contains 150 rows, which is calculated as the number of rows (1500)/number of buckets (10). The list of numbers for the “buckets” property indicates bucket boundaries, with the first bucket starting at 0.0 and ending at 2.0. The end of the first bucket is the start point for the second bucket, such that the second bucket starts at 2.0 and ends at 4.0, and so on for the remainder of the buckets. </p>
 
 <h2 id="limitations">Limitations</h2>
 

@@ -1316,43 +1316,50 @@
 
     </div>
 
-     Apr 29, 2019
+     May 2, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Starting in Drill 1.16, you can define a schema for text files using the CREATE OR REPLACE SCHEMA command. Running this command generates a hidden <code>.drill.schema</code> file in the table’s root directory. The <code>.drill.schema</code> file stores the schema definition in JSON format. Drill uses the schema file at runtime if the <code>exec.storage.enable_v3_text_reader</code> and <code>store.table.use_schema_file</code> options are enabled. Alternatively, you can create the schema file manually. If created manually, the file content must comply with the structure recognized by the Drill.  </p>
+        <p>Starting in Drill 1.16, you can define a schema for text files using the CREATE OR REPLACE SCHEMA command. Schema is only available for tables represented by a directory. To use this feature with a single file, put the file inside a directory, and use the directory name to query the table.</p>
+
+<p>In Drill 1.16, this feature is in preview status and disabled by default. You can enable this feature by setting the <code>exec.storage.enable_v3_text_reader</code> and <code>store.table.use_schema_file</code> system/session options to true. The feature is currently only available for text (CSV) files.</p>
+
+<p>Running this command generates a hidden <code>.drill.schema</code> file in the table’s root directory. The <code>.drill.schema</code> file stores the schema definition in JSON format. Alternatively, you can create the schema file manually. If created manually, the file content must comply with the structure recognized by the Drill.  </p>
+
+<p>The end of this topic provides <a href="/docs/create-or-replace-schema/#examples">examples</a> that show how the feature is used. You may want to review this section before reading the reference material.  </p>
+
+<p>Please post your experience and suggestions to the &quot;<a href="user@drill.apache.org">user</a>&quot; mailing list.</p>
 
 <h2 id="syntax">Syntax</h2>
 
 <p>The CREATE OR REPLACE SCHEMA command supports the following syntax:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">CREATE [OR REPLACE] SCHEMA
 [LOAD &#39;file:///path/to/file&#39;]
-[(column_name data_type nullability format default properties {prop=&#39;val&#39;, ...})]
-[FOR TABLE `table_name`]
-[PATH &#39;file:///schema_file_path/schema_file_name&#39;] 
-[PROPERTIES (&#39;key1&#39;=&#39;value1&#39;, &#39;key2&#39;=&#39;value2&#39;, ...)]  
+[(column_name data_type [nullability] [format] [default] [properties {prop=&#39;val&#39;, ...})]]
+[FOR TABLE `table_name` | PATH &#39;file:///schema_file_path/schema_file_name&#39;] 
+[PROPERTIES (&#39;key1&#39;=&#39;value1&#39;, &#39;key2&#39;=&#39;value2&#39;, ...)]   
 </code></pre></div>
 <h2 id="parameters">Parameters</h2>
 
 <p><em>OR REPLACE</em><br>
-Existing schema is dropped and replaced with the new schema. Only supported when using FOR TABLE. Not supported when using PATH because it prevents malicious deletion of any file. You must manually delete any schema file created in a custom location. </p>
+Existing schema is dropped and replaced with the new schema. Prevents malicious deletion of any file. Only supported when using FOR TABLE. Not supported when using PATH. Instead, you must manually delete any schema file created in a custom PATH location.  </p>
 
 <p><em>LOAD</em><br>
 Loads raw schema (list of column names with their attributes) from a file. You must indicate the path to the file after the LOAD keyword. Note that columns should be listed or provided when using the LOAD clause; at least one option is required for the successful schema creation.</p>
 
 <p><em>column_name</em><br>
-Name of the column for which schema is created. Case-insensitive. </p>
+Name of the column for which schema is created. Case-insensitive. The name must match the name in the data file or data source. You cannot rename columns using the schema mechanism. </p>
 
 <p><em>data_type</em><br>
 Data type defined for the column. See Supported Data Types. </p>
 
 <p><em>format</em><br>
-Sets the format for date and time data types when converting from string.</p>
+Sets the format for date and time data types when converting from string. See <a href="/docs/create-or-replace-schema/#format-for-date-time-conversion">Format for Date, Time Conversion</a>.</p>
 
 <p><em>default</em><br>
-Sets a default value for non-nullable columns, such that queries return the default value instead of null. </p>
+Used for non-nullable columns. The default value is returned by queries when the column is missing from a data file. The default value is a string enclosed in single quotes, like &#39;10&#39;. If you provide a format, the value must be valid for that format. </p>
 
 <p><em>properties</em><br>
 Keyword to include optional properties. See Related Options below.  </p>
@@ -1374,7 +1381,15 @@ List of properties as key-value pairs in  parenthesis.  </p>
 
 <h2 id="related-options">Related Options</h2>
 
-<p>You must enable the following options for Drill to use the schema created during query execution:</p>
+<p>In Drill 1.16, you must enable the following options for Drill to use the schema created during query execution: </p>
+
+<p><strong>exec.storage.enable_v3_text_reader</strong><br>
+Enables the preview &quot;version 3&quot; of the text (CSV) file reader. The V3 text reader is the only reader in Drill 1.16 that supports file schemas.  </p>
+
+<p><strong>store.table.use_schema_file</strong><br>
+Enables the use of the schema file mechanism.</p>
+
+<p>You can enable these options, as shown:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">set `exec.storage.enable_v3_text_reader` = true;
 +------+---------------------------------------------+
 |  ok  |                   summary                   |
@@ -1391,25 +1406,41 @@ set `store.table.use_schema_file` = true;
 </code></pre></div>
 <h2 id="related-properties">Related Properties</h2>
 
-<p>When you create a schema, you can set the following properties within the CREATE [OR REPLACE] SCHEMA command:   </p>
+<p>Drill normally uses &quot;schema on read&quot; to load data from your tables. The schema mechanism allows you to perform some data cleanup and transformations on your data. You can:  </p>
+
+<ul>
+<li>Identify which columns to load, ignoring columns that are not needed by users.<br></li>
+<li>Handle schema evolution by providing names and default values for columns that may be missing from some of your older (or newer) data files.<br></li>
+<li>Convert text fields to numbers, dates, times or timestamps without having to add a CAST to every query (or define a view.)<br></li>
+</ul>
+
+<p>When you create a schema, you can set the following column properties within the CREATE [OR REPLACE] SCHEMA command: </p>
+
+<p>(<code>drill.format, drill.default, drill.blank-as</code>)  </p>
+
+<p>You can also set the following table properties:</p>
+
+<p>(<code>drill.strict</code>)  </p>
+
+<p>The following sections describe the properties that aid in data clean up and transformation:   </p>
 
 <p><strong>drill.strict</strong><br>
-A table property that determines the ordering of columns returned for wildcard (*) queries. Accepts a value of true or false. See Schema Mode (Column Order). </p>
+Table property that determines the set of columns returned for a wildcard (*) query. With <code>drill.strict=false</code> (the default), a wildcard includes all columns in the table, whether or not they are listed in the schema. With <code>drill.strict=true</code>, a wildcard includes only the columns defined in the schema, and in the order defined by the schema. See <a href="/docs/create-or-replace-schema/#schema-mode-column-order">Schema Mode (Column Order)</a>. </p>
 
 <p><strong>drill.format</strong><br>
-A column property that ensures proper conversion when converting string values to date and time data types. See Format for Date, Time Conversion.</p>
+Same as the format parameter. (The format parameter is stored as a property in the schema file.) See the format parameter for the supported formats. Also, see <a href="/docs/create-or-replace-schema/#format-for-date-time-conversion">Format for Date, Time Conversion</a>.</p>
 
 <p><strong>drill.default</strong><br>
-A column property that sets non-nullable columns to a “default” value when creating the schema. See Column Modes (Nullable and Non-Nullable Columns).  </p>
+Same as the default parameter. (The default parameter is stored as a property in the schema file.) See <a href="/docs/create-or-replace-schema/#column-modes-nullable-and-non-nullable-columns">Column Modes (Nullable and Non-Nullable Columns</a>).  </p>
 
 <p><strong>drill.blank-as</strong><br>
 A property that sets how Drill handles blank column values. Accepts the following values:<br>
 - <strong>null</strong>: If the column is nullable, treat the blank as null. If non-nullable, leave the blank unchanged.<br>
 - <strong>0</strong>: Replace blanks with the value &quot;0&quot; for numeric types.<br>
-- <strong>skip</strong>: Skip blank values. This sets the column to its default value: NULL for nullable columns, the default value for non-nullable columns.<br>
-- If left empty, blanks have no special meaning. A blank is parsed as any other string, which typically produces an error.  </p>
+- <strong>skip</strong>: Skip blank values. This sets the column to its default value: NULL for nullable columns, or the default value for non-nullable columns.<br>
+- If left empty, blanks have no special meaning. A blank is parsed as any other string, which typically produces an error for text columns converted to a numeric type.   </p>
 
-<p>See Handling Policy for Blank Column Values.  </p>
+<p>See <a href="/docs/create-or-replace-schema/#handling-policy-for-blank-column-values">Handling Policy for Blank Column Values</a>.  </p>
 
 <h3 id="setting-properties">Setting Properties</h3>
 
@@ -1463,10 +1494,10 @@ A property that sets how Drill handles blank column values. Accepts the followin
 <h2 id="related-commands">Related Commands</h2>
 <div class="highlight"><pre><code class="language-text" data-lang="text">DROP SCHEMA [IF EXISTS] FOR TABLE `table_name`
 </code></pre></div>
-<p>See Dropping Schema for a Table in the Examples section at the end of this topic. </p>
+<p>See <a href="/docs/create-or-replace-schema/#dropping-schema-for-a-table">Dropping Schema for a Table</a>. </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">DESCRIBE SCHEMA FOR TABLE `table_name`
 </code></pre></div>
-<p>See Describing Schema for a Table in the Examples section at the end of this topic.   </p>
+<p>See <a href="/docs/create-or-replace-schema/#describing-schema-for-a-table">Describing Schema for a Table</a>.   </p>
 
 <h2 id="supported-data-types">Supported Data Types</h2>
 
@@ -1495,13 +1526,14 @@ A property that sets how Drill handles blank column values. Accepts the followin
 <li>Schema provisioning only works with tables defined as directories because Drill must have a place to store the schema file. The directory can contain one or more files.<br></li>
 <li>Text files must have headers. The default extension for delimited text files with headers is <code>.csvh</code>. Note that the column names that appear in the headers match column definitions in the schema.<br></li>
 <li>You do not have to enumerate all columns in a file when creating a schema. You can indicate the columns of interest only.<br></li>
-<li>Columns in the defined schema do not have to be in the same order as in the data file. However, the names must match. The case can differ, for example “name” and “NAME” are acceptable.<br></li>
+<li>Columns in the defined schema do not have to be in the same order as in the data file.<br></li>
+<li>Column names must match. The case can differ, for example “name” and “NAME” are acceptable.<br></li>
 <li>Queries on columns with data types that cannot be converted fail with a <code>DATA_READ_ERROR</code>.<br></li>
 </ul>
 
 <h3 id="schema-mode-column-order">Schema Mode (Column Order)</h3>
 
-<p>The schema mode determines the ordering of columns returned for wildcard (*) queries. The mode is set through the <code>drill.strict</code> property. You can set this property to true (strict) or false (not strict). If you do not indicate the mode, the default is false (not strict).  </p>
+<p>The schema mode determines the set of columns returned for wildcard (*) queries and the  ordering of those columns. The mode is set through the <code>drill.strict</code> property. You can set this property to true (strict) or false (not strict). If you do not indicate the mode, the default is false (not strict).  </p>
 
 <p><strong>Not Strict (Default)</strong><br>
 Columns defined in the schema are projected in the defined order. Columns not defined in the schema are appended to the defined columns, as shown:  </p>
@@ -1549,6 +1581,8 @@ select * from dfs.tmp.`text_table`;
 
 <h2 id="including-additional-columns-in-the-schema">Including Additional Columns in the Schema</h2>
 
+<p>The ability to include additional columns in the schema enables schema evolution, which is useful when some columns appear only in newer (or older) files. </p>
+
 <p>When you create a schema, you can include columns that do not exist in the table and these columns will be projected. This feature ensures that queries return the correct results whether the files have a specific column or not. Note that schema mode does not affect the behavior of this feature.</p>
 
 <p>For example, the “comment” column is not in the text_table, but added when creating the schema:  </p>
@@ -1569,7 +1603,7 @@ select * from dfs.tmp.`text_table`;
 | 3    | 2016-01-01 |  null   | Pebbles |
 | 4    | null       |  null   | Barney  |
 | null | null       |  null   | Dino    |
-+------+------------+---------+---------+  
++------+------------+---------+---------+    
 </code></pre></div>
 <h2 id="column-modes-nullable-and-non-nullable-columns">Column Modes (Nullable and Non-Nullable Columns)</h2>
 
@@ -1752,7 +1786,7 @@ select * from dfs.tmp.`text_blank`;
 
 <h2 id="limitations">Limitations</h2>
 
-<p>None</p>
+<p>This feature is currently in the alpha phase (preview, experimental) for Drill 1.16 and only applies to text (CSV) files in this release. You must enable this feature through the <code>exec.storage.enable_v3_text_reader</code> and <code>store.table.use_schema_file</code> system/session options.</p>
 
 <h2 id="examples">Examples</h2>
 
