@@ -1320,7 +1320,7 @@
 
     </div>
 
-     Feb 19, 2019
+     May 24, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1335,7 +1335,7 @@
 <li><a href="/docs/data-type-conversion/#other-data-type-conversions">Other Data Type Conversions</a><br></li>
 </ul>
 
-<p><strong>Note:</strong> Starting in Drill 1.15, all cast and data type conversion functions return null for an empty string (&#39;&#39;) when the <code>drill.exec.functions.cast_empty_string_to_null</code> option is enabled, for example:    </p>
+<p>Starting in Drill 1.15, all cast and data type conversion functions return null for an empty string (&#39;&#39;) when the <code>drill.exec.functions.cast_empty_string_to_null</code> option is enabled, for example:    </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SELECT CAST(&#39;&#39; AS DATE), TO_TIMESTAMP(&#39;&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;) FROM (VALUES(2));
 +---------+---------+
 | EXPR$0  | EXPR$1  |
@@ -2348,11 +2348,46 @@ FROM (VALUES(1));
 +------------------------+---------+
 | 2015-03-30 20:49:00.0  | UTC     |
 +------------------------+---------+
-1 row selected (0.148 seconds)
+1 row selected (0.148 seconds)  
 </code></pre></div>
+<h2 id="enabling-time-zone-offset">Enabling Time Zone Offset</h2>
+
+<p>Starting in Drill 1.16, the <code>store.hive.maprdb_json.read_timestamp_with_timezone_offset</code> option enables Drill to read timestamp values with a timezone offset when using the hive plugin with the Drill native MaprDB JSON reader enabled through the  <code>store.hive.maprdb_json.optimize_scan_with_native_reader option</code>. The <code>store.hive.maprdb_json.read_timestamp_with_timezone_offset</code> option is disabled (set to &#39;false&#39;) by default. You can enable this option from the Options page in the Drill Web UI or from the command line using the SET or ALTER SYSTEM commands.</p>
+
+<p><strong>Important</strong><br>
+Internally, Drill stores timestamp values in UTC format, for example 2018-01-01T20:12:12.123Z. When you enable the timezone offset option, select on a table returns different timestamp values. If you filter on timestamp values when this option is enabled, you must include the new timestamp value in the filter condition. </p>
+
+<p>For example, look at the timestamp values when the <code>store.hive.maprdb_json.read_timestamp_with_timezone_offset</code> option is disabled (set to &#39;false&#39;):   </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">select * from dfs.`/tmp/timestamp`;
+-------------------------------------------------------
+_id datestring  datetimestamp
+-------------------------------------------------------
+1   2018-01-01 12:12:12.123 2018-01-01 20:12:12.123
+2   9999-12-31 23:59:59.999 10000-01-01 07:59:59.999
+-------------------------------------------------------  
+</code></pre></div>
+<p>When the option is enabled (set to &#39;true&#39;), you can see the difference in the timestamp values returned:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">select * from dfs.`/tmp/timestamp`;
+------------------------------------------------------
+_id datestring  datetimestamp
+------------------------------------------------------
+1   2018-01-01 12:12:12.123 2018-01-01 12:12:12.123
+2   9999-12-31 23:59:59.999 9999-12-31 23:59:59.999
+------------------------------------------------------  
+</code></pre></div>
+<p>When the option is enabled, queries that filter on timestamp values must include the new timestamp value in the filter condition, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">select * from dfs.`/tmp/timestamp` where datetimestamp=timestamp &#39;2018-01-01 12:12:12.123&#39;;
+------------------------------------------------------
+_id datestring  datetimestamp
+------------------------------------------------------
+1   2018-01-01 12:12:12.123 2018-01-01 12:12:12.123
+------------------------------------------------------  
+</code></pre></div>
+<p>Notice that the WHERE clause uses the <code>2018-01-01 12:12:12.123</code> format versus the <code>2018-01-01 20:12:12.123</code> format.</p>
+
 <h2 id="time-zone-limitation">Time Zone Limitation</h2>
 
-<p>Currently Drill does not support conversion of a date, time, or timestamp from one time zone to another. Queries of data associated with a time zone can return inconsistent results or an error. For more information, see the <a href="http://www.openkb.info/2015/05/understanding-drills-timestamp-and.html#.VUzhotpVhHw">&quot;Understanding Drill&#39;s Timestamp and Timezone&quot;</a> blog. The Drill time zone is based on the operating system time zone unless you override it. To work around the limitation, configure Drill to use <a href="http://www.timeanddate.com/time/aboututc.html">UTC</a>-based time, convert your data to UTC timestamps, and perform date/time operation in UTC.  </p>
+<p>Drill does not support conversion of a date, time, or timestamp from one time zone to another. Queries of data associated with a time zone can return inconsistent results or an error. For more information, see the <a href="http://www.openkb.info/2015/05/understanding-drills-timestamp-and.html#.VUzhotpVhHw">&quot;Understanding Drill&#39;s Timestamp and Timezone&quot;</a> blog. The Drill time zone is based on the operating system time zone unless you override it. To work around the limitation, configure Drill to use <a href="http://www.timeanddate.com/time/aboututc.html">UTC</a>-based time, convert your data to UTC timestamps, and perform date/time operation in UTC.  </p>
 
 <ol>
 <li><p>Take a look at the Drill time zone configuration by running the TIMEOFDAY function or by querying the system.options table. This TIMEOFDAY function returns the local date and time with time zone information. </p>
@@ -2391,7 +2426,7 @@ FROM (VALUES(1));
 +------------------------+-----------+
 | 2015-03-30 20:49:00.0  | UTC       |
 +------------------------+-----------+
-1 row selected (0.097 seconds)
+1 row selected (0.097 seconds)  
 </code></pre></div>
 <!-- DRILL-448 Support timestamp with time zone -->
 
