@@ -1320,18 +1320,19 @@
 
     </div>
 
-     May 2, 2019
+     May 31, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Drill 1.16 and later supports the ANALYZE TABLE statement. The ANALYZE TABLE statement computes statistics on Parquet data stored in tables and directories. ANALYZE TABLE writes statistics to a JSON file in the <code>.stats.drill</code> directory, for example <code>/user/table1/.stats.drill/0_0.json</code>. The optimizer in Drill uses these statistics to estimate filter, aggregation, and join cardinalities and create more efficient query plans. </p>
+        <p>Drill 1.16 and later supports the ANALYZE TABLE statement. The ANALYZE TABLE statement computes statistics on Parquet data stored in tables and directories. The optimizer in Drill uses statistics to estimate filter, aggregation, and join cardinalities and create an optimal query plan. 
+ANALYZE TABLE writes statistics to a JSON file in the <code>.stats.drill</code> directory, for example <code>/user/table1/.stats.drill/0_0.json</code>. </p>
 
-<p>You can run the ANALYZE TABLE statement to calculate statistics for tables, columns, and directories with Parquet data; however, Drill will not use the statistics for query planning unless you enable the <code>planner.statistics.use</code> option, as shown:</p>
+<p>Drill will not use the statistics for query planning unless you enable the <code>planner.statistics.use</code> option, as shown:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">SET `planner.statistics.use` = true;
 </code></pre></div>
-<p>Alternatively, you can enable the option in the Drill Web UI at <code>http://&lt;drill-hostname-or-ip&gt;:8047/options</code>.</p>
+<p>Alternatively, you can enable the option in the Drill Web UI at <code>http://&lt;drill-hostname-or-ip-address&gt;:8047/options</code>.</p>
 
 <h2 id="syntax">Syntax</h2>
 
@@ -1360,13 +1361,13 @@ An integer that specifies the percentage of data on which to compute statistics.
 
 <h2 id="related-command">Related Command</h2>
 
-<p>If you drop a table on which you have run ANALYZE TABLE, the statistics are automatically removed with the table:  </p>
+<p>If you drop a table that you have already run ANALYZE TABLE against, the statistics are automatically removed with the table:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">DROP TABLE [IF EXISTS] [workspace.]name  
 </code></pre></div>
-<p>If you want to remove statistics for a table (and keep the table), you must remove the directory in which Drill stores the statistics:  </p>
+<p>To remove statistics for a table you want to keep, you must remove the directory in which Drill stores the statistics:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">DROP TABLE [IF EXISTS] [workspace.]name/.stats.drill  
 </code></pre></div>
-<p>If you have already issued the ANALYZE TABLE statement against specific columns, a table, or directory, you must run the DROP TABLE statement with <code>/.stats.drill</code> before you can successfully run the ANALYZE TABLE statement against the data source again, for example:</p>
+<p>If you have already issued the ANALYZE TABLE statement against specific columns, table, or directory, you must run the DROP TABLE statement with <code>/.stats.drill</code> before you can successfully run the ANALYZE TABLE statement against the data source again, for example:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">DROP TABLE `table_stats/Tpch0.01/parquet/customer/.stats.drill`;
 </code></pre></div>
 <p>Note that <code>/.stats.drill</code> is the directory to which the JSON file with statistics is written.   </p>
@@ -1466,11 +1467,10 @@ Sample
 
 <p>Next, consider the range predicate <code>&quot;WHERE a &gt; 5 AND a &lt;= 16&quot;</code>.  The range spans part of bucket [1, 7] and entire buckets [8, 9], [10, 11] and [12, 16].  The total estimate = (7-5)/7 * 16 + 16 + 16 + 16 = 53 (approximately).  The actual count is 59.</p>
 
-<p><strong>Viewing Histogram Statistics for a Column</strong>
+<p><strong>Viewing Histogram Statistics for a Column</strong><br>
 Histogram statistics are generated for each column, as shown:  </p>
-
-<p>qhistogram&quot;:{&quot;category&quot;:&quot;numeric-equi-depth&quot;,&quot;numRowsPerBucket&quot;:150,&quot;buckets&quot;:[0.0,2.0,4.0,7.0,9.0,12.0,15.199999999999978,17.0,19.0,22.0,24.0]</p>
-
+<div class="highlight"><pre><code class="language-text" data-lang="text">qhistogram&quot;:{&quot;category&quot;:&quot;numeric-equi-depth&quot;,&quot;numRowsPerBucket&quot;:150,&quot;buckets&quot;:[0.0,2.0,4.0,7.0,9.0,12.0,15.199999999999978,17.0,19.0,22.0,24.0]
+</code></pre></div>
 <p>In this example, there are 10 buckets. Each bucket contains 150 rows, which is calculated as the number of rows (1500)/number of buckets (10). The list of numbers for the “buckets” property indicates bucket boundaries, with the first bucket starting at 0.0 and ending at 2.0. The end of the first bucket is the start point for the second bucket, such that the second bucket starts at 2.0 and ends at 4.0, and so on for the remainder of the buckets. </p>
 
 <h2 id="limitations">Limitations</h2>

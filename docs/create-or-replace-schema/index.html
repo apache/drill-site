@@ -1320,7 +1320,7 @@
 
     </div>
 
-     May 2, 2019
+     May 31, 2019
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1958,15 +1958,16 @@ drop schema for table `text_table`;
 </code></pre></div>
 <h2 id="troubleshooting">Troubleshooting</h2>
 
-<p><strong>Schema defined as incorrect data type produces DATA_READ_ERROR</strong><br>
-Assume that you defined schema on the “name” column as integer, as shown:
-    create or replace schema (name int) for table dfs.tmp.<code>text_table</code>;
-    +------+-----------------------------------------+
-    |  ok  |                 summary                 |
-    +------+-----------------------------------------+
-    | true | Created schema for [dfs.tmp.text_table] |
-    +------+-----------------------------------------+</p>
+<p><strong>Schema defined as incorrect data type produces DATA_READ_ERROR</strong>  </p>
 
+<p>Assume that you defined schema on the “name” column as integer, as shown:  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">create or replace schema (name int) for table dfs.tmp.`text_table`;
++------+-----------------------------------------+
+|  ok  |                 summary                 |
++------+-----------------------------------------+
+| true | Created schema for [dfs.tmp.text_table] |
++------+-----------------------------------------+
+</code></pre></div>
 <p>Because the column does not contain integers, a query issued against the directory returns the DATA_READ_ERROR. The error message includes the line and value causing the issue:  </p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">select * from dfs.tmp.`text_table`;
 
