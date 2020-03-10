@@ -1337,15 +1337,15 @@
 
     </div>
 
-     Jan 31, 2020
+     Mar 3, 2020
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
     <div class="int_text" align="left">
       
-        <p>Drill uses Iceberg Metastore implementation based on <a href="http://iceberg.incubator.apache.org">Iceberg tables</a>. For Drill 1.17,
- this is default Drill Metastore implementation. For details on how to configure Iceberg Metastore implementation and
- its option descriptions, please refer to <a href="https://github.com/apache/drill/blob/master/metastore/iceberg-metastore/README.md">Iceberg Metastore docs</a>.</p>
+        <p>Drill&#39;s Metastore allows a variety of storage engines. Drill ships with a storage engine based on
+ <a href="http://iceberg.incubator.apache.org">Iceberg tables</a>. For Drill 1.17, this is default Drill Metastore
+ implementation.</p>
 
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
@@ -1358,21 +1358,23 @@ If the file system does not support atomic rename, it could lead to inconsistenc
 
 <h3 id="iceberg-tables-location">Iceberg Tables Location</h3>
 
-<p>Iceberg tables will reside on the file system in the location based on
-Iceberg Metastore base location <code>drill.metastore.iceberg.location.base_path</code> and component specific location.
-If Iceberg Metastore base location is <code>/drill/metastore/iceberg</code>
-and tables component location is <code>tables</code>. Iceberg table for tables component
-will be located in <code>/drill/metastore/iceberg/tables</code> folder.</p>
+<p>Iceberg is essentially a file system within a file. The Iceberg table is stored in a file system. In the tutorial we
+ stored the Metastore in your local file system. Drill is a distributed query engine, so production deployments MUST
+ store the Metastore on DFS such as HDFS.</p>
 
-<p>Metastore metadata will be stored inside Iceberg table location provided
-in the configuration file. Drill table metadata location will be constructed
-based on specific component storage keys. For example, for <code>tables</code> component,
-storage keys are storage plugin, workspace and table name: unique table identifier in Drill.</p>
+<p>Iceberg Metastore configuration can be set in <code>drill-metastore-distrib.conf</code> or <code>drill-metastore-override.conf</code> files.
+The default configuration is indicated in <code>drill-metastore-module.conf</code> file.</p>
 
-<p>Assume Iceberg table location is <code>/drill/metastore/iceberg/tables</code>, metadata for the table
-<code>dfs.tmp.nation</code> will be stored in the <code>/drill/metastore/iceberg/tables/dfs/tmp/nation</code> folder.</p>
+<p>Within the Metastore directory, the Metastore stores the data for each table as a set of records within a single Iceberg table.</p>
 
-<p>Example of base Metastore configuration file <code>drill-metastore-override.conf</code>, where Iceberg tables will be stored in
+<p>Iceberg tables will reside on the file system in the location based on Iceberg Metastore base location
+ <code>drill.metastore.iceberg.location.base_path</code> configuration property and component specific location.
+Table metadata resides in the <code>${drill.metastore.iceberg.location.base_path}/tables</code> directory.</p>
+
+<p>If you ran through the <a href="/docs/using-drill-metastore/#tutorial">Tutorial</a>, Metastore files are stored in <code>/home/username/drill/metastore/iceberg/tables</code>.
+If you inspect this directory you will see the following directories <code>my-dfs/tmp/lineitem/</code>.</p>
+
+<p>Example of base Metastore configuration file <code>drill-metastore-override.conf</code>, where Iceberg tables are stored in
  hdfs:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">drill.metastore.iceberg: {
   config.properties: {
@@ -1385,19 +1387,6 @@ storage keys are storage plugin, workspace and table name: unique table identifi
   }
 }
 </code></pre></div>
-<h3 id="metadata-storage-format">Metadata Storage Format</h3>
-
-<p>Iceberg tables support data storage in three formats: Parquet, Avro, ORC. Drill metadata will be stored in Parquet files.
-This format was chosen over others since it is column oriented and efficient in terms of disk I/O when specific
-columns need to be queried.</p>
-
-<p>Each Parquet file will hold information for one partition. Partition keys will depend on Metastore
-component characteristics. For example, for tables component, partitions keys are storage plugin, workspace,
-table name and metadata key.</p>
-
-<p>Parquet files name will be based on UUID to ensure uniqueness. If somehow collision occurs, modify operation
-in Metastore will fail.</p>
-
 <h3 id="iceberg-metadata-expiration">Iceberg metadata expiration</h3>
 
 <p>Iceberg table generates metadata for each modification operation:
