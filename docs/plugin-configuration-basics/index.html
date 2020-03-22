@@ -1474,6 +1474,8 @@
 
 <p>You set the formats attributes, such as skipFirstLine, in the <code>formats</code> area of the storage plugin configuration. When setting attributes for text files, such as CSV, you also need to set the <code>sys.options</code> property <code>exec.storage.enable_new_text_reader</code> to true (the default). For more information and examples of using formats for text files, see <a href="/docs/text-files-csv-tsv-psv/">&quot;Text Files: CSV, TSV, PSV&quot;</a>.  </p>
 
+<h1 id="table-function-parameters">Table Function Parameters</h1>
+
 <h2 id="using-the-formats-attributes-as-table-function-parameters">Using the Formats Attributes as Table Function Parameters</h2>
 
 <p>In Drill version 1.4 and later, you can also set the formats attributes defined above on a per query basis. To pass parameters to the format plugin, use the table function syntax:  </p>
@@ -1488,6 +1490,28 @@ fieldDelimiter =&gt; &#39;,&#39;, extractHeader =&gt; true))</code></p>
 
 <p>For more information about format plugin configuration see <a href="/docs/text-files-csv-tsv-psv/">&quot;Text Files: CSV, TSV, PSV&quot;</a>.  </p>
 
+<h2 id="specifying-the-schema-as-table-function-parameter">Specifying the Schema as Table Function Parameter</h2>
+
+<p>Table schemas normally reside in the root folder of each table. You can also specify a schema for an individual query
+ using a table function and specifying the <code>SCHEMA</code> property. You can combine the schema with format plugin properties.
+ The syntax is similar to the <a href="/docs/create-or-replace-schema/#syntax">CREATE OR REPLACE SCHEMA</a>:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT a, b FROM TABLE (table_name(
+SCHEMA =&gt; &#39;inline=(column_name data_type [nullability] [format] [default] [properties {prop=&#39;val&#39;, ...})]&#39;))
+</code></pre></div>
+<p>You can specify the schema inline within the query. For example:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">select * from table(dfs.tmp.`text_table`(
+schema =&gt; &#39;inline=(col1 date properties {`drill.format` = `yyyy-MM-dd`}) 
+properties {`drill.strict` = `false`}&#39;))
+</code></pre></div>
+<p>Alternatively, you can also specify the path to a schema file. For example:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">select * from table(dfs.tmp.`text_table`(schema =&gt; &#39;path=`/tmp/my_schema`&#39;))
+</code></pre></div>
+<p>The following example demonstrates applying provided schema alongside with format plugin table function parameters.
+Suppose that you have a CSV file with headers and with a custom extension: <code>csvh-test</code>. You can combine the schema with format plugin properties:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">select * from table(dfs.tmp.`cars.csvh-test`(type =&gt; &#39;text&#39;, 
+fieldDelimiter =&gt; &#39;,&#39;, extractHeader =&gt; true,
+schema =&gt; &#39;inline=(col1 date)&#39;))
+</code></pre></div>
 <h2 id="using-other-attributes">Using Other Attributes</h2>
 
 <p>The configuration of other attributes, such as <code>size.calculator.enabled</code> in the <code>hbase</code> plugin and <code>configProps</code> in the <code>hive</code> plugin, are implementation-dependent and beyond the scope of this document.</p>

@@ -1337,7 +1337,7 @@
 
     </div>
 
-     Mar 3, 2020
+     Mar 17, 2020
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1370,10 +1370,17 @@ The name of the table or directory for which Drill will collect table metadata. 
 <p><em>table({table function name}(parameters))</em>
 Table function parameters. This syntax is only available since Drill 1.18.
 Example of table function parameters usage:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">table(dfs.`table_name` (type =&gt; &#39;parquet&#39;, autoCorrectCorruptDates =&gt; true))
+<div class="highlight"><pre><code class="language-text" data-lang="text"> table(dfs.tmp.`text_nation` (type=&gt;&#39;text&#39;, fieldDelimiter=&gt;&#39;,&#39;, extractHeader=&gt;true,
+    schema=&gt;&#39;inline=(
+        `n_nationkey` INT not null,
+        `n_name` VARCHAR not null,
+        `n_regionkey` INT not null,
+        `n_comment` VARCHAR not null)&#39;
+    ))
 </code></pre></div>
-<p>For detailed information, please refer to
- <a href="/docs/plugin-configuration-basics/#using-the-formats-attributes-as-table-function-parameters">Using the Formats Attributes as Table Function Parameters</a></p>
+<p>Please refer to
+ <a href="/docs/plugin-configuration-basics/#specifying-the-schema-as-table-function-parameter">Specifying the Schema as Table Function Parameter</a>
+ for the details.</p>
 
 <p><em>COLUMNS (col1, col2, ...)</em>
 Optional names of the column(s) for which Drill will compute and store statistics. The stored schema will include all

@@ -1343,13 +1343,20 @@
 
     <div class="int_text" align="left">
       
-        <p>Starting in Drill 1.16, you can define a schema for text files using the CREATE OR REPLACE SCHEMA command. Schema is only available for tables represented by a directory. To use this feature with a single file, put the file inside a directory, and use the directory name to query the table.</p>
+        <p>Starting in Drill 1.16 you can define a schema for text files. Drill places a schema file in the root directory of your text table and so the schema feature only works for tables within a directory. If you have a single-file table, simply create a directory to hold that file and the schema file.</p>
 
-<p>In Drill 1.16, this feature is in preview status and disabled by default. You can enable this feature by setting the <code>exec.storage.enable_v3_text_reader</code> and <code>store.table.use_schema_file</code> system/session options to true. The feature is currently only available for text (CSV) files.</p>
+<p>In Drill 1.17, the provided schema feature is disabled by default. Enable it by setting the <code>store.table.use_schema_file</code> system/session option to true:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SESSION SET `store.table.use_schema_file` = true
+</code></pre></div>
+<p>Next you create the schema using the <code>CREATE OR REPLACE SCHEMA</code> command as described in <a href="#syntax">Syntax</a> section.</p>
 
 <p>Running this command generates a hidden <code>.drill.schema</code> file in the table’s root directory. The <code>.drill.schema</code> file stores the schema definition in JSON format. Alternatively, you can create the schema file manually. If created manually, the file content must comply with the structure recognized by the Drill.  </p>
 
 <p>The end of this topic provides <a href="/docs/create-or-replace-schema/#examples">examples</a> that show how the feature is used. You may want to review this section before reading the reference material.  </p>
+
+<p>As described in <a href="/docs/plugin-configuration-basics/#specifying-the-schema-as-table-function-parameter">Specifying the Schema as Table Function Parameter</a>,
+ you can also use a table function to apply a query to individual queries. Or, you can place the
+ table function within a view, and query the table through the view.</p>
 
 <p>Please post your experience and suggestions to the &quot;<a href="user@drill.apache.org">user</a>&quot; mailing list.</p>
 
@@ -1405,7 +1412,8 @@ List of properties as key-value pairs in  parenthesis.  </p>
 <p>In Drill 1.16, you must enable the following options for Drill to use the schema created during query execution: </p>
 
 <p><strong>exec.storage.enable_v3_text_reader</strong><br>
-Enables the preview &quot;version 3&quot; of the text (CSV) file reader. The V3 text reader is the only reader in Drill 1.16 that supports file schemas.  </p>
+Enables the preview &quot;version 3&quot; of the text (CSV) file reader. The V3 text reader is the only reader in Drill 1.16 that supports file schemas.<br>
+In Drill 1.17, this option is enabled by default.</p>
 
 <p><strong>store.table.use_schema_file</strong><br>
 Enables the use of the schema file mechanism.</p>
@@ -1544,13 +1552,23 @@ A property that sets how Drill handles blank column values. Accepts the followin
 <h3 id="general-information">General Information</h3>
 
 <ul>
-<li>Schema provisioning only works with tables defined as directories because Drill must have a place to store the schema file. The directory can contain one or more files.<br></li>
+<li>Schema provisioning works only with the file system (dfs-based) storage plugins. It works by placing a file <code>.drill.schema</code> in the root folder of tables defined as a directory. The directory can contain any number of files (even just one) in addition to the schema file.</li>
 <li>Text files must have headers. The default extension for delimited text files with headers is <code>.csvh</code>. Note that the column names that appear in the headers match column definitions in the schema.<br></li>
 <li>You do not have to enumerate all columns in a file when creating a schema. You can indicate the columns of interest only.<br></li>
 <li>Columns in the defined schema do not have to be in the same order as in the data file.<br></li>
 <li>Column names must match. The case can differ, for example “name” and “NAME” are acceptable.<br></li>
-<li>Queries on columns with data types that cannot be converted fail with a <code>DATA_READ_ERROR</code>.<br></li>
 </ul>
+
+<p>Drill is unique in that it infers table schema at runtime. However, sometimes schema inference can fail when Drill
+ cannot infer the correct types. For example, Drill treats all fields in a text file as text. Drill may not be able
+ to determine the type of fields in JSON files if the fields are missing or set to <code>null</code> in the first few records
+ in the file. Drill issues a <code>DATA_READ_ERROR</code> when runtime schema inference fails.</p>
+
+<p>When Drill cannot correctly infer the schema, you can instead use your knowledge of the file layout to tell Drill
+ the proper schema to use. Schema provisioning is the feature you use to specify the schema.
+ You can provide a schema for the file as a whole using the <a href="#syntax"><code>CREATE OR REPLACE SCHEMA</code> command</a> or for
+ a single query using a <a href="/docs/plugin-configuration-basics/#table-function-parameters">table function</a>.
+ Please see <a href="/docs/plugin-configuration-basics/#specifying-the-schema-as-table-function-parameter">Specifying the Schema as Table Function Parameter</a> for details.</p>
 
 <h3 id="schema-mode-column-order">Schema Mode (Column Order)</h3>
 
@@ -1807,7 +1825,10 @@ select * from dfs.tmp.`text_blank`;
 
 <h2 id="limitations">Limitations</h2>
 
-<p>This feature is currently in the alpha phase (preview, experimental) for Drill 1.16 and only applies to text (CSV) files in this release. You must enable this feature through the <code>exec.storage.enable_v3_text_reader</code> and <code>store.table.use_schema_file</code> system/session options.</p>
+<p>Schema provisioning works with selected readers. If you develop a format plugin, you must use the
+ <code>Enhanced Vector Framework</code> (rather than the &quot;classic&quot; techniques) to enable schema support.</p>
+
+<p>To use schema provisioning, you must first enable it with the <code>store.table.use_schema_file</code> option.</p>
 
 <h2 id="examples">Examples</h2>
 
@@ -1923,7 +1944,7 @@ id,amount,start_date
 </code></pre></div>
 <h3 id="describing-schema-for-a-table">Describing Schema for a Table</h3>
 
-<p>After you create schema, you can examine the schema using the DESCRIBE SCHEMA FOR TABLE command. Schema can print to JSON or STATEMENT format. JSON format is the default if no format is indicated in the query. Schema displayed in JSON format is the same as the JSON format in the <code>.drill.schema</code> file.</p>
+<p>You can verify the provided schema using the <a href="#related-commands"><code>DESCRIBE SCHEMA FOR TABLE</code> command</a>. This command can format the schema in two formats. The <code>JSON</code> format is the same as the contents of the <code>.drill.schema</code> file stored in your table directory.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">describe schema for table dfs.tmp.`text_table` as JSON;
 +----------------------------------------------------------------------------------+
 |                                      schema                                      |
@@ -1943,7 +1964,7 @@ id,amount,start_date
 } |
 +----------------------------------------------------------------------------------+
 </code></pre></div>
-<p>STATEMENT format displays the schema in a form compatible with the CREATE OR REPLACE SCHEMA command such that it can easily be copied, modified, and executed.</p>
+<p>You can also use the <code>STATEMENT</code> format to recover the SQL statement to recreate the schema. You can easily copy, reuse or edit this statement to change the schema or reuse the statement for other files.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">describe schema for table dfs.tmp.`text_table` as statement;
 +--------------------------------------------------------------------------+
 |                                  schema                                  |
@@ -1956,9 +1977,35 @@ FOR TABLE dfs.tmp.`text_table`
  |
 +--------------------------------------------------------------------------+
 </code></pre></div>
+<h3 id="altering-schema-for-a-table">Altering Schema for a Table</h3>
+
+<p>Use the <code>ALTER SCHEMA</code> command to update your table schema. The command can add or replace columns.
+Or, it can update properties for the table or individual columns. Syntax:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SCHEMA
+(FOR TABLE dfs.tmp.nation | PATH &#39;/tmp/schema.json&#39;)
+ADD [OR REPLACE]
+[COLUMNS (col1 int, col2 varchar)]
+[PROPERTIES (&#39;prop1&#39;=&#39;val1&#39;, &#39;prop2&#39;=&#39;val2&#39;)]
+</code></pre></div>
+<p><code>ALTER SCHEMA</code> modifies an existing schema file; it will fail if the schema file does not exist.
+(Use <code>CREATE SCHEMA</code> to create a new schema file.)</p>
+
+<p>To prevent accidental changes, the <code>ALTER SCHEMA ... ADD</code> command will fail if the requested column or property
+ already exists. Use the <code>OR REPLACE</code> clause to modify an existing column or property.</p>
+
+<p>You can remove columns or property with the <code>ALTER SCHEMA ... REMOVE</code> command:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SCHEMA
+(FOR TABLE dfs.tmp.nation | PATH &#39;/tmp/schema.json&#39;)
+REMOVE
+[COLUMNS (col1 int, col2 varchar)]
+[PROPERTIES (&#39;prop1&#39;=&#39;val1&#39;, &#39;prop2&#39;=&#39;val2&#39;)]
+</code></pre></div>
+<p>The command fails if the schema file does not exist. The command silently ignores a request to remove a column or
+ property which does not exist.</p>
+
 <h3 id="dropping-schema-for-a-table">Dropping Schema for a Table</h3>
 
-<p>You can easily drop the schema for a table using the DROP SCHEMA [IF EXISTS] FOR TABLE `table_name` command, as shown:</p>
+<p>You can easily drop the schema for a table using the <code>DROP SCHEMA [IF EXISTS] FOR TABLE `table_name`</code> command, as shown:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">use dfs.tmp;
 +------+-------------------------------------+
 |  ok  |               summary               |

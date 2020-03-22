@@ -1337,7 +1337,7 @@
 
     </div>
 
-     Mar 3, 2020
+     Mar 17, 2020
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1345,11 +1345,14 @@
       
         <p>Drill 1.17 introduces the Drill Metastore which stores the table schema and table statistics. Statistics allow Drill to better create optimal query plans.</p>
 
-<p>The Metastore is a Beta feature; it is subject to change. We encourage you to try it and provide feedback.
-Because the Metastore is in Beta, the SQL commands and Metastore formats may change in the next release.
+<p>The Metastore is a beta feature and is subject to change.
+In particular, the SQL commands and Metastore format may change based on your experience and feedback.
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
-  <p class="last">In Drill 1.17, this feature is supported for Parquet tables only and is disabled by default.  </p>
+  <p class="last">
+In Drill 1.17, Metastore supports only tables in Parquet format. The feature is disabled by default.
+In Drill 1.18, Metastore supports all format plugins (except MaprDB) for the file system plugin. The feature is still disabled by default.
+  </p>
 </div></p>
 
 <h2 id="drill-metastore-introduction">Drill Metastore introduction</h2>
@@ -1458,19 +1461,67 @@ refer to <a href="/docs/create-or-replace-schema/#usage-notes">Schema provisioni
 
 <p>The detailed metadata schema is described <a href="https://github.com/apache/drill/tree/master/metastore/metastore-api#metastore-tables">here</a>.
 You can try out the metadata to get a sense of what is available, by using the
- <a href="/docs/using-drill-metastore/#inspect-the-metastore-using-information_schema-tables">Inspect the Metastore using <code>INFORMATION_SCHEMA</code> tables</a> tutorial.</p>
+ <a href="#inspect-the-metastore-using-information_schema-tables">Inspect the Metastore using <code>INFORMATION_SCHEMA</code> tables</a> tutorial.</p>
 
 <p>Every table described by the Metastore may be a bare file or one or more files that reside in one or more directories.</p>
 
 <p>If a table consists of a single directory or file, then it is non-partitioned. The single directory can contain any number of files.
 Larger tables tend to have subdirectories. Each subdirectory is a partition and such a table are called &quot;partitioned&quot;.
-Please refer to <a href="/docs/using-drill-metastore/#exposing-drill-metastore-metadata-through-information_schema-tables">Exposing Drill Metastore metadata through <code>INFORMATION_SCHEMA</code> tables</a>
+Please refer to <a href="#exposing-drill-metastore-metadata-through-information_schema-tables">Exposing Drill Metastore metadata through <code>INFORMATION_SCHEMA</code> tables</a>
  for information, how to query partitions and segments metadata.</p>
 
 <p>A traditional database divides tables into schemas and tables.
 Drill can connect to any number of data sources, each of which may have its own schema.
 As a result, the Metastore labels tables with a combination of (plugin configuration name, workspace name, table name).
 Note that if before renaming any of these items, you must delete table&#39;s Metadata entry and recreate it after renaming.</p>
+
+<h3 id="using-schema-provisioning-feature-with-drill-metastore">Using schema provisioning feature with Drill Metastore</h3>
+
+<p>The Drill Metastore holds both schema and statistics information for a table. The <code>ANALYZE</code> command can infer the table
+ schema for well-defined tables (such as many Parquet tables). Some tables are too complex or variable for Drill&#39;s
+ schema inference to work well. For example, JSON tables often omit fields or have long runs of nulls so that Drill
+ cannot determine column types. In these cases, you can specify the correct schema based on your knowledge of the
+ table&#39;s structure. You specify a schema in the <code>ANALYZE</code> command using the 
+ <a href="/docs/plugin-configuration-basics/#specifying-the-schema-as-table-function-parameter">Schema provisioning</a> syntax.</p>
+
+<p>Please refer to <a href="#provisioning-schema-for-drill-metastore">Provisioning schema for Drill Metastore</a> for examples of usage.</p>
+
+<h3 id="schema-priority">Schema priority</h3>
+
+<p>Drill uses metadata during both query planning and execution. Drill gives you multiple ways to provide a schema.</p>
+
+<p>When you run the <code>ANALYZE TABLE</code> command, Drill will use the following rules for the table schema to be stored in the Metastore. In priority order:</p>
+
+<ul>
+<li>A schema provided in the table function.</li>
+<li>A schema file, created with <code>CREATE OR REPLACE SCHEMA</code>, in the table root directory.</li>
+<li>Schema inferred from file data.</li>
+</ul>
+
+<p>To plan a query, Drill requires information about your file partitions (if any) and about row and column cardinality.
+Drill does not use the provided schema for planning as it does not provide this metadata. Instead, at plan time Drill
+obtains metadata from one of the following, again in priority order:</p>
+
+<ul>
+<li>The Drill Metastore, if available.</li>
+<li>Inferred from file data. Drill scans the table&#39;s directory structure to identify partitions.
+Drill estimates row counts based on the file size. Drill uses default estimates for column cardinality.</li>
+</ul>
+
+<p>At query execution time, a schema tells Drill the shape of your data and how that data should be converted to Drill&#39;s SQL types.
+Your choices for execution-time schema, in priority order, are:</p>
+
+<ul>
+<li>With a table function:
+
+<ul>
+<li>specify an inline schema</li>
+<li>specify the path to the schema file.</li>
+</ul></li>
+<li>With a schema file, created with <code>CREATE OR REPLACE SCHEMA</code>, in the table root directory.</li>
+<li>Using the schema from the Drill Metastore, if available.</li>
+<li>Infer the schema directly from file data.</li>
+</ul>
 
 <h3 id="related-session-system-options">Related Session/System Options</h3>
 
@@ -1534,7 +1585,7 @@ When you do <code>ANALYZE TABLE</code> a second time, Drill will attempt to upda
  actual metadata from the Metastore where possible.</p>
 
 <p>The command will return the following message if table statistics are up-to-date:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">apache drill (dfs.tmp)&gt; analyze table lineitem refresh metadata;
+<div class="highlight"><pre><code class="language-text" data-lang="text">ANALYZE TABLE `lineitem` REFRESH METADATA;
 +-------+---------------------------------------------------------+
 |  ok   |                         summary                         |
 +-------+---------------------------------------------------------+
@@ -1737,6 +1788,12 @@ Description of Metastore-specific columns:</p>
 <li>Disabled by default. You must enable this feature through the <code>metastore.enabled</code> system/session option.</li>
 </ul>
 
+<h3 id="limitations-of-the-1-18-release">Limitations of the 1.18 release</h3>
+
+<ul>
+<li>Applies to all file system storage plugin formats except for MaprDB.</li>
+</ul>
+
 <h3 id="cheat-sheet-of-analyze-table-commands">Cheat sheet of <code>ANALYZE TABLE</code> commands</h3>
 
 <ul>
@@ -1792,7 +1849,7 @@ cp TPCH/lineitem /tmp/lineitem/s2
 
 <p>Run the <a href="/docs/analyze-table-refresh-metadata">ANALYZE TABLE</a> command on the table, whose metadata should
  be computed and stored into the Drill Metastore:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">apache drill&gt; ANALYZE TABLE dfs.tmp.lineitem REFRESH METADATA;
+<div class="highlight"><pre><code class="language-text" data-lang="text">ANALYZE TABLE dfs.tmp.lineitem REFRESH METADATA;
 +------+-------------------------------------------------------------+
 |  ok  |                           summary                           |
 +------+-------------------------------------------------------------+
@@ -1810,7 +1867,7 @@ cp TPCH/lineitem /tmp/lineitem/s2
 <h3 id="perform-incremental-analysis">Perform incremental analysis</h3>
 
 <p>Rerun <a href="/docs/analyze-table-refresh-metadata">ANALYZE TABLE</a> command on the <code>lineitem</code> table:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">apache drill&gt; ANALYZE TABLE dfs.tmp.lineitem REFRESH METADATA;
+<div class="highlight"><pre><code class="language-text" data-lang="text">ANALYZE TABLE dfs.tmp.lineitem REFRESH METADATA;
 +-------+---------------------------------------------------------+
 |  ok   |                         summary                         |
 +-------+---------------------------------------------------------+
@@ -1821,7 +1878,7 @@ cp TPCH/lineitem /tmp/lineitem/s2
 <h3 id="inspect-the-metastore-using-information_schema-tables">Inspect the Metastore using INFORMATION_SCHEMA tables</h3>
 
 <p>Run the following query to inspect <code>lineitem</code> table metadata from <code>TABLES</code> table stored in the Metastore:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">apache drill&gt; SELECT * FROM INFORMATION_SCHEMA.`TABLES` WHERE TABLE_NAME=&#39;lineitem&#39;;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM INFORMATION_SCHEMA.`TABLES` WHERE TABLE_NAME=&#39;lineitem&#39;;
 +---------------+--------------+------------+------------+--------------+---------------+----------+-----------------------+
 | TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | TABLE_TYPE | TABLE_SOURCE |   LOCATION    | NUM_ROWS |  LAST_MODIFIED_TIME   |
 +---------------+--------------+------------+------------+--------------+---------------+----------+-----------------------+
@@ -1830,7 +1887,7 @@ cp TPCH/lineitem /tmp/lineitem/s2
 1 row selected (0.157 seconds)
 </code></pre></div>
 <p>To obtain columns with their types and descriptions within the <code>lineitem</code> table, run the following query:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">apache drill&gt; SELECT * FROM INFORMATION_SCHEMA.`COLUMNS` WHERE TABLE_NAME=&#39;lineitem&#39;;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM INFORMATION_SCHEMA.`COLUMNS` WHERE TABLE_NAME=&#39;lineitem&#39;;
 +---------------+--------------+------------+-----------------+------------------+----------------+-------------+-------------------+--------------------------+------------------------+-------------------+-------------------------+---------------+--------------------+---------------+--------------------+-------------+---------------+-----------+--------------+---------------------------------------------+-----------+-------------------+-----------+
 | TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME |   COLUMN_NAME   | ORDINAL_POSITION | COLUMN_DEFAULT | IS_NULLABLE |     DATA_TYPE     | CHARACTER_MAXIMUM_LENGTH | CHARACTER_OCTET_LENGTH | NUMERIC_PRECISION | NUMERIC_PRECISION_RADIX | NUMERIC_SCALE | DATETIME_PRECISION | INTERVAL_TYPE | INTERVAL_PRECISION | COLUMN_SIZE | COLUMN_FORMAT | NUM_NULLS |   MIN_VAL    |                   MAX_VAL                   |    NDV    | EST_NUM_NON_NULLS | IS_NESTED |
 +---------------+--------------+------------+-----------------+------------------+----------------+-------------+-------------------+--------------------------+------------------------+-------------------+-------------------------+---------------+--------------------+---------------+--------------------+-------------+---------------+-----------+--------------+---------------------------------------------+-----------+-------------------+-----------+
@@ -1843,7 +1900,7 @@ cp TPCH/lineitem /tmp/lineitem/s2
 17 rows selected (0.187 seconds)
 </code></pre></div>
 <p>The sample <code>lineitem</code> table has two partitions. The <code>PARTITIONS</code> table contains an entry for each directory:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">apache drill (information_schema)&gt; SELECT * FROM INFORMATION_SCHEMA.`PARTITIONS` WHERE TABLE_NAME=&#39;lineitem&#39;;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM INFORMATION_SCHEMA.`PARTITIONS` WHERE TABLE_NAME=&#39;lineitem&#39;;
 +---------------+--------------+------------+--------------+---------------+---------------------+------------------+-----------------+------------------+-----------------------+
 | TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME | METADATA_KEY | METADATA_TYPE | METADATA_IDENTIFIER | PARTITION_COLUMN | PARTITION_VALUE |     LOCATION     |  LAST_MODIFIED_TIME   |
 +---------------+--------------+------------+--------------+---------------+---------------------+------------------+-----------------+------------------+-----------------------+
@@ -1857,7 +1914,7 @@ cp TPCH/lineitem /tmp/lineitem/s2
 <p>Once we are done exploring metadata we can drop the metadata for the <code>lineitem</code> table.</p>
 
 <p>Table metadata may be dropped using <code>ANALYZE TABLE DROP METADATA</code> command:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">apache drill&gt; ANALYZE TABLE dfs.tmp.lineitem DROP METADATA;
+<div class="highlight"><pre><code class="language-text" data-lang="text">ANALYZE TABLE dfs.tmp.lineitem DROP METADATA;
 +------+----------------------------------------+
 |  ok  |                summary                 |
 +------+----------------------------------------+
@@ -1873,7 +1930,7 @@ cp TPCH/lineitem /tmp/lineitem/s2
  selected columns: those actually used in the <code>WHERE</code> clause.</p>
 
 <p>For the case when metadata for several columns should be computed and stored into the Metastore, the following command may be used:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">apache drill (information_schema)&gt; ANALYZE TABLE dfs.tmp.lineitem COLUMNS(l_orderkey, l_partkey) REFRESH METADATA;
+<div class="highlight"><pre><code class="language-text" data-lang="text">ANALYZE TABLE dfs.tmp.lineitem COLUMNS(l_orderkey, l_partkey) REFRESH METADATA;
 +------+-------------------------------------------------------------+
 |  ok  |                           summary                           |
 +------+-------------------------------------------------------------+
@@ -1883,7 +1940,7 @@ cp TPCH/lineitem /tmp/lineitem/s2
 </code></pre></div>
 <p>Now, check, that metadata is collected only for specified columns (<code>MIN_VAL</code>, <code>MAX_VAL</code>, <code>NDV</code>, etc.), but all
  columns are present:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">apache drill (information_schema)&gt; SELECT * FROM INFORMATION_SCHEMA.`COLUMNS` WHERE TABLE_NAME=&#39;lineitem&#39;;
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM INFORMATION_SCHEMA.`COLUMNS` WHERE TABLE_NAME=&#39;lineitem&#39;;
 +---------------+--------------+------------+-----------------+------------------+----------------+-------------+-------------------+--------------------------+------------------------+-------------------+-------------------------+---------------+--------------------+---------------+--------------------+-------------+---------------+-----------+---------+---------+-----------+-------------------+-----------+
 | TABLE_CATALOG | TABLE_SCHEMA | TABLE_NAME |   COLUMN_NAME   | ORDINAL_POSITION | COLUMN_DEFAULT | IS_NULLABLE |     DATA_TYPE     | CHARACTER_MAXIMUM_LENGTH | CHARACTER_OCTET_LENGTH | NUMERIC_PRECISION | NUMERIC_PRECISION_RADIX | NUMERIC_SCALE | DATETIME_PRECISION | INTERVAL_TYPE | INTERVAL_PRECISION | COLUMN_SIZE | COLUMN_FORMAT | NUM_NULLS | MIN_VAL | MAX_VAL |    NDV    | EST_NUM_NON_NULLS | IS_NESTED |
 +---------------+--------------+------------+-----------------+------------------+----------------+-------------+-------------------+--------------------------+------------------------+-------------------+-------------------------+---------------+--------------------+---------------+--------------------+-------------+---------------+-----------+---------+---------+-----------+-------------------+-----------+
@@ -1894,6 +1951,108 @@ cp TPCH/lineitem /tmp/lineitem/s2
 | DRILL         | dfs.tmp      | lineitem   | l_comment       | 17               | null           | YES         | CHARACTER VARYING | 65535                    | 65535                  | null              | null                    | null          | null               | null          | null               | 65535       | null          | null      | null    | null    | null      | null              | false     |
 +---------------+--------------+------------+-----------------+------------------+----------------+-------------+-------------------+--------------------------+------------------------+-------------------+-------------------------+---------------+--------------------+---------------+--------------------+-------------+---------------+-----------+---------+---------+-----------+-------------------+-----------+
 17 rows selected (0.183 seconds)
+</code></pre></div>
+<h3 id="provisioning-schema-for-drill-metastore">Provisioning schema for Drill Metastore</h3>
+
+<h4 id="directory-and-file-setup">Directory and File Setup</h4>
+
+<p>Ensure you have configured the file system storage plugin as described here:
+ <a href="/docs/file-system-storage-plugin/#connecting-drill-to-a-file-system">Connecting Drill to a File System</a>.</p>
+
+<p>Set <code>store.format</code> to <code>csvh</code>:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SET `store.format`=&#39;csvh&#39;;
++------+-----------------------+
+|  ok  |        summary        |
++------+-----------------------+
+| true | store.format updated. |
++------+-----------------------+
+</code></pre></div>
+<p>Create a text table based on the sample <code>/tpch/nation.parquet</code> table from <code>cp</code> plugin:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE dfs.tmp.text_nation AS
+  (SELECT *
+   FROM cp.`/tpch/nation.parquet`);
++----------+---------------------------+
+| Fragment | Number of records written |
++----------+---------------------------+
+| 0_0      | 25                        |
++----------+---------------------------+
+</code></pre></div>
+<p>Query the table <code>text_nation</code>:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT typeof(n_nationkey),
+       typeof(n_name),
+       typeof(n_regionkey),
+       typeof(n_comment)
+FROM dfs.tmp.text_nation
+LIMIT 1;
++---------+---------+---------+---------+
+| EXPR$0  | EXPR$1  | EXPR$2  | EXPR$3  |
++---------+---------+---------+---------+
+| VARCHAR | VARCHAR | VARCHAR | VARCHAR |
++---------+---------+---------+---------+
+</code></pre></div>
+<p>Notice that the query plan contains a group scan with <code>usedMetastore = false</code>:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">00-00    Screen : rowType = RecordType(ANY EXPR$0, ANY EXPR$1, ANY EXPR$2, ANY EXPR$3): rowcount = 1.0, cumulative cost = {25.1 rows, 109.1 cpu, 2247.0 io, 0.0 network, 0.0 memory}, id = 160
+00-01      Project(EXPR$0=[TYPEOF($0)], EXPR$1=[TYPEOF($1)], EXPR$2=[TYPEOF($2)], EXPR$3=[TYPEOF($3)]) : rowType = RecordType(ANY EXPR$0, ANY EXPR$1, ANY EXPR$2, ANY EXPR$3): rowcount = 1.0, cumulative cost = {25.0 rows, 109.0 cpu, 2247.0 io, 0.0 network, 0.0 memory}, id = 159
+00-02        SelectionVectorRemover : rowType = RecordType(ANY n_nationkey, ANY n_name, ANY n_regionkey, ANY n_comment): rowcount = 1.0, cumulative cost = {24.0 rows, 93.0 cpu, 2247.0 io, 0.0 network, 0.0 memory}, id = 158
+00-03          Limit(fetch=[1]) : rowType = RecordType(ANY n_nationkey, ANY n_name, ANY n_regionkey, ANY n_comment): rowcount = 1.0, cumulative cost = {23.0 rows, 92.0 cpu, 2247.0 io, 0.0 network, 0.0 memory}, id = 157
+00-04            Scan(table=[[dfs, tmp, text_nation]], groupscan=[EasyGroupScan [... schema=null, usedMetastore=false...
+</code></pre></div>
+<h4 id="compute-table-metadata-and-store-in-the-drill-metastore">Compute table metadata and store in the Drill Metastore</h4>
+
+<p>Enable Drill Metastore:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SET `metastore.enabled` = true;
+</code></pre></div>
+<p>Specify table schema when running <code>ANALYZE</code> query:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">ANALYZE TABLE table(dfs.tmp.`text_nation` (type=&gt;&#39;text&#39;, fieldDelimiter=&gt;&#39;,&#39;, extractHeader=&gt;true,
+    schema=&gt;&#39;inline=(
+        `n_nationkey` INT not null,
+        `n_name` VARCHAR not null,
+        `n_regionkey` INT not null,
+        `n_comment` VARCHAR not null)&#39;
+    )) REFRESH METADATA;
++------+----------------------------------------------------------------+
+|  ok  |                            summary                             |
++------+----------------------------------------------------------------+
+| true | Collected / refreshed metadata for table [dfs.tmp.text_nation] |
++------+----------------------------------------------------------------+
+</code></pre></div>
+<h4 id="inspect-the-metastore-using-information_schema-tables">Inspect the Metastore using INFORMATION_SCHEMA tables</h4>
+
+<p>Run the following query to inspect <code>text_nation</code> table schema stored in the Metastore:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT COLUMN_NAME, DATA_TYPE FROM INFORMATION_SCHEMA.`COLUMNS` WHERE TABLE_NAME=&#39;text_nation&#39;;
++-------------+-------------------+
+| COLUMN_NAME |     DATA_TYPE     |
++-------------+-------------------+
+| n_nationkey | INTEGER           |
+| n_name      | CHARACTER VARYING |
+| n_regionkey | INTEGER           |
+| n_comment   | CHARACTER VARYING |
++-------------+-------------------+
+</code></pre></div>
+<p>Ensure that this schema is applied to the table:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT typeof(n_nationkey),
+       typeof(n_name),
+       typeof(n_regionkey),
+       typeof(n_comment)
+FROM dfs.tmp.text_nation
+LIMIT 1;
++--------+---------+--------+---------+
+| EXPR$0 | EXPR$1  | EXPR$2 | EXPR$3  |
++--------+---------+--------+---------+
+| INT    | VARCHAR | INT    | VARCHAR |
++--------+---------+--------+---------+
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">select sum(n_nationkey) from dfs.tmp.`text_nation`;
++--------+
+| EXPR$0 |
++--------+
+| 300    |
++--------+
+</code></pre></div>
+<p>Query plan contains schema from the Metastore and group scan with <code>usedMetastore = true</code>:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">00-00    Screen : rowType = RecordType(ANY EXPR$0): rowcount = 1.0, cumulative cost = {45.1 rows, 287.1 cpu, 2247.0 io, 0.0 network, 0.0 memory}, id = 3129
+00-01      Project(EXPR$0=[$0]) : rowType = RecordType(ANY EXPR$0): rowcount = 1.0, cumulative cost = {45.0 rows, 287.0 cpu, 2247.0 io, 0.0 network, 0.0 memory}, id = 3128
+00-02        StreamAgg(group=[{}], EXPR$0=[SUM($0)]) : rowType = RecordType(ANY EXPR$0): rowcount = 1.0, cumulative cost = {44.0 rows, 286.0 cpu, 2247.0 io, 0.0 network, 0.0 memory}, id = 3127
+00-03          Scan(table=[[dfs, tmp, text_nation]], groupscan=[EasyGroupScan ... schema=..., usedMetastore=true]]) ...
 </code></pre></div>
     
       

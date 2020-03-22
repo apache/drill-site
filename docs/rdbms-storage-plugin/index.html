@@ -1335,7 +1335,7 @@
 
     </div>
 
-     Dec 8, 2018
+     Mar 17, 2020
 
     <link href="/css/docpage.css" rel="stylesheet" type="text/css">
 
@@ -1347,16 +1347,27 @@
 
 <h2 id="using-the-rdbms-storage-plugin">Using the RDBMS Storage Plugin</h2>
 
-<p>Drill is designed to work with any relational datastore that provides a JDBC driver. Drill is actively tested with Postgres, MySQL, Oracle, MSSQL and Apache Derby. For each system, you will follow three basic steps for setup:</p>
+<p>Drill is designed to work with any relational datastore that provides a JDBC driver. Drill is actively tested with
+ Postgres, MySQL, Oracle, MSSQL, Apache Derby and H2. For each system, you will follow three basic steps for setup:</p>
 
 <ol>
 <li><a href="/docs/installing-drill-in-embedded-mode">Install Drill</a>, if you do not already have it installed.</li>
-<li>Copy your database&#39;s JDBC driver into the jars/3rdparty directory. (You&#39;ll need to do this on every node.)<br></li>
+<li>Copy your database&#39;s JDBC driver into the <code>jars/3rdparty</code> directory. (You&#39;ll need to do this on every node.)<br></li>
 <li>Restart Drill. See <a href="/docs/starting-drill-in-distributed-mode/">Starting Drill in Distributed Mode</a>.</li>
-<li>Add a new storage configuration to Drill through the Web UI. Example configurations for <a href="#Example-Oracle-Configuration">Oracle</a>, <a href="#Example-SQL-Server-Configuration">SQL Server</a>, <a href="#Example-MySQL-Configuration">MySQL</a> and <a href="#Example-Postgres-Configuration">Postgres</a> are provided below.</li>
+<li>Add a new storage configuration to Drill through the Web UI. Example configurations for <a href="#example-oracle-configuration">Oracle</a>, <a href="#example-sql-server-configuration">SQL Server</a>, <a href="#example-mysql-configuration">MySQL</a> and <a href="#example-postgres-configuration">Postgres</a> are provided below.</li>
 </ol>
 
-<p><strong>Example: Working with MySQL</strong></p>
+<h2 id="setting-data-source-parameters-in-the-storage-plugin-configuration">Setting data source parameters in the storage plugin configuration</h2>
+
+<p>Starting from Drill 1.18.0, new JDBC storage plugin configuration property <code>sourceParameters</code> was introduced to allow
+ setting data source parameters described in <a href="https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby">HikariCP</a>.
+ Parameters names with incorrect naming and parameter values which are of incorrect data type or illegal will fail
+ storage plugin to start up.</p>
+
+<p>See the <a href="#example-of-postgres-configuration-with-sourceparameters-configuration-property">Example of Postgres Configuration with <code>sourceParameters</code> configuration property</a>
+section for the example of usage.</p>
+
+<h3 id="example-working-with-mysql">Example: Working with MySQL</h3>
 
 <p>Drill communicates with MySQL through the JDBC driver using the configuration that you specify in the Web UI or through the <a href="/docs/plugin-configuration-basics/#storage-plugin-rest-api">REST API</a>.  </p>
 
@@ -1375,7 +1386,7 @@ Each configuration registered with Drill must have a distinct name. Names are ca
 
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The URL differs depending on your installation and configuration. See the [example configurations](#Example-Configurations) below for examples.  </p>
+<p class="last">The URL differs depending on your installation and configuration. See the example configurations below for examples.  </p>
 </div>  </li>
 <li><p>Click <strong>Create</strong>.  </p></li>
 <li><p>In Configuration, set the required properties using JSON formatting as shown in the following example. Change the properties to match your environment.  </p>
@@ -1404,17 +1415,17 @@ Each configuration registered with Drill must have a distinct name. Names are ca
 </code></pre></div>
 <h2 id="example-configurations">Example Configurations</h2>
 
-<p><strong>Example Oracle Configuration</strong></p>
+<h3 id="example-oracle-configuration">Example Oracle Configuration</h3>
 
 <p>Download and install Oracle&#39;s Thin <a href="http://www.oracle.com/technetwork/database/features/jdbc/default-2280470.html">ojdbc7.12.1.0.2.jar</a> driver and copy it to all nodes in your cluster.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">{
   type: &quot;jdbc&quot;,
   enabled: true,
   driver: &quot;oracle.jdbc.OracleDriver&quot;,
-  url:&quot;jdbc:oracle:thin:user/password@1.2.3.4:1521/ORCL&quot;
+  url: &quot;jdbc:oracle:thin:user/password@1.2.3.4:1521/ORCL&quot;
 }
 </code></pre></div>
-<p><strong>Example SQL Server Configuration</strong></p>
+<h3 id="example-sql-server-configuration">Example SQL Server Configuration</h3>
 
 <p>For SQL Server, Drill has been tested with Microsoft&#39;s  <a href="https://www.microsoft.com/en-US/download/details.aspx?id=11774">sqljdbc41.4.2.6420.100.jar</a> driver. Copy this jar file to all Drillbits. </p>
 
@@ -1426,26 +1437,27 @@ Each configuration registered with Drill must have a distinct name. Names are ca
   type: &quot;jdbc&quot;,
   enabled: true,
   driver: &quot;com.microsoft.sqlserver.jdbc.SQLServerDriver&quot;,
-  url:&quot;jdbc:sqlserver://1.2.3.4:1433;databaseName=mydatabase&quot;,
-  username:&quot;user&quot;,
-  password:&quot;password&quot;
+  url: &quot;jdbc:sqlserver://1.2.3.4:1433;databaseName=mydatabase&quot;,
+  username: &quot;user&quot;,
+  password: &quot;password&quot;
 }
 </code></pre></div>
-<p><strong>Example MySQL Configuration</strong></p>
+<h3 id="example-mysql-configuration">Example MySQL Configuration</h3>
 
 <p>For MySQL, Drill has been tested with MySQL&#39;s <a href="http://dev.mysql.com/downloads/connector/j/">mysql-connector-java-5.1.37-bin.jar</a> driver. Copy this to all nodes.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">{
   type: &quot;jdbc&quot;,
   enabled: true,
   driver: &quot;com.mysql.jdbc.Driver&quot;,
-  url:&quot;jdbc:mysql://1.2.3.4&quot;,
-  username:&quot;user&quot;,
-  password:&quot;password&quot;
+  url: &quot;jdbc:mysql://1.2.3.4&quot;,
+  username: &quot;user&quot;,
+  password: &quot;password&quot;
 }  
 </code></pre></div>
-<p><strong>Example Postgres Configuration</strong></p>
+<h3 id="example-postgres-configuration">Example Postgres Configuration</h3>
 
-<p>For Postgres, Drill has been tested with Postgres&#39;s <a href="http://central.maven.org/maven2/org/postgresql/postgresql/">9.1-901-1.jdbc4</a> driver (any recent driver should work). Copy this driver file to all nodes.</p>
+<p>Drill is tested with the Postgres driver version <a href="https://mvnrepository.com/artifact/org.postgresql/postgresql">42.2.11</a> (any recent driver should work).
+ Download and copy this driver jar to the <code>jars/3rdparty</code> folder on all nodes.</p>
 
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
@@ -1455,9 +1467,9 @@ Each configuration registered with Drill must have a distinct name. Names are ca
   type: &quot;jdbc&quot;,
   enabled: true,
   driver: &quot;org.postgresql.Driver&quot;,
-  url:&quot;jdbc:postgresql://1.2.3.4/mydatabase&quot;,
-  username:&quot;user&quot;,
-  password:&quot;password&quot;
+  url: &quot;jdbc:postgresql://1.2.3.4/mydatabase&quot;,
+  username: &quot;user&quot;,
+  password: &quot;password&quot;
 }  
 </code></pre></div>
 <p>You may need to qualify a table name with a schema name for Drill to return data. For example, when querying a table named ips, you must issue the query against public.ips, as shown in the following example:  </p>
@@ -1484,6 +1496,23 @@ Each configuration registered with Drill must have a distinct name. Names are ca
    | 1  | 1.2.3.4  |
    | 2  | 1.2.3.5  |
    +-------+----------+
+</code></pre></div>
+<h3 id="example-of-postgres-configuration-with-sourceparameters-configuration-property">Example of Postgres Configuration with <code>sourceParameters</code> configuration property</h3>
+<div class="highlight"><pre><code class="language-text" data-lang="text">{
+  type: &quot;jdbc&quot;,
+  enabled: true,
+  driver: &quot;org.postgresql.Driver&quot;,
+  url: &quot;jdbc:postgresql://1.2.3.4/mydatabase?defaultRowFetchSize=2&quot;,
+  username: &quot;user&quot;,
+  password: &quot;password&quot;,
+  sourceParameters: {
+    &quot;minimumIdle&quot;: 5,
+    &quot;autoCommit&quot;: false,
+    &quot;connectionTestQuery&quot;: &quot;select version() as postgresql_version&quot;,
+    &quot;dataSource.cachePrepStmts&quot;: true,
+    &quot;dataSource.prepStmtCacheSize&quot;: 250
+  }
+}  
 </code></pre></div>
     
       
