@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1335,45 +1367,53 @@
 
     </div>
 
-     Nov 2, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>If a query is failing, you can use jstack to print the Java thread stack traces for the Drillbit process on the executing nodes to determine which part of the query is causing the failure. Drill labels threads based on query coordinates. For example, in the following thread you can see the QueryID, MajorFragementID, and MinorFragmentID, respectively:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   &quot;2ae226e1-f4c5-6253-e9ff-22ac1204935f:frag:3:2&quot; daemon prio=10 tid=0x00007fa81167b800 nid=0x1431 waiting on condition [0x00007fa7aa3b3000]
-</code></pre></div>
-<p>When you use jstack, grep for frag to see the fragments executing the query. To see the stack trace for a Drillbit process, you must have the Drillbit process ID. You can run jps to get the ID. </p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   "2ae226e1-f4c5-6253-e9ff-22ac1204935f:frag:3:2" daemon prio=10 tid=0x00007fa81167b800 nid=0x1431 waiting on condition [0x00007fa7aa3b3000]
+</code></pre></div></div>
+
+<p>When you use jstack, grep for frag to see the fragments executing the query. To see the stack trace for a Drillbit process, you must have the Drillbit process ID. You can run jps to get the ID.</p>
 
 <h2 id="use-jstack-to-review-stack-traces">Use jstack to Review Stack Traces</h2>
-
 <p>The following example shows you how to run jps to get the Drillbit process ID and grep for frag in the stack trace:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   [root@drillats2 ~]# jps
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   [root@drillats2 ~]# jps
    17455 jps
    1975 Drillbit
    31801 HRegionServer
    28858 TaskTracker
    22603 WardenMain
-</code></pre></div>
+</code></pre></div></div>
+
 <p>In this example, the Drillbit process ID is 1975. Alternatively, you can grep for the Java processes running to identify the Drillbit process ID:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   [root@drillats2 ~]# ps -el|grep java
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   [root@drillats2 ~]# ps -el|grep java
+</code></pre></div></div>
+
 <p>Once you have the Drillbit process ID, you can use jstack to view the stack trace of threads.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   [root@drillats2 ~]# jstack 1975 | grep frag:
-   &quot;2ae22585-bb7b-b482-0542-4ebd5225a249:frag:0:0&quot; daemon prio=10 tid=0x00007fa782796800 nid=0x37a2 runnable [0x00007fa7866e4000]
-   &quot;2ae225ab-c37a-31dc-227e-5f165e057f5f:frag:0:0&quot; daemon prio=10 tid=0x00007fa7a004f000 nid=0x2946 runnable [0x00007fa7868e6000]
-   &quot;2ae22598-2a77-5361-363b-291301fc44e8:frag:0:0&quot; daemon prio=10 tid=0x00007fa782280800 nid=0x1bd4 runnable [0x00007fa7a4293000]
-   &quot;2ae22582-c517-ec7a-8438-c81b7f5fdbce:frag:0:0&quot; daemon prio=10 tid=0x0000000004651800 nid=0x144f runnable [0x00007fa7a53a4000]
-   &quot;2ae226e1-8a2d-c079-a1d6-1f27c5a003bb:frag:13:2&quot; daemon prio=10 tid=0x00007fa811ec3000 nid=0x143d waiting on condition [0x00007fa7a4799000]
-   &quot;2ae226e1-8a2d-c079-a1d6-1f27c5a003bb:frag:9:2&quot; daemon prio=10 tid=0x0000000004583800 nid=0x143c waiting on condition [0x00007fa7a4596000]
-   &quot;2ae226e1-8a2d-c079-a1d6-1f27c5a003bb:frag:15:2&quot; daemon prio=10 tid=0x00007fa81323f800 nid=0x1439 waiting on condition [0x00007fa7a4fa0000]
-   &quot;2ae226e1-8a2d-c079-a1d6-1f27c5a003bb:frag:15:5&quot; daemon prio=10 tid=0x0000000004582800 nid=0x1438 waiting on condition [0x00007fa7a4e9f000]
-   &quot;2ae226e1-8a2d-c079-a1d6-1f27c5a003bb:frag:17:2&quot; daemon prio=10 tid=0x00007fa813240800 nid=0x1435 waiting on condition [0x00007fa7a4496000]
-   &quot;2ae226e1-f4c5-6253-e9ff-22ac1204935f:frag:3:2&quot; daemon prio=10 tid=0x00007fa81167b800 nid=0x1431 waiting on condition [0x00007fa7aa3b3000]
-   &quot;2ae226e1-f4c5-6253-e9ff-22ac1204935f:frag:2:2&quot; daemon prio=10 tid=0x0000000004582000 nid=0x1430 waiting on condition [0x00007fa7a7bae000]
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   [root@drillats2 ~]# jstack 1975 | grep frag:
+   "2ae22585-bb7b-b482-0542-4ebd5225a249:frag:0:0" daemon prio=10 tid=0x00007fa782796800 nid=0x37a2 runnable [0x00007fa7866e4000]
+   "2ae225ab-c37a-31dc-227e-5f165e057f5f:frag:0:0" daemon prio=10 tid=0x00007fa7a004f000 nid=0x2946 runnable [0x00007fa7868e6000]
+   "2ae22598-2a77-5361-363b-291301fc44e8:frag:0:0" daemon prio=10 tid=0x00007fa782280800 nid=0x1bd4 runnable [0x00007fa7a4293000]
+   "2ae22582-c517-ec7a-8438-c81b7f5fdbce:frag:0:0" daemon prio=10 tid=0x0000000004651800 nid=0x144f runnable [0x00007fa7a53a4000]
+   "2ae226e1-8a2d-c079-a1d6-1f27c5a003bb:frag:13:2" daemon prio=10 tid=0x00007fa811ec3000 nid=0x143d waiting on condition [0x00007fa7a4799000]
+   "2ae226e1-8a2d-c079-a1d6-1f27c5a003bb:frag:9:2" daemon prio=10 tid=0x0000000004583800 nid=0x143c waiting on condition [0x00007fa7a4596000]
+   "2ae226e1-8a2d-c079-a1d6-1f27c5a003bb:frag:15:2" daemon prio=10 tid=0x00007fa81323f800 nid=0x1439 waiting on condition [0x00007fa7a4fa0000]
+   "2ae226e1-8a2d-c079-a1d6-1f27c5a003bb:frag:15:5" daemon prio=10 tid=0x0000000004582800 nid=0x1438 waiting on condition [0x00007fa7a4e9f000]
+   "2ae226e1-8a2d-c079-a1d6-1f27c5a003bb:frag:17:2" daemon prio=10 tid=0x00007fa813240800 nid=0x1435 waiting on condition [0x00007fa7a4496000]
+   "2ae226e1-f4c5-6253-e9ff-22ac1204935f:frag:3:2" daemon prio=10 tid=0x00007fa81167b800 nid=0x1431 waiting on condition [0x00007fa7aa3b3000]
+   "2ae226e1-f4c5-6253-e9ff-22ac1204935f:frag:2:2" daemon prio=10 tid=0x0000000004582000 nid=0x1430 waiting on condition [0x00007fa7a7bae000]
    …
-</code></pre></div>
+</code></pre></div></div>
+
+
     
       
         <div class="doc-nav">
@@ -1390,7 +1430,7 @@
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

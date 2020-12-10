@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,28 +1369,29 @@
 
     </div>
 
-     Mar 16, 2016
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
-        <p>Window functions operate on a set of rows and return a single value for each row from the underlying query. The term window describes the set of rows on which the function operates. A window function uses values from the rows in a window to calculate the returned values.  </p>
+        <p>Window functions operate on a set of rows and return a single value for each row from the underlying query. The term window describes the set of rows on which the function operates. A window function uses values from the rows in a window to calculate the returned values.</p>
 
-<p>When you use a window function in a query, define the window using the OVER() clause. The OVER() clause (window definition) differentiates window functions from other analytical and reporting functions. A query can include multiple window functions with the same or different window definitions. </p>
+<p>When you use a window function in a query, define the window using the OVER() clause. The OVER() clause (window definition) differentiates window functions from other analytical and reporting functions. A query can include multiple window functions with the same or different window definitions.</p>
 
-<p>The OVER() clause has the following capabilities:  </p>
+<p>The OVER() clause has the following capabilities:</p>
 
 <ul>
-<li>Defines window partitions to form groups of rows. (PARTITION BY clause)<br></li>
-<li>Orders rows within a partition. (ORDER BY clause)</li>
+  <li>Defines window partitions to form groups of rows (PARTITION BY clause).</li>
+  <li>Orders rows within a partition (ORDER BY clause).</li>
 </ul>
 
-<p>For example, the following query uses the AVG() window function to calculate the average sales for employees in Q1:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   select emp_name, dealer_id, sales, avg(sales) over() as avgsales from q1_sales;
-   +-----------------+------------+--------+-----------+
+<p>For example, the following query uses the AVG() window function to calculate the average sales for employees in Q1:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   select emp_name, dealer_id, sales, avg(sales) over() as avgsales from q1_sales;
+   |-----------------|------------|--------|-----------|
    |    emp_name     | dealer_id  | sales  | avgsales  |
-   +-----------------+------------+--------+-----------+
+   |-----------------|------------|--------|-----------|
    | Beverly Lang    | 2          | 16233  | 13631     |
    | Kameko French   | 2          | 16233  | 13631     |
    | Ursa George     | 3          | 15427  | 13631     |
@@ -1369,28 +1402,32 @@
    | Jack Salazar    | 1          | 9710   | 13631     |
    | May Stout       | 3          | 9308   | 13631     |
    | Haviva Montoya  | 2          | 9308   | 13631     |
-   +-----------------+------------+--------+-----------+
+   |-----------------|------------|--------|-----------|
    10 rows selected (0.213 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>The AVG() window function operates on the rows defined in the window and returns a value for each row. 
-To compare, you can run a query using the AVG() function as a standard set function:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   select avg(sales) as avgsales from q1_sales;
-   +-----------+
+To compare, you can run a query using the AVG() function as a standard set function:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   select avg(sales) as avgsales from q1_sales;
+   |-----------|
    | avgsales  |
-   +-----------+
+   |-----------|
    | 13630.5   |
-   +-----------+
+   |-----------|
    1 row selected (0.131 seconds)
-</code></pre></div>
-<p>The query returns one row with the average of all the values in the specified column instead of returning values for each row.  </p>
+</code></pre></div></div>
 
-<p>You can also include the optional PARTITION BY and ORDER BY clauses in a query. The PARTITION BY clause subdivides the window into partitions. The ORDER BY clause defines the logical order of the rows within each partition of the result set. Window functions are applied to the rows within each partition and sorted according to the order specification.  </p>
+<p>The query returns one row with the average of all the values in the specified column instead of returning values for each row.</p>
 
-<p>The following query uses the AVG() window function with the PARTITION BY clause to determine the average car sales for each dealer in Q1:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   select emp_name, dealer_id, sales, avg(sales) over (partition by dealer_id) as avgsales from q1_sales;
-   +-----------------+------------+--------+-----------+
+<p>You can also include the optional PARTITION BY and ORDER BY clauses in a query. The PARTITION BY clause subdivides the window into partitions. The ORDER BY clause defines the logical order of the rows within each partition of the result set. Window functions are applied to the rows within each partition and sorted according to the order specification.</p>
+
+<p>The following query uses the AVG() window function with the PARTITION BY clause to determine the average car sales for each dealer in Q1:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   select emp_name, dealer_id, sales, avg(sales) over (partition by dealer_id) as avgsales from q1_sales;
+   |-----------------|------------|--------|-----------|
    |    emp_name     | dealer_id  | sales  | avgsales  |
-   +-----------------+------------+--------+-----------+
+   |-----------------|------------|--------|-----------|
    | Ferris Brown    | 1          | 19745  | 14357     |
    | Noel Meyer      | 1          | 19745  | 14357     |
    | Raphael Hull    | 1          | 8227   | 14357     |
@@ -1401,14 +1438,16 @@ To compare, you can run a query using the AVG() function as a standard set funct
    | Ursa George     | 3          | 15427  | 12368     |
    | Abel Kim        | 3          | 12369  | 12368     |
    | May Stout       | 3          | 9308   | 12368     |
-   +-----------------+------------+--------+-----------+
+   |-----------------|------------|--------|-----------|
    10 rows selected (0.215 seconds)  
-</code></pre></div>
-<p>The following query uses the AVG() and ROW_NUM() window functions to determine the average car sales for each dealer in Q1 and assign a row number to each row in a partition:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   select dealer_id, sales, emp_name,row_number() over (partition by dealer_id order by sales) as `row`,avg(sales) over (partition by dealer_id) as avgsales from q1_sales;
-   +------------+--------+-----------------+------+---------------+
+</code></pre></div></div>
+
+<p>The following query uses the AVG() and ROW_NUM() window functions to determine the average car sales for each dealer in Q1 and assign a row number to each row in a partition:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   select dealer_id, sales, emp_name,row_number() over (partition by dealer_id order by sales) as `row`,avg(sales) over (partition by dealer_id) as avgsales from q1_sales;
+   |------------|--------|-----------------|------|---------------|
    | dealer_id  | sales  |    emp_name     | row  |      avgsales |
-   +------------+--------+-----------------+------+---------------+
+   |------------|--------|-----------------|------|---------------|
    | 1          | 8227   | Raphael Hull    | 1    | 14356         |
    | 1          | 9710   | Jack Salazar    | 2    | 14356         |
    | 1          | 19745  | Ferris Brown    | 3    | 14356         |
@@ -1419,68 +1458,117 @@ To compare, you can run a query using the AVG() function as a standard set funct
    | 3          | 9308   | May Stout       | 1    | 12368         |
    | 3          | 12369  | Abel Kim        | 2    | 12368         |
    | 3          | 15427  | Ursa George     | 3    | 12368         |
-   +------------+--------+-----------------+------+---------------+
+   |------------|--------|-----------------|------|---------------|
    10 rows selected (0.37 seconds)  
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="types-of-window-functions">Types of Window Functions</h2>
 
-<p>Currently, Drill supports the following value, aggregate, and ranking window functions:  </p>
+<p>Currently, Drill supports the following value, aggregate, and ranking window functions:</p>
 
 <p><a href="/docs/value-window-functions/">Value</a></p>
 
 <ul>
-<li><a href="/docs/value-window-functions/#first_value-%7C-last_value">FIRST_VALUE()</a></li>
-<li><a href="/docs/value-window-functions/#lag-%7C-lead">LAG()</a></li>
-<li><a href="/docs/value-window-functions/#first_value-%7C-last_value">LAST_VALUE()</a></li>
-<li><a href="/docs/value-window-functions/#lag-%7C-lead">LEAD()</a> </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>[FIRST_VALUE()](/docs/value-window-functions/#first_value-</td>
+          <td>-last_value)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>[LAG()](/docs/value-window-functions/#lag-</td>
+          <td>-lead)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>[LAST_VALUE()](/docs/value-window-functions/#first_value-</td>
+          <td>-last_value)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>[LEAD()](/docs/value-window-functions/#lag-</td>
+          <td>-lead)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
 </ul>
 
-<p><a href="/docs/aggregate-window-functions/">Aggregate</a>   </p>
+<p><a href="/docs/aggregate-window-functions/">Aggregate</a></p>
 
 <ul>
-<li><a href="/docs/aggregate-window-functions/">AVG()</a></li>
-<li><a href="/docs/aggregate-window-functions/">COUNT()</a></li>
-<li><a href="/docs/aggregate-window-functions/">MAX()</a></li>
-<li><a href="/docs/aggregate-window-functions/">MIN()</a></li>
-<li><a href="/docs/aggregate-window-functions/">SUM()</a></li>
+  <li><a href="/docs/aggregate-window-functions/">AVG()</a></li>
+  <li><a href="/docs/aggregate-window-functions/">COUNT()</a></li>
+  <li><a href="/docs/aggregate-window-functions/">MAX()</a></li>
+  <li><a href="/docs/aggregate-window-functions/">MIN()</a></li>
+  <li><a href="/docs/aggregate-window-functions/">SUM()</a></li>
 </ul>
 
-<p><a href="/docs/ranking-window-functions/">Ranking</a>  </p>
+<p><a href="/docs/ranking-window-functions/">Ranking</a></p>
 
 <ul>
-<li><a href="/docs/ranking-window-functions/">CUME_DIST()</a></li>
-<li><a href="/docs/ranking-window-functions/">DENSE_RANK()</a></li>
-<li><a href="/docs/ranking-window-functions/">NTILE()</a></li>
-<li><a href="/docs/ranking-window-functions/">PERCENT_RANK()</a></li>
-<li><a href="/docs/ranking-window-functions/">RANK()</a></li>
-<li><a href="/docs/ranking-window-functions/">ROW_NUMBER()</a></li>
+  <li><a href="/docs/ranking-window-functions/">CUME_DIST()</a></li>
+  <li><a href="/docs/ranking-window-functions/">DENSE_RANK()</a></li>
+  <li><a href="/docs/ranking-window-functions/">NTILE()</a></li>
+  <li><a href="/docs/ranking-window-functions/">PERCENT_RANK()</a></li>
+  <li><a href="/docs/ranking-window-functions/">RANK()</a></li>
+  <li><a href="/docs/ranking-window-functions/">ROW_NUMBER()</a></li>
 </ul>
 
-<p>All of the ranking functions depend on the sort ordering specified by the ORDER BY clause of the associated window definition. Rows that are not distinct in the ordering are called peers. The ranking functions are defined so that they give the same answer for any two peer rows.  </p>
+<p>All of the ranking functions depend on the sort ordering specified by the ORDER BY clause of the associated window definition. Rows that are not distinct in the ordering are called peers. The ranking functions are defined so that they give the same answer for any two peer rows.</p>
 
 <h2 id="syntax">Syntax</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   window_function (expression) OVER (
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   window_function (expression) OVER (
    [ PARTITION BY expr_list ]
    [ ORDER BY order_list ][ frame_clause ] )  
-</code></pre></div>
-<p>where function is one of the functions described, such as AVG(), and <em>expr_list</em> is:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   expression | column_name [, expr_list ]
-</code></pre></div>
-<p>and <em>order_list</em> is:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   expression | column_name [ASC | DESC] [ NULLS { FIRST | LAST } ] [, order_list ]
-</code></pre></div>
+</code></pre></div></div>
+
+<p>where function is one of the functions described, such as AVG(), and <em>expr_list</em> is:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   expression | column_name [, expr_list ]
+</code></pre></div></div>
+
+<p>and <em>order_list</em> is:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   expression | column_name [ASC | DESC] [ NULLS { FIRST | LAST } ] [, order_list ]
+</code></pre></div></div>
+
 <p>and the optional <em>frame_clause</em> is one of the following frames:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   { RANGE | ROWS } frame_start
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   { RANGE | ROWS } frame_start
    { RANGE | ROWS } BETWEEN frame_start AND frame_end  
-</code></pre></div>
-<p>where <em>frame_start</em> is one of the following choices: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   UNBOUNDED PRECEDING  
+</code></pre></div></div>
+
+<p>where <em>frame_start</em> is one of the following choices:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   UNBOUNDED PRECEDING  
    CURRENT ROW  
-</code></pre></div>
-<p>and <em>frame_end</em> is one of the following choices:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   CURRENT ROW  
+</code></pre></div></div>
+
+<p>and <em>frame_end</em> is one of the following choices:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   CURRENT ROW  
    UNBOUNDED FOLLOWING  
-</code></pre></div>
+</code></pre></div></div>
+
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
   <p class="last">The `frame_end` choice cannot appear earlier than the `frame_start` choice and defaults to CURRENT ROW if not explicitly included.  </p>
@@ -1488,80 +1576,98 @@ To compare, you can run a query using the AVG() function as a standard set funct
 
 <h2 id="arguments">Arguments</h2>
 
-<p><em>window_function</em><br>
-Any of the following functions used with the OVER clause to provide a window specification:  </p>
+<p><em>window_function</em><br />
+Any of the following functions used with the OVER clause to provide a window specification:</p>
 
 <ul>
-<li>AVG()</li>
-<li>COUNT()</li>
-<li>CUME_DIST()</li>
-<li>DENSE_RANK()</li>
-<li>FIRST_VALUE()</li>
-<li>LAG()</li>
-<li>LAST_VALUE()</li>
-<li>LEAD()</li>
-<li>MAX()</li>
-<li>MIN()</li>
-<li>NTILE()</li>
-<li>PERCENT_RANK()</li>
-<li>RANK()</li>
-<li>ROW_NUMBER()</li>
-<li>SUM()</li>
+  <li>AVG()</li>
+  <li>COUNT()</li>
+  <li>CUME_DIST()</li>
+  <li>DENSE_RANK()</li>
+  <li>FIRST_VALUE()</li>
+  <li>LAG()</li>
+  <li>LAST_VALUE()</li>
+  <li>LEAD()</li>
+  <li>MAX()</li>
+  <li>MIN()</li>
+  <li>NTILE()</li>
+  <li>PERCENT_RANK()</li>
+  <li>RANK()</li>
+  <li>ROW_NUMBER()</li>
+  <li>SUM()</li>
 </ul>
 
-<p>OVER()<br>
-OVER() is a mandatory clause that defines a window within a query result set. OVER() is a subset of SELECT and a part of the aggregate definition. A window function computes a value for each row in the window.  </p>
+<p>OVER()<br />
+OVER() is a mandatory clause that defines a window within a query result set. OVER() is a subset of SELECT and a part of the aggregate definition. A window function computes a value for each row in the window.</p>
 
-<p>PARTITION BY <em>expr_list</em><br>
-PARTITION BY is an optional clause that subdivides the data into partitions. Including the partition clause divides the query result set into partitions, and the window function is applied to each partition separately. Computation restarts for each partition. If you do not include a partition clause, the function calculates on the entire table or file.  </p>
+<p>PARTITION BY <em>expr_list</em><br />
+PARTITION BY is an optional clause that subdivides the data into partitions. Including the partition clause divides the query result set into partitions, and the window function is applied to each partition separately. Computation restarts for each partition. If you do not include a partition clause, the function calculates on the entire table or file.</p>
 
-<p>ORDER BY <em>order_list</em><br>
-The ORDER BY clause defines the logical order of the rows within each partition of the result set. If no PARTITION BY is specified, ORDER BY uses the entire table. ORDER BY is optional for the aggregate window functions and required for the ranking functions. This ORDER BY clause does not relate to the ORDER BY clause used outside of the OVER clause.  </p>
+<p>ORDER BY <em>order_list</em><br />
+The ORDER BY clause defines the logical order of the rows within each partition of the result set. If no PARTITION BY is specified, ORDER BY uses the entire table. ORDER BY is optional for the aggregate window functions and required for the ranking functions. This ORDER BY clause does not relate to the ORDER BY clause used outside of the OVER clause.</p>
 
-<p>The window function is applied to the rows within each partition sorted according to the order specification.  </p>
+<p>The window function is applied to the rows within each partition sorted according to the order specification.</p>
 
-<p>Column identifiers or expressions that evaluate to column identifiers are required in the order list. You can also use constants as substitutes for column names.  </p>
+<p>Column identifiers or expressions that evaluate to column identifiers are required in the order list. You can also use constants as substitutes for column names.</p>
 
-<p>NULLS are treated as their own group, sorted and ranked last in ASC and sorted and ranked first in DESC. ASC is the default sort order.  </p>
+<p>NULLS are treated as their own group, sorted and ranked last in ASC and sorted and ranked first in DESC. ASC is the default sort order.</p>
 
-<p><em>column_name</em><br>
-The name of a column to be partitioned by or ordered by.  </p>
+<p><em>column_name</em><br />
+The name of a column to be partitioned by or ordered by.</p>
 
 <p>ASC | DESC
-Specifies sort order, either ascending or descending.  </p>
+Specifies sort order, either ascending or descending.</p>
 
-<p><em>frame_clause</em><br>
-For window functions that operate on the frame instead of the whole partition, the frame_clause specifies the group of rows that create the window frame. The frame_clause supports the following frames:  </p>
+<p><em>frame_clause</em><br />
+For window functions that operate on the frame instead of the whole partition, the frame_clause specifies the group of rows that create the window frame. The frame_clause supports the following frames:</p>
 
 <ul>
-<li>RANGE UNBOUNDED PRECEDING</li>
-<li>RANGE BETWEEN CURRENT ROW AND CURRENT ROW</li>
-<li>[RANGE | ROWS] BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</li>
-<li>[RANGE | ROWS] BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING<br></li>
+  <li>RANGE UNBOUNDED PRECEDING</li>
+  <li>RANGE BETWEEN CURRENT ROW AND CURRENT ROW</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>[RANGE</td>
+          <td>ROWS] BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>[RANGE</td>
+          <td>ROWS] BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
 </ul>
 
-<p>The default frame is RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW, which is the same as RANGE UNBOUNDED PRECEDING. This frame sets the frame as all rows from the start of the partition through the current row&#39;s last peer in the ordering, as specified by the ORDER BY clause.  The frame also includes ties when ordering is not unique.  </p>
+<p>The default frame is RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW, which is the same as RANGE UNBOUNDED PRECEDING. This frame sets the frame as all rows from the start of the partition through the current row’s last peer in the ordering, as specified by the ORDER BY clause.  The frame also includes ties when ordering is not unique.</p>
 
-<p>The following delimiters define the frame:  </p>
+<p>The following delimiters define the frame:</p>
 
 <ul>
-<li>UNBOUNDED PRECEDING<br>
-The frame starts with the first row of the partition.<br></li>
-<li>UNBOUNDED FOLLOWING<br>
-The frame ends with the last row of the partition, for both ROW and RANGE modes.<br></li>
-<li>CURRENT ROW<br>
+  <li>UNBOUNDED PRECEDING<br />
+The frame starts with the first row of the partition.</li>
+  <li>UNBOUNDED FOLLOWING<br />
+The frame ends with the last row of the partition, for both ROW and RANGE modes.</li>
+  <li>CURRENT ROW<br />
 In ROWS mode, CURRENT ROW means that the frame starts or ends with the current row. In RANGE mode, CURRENT ROW means that the frame starts or ends with the current row’s first or last peer in the ORDER BY ordering.</li>
 </ul>
 
 <h2 id="usage-notes">Usage Notes</h2>
 
 <ul>
-<li>You can only use window functions in the SELECT list and ORDER BY clauses of a query.<br></li>
-<li>Window functions precede ORDER BY.<br></li>
-<li>Drill processes window functions after the WHERE, GROUP BY, and HAVING clauses.<br></li>
-<li>Including the OVER() clause after an aggregate set function turns the function into an aggregate window function. </li>
-<li>You can use window functions to aggregate over any number of rows in the window frame.</li>
-<li>If you want to run a window function on the result set returned by the FLATTEN clause, use FLATTEN in a subquery. For example: <code>select x, y, a, sum(x) over() from  ( select x , y, flatten(z) as a from `complex.json`);</code></li>
+  <li>You can only use window functions in the SELECT list and ORDER BY clauses of a query.</li>
+  <li>Window functions precede ORDER BY.</li>
+  <li>Drill processes window functions after the WHERE, GROUP BY, and HAVING clauses.</li>
+  <li>Including the OVER() clause after an aggregate set function turns the function into an aggregate window function.</li>
+  <li>You can use window functions to aggregate over any number of rows in the window frame.</li>
+  <li>If you want to run a window function on the result set returned by the FLATTEN clause, use FLATTEN in a subquery. For example: <code class="language-plaintext highlighter-rouge">select x, y, a, sum(x) over() from  ( select x , y, flatten(z) as a from `complex.json`);</code></li>
 </ul>
 
     
@@ -1580,7 +1686,7 @@ In ROWS mode, CURRENT ROW means that the frame starts or ends with the current r
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

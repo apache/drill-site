@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,84 +1369,89 @@
 
     </div>
 
-     Dec 18, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
-        <p>Evaluate query plans to analyze query performance and determine if Drill used qualifying indexes. You can view query plans in the Drill Web UI or through the command line using the EXPLAIN PLAN FOR command. Alternatively, you can disable the <code>planner.enable_index_planning</code> option in Drill to see the query plan with a full table scan and then compare the plan with the index-based plan.  </p>
+        <p>Evaluate query plans to analyze query performance and determine if Drill used qualifying indexes. You can view query plans in the Drill Web UI or through the command line using the EXPLAIN PLAN FOR command. Alternatively, you can disable the <code class="language-plaintext highlighter-rouge">planner.enable_index_planning</code> option in Drill to see the query plan with a full table scan and then compare the plan with the index-based plan.</p>
 
-<p>The following examples demonstrate how to view the query profile in the Drill Web UI and the output of the EXPLAIN PLAN FOR command to determine if the query planner in Drill selected an index-based query plan. There is also an example that shows you how to disable index planning to compare a full table scan plan with an index-based query plan.  </p>
+<p>The following examples demonstrate how to view the query profile in the Drill Web UI and the output of the EXPLAIN PLAN FOR command to determine if the query planner in Drill selected an index-based query plan. There is also an example that shows you how to disable index planning to compare a full table scan plan with an index-based query plan.</p>
 
 <h2 id="examples">Examples</h2>
+<p>The subsequent sections assume that an index exists on a table named “lineitem.” The index, l_single_c_5, is a single column index created on the L_QUANTITY column. The index also covers the L_SUPPKEY, L_DISCOUNT, L_SHIPDate, and L_SHIPMODE columns. If a query contains columns covered by the index, the query is a covering query. If a query contains columns not covered by the index, the query is non-covering and requires a lookup back into the primary table to retrieve data.</p>
 
-<p>The subsequent sections assume that an index exists on a table named &quot;lineitem.&quot; The index, l_single_c_5, is a single column index created on the L_QUANTITY column. The index also covers the L_SUPPKEY, L_DISCOUNT, L_SHIPDate, and L_SHIPMODE columns. If a query contains columns covered by the index, the query is a covering query. If a query contains columns not covered by the index, the query is non-covering and requires a lookup back into the primary table to retrieve data.  </p>
-
-<p>The following list summarizes the assumptions:  </p>
+<p>The following list summarizes the assumptions:</p>
 
 <ul>
-<li><strong>Table name</strong>: <code>lineitem</code></li>
-<li><strong>Index name</strong>: <code>l_single_c_5</code></li>
-<li><strong>Indexed column</strong>: <code>L_QUANTITY</code></li>
-<li><strong>Included columns</strong>: <code>L_SUPPKEY</code>, <code>L_DISCOUNT</code>, <code>L_SHIPDate</code>, <code>L_SHIPMODE</code><br></li>
+  <li><strong>Table name</strong>: <code class="language-plaintext highlighter-rouge">lineitem</code></li>
+  <li><strong>Index name</strong>: <code class="language-plaintext highlighter-rouge">l_single_c_5</code></li>
+  <li><strong>Indexed column</strong>: <code class="language-plaintext highlighter-rouge">L_QUANTITY</code></li>
+  <li><strong>Included columns</strong>: <code class="language-plaintext highlighter-rouge">L_SUPPKEY</code>, <code class="language-plaintext highlighter-rouge">L_DISCOUNT</code>, <code class="language-plaintext highlighter-rouge">L_SHIPDate</code>, <code class="language-plaintext highlighter-rouge">L_SHIPMODE</code></li>
 </ul>
 
 <h3 id="query-profile">Query Profile</h3>
+<p>You can view the query plan on the Profiles page of the Drill Web UI, by selecting the query you want to evaluate and then selecting the Physical Plan page. The page displays the physical plan that Drill used to execute the query.</p>
 
-<p>You can view the query plan on the Profiles page of the Drill Web UI, by selecting the query you want to evaluate and then selecting the Physical Plan page. The page displays the physical plan that Drill used to execute the query.  </p>
+<p>The following image shows the physical plan that Drill used to execute this simple equality query:</p>
 
-<p>The following image shows the physical plan that Drill used to execute this simple equality query:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT L_SHIPDate FROM lineitem WHERE L_QUANTITY = 5; 
-</code></pre></div>
-<p><img src="https://i.imgur.com/DkZPAYJ.png" alt="">   </p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT L_SHIPDate FROM lineitem WHERE L_QUANTITY = 5; 
+</code></pre></div></div>
 
-<p>In the plan, you can see that Drill scanned the index, <code>l_single_c_5</code>, instead of the primary table. The query was completely covered by the index because the index contains all the columns referenced in the query and the query filtered on the indexed column.  </p>
+<p><img src="https://i.imgur.com/DkZPAYJ.png" alt="" /></p>
+
+<p>In the plan, you can see that Drill scanned the index, <code class="language-plaintext highlighter-rouge">l_single_c_5</code>, instead of the primary table. The query was completely covered by the index because the index contains all the columns referenced in the query and the query filtered on the indexed column.</p>
 
 <h3 id="explain-command">EXPLAIN Command</h3>
+<p>Alternatively, you can issue the <a href="/docs/explain/">EXPLAIN command</a> to see how Drill executes a query. You can see the chosen physical execution plan for a query without running the query, by issuing the <a href="/docs/explain/#explain-for-physical-plans">EXPLAIN PLAN FOR command</a>. The output of the command shows you if Drill plans to use the index when executing the query, as shown:</p>
 
-<p>Alternatively, you can issue the <a href="/docs/explain/">EXPLAIN command</a> to see how Drill executes a query. You can see the chosen physical execution plan for a query without running the query, by issuing the <a href="/docs/explain/#explain-for-physical-plans">EXPLAIN PLAN FOR command</a>. The output of the command shows you if Drill plans to use the index when executing the query, as shown:    </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">EXPLAIN PLAN FOR SELECT L_SHIPDate FROM lineitem WHERE L_QUANTITY = 5 LIMIT 10;
-+------+------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>EXPLAIN PLAN FOR SELECT L_SHIPDate FROM lineitem WHERE L_QUANTITY = 5 LIMIT 10;
+|------|------|
 | text | json |
-+------+------+
+|------|------|
 | 00-00    Screen
 00-01      Project(L_SHIPDate=[$0])
 00-02        SelectionVectorRemover
 00-03          Limit(fetch=[10])
 00-04            Limit(fetch=[10])
 00-05              Project(L_SHIPDate=[$1])
-00-06                Scan(groupscan=[JsonTableGroupScan [ScanSpec=JsonScanSpec [tableName=hdfs:///drill/testdata/tpch/sf1/data/json/lineitem, condition=(L_QUANTITY = {&quot;$numberLong&quot;:5}), indexName=l_single_c_5], columns=[`L_QUANTITY`, `L_SHIPDate`]]])  
-</code></pre></div>
-<p>In the plan, you can see that Drill plans to use the index, <code>l_single_c_5</code>, instead of performing a full table scan. The query is completely covered by the index because the index contains all columns referenced in the query and the query filters on the indexed column.  </p>
+00-06                Scan(groupscan=[JsonTableGroupScan [ScanSpec=JsonScanSpec [tableName=hdfs:///drill/testdata/tpch/sf1/data/json/lineitem, condition=(L_QUANTITY = {"$numberLong":5}), indexName=l_single_c_5], columns=[`L_QUANTITY`, `L_SHIPDate`]]])  
+</code></pre></div></div>
+
+<p>In the plan, you can see that Drill plans to use the index, <code class="language-plaintext highlighter-rouge">l_single_c_5</code>, instead of performing a full table scan. The query is completely covered by the index because the index contains all columns referenced in the query and the query filters on the indexed column.</p>
 
 <h3 id="comparing-an-index-based-plan-to-a-full-table-scan-plan">Comparing an Index-Based Plan to a Full Table Scan Plan</h3>
-
-<p>If you want to compare an index-based plan against a plan with a full table scan, disable the <code>planner.enable_index_planning</code> option in Drill, and run the EXPLAIN PLAN FOR command with the query. Running this command with the <code>planner.enable_index_planning</code> option disabled forces Drill to generate a plan that includes a full table scan. </p>
+<p>If you want to compare an index-based plan against a plan with a full table scan, disable the <code class="language-plaintext highlighter-rouge">planner.enable_index_planning</code> option in Drill, and run the EXPLAIN PLAN FOR command with the query. Running this command with the <code class="language-plaintext highlighter-rouge">planner.enable_index_planning</code> option disabled forces Drill to generate a plan that includes a full table scan.</p>
 
 <p>You can compare the full table scan plan against the index-based plan to compare the costs and resource consumption of each plan.</p>
 
-<p>In the following example, the indexing feature is enabled, and Drill generated a plan using the index:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">EXPLAIN PLAN FOR SELECT L_SHIPDate FROM lineitem WHERE L_QUANTITY = 5 LIMIT 10;
-+------+------+
+<p>In the following example, the indexing feature is enabled, and Drill generated a plan using the index:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>EXPLAIN PLAN FOR SELECT L_SHIPDate FROM lineitem WHERE L_QUANTITY = 5 LIMIT 10;
+|------|------|
 | text | json |
-+------+------+
+|------|------|
 | 00-00    Screen
 00-01      Project(L_SHIPDate=[$0])
 00-02        SelectionVectorRemover
 00-03          Limit(fetch=[10])
 00-04            Limit(fetch=[10])
 00-05              Project(L_SHIPDate=[$1])
-00-06                Scan(groupscan=[JsonTableGroupScan [ScanSpec=JsonScanSpec [tableName=hdfs:///drill/testdata/tpch/sf1/data/json/lineitem, condition=(L_QUANTITY = {&quot;$numberLong&quot;:5}), indexName=l_single_c_5], columns=[`L_QUANTITY`, `L_SHIPDate`]]])  
-</code></pre></div>
-<p>Turning the option off, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SESSION SET planner.enable_index_planning = false   
-</code></pre></div>
-<p>And running the EXPLAIN PLAN FOR command again shows the plan with a full table scan:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">EXPLAIN PLAN FOR SELECT L_SHIPDate FROM lineitem WHERE L_QUANTITY = 5 LIMIT 10;
-+------+------+
+00-06                Scan(groupscan=[JsonTableGroupScan [ScanSpec=JsonScanSpec [tableName=hdfs:///drill/testdata/tpch/sf1/data/json/lineitem, condition=(L_QUANTITY = {"$numberLong":5}), indexName=l_single_c_5], columns=[`L_QUANTITY`, `L_SHIPDate`]]])  
+</code></pre></div></div>
+
+<p>Turning the option off, as shown:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ALTER SESSION SET planner.enable_index_planning = false   
+</code></pre></div></div>
+
+<p>And running the EXPLAIN PLAN FOR command again shows the plan with a full table scan:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>EXPLAIN PLAN FOR SELECT L_SHIPDate FROM lineitem WHERE L_QUANTITY = 5 LIMIT 10;
+|------|------|
 | text | json |
-+------+------+
+|------|------|
 | 00-00    Screen
 00-01      Project(L_SHIPDate=[$0])
 00-02        SelectionVectorRemover
@@ -1423,10 +1460,12 @@
 01-01              SelectionVectorRemover
 01-02                Limit(fetch=[10])
 01-03                  Project(L_SHIPDate=[$1])
-01-04                    Scan(groupscan=[JsonTableGroupScan [ScanSpec=JsonScanSpec [tableName=hdfs:///drill/testdata/tpch/sf1/data/json/lineitem, condition=(L_QUANTITY = {&quot;$numberLong&quot;:5})], columns=[`L_QUANTITY`, `L_SHIPDate`]]])
+01-04                    Scan(groupscan=[JsonTableGroupScan [ScanSpec=JsonScanSpec [tableName=hdfs:///drill/testdata/tpch/sf1/data/json/lineitem, condition=(L_QUANTITY = {"$numberLong":5})], columns=[`L_QUANTITY`, `L_SHIPDate`]]])
  |  
-</code></pre></div>
+</code></pre></div></div>
+
 <p><strong>Note:</strong> To see the cost of each plan, go to the Drill Web UI and view the query profile for each EXPLAIN PLAN FOR command that you issue through the command line.</p>
+
 
     
       
@@ -1444,7 +1483,7 @@
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

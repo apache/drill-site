@@ -137,41 +137,52 @@
   <div class="addthis_sharing_toolbox"></div>
 
   <article class="post-content">
-    <p>Apache Drill 1.4 (<a href="https://drill.apache.org/download/">available here</a>) includes bug fixes and enhancements from <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12332947&projectId=12313820">32 
+    <p>Apache Drill 1.4 (<a href="https://drill.apache.org/download/">available here</a>) includes bug fixes and enhancements from <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12332947&amp;projectId=12313820">32 
 JIRAs</a>.</p>
 
-<p>Here&#39;s a list of highlights from this newest version of Drill:</p>
+<p>Here’s a list of highlights from this newest version of Drill:</p>
 
 <h2 id="select-with-options">Select With Options</h2>
+<p>Queries that change storage plugin configuration options can now be written. For instance, to query the file <code class="language-plaintext highlighter-rouge">CO.dat</code>, the following can be used:</p>
 
-<p>Queries that change storage plugin configuration options can now be written. For instance, to query the file <code>CO.dat</code>, the following can be used:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM TABLE(dfs.`/path/to/CO.dat`(type =&gt; &#39;text&#39;));
-</code></pre></div>
-<p>If a version of <code>CO.dat</code> with a header is available, the first entries of the file can be parsed as column names by 
-passing an <code>extractHeader =&gt; true</code> argument. We can also use a pipe symbol, &#39;|&#39;, as the delimiter by passing 
-<code>fieldDelimiter</code>:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM TABLE(dfs.`/path/to/CO.dat`(type =&gt; &#39;text&#39;, fieldDelimiter =&gt; &#39;|&#39;, extractHeader =&gt; true));
-</code></pre></div>
-<p>Additionally, <code>lineDelimiter</code> can be used to indicate a deliminter for new lines, such as the double pipe, &#39;||&#39;, symbol in this example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM TABLE(dfs.`/path/to/CO.dat`(type =&gt; &#39;text&#39;, lineDelimiter =&gt; &#39;||&#39;, fieldDelimiter =&gt; &#39;|&#39;));
-</code></pre></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM TABLE(dfs.`/path/to/CO.dat`(type =&gt; 'text'));
+</code></pre></div></div>
+
+<p>If a version of <code class="language-plaintext highlighter-rouge">CO.dat</code> with a header is available, the first entries of the file can be parsed as column names by 
+passing an <code class="language-plaintext highlighter-rouge">extractHeader =&gt; true</code> argument. We can also use a pipe symbol, ‘|’, as the delimiter by passing 
+<code class="language-plaintext highlighter-rouge">fieldDelimiter</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM TABLE(dfs.`/path/to/CO.dat`(type =&gt; 'text', fieldDelimiter =&gt; '|', extractHeader =&gt; true));
+</code></pre></div></div>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Additionally, <code class="language-plaintext highlighter-rouge">lineDelimiter</code> can be used to indicate a deliminter for new lines, such as the double pipe, ‘</td>
+      <td> </td>
+      <td>’, symbol in this example:</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM TABLE(dfs.`/path/to/CO.dat`(type =&gt; 'text', lineDelimiter =&gt; '||', fieldDelimiter =&gt; '|'));
+</code></pre></div></div>
+
 <h2 id="improved-behavior-for-csv-header-parsing">Improved Behavior For CSV Header Parsing</h2>
-
 <p>When header parsing is enabled, queries to CSV files no longer raise an exception if the indicated column does not 
-exist. Instead, Drill now returns <code>null</code> values for that column.</p>
+exist. Instead, Drill now returns <code class="language-plaintext highlighter-rouge">null</code> values for that column.</p>
 
 <h2 id="json-formatting">JSON Formatting</h2>
+<p>For more compact results, Drill’s default behavior of pretty-printing JSON can now be changed by setting the variable 
+<code class="language-plaintext highlighter-rouge">store.json.writer.uglify</code> to <code class="language-plaintext highlighter-rouge">true</code>. As in:</p>
 
-<p>For more compact results, Drill&#39;s default behavior of pretty-printing JSON can now be changed by setting the variable 
-<code>store.json.writer.uglify</code> to <code>true</code>. As in:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SESSION SET store.json.writer.uglify = true;
-</code></pre></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ALTER SESSION SET store.json.writer.uglify = true;
+</code></pre></div></div>
+
 <h2 id="better-logging">Better Logging</h2>
-
-<p>SQL query text is now logged to the <code>drillbit.log</code> file.</p>
+<p>SQL query text is now logged to the <code class="language-plaintext highlighter-rouge">drillbit.log</code> file.</p>
 
 <h2 id="other-improvements">Other Improvements</h2>
-
 <p>This version also features schema change compatible sorting, better Apache Hive support, and more efficient caching for Parquet file metadata.</p>
 
   </article>
@@ -196,7 +207,7 @@ exist. Instead, Drill now returns <code>null</code> values for that column.</p>
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

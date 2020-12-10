@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1335,9 +1367,9 @@
 
     </div>
 
-     Nov 2, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
@@ -1347,57 +1379,56 @@ Your function must include data types that Drill supports, such as INTEGER or
 BIGINT. For a list of supported data types, refer to the <a href="/docs/supported-data-types/">SQL Reference</a>. Keep the following guidelines in mind:</p>
 
 <ul>
-<li>Do not use complex @Workspace variables. </li>
-<li>You cannot allocate a Repeated* value or have a ComplexWriter in the @Workspace.</li>
+  <li>Do not use complex @Workspace variables.</li>
+  <li>You cannot allocate a Repeated* value or have a ComplexWriter in the @Workspace.</li>
 </ul>
 
 <p>Complete the following steps to create an aggregate function:</p>
 
 <ol>
-<li><p>Create a Maven project and add the following dependency:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;dependency&gt;
-&lt;groupId&gt;org.apache.drill.exec&lt;/groupId&gt;
-&lt;artifactId&gt;drill-java-exec&lt;/artifactId&gt;
-&lt;version&gt;1.1.0&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre></div></li>
-<li><p>Create a class that implements the <code>DrillAggFunc</code> interface and identify the scope as <code>FunctionTemplate.FunctionScope.POINT_AGGREGATE</code>.</p>
+  <li>
+    <p>Create a Maven project and add the following dependency:</p>
 
-<p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">@FunctionTemplate(name = &quot;count&quot;, scope = FunctionTemplate.FunctionScope.POINT_AGGREGATE)
-public static class BitCount implements DrillAggFunc{
-</code></pre></div></li>
-<li><p>Provide the variables used in the code in the <code>Param, Workspace,</code>and <code>Output</code> bit holders.</p>
+    <dependency>
+   <groupId>org.apache.drill.exec</groupId>
+   <artifactId>drill-java-exec</artifactId>
+   <version>1.1.0</version>
+   </dependency>
+  </li>
+  <li>
+    <p>Create a class that implements the <code class="language-plaintext highlighter-rouge">DrillAggFunc</code> interface and identify the scope as <code class="language-plaintext highlighter-rouge">FunctionTemplate.FunctionScope.POINT_AGGREGATE</code>.</p>
+  </li>
+</ol>
 
-<p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">@Param BitHolder in;
-@Workspace BitHolder value;
-@Output BitHolder out;
-</code></pre></div></li>
-<li><p>Include the setup(), add(), output(),<code>and</code>reset() methods.  </p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>**Example**
 
-<p><strong>Example</strong>
+	@FunctionTemplate(name = "count", scope = FunctionTemplate.FunctionScope.POINT_AGGREGATE)
+	public static class BitCount implements DrillAggFunc{   3. Provide the variables used in the code in the `Param, Workspace, `and `Output` bit holders.
+
+**Example**
+
+	@Param BitHolder in;
+	@Workspace BitHolder value;
+	@Output BitHolder out;   4. Include the setup(), add(), output(),` and `reset() methods.  
+
+**Example**
     public void setup() {
       value = new BitHolder(); 
       value.value = 0;
-    }</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">@Override
-public void add() {
-  value.value++;
-}
-@Override
-public void output() {
-  out.value = value.value;
-}
-@Override
-public void reset() {
-    value.value = 0;
-</code></pre></div></li>
-<li><p>Use the maven-source-plugin to compile the sources and classes JAR files. Verify that an empty <code>drill-module.conf</code> is included in the resources folder of the JARs.<br>
-Drill searches this module during classpath scanning. If the file is not
-included in the resources folder, you can add it to the JAR file or add it to
-<code>etc/drill/conf</code>.</p></li>
-</ol>
+    }
+     
+    @Override
+    public void add() {
+      value.value++;
+    }
+    @Override
+    public void output() {
+      out.value = value.value;
+    }
+    @Override
+    public void reset() {
+        value.value = 0;   5. Use the maven-source-plugin to compile the sources and classes JAR files. Verify that an empty `drill-module.conf` is included in the resources folder of the JARs.    Drill searches this module during classpath scanning. If the file is not included in the resources folder, you can add it to the JAR file or add it to `etc/drill/conf`.
+</code></pre></div></div>
 
     
       
@@ -1415,7 +1446,7 @@ included in the resources folder, you can add it to the JAR file or add it to
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

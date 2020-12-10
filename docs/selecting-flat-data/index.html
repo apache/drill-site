@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,29 +1369,31 @@
 
     </div>
 
-     Nov 2, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
-        <p>A very simple query against the <code>donuts.json</code> file returns the values for the
-five &quot;flat&quot; columns (the columns that contain data at the top level only: no
+        <p>A very simple query against the <code class="language-plaintext highlighter-rouge">donuts.json</code> file returns the values for the
+five “flat” columns (the columns that contain data at the top level only: no
 nested data):</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select id, type, name, ppu
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select id, type, name, ppu
 from dfs.`/Users/brumsby/drill/donuts.json`;
-+-------+--------+----------------+-------+
+|-------|--------|----------------|-------|
 |  id   |  type  |      name      |  ppu  |
-+-------+--------+----------------+-------+
+|-------|--------|----------------|-------|
 | 0001  | donut  | Cake           | 0.55  |
 | 0002  | donut  | Raised         | 0.69  |
 | 0003  | donut  | Old Fashioned  | 0.55  |
 | 0004  | donut  | Filled         | 0.69  |
 | 0005  | donut  | Apple Fritter  | 1.0   |
-+-------+--------+----------------+-------+
+|-------|--------|----------------|-------|
 5 rows selected (0.18 seconds)
-</code></pre></div>
-<p>Note that <code>dfs</code> is the schema name, the path to the file is enclosed by
+</code></pre></div></div>
+
+<p>Note that <code class="language-plaintext highlighter-rouge">dfs</code> is the schema name, the path to the file is enclosed by
 backticks, and the query must end with a semicolon.</p>
 
     
@@ -1378,7 +1412,7 @@ backticks, and the query must end with a semicolon.</p>
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

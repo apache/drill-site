@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,139 +1369,150 @@
 
     </div>
 
-     Jun 29, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
-        <p>Drill reads from and writes to data sources having a wide variety of types. </p>
+        <p>Drill reads from and writes to data sources having a wide variety of types.</p>
 
-<table><thead>
-<tr>
-<th>SQL Data Type</th>
-<th>Description</th>
-<th>Example</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>BIGINT</td>
-<td>8-byte signed integer in the range -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807</td>
-<td>9223372036854775807</td>
-</tr>
-<tr>
-<td>BINARY</td>
-<td>Variable-length byte string</td>
-<td>B@e6d9eb7</td>
-</tr>
-<tr>
-<td>BOOLEAN</td>
-<td>True or false</td>
-<td>true</td>
-</tr>
-<tr>
-<td>DATE</td>
-<td>Years, months, and days in YYYY-MM-DD format since 4713 BC</td>
-<td>2015-12-30</td>
-</tr>
-<tr>
-<td>DECIMAL(p,s), or DEC(p,s), NUMERIC(p,s)*</td>
-<td>38-digit precision number, precision is p, and scale is s</td>
-<td>DECIMAL(6,2) is 1234.56,  4 digits before and 2 digits after the decimal point</td>
-</tr>
-<tr>
-<td>FLOAT</td>
-<td>4-byte floating point number</td>
-<td>0.456</td>
-</tr>
-<tr>
-<td>DOUBLE, DOUBLE PRECISION</td>
-<td>8-byte floating point number, precision-scalable</td>
-<td>0.456</td>
-</tr>
-<tr>
-<td>INTEGER or INT</td>
-<td>4-byte signed integer in the range -2,147,483,648 to 2,147,483,647</td>
-<td>2147483646</td>
-</tr>
-<tr>
-<td>INTERVAL**</td>
-<td>A day-time or year-month interval</td>
-<td>&#39;1 10:20:30.123&#39; (day-time) or &#39;1-2&#39; year to month (year-month)</td>
-</tr>
-<tr>
-<td>SMALLINT***</td>
-<td>2-byte signed integer in the range -32,768 to 32,767</td>
-<td>32000</td>
-</tr>
-<tr>
-<td>TIME</td>
-<td>24-hour based time before or after January 1, 2001 in hours, minutes, seconds format: HH:mm:ss</td>
-<td>22:55:55.23</td>
-</tr>
-<tr>
-<td>TIMESTAMP</td>
-<td>JDBC timestamp in year, month, date hour, minute, second, and optional milliseconds format: yyyy-MM-dd HH:mm:ss.SSS</td>
-<td>2015-12-30 22:55:55.23</td>
-</tr>
-<tr>
-<td>CHARACTER VARYING, CHARACTER, CHAR,**** or VARCHAR</td>
-<td>UTF8-encoded variable-length string. The default limit is 1 character. The maximum character limit is 2,147,483,647.</td>
-<td>CHAR(30) casts data to a 30-character string maximum.</td>
-</tr>
-</tbody></table>
+<table>
+  <thead>
+    <tr>
+      <th>SQL Data Type</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>BIGINT</td>
+      <td>8-byte signed integer in the range -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807</td>
+      <td>9223372036854775807</td>
+    </tr>
+    <tr>
+      <td>BINARY</td>
+      <td>Variable-length byte string</td>
+      <td>B@e6d9eb7</td>
+    </tr>
+    <tr>
+      <td>BOOLEAN</td>
+      <td>True or false</td>
+      <td>true</td>
+    </tr>
+    <tr>
+      <td>DATE</td>
+      <td>Years, months, and days in YYYY-MM-DD format since 4713 BC</td>
+      <td>2015-12-30</td>
+    </tr>
+    <tr>
+      <td>DECIMAL(p,s), or DEC(p,s), NUMERIC(p,s)*</td>
+      <td>38-digit precision number, precision is p, and scale is s</td>
+      <td>DECIMAL(6,2) is 1234.56,  4 digits before and 2 digits after the decimal point</td>
+    </tr>
+    <tr>
+      <td>FLOAT</td>
+      <td>4-byte floating point number</td>
+      <td>0.456</td>
+    </tr>
+    <tr>
+      <td>DOUBLE, DOUBLE PRECISION</td>
+      <td>8-byte floating point number, precision-scalable</td>
+      <td>0.456</td>
+    </tr>
+    <tr>
+      <td>INTEGER or INT</td>
+      <td>4-byte signed integer in the range -2,147,483,648 to 2,147,483,647</td>
+      <td>2147483646</td>
+    </tr>
+    <tr>
+      <td>INTERVAL**</td>
+      <td>A day-time or year-month interval</td>
+      <td>‘1 10:20:30.123’ (day-time) or ‘1-2’ year to month (year-month)</td>
+    </tr>
+    <tr>
+      <td>SMALLINT***</td>
+      <td>2-byte signed integer in the range -32,768 to 32,767</td>
+      <td>32000</td>
+    </tr>
+    <tr>
+      <td>TIME</td>
+      <td>24-hour based time before or after January 1, 2001 in hours, minutes, seconds format: HH:mm:ss</td>
+      <td>22:55:55.23</td>
+    </tr>
+    <tr>
+      <td>TIMESTAMP</td>
+      <td>JDBC timestamp in year, month, date hour, minute, second, and optional milliseconds format: yyyy-MM-dd HH:mm:ss.SSS</td>
+      <td>2015-12-30 22:55:55.23</td>
+    </tr>
+    <tr>
+      <td>CHARACTER VARYING, CHARACTER, CHAR,<em>**</em> or VARCHAR</td>
+      <td>UTF8-encoded variable-length string. The default limit is 1 character. The maximum character limit is 2,147,483,647.</td>
+      <td>CHAR(30) casts data to a 30-character string maximum.</td>
+    </tr>
+  </tbody>
+</table>
 
-<p>* Starting in Drill 1.14, the DECIMAL data type is enabled by default.<br>
-** Internally, INTERVAL is represented as INTERVALDAY or INTERVALYEAR.<br>
-*** SMALLINT is not currently supported.<br>
-**** The CHAR data type is internally represented as VARCHAR by Drill.    </p>
+<p>* Starting in Drill 1.14, the DECIMAL data type is enabled by default.<br />
+** Internally, INTERVAL is represented as INTERVALDAY or INTERVALYEAR.<br />
+*** SMALLINT is not currently supported.<br />
+**** The CHAR data type is internally represented as VARCHAR by Drill.</p>
 
 <h2 id="decimal-data-type">DECIMAL Data Type</h2>
 
-<p>Starting in Drill 1.14, DECIMAL data type support is enabled by default. Drill uses the vardecimal data type to store decimal and numeric data types in a compressed format that optimizes storage space. The vardecimal data type stores decimal and numeric values as variable length columns that can represent any decimal precision.  </p>
+<p>Starting in Drill 1.14, DECIMAL data type support is enabled by default. Drill uses the vardecimal data type to store decimal and numeric data types in a compressed format that optimizes storage space. The vardecimal data type stores decimal and numeric values as variable length columns that can represent any decimal precision.</p>
 
-<p>In Drill, the SQL DECIMAL and NUMERIC data types map to the <a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html">java.math.BigDecimal</a> Java data type.   </p>
+<p>In Drill, the SQL DECIMAL and NUMERIC data types map to the <a href="https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html">java.math.BigDecimal</a> Java data type.</p>
 
 <h3 id="syntax">Syntax</h3>
 
-<p>The DECIMAL data type accepts numeric values, for which you can define a precision and a scale, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   column_name DECIMAL[(precision[,scale])]  
-</code></pre></div>
-<p>Precision is an integer that indicates how many digits the number will contain. Scale is an integer that indicates the number of digits to the right of the decimal point. For example, the number 2325.67 has a precision of 6 and scale of 2. In a query, DECIMAL (6,2). </p>
+<p>The DECIMAL data type accepts numeric values, for which you can define a precision and a scale, as shown:</p>
 
-<p>Scale cannot be greater than the precision. If you do not indicate a precision or scale, the default precision is 38 and scale is 0.  </p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   column_name DECIMAL[(precision[,scale])]  
+</code></pre></div></div>
+
+<p>Precision is an integer that indicates how many digits the number will contain. Scale is an integer that indicates the number of digits to the right of the decimal point. For example, the number 2325.67 has a precision of 6 and scale of 2. In a query, DECIMAL (6,2).</p>
+
+<p>Scale cannot be greater than the precision. If you do not indicate a precision or scale, the default precision is 38 and scale is 0.</p>
 
 <h3 id="decimal-data-type-storage-format-support">Decimal Data Type Storage Format Support</h3>
 
-<p>Drill can read decimal data types from and write decimal data types to the following storage format: </p>
+<p>Drill can read decimal data types from and write decimal data types to the following storage format:</p>
 
 <ul>
-<li>parquet</li>
+  <li>parquet</li>
 </ul>
 
-<p>Drill can read decimal data types from the following storage formats, but cannot write decimal data types to them:  </p>
+<p>Drill can read decimal data types from the following storage formats, but cannot write decimal data types to them:</p>
 
 <ul>
-<li>hive<br></li>
-<li>jdbc<br></li>
-<li>avro</li>
+  <li>hive</li>
+  <li>jdbc</li>
+  <li>avro</li>
 </ul>
 
 <h3 id="decimal-type-options">Decimal Type Options</h3>
 
-<p>You can use the <a href="/docs/set/">SET command</a> with the <code>planner.enable_decimal_data_type</code> option to turn DECIMAL data type support off and on. If you disable the <code>planner.enable_decimal_data_type</code> option (by setting it to false), Drill treats decimal literals as DOUBLE.  </p>
+<p>You can use the <a href="/docs/set/">SET command</a> with the <code class="language-plaintext highlighter-rouge">planner.enable_decimal_data_type</code> option to turn DECIMAL data type support off and on. If you disable the <code class="language-plaintext highlighter-rouge">planner.enable_decimal_data_type</code> option (by setting it to false), Drill treats decimal literals as DOUBLE.</p>
 
-<p>Drill 1.14 introduces the following additional decimal-related options for the Parquet storage format that you can modify using the <a href="/docs/set/">SET command</a>:  </p>
+<p>Drill 1.14 introduces the following additional decimal-related options for the Parquet storage format that you can modify using the <a href="/docs/set/">SET command</a>:</p>
 
 <ul>
-<li><p><code>store.parquet.writer.use_primitive_types_for_decimals (boolean)</code><br>
-Allows Drill to use INT32 and INT64 logical types when storing decimal values in Parquet if the precision of the value allows it. Default is true. Set to false to prevent Drill from using INT32 and INT64 logical types, as shown:   </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SET `store.parquet.writer.use_primitive_types_for_decimals` = false;   
-</code></pre></div></li>
-<li><p><code>store.parquet.writer.logical_type_for_decimals</code> 
-Indicates the logical type that Drill should use to store decimals. The default is fixed_len_byte_array. Alternatively, you can set this option to binary, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SET `store.parquet.writer.logical_type_for_decimals` = &#39;binary&#39;;  
-</code></pre></div></li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">store.parquet.writer.use_primitive_types_for_decimals (boolean)</code><br />
+Allows Drill to use INT32 and INT64 logical types when storing decimal values in Parquet if the precision of the value allows it. Default is true. Set to false to prevent Drill from using INT32 and INT64 logical types, as shown:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SET `store.parquet.writer.use_primitive_types_for_decimals` = false;   
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">store.parquet.writer.logical_type_for_decimals</code> 
+Indicates the logical type that Drill should use to store decimals. The default is fixed_len_byte_array. Alternatively, you can set this option to binary, as shown:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SET `store.parquet.writer.logical_type_for_decimals` = 'binary';  
+</code></pre></div>    </div>
+  </li>
 </ul>
 
 <h2 id="composite-types">Composite Types</h2>
@@ -1477,29 +1520,28 @@ Indicates the logical type that Drill should use to store decimals. The default 
 <p>Drill supports the following composite types:</p>
 
 <ul>
-<li>Map</li>
-<li>Array</li>
+  <li>Map</li>
+  <li>Array</li>
 </ul>
 
 <p>A map is a set of name/value pairs. A value in a map can be a scalar type, such as string or int, or a complex type, such as an array or another map. An array is a repeated list of values. A value in an array can be a scalar type, such as string or int, or an array can be a complex type, such as a map or another array.</p>
 
-<p>Drill uses map and array data types internally for reading complex and nested data structures from data sources. In this release of Drill, you cannot reference a composite type by name in a query, but Drill supports array values coming from data sources. For example, you can use the index syntax to query data and get the value of an array element:  </p>
+<p>Drill uses map and array data types internally for reading complex and nested data structures from data sources. In this release of Drill, you cannot reference a composite type by name in a query, but Drill supports array values coming from data sources. For example, you can use the index syntax to query data and get the value of an array element:</p>
 
-<p><code>a[1]</code>  </p>
+<p><code class="language-plaintext highlighter-rouge">a[1]</code></p>
 
 <p>You can refer to the value for a key in a map using dot notation:</p>
 
-<p><code>t.m.k</code></p>
+<p><code class="language-plaintext highlighter-rouge">t.m.k</code></p>
 
-<p>The section <a href="/docs/querying-complex-data-introduction">“Query Complex Data”</a> shows how to use composite types to access nested arrays. <a href="/docs/handling-different-data-types/#handling-json-and-parquet-data">&quot;Handling Different Data Types&quot;</a> includes examples of JSON maps and arrays. Drill provides functions for handling array and map types:</p>
+<p>The section <a href="/docs/querying-complex-data-introduction">“Query Complex Data”</a> shows how to use composite types to access nested arrays. <a href="/docs/handling-different-data-types/#handling-json-and-parquet-data">“Handling Different Data Types”</a> includes examples of JSON maps and arrays. Drill provides functions for handling array and map types:</p>
 
 <ul>
-<li><a href="/docs/kvgen/">&quot;KVGEN&quot;</a></li>
-<li><a href="/docs/flatten/">&quot;FLATTEN&quot;</a></li>
+  <li><a href="/docs/kvgen/">“KVGEN”</a></li>
+  <li><a href="/docs/flatten/">“FLATTEN”</a></li>
 </ul>
 
 <h2 id="any-type">ANY Type</h2>
-
 <p>The ANY type is a key technological advance in Drill that enables it to address late typing problems. Drill uses the ANY type internally and you might see references to ANY in the output of the DESCRIBE or other commands. You cannot cast a value to the ANY type in this release.</p>
 
 <p>Using the ANY type, the parser postpones the problem of resolving the type of some value until the query is actually running.  At that point, Drill has an empirical schema available for each record batch to use for final code
@@ -1512,113 +1554,118 @@ changes in the data processing, Drill regenerates the code as necessary.</p>
 You do not assign a data type to every column name in a CREATE TABLE statement to define the table as you do in database software. Instead, you use the CREATE TABLE AS (CTAS) statement with one or more of the following functions to define the table:</p>
 
 <ul>
-<li><a href="/docs/data-type-conversion/#cast">CAST</a><br></li>
-<li><a href="/docs/data-type-conversion/#convert_to-and-convert_from">CONVERT TO/FROM</a><br>
-Use the <a href="/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">CONVERT TO AND CONVERT FROM data types</a><br></li>
-<li>Other <a href="/docs/data-type-conversion/#other-data-type-conversions">data conversion functions</a><br></li>
+  <li><a href="/docs/data-type-conversion/#cast">CAST</a></li>
+  <li><a href="/docs/data-type-conversion/#convert_to-and-convert_from">CONVERT TO/FROM</a> <br />
+Use the <a href="/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">CONVERT TO AND CONVERT FROM data types</a></li>
+  <li>Other <a href="/docs/data-type-conversion/#other-data-type-conversions">data conversion functions</a></li>
 </ul>
 
 <p>In some cases, Drill converts schema-less data to correctly-typed data implicitly. In this case, you do not need to cast the data. The file format of the data and the nature of your query determines the requirement for casting or converting. Differences in casting depend on the data source. The following list describes how Drill treats data types from various data sources:</p>
 
 <ul>
-<li>HBase<br>
-Does not implicitly cast input to SQL types. Convert data to appropriate types as as described in the section <a href="/docs/querying-hbase/">&quot;Querying HBase&quot;</a>. Use <a href="/docs//data-type-conversion/#convert_to-and-convert_from">CONVERT_TO or CONVERT_FROM data types</a>.</li>
-<li>Hive<br>
+  <li>HBase<br />
+Does not implicitly cast input to SQL types. Convert data to appropriate types as as described in the section <a href="/docs/querying-hbase/">“Querying HBase”</a>. Use <a href="/docs//data-type-conversion/#convert_to-and-convert_from">CONVERT_TO or CONVERT_FROM data types</a>.</li>
+  <li>Hive<br />
 Implicitly casts Hive types to SQL types as shown in the Hive <a href="/docs/hive-to-drill-data-type-mapping/#type-mapping-example">type mapping example</a></li>
-<li>JSON<br>
-Implicitly casts JSON data to its <a href="/docs/json-data-model/#data-type-mapping">corresponding SQL types</a> or to VARCHAR if Drill is in all text mode. </li>
-<li>MapR-DB<br>
+  <li>JSON<br />
+Implicitly casts JSON data to its <a href="/docs/json-data-model/#data-type-mapping">corresponding SQL types</a> or to VARCHAR if Drill is in all text mode.</li>
+  <li>MapR-DB<br />
 Implicitly casts MapR-DB data to SQL types when you use <a href="/docs/mapr-db-format">the maprdb format</a> for reading MapR-DB data. The dfs storage plugin defines the format when you install Drill from the mapr-drill package on a MapR node.</li>
-<li>Parquet<br>
-Implicitly casts Parquet data to the SQL types shown in <a href="/docs/parquet-format/#sql-data-types-to-parquet">SQL Data Types to Parquet</a>. </li>
-<li>Text: CSV, TSV, and other text<br>
+  <li>Parquet<br />
+Implicitly casts Parquet data to the SQL types shown in <a href="/docs/parquet-format/#sql-data-types-to-parquet">SQL Data Types to Parquet</a>.</li>
+  <li>Text: CSV, TSV, and other text<br />
 Implicitly casts all textual data to VARCHAR.</li>
 </ul>
 
 <h2 id="implicit-casting-precedence-of-data-types">Implicit Casting Precedence of Data Types</h2>
 
 <p>The following list includes data types Drill uses in descending order of precedence. Casting precedence shown in the following table applies to the implicit casting that Drill performs. For example, Drill might implicitly cast data when a query includes a function or filter on mismatched data types:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT myBigInt FROM mytable WHERE myBigInt = 2.5;
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT myBigInt FROM mytable WHERE myBigInt = 2.5;
+</code></pre></div></div>
+
 <p>As shown in the table, Drill can cast a NULL value, which has the lowest precedence, to any other type; you can cast a SMALLINT (not supported in this release) value to INT. Drill might deviate from these precedence rules for performance reasons. Under certain circumstances, such as queries involving SUBSTR and CONCAT functions, Drill reverses the order of precedence and allows a cast to VARCHAR from a type of higher precedence than VARCHAR, such as BIGINT. The INTERVALDAY and INTERVALYEAR types are internal types.</p>
 
 <h3 id="casting-precedence">Casting Precedence</h3>
 
-<table><thead>
-<tr>
-<th>Precedence</th>
-<th>Data Type</th>
-<th>Precedence</th>
-<th>Data Type</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>1</td>
-<td>INTERVALYEAR (highest)</td>
-<td>12</td>
-<td>UINT2</td>
-</tr>
-<tr>
-<td>2</td>
-<td>INTERVALDAY</td>
-<td>13</td>
-<td>SMALLINT*</td>
-</tr>
-<tr>
-<td>3</td>
-<td>TIMESTAMP</td>
-<td>14</td>
-<td>UINT1</td>
-</tr>
-<tr>
-<td>4</td>
-<td>DATE</td>
-<td>15</td>
-<td>VAR16CHAR</td>
-</tr>
-<tr>
-<td>5</td>
-<td>TIME</td>
-<td>16</td>
-<td>FIXED16CHAR</td>
-</tr>
-<tr>
-<td>6</td>
-<td>DOUBLE</td>
-<td>17</td>
-<td>VARCHAR</td>
-</tr>
-<tr>
-<td>7</td>
-<td>DECIMAL</td>
-<td>18</td>
-<td>CHAR</td>
-</tr>
-<tr>
-<td>8</td>
-<td>UINT8</td>
-<td>19</td>
-<td>VARBINARY</td>
-</tr>
-<tr>
-<td>9</td>
-<td>BIGINT</td>
-<td>20</td>
-<td>FIXEDBINARY</td>
-</tr>
-<tr>
-<td>10</td>
-<td>UINT4</td>
-<td>21</td>
-<td>NULL (lowest)</td>
-</tr>
-<tr>
-<td>11</td>
-<td>INT</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
+<table>
+  <thead>
+    <tr>
+      <th>Precedence</th>
+      <th>Data Type</th>
+      <th>Precedence</th>
+      <th>Data Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>INTERVALYEAR (highest)</td>
+      <td>12</td>
+      <td>UINT2</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>INTERVALDAY</td>
+      <td>13</td>
+      <td>SMALLINT*</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>TIMESTAMP</td>
+      <td>14</td>
+      <td>UINT1</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>DATE</td>
+      <td>15</td>
+      <td>VAR16CHAR</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>TIME</td>
+      <td>16</td>
+      <td>FIXED16CHAR</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>DOUBLE</td>
+      <td>17</td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>DECIMAL</td>
+      <td>18</td>
+      <td>CHAR</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>UINT8</td>
+      <td>19</td>
+      <td>VARBINARY</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>BIGINT</td>
+      <td>20</td>
+      <td>FIXEDBINARY</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>UINT4</td>
+      <td>21</td>
+      <td>NULL (lowest)</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>INT</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
 
 <p>* Not supported in this release.</p>
 
@@ -1627,17 +1674,17 @@ Implicitly casts all textual data to VARCHAR.</li>
 <p>In a textual file, such as CSV, Drill interprets every field as a VARCHAR, as previously mentioned. To handle textual data, you can use the following functions to cast and convert compatible data types:</p>
 
 <ul>
-<li><a href="/docs/data-type-conversion/#cast">CAST</a><br>
+  <li><a href="/docs/data-type-conversion/#cast">CAST</a><br />
 Casts data from one data type to another.</li>
-<li>CONVERT_TO and CONVERT_FROM functions
-Converts data, including binary data, from one data type to another using <a href="/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">&quot;CONVERT_TO and CONVERT_FROM data types&quot;</a><br></li>
-<li><a href="/docs/data-type-conversion/#to_char">TO_CHAR</a><br>
+  <li><a href="">CONVERT_TO and CONVERT_FROM</a>/docs/data-type-conversion/#convert_to-and-convert_from)
+Convert data, including binary data, from one data type to another using <a href="/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">“CONVERT_TO and CONVERT_FROM data types”</a></li>
+  <li><a href="/docs/data-type-conversion/#to_char">TO_CHAR</a><br />
 Converts a TIMESTAMP, INTERVALDAY/INTERVALYEAR, INTEGER, DOUBLE, or DECIMAL to a string.</li>
-<li><a href="/docs/data-type-conversion/#to_date">TO_DATE</a><br>
+  <li><a href="/docs/data-type-conversion/#to_date">TO_DATE</a><br />
 Converts a string to DATE.</li>
-<li><a href="/docs/data-type-conversion/#to_number">TO_NUMBER</a><br>
+  <li><a href="/docs/data-type-conversion/#to_number">TO_NUMBER</a><br />
 Converts a string to a DECIMAL.</li>
-<li><a href="/docs/data-type-conversion/#to_timestamp">TO_TIMESTAMP</a><br>
+  <li><a href="/docs/data-type-conversion/#to_timestamp">TO_TIMESTAMP</a><br />
 Converts a string to TIMESTAMP.</li>
 </ul>
 
@@ -1649,157 +1696,160 @@ Converts a string to TIMESTAMP.</li>
 
 <h3 id="numerical-and-character-data-types">Numerical and Character Data Types</h3>
 
-<table><thead>
-<tr>
-<th>To</th>
-<th>SMALLINT</th>
-<th>INT</th>
-<th>BIGINT</th>
-<th>DECIMAL</th>
-<th>FLOAT</th>
-<th>CHAR</th>
-<th>FIXEDBINARY</th>
-<th>VARCHAR</th>
-<th>VARBINARY</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>From:</strong></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>SMALLINT*</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-<tr>
-<td>INT</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-<tr>
-<td>BIGINT</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-<tr>
-<td>DECIMAL</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-<tr>
-<td>DOUBLE</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td>FLOAT</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td>CHAR</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-<tr>
-<td>FIXEDBINARY**</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>no</td>
-<td>no</td>
-<td>yes</td>
-<td>yes</td>
-</tr>
-<tr>
-<td>VARCHAR***</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-</tr>
-<tr>
-<td>VARBINARY**</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>no</td>
-<td>yes</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-</tbody></table>
+<table>
+  <thead>
+    <tr>
+      <th>To</th>
+      <th>SMALLINT</th>
+      <th>INT</th>
+      <th>BIGINT</th>
+      <th>DECIMAL</th>
+      <th>FLOAT</th>
+      <th>CHAR</th>
+      <th>FIXEDBINARY</th>
+      <th>VARCHAR</th>
+      <th>VARBINARY</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>From:</strong></td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>SMALLINT*</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <td>INT</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <td>BIGINT</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <td>DECIMAL</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <td>DOUBLE</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>no</td>
+      <td>yes</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <td>FLOAT</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>no</td>
+      <td>yes</td>
+      <td>no</td>
+    </tr>
+    <tr>
+      <td>CHAR</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>no</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <td>FIXEDBINARY**</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>no</td>
+      <td>no</td>
+      <td>yes</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <td>VARCHAR***</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>no</td>
+      <td>yes</td>
+    </tr>
+    <tr>
+      <td>VARBINARY**</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>no</td>
+      <td>yes</td>
+      <td>yes</td>
+      <td>no</td>
+    </tr>
+  </tbody>
+</table>
 
-<p>* Not supported in this release.<br>
-** Used to cast binary UTF-8 data coming to/from sources such as HBase.<br>
-*** You cannot convert a character string having a decimal point to an INT or BIGINT.   </p>
+<p>* Not supported in this release. <br />
+** Used to cast binary UTF-8 data coming to/from sources such as HBase. <br />
+*** You cannot convert a character string having a decimal point to an INT or BIGINT.</p>
 
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
@@ -1810,242 +1860,251 @@ Converts a string to TIMESTAMP.</li>
 
 <h3 id="date-and-time-data-types">Date and Time Data Types</h3>
 
-<table><thead>
-<tr>
-<th>To:</th>
-<th>DATE</th>
-<th>TIME</th>
-<th>TIMESTAMP</th>
-<th>INTERVALYEAR</th>
-<th>INTERVALDAY</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>From:</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>CHAR</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td>FIXEDBINARY*</td>
-<td>No</td>
-<td>No</td>
-<td>No</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr>
-<td>VARCHAR</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td>VARBINARY*</td>
-<td>No</td>
-<td>No</td>
-<td>Yes</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr>
-<td>DATE</td>
-<td>No</td>
-<td>No</td>
-<td>Yes</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr>
-<td>TIME</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr>
-<td>TIMESTAMP</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr>
-<td>INTERVALYEAR</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td>INTERVALDAY</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-</tbody></table>
+<table>
+  <thead>
+    <tr>
+      <th>To:</th>
+      <th>DATE</th>
+      <th>TIME</th>
+      <th>TIMESTAMP</th>
+      <th>INTERVALYEAR</th>
+      <th>INTERVALDAY</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>From:</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>CHAR</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>FIXEDBINARY*</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>VARCHAR</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>VARBINARY*</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>DATE</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>TIME</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>TIMESTAMP</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>INTERVALYEAR</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>INTERVALDAY</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+    </tr>
+  </tbody>
+</table>
 
-<p>* Used to cast binary UTF-8 data coming to/from sources such as HBase. The CAST function does not support all representations of FIXEDBINARY and VARBINARY. Only the UTF-8 format is supported. </p>
+<p>* Used to cast binary UTF-8 data coming to/from sources such as HBase. The CAST function does not support all representations of FIXEDBINARY and VARBINARY. Only the UTF-8 format is supported.</p>
 
 <h2 id="data-types-for-convert_to-and-convert_from-functions">Data Types for CONVERT_TO and CONVERT_FROM Functions</h2>
 
 <p>The <a href="/docs/data-type-conversion/#convert_to-and-convert_from">CONVERT_TO function</a> converts data to bytes from the input type. The <a href="/docs/data-type-conversion/#convert_to-and-convert_from">CONVERT_FROM function</a> converts data from bytes to the input type. For example, the following CONVERT_TO function converts an integer to bytes using big endian encoding:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">CONVERT_TO(mycolumn, &#39;INT_BE&#39;)
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CONVERT_TO(mycolumn, 'INT_BE')
+</code></pre></div></div>
+
 <p>The following table lists the data types you can use with the CONVERT_TO
 and CONVERT_FROM functions:</p>
 
-<table><thead>
-<tr>
-<th><strong>Type</strong></th>
-<th><strong>Input Type</strong></th>
-<th><strong>Output Type</strong></th>
-</tr>
-</thead><tbody>
-<tr>
-<td>JSON</td>
-<td>bytes</td>
-<td>varchar</td>
-</tr>
-<tr>
-<td>BOOLEAN_BYTE</td>
-<td>bytes(1)</td>
-<td>BOOLEAN</td>
-</tr>
-<tr>
-<td>TINYINT_BE</td>
-<td>bytes(1)</td>
-<td>TINYINT</td>
-</tr>
-<tr>
-<td>TINYINT</td>
-<td>bytes(1)</td>
-<td>TINYINT</td>
-</tr>
-<tr>
-<td>SMALLINT_BE</td>
-<td>bytes(2)</td>
-<td>SMALLINT</td>
-</tr>
-<tr>
-<td>SMALLINT</td>
-<td>bytes(2)</td>
-<td>SMALLINT</td>
-</tr>
-<tr>
-<td>INT_BE</td>
-<td>bytes(4)</td>
-<td>INT</td>
-</tr>
-<tr>
-<td>INT</td>
-<td>bytes(4)</td>
-<td>INT</td>
-</tr>
-<tr>
-<td>BIGINT_BE</td>
-<td>bytes(8)</td>
-<td>BIGINT</td>
-</tr>
-<tr>
-<td>BIGINT</td>
-<td>bytes(8)</td>
-<td>BIGINT</td>
-</tr>
-<tr>
-<td>FLOAT</td>
-<td>bytes(4)</td>
-<td>FLOAT (float4)</td>
-</tr>
-<tr>
-<td>DOUBLE</td>
-<td>bytes(8)</td>
-<td>DOUBLE (float8)</td>
-</tr>
-<tr>
-<td>INT_HADOOPV</td>
-<td>bytes(1-9)</td>
-<td>INT</td>
-</tr>
-<tr>
-<td>BIGINT_HADOOPV</td>
-<td>BYTES(1-9)</td>
-<td>BIGINT</td>
-</tr>
-<tr>
-<td>DATE_EPOCH_BE</td>
-<td>bytes(8)</td>
-<td>DATE</td>
-</tr>
-<tr>
-<td>DATE_EPOCH</td>
-<td>bytes(8)</td>
-<td>DATE</td>
-</tr>
-<tr>
-<td>TIME_EPOCH_BE</td>
-<td>bytes(8)</td>
-<td>TIME</td>
-</tr>
-<tr>
-<td>TIME_EPOCH</td>
-<td>bytes(8)</td>
-<td>TIME</td>
-</tr>
-<tr>
-<td>TIMESTAMP_EPOCH</td>
-<td>bytes(8)</td>
-<td>TIMESTAMP</td>
-</tr>
-<tr>
-<td>TIMESTAMP_IMPALA*</td>
-<td>bytes(12)</td>
-<td>TIMESTAMP</td>
-</tr>
-<tr>
-<td>UTF8</td>
-<td>bytes</td>
-<td>VARCHAR</td>
-</tr>
-<tr>
-<td>UTF16</td>
-<td>bytes</td>
-<td>VAR16CHAR</td>
-</tr>
-<tr>
-<td>UINT8</td>
-<td>bytes(8)</td>
-<td>UINT8</td>
-</tr>
-<tr>
-<td>UINT8_BE</td>
-<td>bytes(8)</td>
-<td>UINT8</td>
-</tr>
-</tbody></table>
+<table>
+  <thead>
+    <tr>
+      <th><strong>Type</strong></th>
+      <th><strong>Input Type</strong></th>
+      <th><strong>Output Type</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>JSON</td>
+      <td>bytes</td>
+      <td>varchar</td>
+    </tr>
+    <tr>
+      <td>BOOLEAN_BYTE</td>
+      <td>bytes(1)</td>
+      <td>BOOLEAN</td>
+    </tr>
+    <tr>
+      <td>TINYINT_BE</td>
+      <td>bytes(1)</td>
+      <td>TINYINT</td>
+    </tr>
+    <tr>
+      <td>TINYINT</td>
+      <td>bytes(1)</td>
+      <td>TINYINT</td>
+    </tr>
+    <tr>
+      <td>SMALLINT_BE</td>
+      <td>bytes(2)</td>
+      <td>SMALLINT</td>
+    </tr>
+    <tr>
+      <td>SMALLINT</td>
+      <td>bytes(2)</td>
+      <td>SMALLINT</td>
+    </tr>
+    <tr>
+      <td>INT_BE</td>
+      <td>bytes(4)</td>
+      <td>INT</td>
+    </tr>
+    <tr>
+      <td>INT</td>
+      <td>bytes(4)</td>
+      <td>INT</td>
+    </tr>
+    <tr>
+      <td>BIGINT_BE</td>
+      <td>bytes(8)</td>
+      <td>BIGINT</td>
+    </tr>
+    <tr>
+      <td>BIGINT</td>
+      <td>bytes(8)</td>
+      <td>BIGINT</td>
+    </tr>
+    <tr>
+      <td>FLOAT</td>
+      <td>bytes(4)</td>
+      <td>FLOAT (float4)</td>
+    </tr>
+    <tr>
+      <td>DOUBLE</td>
+      <td>bytes(8)</td>
+      <td>DOUBLE (float8)</td>
+    </tr>
+    <tr>
+      <td>INT_HADOOPV</td>
+      <td>bytes(1-9)</td>
+      <td>INT</td>
+    </tr>
+    <tr>
+      <td>BIGINT_HADOOPV</td>
+      <td>BYTES(1-9)</td>
+      <td>BIGINT</td>
+    </tr>
+    <tr>
+      <td>DATE_EPOCH_BE</td>
+      <td>bytes(8)</td>
+      <td>DATE</td>
+    </tr>
+    <tr>
+      <td>DATE_EPOCH</td>
+      <td>bytes(8)</td>
+      <td>DATE</td>
+    </tr>
+    <tr>
+      <td>TIME_EPOCH_BE</td>
+      <td>bytes(8)</td>
+      <td>TIME</td>
+    </tr>
+    <tr>
+      <td>TIME_EPOCH</td>
+      <td>bytes(8)</td>
+      <td>TIME</td>
+    </tr>
+    <tr>
+      <td>TIMESTAMP_EPOCH</td>
+      <td>bytes(8)</td>
+      <td>TIMESTAMP</td>
+    </tr>
+    <tr>
+      <td>TIMESTAMP_IMPALA*</td>
+      <td>bytes(12)</td>
+      <td>TIMESTAMP</td>
+    </tr>
+    <tr>
+      <td>UTF8</td>
+      <td>bytes</td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
+      <td>UTF16</td>
+      <td>bytes</td>
+      <td>VAR16CHAR</td>
+    </tr>
+    <tr>
+      <td>UINT8</td>
+      <td>bytes(8)</td>
+      <td>UINT8</td>
+    </tr>
+    <tr>
+      <td>UINT8_BE</td>
+      <td>bytes(8)</td>
+      <td>UINT8</td>
+    </tr>
+  </tbody>
+</table>
 
-<p>* In Drill 1.2 and later, use the TIMESTAMP_IMPALA type with the CONVERT_FROM function to decode a timestamp from Hive or Impala, as shown in the section, <a href="/docs/parquet-format/#about-int96-support">&quot;About INT96 Support&quot;</a>.</p>
+<p>* In Drill 1.2 and later, use the TIMESTAMP_IMPALA type with the CONVERT_FROM function to decode a timestamp from Hive or Impala, as shown in the section, <a href="/docs/parquet-format/#about-int96-support">“About INT96 Support”</a>.</p>
 
-<p>This table includes types such as INT, for converting little endian-encoded data and types such as INT_BE for converting big endian-encoded data to Drill internal types. You need to convert binary representations, such as data in HBase, to a Drill internal format as you query the data. If you are unsure that the size of the source and destination INT or BIGINT you are converting is the same, use CAST to convert these data types to/from binary.  </p>
+<p>This table includes types such as INT, for converting little endian-encoded data and types such as INT_BE for converting big endian-encoded data to Drill internal types. You need to convert binary representations, such as data in HBase, to a Drill internal format as you query the data. If you are unsure that the size of the source and destination INT or BIGINT you are converting is the same, use CAST to convert these data types to/from binary.</p>
 
 <p>*_HADOOPV in the data type name denotes the variable length integer as defined by Hadoop libraries. Use a *_HADOOPV type if user data is encoded in this format by a Hadoop tool outside MapR.</p>
+
 
     
       
@@ -2063,7 +2122,7 @@ and CONVERT_FROM functions:</p>
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

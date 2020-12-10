@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,9 +1369,9 @@
 
     </div>
 
-     May 7, 2019
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
@@ -1347,125 +1379,142 @@
 system or session level. Options set at the session level only apply to
 queries that you run during the current Drill connection. Options set at the
 system level affect the entire system and persist between restarts. Session
-level settings override system level settings for the duration of the session.  </p>
+level settings override system level settings for the duration of the session.</p>
 
-<p>Planning options are prepended by planner, for example <code>planner.enable_hashjoin</code>. Execution options are prepended by drill.exe, for example <code>drill.exec.functions.cast_empty_string_to_null</code>.</p>
+<p>Planning options are prepended by planner, for example <code class="language-plaintext highlighter-rouge">planner.enable_hashjoin</code>. Execution options are prepended by drill.exe, for example <code class="language-plaintext highlighter-rouge">drill.exec.functions.cast_empty_string_to_null</code>.</p>
 
 <h2 id="setting-planning-and-execution-options">Setting Planning and Execution Options</h2>
-
-<p>You can set planning and execution options for Drill from the Drill shell (SQLLine) or the Drill Web UI. Options set in the Drill Web UI are set at the system level. You can override system level options set in the Drill Web UI by setting the options at the session level from the Drill shell.   </p>
+<p>You can set planning and execution options for Drill from the Drill shell (SQLLine) or the Drill Web UI. Options set in the Drill Web UI are set at the system level. You can override system level options set in the Drill Web UI by setting the options at the session level from the Drill shell.</p>
 
 <h3 id="setting-options-from-the-drill-shell">Setting Options from the Drill Shell</h3>
 
 <p>Use the <a href="/docs/alter-system/">ALTER SYSTEM</a> or <a href="/docs/set/">SET</a> commands to set planning and execution options at the system or session level. Typically,
 you set the options at the session level unless you want the setting to
-persist across all sessions. </p>
+persist across all sessions.</p>
 
-<p>You can run the following query to see a list of options:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM sys.options;    
-</code></pre></div>
-<p>The query returns a table that lists options with descriptions and other details. As of Drill 1.15, there are 179 options:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT COUNT() AS num_of_sysopts FROM sys.options;
-+-----------------+
+<p>You can run the following query to see a list of options:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM sys.options;    
+</code></pre></div></div>
+
+<p>The query returns a table that lists options with descriptions and other details. As of Drill 1.15, there are 179 options:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT COUNT() AS num_of_sysopts FROM sys.options;
+|-----------------|
 | num_of_sysopts  |
-+-----------------+
+|-----------------|
 | 179             |
-+-----------------+  
-</code></pre></div>
-<p>See <a href="/docs/querying-system-tables/#querying-the-options-table">Querying the Options Table</a>.   </p>
+|-----------------|  
+</code></pre></div></div>
+
+<p>See <a href="/docs/querying-system-tables/#querying-the-options-table">Querying the Options Table</a>.</p>
 
 <h3 id="setting-options-from-the-drill-web-ui">Setting Options from the Drill Web UI</h3>
 
-<p>When Drill is running, you can access the Drill Web UI at <code>http://&lt;drill-hostname&gt;:8047/</code>. The Drill Web UI has an Options button located in the upper right corner that you can click to display an Options page. </p>
+<p>When Drill is running, you can access the Drill Web UI at <code class="language-plaintext highlighter-rouge">http://&lt;drill-hostname&gt;:8047/</code>. The Drill Web UI has an Options button located in the upper right corner that you can click to display an Options page.</p>
 
-<p>The Options page lists all the Drill options that you can set at the system level. To override an option for the duration of a session, set the option from the Drill shell using the SET command.  </p>
+<p>The Options page lists all the Drill options that you can set at the system level. To override an option for the duration of a session, set the option from the Drill shell using the SET command.</p>
 
-<p>Starting in Drill 1.15, the Options page includes the following enhancements:  </p>
+<p>Starting in Drill 1.15, the Options page includes the following enhancements:</p>
 
-<p><strong>Search Field</strong><br>
-The search field enables you to quickly search across all available Drill configuration options to quickly find options you are interested in. For example, you can search on the keyword &quot;memory&quot; for a list of all options related to configuring Drill memory. Starting in Drill 1.16, the Search field contains an x that clears the search field when clicked. </p>
+<p><strong>Search Field</strong><br />
+The search field enables you to quickly search across all available Drill configuration options to quickly find options you are interested in. For example, you can search on the keyword “memory” for a list of all options related to configuring Drill memory. Starting in Drill 1.16, the Search field contains an x that clears the search field when clicked.</p>
 
-<p><strong>Quick Filters</strong><br>
-Next to the search field are quick filter buttons that filter options by important keywords in one click. For example, the &quot;planner&quot; quick filter button quickly lists all options related to the query planner. The query planning options are prepended by the keyword &quot;planner.&quot; Quick filters return options that include the keyword in the option name and/or description. </p>
+<p><strong>Quick Filters</strong><br />
+Next to the search field are quick filter buttons that filter options by important keywords in one click. For example, the “planner” quick filter button quickly lists all options related to the query planner. The query planning options are prepended by the keyword “planner.” Quick filters return options that include the keyword in the option name and/or description.</p>
 
-<p><strong>Default Button</strong><br>
-Each option has a Default button that indicates whether the default value for the option was changed. If the Default button is not active, the option is currently set to the default value. If the default button is active, the value of the option was changed from the default. Clicking an active Default button resets the value of the option back to the original (default) value. </p>
+<p><strong>Default Button</strong><br />
+Each option has a Default button that indicates whether the default value for the option was changed. If the Default button is not active, the option is currently set to the default value. If the default button is active, the value of the option was changed from the default. Clicking an active Default button resets the value of the option back to the original (default) value.</p>
 
-<p><strong>Web Display Options</strong><br>
+<p><strong>Web Display Options</strong><br />
 Prior to Drill 1.15, timestamp, date, and time values did not display correctly in query results when running queries from the Query page in the Drill Web UI; however, you can set the output format for these values through the following three options:</p>
 
 <ul>
-<li><code>web.display_format.date</code></li>
-<li><code>web.display_format.time</code></li>
-<li><code>web.display_format.timestamp</code><br></li>
+  <li><code class="language-plaintext highlighter-rouge">web.display_format.date</code></li>
+  <li><code class="language-plaintext highlighter-rouge">web.display_format.time</code></li>
+  <li><code class="language-plaintext highlighter-rouge">web.display_format.timestamp</code></li>
 </ul>
 
-<p><strong>Example: Setting Web Display Options</strong>  </p>
+<p><strong>Example: Setting Web Display Options</strong></p>
 
-<p>The following examples demonstrate how the web display options change the format for date, time, and timestamp values:  </p>
+<p>The following examples demonstrate how the web display options change the format for date, time, and timestamp values:</p>
 
-<p><strong>Date</strong><br>
-Issuing <code>select date &#39;2008-2-23&#39; from (values(1))</code> returns the following results, by default, in the Web UI:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">2008-02-23  
-</code></pre></div>
-<p>Issuing the query after setting the <code>web.display_format.date</code> option to the format <code>EEE, MMM d, yyyy</code> returns the following results in the Web UI:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">Sat, Feb 23, 2008  
-</code></pre></div>
-<p><strong>Time</strong><br>
-Issuing <code>select time &#39;12:23:34&#39; from (values(1))</code> returns the following results, by default, in the Web UI:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">12:23:34  
-</code></pre></div>
-<p>Issuing the query after setting the <code>web.display_format.time</code> option to the format <code>HH:mm:ss.SS</code> returns the following results in the Web UI:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">12:23:34.00 
-</code></pre></div>
-<p><strong>Timestamp</strong><br>
-Issuing <code>select timestamp &#39;2008-2-23 12:23:34&#39; from (values(1))</code> returns the following results, by default, in the Web UI:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">2008-02-23T12:23:34  
-</code></pre></div>
-<p>Issuing the query after setting the <code>web.display_format.timestamp</code> option to the format <code>yyyy-MM-dd HH:mm:ss.SS</code> returns the following results in the Web UI:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">2008-02-23 12:23:34.00  
-</code></pre></div>
+<p><strong>Date</strong><br />
+Issuing <code class="language-plaintext highlighter-rouge">select date '2008-2-23' from (values(1))</code> returns the following results, by default, in the Web UI:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2008-02-23  
+</code></pre></div></div>
+
+<p>Issuing the query after setting the <code class="language-plaintext highlighter-rouge">web.display_format.date</code> option to the format <code class="language-plaintext highlighter-rouge">EEE, MMM d, yyyy</code> returns the following results in the Web UI:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Sat, Feb 23, 2008  
+</code></pre></div></div>
+
+<p><strong>Time</strong><br />
+Issuing <code class="language-plaintext highlighter-rouge">select time '12:23:34' from (values(1))</code> returns the following results, by default, in the Web UI:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>12:23:34  
+</code></pre></div></div>
+
+<p>Issuing the query after setting the <code class="language-plaintext highlighter-rouge">web.display_format.time</code> option to the format <code class="language-plaintext highlighter-rouge">HH:mm:ss.SS</code> returns the following results in the Web UI:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>12:23:34.00 
+</code></pre></div></div>
+
+<p><strong>Timestamp</strong><br />
+Issuing ` select timestamp ‘2008-2-23 12:23:34’ from (values(1))` returns the following results, by default, in the Web UI:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2008-02-23T12:23:34  
+</code></pre></div></div>
+
+<p>Issuing the query after setting the <code class="language-plaintext highlighter-rouge">web.display_format.timestamp</code> option to the format <code class="language-plaintext highlighter-rouge">yyyy-MM-dd HH:mm:ss.SS</code> returns the following results in the Web UI:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2008-02-23 12:23:34.00  
+</code></pre></div></div>
+
 <h2 id="setting-an-auto-limit-on-the-number-of-rows-returned-for-result-sets">Setting an Auto Limit on the Number of Rows Returned for Result Sets</h2>
+<p>The <code class="language-plaintext highlighter-rouge">exec.query.max_rows</code> option, introduced in Drill 1.16, automatically limits the number of rows that Drill returns from a result set. When you configure a limit, the limit is automatically applied by Drill when you run a query. You do not need to include the LIMIT clause. Configuring a limit on results reduces the amount of processing and streaming work for the web server when using the Drill WEb UI.</p>
 
-<p>The <code>exec.query.max_rows</code> option, introduced in Drill 1.16, automatically limits the number of rows that Drill returns from a result set. When you configure a limit, the limit is automatically applied by Drill when you run a query. You do not need to include the LIMIT clause. Configuring a limit on results reduces the amount of processing and streaming work for the web server when using the Drill WEb UI. </p>
+<p>The default setting for <code class="language-plaintext highlighter-rouge">exec.query.max_rows</code> is 0, which indicates no limit; queries will return all results. An administrator can modify the exec.query.max_rows setting at the system level (setting persists across restarts) from the Options page in the Drill Web UI or using the ALTER SYSTEM command. Alternatively, the option can be set at the session level (valid for a user session only) using the SET command or from SQLLine.</p>
 
-<p>The default setting for <code>exec.query.max_rows</code> is 0, which indicates no limit; queries will return all results. An administrator can modify the exec.query.max_rows setting at the system level (setting persists across restarts) from the Options page in the Drill Web UI or using the ALTER SYSTEM command. Alternatively, the option can be set at the session level (valid for a user session only) using the SET command or from SQLLine.  </p>
+<p><strong>Session Level</strong><br />
+To set the <code class="language-plaintext highlighter-rouge">exec.query.max_rows</code> option per user session, use the SET command or the SQLLine line command, as shown:</p>
 
-<p><strong>Session Level</strong><br>
-To set the <code>exec.query.max_rows</code> option per user session, use the SET command or the SQLLine line command, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SET `exec.query.max_rows` = &lt;value&gt;;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SET `exec.query.max_rows` = &lt;value&gt;;
 !set rowlimit &lt;value&gt;  
-</code></pre></div>
-<p><strong>System Level</strong><br>
-To set the <code>exec.query.max_rows</code> option such that it persists across users, change the setting in the Drill Web UI (<code>http://&lt;drill-hostname&gt;:8047/options</code>) or use the ALTER SYSTEM SET command, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SYSTEM SET `exec.query.max_rows` = &lt;value&gt;;  
-</code></pre></div>
-<hr>
+</code></pre></div></div>
 
-<p><strong>NOTE</strong><br>
-The <code>exec.query.max_rows</code> option overrides row limit settings configured in the Drill Web UI and <code>drill-override.conf</code> file, which are described below.   </p>
+<p><strong>System Level</strong><br />
+To set the <code class="language-plaintext highlighter-rouge">exec.query.max_rows</code> option such that it persists across users, change the setting in the Drill Web UI (<code class="language-plaintext highlighter-rouge">http://&lt;drill-hostname&gt;:8047/options</code>) or use the ALTER SYSTEM SET command, as shown:</p>
 
-<hr>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ALTER SYSTEM SET `exec.query.max_rows` = &lt;value&gt;;  
+</code></pre></div></div>
 
-<h3 id="drill-web-ui-row-limit-settings">Drill Web UI Row Limit Settings</h3>
+<hr />
+<p><strong>NOTE</strong><br />
+The <code class="language-plaintext highlighter-rouge">exec.query.max_rows</code> option overrides row limit settings configured in the Drill Web UI and <code class="language-plaintext highlighter-rouge">drill-override.conf</code> file, which are described below. <br />
+***</p>
 
-<p>In addition to the <code>exec.query.max_rows</code> option, the Query page in the Drill Web UI provides a field where you can enter a limit on the number of rows returned from a result set when you run a query.  </p>
+<h3 id="drill-web-ui-row-limit-settings">Drill Web UI row limit settings</h3>
 
-<p><strong>Note:</strong> You can also configure the row limit for a REST client through the <a href="/docs/rest-api-introduction/#post-query-json">autoLimit parameter in the REST API</a> or a JDBC client through the <code>setMaxRows</code> method in the <a href="/docs/using-the-jdbc-driver/#using-the-drill-driver-class-name">Java API</a>.   </p>
+<p>In addition to the <code class="language-plaintext highlighter-rouge">exec.query.max_rows</code> option, the Query page in the Drill Web UI provides a field where you can enter a limit on the number of rows returned from a result set when you run a query.</p>
 
-<p><img src="https://i.imgur.com/7nF0RBq.png" alt=""><br>
+<p><strong>Note:</strong> You can also configure the row limit for a REST client through the <a href="/docs/rest-api-introduction/#post-query-json">autoLimit parameter in the REST API</a> or a JDBC client through the <code class="language-plaintext highlighter-rouge">setMaxRows</code> method in the <a href="/docs/using-the-jdbc-driver/#using-the-drill-driver-class-name">Java API</a>.</p>
+
+<p><img src="https://i.imgur.com/7nF0RBq.png" alt="" />  <br />
 When you submit the query, results display across one or multiple pages. You can set the number of results that display per page. When results span multiple pages, scroll through the pages using the links in the bottom right corner of the screen.
-<img src="https://i.imgur.com/eYn22NL.png" alt=""><br>
+<img src="https://i.imgur.com/eYn22NL.png" alt="" /> <br />
 Clicking the Query Profile tab at the top of the results page displays the query profile with a warning stating that the results were automatically limited.
-<img src="https://i.imgur.com/L4Yx666.png" alt=""><br>
-Note that the <code>exec.query.max_rows</code> setting overrides the setting in the Web UI. For example, if the <code>exec.query.max_rows</code> option is set to 10 and you limit results to 20 on the Query page in the Web UI, Drill only returns 10 rows from the result set.  </p>
+<img src="https://i.imgur.com/L4Yx666.png" alt="" /><br />
+Note that the <code class="language-plaintext highlighter-rouge">exec.query.max_rows</code> setting overrides the setting in the Web UI. For example, if the <code class="language-plaintext highlighter-rouge">exec.query.max_rows</code> option is set to 10 and you limit results to 20 on the Query page in the Web UI, Drill only returns 10 rows from the result set.</p>
 
-<h3 id="drill-override-conf-row-limit-settings">Drill-override.conf Row Limit Settings</h3>
+<h3 id="drill-overrideconf-row-limit-settings">Drill-override.conf row limit settings</h3>
 
-<p>The <code>drill-override.conf</code> file contains the same row limit setting as the Drill Web UI; however, the setting in the <code>drill-override.conf</code> file overrides the limit set in the Drill Web UI. Note that the <code>exec.query.max_rows</code> option overrides the setting in <code>drill-override.conf</code> and the Drill Web UI. You must restart the Drillbit after you modify <code>drill-override.conf</code>. </p>
+<p>The <code class="language-plaintext highlighter-rouge">drill-override.conf</code> file contains the same row limit setting as the Drill Web UI; however, the setting in the <code class="language-plaintext highlighter-rouge">drill-override.conf</code> file overrides the limit set in the Drill Web UI. Note that the <code class="language-plaintext highlighter-rouge">exec.query.max_rows</code> option overrides the setting in <code class="language-plaintext highlighter-rouge">drill-override.conf</code> and the Drill Web UI. You must restart the Drillbit after you modify <code class="language-plaintext highlighter-rouge">drill-override.conf</code>.</p>
 
-<p>Add the following configuration to <code>drill-override.conf</code>, changing the row limit setting and rows per page setting, as needed:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">drill.exec.http: {
+<p>Add the following configuration to <code class="language-plaintext highlighter-rouge">drill-override.conf</code>, changing the row limit setting and rows per page setting, as needed:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>drill.exec.http: {
     web.client.resultset: {
         autolimit {
             enable: true,
@@ -1474,7 +1523,9 @@ Note that the <code>exec.query.max_rows</code> setting overrides the setting in 
         defaultRowsPerPage: 10
     }
 }
-</code></pre></div>
+</code></pre></div></div>
+
+
     
       
         <div class="doc-nav">
@@ -1491,7 +1542,7 @@ Note that the <code>exec.query.max_rows</code> setting overrides the setting in 
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

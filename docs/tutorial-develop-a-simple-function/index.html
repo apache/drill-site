@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1335,75 +1367,79 @@
 
     </div>
 
-     Nov 18, 2016
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>You can create complex functions having advanced features, but for example purposes, this tutorial covers how to create a simple MASK function. You extend the Drill query engine using the <a href="https://github.com/apache/drill/blob/master/exec/java-exec/src/main/java/org/apache/drill/exec/expr/DrillSimpleFunc.java">Drill Simple Function interface</a>:</p>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">drill</span><span class="o">.</span><span class="na">exec</span><span class="o">.</span><span class="na">expr</span><span class="o">;</span>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">org.apache.drill.exec.expr</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">org.apache.drill.exec.record.RecordBatch</span><span class="o">;</span>
 
-<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">DrillSimpleFunc</span> <span class="kd">extends</span> <span class="n">DrillFunc</span><span class="o">{</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">DrillSimpleFunc</span> <span class="kd">extends</span> <span class="nc">DrillFunc</span><span class="o">{</span>
   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">();</span>
   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">eval</span><span class="o">();</span>
 <span class="o">}</span>
-</code></pre></div>
+</code></pre></div></div>
+
 <p>The MASK function transforms the value of a column on each row. The function masks characters in a string, as shown by the following pseudo-code:</p>
 
-<p><code>MASK( &#39;PASSWORD&#39; , &#39;#&#39; , 4 ) =&gt; ####WORD</code></p>
+<p><code class="language-plaintext highlighter-rouge">MASK( 'PASSWORD' , '#' , 4 ) =&gt; ####WORD</code></p>
 
-<p>The MASK function replaces a given number of characters from the beginning of a string with another character. In this example, MASK replaces four characters with the # character. </p>
+<p>The MASK function replaces a given number of characters from the beginning of a string with another character. In this example, MASK replaces four characters with the # character.</p>
 
-<p>You can get the complete project for creating and building this function from the <a href="https://github.com/tgrall/drill-simple-mask-function">drill-simple-mask-function Github repository</a>. </p>
+<p>You can get the complete project for creating and building this function from the <a href="https://github.com/tgrall/drill-simple-mask-function">drill-simple-mask-function Github repository</a>.</p>
 
 <h2 id="prerequisites">Prerequisites</h2>
 
 <ul>
-<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html">Oracle Java SE Development (JDK) Kit 7</a> or later<br></li>
-<li><a href="http://getdrill.org/drill/download/apache-drill-1.1.0.tar.gz">Apache Drill 1.1</a> or later<br></li>
-<li><a href="https://maven.apache.org/download.cgi">Maven 3.0</a> or later</li>
+  <li><a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html">Oracle Java SE Development (JDK) Kit 7</a> or later</li>
+  <li><a href="http://getdrill.org/drill/download/apache-drill-1.1.0.tar.gz">Apache Drill 1.1</a> or later</li>
+  <li><a href="https://maven.apache.org/download.cgi">Maven 3.0</a> or later</li>
 </ul>
 
-<hr>
+<hr />
 
 <h2 id="step-1-add-dependencies">Step 1: Add dependencies</h2>
 
 <p>First, add the following Drill dependency to your maven project:</p>
-<div class="highlight"><pre><code class="language-xml" data-lang="xml"> <span class="nt">&lt;dependency&gt;</span>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nt">&lt;dependency&gt;</span>
      <span class="nt">&lt;groupId&gt;</span>org.apache.drill.exec<span class="nt">&lt;/groupId&gt;</span>
      <span class="nt">&lt;artifactId&gt;</span>drill-java-exec<span class="nt">&lt;/artifactId&gt;</span>
      <span class="nt">&lt;version&gt;</span>1.1.0<span class="nt">&lt;/version&gt;</span>
  <span class="nt">&lt;/dependency&gt;</span>
-</code></pre></div>
-<hr>
+</code></pre></div></div>
+<hr />
 
 <h2 id="step-2-add-annotations-to-the-function-template">Step 2: Add annotations to the function template</h2>
 
 <p>To start implementing the DrillSimpleFunc interface, add the following annotations to the @FunctionTemplate declaration:</p>
 
 <ul>
-<li>Name of the custom function 
-<code>name=&quot;mask&quot;</code></li>
-<li>Scope of the custom function, in this case, Simple 
-<code>scope= FunctionTemplate.FunctionScope.SIMPLE</code></li>
-<li>What to do when the value is NULL, in this case Reverse will just returns NULL
-<code>nulls = FunctionTemplate.NullHandling.NULL_IF_NULL</code></li>
+  <li>Name of the custom function 
+<code class="language-plaintext highlighter-rouge">name="mask"</code></li>
+  <li>Scope of the custom function, in this case, Simple 
+<code class="language-plaintext highlighter-rouge">scope= FunctionTemplate.FunctionScope.SIMPLE</code></li>
+  <li>What to do when the value is NULL, in this case Reverse will just returns NULL
+<code class="language-plaintext highlighter-rouge">nulls = FunctionTemplate.NullHandling.NULL_IF_NULL</code></li>
 </ul>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="o">.</span> <span class="o">.</span> <span class="o">.</span>
-<span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">drill</span><span class="o">.</span><span class="na">contrib</span><span class="o">.</span><span class="na">function</span><span class="o">;</span>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">.</span> <span class="o">.</span> <span class="o">.</span>
+<span class="kn">package</span> <span class="nn">org.apache.drill.contrib.function</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">org.apache.drill.exec.expr.DrillSimpleFunc</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">org.apache.drill.exec.expr.annotations.FunctionTemplate</span><span class="o">;</span>
 
 <span class="nd">@FunctionTemplate</span><span class="o">(</span>
-        <span class="n">name</span><span class="o">=</span><span class="s">&quot;mask&quot;</span><span class="o">,</span>
-        <span class="n">scope</span><span class="o">=</span> <span class="n">FunctionTemplate</span><span class="o">.</span><span class="na">FunctionScope</span><span class="o">.</span><span class="na">SIMPLE</span><span class="o">,</span>
-        <span class="n">nulls</span> <span class="o">=</span> <span class="n">FunctionTemplate</span><span class="o">.</span><span class="na">NullHandling</span><span class="o">.</span><span class="na">NULL_IF_NULL</span>
+        <span class="n">name</span><span class="o">=</span><span class="s">"mask"</span><span class="o">,</span>
+        <span class="n">scope</span><span class="o">=</span> <span class="nc">FunctionTemplate</span><span class="o">.</span><span class="na">FunctionScope</span><span class="o">.</span><span class="na">SIMPLE</span><span class="o">,</span>
+        <span class="n">nulls</span> <span class="o">=</span> <span class="nc">FunctionTemplate</span><span class="o">.</span><span class="na">NullHandling</span><span class="o">.</span><span class="na">NULL_IF_NULL</span>
 <span class="o">)</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleMaskFunc</span> <span class="kd">implements</span> <span class="n">DrillSimpleFunc</span><span class="o">{</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleMaskFunc</span> <span class="kd">implements</span> <span class="nc">DrillSimpleFunc</span><span class="o">{</span>
 
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
 
@@ -1413,70 +1449,77 @@
 
     <span class="o">}</span>
 <span class="o">}</span>
-</code></pre></div>
-<hr>
+</code></pre></div></div>
+
+<hr />
 
 <h2 id="step-3-declare-input-parameters">Step 3: Declare input parameters</h2>
 
-<p>The function will be generated dynamically, as you can see in the <a href="https://github.com/apache/drill/blob/master/exec/java-exec/src/main/java/org/apache/drill/exec/expr/fn/DrillSimpleFuncHolder.java/#L42">DrillSimpleFuncHolder</a>, and the input parameters and output holders are defined using holders by annotations. Define the parameters using the @Param annotation. </p>
+<p>The function will be generated dynamically, as you can see in the <a href="https://github.com/apache/drill/blob/master/exec/java-exec/src/main/java/org/apache/drill/exec/expr/fn/DrillSimpleFuncHolder.java/#L42">DrillSimpleFuncHolder</a>, and the input parameters and output holders are defined using holders by annotations. Define the parameters using the @Param annotation.</p>
 
 <ul>
-<li>A nullable string<br></li>
-<li>The mask char or string<br></li>
-<li>The number of characters to replace starting from the first<br></li>
+  <li>A nullable string</li>
+  <li>The mask char or string</li>
+  <li>The number of characters to replace starting from the first</li>
 </ul>
 
-<p>Use a holder classes to provide a buffer to manage larger objects in an efficient way: VarCharHolder or NullableVarCharHolder. </p>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="o">.</span> <span class="o">.</span> <span class="o">.</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleMaskFunc</span> <span class="kd">implements</span> <span class="n">DrillSimpleFunc</span> <span class="o">{</span>
+<p>Use a holder classes to provide a buffer to manage larger objects in an efficient way: VarCharHolder or NullableVarCharHolder.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">.</span> <span class="o">.</span> <span class="o">.</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleMaskFunc</span> <span class="kd">implements</span> <span class="nc">DrillSimpleFunc</span> <span class="o">{</span>
 
     <span class="nd">@Param</span>
-    <span class="n">NullableVarCharHolder</span> <span class="n">input</span><span class="o">;</span>
+    <span class="nc">NullableVarCharHolder</span> <span class="n">input</span><span class="o">;</span>
 
     <span class="nd">@Param</span><span class="o">(</span><span class="n">constant</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
-    <span class="n">VarCharHolder</span> <span class="n">mask</span><span class="o">;</span>
+    <span class="nc">VarCharHolder</span> <span class="n">mask</span><span class="o">;</span>
 
     <span class="nd">@Param</span><span class="o">(</span><span class="n">constant</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
-    <span class="n">IntHolder</span> <span class="n">toReplace</span><span class="o">;</span>
+    <span class="nc">IntHolder</span> <span class="n">toReplace</span><span class="o">;</span>
 <span class="o">.</span> <span class="o">.</span> <span class="o">.</span>
 <span class="o">}</span>
-</code></pre></div>
+</code></pre></div></div>
+
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
   <p class="last">Drill doesn’t actually use the Java heap for data being processed in a query but instead keeps this data off the heap and manages the life-cycle for us without using the Java garbage collector.  </p>
 </div>
 
-<hr>
+<hr />
 
 <h2 id="step-4-declare-the-return-value-type">Step 4: Declare the return value type</h2>
 
-<p>Also, using the @Output annotation, define the returned value as VarCharHolder type. Because you are manipulating a VarChar, you also have to inject a buffer that Drill uses for the output. </p>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleMaskFunc</span> <span class="kd">implements</span> <span class="n">DrillSimpleFunc</span> <span class="o">{</span>
+<p>Also, using the @Output annotation, define the returned value as VarCharHolder type. Because you are manipulating a VarChar, you also have to inject a buffer that Drill uses for the output.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleMaskFunc</span> <span class="kd">implements</span> <span class="nc">DrillSimpleFunc</span> <span class="o">{</span>
 <span class="o">.</span> <span class="o">.</span> <span class="o">.</span>
     <span class="nd">@Output</span>
-    <span class="n">VarCharHolder</span> <span class="n">out</span><span class="o">;</span>
+    <span class="nc">VarCharHolder</span> <span class="n">out</span><span class="o">;</span>
 
     <span class="nd">@Inject</span>
-    <span class="n">DrillBuf</span> <span class="n">buffer</span><span class="o">;</span>
+    <span class="nc">DrillBuf</span> <span class="n">buffer</span><span class="o">;</span>
 <span class="o">.</span> <span class="o">.</span> <span class="o">.</span>
 <span class="o">}</span>
-</code></pre></div>
-<hr>
+</code></pre></div></div>
+
+<hr />
 
 <h2 id="step-5-implement-the-eval-method">Step 5: Implement the eval() method</h2>
 
-<p>The MASK function does not require any setup, so you do not need to define the setup() method. Define only the eval() method. </p>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">eval</span><span class="o">()</span> <span class="o">{</span>
+<p>The MASK function does not require any setup, so you do not need to define the setup() method. Define only the eval() method.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">eval</span><span class="o">()</span> <span class="o">{</span>
 
     <span class="c1">// get the value and replace with</span>
-    <span class="n">String</span> <span class="n">maskValue</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">drill</span><span class="o">.</span><span class="na">exec</span><span class="o">.</span><span class="na">expr</span><span class="o">.</span><span class="na">fn</span><span class="o">.</span><span class="na">impl</span><span class="o">.</span><span class="na">StringFunctionHelpers</span><span class="o">.</span><span class="na">getStringFromVarCharHolder</span><span class="o">(</span><span class="n">mask</span><span class="o">);</span>
-    <span class="n">String</span> <span class="n">stringValue</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">drill</span><span class="o">.</span><span class="na">exec</span><span class="o">.</span><span class="na">expr</span><span class="o">.</span><span class="na">fn</span><span class="o">.</span><span class="na">impl</span><span class="o">.</span><span class="na">StringFunctionHelpers</span><span class="o">.</span><span class="na">toStringFromUTF8</span><span class="o">(</span><span class="n">input</span><span class="o">.</span><span class="na">start</span><span class="o">,</span> <span class="n">input</span><span class="o">.</span><span class="na">end</span><span class="o">,</span> <span class="n">input</span><span class="o">.</span><span class="na">buffer</span><span class="o">);</span>
+    <span class="nc">String</span> <span class="n">maskValue</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">drill</span><span class="o">.</span><span class="na">exec</span><span class="o">.</span><span class="na">expr</span><span class="o">.</span><span class="na">fn</span><span class="o">.</span><span class="na">impl</span><span class="o">.</span><span class="na">StringFunctionHelpers</span><span class="o">.</span><span class="na">getStringFromVarCharHolder</span><span class="o">(</span><span class="n">mask</span><span class="o">);</span>
+    <span class="nc">String</span> <span class="n">stringValue</span> <span class="o">=</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">drill</span><span class="o">.</span><span class="na">exec</span><span class="o">.</span><span class="na">expr</span><span class="o">.</span><span class="na">fn</span><span class="o">.</span><span class="na">impl</span><span class="o">.</span><span class="na">StringFunctionHelpers</span><span class="o">.</span><span class="na">toStringFromUTF8</span><span class="o">(</span><span class="n">input</span><span class="o">.</span><span class="na">start</span><span class="o">,</span> <span class="n">input</span><span class="o">.</span><span class="na">end</span><span class="o">,</span> <span class="n">input</span><span class="o">.</span><span class="na">buffer</span><span class="o">);</span>
 
-    <span class="kt">int</span> <span class="n">numberOfCharToReplace</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">toReplace</span><span class="o">.</span><span class="na">value</span><span class="o">,</span> <span class="n">stringValue</span><span class="o">.</span><span class="na">length</span><span class="o">());</span>
+    <span class="kt">int</span> <span class="n">numberOfCharToReplace</span> <span class="o">=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">toReplace</span><span class="o">.</span><span class="na">value</span><span class="o">,</span> <span class="n">stringValue</span><span class="o">.</span><span class="na">length</span><span class="o">());</span>
 
     <span class="c1">// build the mask substring</span>
-    <span class="n">String</span> <span class="n">maskSubString</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="na">google</span><span class="o">.</span><span class="na">common</span><span class="o">.</span><span class="na">base</span><span class="o">.</span><span class="na">Strings</span><span class="o">.</span><span class="na">repeat</span><span class="o">(</span><span class="n">maskValue</span><span class="o">,</span> <span class="n">numberOfCharToReplace</span><span class="o">);</span>
-    <span class="n">String</span> <span class="n">outputValue</span> <span class="o">=</span> <span class="o">(</span><span class="k">new</span> <span class="nf">StringBuilder</span><span class="o">(</span><span class="n">maskSubString</span><span class="o">)).</span><span class="na">append</span><span class="o">(</span><span class="n">stringValue</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="n">numberOfCharToReplace</span><span class="o">)).</span><span class="na">toString</span><span class="o">();</span>
+    <span class="nc">String</span> <span class="n">maskSubString</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="na">google</span><span class="o">.</span><span class="na">common</span><span class="o">.</span><span class="na">base</span><span class="o">.</span><span class="na">Strings</span><span class="o">.</span><span class="na">repeat</span><span class="o">(</span><span class="n">maskValue</span><span class="o">,</span> <span class="n">numberOfCharToReplace</span><span class="o">);</span>
+    <span class="nc">String</span> <span class="n">outputValue</span> <span class="o">=</span> <span class="o">(</span><span class="k">new</span> <span class="nc">StringBuilder</span><span class="o">(</span><span class="n">maskSubString</span><span class="o">)).</span><span class="na">append</span><span class="o">(</span><span class="n">stringValue</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="n">numberOfCharToReplace</span><span class="o">)).</span><span class="na">toString</span><span class="o">();</span>
 
     <span class="c1">// put the output value in the out buffer</span>
     <span class="n">out</span><span class="o">.</span><span class="na">buffer</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">;</span>
@@ -1484,39 +1527,40 @@
     <span class="n">out</span><span class="o">.</span><span class="na">end</span> <span class="o">=</span> <span class="n">outputValue</span><span class="o">.</span><span class="na">getBytes</span><span class="o">().</span><span class="na">length</span><span class="o">;</span>
     <span class="n">buffer</span><span class="o">.</span><span class="na">setBytes</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">outputValue</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span>
 <span class="o">}</span>
-</code></pre></div>
+</code></pre></div></div>
+
 <p>The eval() method performs the following tasks:</p>
 
 <ul>
-<li>Gets the mask</li>
-<li>Gets the value</li>
-<li>Gets the number of character to replace</li>
-<li>Generates a new string with masked values</li>
-<li>Creates and populates the output buffer</li>
+  <li>Gets the mask</li>
+  <li>Gets the value</li>
+  <li>Gets the number of character to replace</li>
+  <li>Generates a new string with masked values</li>
+  <li>Creates and populates the output buffer</li>
 </ul>
 
 <p>Even to a seasoned Java developer, the eval() method might look a bit strange because Drill generates the final code on the fly to fulfill a query request. This technique leverages Java’s just-in-time (JIT) compiler for maximum speed.</p>
 
 <h2 id="basic-coding-rules">Basic Coding Rules</h2>
-
 <p>To leverage Java’s just-in-time (JIT) compiler for maximum speed, you need to adhere to some basic rules.</p>
 
 <ul>
-<li>Do not use imports. Instead, use the fully qualified class name as required by the Google Guava API packaged in Apache Drill and as shown in <a href="/docs/tutorial-develop-a-simple-function/#step-3:-declare-input-parameters">&quot;Step 3: Declare input parameters&quot;</a>.<br></li>
-<li>Manipulate the ValueHolders classes, for example VarCharHolder and IntHolder, as structs by calling helper methods, such as getStringFromVarCharHolder and toStringFromUTF8 as shown in <a href="/docs/tutorial-develop-a-simple-function/#step-5:-implement-the-eval()-method">&quot;Step 5: Implement the eval() function&quot;</a>.<br></li>
-<li>Do not call methods such as toString because this causes serious problems.</li>
+  <li>Do not use imports. Instead, use the fully qualified class name as required by the Google Guava API packaged in Apache Drill and as shown in <a href="/docs/tutorial-develop-a-simple-function/#step-3:-declare-input-parameters">“Step 3: Declare input parameters”</a>.</li>
+  <li>Manipulate the ValueHolders classes, for example VarCharHolder and IntHolder, as structs by calling helper methods, such as getStringFromVarCharHolder and toStringFromUTF8 as shown in <a href="/docs/tutorial-develop-a-simple-function/#step-5:-implement-the-eval()-method">“Step 5: Implement the eval() function”</a>.</li>
+  <li>Do not call methods such as toString because this causes serious problems.</li>
 </ul>
 
 <h2 id="complete-code-listing">Complete Code Listing</h2>
 
-<p>The Github drill-simple-mask-function project includes the <a href="https://github.com/tgrall/drill-simple-mask-function/blob/master/src/main/java/org/apache/drill/contrib/function/SimpleMaskFunc.java">complete listing</a> of the code for the MASK function. </p>
+<p>The Github drill-simple-mask-function project includes the <a href="https://github.com/tgrall/drill-simple-mask-function/blob/master/src/main/java/org/apache/drill/contrib/function/SimpleMaskFunc.java">complete listing</a> of the code for the MASK function.</p>
 
 <h2 id="prepare-the-package">Prepare the Package</h2>
 
 <p>Because Drill generates the source, you must prepare your package such that classes and sources of the function are present in the classpath. The classes and sources are required for the necessary code generation. Drill uses the compiled code to access the annotations and uses the source code to do code generation. This packaging differs from the way Java code is typically packaged.</p>
 
 <p>For simplicity, use maven to build your project in a pom.xml file as follows:</p>
-<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;plugin&gt;</span>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;plugin&gt;</span>
     <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
     <span class="nt">&lt;artifactId&gt;</span>maven-source-plugin<span class="nt">&lt;/artifactId&gt;</span>
     <span class="nt">&lt;version&gt;</span>2.4<span class="nt">&lt;/version&gt;</span>
@@ -1530,47 +1574,48 @@
         <span class="nt">&lt;/execution&gt;</span>
     <span class="nt">&lt;/executions&gt;</span>
 <span class="nt">&lt;/plugin&gt;</span>
-</code></pre></div>
-<h2 id="add-a-drill-module-conf-file-to-resources">Add a drill-module.conf File to Resources</h2>
+</code></pre></div></div>
 
-<p>Add a <code>drill-module.conf</code> file in the resources folder of your project. The presence of this file tells Drill that your jar contains a custom function. Put the following line in the <code>drill-module.config</code>:</p>
+<h2 id="add-a-drill-moduleconf-file-to-resources">Add a drill-module.conf File to Resources</h2>
+<p>Add a <code class="language-plaintext highlighter-rouge">drill-module.conf</code> file in the resources folder of your project. The presence of this file tells Drill that your jar contains a custom function. Put the following line in the <code class="language-plaintext highlighter-rouge">drill-module.config</code>:</p>
 
-<p><code>drill.classpath.scanning.packages += &quot;org.apache.drill.contrib.function&quot;</code></p>
+<p><code class="language-plaintext highlighter-rouge">drill.classpath.scanning.packages += "org.apache.drill.contrib.function"</code></p>
 
 <h2 id="build-and-deploy-the-function">Build and Deploy the Function</h2>
-
 <p>Build the function using mvn package:</p>
 
-<p><code>mvn clean package</code></p>
+<p><code class="language-plaintext highlighter-rouge">mvn clean package</code></p>
 
 <p>Maven generates two JAR files:</p>
 
 <ul>
-<li>The default jar with the classes and resources (drill-simple-mask-1.0.jar)<br></li>
-<li>A second jar with the sources (drill-simple-mask-1.0-sources.jar)</li>
+  <li>The default jar with the classes and resources (drill-simple-mask-1.0.jar)</li>
+  <li>A second jar with the sources (drill-simple-mask-1.0-sources.jar)</li>
 </ul>
 
 <p>Add the JAR files to Drill, by copying them to the following location:</p>
 
-<p><code>&lt;Drill installation directory&gt;/jars/3rdparty</code>  </p>
+<p><code class="language-plaintext highlighter-rouge">&lt;Drill installation directory&gt;/jars/3rdparty</code></p>
 
 <p><strong>Note:</strong> This tutorial shows the manual method for adding JAR files to Drill, however as of Drill 1.9, the Dynamic UDF feature provides a new method for users.</p>
 
 <h2 id="test-the-new-function">Test the New Function</h2>
 
-<p>Restart drill and run the following query on the <a href="/docs/querying-json-files/"><code>employee.json</code></a> file installed with Drill:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT MASK(first_name, &#39;*&#39; , 3) FIRST , MASK(last_name, &#39;#&#39;, 7) LAST  FROM cp.`employee.json` LIMIT 5;
-+----------+------------+
+<p>Restart drill and run the following query on the <a href="/docs/querying-json-files/"><code class="language-plaintext highlighter-rouge">employee.json</code></a> file installed with Drill:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT MASK(first_name, '*' , 3) FIRST , MASK(last_name, '#', 7) LAST  FROM cp.`employee.json` LIMIT 5;
+|----------|------------|
 |  FIRST   |    LAST    |
-+----------+------------+
+|----------|------------|
 | ***ri    | ######     |
 | ***rick  | #######    |
 | ***hael  | ######     |
 | ***a     | #######ez  |
 | ***erta  | #######    |
-+----------+------------+
+|----------|------------|
 5 rows selected (2.259 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
     
       
         <div class="doc-nav">
@@ -1587,7 +1632,7 @@
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

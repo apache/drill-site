@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1335,149 +1367,154 @@
 
     </div>
 
-     Nov 2, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
-        <p>The Creating a Basic Drill Cluster topic presented the minimum configuration needed to launch Drill under YARN. Additional configuration options are available for specialized cases. Refer to the drill-on-yarn-example.conf for information about the other options.  </p>
+        <p>The Creating a Basic Drill Cluster topic presented the minimum configuration needed to launch Drill under YARN. Additional configuration options are available for specialized cases. Refer to the drill-on-yarn-example.conf for information about the other options.</p>
 
 <h2 id="application-name">Application Name</h2>
-
 <p>The application name appears when starting or stopping the Drill cluster and in the
-Drill-on-YARN web UI. Choose a name helpful to you:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   app-name: &quot;My Drill Cluster&quot;  
-</code></pre></div>
+Drill-on-YARN web UI. Choose a name helpful to you:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   app-name: "My Drill Cluster"  
+</code></pre></div></div>
+
 <h2 id="drill-distribution-archive">Drill Distribution Archive</h2>
+<p>The Drill distribution archive is assumed to expand to create a folder that has the same name as the archive itself (minus the .tar.gz suffix). That is, the archive apache-drill-x.y.z.tar.gz is assumed to expand to a directory named apache-drill-x.y.z. Apache Drill archives follow this pattern. In specialized cases, you may have to create your own archive. If you do, it is most convenient if you follow the same pattern. However, if cannot follow the pattern, you can configure Drill-on-YARN to follow a custom pattern using the drill-install.dir-name option:</p>
 
-<p>The Drill distribution archive is assumed to expand to create a folder that has the same name as the archive itself (minus the .tar.gz suffix). That is, the archive apache-drill-x.y.z.tar.gz is assumed to expand to a directory named apache-drill-x.y.z. Apache Drill archives follow this pattern. In specialized cases, you may have to create your own archive. If you do, it is most convenient if you follow the same pattern. However, if cannot follow the pattern, you can configure Drill-on-YARN to follow a custom pattern using the drill-install.dir-name option:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   drill-install:{
-          clientpath: &quot;/path/to/ your-custom-archive.tar.gz&quot;
-          dirname: &quot;your-drill-directory&quot;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   drill-install:{
+          clientpath: "/path/to/ your-custom-archive.tar.gz"
+          dirname: "your-drill-directory"
      }  
-</code></pre></div>
-<p>Where:  </p>
+</code></pre></div></div>
 
-<p><code>/path/to/ your-custom-archive.tar.gz</code> is the location of your archive. <code>your-drill-directory</code>
-is the name of your Drill directory within the archive.  </p>
+<p>Where:</p>
+
+<p><code class="language-plaintext highlighter-rouge">/path/to/ your-custom-archive.tar.gz</code> is the location of your archive. <code class="language-plaintext highlighter-rouge">your-drill-directory</code>
+is the name of your Drill directory within the archive.</p>
 
 <h2 id="customize-web-ui-port">Customize Web UI Port</h2>
-
 <p>If you run multiple Drill clusters per YARN cluster, then YARN may choose to place two Drill AM
 processes on the same node. To avoid port conflicts, change the HTTP port for one or both of
-the Drill clusters:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   drill.yarn:{
+the Drill clusters:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   drill.yarn:{
           http: {
            port: 12345
           }
    }  
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="customize-application-master-settings">Customize Application Master Settings</h2>
+<p>The following settings apply to the Application Master. All are prefixed with <code class="language-plaintext highlighter-rouge">drill.yarn.am.</code></p>
 
-<p>The following settings apply to the Application Master. All are prefixed with <code>drill.yarn.am.</code>  </p>
-
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>memorymb</td>
-<td>Memory, in MB, to allocate to the AM.</td>
-<td>512</td>
-</tr>
-<tr>
-<td>vcores</td>
-<td>Number of CPUS to allocate to the AM.</td>
-<td>1</td>
-</tr>
-<tr>
-<td>heap</td>
-<td>Java heap for the AM.</td>
-<td>450M</td>
-</tr>
-<tr>
-<td>node-label-expr</td>
-<td>YARN node label expression to use to select nodes to run the   AM.</td>
-<td>None</td>
-</tr>
-</tbody></table>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>memorymb</td>
+      <td>Memory, in MB, to allocate to the AM.</td>
+      <td>512</td>
+    </tr>
+    <tr>
+      <td>vcores</td>
+      <td>Number of CPUS to allocate to the AM.</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>heap</td>
+      <td>Java heap for the AM.</td>
+      <td>450M</td>
+    </tr>
+    <tr>
+      <td>node-label-expr</td>
+      <td>YARN node label expression to use to select nodes to run the   AM.</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
 
 <h2 id="drillbit-customization">Drillbit Customization</h2>
 
 <p>The following Drill-on-YARN configuration options control the Drillbit processes. All properties
-start with drill.yarn.drillbit.  </p>
+start with drill.yarn.drillbit.</p>
 
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>memory-mb</td>
-<td>Memory, in MB, to allocate to the Drillbit.</td>
-<td>13000</td>
-</tr>
-<tr>
-<td>vcores</td>
-<td>Number of CPUS to allocatet to the AM.</td>
-<td>4</td>
-</tr>
-<tr>
-<td>disks</td>
-<td>Number of disk equivalents consumed by Drill (on versions of   YARN that support disk resources.)</td>
-<td>1</td>
-</tr>
-<tr>
-<td>heap</td>
-<td>Java heap memory.</td>
-<td>4G</td>
-</tr>
-<tr>
-<td>max-direct-memory</td>
-<td>Direct (offheap) memory for the Drillbit.</td>
-<td>8G</td>
-</tr>
-<tr>
-<td>log-gc</td>
-<td>Enables Java garbage collector logging.</td>
-<td>FALSE</td>
-</tr>
-<tr>
-<td>class-path</td>
-<td>Additional classpath entries.</td>
-<td>blank</td>
-</tr>
-</tbody></table>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>memory-mb</td>
+      <td>Memory, in MB, to allocate to the Drillbit.</td>
+      <td>13000</td>
+    </tr>
+    <tr>
+      <td>vcores</td>
+      <td>Number of CPUS to allocatet to the AM.</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>disks</td>
+      <td>Number of disk equivalents consumed by Drill (on versions of   YARN that support disk resources.)</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>heap</td>
+      <td>Java heap memory.</td>
+      <td>4G</td>
+    </tr>
+    <tr>
+      <td>max-direct-memory</td>
+      <td>Direct (offheap) memory for the Drillbit.</td>
+      <td>8G</td>
+    </tr>
+    <tr>
+      <td>log-gc</td>
+      <td>Enables Java garbage collector logging.</td>
+      <td>FALSE</td>
+    </tr>
+    <tr>
+      <td>class-path</td>
+      <td>Additional classpath entries.</td>
+      <td>blank</td>
+    </tr>
+  </tbody>
+</table>
 
-<p>Note that the Drillbit node expression is set in the labeled pool below.  </p>
+<p>Note that the Drillbit node expression is set in the labeled pool below.</p>
 
 <h2 id="cluster-groups">Cluster Groups</h2>
-
-<p>YARN was originally designed for MapReduce jobs that can run on any node, and that often can be combined onto a single node. Compared to the traditional MapReduce jobs, Drill has additional constraints:  </p>
+<p>YARN was originally designed for MapReduce jobs that can run on any node, and that often can be combined onto a single node. Compared to the traditional MapReduce jobs, Drill has additional constraints:</p>
 
 <ul>
-<li>Only one Drillbit (per Drill cluster) can run per host (to avoid port conflict.)</li>
-<li>Drillbits work best when launched on the same host as the data that the Drillbit is to scan.</li>
+  <li>Only one Drillbit (per Drill cluster) can run per host (to avoid port conflict.)</li>
+  <li>Drillbits work best when launched on the same host as the data that the Drillbit is to scan.</li>
 </ul>
 
 <h3 id="basic-cluster">Basic Cluster</h3>
-
-<p>A basic cluster launches n Drillbits on distinct nodes anywhere in your YARN cluster. The basic cluster is great for testing and other informal tasks: just configure the desired vcores and memory, along with a number of nodes, then launch Drill. YARN will locate a set of suitable hosts anywhere on the YARN cluster.  </p>
+<p>A basic cluster launches n Drillbits on distinct nodes anywhere in your YARN cluster. The basic cluster is great for testing and other informal tasks: just configure the desired vcores and memory, along with a number of nodes, then launch Drill. YARN will locate a set of suitable hosts anywhere on the YARN cluster.</p>
 
 <h3 id="labeled-hosts">Labeled Hosts</h3>
-
-<p>Drill-on-YARN can handle node placement directly without the use of labeled queues. You use the “labeled” pool type. Then, set the drillbit-label-expr property to a YARN label expression that matches the nodes on which Drill should run. You will most often care only about Drillbit placement. Finally, indicate the number of Drillbits to run on the selected nodes. </p>
+<p>Drill-on-YARN can handle node placement directly without the use of labeled queues. You use the “labeled” pool type. Then, set the drillbit-label-expr property to a YARN label expression that matches the nodes on which Drill should run. You will most often care only about Drillbit placement. Finally, indicate the number of Drillbits to run on the selected nodes.</p>
 
 <h3 id="named-hosts">Named Hosts</h3>
-
 <p>You can configure Drill-on-YARN to run on a specific set of hosts. However, you must keep the list synchronized with your YARN cluster. If you list a host that is not available to YARN, then Drill cannot start a Drillbit on that host. Also, if the host does
 not have sufficient resources available, the Drillbit will not run.</p>
+
 
     
       
@@ -1495,7 +1532,7 @@ not have sufficient resources available, the Drillbit will not run.</p>
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

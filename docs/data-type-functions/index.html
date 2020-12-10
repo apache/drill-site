@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,70 +1369,72 @@
 
     </div>
 
-     Jun 20, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
-        <p>Starting in Drill 1.14, Drill supports the following functions that return data type information:  </p>
+        <p>Starting in Drill 1.14, Drill supports the following functions that return data type information:</p>
 
-<p><strong>sqlTypeOf()</strong><br>
-Returns the data type of a column (using the SQL names) whether the column is NULL or not. You can use the SQL name in a CAST statement, for example:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">          sqlTypeOf( CAST(x AS &lt;data type&gt; ))  
-          //Returns &lt;data type&gt; as the type name.  
-</code></pre></div>
-<p>If the type is DECIMAL, the type also includes precision and scale, for example:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">          DECIMAL(6, 3)  
-</code></pre></div>
-<p><strong>modeOf()</strong><br>
-Returns the cardinality (mode) of the column as &quot;NOT NULL&quot;, &quot;NULLABLE&quot;, or &quot;ARRAY&quot;. Drill data types include a cardinality, for example <code>Optional Int</code> or <code>Required VarChar</code>.  </p>
+<p><strong>sqlTypeOf()</strong><br />
+Returns the data type of a column (using the SQL names) whether the column is NULL or not. You can use the SQL name in a CAST statement, for example:</p>
 
-<p><strong>drillTypeOf()</strong><br>
-Similar to typeOf(), but returns the internal Drill names even if the value is NULL.  </p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>          sqlTypeOf( CAST(x AS &lt;data type&gt; ))  
+          //Returns &lt;data type&gt; as the type name.   If the type is DECIMAL, the type also includes precision and scale, for example:  
+ 
+          DECIMAL(6, 3)   **modeOf()**   Returns the cardinality (mode) of the column as "NOT NULL", "NULLABLE", or "ARRAY". Drill data types include a cardinality, for example `Optional Int` or `Required VarChar`.  
+</code></pre></div></div>
 
-<hr>
+<p><strong>drillTypeOf()</strong><br />
+Similar to typeOf(), but returns the internal Drill names even if the value is NULL.<br />
+_____</p>
 
 <h3 id="usage-notes">Usage Notes</h3>
 
-<p>The data type functions are useful for data conversions. For example, if you know a column value is <code>Nullable Int</code>, you can assume that the data type is one that Drill derived. You can then merge the Drill-derived data type with the data type from another file that has actual values.  </p>
+<p>The data type functions are useful for data conversions. For example, if you know a column value is <code class="language-plaintext highlighter-rouge">Nullable Int</code>, you can assume that the data type is one that Drill derived. You can then merge the Drill-derived data type with the data type from another file that has actual values.</p>
 
-<hr>
+<hr />
 
 <h3 id="usage-examples">Usage Examples</h3>
 
-<p>The follow examples show you how you can use the data type functions:  </p>
+<p>The follow examples show you how you can use the data type functions:</p>
 
-<p><strong>Example 1</strong><br>
-This example shows the Drill internal type, nullable int, for a missing column:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT sqlTypeOf(a) AS a_type, modeOf(a) AS a_mode FROM `json/all-null.json`;
+<p><strong>Example 1</strong><br />
+This example shows the Drill internal type, nullable int, for a missing column:</p>
 
-   +----------+-----------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT sqlTypeOf(a) AS a_type, modeOf(a) AS a_mode FROM `json/all-null.json`;
+   
+   |----------|-----------|
    |  a_type  |  a_mode   |
-   +----------+-----------+
+   |----------|-----------|
    | INTEGER  | NULLABLE  |
-   +----------+-----------+
-</code></pre></div>
-<p><strong>Example 2</strong><br>
-This example shows arrays (repeated) types:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT sqlTypeOf(columns) as col_type, modeOf(columns) as col_mode
-   FROM `csv/cust.csv`;
+   |----------|-----------|
+</code></pre></div></div>
 
-   +--------------------+-----------+
+<p><strong>Example 2</strong><br />
+This example shows arrays (repeated) types:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT sqlTypeOf(columns) as col_type, modeOf(columns) as col_mode
+   FROM `csv/cust.csv`;
+   
+   |--------------------|-----------|
    |      col_type      | col_mode  |
-   +--------------------+-----------+
+   |--------------------|-----------|
    | CHARACTER VARYING  | ARRAY     |
-   +--------------------+-----------+
+   |--------------------|-----------|
    Example 3: This example shows non-null types:
    SELECT sqlTypeOf(`name`) AS name_type, 
    modeOf(`name`) AS name_mode FROM `csvh/cust.csvh`;
-
-   +--------------------+------------+
+   
+   |--------------------|------------|
    |     name_type      | name_mode  |
-   +--------------------+------------+
+   |--------------------|------------|
    | CHARACTER VARYING  | NOT NULL   |
-   +--------------------+------------+
-</code></pre></div>
+   |--------------------|------------|
+</code></pre></div></div>
+
+
     
       
         <div class="doc-nav">
@@ -1417,7 +1451,7 @@ This example shows arrays (repeated) types:  </p>
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

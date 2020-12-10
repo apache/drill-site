@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1335,9 +1367,9 @@
 
     </div>
 
-     Mar 26, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
@@ -1346,106 +1378,133 @@
 <p>Drill performs well when executing operations in memory instead of storing the operations on disk. Drill does not write to disk unless absolutely necessary, unlike MapReduce where everything is written to disk during each phase of a job.</p>
 
 <p>The JVM heap memory does not limit the amount of direct memory available in a Drillbit. The on-heap memory for Drill is typically set at 4-8G (default is 4), which should
-suffice because Drill avoids having data sit in heap memory.  </p>
+suffice because Drill avoids having data sit in heap memory.</p>
 
-<p>The following sections describe how to allocate memory to Drillbits and queries, and how to enable bounds checking if you see performance issues:  </p>
+<p>The following sections describe how to allocate memory to Drillbits and queries, and how to enable bounds checking if you see performance issues:</p>
 
 <h2 id="modifying-memory-allocated-to-a-drillbit">Modifying Memory Allocated to a Drillbit</h2>
 
-<p>Modify the memory allocated to each Drillbit in a cluster in the Drillbit startup script, <code>&lt;drill_installation_directory&gt;/conf/drill-env.sh</code>. You must <a href="/docs/starting-drill-in-distributed-mode">restart Drill</a> after you modify the script.  </p>
+<p>Modify the memory allocated to each Drillbit in a cluster in the Drillbit startup script, <code class="language-plaintext highlighter-rouge">&lt;drill_installation_directory&gt;/conf/drill-env.sh</code>. You must <a href="/docs/starting-drill-in-distributed-mode">restart Drill</a> after you modify the script.</p>
 
-<p>The <code>drill-env.sh</code> file contains the following options:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">#export DRILLBIT_MAX_PROC_MEM=${DRILLBIT_MAX_PROC_MEM:-&quot;13G&quot;}
+<p>The <code class="language-plaintext highlighter-rouge">drill-env.sh</code> file contains the following options:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#export DRILLBIT_MAX_PROC_MEM=${DRILLBIT_MAX_PROC_MEM:-"13G"}
 //Maximum cumulative memory allocated to the Drill process during startup. This option was introduced in Drill 1.13.
 
-#export DRILL_HEAP=${DRILL_HEAP:-&quot;4G&quot;}
+#export DRILL_HEAP=${DRILL_HEAP:-"4G"}
 //Maximum theoretical heap limit for the JVM per node.
 
-#export DRILL_MAX_DIRECT_MEMORY=${DRILL_MAX_DIRECT_MEMORY:-&quot;8G&quot;}  
+#export DRILL_MAX_DIRECT_MEMORY=${DRILL_MAX_DIRECT_MEMORY:-"8G"}  
 //Java direct memory limit per node.
 
-#export DRILLBIT_CODE_CACHE_SIZE=${DRILLBIT_CODE_CACHE_SIZE:-&quot;1G&quot;} 
+#export DRILLBIT_CODE_CACHE_SIZE=${DRILLBIT_CODE_CACHE_SIZE:-"1G"} 
 //Do not modify the DRILLBIT_CODE_CACHE_SIZE. The value for this parameter is auto-computed based on the heap size and cannot exceed 1GB. 
-</code></pre></div>
+</code></pre></div></div>
+
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
   <p class="last">If DRILL_MAX_DIRECT_MEMORY is not set, the limit depends on the amount of available direct memory.  </p>
 </div>
 
-<p>To customize memory limits, uncomment the line needed and change the setting:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">export DRILLBIT_MAX_PROC_MEM=${DRILLBIT_MAX_PROC_MEM:-&quot;&lt;limit&gt;&quot;}
-export DRILL_HEAP=${DRILL_HEAP:-&quot;&lt;limit&gt;&quot;}
-export DRILL_MAX_DIRECT_MEMORY=${DRILL_MAX_DIRECT_MEMORY:-&quot;&lt;limit&gt;&quot;}   
-</code></pre></div>
-<p>For example, if you set <code>DRILLBIT_MAX_PROC_MEM</code> to 40G, the total amount of memory allocated to the following memory parameters cannot exceed 40G:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   DRILL_HEAP=8G
+<p>To customize memory limits, uncomment the line needed and change the setting:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export DRILLBIT_MAX_PROC_MEM=${DRILLBIT_MAX_PROC_MEM:-"&lt;limit&gt;"}
+export DRILL_HEAP=${DRILL_HEAP:-"&lt;limit&gt;"}
+export DRILL_MAX_DIRECT_MEMORY=${DRILL_MAX_DIRECT_MEMORY:-"&lt;limit&gt;"}   
+</code></pre></div></div>
+
+<p>For example, if you set <code class="language-plaintext highlighter-rouge">DRILLBIT_MAX_PROC_MEM</code> to 40G, the total amount of memory allocated to the following memory parameters cannot exceed 40G:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   DRILL_HEAP=8G
    DRILL_MAX_DIRECT_MEMORY=10G
    DRILLBIT_CODE_CACHE_SIZE=1024M
-</code></pre></div>
-<p>At startup, the auto-setup.sh script (introduced in Drill 1.13) performs a check to see if these memory parameters are declared. If the parameters are declared, the script performs a check to verify that the cumulative memory of the parameters does not exceed the value specified by <code>DRILLBIT_MAX_PROC_MEM</code>. If the cumulative memory exceeds the total amount of memory defined by <code>DRILLBIT_MAX_PROC_MEM</code>, Drill returns an error message with instructions. See the example below.</p>
+</code></pre></div></div>
 
-<p>If any of the memory parameters are undefined, the script adjusts the settings for the undefined parameters to ensure that the total memory allocated is within the value defined by <code>DRILLBIT_MAX_PROC_MEM</code>.</p>
+<p>At startup, the auto-setup.sh script (introduced in Drill 1.13) performs a check to see if these memory parameters are declared. If the parameters are declared, the script performs a check to verify that the cumulative memory of the parameters does not exceed the value specified by <code class="language-plaintext highlighter-rouge">DRILLBIT_MAX_PROC_MEM</code>. If the cumulative memory exceeds the total amount of memory defined by <code class="language-plaintext highlighter-rouge">DRILLBIT_MAX_PROC_MEM</code>, Drill returns an error message with instructions. See the example below.</p>
 
-<p>By default, <code>DRILLBIT_MAX_PROC_MEM</code> is not defined. You can define <code>DRILLBIT_MAX_PROC_MEM</code> in KB, MB, or GB, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   DRILLBIT_MAX_PROC_MEM=13G
+<p>If any of the memory parameters are undefined, the script adjusts the settings for the undefined parameters to ensure that the total memory allocated is within the value defined by <code class="language-plaintext highlighter-rouge">DRILLBIT_MAX_PROC_MEM</code>.</p>
+
+<p>By default, <code class="language-plaintext highlighter-rouge">DRILLBIT_MAX_PROC_MEM</code> is not defined. You can define <code class="language-plaintext highlighter-rouge">DRILLBIT_MAX_PROC_MEM</code> in KB, MB, or GB, as shown:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   DRILLBIT_MAX_PROC_MEM=13G
    DRILLBIT_MAX_PROC_MEM=8192M
    DRILLBIT_MAX_PROC_MEM=4194304K
-</code></pre></div>
-<p>Alternatively, you can set <code>DRILLBIT_MAX_PROC_MEM</code> as a percentage of total memory:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   DRILLBIT_MAX_PROC_MEM=50%
-</code></pre></div>
-<p>If you do not set this variable, it is disabled. If you set this variable, you can unset it to disable it.  </p>
+</code></pre></div></div>
 
-<p><strong>Example</strong>  </p>
+<p>Alternatively, you can set <code class="language-plaintext highlighter-rouge">DRILLBIT_MAX_PROC_MEM</code> as a percentage of total memory:</p>
 
-<p>If a system has 48GB of memory and you set the following parameters in drill-env.sh:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   DRILLBIT_MAX_PROC_MEM=25%
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   DRILLBIT_MAX_PROC_MEM=50%
+</code></pre></div></div>
+
+<p>If you do not set this variable, it is disabled. If you set this variable, you can unset it to disable it.</p>
+
+<p><strong>Example</strong></p>
+
+<p>If a system has 48GB of memory and you set the following parameters in drill-env.sh:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   DRILLBIT_MAX_PROC_MEM=25%
    DRILL_HEAP=8G
    DRILL_MAX_DIRECT_MEMORY=10G
    DRILLBIT_CODE_CACHE_SIZE=1024M  
-</code></pre></div>
+</code></pre></div></div>
+
 <p>The Drillbit fails on startup with the following messages:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   [WARN] 25% of System Memory (47 GB) translates to 12 GB
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   [WARN] 25% of System Memory (47 GB) translates to 12 GB
    [ERROR] Unable to start Drillbit due to memory constraint violations Total Memory Requested : 19 GB 
    Check and modify the settings or increase the maximum amount of memory permitted.
-</code></pre></div>
-<p>If <code>DRILLBIT_MAX_PROC_MEM</code> is increased to 50%; the Drillbit starts up with the following warnings:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   [WARN] 50% of the system memory (48 GB) translates to 24 GB.
+</code></pre></div></div>
+
+<p>If <code class="language-plaintext highlighter-rouge">DRILLBIT_MAX_PROC_MEM</code> is increased to 50%; the Drillbit starts up with the following warnings:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   [WARN] 50% of the system memory (48 GB) translates to 24 GB.
    [WARN] You have an allocation of 4 GB that is currently unused from a total of 24 GB. 
    You can increase your existing memory configuration to use this extra memory.  
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Additionally, if the available free memory is less than the allocation, the following additional warnings are provided under the assumption that the operating system will reclaim more free memory when required:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   [WARN] Total Memory Allocation for Drillbit (19GB) exceeds available free memory (11GB).
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   [WARN] Total Memory Allocation for Drillbit (19GB) exceeds available free memory (11GB).
    [WARN] Drillbit will start up, but can potentially crash due to oversubscribing of system memory.  
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="modifying-memory-allocated-to-queries">Modifying Memory Allocated to Queries</h2>
 
-<p>You can configure the amount of memory that Drill allocates to each query as a hard limit or a percentage of the total direct memory. The <code>planner.memory.max_query_memory_per_node</code> and <code>planner.memory.percent_per_query</code> options set the amount of memory that Drill can allocate to a query on a node. Both options are enabled by default. Of these two options, Drill picks the setting that provides the most memory. For more information about these options, see <a href="https://drill.apache.org/docs/sort-based-and-hash-based-memory-constrained-operators/">Sort-Based and Hash-Based Memory Constrained Operators</a>.  </p>
+<p>You can configure the amount of memory that Drill allocates to each query as a hard limit or a percentage of the total direct memory. The <code class="language-plaintext highlighter-rouge">planner.memory.max_query_memory_per_node</code> and <code class="language-plaintext highlighter-rouge">planner.memory.percent_per_query</code> options set the amount of memory that Drill can allocate to a query on a node. Both options are enabled by default. Of these two options, Drill picks the setting that provides the most memory. For more information about these options, see <a href="https://drill.apache.org/docs/sort-based-and-hash-based-memory-constrained-operators/">Sort-Based and Hash-Based Memory Constrained Operators</a>.</p>
 
-<p>If you modify the memory allocated per query and continue to experience out-of-memory errors, you can try reducing the value of the <a href="/docs/configuration-options-introduction/"><code>planner.width.max_per_node</code></a> option. Reducing the value of this option reduces the level of parallelism per node. However, this may increase the amount of time required for a query to complete.  </p>
+<p>If you modify the memory allocated per query and continue to experience out-of-memory errors, you can try reducing the value of the <a href="/docs/configuration-options-introduction/"><code class="language-plaintext highlighter-rouge">planner.width.max_per_node</code></a> option. Reducing the value of this option reduces the level of parallelism per node. However, this may increase the amount of time required for a query to complete.</p>
 
-<p>You can also modify the <code>drill.exec.memory.operator.output_batch_size</code> option, introduced in Drill 1.13. The <code>drill.exec.memory.operator.output_batch_size</code> option limits the amount of memory that the Flatten, Merge Join, and External Sort operators allocate to outgoing batches. Limiting the memory allocated to outgoing batches can improve concurrency and prevent queries from failing with out-of-memory errors.</p>
+<p>You can also modify the <code class="language-plaintext highlighter-rouge">drill.exec.memory.operator.output_batch_size</code> option, introduced in Drill 1.13. The <code class="language-plaintext highlighter-rouge">drill.exec.memory.operator.output_batch_size</code> option limits the amount of memory that the Flatten, Merge Join, and External Sort operators allocate to outgoing batches. Limiting the memory allocated to outgoing batches can improve concurrency and prevent queries from failing with out-of-memory errors.</p>
 
-<p>The average row size of the outgoing batch (calculated from the incoming batch size) determines the number of rows that can fit into the available memory for the batch. If your queries fail with memory errors, reduce the value of the <code>drill.exec.memory.operator.output_batch_size</code> option to reduce the output batch size. </p>
+<p>The average row size of the outgoing batch (calculated from the incoming batch size) determines the number of rows that can fit into the available memory for the batch. If your queries fail with memory errors, reduce the value of the <code class="language-plaintext highlighter-rouge">drill.exec.memory.operator.output_batch_size</code> option to reduce the output batch size.</p>
 
-<p>The default value is 16777216 (16 MB). The maximum allowed value is 536870912 (512 MB). Enter the value in bytes. </p>
+<p>The default value is 16777216 (16 MB). The maximum allowed value is 536870912 (512 MB). Enter the value in bytes.</p>
 
-<p><strong>Note:</strong> Configuring a batch size less than 1 MB is not recommended, as it could lead to performance issues. </p>
+<p><strong>Note:</strong> Configuring a batch size less than 1 MB is not recommended, as it could lead to performance issues.</p>
 
-<p>Use the ALTER SYSTEM SET command to change the settings, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   ALTER SYSTEM SET `drill.exec.memory.operator.output_batch_size` = &lt;value&gt;;  
-</code></pre></div>
+<p>Use the ALTER SYSTEM SET command to change the settings, as shown:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ALTER SYSTEM SET `drill.exec.memory.operator.output_batch_size` = &lt;value&gt;;  
+</code></pre></div></div>
+
 <h2 id="bounds-checking">Bounds Checking</h2>
 
 <p>If performance is an issue, add -Dbounds=false, as shown in the following example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">export DRILL_JAVA_OPTS=&quot;$DRILL_JAVA_OPTS -Dbounds=false&quot;  
-</code></pre></div>
-<p>As of Drill 1.13, bounds checking for direct memory is disabled by default. To enable bounds checking for direct memory, use the DRILLBIT_JAVA_OPTS variable to pass the <code>drill.exec.memory.enable_unsafe_bounds_check</code> parameter in $DRILL_HOME/conf/drill-env.sh, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">export DRILL_JAVA_OPTS=&quot;$DRILL_JAVA_OPTS -Ddrill.exec.memory.enable_unsafe_bounds_check=true&quot;  
-</code></pre></div>
-<p>For earlier versions of Drill (prior to 1.13), bounds checking is enabled by default. To disable bounds checking, set the <code>drill.enable_unsafe_memory_access</code> parameter to true, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">export DRILL_JAVA_OPTS=&quot;$DRILL_JAVA_OPTS -Ddrill.enable_unsafe_memory_access=true&quot;
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export DRILL_JAVA_OPTS="$DRILL_JAVA_OPTS -Dbounds=false"  
+</code></pre></div></div>
+
+<p>As of Drill 1.13, bounds checking for direct memory is disabled by default. To enable bounds checking for direct memory, use the DRILLBIT_JAVA_OPTS variable to pass the <code class="language-plaintext highlighter-rouge">drill.exec.memory.enable_unsafe_bounds_check</code> parameter in $DRILL_HOME/conf/drill-env.sh, as shown:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export DRILL_JAVA_OPTS="$DRILL_JAVA_OPTS -Ddrill.exec.memory.enable_unsafe_bounds_check=true"  
+</code></pre></div></div>
+
+<p>For earlier versions of Drill (prior to 1.13), bounds checking is enabled by default. To disable bounds checking, set the <code class="language-plaintext highlighter-rouge">drill.enable_unsafe_memory_access</code> parameter to true, as shown:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export DRILL_JAVA_OPTS="$DRILL_JAVA_OPTS -Ddrill.enable_unsafe_memory_access=true"
+</code></pre></div></div>
+
+
     
       
         <div class="doc-nav">
@@ -1462,7 +1521,7 @@ export DRILL_MAX_DIRECT_MEMORY=${DRILL_MAX_DIRECT_MEMORY:-&quot;&lt;limit&gt;&qu
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

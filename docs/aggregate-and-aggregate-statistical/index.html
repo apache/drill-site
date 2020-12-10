@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,424 +1369,550 @@
 
     </div>
 
-     Jan 15, 2019
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <h2 id="aggregate-functions">Aggregate Functions</h2>
 
-<p>The following tables list the aggregate and aggregate statistical functions that you can use in 
-Drill queries:  </p>
+<p>The following table lists the aggregate functions that you can use in Drill queries.</p>
 
-<table><thead>
-<tr>
-<th><strong>Function</strong></th>
-<th><strong>Argument Type</strong></th>
-<th><strong>Return Type</strong></th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ANY_VALUE(expression)</td>
-<td>Bit, Int, BigInt, Float4, Float8, Date, Timestamp, Time, VarChar, VarBinary, List, Map, Interval, IntervalDay, IntervalYear, VarDecimal</td>
-<td>same as argument type</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>AVG(expression)</td>
-<td>SMALLINT,   INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL, INTERVAL</td>
-<td>DECIMAL for DECIMAL argument,   DOUBLE for all other arguments</td>
-</tr>
-<tr>
-<td>COUNT(*)</td>
-<td>-</td>
-<td>BIGINT</td>
-</tr>
-<tr>
-<td>COUNT([DISTINCT] expression)</td>
-<td>any</td>
-<td>BIGINT</td>
-</tr>
-<tr>
-<td>MAX(expression)</td>
-<td>BINARY,   DECIMAL, VARCHAR, DATE, TIME, or TIMESTAMP</td>
-<td>same   as argument type</td>
-</tr>
-<tr>
-<td>MIN(expression)</td>
-<td>BINARY,   DECIMAL, VARCHAR, DATE, TIME, or TIMESTAMP</td>
-<td>same   as argument type</td>
-</tr>
-<tr>
-<td>SUM(expression)</td>
-<td>SMALLINT,   INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL, INTERVAL</td>
-<td>DECIMAL for DECIMAL   argument,     BIGINT for any integer-type argument (including BIGINT), DOUBLE for   floating-point arguments</td>
-</tr>
-</tbody></table>
+<table>
+  <thead>
+    <tr>
+      <th><strong>Function</strong></th>
+      <th><strong>Argument Type</strong></th>
+      <th><strong>Return Type</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ANY_VALUE(expression)</td>
+      <td>BIT, INT, BIGINT, FLOAT4, FLOAT8, DATE, TIMESTAMP, TIME, VARCHAR, VARBINARY, LIST, MAP, INTERVAL, INTERVALDAY, INTERVALYEAR, VARDECIMAL</td>
+      <td>Same as argument type</td>
+    </tr>
+    <tr>
+      <td>AVG(expression)</td>
+      <td>SMALLINT,   INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL, INTERVAL</td>
+      <td>DECIMAL for DECIMAL argument,   DOUBLE for all other arguments</td>
+    </tr>
+    <tr>
+      <td>BOOL_AND(expression), BOOL_OR(expression)</td>
+      <td>BIT</td>
+      <td>BIT</td>
+    </tr>
+    <tr>
+      <td>COUNT(*)</td>
+      <td>-</td>
+      <td>BIGINT</td>
+    </tr>
+    <tr>
+      <td>COUNT([DISTINCT] expression)</td>
+      <td>any</td>
+      <td>BIGINT</td>
+    </tr>
+    <tr>
+      <td>MAX(expression), MIN(expression)</td>
+      <td>BINARY, DECIMAL, VARCHAR, DATE, TIME, or TIMESTAMP</td>
+      <td>Same   as argument type</td>
+    </tr>
+    <tr>
+      <td>SUM(expression)</td>
+      <td>SMALLINT, INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL, INTERVAL</td>
+      <td>DECIMAL for DECIMAL   argument,     BIGINT for any integer-type argument (including BIGINT), DOUBLE for   floating-point arguments</td>
+    </tr>
+  </tbody>
+</table>
 
 <ul>
-<li>Drill 1.14 and later supports the ANY_VALUE function. </li>
-<li>Starting in Drill 1.14, the DECIMAL data type is enabled by default.<br></li>
-<li>AVG, COUNT, MIN, MAX, and SUM accept ALL and DISTINCT keywords. The default is ALL.<br></li>
-<li>The aggregate function examples use the <code>cp</code> storage plugin to access the <a href="/docs/querying-json-files/"><code>employee.json</code></a> file installed with Drill. By default, JSON reads numbers as double-precision floating point numbers. These examples assume that you are using the default option <a href="/docs/json-data-model/#handling-type-differences">all_text_mode</a> set to false.<br></li>
+  <li>Drill 1.14 and later supports the ANY_VALUE function.</li>
+  <li>Starting in Drill 1.14, the DECIMAL data type is enabled by default.</li>
+  <li>AVG, COUNT, MIN, MAX, and SUM accept ALL and DISTINCT keywords. The default is ALL.</li>
+  <li>The aggregate function examples use the <code class="language-plaintext highlighter-rouge">cp</code> storage plugin to access the <a href="/docs/querying-json-files/"><code class="language-plaintext highlighter-rouge">employee.json</code></a> file installed with Drill. By default, JSON reads numbers as double-precision floating point numbers. These examples assume that you are using the default option <a href="/docs/json-data-model/#handling-type-differences">all_text_mode</a> set to false.</li>
 </ul>
 
 <h2 id="any_value">ANY_VALUE</h2>
-
-<p>Supported in Drill 1.14 and later. Returns one of the values of value across all input values. This function is NOT specified in the SQL standard.  </p>
+<p>Supported in Drill 1.14 and later. Returns one of the values of value across all input values. This function is NOT specified in the SQL standard.</p>
 
 <h3 id="any_value-syntax">ANY_VALUE Syntax</h3>
-
-<p>ANY_VALUE( [ ALL | DISTINCT ] value)  </p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ANY_VALUE([ ALL | DISTINCT ] value)  
+</code></pre></div></div>
 
 <h3 id="any_value-examples">ANY_VALUE Examples</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT ANY_VALUE(employee_id) AS anyemp FROM cp.`employee.json`;
-+---------+
-| anyemp  |
-+---------+
-| 1156    |
-+---------+  
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT ANY_VALUE(employee_id) AS anyemp FROM cp.`employee.json`;
+|--------|
+| anyemp |
+|--------|
+| 1156   |
+|--------|
 
 SELECT ANY_VALUE(ALL employee_id) AS anyemp FROM cp.`employee.json`;
-+---------+
-| anyemp  |
-+---------+
-| 1156    |
-+---------+
+|--------|
+| anyemp |
+|--------|
+| 1156   |
+|--------|
 
 SELECT ANY_VALUE(DISTINCT employee_id) AS anyemp FROM cp.`employee.json`;
-+---------+
-| anyemp  |
-+---------+
-| 1156    |
-+---------+  
+|--------|
+| anyemp |
+|--------|
+| 1156   |
+|--------|
 
 SELECT ANY_VALUE(employee_id) as anyemp, salary as empsal FROM cp.`employee.json` GROUP BY salary;
-+---------+----------+
-| anyemp  |  empsal  |
-+---------+----------+
-| 1155    | 20.0     |
-| 197     | 3700.0   |
-| 1115    | 4200.0   |
-| 589     | 4300.0   |
-| 403     | 4400.0   |
-| 204     | 4500.0   |
-| 201     | 4550.0   |
-| 206     | 4600.0   |
-| 264     | 4650.0   |
-| 267     | 4700.0   |
-| 632     | 4800.0   |
-| 42      | 5000.0   |
-| 590     | 5200.0   |
-| 733     | 5900.0   |
-| 1144    | 6100.0   |
-| 625     | 6200.0   |
-| 1141    | 6400.0   |
-| 588     | 6500.0   |
-| 46      | 6600.0   |
-| 1075    | 6700.0   |
-| 1079    | 6800.0   |
-| 1028    | 6900.0   |
-| 900     | 7000.0   |
-| 63      | 7100.0   |
-| 60      | 7200.0   |
-| 69      | 7500.0   |
-| 764     | 7900.0   |
-| 957     | 8000.0   |
-| 566     | 8100.0   |
-| 171     | 8200.0   |
-| 489     | 8500.0   |
-| 226     | 8900.0   |
-| 490     | 9000.0   |
-| 8       | 10000.0  |
-| 35      | 11000.0  |
-| 53      | 12000.0  |
-| 484     | 13000.0  |
-| 31      | 14000.0  |
-| 13      | 15000.0  |
-| 27      | 16000.0  |
-| 33      | 17000.0  |
-| 6       | 25000.0  |
-| 20      | 30000.0  |
-| 21      | 35000.0  |
-| 4       | 40000.0  |
-| 36      | 45000.0  |
-| 10      | 50000.0  |
-| 1       | 80000.0  |
-+---------+----------+  
+|--------|---------|
+| anyemp | empsal  |
+|--------|---------|
+| 1155   | 20.0    |
+| 197    | 3700.0  |
+| 1115   | 4200.0  |
+| 589    | 4300.0  |
+| 403    | 4400.0  |
+| 204    | 4500.0  |
+...
 
 SELECT ANY_VALUE(employee_id) as anyemp FROM cp.`employee.json` GROUP BY salary ORDER BY anyemp;
-+-----------+
-| anyemp    |
-+-----------+
-| 1         |
-| 4         |
-| 6         |
-| 8         |
-| 10        |
-| 13        |
-| 20        |
-| 21        |
-| 27        |
-| 31        |
-| 33        |
-| 35        |
-| 36        |
-| 42        |
-| 46        |
-| 53        |
-| 60        |
-| 63        |
-| 69        |
-| 171       |
-| 197       |
-| 201       |
-| 204       |
-| 206       |
-| 226       |
-| 264       |
-| 267       |
-| 403       |
-| 484       |
-| 489       |
-| 490       |
-| 566       |
-| 588       |
-| 589       |
-| 590       |
-| 625       |
-| 632       |
-| 733       |
-| 764       |
-| 900       |
-| 957       |
-| 1028      |
-| 1075      |
-| 1079      |
-| 1115      |
-| 1141      |
-| 1144      |
-| 1155      |
-+-----------+  
-</code></pre></div>
+|--------|
+| anyemp |
+|--------|
+| 1      |
+| 4      |
+| 6      |
+| 8      |
+| 10     |
+| 13     |
+...
+</code></pre></div></div>
+
 <h2 id="avg">AVG</h2>
 
-<p>Averages a column of all records in a data source. Averages a column of one or more groups of records. Which records to include in the calculation can be based on a condition.</p>
+<p>Returns the average of a numerical expression.</p>
 
 <h3 id="avg-syntax">AVG Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT AVG([ALL | DISTINCT] aggregate_expression)
-FROM tables
-WHERE conditions;
 
-SELECT expression1, expression2, ... expression_n,
-       AVG([ALL | DISTINCT] aggregate_expression)
-FROM tables
-WHERE conditions
-GROUP BY expression1, expression2, ... expression_n;
-</code></pre></div>
-<p>Expressions listed within the AVG function and must be included in the GROUP BY clause. </p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>AVG([ALL | DISTINCT] expression)
+</code></pre></div></div>
 
 <h3 id="avg-examples">AVG Examples</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SESSION SET `store.json.all_text_mode` = false;
-+-------+------------------------------------+
-|  ok   |              summary               |
-+-------+------------------------------------+
-| true  | store.json.all_text_mode updated.  |
-+-------+------------------------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ALTER SESSION SET `store.json.all_text_mode` = false;
+|------|-----------------------------------|
+| ok   | summary                           |
+|------|-----------------------------------|
+| true | store.json.all_text_mode updated. |
+|------|-----------------------------------|
 1 row selected (0.073 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Take a look at the salaries of employees having IDs 1139, 1140, and 1141. These are the salaries that subsequent examples will average and sum.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM cp.`employee.json` WHERE employee_id IN (1139, 1140, 1141);
-+--------------+------------------+-------------+------------+--------------+--------------------------+-----------+----------------+-------------+------------------------+-------------+----------------+------------------+-----------------+---------+-----------------------+
-| employee_id  |    full_name     | first_name  | last_name  | position_id  |      position_title      | store_id  | department_id  | birth_date  |       hire_date        |   salary    | supervisor_id  | education_level  | marital_status  | gender  |    management_role    |
-+--------------+------------------+-------------+------------+--------------+--------------------------+-----------+----------------+-------------+------------------------+-------------+----------------+------------------+-----------------+---------+-----------------------+
-| 1139         | Jeanette Belsey  | Jeanette    | Belsey     | 12           | Store Assistant Manager  | 18        | 11             | 1972-05-12  | 1998-01-01 00:00:00.0  | 10000.0000  | 17             | Graduate Degree  | S               | M       | Store Management      |
-| 1140         | Mona Jaramillo   | Mona        | Jaramillo  | 13           | Store Shift Supervisor   | 18        | 11             | 1961-09-24  | 1998-01-01 00:00:00.0  | 8900.0000   | 1139           | Partial College  | S               | M       | Store Management      |
-| 1141         | James Compagno   | James       | Compagno   | 15           | Store Permanent Checker  | 18        | 15             | 1914-02-02  | 1998-01-01 00:00:00.0  | 6400.0000   | 1139           | Graduate Degree  | S               | M       | Store Full Time Staf  |
-+--------------+------------------+-------------+------------+--------------+--------------------------+-----------+----------------+-------------+------------------------+-------------+----------------+------------------+-----------------+---------+-----------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM cp.`employee.json` WHERE employee_id IN (1139, 1140, 1141);
+|-------------|-----------------|------------|-----------|-------------|-------------------------|----------|---------------|------------|-----------------------|------------|---------------|-----------------|----------------|--------|----------------------|
+| employee_id | full_name       | first_name | last_name | position_id | position_title          | store_id | department_id | birth_date | hire_date             | salary     | supervisor_id | education_level | marital_status | gender | management_role      |
+|-------------|-----------------|------------|-----------|-------------|-------------------------|----------|---------------|------------|-----------------------|------------|---------------|-----------------|----------------|--------|----------------------|
+| 1139        | Jeanette Belsey | Jeanette   | Belsey    | 12          | Store Assistant Manager | 18       | 11            | 1972-05-12 | 1998-01-01 00:00:00.0 | 10000.0000 | 17            | Graduate Degree | S              | M      | Store Management     |
+| 1140        | Mona Jaramillo  | Mona       | Jaramillo | 13          | Store Shift Supervisor  | 18       | 11            | 1961-09-24 | 1998-01-01 00:00:00.0 | 8900.0000  | 1139          | Partial College | S              | M      | Store Management     |
+| 1141        | James Compagno  | James      | Compagno  | 15          | Store Permanent Checker | 18       | 15            | 1914-02-02 | 1998-01-01 00:00:00.0 | 6400.0000  | 1139          | Graduate Degree | S              | M      | Store Full Time Staf |
+|-------------|-----------------|------------|-----------|-------------|-------------------------|----------|---------------|------------|-----------------------|------------|---------------|-----------------|----------------|--------|----------------------|
 3 rows selected (0.284 seconds)
-</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">SELECT AVG(salary) FROM cp.`employee.json` WHERE employee_id IN (1139, 1140, 1141);
-+--------------------+
-|       EXPR$0       |
-+--------------------+
-| 8433.333333333334  |
-+--------------------+
+
+SELECT AVG(salary) FROM cp.`employee.json` WHERE employee_id IN (1139, 1140, 1141);
+|-------------------|
+| EXPR$0            |
+|-------------------|
+| 8433.333333333334 |
+|-------------------|
 1 row selected (0.208 seconds)
 
 SELECT AVG(ALL salary) FROM cp.`employee.json` WHERE employee_id IN (1139, 1140, 1141);
-+--------------------+
-|       EXPR$0       |
-+--------------------+
-| 8433.333333333334  |
-+--------------------+
+|-------------------|
+| EXPR$0            |
+|-------------------|
+| 8433.333333333334 |
+|-------------------|
 1 row selected (0.17 seconds)
 
 SELECT AVG(DISTINCT salary) FROM cp.`employee.json`;
-+---------------------+
-|       EXPR$0        |
-+---------------------+
-| 12773.333333333334  |
-+---------------------+
+|--------------------|
+| EXPR$0             |
+|--------------------|
+| 12773.333333333334 |
+|--------------------|
 1 row selected (0.384 seconds)
-</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">SELECT education_level, AVG(salary) FROM cp.`employee.json` GROUP BY education_level;
-+----------------------+---------------------+
-|   education_level    |       EXPR$1        |
-+----------------------+---------------------+
-| Graduate Degree      | 4392.823529411765   |
-| Bachelors Degree     | 4492.404181184669   |
-| Partial College      | 4047.1180555555557  |
-| High School Degree   | 3516.1565836298932  |
-| Partial High School  | 3511.0852713178297  |
-+----------------------+---------------------+
-5 rows selected (0.495 seconds)
-</code></pre></div>
-<h2 id="count">COUNT</h2>
 
+SELECT education_level, AVG(salary) FROM cp.`employee.json` GROUP BY education_level;
+|---------------------|--------------------|
+| education_level     | EXPR$1             |
+|---------------------|--------------------|
+| Graduate Degree     | 4392.823529411765  |
+| Bachelors Degree    | 4492.404181184669  |
+| Partial College     | 4047.1180555555557 |
+| High School Degree  | 3516.1565836298932 |
+| Partial High School | 3511.0852713178297 |
+|---------------------|--------------------|
+5 rows selected (0.495 seconds)
+</code></pre></div></div>
+
+<h2 id="bool_and-and-bool_or">BOOL_AND and BOOL_OR</h2>
+<p>Returns the result of a logical AND (resp. OR) over the specified expression.</p>
+
+<h3 id="bool_and-and-bool_or-syntax">BOOL_AND and BOOL_OR Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BOOL_AND(expression)
+BOOL_OR(expression)
+</code></pre></div></div>
+
+<h3 id="bool_and-and-bool_or-examples">BOOL_AND and BOOL_OR Examples</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT BOOL_AND(last_name = 'Spence') FROM cp.`employee.json`;
+|--------|
+| EXPR$0 |
+|--------|
+| false  |
+|--------|
+
+SELECT BOOL_OR(last_name = 'Spence') FROM cp.`employee.json`;
+|--------|
+| EXPR$0 |
+|--------|
+| true   |
+|--------|
+</code></pre></div></div>
+
+<h3 id="bool_and-and-bool_or-usage-notes">BOOL_AND and BOOL_OR Usage Notes</h3>
+
+<ol>
+  <li>EVERY is nearly an alias for BOOL_AND but returns a TINYINT rather than a BIT.</li>
+</ol>
+
+<h2 id="count">COUNT</h2>
 <p>Returns the number of rows that match the given criteria.</p>
 
 <h3 id="count-syntax">COUNT Syntax</h3>
 
-<p><code>SELECT COUNT([DISTINCT | ALL] column) FROM . . .</code><br>
-<code>SELECT COUNT(*) FROM . . .</code>  </p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT COUNT([ALL | DISTINCT] expression) FROM . . . 
+SELECT COUNT(*) FROM . . .
+</code></pre></div></div>
 
 <ul>
-<li>column<br>
-Returns the number of values of the specified column.<br></li>
-<li>DISTINCT column<br>
-Returns the number of distinct values in the column.<br></li>
-<li>ALL column<br>
-Returns the number of values of the specified column.<br></li>
-<li>* (asterisk)
+  <li>expression<br />
+Returns the number of values of the specified expression.</li>
+  <li>DISTINCT expression<br />
+Returns the number of distinct values in the expression.</li>
+  <li>ALL expression<br />
+Returns the number of values of the specified expression.</li>
+  <li>
+    <ul>
+      <li>(asterisk)
 Returns the number of records in the table.</li>
+    </ul>
+  </li>
 </ul>
 
 <h3 id="count-examples">COUNT Examples</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT COUNT(DISTINCT salary) FROM cp.`employee.json`;
-+---------+
-| EXPR$0  |
-+---------+
-| 48      |
-+---------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT COUNT(DISTINCT salary) FROM cp.`employee.json`;
+|--------|
+| EXPR$0 |
+|--------|
+| 48     |
+|--------|
 1 row selected (0.159 seconds)
 
 SELECT COUNT(ALL salary) FROM cp.`employee.json`;
-+---------+
-| EXPR$0  |
-+---------+
-| 1155    |
-+---------+
+|--------|
+| EXPR$0 |
+|--------|
+| 1155   |
+|--------|
 1 row selected (0.106 seconds)
 
 SELECT COUNT(salary) FROM cp.`employee.json`;
-+---------+
-| EXPR$0  |
-+---------+
-| 1155    |
-+---------+
+|--------|
+| EXPR$0 |
+|--------|
+| 1155   |
+|--------|
 1 row selected (0.102 seconds)
 
 SELECT COUNT(*) FROM cp.`employee.json`;
-+---------+
-| EXPR$0  |
-+---------+
-| 1155    |
-+---------+
+|--------|
+| EXPR$0 |
+|--------|
+| 1155   |
+|--------|
 1 row selected (0.174 seconds)
-</code></pre></div>
-<h2 id="min-and-max-functions">MIN and MAX Functions</h2>
+</code></pre></div></div>
 
-<p>These functions return the smallest and largest values of the selected columns, respectively.</p>
+<h2 id="min-and-max">MIN and MAX</h2>
+<p>These functions return the smallest and largest values of the selected expressions, respectively.</p>
 
 <h3 id="min-and-max-syntax">MIN and MAX Syntax</h3>
 
-<p>MIN(column)<br>
-MAX(column)</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>MIN(expression)  
+MAX(expression)
+</code></pre></div></div>
 
 <h3 id="min-and-max-examples">MIN and MAX Examples</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT MIN(salary) FROM cp.`employee.json`;
-+---------+
-| EXPR$0  |
-+---------+
-| 20.0    |
-+---------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT MIN(salary) FROM cp.`employee.json`;
+|--------|
+| EXPR$0 |
+|--------|
+| 20.0   |
+|--------|
 1 row selected (0.138 seconds)
 
 SELECT MAX(salary) FROM cp.`employee.json`;
-+----------+
-|  EXPR$0  |
-+----------+
-| 80000.0  |
-+----------+
+|---------|
+| EXPR$0  |
+|---------|
+| 80000.0 |
+|---------|
 1 row selected (0.139 seconds)
-</code></pre></div>
-<p>Use a correlated subquery to find the names and salaries of the lowest paid employees:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT full_name, SALARY FROM cp.`employee.json` WHERE salary = (SELECT MIN(salary) FROM cp.`employee.json`);
-+------------------------+---------+
-|       full_name        | SALARY  |
-+------------------------+---------+
-| Leopoldo Renfro        | 20.0    |
-| Donna Brockett         | 20.0    |
-| Laurie Anderson        | 20.0    |
-. . .
-</code></pre></div>
-<h2 id="sum-function">SUM Function</h2>
+</code></pre></div></div>
 
-<p>Returns the total of a numeric column.</p>
+<p>Use a correlated subquery to find the names and salaries of the lowest paid employees:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT full_name, SALARY FROM cp.`employee.json` WHERE salary = (SELECT MIN(salary) FROM cp.`employee.json`);
+|-----------------|--------|
+| full_name       | SALARY |
+|-----------------|--------|
+| Leopoldo Renfro | 20.0   |
+| Donna Brockett  | 20.0   |
+| Laurie Anderson | 20.0   |
+. . .
+</code></pre></div></div>
+
+<h2 id="sum">SUM</h2>
+<p>Returns the sum of a numerical expresion.</p>
 
 <h3 id="sum-syntax">SUM syntax</h3>
 
-<p><code>SUM(column)</code></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SUM([DISTINCT | ALL] expression)
+</code></pre></div></div>
 
 <h3 id="examples">Examples</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT SUM(ALL salary) FROM cp.`employee.json`;
-+------------+
-|   EXPR$0   |
-+------------+
-| 4642640.0  |
-+------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT SUM(ALL salary) FROM cp.`employee.json`;
+|-----------|
+| EXPR$0    |
+|-----------|
+| 4642640.0 |
+|-----------|
 1 row selected (0.123 seconds)
 
 SELECT SUM(DISTINCT salary) FROM cp.`employee.json`;
-+-----------+
-|  EXPR$0   |
-+-----------+
-| 613120.0  |
-+-----------+
+|----------|
+| EXPR$0   |
+|----------|
+| 613120.0 |
+|----------|
 1 row selected (0.309 seconds)
 
 SELECT SUM(salary) FROM cp.`employee.json` WHERE employee_id IN (1139, 1140, 1141);
-+----------+
-|  EXPR$0  |
-+----------+
-| 25300.0  |
-+----------+
+|---------|
+| EXPR$0  |
+|---------|
+| 25300.0 |
+|---------|
 1 row selected (1.995 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="aggregate-statistical-functions">Aggregate Statistical Functions</h2>
 
-<p>Drill provides following aggregate statistics functions:</p>
+<p>The following table lists the aggregate statistical functions that you can use in Drill queries.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>Function</strong></th>
+      <th><strong>Argument Type</strong></th>
+      <th><strong>Return Type</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>APPROX_COUNT_DUPS(expression)</td>
+      <td>any</td>
+      <td>BIGINT</td>
+    </tr>
+    <tr>
+      <td>STDDEV(expression)</td>
+      <td>SMALLINT, INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL</td>
+      <td>DECIMAL for DECIMAL arguments, otherwise DOUBLE</td>
+    </tr>
+    <tr>
+      <td>STDDEV_POP(expression)</td>
+      <td>SMALLINT, INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL</td>
+      <td>DECIMAL for DECIMAL arguments, otherwise DOUBLE</td>
+    </tr>
+    <tr>
+      <td>VARIANCE(expression)</td>
+      <td>SMALLINT, INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL</td>
+      <td>DECIMAL for DECIMAL arguments, otherwise DOUBLE</td>
+    </tr>
+    <tr>
+      <td>VAR_POP(expression)</td>
+      <td>SMALLINT, INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL</td>
+      <td>DECIMAL for DECIMAL arguments, otherwise DOUBLE</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="approx_count_dups">APPROX_COUNT_DUPS</h2>
+
+<p>Returns an approximate count of the values that are duplicates (not unique).</p>
+
+<h3 id="approx_count_dups-syntax">APPROX_COUNT_DUPS Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>APPROX_COUNT_DUPS( expression )
+</code></pre></div></div>
+
+<h3 id="approx_count_dups-examples">APPROX_COUNT_DUPS Examples</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select
+  COUNT(*),
+  APPROX_COUNT_DUPS(e1.employee_id),
+  APPROX_COUNT_DUPS(e1.gender)
+FROM cp.`employee.json` e1
+
+|--------|--------|--------|
+| EXPR$0 | EXPR$1 | EXPR$2 |
+| ------ | ------ | ------ |
+| 1155   | 0      | 1153   |
+|--------|--------|--------|
+</code></pre></div></div>
+
+<p>Use COUNT - APPROX_COUNT_DUPS to approximate a distinct count.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select
+  COUNT(*),
+  COUNT(salary) - APPROX_COUNT_DUPS(salary),
+  COUNT(distinct salary)
+from cp.`employee.json`;
+
+|--------|--------|--------|
+| EXPR$0 | EXPR$1 | EXPR$2 |
+|--------|--------|--------|
+| 1155   | 48     | 48     |
+|--------|--------|--------|
+</code></pre></div></div>
+
+<h3 id="approx_count_dups-usage-notes">APPROX_COUNT_DUPS Usage Notes</h3>
+
+<p>The underlying Bloom filter is a probabilistic data structure that may return a false positive when an element is tested for duplication.  Consequently, the approximate count returned <em>overestimates</em> the true duplicate count.  In return for this inaccuracy, Bloom filters are highly space- and time-efficient at large scales with the specifics determined by the parameters of the filter (see below).</p>
+
+<h3 id="configuration-options">Configuration options</h3>
+
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">
+The APPROX_COUNT_DUPS function is used internally by Drill when it computes table statistics.  As a result, setting configuration options that affect it in the global configuration scope will affect the computation of table statistics accordingly.
+  </p>
+</div>
 
 <ul>
-<li>stddev(expression)<br>
-An alias for stddev_samp</li>
-<li>stddev_pop(expression)
-Population standard deviate of input values</li>
-<li>stddev_samp(expression)
-Sample standard deviate of input values</li>
-<li>variance(expression)
-An alias for var_samp</li>
-<li>var_pop(expression)
-Population variance of input values (the population standard deviated squared)</li>
-<li>var_samp(expression)
-Sample variance of input values (sample standard deviation squared)</li>
+  <li>exec.statistics.ndv_extrapolation_bf_elements</li>
+  <li>exec.statistics.ndv_extrapolation_bf_fpprobability</li>
 </ul>
 
-<p>These functions take a SMALLINT, INTEGER, BIGINT, FLOAT, DOUBLE, or DECIMAL expression as the argument. The functions return DECIMAL for DECIMAL arguments and DOUBLE for all other arguments.</p>
+<h2 id="stddev">STDDEV</h2>
+
+<p>Returns the sample standard deviation.</p>
+
+<h3 id="stddev-syntax">STDDEV Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>STDDEV(expression)
+</code></pre></div></div>
+
+<h3 id="stddev-examples">STDDEV Examples</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT STDDEV(salary) from cp.`employee.json`;
+
+|-------------------|
+| EXPR$0            |
+|-------------------|
+| 5371.847873988941 |
+|-------------------|
+</code></pre></div></div>
+
+<h3 id="stddev-usage-notes">STDDEV Usage Notes</h3>
+
+<ol>
+  <li>Aliases: STDDEV_SAMP</li>
+</ol>
+
+<h2 id="stddev_pop">STDDEV_POP</h2>
+
+<p>Returns the estimate of the population standard deviation obtained by applying Bessel’s correction to the sample standard deviation.</p>
+
+<h3 id="stddev_pop-syntax">STDDEV_POP Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>STDDEV_POP(expression)
+</code></pre></div></div>
+
+<h3 id="stddev_pop-examples">STDDEV_POP Examples</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT STDDEV_POP(salary) from cp.`employee.json`;
+
+|-------------------|
+| EXPR$0            |
+|-------------------|
+| 5369.521895151171 |
+|-------------------|
+</code></pre></div></div>
+
+<h2 id="variance">VARIANCE</h2>
+
+<p>Returns the sample variance.</p>
+
+<h3 id="variance-syntax">VARIANCE Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>VARIANCE(expression)
+</code></pre></div></div>
+
+<h3 id="variance-examples">VARIANCE Examples</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT VARIANCE(salary) from cp.`employee.json`;
+
+|--------------------|
+| EXPR$0             |
+|--------------------|
+| 28856749.581279505 |
+|--------------------|
+</code></pre></div></div>
+
+<h3 id="variance-usage-notes">VARIANCE Usage Notes</h3>
+
+<ol>
+  <li>Aliases: VAR_SAMP</li>
+</ol>
+
+<h2 id="var_pop">VAR_POP</h2>
+
+<p>Returns the estimate of the population variance obtained by applying Bessel’s correction to the sample variance.</p>
+
+<h3 id="var_pop-syntax">VAR_POP Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>VAR_POP(expression)
+</code></pre></div></div>
+
+<h3 id="var_pop-examples">VAR_POP Examples</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT VAR_POP(salary) from cp.`employee.json`;
+
+|--------------------|
+| EXPR$0             |
+|--------------------|
+| 28831765.382507823 |
+|--------------------|
+</code></pre></div></div>
+
 
     
       
@@ -1772,7 +1930,7 @@ Sample variance of input values (sample standard deviation squared)</li>
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

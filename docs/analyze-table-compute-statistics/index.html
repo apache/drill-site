@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,313 +1369,356 @@
 
     </div>
 
-     May 31, 2019
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>Drill 1.16 and later supports the ANALYZE TABLE COMPUTE STATISTICS statement. The ANALYZE TABLE COMPUTE STATISTICS statement computes statistics on Parquet data stored in tables and directories. The optimizer in Drill uses statistics to estimate filter, aggregation, and join cardinalities and create an optimal query plan. 
-ANALYZE TABLE COMPUTE STATISTICS writes statistics to a JSON file in the <code>.stats.drill</code> directory, for example <code>/user/table1/.stats.drill/0_0.json</code>. </p>
+ANALYZE TABLE COMPUTE STATISTICS writes statistics to a JSON file in the <code class="language-plaintext highlighter-rouge">.stats.drill</code> directory, for example <code class="language-plaintext highlighter-rouge">/user/table1/.stats.drill/0_0.json</code>.</p>
 
-<p>Drill will not use the statistics for query planning unless you enable the <code>planner.statistics.use</code> option, as shown:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SET `planner.statistics.use` = true;
-</code></pre></div>
-<p>Alternatively, you can enable the option in the Drill Web UI at <code>http://&lt;drill-hostname-or-ip-address&gt;:8047/options</code>.</p>
+<p>Drill will not use the statistics for query planning unless you enable the <code class="language-plaintext highlighter-rouge">planner.statistics.use</code> option, as shown:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SET `planner.statistics.use` = true;
+</code></pre></div></div>
+
+<p>Alternatively, you can enable the option in the Drill Web UI at <code class="language-plaintext highlighter-rouge">http://&lt;drill-hostname-or-ip-address&gt;:8047/options</code>.</p>
 
 <h2 id="syntax">Syntax</h2>
 
-<p>The ANALYZE TABLE COMPUTE STATISTICS statement supports the following syntax:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">ANALYZE TABLE [workspace.]table_name COMPUTE STATISTICS [(column1, column2,...)] [SAMPLE number PERCENT]
-</code></pre></div>
+<p>The ANALYZE TABLE COMPUTE STATISTICS statement supports the following syntax:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ANALYZE TABLE [workspace.]table_name COMPUTE STATISTICS [(column1, column2,...)] [SAMPLE number PERCENT]
+</code></pre></div></div>
+
 <h2 id="parameters">Parameters</h2>
 
-<p><em>workspace</em><br>
-Optional. A configured storage plugin and workspace, like <code>dfs.samples</code>. For example, in <code>dfs.samples</code>, <code>dfs</code> is the file system storage plugin and samples is the <code>workspace</code> configured to point to a directory on the file system. </p>
+<p><em>workspace</em><br />
+Optional. A configured storage plugin and workspace, like <code class="language-plaintext highlighter-rouge">dfs.samples</code>. For example, in <code class="language-plaintext highlighter-rouge">dfs.samples</code>, <code class="language-plaintext highlighter-rouge">dfs</code> is the file system storage plugin and samples is the <code class="language-plaintext highlighter-rouge">workspace</code> configured to point to a directory on the file system.</p>
 
-<p><em>table_name</em><br>
-The name of the table or directory for which Drill will generate statistics. </p>
+<p><em>table_name</em><br />
+The name of the table or directory for which Drill will generate statistics.</p>
 
-<p><em>COMPUTE STATISTICS</em><br>
-Generates statistics for the table, columns, or directory specified.   </p>
+<p><em>COMPUTE STATISTICS</em><br />
+Generates statistics for the table, columns, or directory specified.</p>
 
-<p><em>column</em><br>
-The name of the column(s) for which Drill will generate statistics.  </p>
+<p><em>column</em><br />
+The name of the column(s) for which Drill will generate statistics.</p>
 
-<p><em>SAMPLE</em><br>
+<p><em>SAMPLE</em>  <br />
 Optional. Indicates that compute statistics should run on a subset of the data.</p>
 
-<p><em>number PERCENT</em><br>
-An integer that specifies the percentage of data on which to compute statistics. For example, if a table has 100 rows, <code>SAMPLE 50 PERCENT</code> indicates that statistics should be computed on 50 rows. The optimizer selects the rows at random. </p>
+<p><em>number PERCENT</em><br />
+An integer that specifies the percentage of data on which to compute statistics. For example, if a table has 100 rows, <code class="language-plaintext highlighter-rouge">SAMPLE 50 PERCENT</code> indicates that statistics should be computed on 50 rows. The optimizer selects the rows at random.</p>
 
 <h2 id="related-command">Related Command</h2>
 
-<p>If you drop a table that you have already run ANALYZE TABLE COMPUTE STATISTICS against, the statistics are automatically removed with the table:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">DROP TABLE [IF EXISTS] [workspace.]name  
-</code></pre></div>
-<p>To remove statistics for a table you want to keep, you must remove the directory in which Drill stores the statistics:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">DROP TABLE [IF EXISTS] [workspace.]name/.stats.drill  
-</code></pre></div>
-<p>If you have already issued the ANALYZE TABLE COMPUTE STATISTICS statement against specific columns, table, or directory, you must run the DROP TABLE statement with <code>/.stats.drill</code> before you can successfully run the ANALYZE TABLE COMPUTE STATISTICS statement against the data source again, for example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">DROP TABLE `table_stats/Tpch0.01/parquet/customer/.stats.drill`;
-</code></pre></div>
-<p>Note that <code>/.stats.drill</code> is the directory to which the JSON file with statistics is written.   </p>
+<p>If you drop a table that you have already run ANALYZE TABLE COMPUTE STATISTICS against, the statistics are automatically removed with the table:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DROP TABLE [IF EXISTS] [workspace.]name  
+</code></pre></div></div>
+
+<p>To remove statistics for a table you want to keep, you must remove the directory in which Drill stores the statistics:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DROP TABLE [IF EXISTS] [workspace.]name/.stats.drill  
+</code></pre></div></div>
+
+<p>If you have already issued the ANALYZE TABLE COMPUTE STATISTICS statement against specific columns, table, or directory, you must run the DROP TABLE statement with <code class="language-plaintext highlighter-rouge">/.stats.drill</code> before you can successfully run the ANALYZE TABLE COMPUTE STATISTICS statement against the data source again, for example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DROP TABLE `table_stats/Tpch0.01/parquet/customer/.stats.drill`;
+</code></pre></div></div>
+
+<p>Note that <code class="language-plaintext highlighter-rouge">/.stats.drill</code> is the directory to which the JSON file with statistics is written.</p>
 
 <h2 id="usage-notes">Usage Notes</h2>
 
 <ul>
-<li>The ANALYZE TABLE COMPUTE STATISTICS statement can compute statistics for Parquet data stored in tables, columns, and directories within dfs storage plugins only.<br></li>
-<li>The user running the ANALYZE TABLE COMPUTE STATISTICS statement must have read and write permissions on the data source.<br></li>
-<li><p>The optimizer in Drill computes the following types of statistics for each column:  </p>
+  <li>The ANALYZE TABLE COMPUTE STATISTICS statement can compute statistics for Parquet data stored in tables, columns, and directories within dfs storage plugins only.</li>
+  <li>The user running the ANALYZE TABLE COMPUTE STATISTICS statement must have read and write permissions on the data source.</li>
+  <li>The optimizer in Drill computes the following types of statistics for each column:
+    <ul>
+      <li>Rowcount (total number of entries in the table)</li>
+      <li>Nonnullrowcount (total number of non-null entries in the table)</li>
+      <li>NDV (total distinct values in the table)</li>
+      <li>Avgwidth (average width, in bytes, of a column)</li>
+      <li>Majortype (data type and data mode (OPTIONAL, REQUIRED, REPEATED) of the column values)</li>
+      <li>Histogram (represents the frequency distribution of values (numeric data) in a column) See <a href="/docs/analyze-table-compute-statistics/#histograms">Histograms</a>.</li>
+      <li>
+        <p>When you look at the statistics file, statistics for each column display in the following format (c_nationkey is used as an example column):</p>
 
-<ul>
-<li>Rowcount (total number of entries in the table)<br></li>
-<li>Nonnullrowcount (total number of non-null entries in the table)<br></li>
-<li>NDV (total distinct values in the table)<br></li>
-<li>Avgwidth (average width, in bytes, of a column)<br></li>
-<li>Majortype (data type and data mode (OPTIONAL, REQUIRED, REPEATED) of the column values)<br></li>
-<li>Histogram (represents the frequency distribution of values (numeric data) in a column) See <a href="/docs/analyze-table-compute-statistics/#histograms">Histograms</a>.<br></li>
-<li><p>When you look at the statistics file, statistics for each column display in the following format (c_nationkey is used as an example column):  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{&quot;column&quot;:&quot;`c_nationkey`&quot;,&quot;majortype&quot;:{&quot;type&quot;:&quot;INT&quot;,&quot;mode&quot;:&quot;REQUIRED&quot;},&quot;schema&quot;:1.0,&quot;rowcount&quot;:1500.0,&quot;nonnullrowcount&quot;:1500.0,&quot;ndv&quot;:25,&quot;avgwidth&quot;:4.0,&quot;histogram&quot;:{&quot;category&quot;:&quot;numeric-equi-depth&quot;,&quot;numRowsPerBucket&quot;:150,&quot;buckets&quot;:[0.0,2.0,4.0,7.0,9.0,12.0,15.199999999999978,17.0,19.0,22.0,24.0]}}  
-</code></pre></div></li>
-</ul></li>
-<li><p>ANALYZE TABLE COMPUTE STATISTICS can compute statistics on nested scalar columns; however, you must explicitly state the columns, for example:<br>
-     <code>ANALYZE TABLE employee_table COMPUTE STATISTICS (name.firstname, name.lastname);</code>  </p></li>
-<li><p>ANALYZE TABLE COMPUTE STATISTICS can compute statistics at the root directory level, but not at the partition level. 
-Drill does not compute statistics for complex types (maps, arrays).</p></li>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  {"column":"`c_nationkey`","majortype":{"type":"INT","mode":"REQUIRED"},"schema":1.0,"rowcount":1500.0,"nonnullrowcount":1500.0,"ndv":25,"avgwidth":4.0,"histogram":{"category":"numeric-equi-depth","numRowsPerBucket":150,"buckets":[0.0,2.0,4.0,7.0,9.0,12.0,15.199999999999978,17.0,19.0,22.0,24.0]}}  
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>ANALYZE TABLE COMPUTE STATISTICS can compute statistics on nested scalar columns; however, you must explicitly state the columns, for example:  <br />
+       <code class="language-plaintext highlighter-rouge">ANALYZE TABLE employee_table COMPUTE STATISTICS (name.firstname, name.lastname);</code></li>
+  <li>ANALYZE TABLE COMPUTE STATISTICS can compute statistics at the root directory level, but not at the partition level. 
+Drill does not compute statistics for complex types (maps, arrays).</li>
 </ul>
 
 <h2 id="related-options">Related Options</h2>
-
-<p>You can set the following options related to the ANALYZE TABLE COMPUTE STATISTICS statement at the system or session level with the SET (session level) or ALTER SYSTEM SET (system level) statements, or through the Drill Web UI at <code>http://&lt;drill-hostname-or-ip&gt;:8047/options</code>:  </p>
+<p>You can set the following options related to the ANALYZE TABLE COMPUTE STATISTICS statement at the system or session level with the SET (session level) or ALTER SYSTEM SET (system level) statements, or through the Drill Web UI at <code class="language-plaintext highlighter-rouge">http://&lt;drill-hostname-or-ip&gt;:8047/options</code>:</p>
 
 <ul>
-<li><strong>planner.statistics.use</strong><br>
-Enables the query planner to use statistics. When disabled, ANALYZE TABLE COMPUTE STATISTICS generates statistics, but the query planner will not use the statistics unless this option is enabled. Disabled (false) by default. </li>
-<li><strong>exec.statistics.ndv_accuracy</strong><br>
-Controls the trade-off between NDV statistic computation memory cost and accuracy. Controls the amount of memory for estimates. More memory produces more accurate estimates. The default value should suffice for most scenarios. Default is 20. Range is 0- 30.<br></li>
-<li><strong>exec.statistics.ndv_extrapolation_bf_elements</strong><br>
-Controls the trade-off between NDV statistics computation memory cost and sampling extrapolation accuracy. Relates specifically to SAMPLE. The default value should suffice for most scenarios. Increasing the value requires additional memory. Default is 1000000.<br></li>
-<li><strong>exec.statistics.ndv_extrapolation_bf_fpprobability</strong><br>
-Controls the trade-off between NDV statistics computation memory cost and sampling extrapolation accuracy. Controls the overall accuracy of statistics when using sampling. Default is 10 percent. Range is 0-100.<br></li>
-<li><strong>exec.statistics.deterministic_sampling</strong><br>
-Turns deterministic sampling on and off. Relates specifically to SAMPLE. Default is false.<br></li>
-<li><strong>exec.statistics.tdigest_compression</strong><br>
-Controls the &#39;compression&#39; factor for the TDigest algorithm used for histogram statistics. Controls trade-off between t-digest quantile statistic storage cost and accuracy. Higher values use more groups (clusters) for the t-digest and improve accuracy at the expense of extra storage. Positive integer values in the range [1, 10000].  Default is 100.<br></li>
+  <li><strong>planner.statistics.use</strong><br />
+Enables the query planner to use statistics. When disabled, ANALYZE TABLE COMPUTE STATISTICS generates statistics, but the query planner will not use the statistics unless this option is enabled. Disabled (false) by default.</li>
+  <li><strong>exec.statistics.ndv_accuracy</strong><br />
+Controls the trade-off between NDV statistic computation memory cost and accuracy. Controls the amount of memory for estimates. More memory produces more accurate estimates. The default value should suffice for most scenarios. Default is 20. Range is 0- 30.</li>
+  <li><strong>exec.statistics.ndv_extrapolation_bf_elements</strong><br />
+Controls the trade-off between NDV statistics computation memory cost and sampling extrapolation accuracy. Relates specifically to SAMPLE. The default value should suffice for most scenarios. Increasing the value requires additional memory. Default is 1000000.</li>
+  <li><strong>exec.statistics.ndv_extrapolation_bf_fpprobability</strong><br />
+Controls the trade-off between NDV statistics computation memory cost and sampling extrapolation accuracy. Controls the overall accuracy of statistics when using sampling. Default is 10 percent. Range is 0-100.</li>
+  <li><strong>exec.statistics.deterministic_sampling</strong><br />
+Turns deterministic sampling on and off. Relates specifically to SAMPLE. Default is false.</li>
+  <li><strong>exec.statistics.tdigest_compression</strong><br />
+Controls the ‘compression’ factor for the TDigest algorithm used for histogram statistics. Controls trade-off between t-digest quantile statistic storage cost and accuracy. Higher values use more groups (clusters) for the t-digest and improve accuracy at the expense of extra storage. Positive integer values in the range [1, 10000].  Default is 100.</li>
 </ul>
 
 <h2 id="reserved-keywords">Reserved Keywords</h2>
 
-<p>The ANALYZE TABLE COMPUTE STATISTICS statement introduces the following reserved keywords:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">Analyze  
+<p>The ANALYZE TABLE COMPUTE STATISTICS statement introduces the following reserved keywords:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Analyze  
 Compute  
 Estimate  
 Statistics  
 Sample  
-</code></pre></div>
-<p>If you use any of these words in a Drill query, you must enclose the word in backticks. For example, if you query a table named “estimate,” you would enclose the word &quot;estimate&quot; in backticks, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM `estimate`;
-</code></pre></div>
+</code></pre></div></div>
+
+<p>If you use any of these words in a Drill query, you must enclose the word in backticks. For example, if you query a table named “estimate,” you would enclose the word “estimate” in backticks, as shown:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM `estimate`;
+</code></pre></div></div>
+
 <h2 id="analyze-table-compute-statistics-performance">ANALYZE TABLE COMPUTE STATISTICS Performance</h2>
 
 <ul>
-<li>After you run the ANALYZE TABLE COMPUTE STATISTICS statement, you can view the profile for ANALYZE in the Drill Web UI. Go to <code>http://&lt;drill-hostname-or-ip&gt;:8047/profiles</code>, and click the ANALYZE TABLE statement for which you want to view the profile.<br></li>
-<li>Should you notice any performance issues, you may want to decrease the value of the <code>planner.slice_target</code> option.<br></li>
-<li>Generating statistics on large data sets can consume time and resources, such as memory and CPU. ANALYZE TABLE COMPUTE STATISTICS can compute statistics on a sample (subset of the data indicated as a percentage) to limit the amount of resources needed for computation. Drill still scans the entire data set, but only computes on the rows selected for sampling. Rows are randomly selected for the sample. Note that the quality of statistics increases with the sample size.<br></li>
+  <li>After you run the ANALYZE TABLE COMPUTE STATISTICS statement, you can view the profile for ANALYZE in the Drill Web UI. Go to <code class="language-plaintext highlighter-rouge">http://&lt;drill-hostname-or-ip&gt;:8047/profiles</code>, and click the ANALYZE TABLE statement for which you want to view the profile.</li>
+  <li>Should you notice any performance issues, you may want to decrease the value of the <code class="language-plaintext highlighter-rouge">planner.slice_target</code> option.</li>
+  <li>Generating statistics on large data sets can consume time and resources, such as memory and CPU. ANALYZE TABLE COMPUTE STATISTICS can compute statistics on a sample (subset of the data indicated as a percentage) to limit the amount of resources needed for computation. Drill still scans the entire data set, but only computes on the rows selected for sampling. Rows are randomly selected for the sample. Note that the quality of statistics increases with the sample size.</li>
 </ul>
 
 <h2 id="queries-that-benefit-from-statistics">Queries that Benefit from Statistics</h2>
-
 <p>Typically, the types of queries that benefit from statistics are those that include:</p>
 
 <ul>
-<li>Grouping<br></li>
-<li>Multi-table joins<br></li>
-<li>Equality predicates on scalar columns<br></li>
-<li>Range predicates (filters) on numeric columns</li>
+  <li>Grouping</li>
+  <li>Multi-table joins</li>
+  <li>Equality predicates on scalar columns</li>
+  <li>Range predicates (filters) on numeric columns</li>
 </ul>
 
 <h2 id="histograms">Histograms</h2>
 
-<p><strong>Note:</strong> Currently, histograms are supported for numeric columns only.  </p>
+<p><strong>Note:</strong> Currently, histograms are supported for numeric columns only.</p>
 
-<p>Histograms show the distribution of data to determine if data is skewed or normally distributed. Histogram statistics improve the selectivity estimates used by the optimizer to create the most efficient query plans possible. Histogram statistics are useful for range predicates to help determine how many rows belong to a particular range.   </p>
+<p>Histograms show the distribution of data to determine if data is skewed or normally distributed. Histogram statistics improve the selectivity estimates used by the optimizer to create the most efficient query plans possible. Histogram statistics are useful for range predicates to help determine how many rows belong to a particular range.</p>
 
-<p>Running the ANALYZE TABLE COMPUTE STATISTICS statement generates equi-depth histogram statistics on each column in a table. Equi-depth histograms distribute distinct column values across buckets of varying widths, with all buckets having approximately the same number of rows. The fixed number of rows per bucket is predetermined by <code>ceil(number_rows/n)</code>, where <code>n</code> is the number of buckets. The number of distinct values in each bucket depends on the distribution of the values in a column. Equi-depth histograms are better suited for skewed data because the more frequent column values have their own bucket or span more than one bucket instead of being lumped together with less frequent values.</p>
+<p>Running the ANALYZE TABLE COMPUTE STATISTICS statement generates equi-depth histogram statistics on each column in a table. Equi-depth histograms distribute distinct column values across buckets of varying widths, with all buckets having approximately the same number of rows. The fixed number of rows per bucket is predetermined by <code class="language-plaintext highlighter-rouge">ceil(number_rows/n)</code>, where <code class="language-plaintext highlighter-rouge">n</code> is the number of buckets. The number of distinct values in each bucket depends on the distribution of the values in a column. Equi-depth histograms are better suited for skewed data because the more frequent column values have their own bucket or span more than one bucket instead of being lumped together with less frequent values.</p>
 
-<p>The following diagram shows the column values on the horizontal axis and the individual frequencies (dark blue) and total frequency of a bucket (light blue). In this example, the total number of rows = 64, hence the number of rows per bucket = <code>ceil(64/4)  = 16</code>.  </p>
+<p>The following diagram shows the column values on the horizontal axis and the individual frequencies (dark blue) and total frequency of a bucket (light blue). In this example, the total number of rows = 64, hence the number of rows per bucket = <code class="language-plaintext highlighter-rouge">ceil(64/4)  = 16</code>.</p>
 
-<p><img src="https://i.imgur.com/imchEyg.png" alt="">  </p>
+<p><img src="https://i.imgur.com/imchEyg.png" alt="" /></p>
 
-<p>The following steps are used to determine bucket boundaries:<br>
-1. Determine the number of rows per bucket: ceil(N/m) where m = num buckets.<br>
-2. Sort the data on the column.<br>
-3. Determine bucket boundaries: The start of bucket 0  = min(column), then continue adding individual frequencies until the row limit is reached, which is the end point of the bucket. Continue to the next bucket and repeat the process. The same column value can potentially be at the end point of one bucket and the start point of the next bucket. Also, the last bucket could have slightly fewer values than other buckets.  </p>
+<p>The following steps are used to determine bucket boundaries:</p>
+<ol>
+  <li>Determine the number of rows per bucket: ceil(N/m) where m = num buckets.</li>
+  <li>Sort the data on the column.</li>
+  <li>Determine bucket boundaries: The start of bucket 0  = min(column), then continue adding individual frequencies until the row limit is reached, which is the end point of the bucket. Continue to the next bucket and repeat the process. The same column value can potentially be at the end point of one bucket and the start point of the next bucket. Also, the last bucket could have slightly fewer values than other buckets.</li>
+</ol>
 
-<p>For the predicate <code>&quot;WHERE a = 5&quot;</code>, in the example histogram above, you can see that 5 is in the first bucket, which has a range of [1, 7], Using the ‘continuous variable’ nature of histograms, and assuming a uniform distribution within a bucket, we get 16/7 = 2 (approximately).  This is closer to the actual value of 1.</p>
+<p>For the predicate <code class="language-plaintext highlighter-rouge">"WHERE a = 5"</code>, in the example histogram above, you can see that 5 is in the first bucket, which has a range of [1, 7], Using the ‘continuous variable’ nature of histograms, and assuming a uniform distribution within a bucket, we get 16/7 = 2 (approximately).  This is closer to the actual value of 1.</p>
 
-<p>Next, consider the range predicate <code>&quot;WHERE a &gt; 5 AND a &lt;= 16&quot;</code>.  The range spans part of bucket [1, 7] and entire buckets [8, 9], [10, 11] and [12, 16].  The total estimate = (7-5)/7 * 16 + 16 + 16 + 16 = 53 (approximately).  The actual count is 59.</p>
+<p>Next, consider the range predicate <code class="language-plaintext highlighter-rouge">"WHERE a &gt; 5 AND a &lt;= 16"</code>.  The range spans part of bucket [1, 7] and entire buckets [8, 9], [10, 11] and [12, 16].  The total estimate = (7-5)/7 * 16 + 16 + 16 + 16 = 53 (approximately).  The actual count is 59.</p>
 
-<p><strong>Viewing Histogram Statistics for a Column</strong><br>
-Histogram statistics are generated for each column, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">qhistogram&quot;:{&quot;category&quot;:&quot;numeric-equi-depth&quot;,&quot;numRowsPerBucket&quot;:150,&quot;buckets&quot;:[0.0,2.0,4.0,7.0,9.0,12.0,15.199999999999978,17.0,19.0,22.0,24.0]
-</code></pre></div>
-<p>In this example, there are 10 buckets. Each bucket contains 150 rows, which is calculated as the number of rows (1500)/number of buckets (10). The list of numbers for the “buckets” property indicates bucket boundaries, with the first bucket starting at 0.0 and ending at 2.0. The end of the first bucket is the start point for the second bucket, such that the second bucket starts at 2.0 and ends at 4.0, and so on for the remainder of the buckets. </p>
+<p><strong>Viewing Histogram Statistics for a Column</strong><br />
+Histogram statistics are generated for each column, as shown:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>qhistogram":{"category":"numeric-equi-depth","numRowsPerBucket":150,"buckets":[0.0,2.0,4.0,7.0,9.0,12.0,15.199999999999978,17.0,19.0,22.0,24.0]
+</code></pre></div></div>
+
+<p>In this example, there are 10 buckets. Each bucket contains 150 rows, which is calculated as the number of rows (1500)/number of buckets (10). The list of numbers for the “buckets” property indicates bucket boundaries, with the first bucket starting at 0.0 and ending at 2.0. The end of the first bucket is the start point for the second bucket, such that the second bucket starts at 2.0 and ends at 4.0, and so on for the remainder of the buckets.</p>
 
 <h2 id="limitations">Limitations</h2>
 
 <ul>
-<li>Drill does not cache statistics. </li>
-<li>ANALYZE TABLE COMPUTE STATISTICS runs only on directory-based Parquet tables. </li>
-<li>ANALYZE TABLE COMPUTE STATISTICS cannot do the following:<br>
+  <li>Drill does not cache statistics.</li>
+  <li>ANALYZE TABLE COMPUTE STATISTICS runs only on directory-based Parquet tables.</li>
+  <li>ANALYZE TABLE COMPUTE STATISTICS cannot do the following:
+    <ul>
+      <li>compute statistics on schema-less file formats, such as text and CSV</li>
+      <li>provide up-to-date statistics for operational data due to potential mismatches that can occur between operational updates and manually running ANALYZE TABLE</li>
+    </ul>
+  </li>
+  <li>
+    <p>Running the ANALYZE TABLE COMPUTE STATISTICS statement against multiple files in which some of the files have null values and others have no null values may return the following generic Drill error, which is not specific to the ANALYZE command:</p>
 
-<ul>
-<li>compute statistics on schema-less file formats, such as text and CSV</li>
-<li>provide up-to-date statistics for operational data due to potential mismatches that can occur between operational updates and manually running ANALYZE TABLE<br></li>
-</ul></li>
-<li><p>Running the ANALYZE TABLE COMPUTE STATISTICS statement against multiple files in which some of the files have null values and others have no null values may return the following generic Drill error, which is not specific to the ANALYZE command:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">Error: SYSTEM ERROR: IllegalStateException: Failure while reading vector. 
- Expected vector class of org.apache.drill.exec.vector.NullableBigIntVector
-but was holding vector class org.apache.drill.exec.vector.IntVector, field= [`o_custkey` (INT:REQUIRED)] 
-
-//If you encounter this error, run the ANALYZE TABLE COMPUTE STATISTICS statement on each file with null values individually instead of running the statement against all the files at once.  
-</code></pre></div></li>
-<li><p>Running the ANALYZE TABLE COMPUTE STATISTICS statement creates the stats file, which changes the directory timestamp. The change of the timestamp automatically  triggers the REFRESH TABLE METADATA command, even when the underlying data has not changed.  </p></li>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Error: SYSTEM ERROR: IllegalStateException: Failure while reading vector. 
+   Expected vector class of org.apache.drill.exec.vector.NullableBigIntVector
+  but was holding vector class org.apache.drill.exec.vector.IntVector, field= [`o_custkey` (INT:REQUIRED)] 
+ 
+  //If you encounter this error, run the ANALYZE TABLE COMPUTE STATISTICS statement on each file with null values individually instead of running the statement against all the files at once.  
+</code></pre></div>    </div>
+  </li>
+  <li>Running the ANALYZE TABLE COMPUTE STATISTICS statement creates the stats file, which changes the directory timestamp. The change of the timestamp automatically  triggers the REFRESH TABLE METADATA command, even when the underlying data has not changed.</li>
 </ul>
 
 <h2 id="examples">EXAMPLES</h2>
 
-<p>These examples use a schema, <code>dfs.drilltestdir</code>, which points to the <code>/drill/testdata</code> directory in the MapR File System. The <code>/drill/testdata</code> directory has the following subdirectories: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">/drill/testdata/table_stats/Tpch0.01/parquet
-</code></pre></div>
-<p>The <code>/parquet</code>directory contains a table named “customer.”</p>
+<p>These examples use a schema, <code class="language-plaintext highlighter-rouge">dfs.drilltestdir</code>, which points to the <code class="language-plaintext highlighter-rouge">/drill/testdata</code> directory in the MapR File System. The <code class="language-plaintext highlighter-rouge">/drill/testdata</code> directory has the following subdirectories:</p>
 
-<p>Switch schema to <code>dfs.drilltestdir</code>:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">use dfs.drilltestdir;
-+------+----------------------------------------------+
-|  ok  |                summary                       |
-+------+----------------------------------------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/drill/testdata/table_stats/Tpch0.01/parquet
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">/parquet</code>directory contains a table named “customer.”</p>
+
+<p>Switch schema to <code class="language-plaintext highlighter-rouge">dfs.drilltestdir</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>use dfs.drilltestdir;
+|------|----------------------------------------------|
+|  ok  |               	summary                	      |
+|------|----------------------------------------------|
 | true | Default schema changed to [dfs.drilltestdir] |
-+------+----------------------------------------------+
-</code></pre></div>
-<p>The following query shows the columns and types of data in the “customer” table:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">apache drill (dfs.drilltestdir)&gt; select * from `table_stats/Tpch0.01/parquet/customer` limit 2;
-+-----------+--------------------+--------------------------------+-------------+-----------------+-----------+--------------+-----------------------------------------------------------------+
+|------|----------------------------------------------|
+</code></pre></div></div>
+
+<p>The following query shows the columns and types of data in the “customer” table:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apache drill (dfs.drilltestdir)&gt; select * from `table_stats/Tpch0.01/parquet/customer` limit 2;
+|-----------|--------------------|--------------------------------|-------------|-----------------|-----------|--------------|-----------------------------------------------------------------|
 | c_custkey |       c_name       |           c_address            | c_nationkey |     c_phone     | c_acctbal | c_mktsegment |                            c_comment                            |
-+-----------+--------------------+--------------------------------+-------------+-----------------+-----------+--------------+-----------------------------------------------------------------+
+|-----------|--------------------|--------------------------------|-------------|-----------------|-----------|--------------|-----------------------------------------------------------------|
 | 1         | Customer#000000001 | IVhzIApeRb ot,c,E              | 15          | 25-989-741-2988 | 711.56    | BUILDING     | to the even, regular platelets. regular, ironic epitaphs nag e  |
 | 2         | Customer#000000002 | XSTf4,NCwDVaWNe6tEgvwfmRchLXak | 13          | 23-768-687-3665 | 121.65    | AUTOMOBILE   | l accounts. blithely ironic theodolites integrate boldly: caref |
-+-----------+--------------------+--------------------------------+-------------+-----------------+-----------+--------------+-----------------------------------------------------------------+
-</code></pre></div>
+|-----------|--------------------|--------------------------------|-------------|-----------------|-----------|--------------|-----------------------------------------------------------------|
+</code></pre></div></div>
+
 <h3 id="enabling-statistics-for-query-planning">Enabling Statistics for Query Planning</h3>
-
 <p>You can run the ANALYZE TABLE COMPUTE STATISTICS statement at any time to compute statistics; however, you must enable the following option if you want Drill to use statistics during query planning:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">set `planner.statistics.use`=true;
-+------+---------------------------------+
-|  ok  |             summary             |
-+------+---------------------------------+
-| true | planner.statistics.use updated. |
-+------+---------------------------------+
-</code></pre></div>
-<h3 id="computing-statistics">Computing Statistics</h3>
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>set `planner.statistics.use`=true;
+|------|---------------------------------|
+|  ok  |             summary         	 |
+|------|---------------------------------|
+| true | planner.statistics.use updated. |
+|------|---------------------------------|
+</code></pre></div></div>
+
+<h3 id="computing-statistics">Computing Statistics</h3>
 <p>You can compute statistics on directories with Parquet data or on Parquet tables.</p>
 
 <p>You can run the ANALYZE TABLE COMPUTE STATISTICS statement on a subset of columns to generate statistics for those columns only, as shown:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">analyze table `table_stats/Tpch0.01/parquet/customer` compute statistics (c_custkey, c_nationkey, c_acctbal);
-+----------+---------------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>analyze table `table_stats/Tpch0.01/parquet/customer` compute statistics (c_custkey, c_nationkey, c_acctbal);
+|----------|---------------------------|
 | Fragment | Number of records written |
-+----------+---------------------------+
+|----------|---------------------------|
 | 0_0      | 3                         |
-+----------+---------------------------+
-</code></pre></div>
+|----------|---------------------------|
+</code></pre></div></div>
+
 <p>Or, you can run the ANALYZE TABLE COMPUTE STATISTICS statement on the entire table/directory if you want statistics generated for all the columns:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">analyze table `table_stats/Tpch0.01/parquet/customer` compute statistics;
-+----------+---------------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>analyze table `table_stats/Tpch0.01/parquet/customer` compute statistics;
+|----------|---------------------------|
 | Fragment | Number of records written |
-+----------+---------------------------+
+|----------|---------------------------|
 | 0_0      | 8                         |
-+----------+---------------------------+
-</code></pre></div>
+|----------|---------------------------|
+</code></pre></div></div>
+
 <h3 id="computing-statistics-on-a-sample">Computing Statistics on a SAMPLE</h3>
-
 <p>You can also run ANALYZE TABLE COMPUTE STATISTICS on a percentage of the data using the SAMPLE command, as shown:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">ANALYZE TABLE `table_stats/Tpch0.01/parquet/customer` COMPUTE STATISTICS SAMPLE 50 PERCENT;
-+----------+---------------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ANALYZE TABLE `table_stats/Tpch0.01/parquet/customer` COMPUTE STATISTICS SAMPLE 50 PERCENT;
+|----------|---------------------------|
 | Fragment | Number of records written |
-+----------+---------------------------+
+|----------|---------------------------|
 | 0_0      | 8                         |
-+----------+---------------------------+
-</code></pre></div>
+|----------|---------------------------|
+</code></pre></div></div>
+
 <h3 id="storing-statistics">Storing Statistics</h3>
+<p>When you generate statistics, a statistics directory (<code class="language-plaintext highlighter-rouge">.stats.drill</code>) is created with a JSON file that contains the statistical data.</p>
 
-<p>When you generate statistics, a statistics directory (<code>.stats.drill</code>) is created with a JSON file that contains the statistical data.</p>
+<p>For tables, the <code class="language-plaintext highlighter-rouge">.stats.drill</code> directory is nested within the table directory. For example, if you ran ANALYZE TABLE COMPUTE STATISTICS against a table named “customer,” you could access the statistic file in <code class="language-plaintext highlighter-rouge">/customer/.stats.drill</code>. The JSON file is stored in the <code class="language-plaintext highlighter-rouge">.stats.drill</code> directory.</p>
 
-<p>For tables, the <code>.stats.drill</code> directory is nested within the table directory. For example, if you ran ANALYZE TABLE COMPUTE STATISTICS against a table named “customer,” you could access the statistic file in <code>/customer/.stats.drill</code>. The JSON file is stored in the <code>.stats.drill</code> directory.</p>
-
-<p>For directories, a new directory is written with the same name as the directory on which you ran ANALYZE TABLE COMPUTE STATISTICS, appended by <code>.stats.drill</code>. For example, if you ran ANALYZE TABLE COMPUTE STATISTICS against a directory named “customer,” you could access the JSON statistics file in the new <code>customer.stats.drill</code> directory.</p>
+<p>For directories, a new directory is written with the same name as the directory on which you ran ANALYZE TABLE COMPUTE STATISTICS, appended by <code class="language-plaintext highlighter-rouge">.stats.drill</code>. For example, if you ran ANALYZE TABLE COMPUTE STATISTICS against a directory named “customer,” you could access the JSON statistics file in the new <code class="language-plaintext highlighter-rouge">customer.stats.drill</code> directory.</p>
 
 <p>You can query the statistics file to see the statistics generated for each column, as shown in the following two examples:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">select * from `table_stats/Tpch0.01/parquet/customer/.stats.drill`;
-+--------------------+----------------------------------------------------------------------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select * from `table_stats/Tpch0.01/parquet/customer/.stats.drill`;
+|--------------------|----------------------------------------------------------------------------------|
 | statistics_version |                                   directories                                    |
-+--------------------+----------------------------------------------------------------------------------+
-| v1                 | [{&quot;computed&quot;:&quot;2019-04-30&quot;,&quot;columns&quot;:[{&quot;column&quot;:&quot;`c_custkey`&quot;,&quot;majortype&quot;:{&quot;type&quot;:&quot;INT&quot;,&quot;mode&quot;:&quot;REQUIRED&quot;},&quot;schema&quot;:1.0,&quot;rowcount&quot;:1500.0,&quot;nonnullrowcount&quot;:1500.0,&quot;ndv&quot;:1500,&quot;avgwidth&quot;:4.0,&quot;histogram&quot;:{&quot;category&quot;:&quot;numeric-equi-depth&quot;,&quot;numRowsPerBucket&quot;:150,&quot;buckets&quot;:[2.0,149.0,299.0,450.99999999999994,599.0,749.0,900.9999999999999,1049.0,1199.0,1349.0,1500.0]}},{&quot;column&quot;:&quot;`c_name`&quot;,&quot;majortype&quot;:{&quot;type&quot;:&quot;VARCHAR&quot;,&quot;mode&quot;:&quot;REQUIRED&quot;},&quot;schema&quot;:1.0,&quot;rowcount&quot;:1500.0,&quot;nonnullrowcount&quot;:1500.0,&quot;ndv&quot;:1500,&quot;avgwidth&quot;:18.0,&quot;histogram&quot;:{&quot;buckets&quot;:[]}},{&quot;column&quot;:&quot;`c_address`&quot;,&quot;majortype&quot;:{&quot;type&quot;:&quot;VARCHAR&quot;,&quot;mode&quot;:&quot;REQUIRED&quot;},&quot;schema&quot;:1.0,&quot;rowcount&quot;:1500.0,&quot;nonnullrowcount&quot;:1500.0,&quot;ndv&quot;:1500,&quot;avgwidth&quot;:24.726666666666667,&quot;histogram&quot;:{&quot;buckets&quot;:[]}},{&quot;column&quot;:&quot;`c_nationkey`&quot;,&quot;majortype&quot;:{&quot;type&quot;:&quot;INT&quot;,&quot;mode&quot;:&quot;REQUIRED&quot;},&quot;schema&quot;:1.0,&quot;rowcount&quot;:1500.0,&quot;nonnullrowcount&quot;:1500.0,&quot;ndv&quot;:25,&quot;avgwidth&quot;:4.0,&quot;histogram&quot;:{&quot;category&quot;:&quot;numeric-equi-depth&quot;,&quot;numRowsPerBucket&quot;:150,&quot;buckets&quot;:[0.0,2.0,4.0,7.0,9.0,12.0,15.199999999999978,17.0,19.0,22.0,24.0]}},{&quot;column&quot;:&quot;`c_phone`&quot;,&quot;majortype&quot;:{&quot;type&quot;:&quot;VARCHAR&quot;,&quot;mode&quot;:&quot;REQUIRED&quot;},&quot;schema&quot;:1.0,&quot;rowcount&quot;:1500.0,&quot;nonnullrowcount&quot;:1500.0,&quot;ndv&quot;:1500,&quot;avgwidth&quot;:15.0,&quot;histogram&quot;:{&quot;buckets&quot;:[]}},{&quot;column&quot;:&quot;`c_acctbal`&quot;,&quot;majortype&quot;:{&quot;type&quot;:&quot;FLOAT8&quot;,&quot;mode&quot;:&quot;REQUIRED&quot;},&quot;schema&quot;:1.0,&quot;rowcount&quot;:1500.0,&quot;nonnullrowcount&quot;:1500.0,&quot;ndv&quot;:1499,&quot;avgwidth&quot;:8.0,&quot;histogram&quot;:{&quot;category&quot;:&quot;numeric-equi-depth&quot;,&quot;numRowsPerBucket&quot;:150,&quot;buckets&quot;:[-986.9599781036377,70.38335235292713,1315.592873527358,2308.3286817409094,3224.126201901585,4309.92251900211,5536.811312470584,6568.307274272932,7763.991209015995,8865.61001733318,9987.710018221289]}},{&quot;column&quot;:&quot;`c_mktsegment`&quot;,&quot;majortype&quot;:{&quot;type&quot;:&quot;VARCHAR&quot;,&quot;mode&quot;:&quot;REQUIRED&quot;},&quot;schema&quot;:1.0,&quot;rowcount&quot;:1500.0,&quot;nonnullrowcount&quot;:1500.0,&quot;ndv&quot;:5,&quot;avgwidth&quot;:8.976666666666667,&quot;histogram&quot;:{&quot;buckets&quot;:[]}},{&quot;column&quot;:&quot;`c_comment`&quot;,&quot;majortype&quot;:{&quot;type&quot;:&quot;VARCHAR&quot;,&quot;mode&quot;:&quot;REQUIRED&quot;},&quot;schema&quot;:1.0,&quot;rowcount&quot;:1500.0,&quot;nonnullrowcount&quot;:1500.0,&quot;ndv&quot;:1500,&quot;avgwidth&quot;:73.2,&quot;histogram&quot;:{&quot;buckets&quot;:[]}}]}] |
-+--------------------+--------------------------------------------------------------------------------------+  
+|--------------------|----------------------------------------------------------------------------------|
+| v1                 | [{"computed":"2019-04-30","columns":[{"column":"`c_custkey`","majortype":{"type":"INT","mode":"REQUIRED"},"schema":1.0,"rowcount":1500.0,"nonnullrowcount":1500.0,"ndv":1500,"avgwidth":4.0,"histogram":{"category":"numeric-equi-depth","numRowsPerBucket":150,"buckets":[2.0,149.0,299.0,450.99999999999994,599.0,749.0,900.9999999999999,1049.0,1199.0,1349.0,1500.0]}},{"column":"`c_name`","majortype":{"type":"VARCHAR","mode":"REQUIRED"},"schema":1.0,"rowcount":1500.0,"nonnullrowcount":1500.0,"ndv":1500,"avgwidth":18.0,"histogram":{"buckets":[]}},{"column":"`c_address`","majortype":{"type":"VARCHAR","mode":"REQUIRED"},"schema":1.0,"rowcount":1500.0,"nonnullrowcount":1500.0,"ndv":1500,"avgwidth":24.726666666666667,"histogram":{"buckets":[]}},{"column":"`c_nationkey`","majortype":{"type":"INT","mode":"REQUIRED"},"schema":1.0,"rowcount":1500.0,"nonnullrowcount":1500.0,"ndv":25,"avgwidth":4.0,"histogram":{"category":"numeric-equi-depth","numRowsPerBucket":150,"buckets":[0.0,2.0,4.0,7.0,9.0,12.0,15.199999999999978,17.0,19.0,22.0,24.0]}},{"column":"`c_phone`","majortype":{"type":"VARCHAR","mode":"REQUIRED"},"schema":1.0,"rowcount":1500.0,"nonnullrowcount":1500.0,"ndv":1500,"avgwidth":15.0,"histogram":{"buckets":[]}},{"column":"`c_acctbal`","majortype":{"type":"FLOAT8","mode":"REQUIRED"},"schema":1.0,"rowcount":1500.0,"nonnullrowcount":1500.0,"ndv":1499,"avgwidth":8.0,"histogram":{"category":"numeric-equi-depth","numRowsPerBucket":150,"buckets":[-986.9599781036377,70.38335235292713,1315.592873527358,2308.3286817409094,3224.126201901585,4309.92251900211,5536.811312470584,6568.307274272932,7763.991209015995,8865.61001733318,9987.710018221289]}},{"column":"`c_mktsegment`","majortype":{"type":"VARCHAR","mode":"REQUIRED"},"schema":1.0,"rowcount":1500.0,"nonnullrowcount":1500.0,"ndv":5,"avgwidth":8.976666666666667,"histogram":{"buckets":[]}},{"column":"`c_comment`","majortype":{"type":"VARCHAR","mode":"REQUIRED"},"schema":1.0,"rowcount":1500.0,"nonnullrowcount":1500.0,"ndv":1500,"avgwidth":73.2,"histogram":{"buckets":[]}}]}] |
+|--------------------|--------------------------------------------------------------------------------------|  
 
 SELECT t.directories.columns[0].ndv as ndv, t.directories.columns[0].rowcount as rc, t.directories.columns[0].nonnullrowcount AS nnrc, t.directories.columns[0].histogram as histogram FROM `table_stats/Tpch0.01/parquet/customer/.stats.drill` t;
-+------+--------+--------+----------------------------------------------------------------------------------+
+|------|--------|--------|----------------------------------------------------------------------------------|
 | ndv  |   rc   |  nnrc  |                                    histogram                                     |
-+------+--------+--------+----------------------------------------------------------------------------------+
-| 1500 | 1500.0 | 1500.0 | {&quot;category&quot;:&quot;numeric-equi-depth&quot;,&quot;numRowsPerBucket&quot;:150,&quot;buckets&quot;:[2.0,149.0,299.0,450.99999999999994,599.0,749.0,900.9999999999999,1049.0,1199.0,1349.0,1500.0]}             |
-+------+--------+--------+----------------------------------------------------------------------------------+
-</code></pre></div>
-<h3 id="dropping-statistics">Dropping Statistics</h3>
+|------|--------|--------|----------------------------------------------------------------------------------|
+| 1500 | 1500.0 | 1500.0 | {"category":"numeric-equi-depth","numRowsPerBucket":150,"buckets":[2.0,149.0,299.0,450.99999999999994,599.0,749.0,900.9999999999999,1049.0,1199.0,1349.0,1500.0]}             |
+|------|--------|--------|----------------------------------------------------------------------------------|
+</code></pre></div></div>
 
+<h3 id="dropping-statistics">Dropping Statistics</h3>
 <p>If you want to compute statistics on a table or directory that you have already run the ANALYZE TABLE COMPUTE STATISTICS statement against, you must first drop the statistics before you can run ANALYZE TABLE statement on the table again.</p>
 
 <p>The following example demonstrates how to drop statistics on a table:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">DROP TABLE `table_stats/Tpch0.01/parquet/customer/.stats.drill`;
-+------+--------------------------------------------------------------------+
-|  ok  |                              summary                               |
-+------+--------------------------------------------------------------------+
-| true | Table [table_stats/Tpch0.01/parquet/customer/.stats.drill] dropped |
-+------+--------------------------------------------------------------------+
-</code></pre></div>
-<p>The following example demonstrates how to drop statistics on a directory, assuming that “customer” is a directory that contains Parquet files:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">DROP TABLE `table_stats/Tpch0.01/parquet/customer.stats.drill`;
-+-------+------------------------------------+
-|  ok   |            summary                 |
-+-------+------------------------------------+
-| true  | Table [customer.stats.drill] dropped|
-+-------+------------------------------------+
-</code></pre></div>
-<p>When you drop statistics, the statistics directory no longer exists for the table:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">select * from `table_stats/Tpch0.01/parquet/customer/.stats.drill`;
 
-Error: VALIDATION ERROR: From line 1, column 15 to line 1, column 66: Object &#39;table_stats/Tpch0.01/parquet/customer/.stats.drill&#39; not found  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DROP TABLE `table_stats/Tpch0.01/parquet/customer/.stats.drill`;
+|------|--------------------------------------------------------------------|
+|  ok  |                              summary                               |
+|------|--------------------------------------------------------------------|
+| true | Table [table_stats/Tpch0.01/parquet/customer/.stats.drill] dropped |
+|------|--------------------------------------------------------------------|
+</code></pre></div></div>
+
+<p>The following example demonstrates how to drop statistics on a directory, assuming that “customer” is a directory that contains Parquet files:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DROP TABLE `table_stats/Tpch0.01/parquet/customer.stats.drill`;
+|-------|------------------------------------|
+|  ok   | 	         summary     	         |
+|-------|------------------------------------|
+| true  | Table [customer.stats.drill] dropped|
+|-------|------------------------------------|
+</code></pre></div></div>
+
+<p>When you drop statistics, the statistics directory no longer exists for the table:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select * from `table_stats/Tpch0.01/parquet/customer/.stats.drill`;
+
+Error: VALIDATION ERROR: From line 1, column 15 to line 1, column 66: Object 'table_stats/Tpch0.01/parquet/customer/.stats.drill' not found  
 [Error Id: 886003ca-c64f-4e7d-b4c5-26ee1ca617b8 ] (state=,code=0)
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="troubleshooting">Troubleshooting</h2>
 
 <p>Typical errors you may get when running ANALYZE TABLE COMPUTE STATISTICS result from running the statement against an individual file or against a data source other than Parquet, as shown in the following examples:</p>
 
-<p><strong>Running ANALYZE TABLE COMPUTE STATISTICS on a file.</strong>  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">ANALYZE TABLE `/parquet/nation.parquet` COMPUTE STATISTICS;
-+--------+----------------------------------------------------------------------------------+
+<p><strong>Running ANALYZE TABLE COMPUTE STATISTICS on a file.</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ANALYZE TABLE `/parquet/nation.parquet` COMPUTE STATISTICS;
+|--------|----------------------------------------------------------------------------------|
 |   ok   |                                     summary                                      |
-+--------+----------------------------------------------------------------------------------+
+|--------|----------------------------------------------------------------------------------|
 | false  | Table /parquet/nation.parquet is not supported by ANALYZE. Support is currently limited to directory-based Parquet tables. |
-+--------+----------------------------------------------------------------------------------+
-</code></pre></div>
+|--------|----------------------------------------------------------------------------------|
+</code></pre></div></div>
+
 <p><strong>Running ANALYZE TABLE COMPUTE STATISTICS on a data source other than Parquet.</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">ANALYZE TABLE nation1_json COMPUTE STATISTICS;
-+--------+----------------------------------------------------------------------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ANALYZE TABLE nation1_json COMPUTE STATISTICS;
+|--------|----------------------------------------------------------------------------------|
 |   ok   |                                     summary                                      |
-+--------+----------------------------------------------------------------------------------+
+|--------|----------------------------------------------------------------------------------|
 | false  | Table nation1_json is not supported by ANALYZE. Support is currently limited to directory-based Parquet tables. |
-+--------+----------------------------------------------------------------------------------+
-</code></pre></div>
+|--------|----------------------------------------------------------------------------------|
+</code></pre></div></div>
+
     
       
         <div class="doc-nav">
@@ -1660,7 +1735,7 @@ Error: VALIDATION ERROR: From line 1, column 15 to line 1, column 66: Object &#3
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

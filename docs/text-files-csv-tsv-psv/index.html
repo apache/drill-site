@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1335,133 +1367,148 @@
 
     </div>
 
-     Feb 9, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>Best practices for reading text files are:</p>
 
 <ul>
-<li>Select data from particular columns<br></li>
-<li>Cast data</li>
-<li>Use a distributed file system<br></li>
+  <li>Select data from particular columns</li>
+  <li>Cast data</li>
+  <li>Use a distributed file system</li>
 </ul>
 
 <h2 id="select-data-from-particular-columns">Select Data from Particular Columns</h2>
 
 <p>Converting text files to another format, such as Parquet, using the CTAS command and a SELECT * statement is not recommended. Instead, you should select data from particular columns. If your text files have no headers, use the <a href="/docs/querying-plain-text-files">COLUMN[n] syntax</a>, and then assign meaningful column names using aliases. For example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE parquet_users AS SELECT CAST(COLUMNS[0] AS INT) AS user_id,
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE parquet_users AS SELECT CAST(COLUMNS[0] AS INT) AS user_id,
 COLUMNS[1] AS username, CAST(COLUMNS[2] AS TIMESTAMP) AS registration_date
 FROM `users.csv1`;
-</code></pre></div>
-<p>You need to select particular columns instead of using SELECT * for performance reasons. Drill reads CSV, TSV, and PSV files into a list of VARCHARS, rather than individual columns. </p>
+</code></pre></div></div>
+
+<p>You need to select particular columns instead of using SELECT * for performance reasons. Drill reads CSV, TSV, and PSV files into a list of VARCHARS, rather than individual columns.</p>
 
 <p>If your text files have headers, you can enable extractHeader and select particular columns by name. For example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE parquet_users AS SELECT CAST(user_id AS INT) AS user_id,
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE parquet_users AS SELECT CAST(user_id AS INT) AS user_id,
 username, CAST(registration_date AS TIMESTAMP) AS registration_date
 FROM `users.csv1`;
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="cast-data">Cast Data</h2>
 
-<p>You can also improve performance by casting the VARCHAR data in a text file to INT, FLOAT, DATETIME, and so on when you read the data from a text file. Drill performs better reading fixed-width than reading VARCHAR data. </p>
+<p>You can also improve performance by casting the VARCHAR data in a text file to INT, FLOAT, DATETIME, and so on when you read the data from a text file. Drill performs better reading fixed-width than reading VARCHAR data.</p>
 
 <p>Text files that include empty strings might produce unacceptable results. Common ways to deal with empty strings are:</p>
 
 <ul>
-<li>Set the drill.exec.functions.cast_empty_string_to_null SESSION/SYSTEM option to true.<br></li>
-<li><p>Use a case statement to cast empty strings to values you want. For example, create a Parquet table named test from a CSV file named test.csv, and cast empty strings in the CSV to null in any column the empty string appears:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">  CREATE TABLE test AS SELECT
-    case when COLUMNS[0] = &#39;&#39; then CAST(NULL AS INTEGER) else CAST(COLUMNS[0] AS INTEGER) end AS c1,
-    case when COLUMNS[1] = &#39;&#39; then CAST(NULL AS VARCHAR(20)) else CAST(COLUMNS[1] AS VARCHAR(20)) end AS c2,
-    case when COLUMNS[2] = &#39;&#39; then CAST(NULL AS DOUBLE) else CAST(COLUMNS[2] AS DOUBLE) end AS c3,
-    case when COLUMNS[3] = &#39;&#39; then CAST(NULL AS DATE) else CAST(COLUMNS[3] AS DATE) end AS c4,
-    case when COLUMNS[4] = &#39;&#39; then CAST(NULL AS VARCHAR(20)) else CAST(COLUMNS[4] AS VARCHAR(20)) end AS c5
-  FROM `test.csv`; 
-</code></pre></div></li>
+  <li>Set the drill.exec.functions.cast_empty_string_to_null SESSION/SYSTEM option to true.</li>
+  <li>
+    <p>Use a case statement to cast empty strings to values you want. For example, create a Parquet table named test from a CSV file named test.csv, and cast empty strings in the CSV to null in any column the empty string appears:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    CREATE TABLE test AS SELECT
+      case when COLUMNS[0] = '' then CAST(NULL AS INTEGER) else CAST(COLUMNS[0] AS INTEGER) end AS c1,
+      case when COLUMNS[1] = '' then CAST(NULL AS VARCHAR(20)) else CAST(COLUMNS[1] AS VARCHAR(20)) end AS c2,
+      case when COLUMNS[2] = '' then CAST(NULL AS DOUBLE) else CAST(COLUMNS[2] AS DOUBLE) end AS c3,
+      case when COLUMNS[3] = '' then CAST(NULL AS DATE) else CAST(COLUMNS[3] AS DATE) end AS c4,
+      case when COLUMNS[4] = '' then CAST(NULL AS VARCHAR(20)) else CAST(COLUMNS[4] AS VARCHAR(20)) end AS c5
+    FROM `test.csv`; 
+</code></pre></div>    </div>
+  </li>
 </ul>
 
 <h2 id="use-a-distributed-file-system">Use a Distributed File System</h2>
-
 <p>Using a distributed file system, such as HDFS, instead of a local file system to query files improves performance because Drill attempts to split files on block boundaries.</p>
 
-<p><strong>Configuring Drill to Read Text Files</strong> </p>
+<p><strong>Configuring Drill to Read Text Files</strong></p>
 
-<p>In the storage plugin configuration, you <a href="/docs/plugin-configuration-basics/#list-of-attributes-and-definitions">set the attributes</a> that affect how Drill reads CSV, TSV, PSV (comma-, tab-, pipe-separated) files:  </p>
+<p>In the storage plugin configuration, you <a href="/docs/plugin-configuration-basics/#list-of-attributes-and-definitions">set the attributes</a> that affect how Drill reads CSV, TSV, PSV (comma-, tab-, pipe-separated) files:</p>
 
 <ul>
-<li>comment<br></li>
-<li>escape<br></li>
-<li>delimiter<br></li>
-<li>quote<br></li>
-<li>skipFirstLine</li>
-<li>extractHeader</li>
+  <li>comment</li>
+  <li>escape</li>
+  <li>delimiter</li>
+  <li>quote</li>
+  <li>skipFirstLine</li>
+  <li>extractHeader</li>
 </ul>
 
-<p>Set the <code>sys.options</code> property setting <code>exec.storage.enable_new_text_reader</code> to true (the default) before attempting to use these attributes. </p>
+<p>Set the <code class="language-plaintext highlighter-rouge">sys.options</code> property setting <code class="language-plaintext highlighter-rouge">exec.storage.enable_new_text_reader</code> to true (the default) before attempting to use these attributes.</p>
 
-<p><strong>Using Quotation Marks</strong> </p>
+<p><strong>Using Quotation Marks</strong></p>
 
-<p>CSV files typically enclose text fields in double quotation marks, and Drill treats the double quotation mark in CSV files as a special character accordingly. By default, Drill treats double quotation marks as a special character in TSV files also. If you want Drill <em>not</em> to treat double quotation marks as a special character, configure the storage plugin to set the <code>quote</code> attribute to the unicode null <code>&quot;\u0000&quot;</code>. For example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   . . .
-   &quot;tsv&quot;: {
-   &quot;type&quot;: &quot;text&quot;,
-   &quot;extensions&quot;: [
-     &quot;tsv&quot;
+<p>CSV files typically enclose text fields in double quotation marks, and Drill treats the double quotation mark in CSV files as a special character accordingly. By default, Drill treats double quotation marks as a special character in TSV files also. If you want Drill <em>not</em> to treat double quotation marks as a special character, configure the storage plugin to set the <code class="language-plaintext highlighter-rouge">quote</code> attribute to the unicode null <code class="language-plaintext highlighter-rouge">"\u0000"</code>. For example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   . . .
+   "tsv": {
+   "type": "text",
+   "extensions": [
+     "tsv"
    ],
-   &quot;quote&quot;: &quot;\u0000&quot;,    &lt;-- set this to null 
-   &quot;delimiter&quot;: &quot;\t&quot;
+   "quote": "\u0000",    &lt;-- set this to null 
+   "delimiter": "\t"
  },
  . . .
-</code></pre></div>
-<p>As mentioned previously, set the <code>sys.options</code> property setting <code>exec.storage.enable_new_text_reader</code> to true (the default).</p>
+</code></pre></div></div>
 
-<p>*<em>Examples of Querying Text Files *</em></p>
+<p>As mentioned previously, set the <code class="language-plaintext highlighter-rouge">sys.options</code> property setting <code class="language-plaintext highlighter-rouge">exec.storage.enable_new_text_reader</code> to true (the default).</p>
+
+<p>**Examples of Querying Text Files **</p>
 
 <p>The examples in this section show the results of querying CSV files that use and do not use a header, include comments, and use an escape character:</p>
 
 <p><strong>Not Using a Header in a File</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;csv&quot;: {
-  &quot;type&quot;: &quot;text&quot;,
-  &quot;extensions&quot;: [
-    &quot;csv2&quot;
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"csv": {
+  "type": "text",
+  "extensions": [
+    "csv2"
   ],
-  &quot;skipFirstLine&quot;: true,
-  &quot;delimiter&quot;: &quot;,&quot;
+  "skipFirstLine": true,
+  "delimiter": ","
 },
-</code></pre></div>
-<p><img src="/docs/img/csv_with_header.png" alt="CSV with header"></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/csv_with_header.csv2`;
-+------------------------+
+</code></pre></div></div>
+
+<p><img src="/images/docs/csv_with_header.png" alt="CSV with header" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/csv_with_header.csv2`;
+|------------------------|
 |        columns         |
-+------------------------+
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-+------------------------+
+|------------------------|
+| ["hello","1","2","3"]  |
+| ["hello","1","2","3"]  |
+| ["hello","1","2","3"]  |
+| ["hello","1","2","3"]  |
+| ["hello","1","2","3"]  |
+| ["hello","1","2","3"]  |
+| ["hello","1","2","3"]  |
+|------------------------|
 7 rows selected (0.112 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p><strong>Using a Header in a File</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;csv&quot;: {
-  &quot;type&quot;: &quot;text&quot;,
-  &quot;extensions&quot;: [
-    &quot;csv2&quot;
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"csv": {
+  "type": "text",
+  "extensions": [
+    "csv2"
   ],
-  &quot;skipFirstLine&quot;: false,
-  &quot;extractHeader&quot;: true,
-  &quot;delimiter&quot;: &quot;,&quot;
+  "skipFirstLine": false,
+  "extractHeader": true,
+  "delimiter": ","
 },
-</code></pre></div>
-<p><img src="/docs/img/csv_with_header.png" alt="CSV with header"></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/csv_with_header.csv2`;
-+-------+------+------+------+
+</code></pre></div></div>
+
+<p><img src="/images/docs/csv_with_header.png" alt="CSV with header" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/csv_with_header.csv2`;
+|-------|------|------|------|
 | name  | num1 | num2 | num3 |
-+-------+------+------+------+
+|-------|------|------|------|
 | hello |   1  |   2  |   3  |
 | hello |   1  |   2  |   3  |
 | hello |   1  |   2  |   3  |
@@ -1469,69 +1516,78 @@ FROM `users.csv1`;
 | hello |   1  |   2  |   3  |
 | hello |   1  |   2  |   3  |
 | hello |   1  |   2  |   3  |
-+-------+------+------+------+
+|-------|------|------|------|
 7 rows selected (0.12 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p><strong>File with no Header</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;csv&quot;: {
-  &quot;type&quot;: &quot;text&quot;,
-  &quot;extensions&quot;: [
-    &quot;csv&quot;
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"csv": {
+  "type": "text",
+  "extensions": [
+    "csv"
   ],
-  &quot;skipFirstLine&quot;: false,
-  &quot;extractHeader&quot;: false,
-  &quot;delimiter&quot;: &quot;,&quot;
+  "skipFirstLine": false,
+  "extractHeader": false,
+  "delimiter": ","
 },
-</code></pre></div>
-<p><img src="/docs/img/csv_no_header.png" alt="CSV no header"></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/csv_no_header.csv`;
-+------------------------+
+</code></pre></div></div>
+
+<p><img src="/images/docs/csv_no_header.png" alt="CSV no header" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/csv_no_header.csv`;
+|------------------------|
 |        columns         |
-+------------------------+
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-+------------------------+
+|------------------------|
+| ["hello","1","2","3"]  |
+| ["hello","1","2","3"]  |
+| ["hello","1","2","3"]  |
+| ["hello","1","2","3"]  |
+| ["hello","1","2","3"]  |
+| ["hello","1","2","3"]  |
+| ["hello","1","2","3"]  |
+|------------------------|
 7 rows selected (0.112 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p><strong>Escaping a Character in a File</strong></p>
 
-<p><img src="/docs/img/csv_with_escape.png" alt="CSV with escape"></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/csv_with_escape.csv`;
-+------------------------------------------------------------------------+
+<p><img src="/images/docs/csv_with_escape.png" alt="CSV with escape" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/csv_with_escape.csv`;
+|------------------------------------------------------------------------|
 |                                columns                                 |
-+------------------------------------------------------------------------+
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3 \&quot; double quote is the default escape character&quot;]  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]                                                  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]                                                  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]                                                  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]                                                  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]                                                  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]                                                  |
-+------------------------------------------------------------------------+
+|------------------------------------------------------------------------|
+| ["hello","1","2","3 \" double quote is the default escape character"]  |
+| ["hello","1","2","3"]                                                  |
+| ["hello","1","2","3"]                                                  |
+| ["hello","1","2","3"]                                                  |
+| ["hello","1","2","3"]                                                  |
+| ["hello","1","2","3"]                                                  |
+| ["hello","1","2","3"]                                                  |
+|------------------------------------------------------------------------|
 7 rows selected (0.104 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p><strong>Adding Comments to a File</strong></p>
 
-<p><img src="/docs/img/csv_with_comments.png" alt="CSV with comments"></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/csv_with_comments.csv2`;
-+------------------------+
+<p><img src="/images/docs/csv_with_comments.png" alt="CSV with comments" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; SELECT * FROM dfs.`/tmp/csv_with_comments.csv2`;
+|------------------------|
 |        columns         |
-+------------------------+
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-| [&quot;hello&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;]  |
-+------------------------+
+|------------------------|
+| ["hello","1","2","3"]  |
+| ["hello","1","2","3"]  |
+| ["hello","1","2","3"]  |
+| ["hello","1","2","3"]  |
+| ["hello","1","2","3"]  |
+| ["hello","1","2","3"]  |
+| ["hello","1","2","3"]  |
+|------------------------|
 7 rows selected (0.111 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="strategies-for-using-attributes">Strategies for Using Attributes</h2>
 
 <p>The attributes, such as skipFirstLine, apply to all workspaces defined in a storage plugin. A typical use case defines separate storage plugins for different root directories to query the files stored below the directory. An alternative use case defines multiple formats within the same storage plugin and names target files using different extensions to match the formats.</p>
@@ -1543,48 +1599,54 @@ FROM `users.csv1`;
 <p>A storage plugin configuration defines a root directory that Drill targets. You can use a different configuration for each root directory that sets attributes to match the files stored below that directory. All files can use the same extension, such as .csv, as shown in the following example:</p>
 
 <p>Storage Plugin A</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;csv&quot;: {
-  &quot;type&quot;: &quot;text&quot;,
-  &quot;extensions&quot;: [
-    &quot;csv&quot;
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"csv": {
+  "type": "text",
+  "extensions": [
+    "csv"
   ],
-  &quot;delimiter&quot;: &quot;,&quot;
+  "delimiter": ","
 },
 . . .
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Storage Plugin B</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;csv&quot;: {
-  &quot;type&quot;: &quot;text&quot;,
-  &quot;extensions&quot;: [
-    &quot;csv&quot;
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"csv": {
+  "type": "text",
+  "extensions": [
+    "csv"
   ],
-  &quot;comment&quot;: &quot;&amp;&quot;,
-  &quot;skipFirstLine&quot;: false,
-  &quot;extractHeader&quot;: true,
-  &quot;delimiter&quot;: &quot;,&quot;
+  "comment": "&amp;",
+  "skipFirstLine": false,
+  "extractHeader": true,
+  "delimiter": ","
 },
-</code></pre></div>
-<p><strong>Creating One Storage Plugin Configuration to Handle Multiple Formats</strong>  </p>
+</code></pre></div></div>
+
+<p><strong>Creating One Storage Plugin Configuration to Handle Multiple Formats</strong></p>
 
 <p>You can use a different extension for files with and without a header, and use a storage plugin that looks something like the following example. This method requires renaming some files to use the csv2 extension.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;csv&quot;: {
-  &quot;type&quot;: &quot;text&quot;,
-  &quot;extensions&quot;: [
-    &quot;csv&quot;
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"csv": {
+  "type": "text",
+  "extensions": [
+    "csv"
   ],
-  &quot;delimiter&quot;: &quot;,&quot;
+  "delimiter": ","
 },
-&quot;csv_with_header&quot;: {
-  &quot;type&quot;: &quot;text&quot;,
-  &quot;extensions&quot;: [
-    &quot;csv2&quot;
+"csv_with_header": {
+  "type": "text",
+  "extensions": [
+    "csv2"
   ],
-  &quot;comment&quot;: &quot;&amp;&quot;,
-  &quot;skipFirstLine&quot;: false,
-  &quot;extractHeader&quot;: true,
-  &quot;delimiter&quot;: &quot;,&quot;
+  "comment": "&amp;",
+  "skipFirstLine": false,
+  "extractHeader": true,
+  "delimiter": ","
 },
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="converting-a-csv-file-to-apache-parquet">Converting a CSV file to Apache Parquet</h2>
 
 <p>A common use case when working with Hadoop is to store and query text files, such as CSV and TSV. To get better performance and efficient storage, you convert these files into Parquet. You can use code to achieve this, as you can see in the <a href="https://github.com/Parquet/parquet-compatibility/blob/master/parquet-compat/src/test/java/parquet/compat/test/ConvertUtils.java">ConvertUtils</a> sample/test class. A simpler way to convert these text files to Parquet is to query the text files using Drill, and save the result to Parquet files.</p>
@@ -1594,60 +1656,70 @@ FROM `users.csv1`;
 <p>This example uses the <a href="http://media.flysfo.com/media/sfo/media/air-traffic/Passenger_4.zip">Passenger Dataset</a> from SFO Air Traffic Statistics.</p>
 
 <ol>
-<li><p>Execute a basic query:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * 
-FROM dfs.`/opendata/Passenger/SFO_Passenger_Data/MonthlyPassengerData_200507_to_201503.csv`
-LIMIT 5;
+  <li>
+    <p>Execute a basic query:</p>
 
-[&quot;200507&quot;,&quot;ATA Airlines&quot;,&quot;TZ&quot;,&quot;ATA Airlines&quot;,&quot;TZ&quot;,&quot;Domestic&quot;,&quot;US&quot;,&quot;Deplaned&quot;,&quot;Low Fare&quot;,&quot;Terminal 1&quot;,&quot;B&quot;,&quot;27271\r&quot;]
-...
-...
-</code></pre></div></li>
-</ol>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT * 
+ FROM dfs.`/opendata/Passenger/SFO_Passenger_Data/MonthlyPassengerData_200507_to_201503.csv`
+ LIMIT 5;
 
-<p>By default Drill processes each line as an array of columns, all values being a simple string. To do some operations with these values (projection or conditional query) you must convert the strings to proper types. </p>
+ ["200507","ATA Airlines","TZ","ATA Airlines","TZ","Domestic","US","Deplaned","Low Fare","Terminal 1","B","27271\r"]
+ ...
+ ...
+</code></pre></div>    </div>
 
-<ol>
-<li><p>Use the column index, and cast the value to the proper type. </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT 
-columns[0] as `DATE`,
-columns[1] as `AIRLINE`,
-CAST(columns[11] AS DOUBLE) as `PASSENGER_COUNT`
-FROM dfs.`/opendata/Passenger/SFO_Passenger_Data/*.csv`
-WHERE CAST(columns[11] AS DOUBLE) &lt; 5
-;
+    <p>By default Drill processes each line as an array of columns, all values being a simple string. To do some operations with these values (projection or conditional query) you must convert the strings to proper types.</p>
+  </li>
+  <li>
+    <p>Use the column index, and cast the value to the proper type.</p>
 
-+---------+-----------------------------------+------------------+
-|  DATE   |              AIRLINE              | PASSENGER_COUNT  |
-+---------+-----------------------------------+------------------+
-| 200610  | United Airlines - Pre 07/01/2013  | 2.0              |
-...
-...
-</code></pre></div></li>
-<li><p>Create Parquet files.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SESSION SET `store.format`=&#39;parquet&#39;;
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT 
+ columns[0] as `DATE`,
+ columns[1] as `AIRLINE`,
+ CAST(columns[11] AS DOUBLE) as `PASSENGER_COUNT`
+ FROM dfs.`/opendata/Passenger/SFO_Passenger_Data/*.csv`
+ WHERE CAST(columns[11] AS DOUBLE) &lt; 5
+ ;
 
-CREATE TABLE dfs.tmp.`/stats/airport_data/` AS
-SELECT
-CAST(SUBSTR(columns[0],1,4) AS INT)  `YEAR`,
-CAST(SUBSTR(columns[0],5,2) AS INT) `MONTH`,
-columns[1] as `AIRLINE`,
-columns[2] as `IATA_CODE`,
-columns[3] as `AIRLINE_2`,
-columns[4] as `IATA_CODE_2`,
-columns[5] as `GEO_SUMMARY`,
-columns[6] as `GEO_REGION`,
-columns[7] as `ACTIVITY_CODE`,
-columns[8] as `PRICE_CODE`,
-columns[9] as `TERMINAL`,
-columns[10] as `BOARDING_AREA`,
-CAST(columns[11] AS DOUBLE) as `PASSENGER_COUNT`
-FROM dfs.`/opendata/Passenger/SFO_Passenger_Data/*.csv`
-</code></pre></div></li>
-<li><p>Use the Parquet file in any of your Hadoop processes, or use Drill to query the file as follows:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT *
-FROM dfs.tmp.`/stats/airport_data/*`
-</code></pre></div></li>
+ |---------|-----------------------------------|------------------|
+ |  DATE   |              AIRLINE              | PASSENGER_COUNT  |
+ |---------|-----------------------------------|------------------|
+ | 200610  | United Airlines - Pre 07/01/2013  | 2.0              |
+ ...
+ ...
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Create Parquet files.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ALTER SESSION SET `store.format`='parquet';
+
+
+ CREATE TABLE dfs.tmp.`/stats/airport_data/` AS
+ SELECT
+ CAST(SUBSTR(columns[0],1,4) AS INT)  `YEAR`,
+ CAST(SUBSTR(columns[0],5,2) AS INT) `MONTH`,
+ columns[1] as `AIRLINE`,
+ columns[2] as `IATA_CODE`,
+ columns[3] as `AIRLINE_2`,
+ columns[4] as `IATA_CODE_2`,
+ columns[5] as `GEO_SUMMARY`,
+ columns[6] as `GEO_REGION`,
+ columns[7] as `ACTIVITY_CODE`,
+ columns[8] as `PRICE_CODE`,
+ columns[9] as `TERMINAL`,
+ columns[10] as `BOARDING_AREA`,
+ CAST(columns[11] AS DOUBLE) as `PASSENGER_COUNT`
+ FROM dfs.`/opendata/Passenger/SFO_Passenger_Data/*.csv`
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Use the Parquet file in any of your Hadoop processes, or use Drill to query the file as follows:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT *
+ FROM dfs.tmp.`/stats/airport_data/*`
+</code></pre></div>    </div>
+  </li>
 </ol>
 
     
@@ -1666,7 +1738,7 @@ FROM dfs.tmp.`/stats/airport_data/*`
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

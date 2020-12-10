@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1335,16 +1367,16 @@
 
     </div>
 
-     Dec 8, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <h2 id="overview">Overview</h2>
 
-<p>Drill supports MongoDB 3.0, providing a mongodb storage plugin to connect to MongoDB using MongoDB&#39;s latest Java driver. You can run queries
-to read, but not write, Mongo data using Drill. Attempting to write data back to Mongo results in an error. You do not need any upfront schema definitions. </p>
+<p>Drill supports MongoDB 3.0, providing a mongodb storage plugin to connect to MongoDB using MongoDB’s latest Java driver. You can run queries
+to read, but not write, Mongo data using Drill. Attempting to write data back to Mongo results in an error. You do not need any upfront schema definitions.</p>
 
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
@@ -1355,46 +1387,54 @@ to read, but not write, Mongo data using Drill. Attempting to write data back to
 
 <h3 id="before-you-begin">Before You Begin</h3>
 
-<p>To query MongoDB with Drill, you install Drill and MongoDB, and then you import zip code aggregation data into MongoDB. </p>
+<p>To query MongoDB with Drill, you install Drill and MongoDB, and then you import zip code aggregation data into MongoDB.</p>
 
 <ol>
-<li><a href="/docs/installing-drill-in-embedded-mode">Install Drill</a>, if you do not already have it installed.</li>
-<li><a href="http://docs.mongodb.org/manual/installation">Install MongoDB</a>, if you do not already have it installed.</li>
-<li><a href="http://docs.mongodb.org/manual/tutorial/aggregation-zip-code-data-set">Import the MongoDB zip code sample data set</a>.   * Copy the <code>zips.json</code> content into a file and save it.<br>
-
-<ul>
-<li>Create <code>/data/db</code> if it doesn&#39;t already exist.</li>
-<li>Make sure you have permissions to access the directories. </li>
-<li>Use Mongo Import to import <code>zips.json</code>. </li>
-</ul></li>
+  <li><a href="/docs/installing-drill-in-embedded-mode">Install Drill</a>, if you do not already have it installed.</li>
+  <li><a href="http://docs.mongodb.org/manual/installation">Install MongoDB</a>, if you do not already have it installed.</li>
+  <li><a href="http://docs.mongodb.org/manual/tutorial/aggregation-zip-code-data-set">Import the MongoDB zip code sample data set</a>.   * Copy the <code class="language-plaintext highlighter-rouge">zips.json</code> content into a file and save it.
+    <ul>
+      <li>Create <code class="language-plaintext highlighter-rouge">/data/db</code> if it doesn’t already exist.</li>
+      <li>Make sure you have permissions to access the directories.</li>
+      <li>Use Mongo Import to import <code class="language-plaintext highlighter-rouge">zips.json</code>.</li>
+    </ul>
+  </li>
 </ol>
 
 <h2 id="configuring-mongodb">Configuring MongoDB</h2>
 
-<p>Drill must be running in order to access the Web UI to configure a storage plugin configuration. Start Drill and view and enable the MongoDB storage plugin configuration as described in the following procedure: </p>
+<p>Drill must be running in order to access the Web UI to configure a storage plugin configuration. Start Drill and view and enable the MongoDB storage plugin configuration as described in the following procedure:</p>
 
 <ol>
-<li><p><a href="/docs/starting-drill-on-linux-and-mac-os-x/">Start the Drill shell</a>.</p>
+  <li>
+    <p><a href="/docs/starting-drill-on-linux-and-mac-os-x/">Start the Drill shell</a>.</p>
 
-<p>The Drill shell needs to be running to access the Drill Web UI.</p></li>
-<li><p>In the <a href="/docs/plugin-configuration-basics/#using-the-drill-web-console">Drill Web UI</a>, select the <strong>Storage</strong> tab.</p></li>
-<li><p>Under Disabled Storage Plugins, select <strong>Update</strong> to choose the <code>mongo</code> storage plugin configuration.</p></li>
-<li><p>In the Configuration window, take a look at the default configuration:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{
-  &quot;type&quot;: &quot;mongo&quot;,
-  &quot;connection&quot;: &quot;mongodb://localhost:27017/&quot;,
-  &quot;enabled&quot;: false
-}
-</code></pre></div>
-<p><div class="admonition note">
+    <p>The Drill shell needs to be running to access the Drill Web UI.</p>
+  </li>
+  <li>In the <a href="/docs/plugin-configuration-basics/#using-the-drill-web-console">Drill Web UI</a>, select the <strong>Storage</strong> tab.</li>
+  <li>Under Disabled Storage Plugins, select <strong>Update</strong> to choose the <code class="language-plaintext highlighter-rouge">mongo</code> storage plugin configuration.</li>
+  <li>
+    <p>In the Configuration window, take a look at the default configuration:</p>
+
+    <p>{
+     “type”: “mongo”,
+     “connection”: “mongodb://localhost:27017/”,
+     “enabled”: false
+   }</p>
+
+    <div class="admonition note">
+</div>
+  </li>
+</ol>
 <p class="first admonition-title">Note</p>
-<p class="last">27017 is the default port for <code>mongodb</code> instances.  </p>
-</div> 
- <div class="admonition note">
+<p class="last">27017 is the default port for `mongodb` instances.  </p>
+<p>&lt;/div&gt; 
+     &lt;div class="admonition note"&gt;</p>
 <p class="first admonition-title">Note</p>
-<p class="last">In some cases you will need an authentication to perform certain <code>mongodb</code> queries. You can add login and password directly to connection URL: &#39;mongodb://root:password@localhost:27017/&#39;  </p>
-</div> </p></li>
-<li><p>Click <strong>Enable</strong> to enable the storage plugin.</p></li>
+<p class="last">In some cases you will need an authentication to perform certain `mongodb` queries. You can add login and password directly to connection URL: 'mongodb://root:password@localhost:27017/'  </p>
+<p>&lt;/div&gt;</p>
+<ol>
+  <li>Click <strong>Enable</strong> to enable the storage plugin.</li>
 </ol>
 
 <h2 id="querying-mongodb">Querying MongoDB</h2>
@@ -1402,63 +1442,76 @@ to read, but not write, Mongo data using Drill. Attempting to write data back to
 <p>In the <a href="/docs/starting-drill-on-linux-and-mac-os-x/">Drill shell</a>, set up Drill to use the zips collection you imported into MongoDB.</p>
 
 <ol>
-<li><p>Get a list of schemas from all
-Drill data sources, including MongoDB. </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SHOW DATABASES;
+  <li>
+    <p>Get a list of schemas from all
+Drill data sources, including MongoDB.</p>
 
-+---------------------+
-|     SCHEMA_NAME     |
-+---------------------+
-| INFORMATION_SCHEMA  |
-| cp.default          |
-| dfs.default         |
-| dfs.root            |
-| dfs.tmp             |
-| mongo.local         |
-| mongo.test          |
-| sys                 |
-+---------------------+
-8 rows selected (1.385 seconds)
-</code></pre></div></li>
-<li><p>Change the schema to mongo.text.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">USE mongo.test;
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SHOW DATABASES;
+   
+ |---------------------|
+ |     SCHEMA_NAME     |
+ |---------------------|
+ | INFORMATION_SCHEMA  |
+ | cp.default          |
+ | dfs.default         |
+ | dfs.root            |
+ | dfs.tmp             |
+ | mongo.local         |
+ | mongo.test          |
+ | sys                 |
+ |---------------------|
+ 8 rows selected (1.385 seconds)
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Change the schema to mongo.text.</p>
 
-+-------+-----------------------------------------+
-|  ok   |                 summary                 |
-+-------+-----------------------------------------+
-| true  | Default schema changed to [mongo.test]  |
-+-------+-----------------------------------------+
-</code></pre></div></li>
-<li><p>List the tables and verify that the <code>zips</code> collection appears:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SHOW TABLES;
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> USE mongo.test;
 
-+---------------+-----------------+
-| TABLE_SCHEMA  |   TABLE_NAME    |
-+---------------+-----------------+
-| mongo.test    | system.indexes  |
-| mongo.test    | zips            |
-+---------------+-----------------+
-2 rows selected (0.187 seconds)
-</code></pre></div></li>
-<li><p>Set the option to read numbers as doubles instead of as text;</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SYSTEM SET `store.mongo.read_numbers_as_double` = true;
-+-------+----------------------------------------------+
-|  ok   |                   summary                    |
-+-------+----------------------------------------------+
-| true  | store.mongo.read_numbers_as_double updated.  |
-+-------+----------------------------------------------+
-1 row selected (0.078 seconds)
-</code></pre></div></li>
+ |-------|-----------------------------------------|
+ |  ok   |                 summary                 |
+ |-------|-----------------------------------------|
+ | true  | Default schema changed to [mongo.test]  |
+ |-------|-----------------------------------------|
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>List the tables and verify that the <code class="language-plaintext highlighter-rouge">zips</code> collection appears:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SHOW TABLES;
+
+ |---------------|-----------------|
+ | TABLE_SCHEMA  |   TABLE_NAME    |
+ |---------------|-----------------|
+ | mongo.test    | system.indexes  |
+ | mongo.test    | zips            |
+ |---------------|-----------------|
+ 2 rows selected (0.187 seconds)
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Set the option to read numbers as doubles instead of as text;</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ALTER SYSTEM SET `store.mongo.read_numbers_as_double` = true;
+ |-------|----------------------------------------------|
+ |  ok   |                   summary                    |
+ |-------|----------------------------------------------|
+ | true  | store.mongo.read_numbers_as_double updated.  |
+ |-------|----------------------------------------------|
+ 1 row selected (0.078 seconds)
+</code></pre></div>    </div>
+  </li>
 </ol>
 
 <h3 id="example-queries">Example Queries</h3>
 
 <p><strong>Example 1: View the zips Collection</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM zips LIMIT 10;
 
-+---------------+-------------------------+--------+--------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM zips LIMIT 10;
+
+|---------------|-------------------------|--------|--------|
 |     city      |           loc           |  pop   | state  |
-+---------------+-------------------------+--------+--------+
+|---------------|-------------------------|--------|--------|
 | AGAWAM        | [-72.622739,42.070206]  | 15338  | MA     |
 | CUSHMAN       | [-72.51565,42.377017]   | 36963  | MA     |
 | BELCHERTOWN   | [-72.410953,42.275103]  | 10579  | MA     |
@@ -1469,15 +1522,17 @@ Drill data sources, including MongoDB. </p>
 | CHICOPEE      | [-72.607962,42.162046]  | 23396  | MA     |
 | CHICOPEE      | [-72.576142,42.176443]  | 31495  | MA     |
 | CHESTER       | [-72.988761,42.279421]  | 1688   | MA     |
-+---------------+-------------------------+--------+--------+
+|---------------|-------------------------|--------|--------|
 10 rows selected (0.444 seconds)
-</code></pre></div>
-<p><strong>Example 2: Aggregation</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT city, avg(pop) FROM zips GROUP BY city LIMIT 10; 
+</code></pre></div></div>
 
-+---------------+---------------------+
+<p><strong>Example 2: Aggregation</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT city, avg(pop) FROM zips GROUP BY city LIMIT 10; 
+
+|---------------|---------------------|
 |     city      |       EXPR$1        |
-+---------------+---------------------+
+|---------------|---------------------|
 | AGAWAM        | 15338.0             |
 | CUSHMAN       | 18649.5             |
 | BELCHERTOWN   | 10579.0             |
@@ -1488,14 +1543,16 @@ Drill data sources, including MongoDB. </p>
 | CHICOPEE      | 27445.5             |
 | CHESTER       | 7285.0952380952385  |
 | WESTOVER AFB  | 1764.0              |
-+---------------+---------------------+
+|---------------|---------------------|
 10 rows selected (1.664 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p><strong>Example 3: Nested Data Column Array</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT loc FROM zips LIMIT 10;
-+------------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; SELECT loc FROM zips LIMIT 10;
+|------------------------|
 |    loc                 |
-+------------------------+
+|------------------------|
 | [-72.622739,42.070206] |
 | [-72.51565,42.377017]  |
 | [-72.108354,42.409698] |
@@ -1506,12 +1563,12 @@ Drill data sources, including MongoDB. </p>
 | [-72.833309,42.38167]  |
 | [-72.607962,42.162046] |
 | [-72.576142,42.176443] |
-+------------------------+
-
+|------------------------|
+    
 0: jdbc:drill:zk=local&gt; SELECT loc[0] FROM zips LIMIT 10;
-+------------+
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | -72.622739 |
 | -72.51565  |
 | -72.108354 |
@@ -1522,9 +1579,10 @@ Drill data sources, including MongoDB. </p>
 | -72.833309 |
 | -72.607962 |
 | -72.576142 |
-+------------+
-</code></pre></div>
-<h2 id="using-odbc-jdbc-drivers">Using ODBC/JDBC Drivers</h2>
+|------------|
+</code></pre></div></div>
+
+<h2 id="using-odbcjdbc-drivers">Using ODBC/JDBC Drivers</h2>
 
 <p>You can query MongoDB through standard
 BI tools, such as Tableau and SQuirreL. For information about Drill ODBC and JDBC drivers, refer to <a href="/docs/odbc-jdbc-interfaces">Drill Interfaces</a>.</p>
@@ -1545,7 +1603,7 @@ BI tools, such as Tableau and SQuirreL. For information about Drill ODBC and JDB
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

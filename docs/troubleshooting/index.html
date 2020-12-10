@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1333,182 +1365,177 @@
 
     </div>
 
-     Feb 24, 2017
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>You may experience certain known issues when using Drill. This document lists some known issues and resolutions for each.</p>
 
 <h2 id="before-you-begin">Before You Begin</h2>
-
-<p>Before you begin troubleshooting issues that you encounter in Drill, make sure you know which Drillbit is acting as the Foreman in the Drill cluster. The Drill node to which a client or application connects is the Foreman. </p>
+<p>Before you begin troubleshooting issues that you encounter in Drill, make sure you know which Drillbit is acting as the Foreman in the Drill cluster. The Drill node to which a client or application connects is the Foreman.</p>
 
 <p>You should also know the version of Drill running in the cluster. You can search JIRA for issues related to the version to see if a patch or workaround exists for the issue that you encountered.</p>
 
 <h3 id="identify-the-foreman">Identify the Foreman</h3>
+<p>Issue the following query to identify the Foreman node:</p>
 
-<p>Issue the following query to identify the Foreman node:  </p>
-
-<p><code>SELECT hostname FROM sys.drillbits WHERE `current` = true;</code></p>
+<p><code class="language-plaintext highlighter-rouge">SELECT hostname FROM sys.drillbits WHERE `current` = true;</code></p>
 
 <h3 id="identify-the-drill-version">Identify the Drill Version</h3>
-
-<p>Issue the following query to identify the version of Drill running in your cluster:<br>
-<code>SELECT version FROM sys.version;</code></p>
+<p>Issue the following query to identify the version of Drill running in your cluster:<br />
+<code class="language-plaintext highlighter-rouge">SELECT version FROM sys.version;</code></p>
 
 <h3 id="enable-verbose-errors">Enable Verbose Errors</h3>
-
 <p>You can enable the verbose errors option for a more detailed error print-out.</p>
 
-<p>Issue the following command to enable the verbose errors option:  </p>
+<p>Issue the following command to enable the verbose errors option:</p>
 
-<p><code>ALTER SESSION SET `exec.errors.verbose` = true</code></p>
+<p><code class="language-plaintext highlighter-rouge">ALTER SESSION SET `exec.errors.verbose` = true</code></p>
 
 <h2 id="troubleshooting-problems-and-solutions">Troubleshooting Problems and Solutions</h2>
-
 <p>If you have any of the following problems, try the suggested solution:</p>
 
 <ul>
-<li><a href="/docs/troubleshooting/#memory-issues">Memory Issues</a></li>
-<li><a href="/docs/troubleshooting/#query-parsing-errors">Query Parsing Errors</a></li>
-<li><a href="/docs/troubleshooting/#query-parsing-errors-caused-by-reserved-words">Query Parsing Errors Caused by Reserved Words</a></li>
-<li><a href="/docs/troubleshooting/#table-not-found">Table Not Found</a></li>
-<li><a href="/docs/troubleshooting/#access-nested-fields-without-table-name-alias">Access Nested Fields without Table Name/Alias</a></li>
-<li><a href="/docs/troubleshooting/#unexpected-null-values-for-columns-in-results">Unexpected Null Values for Columns in Results</a></li>
-<li><a href="/docs/troubleshooting/#using-functions-with-incorrect-data-types">Using Functions with Incorrect Data Types</a></li>
-<li><a href="/docs/troubleshooting/#query-takes-a-long-time-to-return">Query Takes a Long Time to Return</a></li>
-<li><a href="/docs/troubleshooting/#schema-changes">Schema Changes</a></li>
-<li><a href="/docs/troubleshooting/#timestamps-and-timezones-other-than-utc">Timestamps and Timezones Other Than UTC</a></li>
-<li><a href="/docs/troubleshooting/#unexpected-odbc-issues">Unexpected ODBC Issues</a></li>
-<li><a href="/docs/troubleshooting/#jdbc-odbc-connection-issues-with-zookeeper">JDBC/ODBC Connection Issues with ZooKeeper</a></li>
-<li><a href="/docs/troubleshooting/#metadata-queries-take-a-long-time-to-return">Metadata Queries Take a Long Time to Return</a></li>
-<li><a href="/docs/troubleshooting/#unexpected-results-due-to-implicit-casting">Unexpected Results Due to Implicit Casting</a></li>
-<li><a href="/docs/troubleshooting/#column-alias-causes-an-error">Column Alias Causes an Error</a></li>
-<li><a href="/docs/troubleshooting/#list-array-contains-null">List (Array) Contains Null</a></li>
-<li><a href="/docs/troubleshooting/#select-count-takes-a-long-time-to-run">SELECT COUNT (*) Takes a Long Time to Run</a></li>
-<li><a href="/docs/troubleshooting/#tableau-issues">Tableau Issues</a></li>
-<li><a href="/docs/troubleshooting/#group-by-using-alias">GROUP BY Using Alias</a></li>
-<li><a href="/docs/troubleshooting/#casting-a-varchar-string-to-an-integer-causes-an-error">Casting a VARCHAR String to an INTEGER Causes an Error</a></li>
-<li><a href="/docs/troubleshooting/#unexpected-exception-during-fragment-initialization">Unexpected Exception during Fragment Initialization</a></li>
-<li><a href="/docs/troubleshooting/#queries-running-out-of-memory">Queries Running Out of Memory</a></li>
-<li><a href="/docs/troubleshooting/#unclear-error-message">Unclear Error Message</a></li>
-<li><a href="/docs/troubleshooting/#error-starting-drill-in-embedded-mode">Error Starting Drill in Embedded Mode</a></li>
+  <li><a href="/docs/troubleshooting/#memory-issues">Memory Issues</a></li>
+  <li><a href="/docs/troubleshooting/#query-parsing-errors">Query Parsing Errors</a></li>
+  <li><a href="/docs/troubleshooting/#query-parsing-errors-caused-by-reserved-words">Query Parsing Errors Caused by Reserved Words</a></li>
+  <li><a href="/docs/troubleshooting/#table-not-found">Table Not Found</a></li>
+  <li><a href="/docs/troubleshooting/#access-nested-fields-without-table-name-alias">Access Nested Fields without Table Name/Alias</a></li>
+  <li><a href="/docs/troubleshooting/#unexpected-null-values-for-columns-in-results">Unexpected Null Values for Columns in Results</a></li>
+  <li><a href="/docs/troubleshooting/#using-functions-with-incorrect-data-types">Using Functions with Incorrect Data Types</a></li>
+  <li><a href="/docs/troubleshooting/#query-takes-a-long-time-to-return">Query Takes a Long Time to Return</a></li>
+  <li><a href="/docs/troubleshooting/#schema-changes">Schema Changes</a></li>
+  <li><a href="/docs/troubleshooting/#timestamps-and-timezones-other-than-utc">Timestamps and Timezones Other Than UTC</a></li>
+  <li><a href="/docs/troubleshooting/#unexpected-odbc-issues">Unexpected ODBC Issues</a></li>
+  <li><a href="/docs/troubleshooting/#jdbc-odbc-connection-issues-with-zookeeper">JDBC/ODBC Connection Issues with ZooKeeper</a></li>
+  <li><a href="/docs/troubleshooting/#metadata-queries-take-a-long-time-to-return">Metadata Queries Take a Long Time to Return</a></li>
+  <li><a href="/docs/troubleshooting/#unexpected-results-due-to-implicit-casting">Unexpected Results Due to Implicit Casting</a></li>
+  <li><a href="/docs/troubleshooting/#column-alias-causes-an-error">Column Alias Causes an Error</a></li>
+  <li><a href="/docs/troubleshooting/#list-array-contains-null">List (Array) Contains Null</a></li>
+  <li><a href="/docs/troubleshooting/#select-count-takes-a-long-time-to-run">SELECT COUNT (*) Takes a Long Time to Run</a></li>
+  <li><a href="/docs/troubleshooting/#tableau-issues">Tableau Issues</a></li>
+  <li><a href="/docs/troubleshooting/#group-by-using-alias">GROUP BY Using Alias</a></li>
+  <li><a href="/docs/troubleshooting/#casting-a-varchar-string-to-an-integer-causes-an-error">Casting a VARCHAR String to an INTEGER Causes an Error</a></li>
+  <li><a href="/docs/troubleshooting/#unexpected-exception-during-fragment-initialization">Unexpected Exception during Fragment Initialization</a></li>
+  <li><a href="/docs/troubleshooting/#queries-running-out-of-memory">Queries Running Out of Memory</a></li>
+  <li><a href="/docs/troubleshooting/#unclear-error-message">Unclear Error Message</a></li>
+  <li><a href="/docs/troubleshooting/#error-starting-drill-in-embedded-mode">Error Starting Drill in Embedded Mode</a></li>
 </ul>
 
 <h3 id="memory-issues">Memory Issues</h3>
-
 <p>Symptom: Memory problems occur when you run certain queries, such as those with sort operators.</p>
 
-<p>Solution: Increase the value of the <a href="/docs/configuration-options-introduction/#system-options"><code>planner.memory.max_query_memory_per_node</code></a> option, which sets the maximum amount of direct memory allocated to the sort operator in each query on a node. If a query plan contains multiple sort operators, they all share this memory. 
-If you continue to encounter memory issues after increasing the  <code>planner.memory.max_query_memory_per_node</code> value, you can also reduce the value of the <code>planner.width.max_per_node</code> option to reduce the level of parallelism per node. However, this may increase the amount of time required for a query to complete.
+<p>Solution: Increase the value of the <a href="/docs/configuration-options-introduction/#system-options"><code class="language-plaintext highlighter-rouge">planner.memory.max_query_memory_per_node</code></a> option, which sets the maximum amount of direct memory allocated to the sort operator in each query on a node. If a query plan contains multiple sort operators, they all share this memory. 
+If you continue to encounter memory issues after increasing the  <code class="language-plaintext highlighter-rouge">planner.memory.max_query_memory_per_node</code> value, you can also reduce the value of the <code class="language-plaintext highlighter-rouge">planner.width.max_per_node</code> option to reduce the level of parallelism per node. However, this may increase the amount of time required for a query to complete.
 See <a href="/docs/configuring-drill-memory/">Configuring Drill Memory</a>.</p>
 
 <h3 id="query-parsing-errors">Query Parsing Errors</h3>
+<p>Symptom:</p>
 
-<p>Symptom:  </p>
-
-<p><code>PARSE ERROR: At line x, column x: ...</code><br>
+<p><code class="language-plaintext highlighter-rouge">PARSE ERROR: At line x, column x: ...</code><br />
 Solution: Verify that you are using valid syntax. See <a href="/docs/sql-reference-introduction/">SQL Reference</a>.</p>
 
 <h3 id="query-parsing-errors-caused-by-reserved-words">Query Parsing Errors Caused by Reserved Words</h3>
+<p>Using a common word, such as count, which is a reserved word, as an identifier causes an error.<br />
+Symptom:</p>
 
-<p>Using a common word, such as count, which is a reserved word, as an identifier causes an error.<br>
-Symptom:   </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT COUNT FROM dfs.tmp.`test2.json`;
-   Query failed: SYSTEM ERROR: Failure parsing SQL. Encountered &quot;count from&quot; at line 1, column 8.
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT COUNT FROM dfs.tmp.`test2.json`;
+   Query failed: SYSTEM ERROR: Failure parsing SQL. Encountered "count from" at line 1, column 8.
    Was expecting one of:
-       &quot;UNION&quot; ...
-       &quot;INTERSECT&quot; ...
-</code></pre></div>
-<p>Solution: Enclose keywords and <a href="/docs/lexical-structure/#identifier">identifiers that SQL cannot parse</a> in back ticks. See <a href="/docs/reserved-keywords/">Reserved Keywords</a>.</p>
+       "UNION" ...
+       "INTERSECT" ... Solution: Enclose keywords and [identifiers that SQL cannot parse](/docs/lexical-structure/#identifier) in back ticks. See [Reserved Keywords](/docs/reserved-keywords/).
+</code></pre></div></div>
 
-<p><code>SELECT `count` FROM dfs.tmp.`test2.json</code>`;</p>
+<p><code class="language-plaintext highlighter-rouge">SELECT `count` FROM dfs.tmp.`test2.json</code>`;</p>
 
 <h3 id="table-not-found">Table Not Found</h3>
-
-<p>To resolve a Table Not Found problem that results from querying a file, try the solutions listed in this section. To resolve a Table Not Found problem that results from querying a directory, try removing or moving hidden files from the directory. Drill 1.1 and earlier might create hidden files in a directory (<a href="https://issues.apache.org/jira/browse/DRILL-2424">DRILL-2424</a>). </p>
+<p>To resolve a Table Not Found problem that results from querying a file, try the solutions listed in this section. To resolve a Table Not Found problem that results from querying a directory, try removing or moving hidden files from the directory. Drill 1.1 and earlier might create hidden files in a directory (<a href="https://issues.apache.org/jira/browse/DRILL-2424">DRILL-2424</a>).</p>
 
 <p>Symptom that results from querying a file:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT * FROM dfs.drill.test2.json;
-   Query failed: PARSE ERROR: From line 1, column 15 to line 1, column 17: Table &#39;dfs.drill.test2.json&#39; not found  
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT * FROM dfs.drill.test2.json;
+   Query failed: PARSE ERROR: From line 1, column 15 to line 1, column 17: Table 'dfs.drill.test2.json' not found  
+</code></pre></div></div>
+
 <p>Solutions:</p>
 
 <ul>
-<li>Run SHOW FILES to list the files in the dfs.drill workspace. </li>
-<li>Check the permission of the files with those for the the Drill user.<br></li>
-<li>Enclose file and path name in back ticks:<br>
-<code>SELECT * FROM dfs.drill.`test2.json`;</code><br></li>
-<li>Drill may not be able to determine the type of file you are trying to read. Try using Drill <a href="/docs/plugin-configuration-basics/#storage-plugin-attributes">Default Input Format</a>.<br></li>
-<li>Verify that your storage plugin is correctly configured.</li>
-<li>Verify that Drill can auto-detect your file format.  Drill supports auto-detection for the following formats:<br>
-
-<ul>
-<li>CSV</li>
-<li>TSV</li>
-<li>PSV</li>
-<li>Parquet</li>
-<li>JSON</li>
-</ul></li>
+  <li>Run SHOW FILES to list the files in the dfs.drill workspace.</li>
+  <li>Check the permission of the files with those for the the Drill user.</li>
+  <li>Enclose file and path name in back ticks:<br />
+<code class="language-plaintext highlighter-rouge">SELECT * FROM dfs.drill.`test2.json`;</code></li>
+  <li>Drill may not be able to determine the type of file you are trying to read. Try using Drill <a href="/docs/plugin-configuration-basics/#storage-plugin-attributes">Default Input Format</a>.</li>
+  <li>Verify that your storage plugin is correctly configured.</li>
+  <li>Verify that Drill can auto-detect your file format.  Drill supports auto-detection for the following formats:
+    <ul>
+      <li>CSV</li>
+      <li>TSV</li>
+      <li>PSV</li>
+      <li>Parquet</li>
+      <li>JSON</li>
+    </ul>
+  </li>
 </ul>
 
-<h3 id="access-nested-fields-without-table-name-alias">Access Nested Fields without Table Name/Alias</h3>
+<h3 id="access-nested-fields-without-table-namealias">Access Nested Fields without Table Name/Alias</h3>
+<p>Symptom:</p>
 
-<p>Symptom: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT x.y …  
-   PARSE ERROR: At line 1, column 8: Table &#39;x&#39; not found  
-</code></pre></div>
-<p>Solution: Add table name or alias to the field reference:  </p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT x.y …  
+   PARSE ERROR: At line 1, column 8: Table 'x' not found   Solution: Add table name or alias to the field reference:  
+</code></pre></div></div>
 
-<p><code>SELECT t.x.y FROM t</code>  </p>
+<p><code class="language-plaintext highlighter-rouge">SELECT t.x.y FROM t</code></p>
 
 <h3 id="unexpected-null-values-for-columns-in-results">Unexpected Null Values for Columns in Results</h3>
+<p>Symptom:  The following type of query returns NULL values:</p>
 
-<p>Symptom:  The following type of query returns NULL values:  </p>
-
-<p><code>SELECT t.price FROM t</code> </p>
+<p><code class="language-plaintext highlighter-rouge">SELECT t.price FROM t</code></p>
 
 <p>Solution: Drill is schema-less system. Verify that column names are typed correctly.</p>
 
 <h3 id="using-functions-with-incorrect-data-types">Using Functions with Incorrect Data Types</h3>
 
-<p>Symptom: Example  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT TRUNC(c3) FROM t3;
+<p>Symptom: Example</p>
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT TRUNC(c3) FROM t3;
+   
    0: jdbc:drill:schema=dfs&gt; select trunc(c3) from t3;
    Query failed: SYSTEM ERROR: Failure while trying to materialize incoming schema.  Errors:
-
+    
    Error in expression at index -1.  Error: Missing function implementation: [trunc(DATE-OPTIONAL)].  Full expression: --UNKNOWN EXPRESSION--..
-
+   
    Fragment 0:0
-
+   
    [6e465594-4d83-4042-b88d-50e7eb207484 on atsqa4-133.qa.lab:31010]
    Error: exception while executing query: Failure while executing query. (state=,code=0)  
-</code></pre></div>
-<p>Solution: Ensure that the function is invoked with the correct data type parameters. In this example, c3 is an unsupported date type. </p>
+</code></pre></div></div>
+
+<p>Solution: Ensure that the function is invoked with the correct data type parameters. In this example, c3 is an unsupported date type.</p>
 
 <h3 id="query-takes-a-long-time-to-return">Query Takes a Long Time to Return</h3>
 
 <p>Symptom: Query takes longer to return than expected.</p>
 
-<p>Solution: Review the <a href="/docs/query-profiles/">query profile</a> and perform the following tasks:  </p>
+<p>Solution: Review the <a href="/docs/query-profiles/">query profile</a> and perform the following tasks:</p>
 
 <ul>
-<li>Determine whether progress is being made. Look at last update and last change times.</li>
-<li>Look at where Drill is currently spending time and try to optimize those operations.</li>
-<li>Confirm that Drill is taking advantage of the nature of your data, including things like partition pruning and projection pushdown.</li>
+  <li>Determine whether progress is being made. Look at last update and last change times.</li>
+  <li>Look at where Drill is currently spending time and try to optimize those operations.</li>
+  <li>Confirm that Drill is taking advantage of the nature of your data, including things like partition pruning and projection pushdown.</li>
 </ul>
 
 <h3 id="schema-changes">Schema Changes</h3>
 
-<p>Symptom:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   DATA_READ ERROR: Error parsing JSON - You tried to write a XXXX type when you are using a ValueWriter of type XXXX.       
+<p>Symptom:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   DATA_READ ERROR: Error parsing JSON - You tried to write a XXXX type when you are using a ValueWriter of type XXXX.       
    File  /src/data/schema.json
    Record  2
    Fragment 0:0  
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Solution: Drill does not fully support schema changes. Either ensure that your schemas are the same or only select columns that share schema.</p>
 
 <h3 id="timestamps-and-timezones-other-than-utc">Timestamps and Timezones Other Than UTC</h3>
@@ -1517,28 +1544,29 @@ Symptom:   </p>
 
 <p>Solution: Convert data to UTC format. You are most likely trying to import date and time data that is encoded one timezone in a different timezone.  Drill’s default behavior is to use the system time for converting incoming data.  If you are providing UTC data and your Drillbit nodes do not run with UTC time, you’ll need to run your JVM with the following system property:</p>
 
-<p><code>-Duser.timezone=UTC</code>  </p>
+<p><code class="language-plaintext highlighter-rouge">-Duser.timezone=UTC</code></p>
 
-<p><a href="http://www.openkb.info/2015/05/understanding-drills-timestamp-and.html">http://www.openkb.info/2015/05/understanding-drills-timestamp-and.html</a>  </p>
+<p>http://www.openkb.info/2015/05/understanding-drills-timestamp-and.html</p>
 
 <h3 id="unexpected-odbc-issues">Unexpected ODBC Issues</h3>
 
 <p>Symptom: ODBC errors.</p>
 
 <p>Solution: Make sure that the ODBC driver version is compatible with the server version. <a href="/docs/installing-the-odbc-driver">Driver installation instructions</a> include how to check the driver version. 
-Turn on ODBC driver debug logging to better understand failure.  </p>
+Turn on ODBC driver debug logging to better understand failure.</p>
 
-<h3 id="jdbc-odbc-connection-issues-with-zookeeper">JDBC/ODBC Connection Issues with ZooKeeper</h3>
+<h3 id="jdbcodbc-connection-issues-with-zookeeper">JDBC/ODBC Connection Issues with ZooKeeper</h3>
 
-<p>Symptom: Client cannot resolve ZooKeeper host names for JDBC/ODBC.</p>
+<p>Symptom: Client cannot resolve ZooKeeper host names for JDBC/ODBC.
+Symptom: “IllegalStateException: No active Drillbit endpoint found from ZooKeeper. Check connection parameters?”</p>
 
-<p>Solution: Ensure that Zookeeper is up and running. Verify that Drill has the correct <code>drill-override.conf</code> settings for the Zookeeper quorum.</p>
+<p>Solution: Ensure that Zookeeper is up and running. Verify that Drill has the correct <code class="language-plaintext highlighter-rouge">drill-override.conf</code> settings for the Zookeeper quorum.  If <code class="language-plaintext highlighter-rouge">cluster-id</code> in file drill-override.conf is not the default value, it must be specified in the JDBC connection string.  See <a href="/docs/using-the-jdbc-driver/">Using the JDBC Driver</a>.</p>
 
 <h3 id="metadata-queries-take-a-long-time-to-return">Metadata Queries Take a Long Time to Return</h3>
 
 <p>Symptom: Running SHOW databases/schemas/tables hangs. In general any INFORMATION_SCHEMA queries hang.</p>
 
-<p>Solution: Disable incorrectly configured storage plugins or start appropriate services. Check compatibility matrix for the appropriate versions.  </p>
+<p>Solution: Disable incorrectly configured storage plugins or start appropriate services. Check compatibility matrix for the appropriate versions.</p>
 
 <h3 id="unexpected-results-due-to-implicit-casting">Unexpected Results Due to Implicit Casting</h3>
 
@@ -1550,15 +1578,15 @@ Turn on ODBC driver debug logging to better understand failure.  </p>
 
 <p>Symptom: Drill is not case sensitive, and you can provide any alias for a column name. However, if the storage type is case sensitive, the alias name may conflict and cause errors.</p>
 
-<p>Solution: Verify that the column alias does not conflict with the storage type. See <a href="/docs/lexical-structure/#case-sensitivity">Lexical Structures</a>.  </p>
+<p>Solution: Verify that the column alias does not conflict with the storage type. See <a href="/docs/lexical-structure/#case-sensitivity">Lexical Structures</a>.</p>
 
 <h3 id="list-array-contains-null">List (Array) Contains Null</h3>
 
-<p>Symptom: UNSUPPORTED_OPERATION ERROR: Null values are not supported in lists by default. </p>
+<p>Symptom: UNSUPPORTED_OPERATION ERROR: Null values are not supported in lists by default.</p>
 
-<p>Solution: Avoid selecting fields that are arrays containing nulls. Change Drill session settings to enable all_text_mode. Set store.json.all_text_mode to true, so Drill treats JSON null values as a string containing the word &#39;null&#39;.</p>
+<p>Solution: Avoid selecting fields that are arrays containing nulls. Change Drill session settings to enable all_text_mode. Set store.json.all_text_mode to true, so Drill treats JSON null values as a string containing the word ‘null’.</p>
 
-<h3 id="select-count-takes-a-long-time-to-run">SELECT COUNT (*) Takes a Long Time to Run</h3>
+<h3 id="select-count--takes-a-long-time-to-run">SELECT COUNT (*) Takes a Long Time to Run</h3>
 
 <p>Solution: In some cases, the underlying storage format does not have a built-in capability to return a count of records in a table.  In these cases, Drill does a full scan of the data to verify the number of records.</p>
 
@@ -1566,65 +1594,65 @@ Turn on ODBC driver debug logging to better understand failure.  </p>
 
 <p>Symptom: You see a lot of error messages in ODBC trace files or the performance is slow.</p>
 
-<p>Solution: Verify that you have installed the TDC file shipped with the ODBC driver.  </p>
+<p>Solution: Verify that you have installed the TDC file shipped with the ODBC driver.</p>
 
 <h3 id="group-by-using-alias">GROUP BY Using Alias</h3>
 
 <p>Symptom: Invalid column.</p>
 
-<p>Solution: Not supported. Use column name and/or expression directly.  </p>
+<p>Solution: Not supported. Use column name and/or expression directly.</p>
 
 <h3 id="casting-a-varchar-string-to-an-integer-causes-an-error">Casting a VARCHAR String to an INTEGER Causes an Error</h3>
 
-<p>Symptom: </p>
+<p>Symptom:</p>
 
-<p><code>SYSTEM ERROR: java.lang.NumberFormatException</code>  </p>
+<p><code class="language-plaintext highlighter-rouge">SYSTEM ERROR: java.lang.NumberFormatException</code></p>
 
-<p>Solution: Per the SQL specificationm CAST to INT does not support empty strings.  If you want to change this behavior, set the drill.exec.functions.cast_empty_string_to_null SESSION/SYSTEM option. </p>
+<p>Solution: Per the SQL specificationm CAST to INT does not support empty strings.  If you want to change this behavior, set the drill.exec.functions.cast_empty_string_to_null SESSION/SYSTEM option.</p>
 
 <h3 id="unexpected-exception-during-fragment-initialization">Unexpected Exception during Fragment Initialization</h3>
 
-<p>Symptom: An error occurred during the Foreman phase of the query. The error typically occurs due to the following common causes:  </p>
+<p>Symptom: An error occurred during the Foreman phase of the query. The error typically occurs due to the following common causes:</p>
 
 <ul>
-<li>Malformed SQL that passed initial validation but failed upon further analysis</li>
-<li>Extraneous files in query directories do not match the default format type</li>
+  <li>Malformed SQL that passed initial validation but failed upon further analysis</li>
+  <li>Extraneous files in query directories do not match the default format type</li>
 </ul>
 
-<p>Solution: Enable the verbose errors option and run the query again to see if further insight is provided.  </p>
+<p>Solution: Enable the verbose errors option and run the query again to see if further insight is provided.</p>
 
 <h3 id="queries-running-out-of-memory">Queries Running Out of Memory</h3>
 
-<p>Symptom: </p>
+<p>Symptom:</p>
 
-<p><code>RESOURCE ERROR: One or more nodes ran out of memory while executing the query.</code>  </p>
+<p><code class="language-plaintext highlighter-rouge">RESOURCE ERROR: One or more nodes ran out of memory while executing the query.</code></p>
 
-<p>Solution:  </p>
+<p>Solution:</p>
 
 <ul>
-<li>Increase the amount of direct memory allotted to Drill.</li>
-<li>If using CTAS, reduce the planner.width.max_per_node setting.</li>
-<li>Reduce the number of concurrent queries running on the cluster using Drill query queues.</li>
-<li>Disable hash aggregation and hash sort for your session.</li>
+  <li>Increase the amount of direct memory allotted to Drill.</li>
+  <li>If using CTAS, reduce the planner.width.max_per_node setting.</li>
+  <li>Reduce the number of concurrent queries running on the cluster using Drill query queues.</li>
+  <li>Disable hash aggregation and hash sort for your session.</li>
 </ul>
 
-<p>See <a href="/docs/configuration-options-introduction/">Configuration Options</a>.  </p>
+<p>See <a href="/docs/configuration-options-introduction/">Configuration Options</a>.</p>
 
 <h3 id="unclear-error-message">Unclear Error Message</h3>
 
 <p>Symptom: Cannot determine issue from error message.</p>
 
-<p>Solution: Turn on verbose errors. </p>
+<p>Solution: Turn on verbose errors.</p>
 
-<p><code>ALTER SESSION SET `exec.errors.verbose`=true;</code>  </p>
+<p><code class="language-plaintext highlighter-rouge">ALTER SESSION SET `exec.errors.verbose`=true;</code></p>
 
 <p>Determine your currently connected drillbit using `SELECT * FROM sys.drillbits.  Then review logs Drill logs from that drillbit.</p>
 
 <h3 id="error-starting-drill-in-embedded-mode">Error Starting Drill in Embedded Mode</h3>
 
-<p>Symptom:  </p>
+<p>Symptom:</p>
 
-<p><code>java.net.BindException: Address already in use</code>  </p>
+<p><code class="language-plaintext highlighter-rouge">java.net.BindException: Address already in use</code></p>
 
 <p>Solution:  You can only run one Drillbit per node in embedded or distributed mode using default settings. You need to either change ports used by Drillbit or stop one Drillbit before starting another.</p>
 
@@ -1644,7 +1672,7 @@ Turn on ODBC driver debug logging to better understand failure.  </p>
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

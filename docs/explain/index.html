@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,9 +1369,9 @@
 
     </div>
 
-     Feb 9, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
@@ -1370,16 +1402,25 @@ you are selecting from, you are likely to see plan changes.</p>
 <h2 id="explain-syntax">EXPLAIN Syntax</h2>
 
 <p>The EXPLAIN command supports the following syntax:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">explain plan [ including all attributes ] [ with implementation | without implementation ] for &lt;query&gt; ;
-</code></pre></div>
-<p>where <code>query</code> is any valid SELECT statement supported by Drill.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>explain plan [ including all attributes ] [ with implementation | without implementation ] for &lt;query&gt; ;
+</code></pre></div></div>
+
+<p>where <code class="language-plaintext highlighter-rouge">query</code> is any valid SELECT statement supported by Drill.</p>
 
 <p><strong>INCLUDING ALL ATTRIBUTES</strong></p>
 
 <p>This option returns costing information. You can use this option for both
-physical and logical plans.  </p>
+physical and logical plans.</p>
 
-<p><strong>WITH IMPLEMENTATION | WITHOUT IMPLEMENTATION</strong></p>
+<table>
+  <tbody>
+    <tr>
+      <td>**WITH IMPLEMENTATION</td>
+      <td>WITHOUT IMPLEMENTATION**</td>
+    </tr>
+  </tbody>
+</table>
 
 <p>These options return the physical and logical plan information, respectively.
 The default is physical (WITH IMPLEMENTATION).</p>
@@ -1392,34 +1433,40 @@ to see what kind of execution operators Drill implements. For example, you can
 find out what kind of join algorithm is chosen when tables or files are
 joined. You can also use this command to analyze errors and troubleshoot
 queries that do not run. For example, if you run into a casting error, the
-query plan text may help you isolate the problem.</p>
+query plan text may help you isolate the problem.</query></p>
 
 <p>Use the following syntax:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">explain plan for &lt;query&gt; ;
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>explain plan for &lt;query&gt; ;
+</code></pre></div></div>
+
 <p>The following set command increases the default text display (number of
 characters). By default, most of the plan output is not displayed.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; !set maxwidth 10000
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; !set maxwidth 10000
+</code></pre></div></div>
+
 <p>Do not use a semicolon to terminate set commands.</p>
 
 <p>For example, here is the top portion of the explain output for a
 COUNT(DISTINCT) query on a JSON file:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; !set maxwidth 10000
-0: jdbc:drill:zk=local&gt; explain plan for select type t, count(distinct id) from dfs.`/home/donuts/donuts.json` where type=&#39;donut&#39; group by type;
-+------------+------------+
-|   text    |   json    |
-+------------+------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; !set maxwidth 10000
+0: jdbc:drill:zk=local&gt; explain plan for select type t, count(distinct id) from dfs.`/home/donuts/donuts.json` where type='donut' group by type;
+|------------|------------|
+|   text     |   json     |
+|------------|------------|
 | 00-00 Screen
 00-01   Project(t=[$0], EXPR$1=[$1])
 00-02       Project(t=[$0], EXPR$1=[$1])
 00-03       HashAgg(group=[{0}], EXPR$1=[COUNT($1)])
 00-04           HashAgg(group=[{0, 1}])
 00-05           SelectionVectorRemover
-00-06               Filter(condition=[=($0, &#39;donut&#39;)])
+00-06               Filter(condition=[=($0, 'donut')])
 00-07               Scan(groupscan=[EasyGroupScan [selectionRoot=/home/donuts/donuts.json, numFiles=1, columns=[`type`, `id`], files=[file:/home/donuts/donuts.json]]])...
 ...
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Read the text output from bottom to top to understand the sequence of
 operators that will execute the query. Note that the physical plan starts with
 a scan of the JSON file that is being queried. The selected columns are
@@ -1427,67 +1474,75 @@ projected and filtered, then the aggregate function is applied.</p>
 
 <p>The EXPLAIN text output is followed by detailed JSON output, which is reusable
 for submitting the query via Drill APIs.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">| {
-  &quot;head&quot; : {
-    &quot;version&quot; : 1,
-    &quot;generator&quot; : {
-      &quot;type&quot; : &quot;ExplainHandler&quot;,
-      &quot;info&quot; : &quot;&quot;
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>| {
+  "head" : {
+    "version" : 1,
+    "generator" : {
+      "type" : "ExplainHandler",
+      "info" : ""
     },
-    &quot;type&quot; : &quot;APACHE_DRILL_PHYSICAL&quot;,
-    &quot;options&quot; : [ ],
-    &quot;queue&quot; : 0,
-    &quot;resultMode&quot; : &quot;EXEC&quot;
+    "type" : "APACHE_DRILL_PHYSICAL",
+    "options" : [ ],
+    "queue" : 0,
+    "resultMode" : "EXEC"
   },
 ....
-</code></pre></div>
+</code></pre></div></div>
+
 <p><strong>Costing Information</strong></p>
 
 <p>Add the INCLUDING ALL ATTRIBUTES option to the EXPLAIN command to see cost
 estimates for the query plan. For example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; !set maxwidth 10000
-0: jdbc:drill:zk=local&gt; explain plan including all attributes for select * from dfs.`/home/donuts/donuts.json` where type=&#39;donut&#39;;
-+------------+------------+
-|   text    |   json    |
-+------------+------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; !set maxwidth 10000
+0: jdbc:drill:zk=local&gt; explain plan including all attributes for select * from dfs.`/home/donuts/donuts.json` where type='donut';
+|------------|------------|
+|   text     |   json     |
+|------------|------------|
 | 00-00 Screen: rowcount = 1.0, cumulative cost = {5.1 rows, 21.1 cpu, 0.0 io, 0.0 network, 0.0 memory}, id = 889
 00-01   Project(*=[$0]): rowcount = 1.0, cumulative cost = {5.0 rows, 21.0 cpu, 0.0 io, 0.0 network, 0.0 memory}, id = 888
 00-02       Project(T1¦¦*=[$0]): rowcount = 1.0, cumulative cost = {4.0 rows, 17.0 cpu, 0.0 io, 0.0 network, 0.0 memory}, id = 887
 00-03       SelectionVectorRemover: rowcount = 1.0, cumulative cost = {3.0 rows, 13.0 cpu, 0.0 io, 0.0 network, 0.0 memory}, id = 886
-00-04           Filter(condition=[=($1, &#39;donut&#39;)]): rowcount = 1.0, cumulative cost = {2.0 rows, 12.0 cpu, 0.0 io, 0.0 network, 0.0 memory}, id = 885
+00-04           Filter(condition=[=($1, 'donut')]): rowcount = 1.0, cumulative cost = {2.0 rows, 12.0 cpu, 0.0 io, 0.0 network, 0.0 memory}, id = 885
 00-05           Project(T1¦¦*=[$0], type=[$1]): rowcount = 1.0, cumulative cost = {1.0 rows, 8.0 cpu, 0.0 io, 0.0 network, 0.0 memory}, id = 884
 00-06               Scan(groupscan=[EasyGroupScan [selectionRoot=/home/donuts/donuts.json, numFiles=1, columns=[`*`], files=[file:/home/donuts/donuts.json]]]): rowcount = 1.0, cumulative cost = {0.0 rows, 0.0 cpu, 0.0 io, 0.0 network, 0.0 memory}, id = 883
-</code></pre></div>
+</code></pre></div></div>
+
 <h3 id="explain-for-logical-plans">EXPLAIN for Logical Plans</h3>
 
 <p>To return the logical plan for a query (again, without actually running the
 query), use the EXPLAIN PLAN WITHOUT IMPLEMENTATION syntax:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">explain plan without implementation for &lt;query&gt; ;
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>explain plan without implementation for &lt;query&gt; ;
+</code></pre></div></div>
+
 <p>For example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; explain plan without implementation for select type t, count(distinct id) from dfs.`/home/donuts/donuts.json` where type=&#39;donut&#39; group by type;
-+------------+------------+
-|   text    |   json    |
-+------------+------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; explain plan without implementation for select type t, count(distinct id) from dfs.`/home/donuts/donuts.json` where type='donut' group by type;
+|------------|------------|
+|   text     |   json     |
+|------------|------------|
 | DrillScreenRel
   DrillProjectRel(t=[$0], EXPR$1=[$1])
     DrillAggregateRel(group=[{0}], EXPR$1=[COUNT($1)])
     DrillAggregateRel(group=[{0, 1}])
-        DrillFilterRel(condition=[=($0, &#39;donut&#39;)])
+        DrillFilterRel(condition=[=($0, 'donut')])
         DrillScanRel(table=[[dfs, /home/donuts/donuts.json]], groupscan=[EasyGroupScan [selectionRoot=/home/donuts/donuts.json, numFiles=1, columns=[`type`, `id`], files=[file:/home/donuts/donuts.json]]]) | {
   | {
-  &quot;head&quot; : {
-    &quot;version&quot; : 1,
-    &quot;generator&quot; : {
-    &quot;type&quot; : &quot;org.apache.drill.exec.planner.logical.DrillImplementor&quot;,
-    &quot;info&quot; : &quot;&quot;
+  "head" : {
+    "version" : 1,
+    "generator" : {
+    "type" : "org.apache.drill.exec.planner.logical.DrillImplementor",
+    "info" : ""
     },
-    &quot;type&quot; : &quot;APACHE_DRILL_LOGICAL&quot;,
-    &quot;options&quot; : null,
-    &quot;queue&quot; : 0,
-    &quot;resultMode&quot; : &quot;LOGICAL&quot;
+    "type" : "APACHE_DRILL_LOGICAL",
+    "options" : null,
+    "queue" : 0,
+    "resultMode" : "LOGICAL"
   },...
-</code></pre></div>
+</code></pre></div></div>
+
     
       
         <div class="doc-nav">
@@ -1504,7 +1559,7 @@ query), use the EXPLAIN PLAN WITHOUT IMPLEMENTATION syntax:</p>
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

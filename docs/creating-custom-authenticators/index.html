@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,9 +1369,9 @@
 
     </div>
 
-     Jun 22, 2017
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
@@ -1348,90 +1380,102 @@
 <p>Complete the following steps to build and implement a custom authenticator:</p>
 
 <ol>
-<li><p>Build the following Java file into a JAR file: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   MyCustomDrillUserAuthenticatorImpl.java 
+  <li>
+    <p>Build the following Java file into a JAR file:</p>
 
-   package myorg.dept.drill.security;     
-
-   import org.apache.drill.common.config.DrillConfig;
-   import org.apache.drill.exec.exception.DrillbitStartupException;
-   import org.apache.drill.exec.rpc.user.security.UserAuthenticator;
-   import org.apache.drill.exec.rpc.user.security.UserAuthenticationException;
-   import org.apache.drill.exec.rpc.user.security.UserAuthenticatorTemplate;
-
-   import java.io.IOException;
-
-   /*
-   * Implement {@link org.apache.drill.exec.rpc.user.security.UserAuthenticator} for illustrating how to develop a custom authenticator and use it in Drill
-   */
-   @UserAuthenticatorTemplate(type = &quot;myCustomAuthenticatorType&quot;)
-   public class MyCustomDrillUserAuthenticatorImpl implements UserAuthenticator {
-
-    public static final String TEST_USER_1 = &quot;testUser1&quot;;
-    public static final String TEST_USER_2 = &quot;testUser2&quot;;
-    public static final String TEST_USER_1_PASSWORD = &quot;testUser1Password&quot;;
-    public static final String TEST_USER_2_PASSWORD = &quot;testUser2Password&quot;;
-
-   /**
-   * Setup for authenticating user credentials.
-   */
-    @Override
-    public void setup(DrillConfig drillConfig) throws DrillbitStartupException {
-      // If the authenticator has any setup such as making sure authenticator provider servers are up and running or 
-      // needed libraries are available, it should be added here.
-    }
-
-   /**
-   * Authenticate the given &lt;i&gt;user&lt;/i&gt; and &lt;i&gt;password&lt;/i&gt; combination.
-   *
-   * @param userName
-   * @param password
-   * @throws UserAuthenticationException if authentication fails for given user and password.
-   */
-    @Override
-    public void authenticate(String userName, String password) throws UserAuthenticationException {
-
-      if (!(TEST_USER_1.equals(userName) &amp;&amp; TEST_USER_1_PASSWORD.equals(password)) &amp;&amp;
-      !(TEST_USER_2.equals(userName) &amp;&amp; TEST_USER_2_PASSWORD.equals(password))) {
-    throw new UserAuthenticationException(&quot;custom failure message if the admin wants to show it to user&quot;);
-      }
-    }
-
-   /**
-   * Close the authenticator. Used to release resources. Ex. LDAP authenticator opens connections to LDAP server,
-   * such connections resources are released in a safe manner as part of close.
-   *
-   * @throws IOException
-   */
-    @Override
-    public void close() throws IOException {
-      // Any clean up such as releasing files/network resources should be done here
-    }
-   }  
-</code></pre></div></li>
-<li><p>Create a file named <code>drill-module.conf</code> with the following configuration code and then add this file to the root of the JAR file: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">      drill {
-        classpath.scanning {
-          packages += &quot;myorg.dept.drill.security&quot;
-        }
-      }  
-</code></pre></div>
-<p>This enables the custom classpath scanner to locate the new class. </p></li>
-<li><p>Add the JAR file that you built to the following directory on each Drill node:<br>
-<code>&lt;DRILLINSTALL_HOME&gt;/jars</code></p></li>
-<li><p>Add the following configuration to the <code>drill.exec</code> block in the <code>drill-override.conf</code> file located in <code>&lt;DRILLINSTALL_HOME&gt;/conf/</code>:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">      drill.exec {
-       security.user.auth {
-            enabled: true,
-            packages += &quot;myorg.dept.drill.security&quot;,
-            impl: &quot;myCustomAuthenticatorType&quot;
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    MyCustomDrillUserAuthenticatorImpl.java 
+       
+    package myorg.dept.drill.security;     
+       
+    import org.apache.drill.common.config.DrillConfig;
+    import org.apache.drill.exec.exception.DrillbitStartupException;
+    import org.apache.drill.exec.rpc.user.security.UserAuthenticator;
+    import org.apache.drill.exec.rpc.user.security.UserAuthenticationException;
+    import org.apache.drill.exec.rpc.user.security.UserAuthenticatorTemplate;
+       
+    import java.io.IOException;
+       
+    /*
+    * Implement {@link org.apache.drill.exec.rpc.user.security.UserAuthenticator} for illustrating how to develop a custom authenticator and use it in Drill
+    */
+    @UserAuthenticatorTemplate(type = "myCustomAuthenticatorType")
+    public class MyCustomDrillUserAuthenticatorImpl implements UserAuthenticator {
+       
+     public static final String TEST_USER_1 = "testUser1";
+     public static final String TEST_USER_2 = "testUser2";
+     public static final String TEST_USER_1_PASSWORD = "testUser1Password";
+     public static final String TEST_USER_2_PASSWORD = "testUser2Password";
+       
+    /**
+    * Setup for authenticating user credentials.
+    */
+     @Override
+     public void setup(DrillConfig drillConfig) throws DrillbitStartupException {
+       // If the authenticator has any setup such as making sure authenticator provider servers are up and running or 
+       // needed libraries are available, it should be added here.
+     }
+       
+    /**
+    * Authenticate the given &lt;i&gt;user&lt;/i&gt; and &lt;i&gt;password&lt;/i&gt; combination.
+    *
+    * @param userName
+    * @param password
+    * @throws UserAuthenticationException if authentication fails for given user and password.
+    */
+     @Override
+     public void authenticate(String userName, String password) throws UserAuthenticationException {
+       
+       if (!(TEST_USER_1.equals(userName) &amp;&amp; TEST_USER_1_PASSWORD.equals(password)) &amp;&amp;
+       !(TEST_USER_2.equals(userName) &amp;&amp; TEST_USER_2_PASSWORD.equals(password))) {
+     throw new UserAuthenticationException("custom failure message if the admin wants to show it to user");
        }
-      }  
-</code></pre></div></li>
-<li><p>Restart the Drillbit process on each Drill node.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;DRILLINSTALL_HOME&gt;/bin/drillbit.sh restart
-</code></pre></div></li>
+     }
+       
+    /**
+    * Close the authenticator. Used to release resources. Ex. LDAP authenticator opens connections to LDAP server,
+    * such connections resources are released in a safe manner as part of close.
+    *
+    * @throws IOException
+    */
+     @Override
+     public void close() throws IOException {
+       // Any clean up such as releasing files/network resources should be done here
+     }
+    }  
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Create a file named <code class="language-plaintext highlighter-rouge">drill-module.conf</code> with the following configuration code and then add this file to the root of the JAR file:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>       drill {
+         classpath.scanning {
+           packages += "myorg.dept.drill.security"
+         }
+       }   This enables the custom classpath scanner to locate the new class. 
+</code></pre></div>    </div>
+  </li>
+  <li>Add the JAR file that you built to the following directory on each Drill node:<br />
+` <DRILLINSTALL_HOME>/jars`</DRILLINSTALL_HOME></li>
+  <li>
+    <p>Add the following configuration to the <code class="language-plaintext highlighter-rouge">drill.exec</code> block in the <code class="language-plaintext highlighter-rouge">drill-override.conf</code> file located in <code class="language-plaintext highlighter-rouge">&lt;DRILLINSTALL_HOME&gt;/conf/</code>:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>       drill.exec {
+        security.user.auth {
+         	enabled: true,
+         	packages += "myorg.dept.drill.security",
+         	impl: "myCustomAuthenticatorType"
+        }
+       }  
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Restart the Drillbit process on each Drill node.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;DRILLINSTALL_HOME&gt;/bin/drillbit.sh restart
+</code></pre></div>    </div>
+  </li>
 </ol>
+
 
     
       
@@ -1449,7 +1493,7 @@
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

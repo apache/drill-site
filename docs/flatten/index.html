@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,17 +1369,19 @@
 
     </div>
 
-     Nov 2, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>FLATTEN separates the elements in a repeated field into individual records.</p>
 
 <h2 id="syntax">Syntax</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">FLATTEN(z)
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FLATTEN(z)
+</code></pre></div></div>
+
 <p><em>z</em> is a JSON array.</p>
 
 <h2 id="usage-notes">Usage Notes</h2>
@@ -1355,24 +1389,28 @@
 <p>The FLATTEN function is useful for flexible exploration of repeated data.</p>
 
 <p>To maintain the association between each flattened value and the other fields in
-the record, the FLATTEN function copies all of the other columns into each new record. </p>
+the record, the FLATTEN function copies all of the other columns into each new record.</p>
 
 <p>A very simple example would turn this data (one record):</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{
-  &quot;x&quot; : 5,
-  &quot;y&quot; : &quot;a string&quot;,
-  &quot;z&quot; : [ 1,2,3]
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "x" : 5,
+  "y" : "a string",
+  "z" : [ 1,2,3]
 }
-</code></pre></div>
+</code></pre></div></div>
+
 <p>into three distinct records:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT FLATTEN(z) FROM table;
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT FLATTEN(z) FROM table;
 | x           | y              | z         |
-+-------------+----------------+-----------+
-| 5           | &quot;a string&quot;     | 1         |
-| 5           | &quot;a string&quot;     | 2         |
-| 5           | &quot;a string&quot;     | 3         |
-</code></pre></div>
-<p>The function takes a single argument, which must be an array (the <code>z</code> column
+|-------------|----------------|-----------|
+| 5           | "a string"     | 1         |
+| 5           | "a string"     | 2         |
+| 5           | "a string"     | 3         |
+</code></pre></div></div>
+
+<p>The function takes a single argument, which must be an array (the <code class="language-plaintext highlighter-rouge">z</code> column
 in this example).</p>
 
 <p>Using the all (*) wildcard as the argument to flatten is not supported and returns an error.</p>
@@ -1382,33 +1420,37 @@ in this example).</p>
 <p>For a more interesting example, consider the JSON data in the publicly
 available <a href="https://www.yelp.com/dataset_challenge/dataset">Yelp</a> data set. The
 first query below returns three columns from the
-<code>yelp_academic_dataset_business.json</code> file: <code>name</code>, <code>hours</code>, and <code>categories</code>.
-The query is restricted to distinct rows where the name is <code>z</code><code>pizza</code>. The
+<code class="language-plaintext highlighter-rouge">yelp_academic_dataset_business.json</code> file: <code class="language-plaintext highlighter-rouge">name</code>, <code class="language-plaintext highlighter-rouge">hours</code>, and <code class="language-plaintext highlighter-rouge">categories</code>.
+The query is restricted to distinct rows where the name is <code class="language-plaintext highlighter-rouge">z</code><code class="language-plaintext highlighter-rouge">pizza</code>. The
 query returns only one row that meets those criteria; however, note that this
 row contains an array of four categories:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select distinct name, hours, categories 
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select distinct name, hours, categories 
 from dfs.yelp.`yelp_academic_dataset_business.json` 
-where name =&#39;zpizza&#39;;
-+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------+
+where name ='zpizza';
+|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
 |    name    |   hours                                                                                                                                                                                                                                                                                                         | categories                                    |
-+------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------+
-| zpizza     | {&quot;Tuesday&quot;:{&quot;close&quot;:&quot;22:00&quot;,&quot;open&quot;:&quot;10:00&quot;},&quot;Friday&quot;:{&quot;close&quot;:&quot;23:00&quot;,&quot;open&quot;:&quot;10:00&quot;},&quot;Monday&quot;:{&quot;close&quot;:&quot;22:00&quot;,&quot;open&quot;:&quot;10:00&quot;},&quot;Wednesday&quot;:{&quot;close&quot;:&quot;22:00&quot;,&quot;open&quot;:&quot;10:00&quot;},&quot;Thursday&quot;:{&quot;close&quot;:&quot;22:00&quot;,&quot;open&quot;:&quot;10:00&quot;},&quot;Sunday&quot;:{&quot;close&quot;:&quot;22:00&quot;,&quot;open&quot;:&quot;10:00&quot;},&quot;Saturday&quot;:{&quot;close&quot;:&quot;23:00&quot;,&quot;open&quot;:&quot;10:00&quot;}} | [&quot;Gluten-Free&quot;,&quot;Pizza&quot;,&quot;Vegan&quot;,&quot;Restaurants&quot;] |
-</code></pre></div>
+|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
+| zpizza     | {"Tuesday":{"close":"22:00","open":"10:00"},"Friday":{"close":"23:00","open":"10:00"},"Monday":{"close":"22:00","open":"10:00"},"Wednesday":{"close":"22:00","open":"10:00"},"Thursday":{"close":"22:00","open":"10:00"},"Sunday":{"close":"22:00","open":"10:00"},"Saturday":{"close":"23:00","open":"10:00"}} | ["Gluten-Free","Pizza","Vegan","Restaurants"] |
+</code></pre></div></div>
+
 <p>The FLATTEN function can operate on this single row and return multiple rows,
 one for each category:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select distinct name, flatten(categories) as categories 
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select distinct name, flatten(categories) as categories 
 from dfs.yelp.`yelp_academic_dataset_business.json` 
-where name =&#39;zpizza&#39; order by 2;
-+------------+-------------+
+where name ='zpizza' order by 2;
+|------------|-------------|
 |    name    | categories  |
-+------------+-------------+
+|------------|-------------|
 | zpizza     | Gluten-Free |
 | zpizza     | Pizza       |
 | zpizza     | Restaurants |
 | zpizza     | Vegan       |
-+------------+-------------+
+|------------|-------------|
 4 rows selected (2.797 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Having used the FLATTEN function to break down arrays into distinct rows, you
 can run queries that do deeper analysis on the flattened result set. For
 example, you can use FLATTEN in a subquery, then apply WHERE clause
@@ -1416,24 +1458,27 @@ constraints or aggregate functions to the results in the outer query.</p>
 
 <p>The following query uses the same data file as the previous query to flatten
 the categories array, then run a COUNT function on the flattened result:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">select celltbl.catl, count(celltbl.catl) catcount 
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select celltbl.catl, count(celltbl.catl) catcount 
 from (select flatten(categories) catl 
 from dfs.yelp.`yelp_academic_dataset_business.json`) celltbl 
 group by celltbl.catl 
 order by count(celltbl.catl) desc limit 5;
-
-+---------------+------------+
+ 
+|---------------|------------|
 |    catl       |  catcount  |
-+---------------+------------+
+|---------------|------------|
 | Restaurants   | 14303      |
 | Shopping      | 6428       |
 | Food          | 5209       |
 | Beauty &amp; Spas | 3421       |
 | Nightlife     | 2870       |
-+---------------|------------+
-</code></pre></div>
+|---------------|------------|
+</code></pre></div></div>
+
 <p>A common use case for FLATTEN is its use in conjunction with the
-KVGEN function as shown in the section, <a href="/docs/json-data-model/">&quot;JSON Data Model&quot;</a>.</p>
+KVGEN function as shown in the section, <a href="/docs/json-data-model/">“JSON Data Model”</a>.</p>
+
 
     
       
@@ -1451,7 +1496,7 @@ KVGEN function as shown in the section, <a href="/docs/json-data-model/">&quot;J
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

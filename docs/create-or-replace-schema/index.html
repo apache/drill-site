@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,505 +1369,561 @@
 
     </div>
 
-     May 31, 2019
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>Starting in Drill 1.16 you can define a schema for text files. Drill places a schema file in the root directory of your text table and so the schema feature only works for tables within a directory. If you have a single-file table, simply create a directory to hold that file and the schema file.</p>
 
-<p>In Drill 1.17, the provided schema feature is disabled by default. Enable it by setting the <code>store.table.use_schema_file</code> system/session option to true:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SESSION SET `store.table.use_schema_file` = true
-</code></pre></div>
-<p>Next you create the schema using the <code>CREATE OR REPLACE SCHEMA</code> command as described in <a href="#syntax">Syntax</a> section.</p>
+<p>In Drill 1.17, the provided schema feature is disabled by default. Enable it by setting the <code class="language-plaintext highlighter-rouge">store.table.use_schema_file</code> system/session option to true:</p>
 
-<p>Running this command generates a hidden <code>.drill.schema</code> file in the table’s root directory. The <code>.drill.schema</code> file stores the schema definition in JSON format. Alternatively, you can create the schema file manually. If created manually, the file content must comply with the structure recognized by the Drill.  </p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ALTER SESSION SET `store.table.use_schema_file` = true
+</code></pre></div></div>
 
-<p>The end of this topic provides <a href="/docs/create-or-replace-schema/#examples">examples</a> that show how the feature is used. You may want to review this section before reading the reference material.  </p>
+<p>Next you create the schema using the <code class="language-plaintext highlighter-rouge">CREATE OR REPLACE SCHEMA</code> command as described in <a href="#syntax">Syntax</a> section.</p>
+
+<p>Running this command generates a hidden <code class="language-plaintext highlighter-rouge">.drill.schema</code> file in the table’s root directory. The <code class="language-plaintext highlighter-rouge">.drill.schema</code> file stores the schema definition in JSON format. Alternatively, you can create the schema file manually. If created manually, the file content must comply with the structure recognized by the Drill.</p>
+
+<p>The end of this topic provides <a href="/docs/create-or-replace-schema/#examples">examples</a> that show how the feature is used. You may want to review this section before reading the reference material.</p>
 
 <p>As described in <a href="/docs/plugin-configuration-basics/#specifying-the-schema-as-table-function-parameter">Specifying the Schema as Table Function Parameter</a>,
  you can also use a table function to apply a query to individual queries. Or, you can place the
  table function within a view, and query the table through the view.</p>
 
-<p>Please post your experience and suggestions to the &quot;<a href="user@drill.apache.org">user</a>&quot; mailing list.</p>
+<p>Please post your experience and suggestions to the “<a href="user@drill.apache.org">user</a>” mailing list.</p>
 
 <h2 id="syntax">Syntax</h2>
 
 <p>The CREATE OR REPLACE SCHEMA command supports the following syntax:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE [OR REPLACE] SCHEMA
-[LOAD &#39;file:///path/to/file&#39;]
-[(column_name data_type [nullability] [format] [default] [properties {prop=&#39;val&#39;, ...})]]
-[FOR TABLE `table_name` | PATH &#39;file:///schema_file_path/schema_file_name&#39;] 
-[PROPERTIES (&#39;key1&#39;=&#39;value1&#39;, &#39;key2&#39;=&#39;value2&#39;, ...)]   
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE [OR REPLACE] SCHEMA
+[LOAD 'file:///path/to/file']
+[(column_name data_type [nullability] [format] [default] [properties {prop='val', ...})]]
+[FOR TABLE `table_name` | PATH 'file:///schema_file_path/schema_file_name'] 
+[PROPERTIES ('key1'='value1', 'key2'='value2', ...)]   
+</code></pre></div></div>
+
 <h2 id="parameters">Parameters</h2>
 
-<p><em>OR REPLACE</em><br>
-Existing schema is dropped and replaced with the new schema. Prevents malicious deletion of any file. Only supported when using FOR TABLE. Not supported when using PATH. Instead, you must manually delete any schema file created in a custom PATH location.  </p>
+<p><em>OR REPLACE</em><br />
+Existing schema is dropped and replaced with the new schema. Prevents malicious deletion of any file. Only supported when using FOR TABLE. Not supported when using PATH. Instead, you must manually delete any schema file created in a custom PATH location.</p>
 
-<p><em>LOAD</em><br>
+<p><em>LOAD</em><br />
 Loads raw schema (list of column names with their attributes) from a file. You must indicate the path to the file after the LOAD keyword. Note that columns should be listed or provided when using the LOAD clause; at least one option is required for the successful schema creation.</p>
 
-<p><em>column_name</em><br>
-Name of the column for which schema is created. Case-insensitive. The name must match the name in the data file or data source. You cannot rename columns using the schema mechanism. </p>
+<p><em>column_name</em><br />
+Name of the column for which schema is created. Case-insensitive. The name must match the name in the data file or data source. You cannot rename columns using the schema mechanism.</p>
 
-<p><em>data_type</em><br>
-Data type defined for the column. See Supported Data Types. </p>
+<p><em>data_type</em><br />
+Data type defined for the column. See Supported Data Types.</p>
 
-<p><em>format</em><br>
+<p><em>format</em><br />
 Sets the format for date and time data types when converting from string. See <a href="/docs/create-or-replace-schema/#format-for-date-time-conversion">Format for Date, Time Conversion</a>.</p>
 
-<p><em>default</em><br>
-Used for non-nullable columns. The default value is returned by queries when the column is missing from a data file. The default value is a string enclosed in single quotes, like &#39;10&#39;. If you provide a format, the value must be valid for that format. </p>
+<p><em>default</em>  <br />
+Used for non-nullable columns. The default value is returned by queries when the column is missing from a data file. The default value is a string enclosed in single quotes, like ‘10’. If you provide a format, the value must be valid for that format.</p>
 
-<p><em>properties</em><br>
-Keyword to include optional properties. See Related Options below.  </p>
+<p><em>properties</em><br />
+Keyword to include optional properties. See Related Options below.</p>
 
-<p><em>property</em><br>
-Name of the property applied to the column or table.  </p>
+<p><em>property</em>    <br />
+Name of the property applied to the column or table.</p>
 
-<p><em>value</em><br>
-Value set for the indicated property. </p>
+<p><em>value</em>    <br />
+Value set for the indicated property.</p>
 
-<p><em>table_name</em><br>
-Name of the table associated with the schema being created or replaced. Enclose the table name in backticks if there are spaces after the FOR TABLE keywords. If the table does not exist, the command fails and schema is not created. If you indicate the table name without schema, the table is assumed to be in the current workspace, and you must specify the PATH property. If you indicate FOR TABLE and PATH, or you do not indicate either, the CREATE SCHEMA command fails. In this case, the table schema is created in the table’s root directory with the default name <code>.drill.table_schema</code>. Table cannot be a temporary table. </p>
+<p><em>table_name</em><br />
+Name of the table associated with the schema being created or replaced. Enclose the table name in backticks if there are spaces after the FOR TABLE keywords. If the table does not exist, the command fails and schema is not created. If you indicate the table name without schema, the table is assumed to be in the current workspace, and you must specify the PATH property. If you indicate FOR TABLE and PATH, or you do not indicate either, the CREATE SCHEMA command fails. In this case, the table schema is created in the table’s root directory with the default name <code class="language-plaintext highlighter-rouge">.drill.table_schema</code>. Table cannot be a temporary table.</p>
 
-<p><em>PATH</em><br>
-Path to the schema file. You must indicate the path to the file after the PATH keyword. </p>
+<p><em>PATH</em><br />
+Path to the schema file. You must indicate the path to the file after the PATH keyword.</p>
 
-<p><em>properties</em><br>
-List of properties as key-value pairs in  parenthesis.  </p>
+<p><em>properties</em><br />
+List of properties as key-value pairs in  parenthesis.</p>
 
 <h2 id="related-options">Related Options</h2>
 
-<p>In Drill 1.16, you must enable the following options for Drill to use the schema created during query execution: </p>
+<p>In Drill 1.16, you must enable the following options for Drill to use the schema created during query execution:</p>
 
-<p><strong>exec.storage.enable_v3_text_reader</strong><br>
-Enables the preview &quot;version 3&quot; of the text (CSV) file reader. The V3 text reader is the only reader in Drill 1.16 that supports file schemas.<br>
+<p><strong>exec.storage.enable_v3_text_reader</strong><br />
+Enables the preview “version 3” of the text (CSV) file reader. The V3 text reader is the only reader in Drill 1.16 that supports file schemas.<br />
 In Drill 1.17, this option is enabled by default.</p>
 
-<p><strong>store.table.use_schema_file</strong><br>
+<p><strong>store.table.use_schema_file</strong><br />
 Enables the use of the schema file mechanism.</p>
 
 <p>You can enable these options, as shown:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">set `exec.storage.enable_v3_text_reader` = true;
-+------+---------------------------------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>set `exec.storage.enable_v3_text_reader` = true;
+|------|---------------------------------------------|
 |  ok  |                   summary                   |
-+------+---------------------------------------------+
+|------|---------------------------------------------|
 | true | exec.storage.enable_v3_text_reader updated. |
-+------+---------------------------------------------+
+|------|---------------------------------------------|
 
 set `store.table.use_schema_file` = true;
-+------+--------------------------------------+
+|------|--------------------------------------|
 |  ok  |               summary                |
-+------+--------------------------------------+
+|------|--------------------------------------|
 | true | store.table.use_schema_file updated. |
-+------+--------------------------------------+ 
-</code></pre></div>
+|------|--------------------------------------| 
+</code></pre></div></div>
+
 <h2 id="related-properties">Related Properties</h2>
 
-<p>Drill normally uses &quot;schema on read&quot; to load data from your tables. The schema mechanism allows you to perform some data cleanup and transformations on your data. You can:  </p>
+<p>Drill normally uses “schema on read” to load data from your tables. The schema mechanism allows you to perform some data cleanup and transformations on your data. You can:</p>
 
 <ul>
-<li>Identify which columns to load, ignoring columns that are not needed by users.<br></li>
-<li>Handle schema evolution by providing names and default values for columns that may be missing from some of your older (or newer) data files.<br></li>
-<li>Convert text fields to numbers, dates, times or timestamps without having to add a CAST to every query (or define a view.)<br></li>
+  <li>Identify which columns to load, ignoring columns that are not needed by users.</li>
+  <li>Handle schema evolution by providing names and default values for columns that may be missing from some of your older (or newer) data files.</li>
+  <li>Convert text fields to numbers, dates, times or timestamps without having to add a CAST to every query (or define a view.)</li>
 </ul>
 
-<p>When you create a schema, you can set the following column properties within the CREATE [OR REPLACE] SCHEMA command: </p>
+<p>When you create a schema, you can set the following column properties within the CREATE [OR REPLACE] SCHEMA command:</p>
 
-<p>(<code>drill.format, drill.default, drill.blank-as</code>)  </p>
+<p>(<code class="language-plaintext highlighter-rouge">drill.format, drill.default, drill.blank-as</code>)</p>
 
 <p>You can also set the following table properties:</p>
 
-<p>(<code>drill.strict</code>)  </p>
+<p>(<code class="language-plaintext highlighter-rouge">drill.strict</code>)</p>
 
-<p>The following sections describe the properties that aid in data clean up and transformation:   </p>
+<p>The following sections describe the properties that aid in data clean up and transformation:</p>
 
-<p><strong>drill.strict</strong><br>
-Table property that determines the set of columns returned for a wildcard (*) query. With <code>drill.strict=false</code> (the default), a wildcard includes all columns in the table, whether or not they are listed in the schema. With <code>drill.strict=true</code>, a wildcard includes only the columns defined in the schema, and in the order defined by the schema. See <a href="/docs/create-or-replace-schema/#schema-mode-column-order">Schema Mode (Column Order)</a>. </p>
+<p><strong>drill.strict</strong><br />
+Table property that determines the set of columns returned for a wildcard (*) query. With <code class="language-plaintext highlighter-rouge">drill.strict=false</code> (the default), a wildcard includes all columns in the table, whether or not they are listed in the schema. With <code class="language-plaintext highlighter-rouge">drill.strict=true</code>, a wildcard includes only the columns defined in the schema, and in the order defined by the schema. See <a href="/docs/create-or-replace-schema/#schema-mode-column-order">Schema Mode (Column Order)</a>.</p>
 
-<p><strong>drill.format</strong><br>
+<p><strong>drill.format</strong><br />
 Same as the format parameter. (The format parameter is stored as a property in the schema file.) See the format parameter for the supported formats. Also, see <a href="/docs/create-or-replace-schema/#format-for-date-time-conversion">Format for Date, Time Conversion</a>.</p>
 
-<p><strong>drill.default</strong><br>
-Same as the default parameter. (The default parameter is stored as a property in the schema file.) See <a href="/docs/create-or-replace-schema/#column-modes-nullable-and-non-nullable-columns">Column Modes (Nullable and Non-Nullable Columns</a>).  </p>
+<p><strong>drill.default</strong><br />
+Same as the default parameter. (The default parameter is stored as a property in the schema file.) See <a href="/docs/create-or-replace-schema/#column-modes-nullable-and-non-nullable-columns">Column Modes (Nullable and Non-Nullable Columns</a>).</p>
 
-<p><strong>drill.blank-as</strong><br>
-A property that sets how Drill handles blank column values. Accepts the following values:<br>
-- <strong>null</strong>: If the column is nullable, treat the blank as null. If non-nullable, leave the blank unchanged.<br>
-- <strong>0</strong>: Replace blanks with the value &quot;0&quot; for numeric types.<br>
-- <strong>skip</strong>: Skip blank values. This sets the column to its default value: NULL for nullable columns, or the default value for non-nullable columns.<br>
-- If left empty, blanks have no special meaning. A blank is parsed as any other string, which typically produces an error for text columns converted to a numeric type.   </p>
+<p><strong>drill.blank-as</strong><br />
+A property that sets how Drill handles blank column values. Accepts the following values:</p>
+<ul>
+  <li><strong>null</strong>: If the column is nullable, treat the blank as null. If non-nullable, leave the blank unchanged.</li>
+  <li><strong>0</strong>: Replace blanks with the value “0” for numeric types.</li>
+  <li><strong>skip</strong>: Skip blank values. This sets the column to its default value: NULL for nullable columns, or the default value for non-nullable columns.</li>
+  <li>If left empty, blanks have no special meaning. A blank is parsed as any other string, which typically produces an error for text columns converted to a numeric type.</li>
+</ul>
 
-<p>See <a href="/docs/create-or-replace-schema/#handling-policy-for-blank-column-values">Handling Policy for Blank Column Values</a>.  </p>
+<p>See <a href="/docs/create-or-replace-schema/#handling-policy-for-blank-column-values">Handling Policy for Blank Column Values</a>.</p>
 
 <h3 id="setting-properties">Setting Properties</h3>
+<p>Include properties after the “properties” keyword, as shown in the following example where the date format is set to <code class="language-plaintext highlighter-rouge">'yyyy-MM-dd'</code> through the <code class="language-plaintext highlighter-rouge">drill.format</code> column property:</p>
 
-<p>Include properties after the “properties” keyword, as shown in the following example where the date format is set to <code>&#39;yyyy-MM-dd&#39;</code> through the <code>drill.format</code> column property:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">create or replace schema (start_date date properties {&#39;drill.format&#39; = &#39;yyyy-MM-dd&#39;}) for table dfs.tmp.`text_table`;
-</code></pre></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create or replace schema (start_date date properties {'drill.format' = 'yyyy-MM-dd'}) for table dfs.tmp.`text_table`;
+</code></pre></div></div>
+
 <p>Alternatively, you can use “default” and “format” as keywords when creating schema, as shown in the following examples:</p>
 
 <p>Setting the default for the non-nullable column “id” to -1 using the keyword “default”:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">create or replace schema (id int not null default &#39;-1&#39;) for table dfs.tmp.`text_table`;
-</code></pre></div>
-<p>When you query the text_table, all blank values in the “id” column return a value of -1.  </p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create or replace schema (id int not null default '-1') for table dfs.tmp.`text_table`;
+</code></pre></div></div>
+
+<p>When you query the text_table, all blank values in the “id” column return a value of -1.</p>
 
 <h3 id="storing-properties">Storing Properties</h3>
+<p>The defined schema and configured properties are stored and reflected in the schema file, <code class="language-plaintext highlighter-rouge">.drill.schema</code>, which you can see when you run DESCRIBE SCHEMA FOR TABLE.</p>
 
-<p>The defined schema and configured properties are stored and reflected in the schema file, <code>.drill.schema</code>, which you can see when you run DESCRIBE SCHEMA FOR TABLE. </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">describe schema for table dfs.tmp.`text_table`;
-+----------------------------------------------------------------------------------+
-|                                     schema                                    |
-+----------------------------------------------------------------------------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>describe schema for table dfs.tmp.`text_table`;
+|----------------------------------------------------------------------------------|
+|                            	      schema                                  	|
+|----------------------------------------------------------------------------------|
 | {
-  &quot;table&quot; : &quot;dfs.tmp.`text_table`&quot;,
-  &quot;schema&quot; : {
-    &quot;columns&quot; : [
-    {
-        &quot;name&quot; : &quot;id&quot;,
-        &quot;type&quot; : &quot;INT&quot;,
-        &quot;mode&quot; : &quot;REQUIRED&quot;,
-        &quot;properties&quot; : {
-          &quot;drill.default&quot; : &quot;-1&quot;
-        }
-    },
-    {
-        &quot;name&quot; : &quot;start_date&quot;,
-        &quot;type&quot; : &quot;DATE&quot;,
-        &quot;mode&quot; : &quot;REQUIRED&quot;,
-        &quot;properties&quot; : {
-          &quot;drill.format&quot; : &quot;yyyy-MM-dd&quot;,
-          &quot;drill.default&quot; : &quot;2017-01-01&quot;
-        }
-    }
-    ],
-    &quot;properties&quot; : {
-      &quot;drill.strict&quot; : &quot;true&quot;
-    }
+  "table" : "dfs.tmp.`text_table`",
+  "schema" : {
+    "columns" : [
+  	{
+        "name" : "id",
+        "type" : "INT",
+        "mode" : "REQUIRED",
+        "properties" : {
+          "drill.default" : "-1"
+    	}
+  	},
+  	{
+        "name" : "start_date",
+        "type" : "DATE",
+        "mode" : "REQUIRED",
+        "properties" : {
+    	  "drill.format" : "yyyy-MM-dd",
+          "drill.default" : "2017-01-01"
+    	}
+  	}
+	],
+    "properties" : {
+      "drill.strict" : "true"
+	}
   },
-  &quot;version&quot; : 1
+  "version" : 1
 } |
-+----------------------------------------------------------------------------------+  
-</code></pre></div>
+|----------------------------------------------------------------------------------|  
+</code></pre></div></div>
+
 <h2 id="related-commands">Related Commands</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">DROP SCHEMA [IF EXISTS] FOR TABLE `table_name`
-</code></pre></div>
-<p>See <a href="/docs/create-or-replace-schema/#dropping-schema-for-a-table">Dropping Schema for a Table</a>. </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">DESCRIBE SCHEMA FOR TABLE `table_name`
-</code></pre></div>
-<p>See <a href="/docs/create-or-replace-schema/#describing-schema-for-a-table">Describing Schema for a Table</a>.   </p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DROP SCHEMA [IF EXISTS] FOR TABLE `table_name` See [Dropping Schema for a Table](/docs/create-or-replace-schema/#dropping-schema-for-a-table). 
+
+
+DESCRIBE SCHEMA FOR TABLE `table_name` See [Describing Schema for a Table](/docs/create-or-replace-schema/#describing-schema-for-a-table).   
+</code></pre></div></div>
 
 <h2 id="supported-data-types">Supported Data Types</h2>
 
-<p>Text files store information in string format and only support simple data types. You can use the CREATE [OR REPLACE] SCHEMA command to convert string data types in text files to the following data types:<br>
-- INTEGER<br>
-- BIGINT<br>
-- DOUBLE<br>
-- FLOAT<br>
-- DECIMAL<br>
-- BOOLEAN<br>
-- VARCHAR<br>
-- TIMESTAMP<br>
-- DATE<br>
-- TIME<br>
-- INTERVAL [YEAR, MONTH, DAY, HOUR, MINUTE, SECOND]  </p>
+<p>Text files store information in string format and only support simple data types. You can use the CREATE [OR REPLACE] SCHEMA command to convert string data types in text files to the following data types:</p>
+<ul>
+  <li>INTEGER</li>
+  <li>BIGINT</li>
+  <li>DOUBLE</li>
+  <li>FLOAT</li>
+  <li>DECIMAL</li>
+  <li>BOOLEAN</li>
+  <li>VARCHAR</li>
+  <li>TIMESTAMP</li>
+  <li>DATE</li>
+  <li>TIME</li>
+  <li>INTERVAL [YEAR, MONTH, DAY, HOUR, MINUTE, SECOND]</li>
+</ul>
 
-<p><strong>Note:</strong> Complex data types (arrays and maps) are not supported. </p>
+<p><strong>Note:</strong> Complex data types (arrays and maps) are not supported.</p>
 
-<p>Values are trimmed when converting to any type, except for varchar.  </p>
+<p>Values are trimmed when converting to any type, except for varchar.</p>
 
 <h2 id="usage-notes">Usage Notes</h2>
 
 <h3 id="general-information">General Information</h3>
-
 <ul>
-<li>Schema provisioning works only with the file system (dfs-based) storage plugins. It works by placing a file <code>.drill.schema</code> in the root folder of tables defined as a directory. The directory can contain any number of files (even just one) in addition to the schema file.</li>
-<li>Text files must have headers. The default extension for delimited text files with headers is <code>.csvh</code>. Note that the column names that appear in the headers match column definitions in the schema.<br></li>
-<li>You do not have to enumerate all columns in a file when creating a schema. You can indicate the columns of interest only.<br></li>
-<li>Columns in the defined schema do not have to be in the same order as in the data file.<br></li>
-<li>Column names must match. The case can differ, for example “name” and “NAME” are acceptable.<br></li>
+  <li>Schema provisioning works only with the file system (dfs-based) storage plugins. It works by placing a file <code class="language-plaintext highlighter-rouge">.drill.schema</code> in the root folder of tables defined as a directory. The directory can contain any number of files (even just one) in addition to the schema file.</li>
+  <li>Text files must have headers. The default extension for delimited text files with headers is <code class="language-plaintext highlighter-rouge">.csvh</code>. Note that the column names that appear in the headers match column definitions in the schema.</li>
+  <li>You do not have to enumerate all columns in a file when creating a schema. You can indicate the columns of interest only.</li>
+  <li>Columns in the defined schema do not have to be in the same order as in the data file.</li>
+  <li>Column names must match. The case can differ, for example “name” and “NAME” are acceptable.</li>
 </ul>
 
 <p>Drill is unique in that it infers table schema at runtime. However, sometimes schema inference can fail when Drill
  cannot infer the correct types. For example, Drill treats all fields in a text file as text. Drill may not be able
- to determine the type of fields in JSON files if the fields are missing or set to <code>null</code> in the first few records
- in the file. Drill issues a <code>DATA_READ_ERROR</code> when runtime schema inference fails.</p>
+ to determine the type of fields in JSON files if the fields are missing or set to <code class="language-plaintext highlighter-rouge">null</code> in the first few records
+ in the file. Drill issues a <code class="language-plaintext highlighter-rouge">DATA_READ_ERROR</code> when runtime schema inference fails.</p>
 
 <p>When Drill cannot correctly infer the schema, you can instead use your knowledge of the file layout to tell Drill
  the proper schema to use. Schema provisioning is the feature you use to specify the schema.
- You can provide a schema for the file as a whole using the <a href="#syntax"><code>CREATE OR REPLACE SCHEMA</code> command</a> or for
+ You can provide a schema for the file as a whole using the <a href="#syntax"><code class="language-plaintext highlighter-rouge">CREATE OR REPLACE SCHEMA</code> command</a> or for
  a single query using a <a href="/docs/plugin-configuration-basics/#table-function-parameters">table function</a>.
  Please see <a href="/docs/plugin-configuration-basics/#specifying-the-schema-as-table-function-parameter">Specifying the Schema as Table Function Parameter</a> for details.</p>
 
 <h3 id="schema-mode-column-order">Schema Mode (Column Order)</h3>
+<p>The schema mode determines the set of columns returned for wildcard (*) queries and the  ordering of those columns. The mode is set through the <code class="language-plaintext highlighter-rouge">drill.strict</code> property. You can set this property to true (strict) or false (not strict). If you do not indicate the mode, the default is false (not strict).</p>
 
-<p>The schema mode determines the set of columns returned for wildcard (*) queries and the  ordering of those columns. The mode is set through the <code>drill.strict</code> property. You can set this property to true (strict) or false (not strict). If you do not indicate the mode, the default is false (not strict).  </p>
+<p><strong>Not Strict (Default)</strong><br />
+Columns defined in the schema are projected in the defined order. Columns not defined in the schema are appended to the defined columns, as shown:</p>
 
-<p><strong>Not Strict (Default)</strong><br>
-Columns defined in the schema are projected in the defined order. Columns not defined in the schema are appended to the defined columns, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">create or replace schema (id int, start_date date format &#39;yyyy-MM-dd&#39;) for table dfs.tmp.`text_table` properties (&#39;drill.strict&#39; = &#39;false&#39;);
-+------+-----------------------------------------+
-|  ok  |              summary               |
-+------+-----------------------------------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create or replace schema (id int, start_date date format 'yyyy-MM-dd') for table dfs.tmp.`text_table` properties ('drill.strict' = 'false');
+|------|-----------------------------------------|
+| ok   | summary                                 |
+|------|-----------------------------------------|
 | true | Created schema for [dfs.tmp.text_table] |
-+------+-----------------------------------------+
-
+|------|-----------------------------------------|
+ 
 select * from dfs.tmp.`text_table`;
-+------+------------+---------+
-|  id  | start_date |  name   |
-+------+------------+---------+
-| 1 | 2019-02-01 | Fred |
-| 2 | 2018-11-30 | Wilma   |
-| 3 | 2016-01-01 | Pebbles |
-| 4 | null       | Barney  |
-| null | null       | Dino  |
-+------+------------+---------+
-</code></pre></div>
+|------|------------|---------|
+| id   | start_date | name    |
+|------|------------|---------|
+| 1    | 2019-02-01 | Fred    |
+| 2    | 2018-11-30 | Wilma   |
+| 3    | 2016-01-01 | Pebbles |
+| 4    | null       | Barney  |
+| null | null       | Dino    |
+|------|------------|---------|
+</code></pre></div></div>
+
 <p>Note that the “name” column, which was not included in the schema was appended to the end of the table.</p>
 
-<p><strong>Strict</strong><br>
-Setting the <code>drill.strict</code> property  to “true” changes the schema mode to strict, which means that the reader ignores any columns NOT included in the schema. The query only returns the columns defined in the schema, as shown:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">create or replace schema (id int, start_date date format &#39;yyyy-MM-dd&#39;) for table dfs.tmp.`text_table` properties (&#39;drill.strict&#39; = &#39;true&#39;);
-+------+-----------------------------------------+
-|  ok  |                summary                 |
-+------+-----------------------------------------+
-| true | Created schema for [dfs.tmp.text_table] |
-+------+-----------------------------------------+
+<p><strong>Strict</strong><br />
+Setting the <code class="language-plaintext highlighter-rouge">drill.strict</code> property  to “true” changes the schema mode to strict, which means that the reader ignores any columns NOT included in the schema. The query only returns the columns defined in the schema, as shown:</p>
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create or replace schema (id int, start_date date format 'yyyy-MM-dd') for table dfs.tmp.`text_table` properties ('drill.strict' = 'true');
+|------|-----------------------------------------|
+| ok   | summary                                 |
+|------|-----------------------------------------|
+| true | Created schema for [dfs.tmp.text_table] |
+|------|-----------------------------------------|
+ 
 select * from dfs.tmp.`text_table`;
-+------+------------+
+|------|------------|
 |  id  | start_date |
-+------+------------+
-| 1 | 2019-02-01 |
-| 2 | 2018-11-30 |
-| 3 | 2016-01-01 |
-| 4 | null       |
+|------|------------|
+| 1    | 2019-02-01 |
+| 2    | 2018-11-30 |
+| 3    | 2016-01-01 |
+| 4    | null       |
 | null | null       |
-+------+------------+  
-</code></pre></div>
-<p>Note that the “name” column, which was not included in the schema was ignored and not returned in the result set.  </p>
+|------|------------|  
+</code></pre></div></div>
+
+<p>Note that the “name” column, which was not included in the schema was ignored and not returned in the result set.</p>
 
 <h2 id="including-additional-columns-in-the-schema">Including Additional Columns in the Schema</h2>
-
-<p>The ability to include additional columns in the schema enables schema evolution, which is useful when some columns appear only in newer (or older) files. </p>
+<p>The ability to include additional columns in the schema enables schema evolution, which is useful when some columns appear only in newer (or older) files.</p>
 
 <p>When you create a schema, you can include columns that do not exist in the table and these columns will be projected. This feature ensures that queries return the correct results whether the files have a specific column or not. Note that schema mode does not affect the behavior of this feature.</p>
 
-<p>For example, the “comment” column is not in the text_table, but added when creating the schema:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">create or replace schema (id int, start_date date format &#39;yyyy-MM-dd&#39;, comment varchar) for table dfs.tmp.`text_table`;
-+------+-----------------------------------------+
-|  ok  |                summary                  |
-+------+-----------------------------------------+
-| true | Created schema for [dfs.tmp.text_table] |
-+------+-----------------------------------------+
-</code></pre></div>
-<p>You can see the “comment” column returned in the result set.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">select * from dfs.tmp.`text_table`;  
-+------+------------+---------+---------+
-|  id  | start_date | comment |  name   |
-+------+------------+---------+---------+
-| 1    | 2019-02-01 |  null   | Fred    |
-| 2    | 2018-11-30 |  null   | Wilma   |
-| 3    | 2016-01-01 |  null   | Pebbles |
-| 4    | null       |  null   | Barney  |
-| null | null       |  null   | Dino    |
-+------+------------+---------+---------+    
-</code></pre></div>
-<h2 id="column-modes-nullable-and-non-nullable-columns">Column Modes (Nullable and Non-Nullable Columns)</h2>
+<p>For example, the “comment” column is not in the text_table, but added when creating the schema:</p>
 
-<p>If a column in the schema is nullable (allows null values), and the column has a null value, the column value is returned as null. If the column is required (not nullable), but contains a null value, Drill returns the default value provided. If no default value is provided, Drill sets the column value to the natural default. </p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create or replace schema (id int, start_date date format 'yyyy-MM-dd', comment varchar) for table dfs.tmp.`text_table`;
+|------|-----------------------------------------|
+| ok   | summary                                 |
+|------|-----------------------------------------|
+| true | Created schema for [dfs.tmp.text_table] |
+|------|-----------------------------------------|
+</code></pre></div></div>
+
+<p>You can see the “comment” column returned in the result set.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select * from dfs.tmp.`text_table`;  
+|------|------------|---------|---------|
+| id   | start_date | comment | name    |
+|------|------------|---------|---------|
+| 1    | 2019-02-01 | null    | Fred    |
+| 2    | 2018-11-30 | null    | Wilma   |
+| 3    | 2016-01-01 | null    | Pebbles |
+| 4    | null       | null    | Barney  |
+| null | null       | null    | Dino    |
+|------|------------|---------|---------|
+</code></pre></div></div>
+
+<h2 id="column-modes-nullable-and-non-nullable-columns">Column Modes (Nullable and Non-Nullable Columns)</h2>
+<p>If a column in the schema is nullable (allows null values), and the column has a null value, the column value is returned as null. If the column is required (not nullable), but contains a null value, Drill returns the default value provided. If no default value is provided, Drill sets the column value to the natural default.</p>
 
 <p>For example, if you create a strict schema with two nullable columns (id and start_date), you can see that the missing values in both cases are null.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">create or replace schema (id int, start_date date format &#39;yyyy-MM-dd&#39;) for table dfs.tmp.`text_table` properties (&#39;drill.strict&#39; = &#39;true&#39;);
-+------+-----------------------------------------+
-|  ok  |                summary                 |
-+------+-----------------------------------------+
-| true | Created schema for [dfs.tmp.text_table] |
-+------+-----------------------------------------+
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create or replace schema (id int, start_date date format 'yyyy-MM-dd') for table dfs.tmp.`text_table` properties ('drill.strict' = 'true');
+|------|-----------------------------------------|
+| ok   | summary                                 |
+|------|-----------------------------------------|
+| true | Created schema for [dfs.tmp.text_table] |
+|------|-----------------------------------------|
+ 
 select * from dfs.tmp.`text_table`;
-+------+------------+
-|  id  | start_date |
-+------+------------+
-| 1 | 2019-02-01 |
-| 2 | 2018-11-30 |
-| 3 | 2016-01-01 |
-| 4 | null      |
+|------|------------|
+| id   | start_date |
+|------|------------|
+| 1    | 2019-02-01 |
+| 2    | 2018-11-30 |
+| 3    | 2016-01-01 |
+| 4    | null       |
 | null | null       |
-+------+------------+
-</code></pre></div>
-<p>Updating the strict schema to have two required columns (id and start_date), you can see that the natural default was applied; 0 for id and 1970-01-01 for start_date.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">create or replace schema (id
-int not null, start_date date not null format &#39;yyyy-MM-dd&#39;) for table
-dfs.tmp.`text_table` properties (&#39;drill.strict&#39; = &#39;true&#39;);
-+------+-----------------------------------------+
-|  ok  |                summary                 |
-+------+-----------------------------------------+
-| true | Created schema for [dfs.tmp.text_table] |
-+------+-----------------------------------------+
+|------|------------|
+</code></pre></div></div>
 
+<p>Updating the strict schema to have two required columns (id and start_date), you can see that the natural default was applied; 0 for id and 1970-01-01 for start_date.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create or replace schema (id
+int not null, start_date date not null format 'yyyy-MM-dd') for table
+dfs.tmp.`text_table` properties ('drill.strict' = 'true');
+|------|-----------------------------------------|
+| ok   | summary                                 |
+|------|-----------------------------------------|
+| true | Created schema for [dfs.tmp.text_table] |
+|------|-----------------------------------------|
+ 
 select * from dfs.tmp.`text_table`;
-+----+------------+
+|----|------------|
 | id | start_date |
-+----+------------+
+|----|------------|
 | 1  | 2019-02-01 |
 | 2  | 2018-11-30 |
 | 3  | 2016-01-01 |
 | 4  | 1970-01-01 |
 | 0  | 1970-01-01 |
-+----+------------+
-</code></pre></div>
-<p>Adding a default for each of these columns (-1 for id and 2017-01-01 for start_date),  you can see that the columns return the defined default value instead of the natural default.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">create or replace schema (id
-int not null default &#39;-1&#39;, start_date date not null format &#39;yyyy-MM-dd&#39; default
-&#39;2017-01-01&#39;) for table dfs.tmp.`text_table` properties (&#39;drill.strict&#39; =
-&#39;true&#39;);
-+------+-----------------------------------------+
-|  ok  |                summary                 |
-+------+-----------------------------------------+
-| true | Created schema for [dfs.tmp.text_table] |
-+------+-----------------------------------------+
+|----|------------|
+</code></pre></div></div>
 
+<p>Adding a default for each of these columns (-1 for id and 2017-01-01 for start_date),  you can see that the columns return the defined default value instead of the natural default.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create or replace schema (id
+int not null default '-1', start_date date not null format 'yyyy-MM-dd' default
+'2017-01-01') for table dfs.tmp.`text_table` properties ('drill.strict' =
+'true');
+|------|-----------------------------------------|
+| ok   | summary                                 |
+|------|-----------------------------------------|
+| true | Created schema for [dfs.tmp.text_table] |
+|------|-----------------------------------------|
+ 
 select * from dfs.tmp.`text_table`;
-+----+------------+
+|----|------------|
 | id | start_date |
-+----+------------+
+|----|------------|
 | 1  | 2019-02-01 |
 | 2  | 2018-11-30 |
 | 3  | 2016-01-01 |
 | 4  | 2017-01-01 |
 | -1 | 2017-01-01 |
-+----+------------+  
-</code></pre></div>
-<h2 id="handling-policy-for-blank-column-values">Handling Policy for Blank Column Values</h2>
+|----|------------|  
+</code></pre></div></div>
 
+<h2 id="handling-policy-for-blank-column-values">Handling Policy for Blank Column Values</h2>
 <p>It is common for CSV files to have blank column values. The default
-output for blank column values are empty strings (&#39;&#39;), as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">select * from dfs.tmp.`text_blank`;
-+----+--------+------------+
+output for blank column values are empty strings (‘’), as shown:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select * from dfs.tmp.`text_blank`;
+|----|--------|------------|
 | id | amount | start_date |
-+----+--------+------------+
+|----|--------|------------|
 | 1  | 20     | 2019-01-01 |
 | 2  |        |            |
 | 3  | 30     |            |
-+----+--------+------------+
-</code></pre></div>
-<p>When a schema is defined for columns, the default blank handling policy is <code>skip</code> which treats blank values as null, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">create or replace schema (id
-int, amount double, start_date date format &#39;yyyy-MM-dd&#39;) for table
-dfs.tmp.`text_blank`;
-+------+-----------------------------------------+
-|  ok  |                summary                 |
-+------+-----------------------------------------+
-| true | Created schema for [dfs.tmp.text_blank] |
-+------+-----------------------------------------+
+|----|--------|------------|
+</code></pre></div></div>
 
+<p>When a schema is defined for columns, the default blank handling policy is <code class="language-plaintext highlighter-rouge">skip</code> which treats blank values as null, as shown:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create or replace schema (id
+int, amount double, start_date date format 'yyyy-MM-dd') for table
+dfs.tmp.`text_blank`;
+|------|-----------------------------------------|
+| ok   | summary                                 |
+|------|-----------------------------------------|
+| true | Created schema for [dfs.tmp.text_blank] |
+|------|-----------------------------------------|
+ 
 select * from dfs.tmp.`text_blank`;
-+----+--------+------------+
+|----|--------|------------|
 | id | amount | start_date |
-+----+--------+------------+
+|----|--------|------------|
 | 1  | 20.0   | 2019-01-01 |
 | 2  | null   | null       |
 | 3  | 30.0   | null       |
-+----+--------+------------+
-</code></pre></div>
+|----|--------|------------|
+</code></pre></div></div>
+
 <p>If a column is absent in the schema, the blank handling policy is default. Note that the blank handling policy is not applicable to varchar columns since they do not go through the type conversion logic.</p>
 
-<p>You can configure how Drill handles blank column values through the <code>drill.blank-as</code> property when you create schema. </p>
+<p>You can configure how Drill handles blank column values through the <code class="language-plaintext highlighter-rouge">drill.blank-as</code> property when you create schema.</p>
 
-<p>In the following example, you can see the blank handling policy for the defined schema with the <code>drill.blank-as</code> property set to <code>0</code> on the “amount” column:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">create or replace schema (id int, amount double properties {&#39;drill.blank-as&#39; = &#39;0&#39;}, start_date date format &#39;yyyy-MM-dd&#39;) for table dfs.tmp.`text_blank`;
-+------+-----------------------------------------+
-|  ok  |                summary                 |
-+------+-----------------------------------------+
+<p>In the following example, you can see the blank handling policy for the defined schema with the <code class="language-plaintext highlighter-rouge">drill.blank-as</code> property set to <code class="language-plaintext highlighter-rouge">0</code> on the “amount” column:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create or replace schema (id int, amount double properties {'drill.blank-as' = '0'}, start_date date format 'yyyy-MM-dd') for table dfs.tmp.`text_blank`;
+|------|-----------------------------------------|
+| ok   | summary                                 |
+|------|-----------------------------------------|
 | true | Created schema for [dfs.tmp.text_blank] |
-+------+-----------------------------------------+
-
+|------|-----------------------------------------|
+ 
 select * from dfs.tmp.`text_blank`;
-+----+--------+------------+
+|----|--------|------------|
 | id | amount | start_date |
-+----+--------+------------+
+|----|--------|------------|
 | 1  | 20.0   | 2019-01-01 |
-| 2  | 0.0  | null       |
+| 2  | 0.0    | null       |
 | 3  | 30.0   | null       |
-+----+--------+------------+  
-</code></pre></div>
+|----|--------|------------|
+</code></pre></div></div>
+
 <h2 id="format-for-date-time-conversion">Format for Date, Time Conversion</h2>
+<p>When you convert string values to date and time data types, include the format for proper conversion.</p>
 
-<p>When you convert string values to date and time data types, include the format for proper conversion. </p>
+<p>You can include the format using the keyword “format,” as shown:</p>
 
-<p>You can include the format using the keyword “format,” as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">create or replace schema (start_date date format &#39;yyyy-MM-dd&#39;) for table dfs.tmp.`text_table`;
-</code></pre></div>
-<p>Alternatively, you can include the format in the column properties, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">create or replace schema (start_date date properties {&#39;drill.format&#39; = &#39;yyyy-MM-dd&#39;}) for table dfs.tmp.`text_table`;
-</code></pre></div>
-<p>Note that date, time type conversion uses the Joda time library, thus the format pattern must comply with the <a href="https://www.joda.org/joda-time/key_format.html">Joda time supported format pattern</a>. If the format is not indicated, ISO datetime formats are used:  </p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create or replace schema (start_date date format 'yyyy-MM-dd') for table dfs.tmp.`text_table`;
+</code></pre></div></div>
 
-<table><thead>
-<tr>
-<th><strong>Type</strong></th>
-<th><strong>Accepted Format</strong></th>
-</tr>
-</thead><tbody>
-<tr>
-<td><a href="https://www.joda.org/joda-time/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTimeNoMillis--">Timestamp</a></td>
-<td>yyyy-MM-dd&#39;T&#39;HH:mm:ssZZ</td>
-</tr>
-<tr>
-<td><a href="https://www.joda.org/joda-time/apidocs/org/joda/time/format/ISODateTimeFormat.html#localDateParser--">Date</a></td>
-<td>date-element = std-date-element</td>
-</tr>
-<tr>
-<td></td>
-<td>std-date-element  = yyyy [&#39;-&#39; MM [&#39;-&#39; dd]]</td>
-</tr>
-<tr>
-<td></td>
-<td>ord-date-element  = yyyy [&#39;-&#39; DDD]</td>
-</tr>
-<tr>
-<td></td>
-<td>week-date-element = xxxx &#39;-W&#39; ww [&#39;-&#39; e]</td>
-</tr>
-<tr>
-<td><a href="https://www.joda.org/joda-time/apidocs/org/joda/time/format/ISODateTimeFormat.html#localTimeParser--">Time</a></td>
-<td>time = [&#39;T&#39;] time-element</td>
-</tr>
-<tr>
-<td></td>
-<td>time-element = HH [minute-element]</td>
-</tr>
-<tr>
-<td></td>
-<td>minute-element = &#39;:&#39; mm [second-element]</td>
-</tr>
-<tr>
-<td></td>
-<td>second-element = &#39;:&#39; ss [fraction]</td>
-</tr>
-<tr>
-<td></td>
-<td>fraction       =   (&#39;.&#39;</td>
-</tr>
-</tbody></table>
+<p>Alternatively, you can include the format in the column properties, as shown:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create or replace schema (start_date date properties {'drill.format' = 'yyyy-MM-dd'}) for table dfs.tmp.`text_table`;
+</code></pre></div></div>
+
+<p>Note that date, time type conversion uses the Joda time library, thus the format pattern must comply with the <a href="https://www.joda.org/joda-time/key_format.html">Joda time supported format pattern</a>. If the format is not indicated, ISO datetime formats are used:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>Type</strong></th>
+      <th><strong>Accepted Format</strong></th>
+      <th> </th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://www.joda.org/joda-time/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTimeNoMillis--">Timestamp</a></td>
+      <td>yyyy-MM-dd’T’HH:mm:ssZZ</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://www.joda.org/joda-time/apidocs/org/joda/time/format/ISODateTimeFormat.html#localDateParser--">Date</a></td>
+      <td>date-element = std-date-element</td>
+      <td>ord-date-element</td>
+      <td>week-date-element</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>std-date-element  = yyyy [’-‘ MM [’-‘ dd]]</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>ord-date-element  = yyyy [’-‘ DDD]</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>week-date-element = xxxx ‘-W’ ww [’-‘ e]</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="https://www.joda.org/joda-time/apidocs/org/joda/time/format/ISODateTimeFormat.html#localTimeParser--">Time</a></td>
+      <td>time = [‘T’] time-element</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>time-element = HH [minute-element]</td>
+      <td>[fraction]</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>minute-element = ‘:’ mm [second-element]</td>
+      <td>[fraction]</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>second-element = ‘:’ ss [fraction]</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>fraction       =   (‘.’</td>
+      <td>’,’) digit+</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
 
 <h2 id="limitations">Limitations</h2>
-
 <p>Schema provisioning works with selected readers. If you develop a format plugin, you must use the
- <code>Enhanced Vector Framework</code> (rather than the &quot;classic&quot; techniques) to enable schema support.</p>
+ <code class="language-plaintext highlighter-rouge">Enhanced Vector Framework</code> (rather than the “classic” techniques) to enable schema support.</p>
 
-<p>To use schema provisioning, you must first enable it with the <code>store.table.use_schema_file</code> option.</p>
+<p>To use schema provisioning, you must first enable it with the <code class="language-plaintext highlighter-rouge">store.table.use_schema_file</code> option.</p>
 
 <h2 id="examples">Examples</h2>
-
-<p>Examples throughout this topic use the files and directories described in the following section, Directory and File Setup.   </p>
+<p>Examples throughout this topic use the files and directories described in the following section, Directory and File Setup.</p>
 
 <h3 id="directory-and-file-setup">Directory and File Setup</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">[root@doc23 text_table]# pwd
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@doc23 text_table]# pwd
 /tmp/text_table
 [root@doc23 text_table]# ls
 1.csvh  2.csvh
@@ -1860,180 +1948,206 @@ id,amount,start_date
 1,20,2019-01-01
 2,,
 3,30,
-</code></pre></div>
-<p>Query the directory text_table. </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">select * from dfs.tmp.`text_table`;
-+----+---------+------------+
+</code></pre></div></div>
+
+<p>Query the directory text_table.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select * from dfs.tmp.`text_table`;
+|----|---------|------------|
 | id |  name   | start_date |
-+----+---------+------------+
+|----|---------|------------|
 | 1  | Fred    | 2019-02-01 |
 | 2  | Wilma   | 2018-11-30 |
 | 3  | Pebbles | 2016-01-01 |
 | 4  | Barney  |            |
 |    | Dino    |            |
-+----+---------+------------+
-</code></pre></div>
+|----|---------|------------|
+</code></pre></div></div>
+
 <p>Notice that the query plan contains a scan and project:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">| 00-00    Screen
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>| 00-00    Screen
 00-01      Project(**=[$0])
 00-02        Scan(table=[[dfs, tmp, text_table]], groupscan=[EasyGroupScan [selectionRoot=file:/tmp/text_table, numFiles=2, columns=[`**`], files=[file:/tmp/text_table/1.csvh, file:/tmp/text_table/2.csvh], schema=null]])
-</code></pre></div>
-<p>Using the sqltypeof and modeof functions, you can see that each column is defined as a non-nullable string (varchar), and missing columns are defined as empty strings:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">select sqltypeof(id), modeof(id) from dfs.tmp.`text_table` limit 1;
-+-------------------+----------+
-|      EXPR$0       |  EXPR$1  |
-+-------------------+----------+
-| CHARACTER VARYING | NOT NULL |
-+-------------------+----------+  
-</code></pre></div>
-<h3 id="creating-a-schema">Creating a Schema</h3>
+</code></pre></div></div>
 
+<p>Using the sqltypeof and modeof functions, you can see that each column is defined as a non-nullable string (varchar), and missing columns are defined as empty strings:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select sqltypeof(id), modeof(id) from dfs.tmp.`text_table` limit 1;
+|-------------------|----------|
+| EXPR$0            | EXPR$1   |
+|-------------------|----------|
+| CHARACTER VARYING | NOT NULL |
+|-------------------|----------|
+</code></pre></div></div>
+
+<h3 id="creating-a-schema">Creating a Schema</h3>
 <p>Create a defined schema for the text_table directory. When you define schema, you do not have to enumerate all columns. The columns in the defined schema are not required to be in the same order as the data file. Note that the name of the columns must match, but can differ in case.</p>
 
 <p>Define schema for the id column:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">create schema (id int) for table dfs.tmp.`text_table`;
-+------+-----------------------------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create schema (id int) for table dfs.tmp.`text_table`;
+|------|-----------------------------------------|
 |  ok  |                 summary                 |
-+------+-----------------------------------------+
+|------|-----------------------------------------|
 | true | Created schema for [dfs.tmp.text_table] |
-+------+-----------------------------------------+  
-</code></pre></div>
-<p>After you define a schema, you can see the schema file (stored in JSON format) in the root table directory: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> [root@doc23 text_table]# ls -a
+|------|-----------------------------------------|  
+</code></pre></div></div>
+
+<p>After you define a schema, you can see the schema file (stored in JSON format) in the root table directory:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> [root@doc23 text_table]# ls -a
 .  ..  1.csvh  2.csvh  .drill.schema  ..drill.schema.crc  
 
 [root@doc23 text_table]# cat .drill.schema
 {
-  &quot;table&quot; : &quot;dfs.tmp.`text_table`&quot;,
-  &quot;schema&quot; : {
-    &quot;columns&quot; : [
+  "table" : "dfs.tmp.`text_table`",
+  "schema" : {
+    "columns" : [
       {
-        &quot;name&quot; : &quot;id&quot;,
-        &quot;type&quot; : &quot;INT&quot;,
-        &quot;mode&quot; : &quot;OPTIONAL&quot;
+        "name" : "id",
+        "type" : "INT",
+        "mode" : "OPTIONAL"
       }
     ]
   },
-  &quot;version&quot; : 1
-</code></pre></div>
+  "version" : 1
+</code></pre></div></div>
+
 <p>Query the text_table directory to see how the schema is applied:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">select * from dfs.tmp.`text_table`;
-+------+---------+------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select * from dfs.tmp.`text_table`;
+|------|---------|------------|
 |  id  |  name   | start_date |
-+------+---------+------------+
+|------|---------|------------|
 | 1    | Fred    | 2019-02-01 |
 | 2    | Wilma   | 2018-11-30 |
 | 3    | Pebbles | 2016-01-01 |
 | 4    | Barney  |            |
 | null | Dino    |            |
-+------+---------+------------+  
-</code></pre></div>
-<p>After defining the schema on the id column, you can see that the <code>id</code> column type and mode is defined as a nullable integer, while other columns types were inferred as non-nullable VarChar:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">select sqltypeof(id), modeof(id) from dfs.tmp.`text_table` limit 1;
-+---------+----------+
+|------|---------|------------|  
+</code></pre></div></div>
+
+<p>After defining the schema on the id column, you can see that the <code class="language-plaintext highlighter-rouge">id</code> column type and mode is defined as a nullable integer, while other columns types were inferred as non-nullable VarChar:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select sqltypeof(id), modeof(id) from dfs.tmp.`text_table` limit 1;
+|---------|----------|
 | EXPR$0  |  EXPR$1  |
-+---------+----------+
+|---------|----------|
 | INTEGER | NULLABLE |
-+---------+----------+
-</code></pre></div>
+|---------|----------|
+</code></pre></div></div>
+
 <p>Running EXPLAIN PLAN, you can see that type conversion was done while reading data from source; no additional plan stages were added:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">explain plan for select * from dfs.tmp.`text_table`;
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>explain plan for select * from dfs.tmp.`text_table`;
 | 00-00    Screen
 00-01      Project(**=[$0])
 00-02        Scan(table=[[dfs, tmp, text_table]], groupscan=[EasyGroupScan [selectionRoot=file:/tmp/text_table, numFiles=2, columns=[`**`], files=[file:/tmp/text_table/1.csvh, file:/tmp/text_table/2.csvh], schema=[TupleSchema [PrimitiveColumnMetadata [`id` (INT(0, 0):OPTIONAL)]]]]])  
-</code></pre></div>
-<h3 id="describing-schema-for-a-table">Describing Schema for a Table</h3>
+</code></pre></div></div>
 
-<p>You can verify the provided schema using the <a href="#related-commands"><code>DESCRIBE SCHEMA FOR TABLE</code> command</a>. This command can format the schema in two formats. The <code>JSON</code> format is the same as the contents of the <code>.drill.schema</code> file stored in your table directory.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">describe schema for table dfs.tmp.`text_table` as JSON;
-+----------------------------------------------------------------------------------+
+<h3 id="describing-schema-for-a-table">Describing Schema for a Table</h3>
+<p>You can verify the provided schema using the <a href="#related-commands"><code class="language-plaintext highlighter-rouge">DESCRIBE SCHEMA FOR TABLE</code> command</a>. This command can format the schema in two formats. The <code class="language-plaintext highlighter-rouge">JSON</code> format is the same as the contents of the <code class="language-plaintext highlighter-rouge">.drill.schema</code> file stored in your table directory.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>describe schema for table dfs.tmp.`text_table` as JSON;
+|----------------------------------------------------------------------------------|
 |                                      schema                                      |
-+----------------------------------------------------------------------------------+
+|----------------------------------------------------------------------------------|
 | {
-  &quot;table&quot; : &quot;dfs.tmp.`text_table`&quot;,
-  &quot;schema&quot; : {
-    &quot;columns&quot; : [
+  "table" : "dfs.tmp.`text_table`",
+  "schema" : {
+    "columns" : [
       {
-        &quot;name&quot; : &quot;id&quot;,
-        &quot;type&quot; : &quot;INT&quot;,
-        &quot;mode&quot; : &quot;OPTIONAL&quot;
+        "name" : "id",
+        "type" : "INT",
+        "mode" : "OPTIONAL"
       }
     ]
   },
-  &quot;version&quot; : 1
+  "version" : 1
 } |
-+----------------------------------------------------------------------------------+
-</code></pre></div>
-<p>You can also use the <code>STATEMENT</code> format to recover the SQL statement to recreate the schema. You can easily copy, reuse or edit this statement to change the schema or reuse the statement for other files.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">describe schema for table dfs.tmp.`text_table` as statement;
-+--------------------------------------------------------------------------+
+|----------------------------------------------------------------------------------|
+</code></pre></div></div>
+
+<p>You can also use the <code class="language-plaintext highlighter-rouge">STATEMENT</code> format to recover the SQL statement to recreate the schema. You can easily copy, reuse or edit this statement to change the schema or reuse the statement for other files.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>describe schema for table dfs.tmp.`text_table` as statement;
+|--------------------------------------------------------------------------|
 |                                  schema                                  |
-+--------------------------------------------------------------------------+
+|--------------------------------------------------------------------------|
 | CREATE OR REPLACE SCHEMA
 (
 `id` INT
 )
 FOR TABLE dfs.tmp.`text_table`
  |
-+--------------------------------------------------------------------------+
-</code></pre></div>
-<h3 id="altering-schema-for-a-table">Altering Schema for a Table</h3>
+|--------------------------------------------------------------------------|
+</code></pre></div></div>
 
-<p>Use the <code>ALTER SCHEMA</code> command to update your table schema. The command can add or replace columns.
+<h3 id="altering-schema-for-a-table">Altering Schema for a Table</h3>
+<p>Use the <code class="language-plaintext highlighter-rouge">ALTER SCHEMA</code> command to update your table schema. The command can add or replace columns.
 Or, it can update properties for the table or individual columns. Syntax:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SCHEMA
-(FOR TABLE dfs.tmp.nation | PATH &#39;/tmp/schema.json&#39;)
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ALTER SCHEMA
+(FOR TABLE dfs.tmp.nation | PATH '/tmp/schema.json')
 ADD [OR REPLACE]
 [COLUMNS (col1 int, col2 varchar)]
-[PROPERTIES (&#39;prop1&#39;=&#39;val1&#39;, &#39;prop2&#39;=&#39;val2&#39;)]
-</code></pre></div>
-<p><code>ALTER SCHEMA</code> modifies an existing schema file; it will fail if the schema file does not exist.
-(Use <code>CREATE SCHEMA</code> to create a new schema file.)</p>
+[PROPERTIES ('prop1'='val1', 'prop2'='val2')]
+</code></pre></div></div>
 
-<p>To prevent accidental changes, the <code>ALTER SCHEMA ... ADD</code> command will fail if the requested column or property
- already exists. Use the <code>OR REPLACE</code> clause to modify an existing column or property.</p>
+<p><code class="language-plaintext highlighter-rouge">ALTER SCHEMA</code> modifies an existing schema file; it will fail if the schema file does not exist.
+(Use <code class="language-plaintext highlighter-rouge">CREATE SCHEMA</code> to create a new schema file.)</p>
 
-<p>You can remove columns or property with the <code>ALTER SCHEMA ... REMOVE</code> command:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SCHEMA
-(FOR TABLE dfs.tmp.nation | PATH &#39;/tmp/schema.json&#39;)
+<p>To prevent accidental changes, the <code class="language-plaintext highlighter-rouge">ALTER SCHEMA ... ADD</code> command will fail if the requested column or property
+ already exists. Use the <code class="language-plaintext highlighter-rouge">OR REPLACE</code> clause to modify an existing column or property.</p>
+
+<p>You can remove columns or property with the <code class="language-plaintext highlighter-rouge">ALTER SCHEMA ... REMOVE</code> command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ALTER SCHEMA
+(FOR TABLE dfs.tmp.nation | PATH '/tmp/schema.json')
 REMOVE
 [COLUMNS (col1 int, col2 varchar)]
-[PROPERTIES (&#39;prop1&#39;=&#39;val1&#39;, &#39;prop2&#39;=&#39;val2&#39;)]
-</code></pre></div>
+[PROPERTIES ('prop1'='val1', 'prop2'='val2')]
+</code></pre></div></div>
+
 <p>The command fails if the schema file does not exist. The command silently ignores a request to remove a column or
  property which does not exist.</p>
 
 <h3 id="dropping-schema-for-a-table">Dropping Schema for a Table</h3>
+<p>You can easily drop the schema for a table using the <code class="language-plaintext highlighter-rouge">DROP SCHEMA [IF EXISTS] FOR TABLE `table_name`</code> command, as shown:</p>
 
-<p>You can easily drop the schema for a table using the <code>DROP SCHEMA [IF EXISTS] FOR TABLE `table_name`</code> command, as shown:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">use dfs.tmp;
-+------+-------------------------------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>use dfs.tmp;
+|------|-------------------------------------|
 |  ok  |               summary               |
-+------+-------------------------------------+
+|------|-------------------------------------|
 | true | Default schema changed to [dfs.tmp] |
-+------+-------------------------------------+
+|------|-------------------------------------|
 
 drop schema for table `text_table`;
-+------+---------------------------------------+
+|------|---------------------------------------|
 |  ok  |                summary                |
-+------+---------------------------------------+
+|------|---------------------------------------|
 | true | Dropped schema for table [text_table] |
-+------+---------------------------------------+
-</code></pre></div>
+|------|---------------------------------------|
+</code></pre></div></div>
+
 <h2 id="troubleshooting">Troubleshooting</h2>
 
-<p><strong>Schema defined as incorrect data type produces DATA_READ_ERROR</strong>  </p>
+<p><strong>Schema defined as incorrect data type produces DATA_READ_ERROR</strong></p>
 
-<p>Assume that you defined schema on the “name” column as integer, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">create or replace schema (name int) for table dfs.tmp.`text_table`;
-+------+-----------------------------------------+
+<p>Assume that you defined schema on the “name” column as integer, as shown:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create or replace schema (name int) for table dfs.tmp.`text_table`;
+|------|-----------------------------------------|
 |  ok  |                 summary                 |
-+------+-----------------------------------------+
+|------|-----------------------------------------|
 | true | Created schema for [dfs.tmp.text_table] |
-+------+-----------------------------------------+
-</code></pre></div>
-<p>Because the column does not contain integers, a query issued against the directory returns the DATA_READ_ERROR. The error message includes the line and value causing the issue:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">select * from dfs.tmp.`text_table`;
+|------|-----------------------------------------|
+</code></pre></div></div>
+
+<p>Because the column does not contain integers, a query issued against the directory returns the DATA_READ_ERROR. The error message includes the line and value causing the issue:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select * from dfs.tmp.`text_table`;
 
 Error: DATA_READ ERROR: Illegal conversion: Column `name` of type INT, Illegal value `Fred`
 
@@ -2045,21 +2159,23 @@ Fragment 0:0
 
 Incorrect syntax
 Required syntax properties are missing or incorrectly specified. Check CREATE SCHEMA syntax to ensure that all required properties where specified.
-</code></pre></div>
-<p><strong>Missing backticks</strong><br>
+</code></pre></div></div>
+
+<p><strong>Missing backticks</strong><br />
 Unable to parse CREATE SCHEMA command due to unknown properties and keywords. If the specified table name or column name contains spaces, enclose the name in backticks.</p>
 
-<p><strong>Incorrect data type</strong><br>
-Parsing has failed on unknown/unsupported data type. Check which data types are supported by Drill. Check syntax for complex data types.  </p>
+<p><strong>Incorrect data type</strong><br />
+Parsing has failed on unknown/unsupported data type. Check which data types are supported by Drill. Check syntax for complex data types.</p>
 
-<p><strong>Missing table name</strong><br>
-Table name indicated after <code>FOR TABLE</code> keywords are not present. Check if the table exists in the specified schema or in the current schema (if the schema was not specified). If you do not want to bind schema to the specific table, use the PATH property.</p>
+<p><strong>Missing table name</strong><br />
+Table name indicated after <code class="language-plaintext highlighter-rouge">FOR TABLE</code> keywords are not present. Check if the table exists in the specified schema or in the current schema (if the schema was not specified). If you do not want to bind schema to the specific table, use the PATH property.</p>
 
-<p><strong>Existing schema file</strong><br>
+<p><strong>Existing schema file</strong><br />
 A schema file already exists for the table. Use the DROP SCHEMA command to remove stale or mistakenly created schema file. Alternatively, you can use the CREATE OR REPLACE SCHEMA command.</p>
 
-<p><strong>Lack of permissions</strong><br>
+<p><strong>Lack of permissions</strong><br />
 Unable to create schema file in the directory. Verify that you have write permission on the table’s root directory or the directory specified. If not, indicate the directory on which you write permissions in the command syntax.</p>
+
 
     
       
@@ -2077,7 +2193,7 @@ Unable to create schema file in the directory. Verify that you have write permis
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

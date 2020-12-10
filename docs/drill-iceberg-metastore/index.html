@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,13 +1369,13 @@
 
     </div>
 
-     Mar 3, 2020
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
-        <p>Drill&#39;s Metastore allows a variety of storage engines. Drill ships with a storage engine based on
+        <p>Drill’s Metastore allows a variety of storage engines. Drill ships with a storage engine based on
  <a href="http://iceberg.incubator.apache.org">Iceberg tables</a>. For Drill 1.17, this is default Drill Metastore
  implementation.</p>
 
@@ -1362,39 +1394,41 @@ If the file system does not support atomic rename, it could lead to inconsistenc
  stored the Metastore in your local file system. Drill is a distributed query engine, so production deployments MUST
  store the Metastore on DFS such as HDFS.</p>
 
-<p>Iceberg Metastore configuration can be set in <code>drill-metastore-distrib.conf</code> or <code>drill-metastore-override.conf</code> files.
-The default configuration is indicated in <code>drill-metastore-module.conf</code> file.</p>
+<p>Iceberg Metastore configuration can be set in <code class="language-plaintext highlighter-rouge">drill-metastore-distrib.conf</code> or <code class="language-plaintext highlighter-rouge">drill-metastore-override.conf</code> files.
+The default configuration is indicated in <code class="language-plaintext highlighter-rouge">drill-metastore-module.conf</code> file.</p>
 
 <p>Within the Metastore directory, the Metastore stores the data for each table as a set of records within a single Iceberg table.</p>
 
 <p>Iceberg tables will reside on the file system in the location based on Iceberg Metastore base location
- <code>drill.metastore.iceberg.location.base_path</code> configuration property and component specific location.
-Table metadata resides in the <code>${drill.metastore.iceberg.location.base_path}/tables</code> directory.</p>
+ <code class="language-plaintext highlighter-rouge">drill.metastore.iceberg.location.base_path</code> configuration property and component specific location.
+Table metadata resides in the <code class="language-plaintext highlighter-rouge">${drill.metastore.iceberg.location.base_path}/tables</code> directory.</p>
 
-<p>If you ran through the <a href="/docs/using-drill-metastore/#tutorial">Tutorial</a>, Metastore files are stored in <code>/home/username/drill/metastore/iceberg/tables</code>.
-If you inspect this directory you will see the following directories <code>my-dfs/tmp/lineitem/</code>.</p>
+<p>If you ran through the <a href="/docs/using-drill-metastore/#tutorial">Tutorial</a>, Metastore files are stored in <code class="language-plaintext highlighter-rouge">/home/username/drill/metastore/iceberg/tables</code>.
+If you inspect this directory you will see the following directories <code class="language-plaintext highlighter-rouge">my-dfs/tmp/lineitem/</code>.</p>
 
-<p>Example of base Metastore configuration file <code>drill-metastore-override.conf</code>, where Iceberg tables are stored in
+<p>Example of base Metastore configuration file <code class="language-plaintext highlighter-rouge">drill-metastore-override.conf</code>, where Iceberg tables are stored in
  hdfs:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">drill.metastore.iceberg: {
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>drill.metastore.iceberg: {
   config.properties: {
-    fs.defaultFS: &quot;hdfs:///&quot;
+    fs.defaultFS: "hdfs:///"
   }
 
   location: {
-    base_path: &quot;/drill/metastore&quot;,
-    relative_path: &quot;iceberg&quot;
+    base_path: "/drill/metastore",
+    relative_path: "iceberg"
   }
 }
-</code></pre></div>
+</code></pre></div></div>
+
 <h3 id="iceberg-metadata-expiration">Iceberg metadata expiration</h3>
 
 <p>Iceberg table generates metadata for each modification operation:
 snapshot, manifest file, table metadata file. Also when performing delete operation,
 previously stored data files are not deleted. These files with the time can occupy lots of space.
-Two table properties <code>write.metadata.delete-after-commit.enabled</code> and <code>write.metadata.previous-versions-max</code>
+Two table properties <code class="language-plaintext highlighter-rouge">write.metadata.delete-after-commit.enabled</code> and <code class="language-plaintext highlighter-rouge">write.metadata.previous-versions-max</code>
 control expiration process. Metadata files will be expired automatically if
-<code>write.metadata.delete-after-commit.enabled</code> is enabled.</p>
+<code class="language-plaintext highlighter-rouge">write.metadata.delete-after-commit.enabled</code> is enabled.</p>
 
     
       
@@ -1412,7 +1446,7 @@ control expiration process. Metadata files will be expired automatically if
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

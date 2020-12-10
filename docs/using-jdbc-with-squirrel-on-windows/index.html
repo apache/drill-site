@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1335,60 +1367,69 @@
 
     </div>
 
-     Jan 19, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
-        <p>You can use the JDBC driver to connect to Drill from SQuirrel and run SQL queries. Verify that your system meets the prerequisites and then follow the steps listed.  </p>
+        <p>You can use the JDBC driver to connect to Drill from SQuirrel and run SQL queries. Verify that your system meets the prerequisites and then follow the steps listed.</p>
 
-<p><strong>Note:</strong> Drill interprets a wildcard in an SQL query as a multiline comment (/.../), which SQuirreL supports. As a result, SQuirreL tries to remove what it interprets as comments and submits an abruptly truncated query. To resolve this issue in SQuirreL, go to the menu and select <strong>File &gt; New Session Properties &gt; Tab SQL</strong> and uncheck the <em>“Remove multi-line comment (/.../) from SQL before sending to database&quot;</em> option located in the lower portion of the window. See <a href="https://sourceforge.net/p/squirrel-sql/bugs/1300/">https://sourceforge.net/p/squirrel-sql/bugs/1300</a>/ for more information. </p>
+<p><strong>Note:</strong> Drill interprets a wildcard in an SQL query as a multiline comment (/…/), which SQuirreL supports. As a result, SQuirreL tries to remove what it interprets as comments and submits an abruptly truncated query. To resolve this issue in SQuirreL, go to the menu and select <strong>File &gt; New Session Properties &gt; Tab SQL</strong> and uncheck the <em>“Remove multi-line comment (/…/) from SQL before sending to database”</em> option located in the lower portion of the window. See <a href="https://sourceforge.net/p/squirrel-sql/bugs/1300/">https://sourceforge.net/p/squirrel-sql/bugs/1300</a>/ for more information.</p>
 
 <h2 id="prerequisites">Prerequisites</h2>
 
 <ul>
-<li>SQuirreL requires JRE 7</li>
-<li>Drill installed in distributed mode on one or multiple nodes in a cluster. Refer to the <a href="/docs/install-drill/">Install Drill</a> documentation for more information.</li>
-<li>The client must be able to resolve the actual hostname of the Drill node(s) with the IP(s). Verify that a DNS entry was created on the client machine for the Drill node(s).</li>
+  <li>SQuirreL requires JRE 7</li>
+  <li>Drill installed in distributed mode on one or multiple nodes in a cluster. Refer to the <a href="/docs/install-drill/">Install Drill</a> documentation for more information.</li>
+  <li>The client must be able to resolve the actual hostname of the Drill node(s) with the IP(s). Verify that a DNS entry was created on the client machine for the Drill node(s).</li>
 </ul>
 
-<p>If a DNS entry does not exist, create the entry for the Drill node(s).</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">* For Windows, create the entry in the %WINDIR%\system32\drivers\etc\hosts file.
-* For Linux and Mac, create the entry in /etc/hosts.  
-</code></pre></div>
-<p><drill-machine-IP> <drill-machine-hostname>
-    Example: <code>127.0.1.1 maprdemo</code></p>
+<p>If a DNS entry does not exist, create an entry for the Drill node(s).</p>
 
-<hr>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>* For Windows, create an entry in the %WINDIR%\system32\drivers\etc\hosts file.
+* For Linux and Mac, create an entry in /etc/hosts.  
+
+&lt;drill-machine-IP&gt; &lt;drill-machine-hostname&gt;
+</code></pre></div></div>
+
+<p>Example: <code class="language-plaintext highlighter-rouge">127.0.1.1 maprdemo</code></p>
+
+<hr />
 
 <h2 id="step-1-getting-the-drill-jdbc-driver">Step 1: Getting the Drill JDBC Driver</h2>
 
-<p>The Drill JDBC Driver <code>JAR</code> file must exist in a directory on your Windows
+<p>The Drill JDBC Driver <code class="language-plaintext highlighter-rouge">JAR</code> file must exist in a directory on your Windows
 machine in order to configure the driver in the SQuirreL client.</p>
 
-<p>You can copy the Drill JDBC <code>JAR</code> file from the following Drill installation
+<p>You can copy the Drill JDBC <code class="language-plaintext highlighter-rouge">JAR</code> file from the following Drill installation
 directory on the node with Drill installed, to a directory on your Windows
 machine:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;drill_installation_directory&gt;/jars/jdbc-driver/drill-jdbc-all-&lt;version&gt;.jar
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;drill_installation_directory&gt;/jars/jdbc-driver/drill-jdbc-all-&lt;version&gt;.jar
+</code></pre></div></div>
+
 <p>Or, download a <a href="http://apache.osuosl.org/drill/">TAR file for the latest Drill release</a> to a location on your Windows machine, and extract the contents of the file. You may need to use a decompression utility, such as <a href="http://www.7-zip.org/">7-zip</a> to extract the archive. Once extracted, you can locate the driver in the following directory:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;windows_directory&gt;\apache-drill-&lt;version&gt;\jars\jdbc-driver\drill-jdbc-all-&lt;version&gt;.jar
-</code></pre></div>
-<hr>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;windows_directory&gt;\apache-drill-&lt;version&gt;\jars\jdbc-driver\drill-jdbc-all-&lt;version&gt;.jar
+</code></pre></div></div>
+
+<hr />
 
 <h2 id="step-2-installing-and-starting-squirrel">Step 2: Installing and Starting SQuirreL</h2>
 
 <p>To install and start SQuirreL, complete the following steps:</p>
 
 <ol>
-<li>Download the SQuirreL JAR file for Windows from the following location:<br>
-<a href="http://www.squirrelsql.org/#installation">http://www.squirrelsql.org/#installation</a></li>
-<li>Double-click the SQuirreL <code>JAR</code> file. The SQuirreL installation wizard walks you through the installation process.</li>
-<li>When installation completes, navigate to the SQuirreL installation folder and then double-click <code>squirrel-sql.bat</code> to start SQuirreL.</li>
+  <li>Download the SQuirreL JAR file for Windows from the following location:</li>
+</ol>
+<p><a href="http://www.squirrelsql.org/#installation">http://www.squirrelsql.org/#installation</a></p>
+<ol>
+  <li>Double-click the SQuirreL <code class="language-plaintext highlighter-rouge">JAR</code> file. The SQuirreL installation wizard walks you through the installation process.</li>
+  <li>When installation completes, navigate to the SQuirreL installation folder and then double-click <code class="language-plaintext highlighter-rouge">squirrel-sql.bat</code> to start SQuirreL.</li>
 </ol>
 
-<hr>
+<hr />
 
 <h2 id="step-3-adding-the-drill-jdbc-driver-to-squirrel">Step 3: Adding the Drill JDBC Driver to SQuirreL</h2>
 
@@ -1402,93 +1443,112 @@ access data sources that you have registered with Drill.</p>
 <p>To define the Drill JDBC Driver, complete the following steps:</p>
 
 <ol>
-<li><p>In the SQuirreL toolbar, select <strong>Drivers &gt; New Driver</strong>. The Add Driver dialog box appears.</p>
+  <li>
+    <p>In the SQuirreL toolbar, select <strong>Drivers &gt; New Driver</strong>. The Add Driver dialog box appears.</p>
 
-<p><img src="/docs/img/40.png" alt="drill query flow"></p></li>
-<li><p>Enter the following information:</p>
+    <p><img src="/images/docs/40.png" alt="drill query flow" /></p>
+  </li>
+  <li>
+    <p>Enter the following information:</p>
 
-<table><thead>
-<tr>
-<th>Option</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Name</td>
-<td>Name for the Drill JDBC Driver</td>
-</tr>
-<tr>
-<td>Example URL</td>
-<td>jdbc:drill:zk=<zookeeper_quorum>[;schema=<schema_to_use_as_default>]Example: jdbc:drill:zk=maprdemo:5181Note: The default ZooKeeper port is 2181. In a MapR cluster, the ZooKeeper port is 5181.</td>
-</tr>
-<tr>
-<td>Website URL</td>
-<td>jdbc:drill:zk=<zookeeper_quorum>[;schema=<schema_to_use_as_default>]Example: jdbc:drill:zk=maprdemo:5181Note: The default ZooKeeper port is 2181. In a MapR cluster, the ZooKeeper port is 5181.</td>
-</tr>
-<tr>
-<td>Extra Class Path</td>
-<td>Click Add and navigate to the JDBC JAR file location in the Windows directory:<windows_directory>/jars/jdbc-driver/drill-jdbc-all-0.6.0-incubating.jar Select the JAR file, click Open, and then click List Drivers.</td>
-</tr>
-<tr>
-<td>Class Name</td>
-<td>Select org.apache.drill.jdbc.Driver from the drop-down menu.</td>
-</tr>
-</tbody></table></li>
-<li><p>Click <strong>OK</strong>. The SQuirreL client displays a message stating that the driver registration is successful, and you can see the driver in the Drivers panel.  </p></li>
+    <table>
+      <thead>
+        <tr>
+          <th>Option</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Name</td>
+          <td>Name for the Drill JDBC Driver</td>
+        </tr>
+        <tr>
+          <td>Example URL</td>
+          <td>jdbc:drill:zk=<zookeeper_quorum>[;schema=<schema_to_use_as_default>]Example: jdbc:drill:zk=maprdemo:5181Note: The default ZooKeeper port is 2181. In a MapR cluster, the ZooKeeper port is 5181.</schema_to_use_as_default></zookeeper_quorum></td>
+        </tr>
+        <tr>
+          <td>Website URL</td>
+          <td>jdbc:drill:zk=<zookeeper_quorum>[;schema=<schema_to_use_as_default>]Example: jdbc:drill:zk=maprdemo:5181Note: The default ZooKeeper port is 2181. In a MapR cluster, the ZooKeeper port is 5181.</schema_to_use_as_default></zookeeper_quorum></td>
+        </tr>
+        <tr>
+          <td>Extra Class Path</td>
+          <td>Click Add and navigate to the JDBC JAR file location in the Windows directory:<windows_directory>/jars/jdbc-driver/drill-jdbc-all-0.6.0-incubating.jar Select the JAR file, click Open, and then click List Drivers.</windows_directory></td>
+        </tr>
+        <tr>
+          <td>Class Name</td>
+          <td>Select org.apache.drill.jdbc.Driver from the drop-down menu.</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>Click <strong>OK</strong>. The SQuirreL client displays a message stating that the driver registration is successful, and you can see the driver in the Drivers panel.</p>
+
+    <p><img src="/images/docs/52.png" alt="drill query flow" /></p>
+  </li>
 </ol>
-
-<p><img src="/docs/img/52.png" alt="drill query flow"></p>
 
 <h3 id="b-create-an-alias">B. Create an Alias</h3>
 
 <p>To create an alias, complete the following steps:</p>
 
 <ol>
-<li>Select the <strong>Aliases</strong> tab.</li>
-<li><p>In the SQuirreL toolbar, select <strong>Aliases &gt;</strong><strong>New Alias</strong>. The Add Alias dialog box appears.</p>
+  <li>Select the <strong>Aliases</strong> tab.</li>
+  <li>
+    <p>In the SQuirreL toolbar, select <strong>Aliases &gt;</strong><strong>New Alias</strong>. The Add Alias dialog box appears.</p>
 
-<p><img src="/docs/img/19.png" alt="drill query flow"></p></li>
-<li><p>Enter the following information:  </p></li>
-</ol>
+    <p><img src="/images/docs/19.png" alt="drill query flow" /></p>
+  </li>
+  <li>
+    <p>Enter the following information:</p>
 
-<ul>
-<li>Alias Name: A unique name for the Drill JDBC Driver alias<br></li>
-<li>Driver: Select the Drill JDBC Driver<br></li>
-<li>URL: Enter the connection URL with the name of the Drill directory stored in ZooKeeper and the cluster ID, as shown in the <a href="/docs/using-jdbc-with-squirrel-on-windows/#entering-the-connection-url">next section</a>.<br></li>
-<li>User Name: admin<br></li>
-<li>Password: admin<br></li>
-</ul>
+    <ul>
+      <li>Alias Name: A unique name for the Drill JDBC Driver alias</li>
+      <li>Driver: Select the Drill JDBC Driver</li>
+      <li>URL: Enter the connection URL with the name of the Drill directory stored in ZooKeeper and the cluster ID, as shown in the <a href="/docs/using-jdbc-with-squirrel-on-windows/#entering-the-connection-url">next section</a>.</li>
+      <li>User Name: admin</li>
+      <li>Password: admin</li>
+    </ul>
+  </li>
+  <li>
+    <p>Click <strong>Ok</strong>. The Connect to: dialog box appears.</p>
 
-<ol>
-<li><p>Click <strong>Ok</strong>. The Connect to: dialog box appears.  </p>
+    <p><img src="/images/docs/30.png" alt="drill query flow" /></p>
+  </li>
+  <li>
+    <p>Click <strong>Connect</strong>. SQuirreL displays a message stating that the connection is successful.</p>
 
-<p><img src="/docs/img/30.png" alt="drill query flow"></p></li>
-<li><p>Click <strong>Connect</strong>. SQuirreL displays a message stating that the connection is successful.</p>
-
-<p><img src="/docs/img/53.png" alt="drill query flow"></p></li>
-<li><p>Click <strong>OK</strong>. SQuirreL displays a series of tabs.</p></li>
+    <p><img src="/images/docs/53.png" alt="drill query flow" /></p>
+  </li>
+  <li>Click <strong>OK</strong>. SQuirreL displays a series of tabs.</li>
 </ol>
 
 <h3 id="entering-the-connection-url">Entering the Connection URL</h3>
+<p>In step 3 of the procedure to create an alias, use the following syntax to enter the connection URL that includes the name of the Drill directory stored in ZooKeeper and the cluster ID:</p>
 
-<p>In step 3 of the procedure to create an alias, use the following syntax to enter the connection URL that includes the name of the Drill directory stored in ZooKeeper and the cluster ID:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> jdbc:drill:zk=&lt;zookeeper_quorum&gt;/&lt;drill_directory_in_zookeeper&gt;/&lt;cluster_ID&gt;;schema=&lt;schema_to_use_as_default&gt;
-</code></pre></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> jdbc:drill:zk=&lt;zookeeper_quorum&gt;/&lt;drill_directory_in_zookeeper&gt;/&lt;cluster_ID&gt;;schema=&lt;schema_to_use_as_default&gt;
+</code></pre></div></div>
+
 <p>The following examples show URLs for Drill installed on a single node:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> jdbc:drill:zk=10.10.100.56:5181/drill/demo_mapr_com-drillbits;schema=hive
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> jdbc:drill:zk=10.10.100.56:5181/drill/demo_mapr_com-drillbits;schema=hive
  jdbc:drill:zk=10.10.100.24:2181/drill/drillbits1;schema=hive
-</code></pre></div>
+</code></pre></div></div>
+
 <p>The following example shows a URL for Drill installed in distributed mode with a connection to a ZooKeeper quorum:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> jdbc:drill:zk=10.10.100.30:5181,10.10.100.31:5181,10.10.100.32:5181/drill/drillbits1;schema=hive
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> jdbc:drill:zk=10.10.100.30:5181,10.10.100.31:5181,10.10.100.32:5181/drill/drillbits1;schema=hive
+</code></pre></div></div>
+
 <ul>
-<li>Including a default schema is optional.</li>
-<li>The ZooKeeper port is 2181. In a MapR cluster, the ZooKeeper port is 5181.</li>
-<li>The Drill directory stored in ZooKeeper is <code>/drill</code>.</li>
-<li>The Drill default cluster ID is drillbits1.</li>
+  <li>Including a default schema is optional.</li>
+  <li>The ZooKeeper port is 2181. In a MapR cluster, the ZooKeeper port is 5181.</li>
+  <li>The Drill directory stored in ZooKeeper is <code class="language-plaintext highlighter-rouge">/drill</code>.</li>
+  <li>The Drill default cluster ID is drillbits1.</li>
 </ul>
 
-<hr>
+<hr />
 
 <h2 id="step-4-running-a-drill-query-from-squirrel">Step 4: Running a Drill Query from SQuirreL</h2>
 
@@ -1500,18 +1560,25 @@ SQuirreL with Drill.</p>
 <p>To query sample data with Squirrel, complete the following steps:</p>
 
 <ol>
-<li>Click the SQL tab.</li>
-<li><p>Enter the following query in the query box:   </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM cp.`employee.json`;
-</code></pre></div>
-<p>Example:<br>
- <img src="/docs/img/11.png" alt="drill query flow"></p></li>
-<li><p>Press <strong>Ctrl+Enter</strong> to run the query. The following query results display: </p>
+  <li>Click the SQL tab.</li>
+  <li>
+    <p>Enter the following query in the query box:</p>
 
-<p><img src="/docs/img/42.png" alt="drill query flow"> </p></li>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT * FROM cp.`employee.json`;
+</code></pre></div>    </div>
+
+    <p>Example:<br />
+  <img src="/images/docs/11.png" alt="drill query flow" /></p>
+  </li>
+  <li>
+    <p>Press <strong>Ctrl+Enter</strong> to run the query. The following query results display:</p>
+
+    <p><img src="/images/docs/42.png" alt="drill query flow" /></p>
+  </li>
 </ol>
 
 <p>You have successfully run a Drill query from the SQuirreL client.</p>
+
 
     
       
@@ -1529,7 +1596,7 @@ SQuirreL with Drill.</p>
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

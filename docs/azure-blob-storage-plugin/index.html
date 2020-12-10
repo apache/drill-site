@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2 current"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1335,9 +1367,9 @@
 
     </div>
 
-     Nov 2, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
@@ -1348,95 +1380,103 @@
 <p>The first step is to download the jars from Maven. The ones the works with the current version of Drill are the followin:</p>
 
 <ul>
-<li><a href="http://central.maven.org/maven2/org/apache/hadoop/hadoop-azure/2.7.7/hadoop-azure-2.7.7.jar">hadoop-azure-2.7.7.jar</a></li>
-<li><a href="http://central.maven.org/maven2/com/microsoft/azure/azure-storage/8.0.0/azure-storage-8.0.0.jar">azure-storage-8.0.0.jar</a></li>
+  <li><a href="http://central.maven.org/maven2/org/apache/hadoop/hadoop-azure/2.7.7/hadoop-azure-2.7.7.jar">hadoop-azure-2.7.7.jar</a></li>
+  <li><a href="http://central.maven.org/maven2/com/microsoft/azure/azure-storage/8.0.0/azure-storage-8.0.0.jar">azure-storage-8.0.0.jar</a></li>
 </ul>
 
-<p>The first one is the HDFS wrapper around Azure Blob Storage and the second provides access Azure Blob Storage from Java. Download them jars and save them into <code>$DRILL_HOME/jars/3rdparty</code> folder.</p>
+<p>The first one is the HDFS wrapper around Azure Blob Storage and the second provides access Azure Blob Storage from Java. Download them jars and save them into <code class="language-plaintext highlighter-rouge">$DRILL_HOME/jars/3rdparty</code> folder.</p>
 
 <h2 id="providing-azure-blob-storage-credentials">Providing Azure Blob Storage Credentials</h2>
 
-<p>Your environment determines where you provide your Azure Blob Storage credentials. You can define your Azure Blob Storage credentials one of three ways:  </p>
+<p>Your environment determines where you provide your Azure Blob Storage credentials. You can define your Azure Blob Storage credentials one of three ways:</p>
 
 <ul>
-<li>Directly in the Azure Blob Storage storage plugin. Note that this method is the least secure, but sufficient for use on a single machine, such as a laptop.<br></li>
-<li>In a non-Hadoop environment, you can use the Drill-specific <code>core-site.xml</code> file to provide the Azure Blob Storage credentials.<br></li>
-<li>In a Hadoop environment, you can use the existing Azure Blob Storage configuration for Hadoop. The Azure Blob Storage credentials should already be defined. All you need to do is <a href="/docs/azure-blob-storage-plugin/#configuring-the-azure-blob-storage-plugin">configure the Azure Blob Storage storage plugin</a>.<br></li>
+  <li>Directly in the Azure Blob Storage storage plugin. Note that this method is the least secure, but sufficient for use on a single machine, such as a laptop.</li>
+  <li>In a non-Hadoop environment, you can use the Drill-specific <code class="language-plaintext highlighter-rouge">core-site.xml</code> file to provide the Azure Blob Storage credentials.</li>
+  <li>In a Hadoop environment, you can use the existing Azure Blob Storage configuration for Hadoop. The Azure Blob Storage credentials should already be defined. All you need to do is <a href="/docs/azure-blob-storage-plugin/#configuring-the-azure-blob-storage-plugin">configure the Azure Blob Storage storage plugin</a>.</li>
 </ul>
 
 <h3 id="defining-access-keys-in-the-azure-blob-storage-plugin">Defining Access Keys in the Azure Blob Storage Plugin</h3>
 
-<p>Refer to <a href="/docs/azure-blob-storage-plugin/#configuring-the-azure-blob-storage-plugin">Configuring the Azure Blob Storage Plugin</a>. </p>
+<p>Refer to <a href="/docs/azure-blob-storage-plugin/#configuring-the-azure-blob-storage-plugin">Configuring the Azure Blob Storage Plugin</a>.</p>
 
-<h3 id="defining-access-keys-in-the-drill-core-site-xml-file">Defining Access Keys in the Drill core-site.xml File</h3>
+<h3 id="defining-access-keys-in-the-drill-core-sitexml-file">Defining Access Keys in the Drill core-site.xml File</h3>
 
 <p>In order to configure Drill to access the Azure Blob Storage that contains that data you want to query with Drill, the authentication key must be provided. To get the authentication key you can use AZ CLI:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">az storage account keys list -g &lt;resource-group&gt; -n &lt;storage-account-name&gt;
-</code></pre></div>
-<p>pick the primary or secondary key and put it in the <code>site-conf.xml</code> file that you can find in <code>$DRILL_HOME/conf</code> or <code>$DRILL_SITE</code> folder. If it doesn&#39;t exists already, go on and create it (you may also just copy <code>core-site-example.xml</code> file to <code>core-site.xml</code> and start from there):</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>az storage account keys list -g &lt;resource-group&gt; -n &lt;storage-account-name&gt;
+</code></pre></div></div>
+
+<p>pick the primary or secondary key and put it in the <code class="language-plaintext highlighter-rouge">site-conf.xml</code> file that you can find in <code class="language-plaintext highlighter-rouge">$DRILL_HOME/conf</code> or <code class="language-plaintext highlighter-rouge">$DRILL_SITE</code> folder. If it doesn’t exists already, go on and create it (you may also just copy <code class="language-plaintext highlighter-rouge">core-site-example.xml</code> file to <code class="language-plaintext highlighter-rouge">core-site.xml</code> and start from there):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
 &lt;configuration&gt;
-    &lt;property&gt;
-        &lt;name&gt;fs.azure.account.key.STORAGE_ACCOUNT_NAME.blob.core.windows.net&lt;/name&gt;
-        &lt;value&gt;AUTHENTICATION_KEY&lt;/value&gt;
-    &lt;/property&gt;
+	&lt;property&gt;
+		&lt;name&gt;fs.azure.account.key.STORAGE_ACCOUNT_NAME.blob.core.windows.net&lt;/name&gt;
+		&lt;value&gt;AUTHENTICATION_KEY&lt;/value&gt;
+	&lt;/property&gt;
 &lt;/configuration&gt;
-</code></pre></div>
-<p><strong>Note:</strong> When you rename the file, Hadoop support breaks if <code>$HADOOP_HOME</code> was in the path because Drill pulls in the Drill core-site.xml file instead of the Hadoop core-site.xml file. In this situation, make the changes in the Hadoop core-site.xml file. Do not create a core-site.xml file for Drill.  </p>
+</code></pre></div></div>
+
+<p><strong>Note:</strong> When you rename the file, Hadoop support breaks if <code class="language-plaintext highlighter-rouge">$HADOOP_HOME</code> was in the path because Drill pulls in the Drill core-site.xml file instead of the Hadoop core-site.xml file. In this situation, make the changes in the Hadoop core-site.xml file. Do not create a core-site.xml file for Drill.</p>
 
 <h2 id="configuring-the-azure-blob-storage-plugin">Configuring the Azure Blob Storage Plugin</h2>
 
-<p>The Storage page in the Drill Web UI provides an Azure Blob Storage plugin that you configure to connect Drill to the Azure Blob Storage file system registered in <code>core-site.xml</code>. If you did not define your Azure Blob Storage credentials in the <code>core-site.xml</code> file, you can define them in the storage plugin configuration.   </p>
+<p>The Storage page in the Drill Web UI provides an Azure Blob Storage plugin that you configure to connect Drill to the Azure Blob Storage file system registered in <code class="language-plaintext highlighter-rouge">core-site.xml</code>. If you did not define your Azure Blob Storage credentials in the <code class="language-plaintext highlighter-rouge">core-site.xml</code> file, you can define them in the storage plugin configuration.</p>
 
-<p>To configure the Azure Blob Storage plugin, log in to the Drill Web UI and then update the Azure Blob Storage configuration with the bucket name, as described in the following steps:   </p>
+<p>To configure the Azure Blob Storage plugin, log in to the Drill Web UI and then update the Azure Blob Storage configuration with the bucket name, as described in the following steps:</p>
 
-<p>1. To access the Drill Web UI, enter the following URL in the address bar of your web browser:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   http://&lt;drill-hostname&gt;:8047  
+<p>1. To access the Drill Web UI, enter the following URL in the address bar of your web browser:</p>
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   http://&lt;drill-hostname&gt;:8047  
+  
    //The drill-hostname is a node on which Drill is running.  
-</code></pre></div>
-<p>2. To configure the Azure Blob Storage plugin in Drill, complete the following steps:  </p>
+</code></pre></div></div>
 
-<p>a. Click on the <strong>Storage</strong> page.<br>
-   b. Find the CP option on the page and then click <strong>Update</strong> next to the option.<br>
+<p>2. To configure the Azure Blob Storage plugin in Drill, complete the following steps:</p>
+
+<p>a. Click on the <strong>Storage</strong> page.<br />
+   b. Find the CP option on the page and then click <strong>Update</strong> next to the option.<br />
    c. Copy the entire content in the clipboard and the go <strong>Back</strong>.
-   d. At the bottom of the page, &quot;New storage Plugin&quot; section, type <code>AZ</code> in the textbox and click on <strong>Create</strong>.
+   d. At the bottom of the page, “New storage Plugin” section, type <code class="language-plaintext highlighter-rouge">AZ</code> in the textbox and click on <strong>Create</strong>.
    e. Paste the text copied from the CP plugin.
-   f. Configure the Azure Blob Storage plugin, specifying the container you want to access to in the <code>&quot;connection&quot;</code> property, as shown in the following example:  </p>
+   f. Configure the Azure Blob Storage plugin, specifying the container you want to access to in the <code class="language-plaintext highlighter-rouge">"connection"</code> property, as shown in the following example:</p>
 
-<p><strong>Note:</strong> The <code>&quot;config&quot;</code> block in the following Azure Blob Storage plugin configuration contains the access key and endpoint properties required if you want to define your Azure Blob Storage credentials here. <em>Do not include</em> the <code>&quot;config&quot;</code> block in your Azure Blob Storage plugin configuration if you defined your Azure Blob Storage credentials in the <code>core-site.xml</code> file.   </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;type&quot;: &quot;file&quot;,
-&quot;enabled&quot;: true,
-&quot;connection&quot;: &quot;wasbs://CONTAINER@STORAGE_ACCOUNT_NAME.blob.core.windows.net&quot;,
-&quot;config&quot;: {
-    &quot;fs.azure.account.key.STORAGE_ACCOUNT_NAME.blob.core.windows.net&quot;: &quot;AUTHENTICATION_KEY&quot;
+<p><strong>Note:</strong> The <code class="language-plaintext highlighter-rouge">"config"</code> block in the following Azure Blob Storage plugin configuration contains the access key and endpoint properties required if you want to define your Azure Blob Storage credentials here. <em>Do not include</em> the <code class="language-plaintext highlighter-rouge">"config"</code> block in your Azure Blob Storage plugin configuration if you defined your Azure Blob Storage credentials in the <code class="language-plaintext highlighter-rouge">core-site.xml</code> file.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"type": "file",
+"enabled": true,
+"connection": "wasbs://CONTAINER@STORAGE_ACCOUNT_NAME.blob.core.windows.net",
+"config": {
+	"fs.azure.account.key.STORAGE_ACCOUNT_NAME.blob.core.windows.net": "AUTHENTICATION_KEY"
 },
-&quot;workspaces&quot;: {
-    &quot;root&quot;: {
-        &quot;location&quot;: &quot;/user/robot/drill&quot;,
-        &quot;writable&quot;: true,
-        &quot;defaultInputFormat&quot;: null
-    },
-    &quot;tmp&quot;: {
-        &quot;location&quot;: &quot;/tmp&quot;,
-        &quot;writable&quot;: true,
-        &quot;defaultInputFormat&quot;: null
-    }
+"workspaces": {
+	"root": {
+		"location": "/user/robot/drill",
+		"writable": true,
+		"defaultInputFormat": null
+	},
+	"tmp": {
+		"location": "/tmp",
+		"writable": true,
+		"defaultInputFormat": null
+	}
 }
-</code></pre></div>
-<p>4-Click <strong>Update</strong> to save the configuration.<br>
-5-Navigate back to the <strong>Storage</strong> page.<br>
-6-On the <strong>Storage</strong> page, the newly create AZ option should be automatically enabled.  </p>
+</code></pre></div></div>
+
+<p>4-Click <strong>Update</strong> to save the configuration.<br />
+5-Navigate back to the <strong>Storage</strong> page.<br />
+6-On the <strong>Storage</strong> page, the newly create AZ option should be automatically enabled.</p>
 
 <p>Drill should now be able to use access data in your Azure Blob Storage container and query it.</p>
 
-<p><a href="https://vimeo.com/286972298">https://vimeo.com/286972298</a> </p>
+<p>https://vimeo.com/286972298</p>
 
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/image-metadata-format-plugin/">← Image Metadata Format Plugin</a></span><span class="next-toc"><a href="/docs/syslog-format-plugin/">Syslog Format Plugin →</a></span>
+  <span class="previous-toc"><a href="/docs/kafka-storage-plugin/">← Kafka Storage Plugin</a></span><span class="next-toc"><a href="/docs/druid-storage-plugin/">Druid Storage Plugin →</a></span>
 </div>
 
     
@@ -1448,7 +1488,7 @@
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

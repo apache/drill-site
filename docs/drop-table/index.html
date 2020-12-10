@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,192 +1369,201 @@
 
     </div>
 
-     Jan 7, 2019
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>As of Drill 1.2, you can use the DROP TABLE command to remove tables (files or directories) from a file system when the file system is configured as a DFS storage plugin. See <a href="/docs/storage-plugin-registration/">Storage Plugin Registration</a>. As of Drill 1.8, you can include the IF EXISTS parameter with the DROP TABLE command. Currently, you can only issue the DROP TABLE command against file system data sources.</p>
 
 <h2 id="syntax">Syntax</h2>
+<p>The DROP TABLE command supports the following syntax:</p>
 
-<p>The DROP TABLE command supports the following syntax: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">DROP TABLE [IF EXISTS] [workspace.]name;  
-</code></pre></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DROP TABLE [IF EXISTS] [workspace.]name;  
+</code></pre></div></div>
+
 <h2 id="parameters">Parameters</h2>
 
-<p>IF EXISTS<br>
-Drill does not throw an error if the table does not exist. Instead, Drill returns &quot;<code>Table [name] not found.</code>&quot;  </p>
+<p>IF EXISTS<br />
+Drill does not throw an error if the table does not exist. Instead, Drill returns “<code class="language-plaintext highlighter-rouge">Table [name] not found.</code>”</p>
 
-<p><em>workspace</em><br>
+<p><em>workspace</em><br />
 The location of the table in subdirectories of a local or distributed file system.</p>
 
-<p><em>name</em><br>
-A unique directory or file name, optionally prefaced by a storage plugin name, such as <code>dfs</code>, and a workspace, such as <code>tmp</code> using dot notation.  </p>
+<p><em>name</em><br />
+A unique directory or file name, optionally prefaced by a storage plugin name, such as <code class="language-plaintext highlighter-rouge">dfs</code>, and a workspace, such as <code class="language-plaintext highlighter-rouge">tmp</code> using dot notation.</p>
 
 <h2 id="usage-notes">Usage Notes</h2>
+<p>By default, Drill returns a result set when you issue DDL statements, such as DROP TABLE. If the client tool from which you connect to Drill (via JDBC) does not expect a result set when you issue DDL statements, set the <code class="language-plaintext highlighter-rouge">exec.query.return_result_set_for_ddl</code> option to false, as shown, to prevent the client from canceling queries:</p>
 
-<p>By default, Drill returns a result set when you issue DDL statements, such as DROP TABLE. If the client tool from which you connect to Drill (via JDBC) does not expect a result set when you issue DDL statements, set the <code>exec.query.return_result_set_for_ddl</code> option to false, as shown, to prevent the client from canceling queries:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SET `exec.query.return_result_set_for_ddl` = false  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SET `exec.query.return_result_set_for_ddl` = false  
 //This option is available in Drill 1.15 and later.   
-</code></pre></div>
+</code></pre></div></div>
+
 <p>When set to false, Drill returns the affected rows count, and the result set is null.</p>
 
 <h3 id="schema">Schema</h3>
-
 <ul>
-<li>You must identify the schema in which a table exists to successfully drop the table. You can identify the schema before dropping the table with the USE <schema_name> command (see <a href="/docs/use/">USE command</a>) or when you issue the DROP TABLE command. See <a href="/docs/drop-table/#example-1:-identifying-a-schema">Example 1: Identifying a schema</a>.<br></li>
-<li>The schema must be mutable. For example, to drop a table from a schema named <code>dfs.sales</code>, the <code>&quot;writable&quot;</code> attribute for the <code>&quot;sales&quot;</code> workspace in the DFS storage plugin configuration must be set to <code>true</code>. See <a href="/docs/plugin-configuration-basics/#storage-plugin-attributes">Storage Plugin Attributes</a>. </li>
+  <li>You must identify the schema in which a table exists to successfully drop the table. You can identify the schema before dropping the table with the USE <schema_name> command (see [USE command](/docs/use/)) or when you issue the DROP TABLE command. See [Example 1: Identifying a schema](/docs/drop-table/#example-1:-identifying-a-schema).</schema_name></li>
+  <li>The schema must be mutable. For example, to drop a table from a schema named <code class="language-plaintext highlighter-rouge">dfs.sales</code>, the <code class="language-plaintext highlighter-rouge">"writable"</code> attribute for the <code class="language-plaintext highlighter-rouge">"sales"</code> workspace in the DFS storage plugin configuration must be set to <code class="language-plaintext highlighter-rouge">true</code>. See <a href="/docs/plugin-configuration-basics/#storage-plugin-attributes">Storage Plugin Attributes</a>.</li>
 </ul>
 
 <h3 id="file-type">File Type</h3>
-
 <ul>
-<li>The DROP TABLE command only works against file types that Drill can read. File types are identified as supported file formats, such as Parquet, JSON, or Text. See <a href="/docs/querying-a-file-system-introduction/">Querying a File System Introduction</a> for a complete list of supported file types. </li>
-<li>Text formats must be configured in the DFS storage plugin configuration. For example, to support CSV files, the <code>&quot;formats&quot;</code> attribute in the configuration must include <code>&quot;csv&quot;</code> as a value. See <a href="/docs/plugin-configuration-basics/#storage-plugin-attributes">Storage Plugin Attributes</a>.</li>
-<li>The directory on which you issue the DROP TABLE command must contain files of the same type. For example, if you have a workspace configured, such as <code>dfs.sales</code>, that points to a directory containing subdirectories, such as <code>/2012</code> and <code>/2013</code>, files in all of the directories must be of the same type to successfully issue the DROP TABLE command against the directory.<br></li>
+  <li>The DROP TABLE command only works against file types that Drill can read. File types are identified as supported file formats, such as Parquet, JSON, or Text. See <a href="/docs/querying-a-file-system-introduction/">Querying a File System Introduction</a> for a complete list of supported file types.</li>
+  <li>Text formats must be configured in the DFS storage plugin configuration. For example, to support CSV files, the <code class="language-plaintext highlighter-rouge">"formats"</code> attribute in the configuration must include <code class="language-plaintext highlighter-rouge">"csv"</code> as a value. See <a href="/docs/plugin-configuration-basics/#storage-plugin-attributes">Storage Plugin Attributes</a>.</li>
+  <li>The directory on which you issue the DROP TABLE command must contain files of the same type. For example, if you have a workspace configured, such as <code class="language-plaintext highlighter-rouge">dfs.sales</code>, that points to a directory containing subdirectories, such as <code class="language-plaintext highlighter-rouge">/2012</code> and <code class="language-plaintext highlighter-rouge">/2013</code>, files in all of the directories must be of the same type to successfully issue the DROP TABLE command against the directory.</li>
 </ul>
 
 <h3 id="permissions">Permissions</h3>
-
 <ul>
-<li>A user must have the appropriate permissions on the file system to successfully issue the DROP TABLE command. Inadequate permissions result in a failed drop and can potentially remove a subset of the files in a directory.<br></li>
+  <li>A user must have the appropriate permissions on the file system to successfully issue the DROP TABLE command. Inadequate permissions result in a failed drop and can potentially remove a subset of the files in a directory.</li>
 </ul>
 
 <h3 id="user-impersonation">User Impersonation</h3>
-
 <ul>
-<li>When user impersonation is enabled in Drill, Drill impersonates the user issuing the DROP TABLE command. Therefore, the user must have sufficient permissions on the file system for the command to succeed. See <a href="/docs/configuring-user-impersonation/">Configuring User Impersonation</a>.</li>
-<li>When user impersonation is not enabled in Drill, Drill accesses the file system as the user running the Drillbit. This user is typically a super user who has permission to delete most files. In this scenario, use the DROP TABLE command with caution to avoid deleting critical files and directories.<br></li>
+  <li>When user impersonation is enabled in Drill, Drill impersonates the user issuing the DROP TABLE command. Therefore, the user must have sufficient permissions on the file system for the command to succeed. See <a href="/docs/configuring-user-impersonation/">Configuring User Impersonation</a>.</li>
+  <li>When user impersonation is not enabled in Drill, Drill accesses the file system as the user running the Drillbit. This user is typically a super user who has permission to delete most files. In this scenario, use the DROP TABLE command with caution to avoid deleting critical files and directories.</li>
 </ul>
 
 <h3 id="views">Views</h3>
-
 <ul>
-<li>Views are independent of tables. Views that reference dropped tables become invalid. You must explicitly drop any view that references a dropped table using the <a href="/docs/drop-view/">DROP VIEW command</a>.<br></li>
+  <li>Views are independent of tables. Views that reference dropped tables become invalid. You must explicitly drop any view that references a dropped table using the <a href="/docs/drop-view/">DROP VIEW command</a>.</li>
 </ul>
 
 <h3 id="concurrency">Concurrency</h3>
-
 <ul>
-<li>Concurrency occurs when two processes try to access and/or change data at the same time. Currently, Drill does not have a mechanism in place, such as read locks on files, to address concurrency issues. For example, if one user runs a query that references a table that another user simultaneously issues the DROP TABLE command against, there is no mechanism in place to prevent a collision of the two processes. In such a scenario, Drill may return partial query results or a system error to the user running the query when the table is dropped. </li>
+  <li>Concurrency occurs when two processes try to access and/or change data at the same time. Currently, Drill does not have a mechanism in place, such as read locks on files, to address concurrency issues. For example, if one user runs a query that references a table that another user simultaneously issues the DROP TABLE command against, there is no mechanism in place to prevent a collision of the two processes. In such a scenario, Drill may return partial query results or a system error to the user running the query when the table is dropped.</li>
 </ul>
 
 <h2 id="examples">Examples</h2>
 
-<p>The following examples show results for several DROP TABLE scenarios.  </p>
+<p>The following examples show results for several DROP TABLE scenarios.</p>
 
-<h3 id="example-1-identifying-a-schema">Example 1:  Identifying a schema</h3>
+<h3 id="example-1--identifying-a-schema">Example 1:  Identifying a schema</h3>
+<p>This example shows you how to identify a schema with the USE and DROP TABLE commands and successfully drop a table named <code class="language-plaintext highlighter-rouge">donuts_json</code> in the <code class="language-plaintext highlighter-rouge">"donuts"</code> workspace configured within the DFS storage plugin configuration.</p>
 
-<p>This example shows you how to identify a schema with the USE and DROP TABLE commands and successfully drop a table named <code>donuts_json</code> in the <code>&quot;donuts&quot;</code> workspace configured within the DFS storage plugin configuration.  </p>
+<p>The <code class="language-plaintext highlighter-rouge">"donuts"</code> workspace is configured within the following DFS configuration:</p>
 
-<p>The <code>&quot;donuts&quot;</code> workspace is configured within the following DFS configuration:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">    {
-     &quot;type&quot;: &quot;file&quot;,
-     &quot;enabled&quot;: true,
-     &quot;connection&quot;: &quot;file:///&quot;,
-     &quot;workspaces&quot;: {
-       &quot;root&quot;: {
-         &quot;location&quot;: &quot;/&quot;,
-         &quot;writable&quot;: false,
-         &quot;defaultInputFormat&quot;: null
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    {
+     "type": "file",
+     "enabled": true,
+     "connection": "file:///",
+     "workspaces": {
+       "root": {
+         "location": "/",
+         "writable": false,
+         "defaultInputFormat": null
        },
-       &quot;donuts&quot;: {
-         &quot;location&quot;: &quot;/Users/user1/donuts&quot;,
-         &quot;writable&quot;: true,
-         &quot;defaultInputFormat&quot;: null
+       "donuts": {
+         "location": "/Users/user1/donuts",
+         "writable": true,
+         "defaultInputFormat": null
        }
      },
-</code></pre></div>
-<p>Issuing the USE command changes the schema to the <code>dfs.donuts</code> schema before dropping the <code>donuts_json</code> table.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; use dfs.donuts;
-   +-------+-----------------------------------------+
+</code></pre></div></div>
+
+<p>Issuing the USE command changes the schema to the <code class="language-plaintext highlighter-rouge">dfs.donuts</code> schema before dropping the <code class="language-plaintext highlighter-rouge">donuts_json</code> table.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; use dfs.donuts;
+   |-------|-----------------------------------------|
    |  ok   |                 summary                 |
-   +-------+-----------------------------------------+
+   |-------|-----------------------------------------|
    | true  | Default schema changed to [dfs.donuts]  |
-   +-------+-----------------------------------------+
+   |-------|-----------------------------------------|
    1 row selected (0.096 seconds)
-
+    
    0: jdbc:drill:zk=local&gt; drop table donuts_json;
-   +-------+------------------------------+
+   |-------|------------------------------|
    |  ok   |           summary            |
-   +-------+------------------------------+
+   |-------|------------------------------|
    | true  | Table [donuts_json] dropped  |
-   +-------+------------------------------+
+   |-------|------------------------------|
    1 row selected (0.094 seconds) 
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Alternatively, instead of issuing the USE command to change the schema, you can include the schema name when you drop the table.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; drop table dfs.donuts.donuts_json;
-   +-------+------------------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; drop table dfs.donuts.donuts_json;
+   |-------|------------------------------|
    |  ok   |           summary            |
-   +-------+------------------------------+
+   |-------|------------------------------|
    | true  | Table [donuts_json] dropped  |
-   +-------+------------------------------+
+   |-------|------------------------------|
    1 row selected (1.189 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>If you do not identify the schema prior to issuing the DROP TABLE command, Drill returns the following error:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; drop table donuts_json;
 
-   Error: PARSE ERROR: Root schema is immutable. Creating or dropping tables/views is not allowed in root schema.Select a schema using &#39;USE schema&#39; command.
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; drop table donuts_json;
+
+   Error: PARSE ERROR: Root schema is immutable. Creating or dropping tables/views is not allowed in root schema.Select a schema using 'USE schema' command.
    [Error Id: 8c42cb6a-27eb-48fd-b42a-671a6fb58c14 on 10.250.56.218:31010] (state=,code=0)
-</code></pre></div>
+</code></pre></div></div>
+
 <h3 id="example-2-dropping-a-table-created-from-a-file">Example 2: Dropping a table created from a file</h3>
+<p>In the following example, the <code class="language-plaintext highlighter-rouge">donuts_json</code> table is removed from the <code class="language-plaintext highlighter-rouge">/tmp</code> workspace using the DROP TABLE command. This example assumes that the steps in the <a href="/docs/create-table-as-ctas/#complete-ctas-example">Complete CTAS Example</a> were already completed.</p>
 
-<p>In the following example, the <code>donuts_json</code> table is removed from the <code>/tmp</code> workspace using the DROP TABLE command. This example assumes that the steps in the <a href="/docs/create-table-as-ctas/#complete-ctas-example">Complete CTAS Example</a> were already completed. </p>
+<p>Running an <code class="language-plaintext highlighter-rouge">ls</code> on <code class="language-plaintext highlighter-rouge">/donuts_json</code> lists the files in the directory.</p>
 
-<p>Running an <code>ls</code> on <code>/donuts_json</code> lists the files in the directory.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   $ pwd
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $ pwd
    /tmp
    $ cd donuts_json
    $ ls
    0_0_0.json
    $ more 0_0_0.json
    {
-    &quot;id&quot; : &quot;0001&quot;,
-     &quot;type&quot; : &quot;donut&quot;,
-     &quot;name&quot; : &quot;Cake&quot;,
-     &quot;ppu&quot; : 0.55
-   }  
-</code></pre></div>
-<p>Issuing the USE command changes the schema to <code>dfs.tmp</code>.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; use dfs.tmp;
-   +-------+-----------------------------------------+
-   |  ok   |                 summary                 |
-   +-------+-----------------------------------------+
-   | true  | Default schema changed to [dfs.tmp]  |
-   +-------+-----------------------------------------+
+    "id" : "0001",
+     "type" : "donut",
+     "name" : "Cake",
+     "ppu" : 0.55
+   }   Issuing the USE command changes the schema to `dfs.tmp`.  
+
+   0: jdbc:drill:zk=local&gt; use dfs.tmp;
+   |------|-------------------------------------|
+   | ok   | summary                             |
+   |------|-------------------------------------|
+   | true | Default schema changed to [dfs.tmp] |
+   |------|-------------------------------------|
    1 row selected (0.085 seconds)  
-</code></pre></div>
-<p>Running the <code>DROP TABLE</code> command removes the table from the <code>dfs.tmp</code> schema.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; drop table donuts_json;
-   +-------+------------------------------+
+</code></pre></div></div>
+
+<p>Running the <code class="language-plaintext highlighter-rouge">DROP TABLE</code> command removes the table from the <code class="language-plaintext highlighter-rouge">dfs.tmp</code> schema.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; drop table donuts_json;
+   |-------|------------------------------|
    |  ok   |           summary            |
-   +-------+------------------------------+
+   |-------|------------------------------|
    | true  | Table [donuts_json] dropped  |
-   +-------+------------------------------+
+   |-------|------------------------------|
    1 row selected (0.107 seconds)  
-</code></pre></div>
+</code></pre></div></div>
+
 <h3 id="example-3-dropping-a-table-created-as-a-directory">Example 3: Dropping a table created as a directory</h3>
+<p>When you create a table that writes files to a directory, you can issue the <code class="language-plaintext highlighter-rouge">DROP TABLE</code> command against the table to remove the directory. All files and subdirectories are deleted. For example, the following CTAS command writes Parquet data from the <code class="language-plaintext highlighter-rouge">nation.parquet</code> file, installed with Drill, to the <code class="language-plaintext highlighter-rouge">/tmp/name_key</code> directory.</p>
 
-<p>When you create a table that writes files to a directory, you can issue the <code>DROP TABLE</code> command against the table to remove the directory. All files and subdirectories are deleted. For example, the following CTAS command writes Parquet data from the <code>nation.parquet</code> file, installed with Drill, to the <code>/tmp/name_key</code> directory.  </p>
+<p>Issuing the USE command changes the schema to the <code class="language-plaintext highlighter-rouge">dfs</code> schema.</p>
 
-<p>Issuing the USE command changes the schema to the <code>dfs</code> schema.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; USE dfs;
-</code></pre></div>
-<p>Issuing the CTAS command creates a <code>tmp.name_key</code> table.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; CREATE TABLE tmp.`name_key` (N_NAME, N_NATIONKEY) AS SELECT N_NATIONKEY, N_NAME FROM dfs.`/Users/drilluser/apache-drill-1.2.0/sample-data/nation.parquet`;
-   +-----------+----------------------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; USE dfs;
+</code></pre></div></div>
+
+<p>Issuing the CTAS command creates a <code class="language-plaintext highlighter-rouge">tmp.name_key</code> table.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; CREATE TABLE tmp.`name_key` (N_NAME, N_NATIONKEY) AS SELECT N_NATIONKEY, N_NAME FROM dfs.`/Users/drilluser/apache-drill-1.2.0/sample-data/nation.parquet`;
+   |-----------|----------------------------|
    | Fragment  | Number of records written  |
-   +-----------+----------------------------+
+   |-----------|----------------------------|
    | 0_0       | 25                         |
-   +-----------+----------------------------+
-</code></pre></div>
-<p>Querying the directory shows the data. </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; select * from tmp.`name_key`;
-   +---------+-----------------+
+   |-----------|----------------------------|
+</code></pre></div></div>
+
+<p>Querying the directory shows the data.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; select * from tmp.`name_key`;
+   |---------|-----------------|
    | N_NAME  |   N_NATIONKEY   |
-   +---------+-----------------+
+   |---------|-----------------|
    | 0       | ALGERIA         |
    | 1       | ARGENTINA       |
    | 2       | BRAZIL          |
@@ -1548,117 +1589,132 @@ A unique directory or file name, optionally prefaced by a storage plugin name, s
    | 22      | RUSSIA          |
    | 23      | UNITED KINGDOM  |
    | 24      | UNITED STATES   |
-   +---------+-----------------+
+   |---------|-----------------|
    25 rows selected (0.183 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Issuing the DROP TABLE command against the directory removes the directory and deletes all the files and subdirectories that existed within the directory.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; drop table name_key;
-   +-------+---------------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; drop table name_key;
+   |-------|---------------------------|
    |  ok   |          summary          |
-   +-------+---------------------------+
+   |-------|---------------------------|
    | true  | Table [name_key] dropped  |
-   +-------+---------------------------+
+   |-------|---------------------------|
    1 row selected (0.086 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <h3 id="example-4-dropping-a-table-that-does-not-exist">Example 4: Dropping a table that does not exist</h3>
+<p>The following example shows the result of dropping a table that does not exist because it was either already dropped or never existed.</p>
 
-<p>The following example shows the result of dropping a table that does not exist because it was either already dropped or never existed. </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; use dfs.tmp;
-   +-------+--------------------------------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; use dfs.tmp;
+   |-------|--------------------------------------|
    |  ok   |               summary                |
-   +-------+--------------------------------------+
+   |-------|--------------------------------------|
    | true  | Default schema changed to [dfs.tmp]  |
-   +-------+--------------------------------------+
+   |-------|--------------------------------------|
    1 row selected (0.289 seconds)
-
+   
    0: jdbc:drill:zk=local&gt; drop table name_key;
 
    Error: VALIDATION ERROR: Table [name_key] not found
    [Error Id: fc6bfe17-d009-421c-8063-d759d7ea2f4e on 10.250.56.218:31010] (state=,code=0)  
-</code></pre></div>
-<h3 id="example-5-dropping-a-table-that-does-not-exist-using-the-if-exists-parameter">Example 5: Dropping a table that does not exist using the IF EXISTS parameter</h3>
+</code></pre></div></div>
 
-<p>The following example shows the result of dropping a table that does not exist (because it was already dropped or never existed) using the IF EXISTS parameter with the DROP TABLE command:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; use dfs.tmp;
-   +-------+--------------------------------------+
+<h3 id="example-5-dropping-a-table-that-does-not-exist-using-the-if-exists-parameter">Example 5: Dropping a table that does not exist using the IF EXISTS parameter</h3>
+<p>The following example shows the result of dropping a table that does not exist (because it was already dropped or never existed) using the IF EXISTS parameter with the DROP TABLE command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; use dfs.tmp;
+   |-------|--------------------------------------|
    |  ok   |               summary                |
-   +-------+--------------------------------------+
-   | true  | Default schema changed to &#39;dfs.tmp&#39;  |
-   +-------+--------------------------------------+
+   |-------|--------------------------------------|
+   | true  | Default schema changed to 'dfs.tmp'  |
+   |-------|--------------------------------------|
    1 row selected (0.289 seconds)  
 
    0: jdbc:drill:zk=local&gt; drop table if exists name_key;
-   +-------+-----------------------------+
+   |-------|-----------------------------|
    |  ok   |         summary             |
-   +-------+-----------------------------+
-   | true  | Table &#39;name_key&#39; not found  |
-   +-------+-----------------------------+
+   |-------|-----------------------------|
+   | true  | Table 'name_key' not found  |
+   |-------|-----------------------------|
    1 row selected (0.083 seconds)  
-</code></pre></div>
+</code></pre></div></div>
+
 <h3 id="example-6-dropping-a-table-that-exists-using-the-if-exists-parameter">Example 6: Dropping a table that exists using the IF EXISTS parameter</h3>
 
-<p>The following example shows the result of dropping a table that exists using the IF EXISTS parameter with the DROP TABLE command.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; use dfs.tmp;
-   +-------+--------------------------------------+
+<p>The following example shows the result of dropping a table that exists using the IF EXISTS parameter with the DROP TABLE command.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; use dfs.tmp;
+   |-------|--------------------------------------|
    |  ok   |               summary                |
-   +-------+--------------------------------------+
-   | true  | Default schema changed to &#39;dfs.tmp&#39;  |
-   +-------+--------------------------------------+
+   |-------|--------------------------------------|
+   | true  | Default schema changed to 'dfs.tmp'  |
+   |-------|--------------------------------------|
    1 row selected (0.289 seconds)
-
+   
    0: jdbc:drill:zk=local&gt; drop table if exists name_key;
-   +-------+---------------------------+
+   |-------|---------------------------|
    |  ok   |        summary            |
-   +-------+---------------------------+
-   | true  | Table &#39;name_key&#39; dropped  |
-   +-------+---------------------------+  
-</code></pre></div>
-<h3 id="example-7-dropping-a-table-without-permissions">Example 7: Dropping a table without permissions</h3>
+   |-------|---------------------------|
+   | true  | Table 'name_key' dropped  |
+   |-------|---------------------------|  
+</code></pre></div></div>
 
+<h3 id="example-7-dropping-a-table-without-permissions">Example 7: Dropping a table without permissions</h3>
 <p>The following example shows the result of dropping a table without the appropriate permissions in the file system.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; drop table name_key;
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; drop table name_key;
 
    Error: PERMISSION ERROR: Unauthorized to drop table
    [Error Id: 36f6b51a-786d-4950-a4a7-44250f153c55 on 10.10.30.167:31010] (state=,code=0)  
-</code></pre></div>
+</code></pre></div></div>
+
 <h3 id="example-8-dropping-and-querying-a-table-concurrently">Example 8: Dropping and querying a table concurrently</h3>
 
 <p>The result of this scenario depends on the delta in time between one user dropping a table and another user issuing a query against the table. Results can also vary. In some instances the drop may succeed and the query fails completely or the query completes partially and then the table is dropped returning an exception in the middle of the query results.</p>
 
-<p>The following example shows the result of dropping a table and issuing a query against the table simultaneously. In this example, the table is dropped before the query can run against it. </p>
+<p>The following example shows the result of dropping a table and issuing a query against the table simultaneously. In this example, the table is dropped before the query can run against it.</p>
 
-<p><strong>User 1 issues the DROP TABLE command.</strong>  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; drop table name_key;
-   +-------+------------------------------+
+<p><strong>User 1 issues the DROP TABLE command.</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; drop table name_key;
+   |-------|------------------------------|
    |  ok   |           summary            |
-   +-------+------------------------------+
+   |-------|------------------------------|
    | true  | Table [droptable34] dropped  |
-   +-------+------------------------------+
+   |-------|------------------------------|
    1 row selected (12.35 seconds)
-</code></pre></div>
-<p><strong>User 2 issues a query against the table.</strong>  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; select * from name_key;
+</code></pre></div></div>
+
+<p><strong>User 2 issues a query against the table.</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; select * from name_key;
 
    Error: SYSTEM ERROR: FileNotFoundException: Requested file does not exist.
    Fragment 1:0
    [Error Id: 6e3c6a8d-8cfd-4033-90c4-61230af80573 on 10.10.30.167:31010] (state=,code=0)
-</code></pre></div>
+</code></pre></div></div>
+
 <h3 id="example-9-dropping-a-table-with-different-file-formats">Example 9: Dropping a table with different file formats</h3>
+<p>The following example shows the result of dropping a table when multiple file formats exists in the directory. In this scenario, the <code class="language-plaintext highlighter-rouge">sales_dir</code> table resides in the <code class="language-plaintext highlighter-rouge">dfs.sales</code> workspace and contains Parquet, CSV, and JSON files.</p>
 
-<p>The following example shows the result of dropping a table when multiple file formats exists in the directory. In this scenario, the <code>sales_dir</code> table resides in the <code>dfs.sales</code> workspace and contains Parquet, CSV, and JSON files.</p>
+<p>Running <code class="language-plaintext highlighter-rouge">ls</code> on <code class="language-plaintext highlighter-rouge">sales_dir</code> shows the different file types that exist in the directory.</p>
 
-<p>Running <code>ls</code> on <code>sales_dir</code> shows the different file types that exist in the directory.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   $ cd sales_dir/
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $ cd sales_dir/
    $ ls
-   0_0_0.parquet    sales_a.csv sales_b.json    sales_c.parquet
-</code></pre></div>
+   0_0_0.parquet	sales_a.csv	sales_b.json	sales_c.parquet
+</code></pre></div></div>
+
 <p>Issuing the DROP TABLE command on the directory results in an error.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; drop table dfs.sales.sales_dir;
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; drop table dfs.sales.sales_dir;
 
    Error: VALIDATION ERROR: Table contains different file formats. 
    Drop Table is only supported for directories that contain homogeneous file formats consumable by Drill
    [Error Id: 062f68c9-f2cd-4033-9b3d-182146a96904 on 10.250.56.218:31010] (state=,code=0)
-</code></pre></div>
+</code></pre></div></div>
+
     
       
         <div class="doc-nav">
@@ -1675,7 +1731,7 @@ A unique directory or file name, optionally prefaced by a storage plugin name, s
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

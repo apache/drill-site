@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,194 +1369,225 @@
 
     </div>
 
-     Dec 8, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>The FROM clause lists the references (tables, views, and subqueries) that data is selected from. Drill expands the traditional concept of a “table reference” in a standard SQL FROM clause to refer to files and directories in a local or distributed file system.</p>
 
 <h2 id="syntax">Syntax</h2>
-
 <p>The FROM clause supports the following syntax:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   ... FROM table_expression [, …]
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ... FROM table_expression [, …]
+</code></pre></div></div>
+
 <h2 id="parameters">Parameters</h2>
+<p><em>table_expression</em></p>
 
-<p><em>table_expression</em> </p>
-
-<p>Includes one or more <em>table_references</em> and is typically followed by the WHERE, GROUP BY, ORDER BY, or HAVING clause. </p>
+<p>Includes one or more <em>table_references</em> and is typically followed by the WHERE, GROUP BY, ORDER BY, or HAVING clause.</p>
 
 <p><em>table_reference</em></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   tableReference:
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   tableReference:
+   
    with_subquery_table_name [ [ AS ] alias [ ( column_alias [, ...] ) ] ]
       | table_name [ [ AS ] alias [ ( column_alias [, ...] ) ] ]
       | ( subquery ) [ AS ] alias [ ( column_alias [, ...] ) ]
       | &lt;join_clause&gt;
       | [ LATERAL ] [&lt;lateral_join_type&gt;] &lt;lateral_subquery&gt; [ON TRUE]
-
+   
    join_clause:
-        tableReference &lt;join_type&gt; tableReference [ON &lt;join_condition&gt;]
-
+      	tableReference &lt;join_type&gt; tableReference [ON &lt;join_condition&gt;]
+   
    lateral_subquery:
          &lt;unnest_table_expr&gt;
       | ( SELECT_clause FROM &lt;unnest_table_expr&gt; [,...] )
-
+   
    lateral_join_type:
    [INNER] JOIN
    LEFT [OUTER] JOIN
-
+   
    unnest_table_expr:
-    UNNEST &#39;(&#39; expression &#39;)&#39;  [AS] &lt;alias_table_name&gt;(&lt;alias_column_name&gt;)
-</code></pre></div>
-<ul>
-<li><p><em>with_subquery_table_name</em><br>
-A table defined by a subquery in the WITH clause.</p>
+    UNNEST '(' expression ')'  [AS] &lt;alias_table_name&gt;(&lt;alias_column_name&gt;)
+</code></pre></div></div>
 
 <ul>
-<li><em>table_name</em><br>
-Name of a table or view. In Drill, you can also refer to a file system directory or a specific file.</li>
-</ul></li>
-<li><p><em>alias</em><br>
-A temporary alternative name for a table or view that provides a convenient shortcut for identifying tables in other parts of a query, such as the WHERE clause. You must supply an alias for a table derived from a subquery. Aliases might be required for <a href="/docs/json-data-model/#analyzing-json">querying nested JSON</a>. Aliases are definitely required to resolve ambiguous references, such as using the name &quot;user&quot; to query the Drill profiles. Drill treats &quot;user&quot; as a function in this case, and the returns unexpected results. If you use a table alias, Drill treats &quot;user&quot; as a column identifier, and the query returns expected results. The AS keyword is always optional. Drill does not support the GROUP BY alias.</p></li>
-<li><p><em>column_alias</em><br>
-A temporary alternative name for a column in a table or view. You can use named column aliases in the SELECT list to provide meaningful names for regular columns and computed columns, such as the results of aggregate functions. You cannot reference column aliases in the following clauses:<br>
-   WHERE<br>
-   GROUP BY<br>
-   HAVING  </p>
+  <li>
+    <p><em>with_subquery_table_name</em><br />
+   A table defined by a subquery in the WITH clause.</p>
+  </li>
+  <li>
+    <p><em>table_name</em><br />
+  Name of a table or view. In Drill, you can also refer to a file system directory or a specific file.</p>
+  </li>
+  <li>
+    <p><em>alias</em><br />
+   A temporary alternative name for a table or view that provides a convenient shortcut for identifying tables in other parts of a query, such as the WHERE clause. You must supply an alias for a table derived from a subquery. Aliases might be required for <a href="/docs/json-data-model/#analyzing-json">querying nested JSON</a>. Aliases are definitely required to resolve ambiguous references, such as using the name “user” to query the Drill profiles. Drill treats “user” as a function in this case, and the returns unexpected results. If you use a table alias, Drill treats “user” as a column identifier, and the query returns expected results. The AS keyword is always optional. Drill does not support the GROUP BY alias.</p>
+  </li>
+  <li>
+    <p><em>column_alias</em><br />
+   A temporary alternative name for a column in a table or view. You can use named column aliases in the SELECT list to provide meaningful names for regular columns and computed columns, such as the results of aggregate functions. You cannot reference column aliases in the following clauses:<br />
+  WHERE<br />
+  GROUP BY<br />
+  HAVING</p>
 
-<p>Because Drill works with schema-less data sources, you cannot use positional aliases (1, 2, etc.) to refer to SELECT list columns, except in the ORDER BY clause.</p></li>
-<li><p><em>subquery</em><br>
-A query expression that evaluates to a table. The table exists only for the duration of the query and is typically given a name or alias, though an alias is not required. You can also define column names for tables that derive from subqueries. Naming column aliases is important when you want to join the results of subqueries to other tables and when you want to select or constrain those columns elsewhere in the query. A subquery may contain an ORDER BY clause, but this clause may have no effect if a LIMIT or OFFSET clause is not also specified. You can use the following subquery operators in Drill queries. These operators all return Boolean results.  </p>
+    <p>Because Drill works with schema-less data sources, you cannot use positional aliases (1, 2, etc.) to refer to SELECT list columns, except in the ORDER BY clause.</p>
+  </li>
+  <li><em>subquery</em><br />
+   A query expression that evaluates to a table. The table exists only for the duration of the query and is typically given a name or alias, though an alias is not required. You can also define column names for tables that derive from subqueries. Naming column aliases is important when you want to join the results of subqueries to other tables and when you want to select or constrain those columns elsewhere in the query. A subquery may contain an ORDER BY clause, but this clause may have no effect if a LIMIT or OFFSET clause is not also specified. You can use the following subquery operators in Drill queries. These operators all return Boolean results.
+    <ul>
+      <li>ALL</li>
+      <li>ANY</li>
+      <li>EXISTS</li>
+      <li>IN</li>
+      <li>SOME</li>
+    </ul>
 
-<ul>
-<li>ALL<br></li>
-<li>ANY<br></li>
-<li>EXISTS<br></li>
-<li>IN<br></li>
-<li>SOME<br></li>
-</ul>
+    <p>In general, correlated subqueries are supported. EXISTS and NOT EXISTS subqueries that do not contain a correlation join are not yet supported.</p>
+  </li>
+  <li>
+    <p><em>join_clause</em><br />
+Identifies the tables with the data you want to join, the type of join to be performed on the tables, and the conditions on which to join the tables. Starting in Drill 1.14, Drill supports lateral joins.</p>
 
-<p>In general, correlated subqueries are supported. EXISTS and NOT EXISTS subqueries that do not contain a correlation join are not yet supported.  </p></li>
-<li><p><em>join_clause</em><br>
- Identifies the tables with the data you want to join, the type of join to be performed on the tables, and the conditions on which to join the tables. Starting in Drill 1.14, Drill supports lateral joins. </p>
+    <p><strong>NOTE:</strong> See <a href="/docs/lateral-join/">Lateral Join</a> for additional information and examples of queries with lateral joins.</p>
+  </li>
+  <li>
+    <p><em>LATERAL</em><br />
+Keyword that represents a lateral join. A lateral join is essentially a foreach loop in SQL. A lateral join combines the results of the outer query with the results of a lateral subquery. When you use the UNNEST relational operator, Drill infers the LATERAL keyword.</p>
+  </li>
+  <li>
+    <p><em>lateral_sub_query</em><br />
+A lateral subquery is like correlated subqueries except that you use a lateral subquery in the FROM clause instead of the WHERE clause. Also, lateral subqueries can return any number of rows; correlated subqueries return exactly one row.</p>
+  </li>
+  <li>
+    <p><em>unnest_table_expr</em><br />
+References the table produced by the UNNEST relational operator. UNNEST converts a collection to a relation. You must use the UNNEST relational operator with LATERAL subqueries when a field contains repeated types, like an array of maps. You must also indicate an alias for the table produced by UNNEST.</p>
+  </li>
+  <li>
+    <p><em>lateral_join_type</em><br />
+The type of join used with the lateral subquery. Lateral subqueries support [INNER] JOIN and LEFT [OUTER] JOIN, for example:</p>
 
-<p><strong>NOTE:</strong> See <a href="/docs/lateral-join/">Lateral Join</a> for additional information and examples of queries with lateral joins.  </p></li>
-<li><p><em>LATERAL</em><br>
- Keyword that represents a lateral join. A lateral join is essentially a foreach loop in SQL. A lateral join combines the results of the outer query with the results of a lateral subquery. When you use the UNNEST relational operator, Drill infers the LATERAL keyword. </p></li>
-<li><p><em>lateral_sub_query</em><br>
- A lateral subquery is like correlated subqueries except that you use a lateral subquery in the FROM clause instead of the WHERE clause. Also, lateral subqueries can return any number of rows; correlated subqueries return exactly one row.</p></li>
-<li><p><em>unnest_table_expr</em><br>
- References the table produced by the UNNEST relational operator. UNNEST converts a collection to a relation. You must use the UNNEST relational operator with LATERAL subqueries when a field contains repeated types, like an array of maps. You must also indicate an alias for the table produced by UNNEST. </p></li>
-<li><p><em>lateral_join_type</em><br>
- The type of join used with the lateral subquery. Lateral subqueries support [INNER] JOIN and LEFT [OUTER] JOIN, for example:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">...FROM table1 LEFT OUTER JOIN LATERAL (select a from t2) ON TRUE;  
-</code></pre></div>
-<p>If you do not indicate the join type, Drill infers an INNER JOIN.  </p></li>
-<li><p><em>ON TRUE</em><br>
- The join condition when the results of a lateral subquery are joined with fields in rows of the table referenced. This condition is implicit. You do not have to include the condition in the query.  </p></li>
-<li><p><em>join_type</em><br>
-Specifies the type of join between two tables in the join clause when you do not use a lateral join. The join clause supports the following join types:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">[INNER] JOIN  
-LEFT [OUTER] JOIN  
-RIGHT [OUTER] JOIN  
-FULL [OUTER] JOIN
-</code></pre></div></li>
-<li><p><em>ON join_condition</em><br>
-A type of join specification where the joining columns are stated as a condition that follows the ON keyword, for example:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">homes join listing on homes.listid=listing.listid and homes.homeid=listing.homeid
-</code></pre></div></li>
+    <p>…FROM table1 LEFT OUTER JOIN LATERAL (select a from t2) ON TRUE;</p>
+
+    <p>If you do not indicate the join type, Drill infers an INNER JOIN.</p>
+  </li>
+  <li>
+    <p><em>ON TRUE</em><br />
+The join condition when the results of a lateral subquery are joined with fields in rows of the table referenced. This condition is implicit. You do not have to include the condition in the query.</p>
+  </li>
+  <li>
+    <p><em>join_type</em><br />
+   Specifies the type of join between two tables in the join clause when you do not use a lateral join. The join clause supports the following join types:</p>
+
+    <p>[INNER] JOIN<br />
+   LEFT [OUTER] JOIN<br />
+   RIGHT [OUTER] JOIN<br />
+   FULL [OUTER] JOIN</p>
+  </li>
+  <li>
+    <p><em>ON join_condition</em><br />
+   A type of join specification where the joining columns are stated as a condition that follows the ON keyword, for example:</p>
+
+    <p>homes join listing on homes.listid=listing.listid and homes.homeid=listing.homeid</p>
+  </li>
 </ul>
 
 <h2 id="join-types">Join Types</h2>
+<p>INNER JOIN<br />
+Return matching rows only, based on the join condition or list of joining columns.</p>
 
-<p>INNER JOIN<br>
-Return matching rows only, based on the join condition or list of joining columns.  </p>
+<p>OUTER JOIN<br />
+Return all of the rows that the equivalent inner join would return plus non-matching rows from the “left” table, “right” table, or both tables. The left table is the first-listed table, and the right table is the second-listed table. The non-matching rows contain NULL values to fill the gaps in the output columns.</p>
 
-<p>OUTER JOIN<br>
-Return all of the rows that the equivalent inner join would return plus non-matching rows from the &quot;left&quot; table, &quot;right&quot; table, or both tables. The left table is the first-listed table, and the right table is the second-listed table. The non-matching rows contain NULL values to fill the gaps in the output columns.  </p>
+<p>LATERAL<br />
+A lateral join is essentially a foreach loop in SQL. A lateral join is represented by the keyword LATERAL with an inner subquery in the FROM clause. See <a href="/docs/lateral-join/">Lateral Join</a>.</p>
 
-<p>LATERAL<br>
-A lateral join is essentially a foreach loop in SQL. A lateral join is represented by the keyword LATERAL with an inner subquery in the FROM clause. See <a href="/docs/lateral-join/">Lateral Join</a>.  </p>
+<p>CROSS JOIN<br />
+Starting in Drill 1.15, Drill supports cross joins. A cross join returns the cartesian product of two tables. Cross joins are disabled by default because they can produce extremely large result sets that cause out of memory errors.</p>
 
-<p>CROSS JOIN<br>
-Starting in Drill 1.15, Drill supports cross joins. A cross join returns the cartesian product of two tables. Cross joins are disabled by default because they can produce extremely large result sets that cause out of memory errors. </p>
+<p>To enable cross joins, disable the <code class="language-plaintext highlighter-rouge">planner.enable_nljoin_for_scalar_only</code> option, as shown:</p>
 
-<p>To enable cross joins, disable the <code>planner.enable_nljoin_for_scalar_only</code> option, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">set `planner.enable_nljoin_for_scalar_only` = false;  
-+-------+-------------------------------------------------+
-|  ok   |                   summary                       | 
-+-------+-------------------------------------------------+
-| true  | planner.enable_nljoin_for_scalar_only updated.  |
-+-------+-------------------------------------------------+  
-</code></pre></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>set `planner.enable_nljoin_for_scalar_only` = false;  
+|------|------------------------------------------------|
+| ok   | summary                                        |
+|------|------------------------------------------------|
+| true | planner.enable_nljoin_for_scalar_only updated. |
+|------|------------------------------------------------|
+</code></pre></div></div>
+
 <p>Before you enable the cross join functionality, verify that Drill has enough memory to process the query. Also note the following limitation related to the use of aggregate functions with cross joins.</p>
 
-<p><strong>Limitation</strong><br>
-If the input row count for an aggregate function is larger than the value set for the <code>planner.slice_target</code> option, Drill cannot plan the query. As a workaround, set the <code>planner.enable_multiphase_agg</code> option to false. This limitation will be resolved with <a href="https://issues.apache.org/jira/browse/DRILL-6839">DRILL-6839</a>.</p>
+<p><strong>Limitation</strong><br />
+If the input row count for an aggregate function is larger than the value set for the <code class="language-plaintext highlighter-rouge">planner.slice_target</code> option, Drill cannot plan the query. As a workaround, set the <code class="language-plaintext highlighter-rouge">planner.enable_multiphase_agg</code> option to false. This limitation will be resolved with <a href="https://issues.apache.org/jira/browse/DRILL-6839">DRILL-6839</a>.</p>
 
 <h2 id="usage-notes">Usage Notes</h2>
-
 <ul>
-<li>Joined columns must have comparable data types.</li>
-<li>A join with the ON syntax retains both joining columns in its intermediate result set.<br></li>
+  <li>Joined columns must have comparable data types.</li>
+  <li>A join with the ON syntax retains both joining columns in its intermediate result set.</li>
 </ul>
 
 <h2 id="examples">Examples</h2>
 
-<p>The following example joins two tables on the table id: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT tbl1.id, tbl1.type 
+<p>The following example joins two tables on the table id:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT tbl1.id, tbl1.type 
    FROM dfs.`/Users/brumsby/drill/donuts.json` 
    AS tbl1
    JOIN
    dfs.`/Users/brumsby/drill/moredonuts.json` as tbl2
    ON tbl1.id=tbl2.id;
-
-   +------------+------------+
+   
+   |------------|------------|
    |     id     |    type    |
-   +------------+------------+
+   |------------|------------|
    | 0001       | donut      |
-   +------------+------------+  
-</code></pre></div>
+   |------------|------------|  
+</code></pre></div></div>
+
 <p>In the following example, assume you have the following two tables that you want to join using a cross join:</p>
 
 <p><strong>Note:</strong> These tables were created from the region.parquet and nation.parquet files in the sample-data folder included with the Drill installation.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM tmp.`n_name`;
-+----------+-----------------------+
-|  R_NAME  |       R_COMMENT    |
-+----------+-----------------------+
-| AFRICA   | lar deposits. blithe  |
-| AMERICA  | hs use ironic, even   |
-| ASIA  | ges. thinly even pin  |
-+----------+-----------------------+
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM tmp.`n_name`;
+|---------|----------------------|
+| R_NAME  | R_COMMENT            |
+|---------|----------------------|
+| AFRICA  | lar deposits. blithe |
+| AMERICA | hs use ironic, even  |
+| ASIA    | ges. thinly even pin |
+|---------|----------------------|
+ 
 SELECT * FROM tmp.`n_key`;
-+---------+--------------+
-| N_NAME  | N_NATIONKEY  |
-+---------+--------------+
-| 0       | ALGERIA      |
-| 1       | ARGENTINA    |
-| 2       | BRAZIL       |
-+---------+--------------+
-</code></pre></div>
+|--------|-------------|
+| N_NAME | N_NATIONKEY |
+|--------|-------------|
+| 0      | ALGERIA     |
+| 1      | ARGENTINA   |
+| 2      | BRAZIL      |
+|--------|-------------|
+</code></pre></div></div>
+
 <p>Using CROSS JOIN to join the two tables produces the following results:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM tmp.`n_key` CROSS JOIN tmp.`n_name`;
-+---------+--------------+----------+----------------------------+
-| N_NAME  | N_NATIONKEY  |  R_NAME  |       R_COMMENT            |
-+---------+--------------+----------+----------------------------+
-| 0       | ALGERIA      | AFRICA   | lar deposits. blithe       |
-| 0       | ALGERIA      | AMERICA  | hs use ironic, even        |
-| 0       | ALGERIA      | ASIA     | ges. thinly even pin       |
-| 1       | ARGENTINA    | AFRICA   | lar deposits. blithe       |
-| 1       | ARGENTINA    | AMERICA  | hs use ironic, even        |
-| 1       | ARGENTINA    | ASIA     | ges. thinly even pin       |
-| 2       | BRAZIL       | AFRICA   | lar deposits. blithe       |
-| 2       | BRAZIL       | AMERICA  | hs use ironic, even        |
-| 2       | BRAZIL       | ASIA     | ges. thinly even pin       |
-+---------+--------------+----------+----------------------------+
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM tmp.`n_key` CROSS JOIN tmp.`n_name`;
+|--------|-------------|---------|----------------------|
+| N_NAME | N_NATIONKEY | R_NAME  | R_COMMENT            |
+|--------|-------------|---------|----------------------|
+| 0      | ALGERIA     | AFRICA  | lar deposits. blithe |
+| 0      | ALGERIA     | AMERICA | hs use ironic, even  |
+| 0      | ALGERIA     | ASIA    | ges. thinly even pin |
+| 1      | ARGENTINA   | AFRICA  | lar deposits. blithe |
+| 1      | ARGENTINA   | AMERICA | hs use ironic, even  |
+| 1      | ARGENTINA   | ASIA    | ges. thinly even pin |
+| 2      | BRAZIL      | AFRICA  | lar deposits. blithe |
+| 2      | BRAZIL      | AMERICA | hs use ironic, even  |
+| 2      | BRAZIL      | ASIA    | ges. thinly even pin |
+|--------|-------------|---------|----------------------|
+</code></pre></div></div>
+
+
     
       
         <div class="doc-nav">
@@ -1541,7 +1604,7 @@ SELECT * FROM tmp.`n_key`;
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

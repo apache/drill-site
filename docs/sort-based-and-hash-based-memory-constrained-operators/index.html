@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,126 +1369,158 @@
 
     </div>
 
-     Dec 21, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
-        <p>Drill supports the following memory-intensive operators, which can temporarily spill data to disk if they run out of memory:  </p>
+        <p>Drill supports the following memory-intensive operators, which can temporarily spill data to disk if they run out of memory:</p>
 
 <ul>
-<li>External Sort</li>
-<li>Hash-Join (includes semi-join functionality starting in Drill 1.15)</li>
-<li>Hash-Aggregate</li>
+  <li>External Sort</li>
+  <li>Hash-Join (includes semi-join functionality starting in Drill 1.15)</li>
+  <li>Hash-Aggregate</li>
 </ul>
 
 <p>Drill only uses the External Sort operator to sort data. Drill uses the Hash-Aggregate operator to aggregate data. Alternatively, Drill can sort the data and then use the (lightweight) Streaming-Aggregate operator to aggregate data.
 Drill uses the Hash-Join operator to join data. Drill 1.15 introduces semi-join functionality inside the Hash-Join operator to improve query performance. Semi-joins remove the distinct processing below the Hash-Join and eliminate the overhead incurred from using a Hash Aggregate. Prior to Drill 1.15 (or when <a href="/docs/sort-based-and-hash-based-memory-constrained-operators/#disabling-the-hash-operators">semi-join functionality is disabled</a>), Drill used a Distinct Hash Aggregate to implement the functionality of a semi-join. Alternatively, Drill can use the Nested-Loop-Join or sort the data and then use the (lightweight) Merge-Join. Drill typically uses Hash operators for joining and aggregation, as they perform better than the Sort operator (Hash - O(N) vs. Sort - O(N * log(N))). However, if you disable the Hash operators, or the data is already sorted, Drill uses the alternative methods previously described.</p>
 
-<p>The memory configuration in Drill is specified as the memory limit per-query, per-node. The allocated memory is equally divided among all instances of the spillable operators (per query on each node). The number of instances is the number of spillable operators in the query plan multiplied by the maximal degree of parallelism. The maximal degree of parallelism is the number of minor fragments required to perform the work for each instance of a spillable operator. When an instance of a spillable operator must process more data than it can hold, the operator temporarily spills some of the data to a directory on disk to complete its work.  </p>
+<p>The memory configuration in Drill is specified as the memory limit per-query, per-node. The allocated memory is equally divided among all instances of the spillable operators (per query on each node). The number of instances is the number of spillable operators in the query plan multiplied by the maximal degree of parallelism. The maximal degree of parallelism is the number of minor fragments required to perform the work for each instance of a spillable operator. When an instance of a spillable operator must process more data than it can hold, the operator temporarily spills some of the data to a directory on disk to complete its work.</p>
 
 <h2 id="spill-to-disk">Spill to Disk</h2>
 
 <p>Spilling to disk prevents queries that use memory intensive operations from failing with out-of-memory errors. The Spill to Disk feature enables the spillable operators to automatically spill (write) excess data (as files) to a temporary directory on disk when the memory requirements for the operators exceed the set memory limit. Queries run uninterrupted while the operators perform the spill operations in the background.</p>
 
-<p>When the spillable operators finish processing data in memory, they read the spilled data back from disk and then finish processing the data. The operators clean up their data (files) from the temporary spill location after they finish processing the data. </p>
+<p>When the spillable operators finish processing data in memory, they read the spilled data back from disk and then finish processing the data. The operators clean up their data (files) from the temporary spill location after they finish processing the data.</p>
 
-<p>Ideally, you want to allocate enough memory for Drill to perform all operations in memory. When data spills to disk, you will not see any difference in terms of how queries run; however, spilling to disk can impact performance due to the additional I/O required to write data to disk and read the data back. For more information, see <a href="/docs/sort-based-and-hash-based-memory-constrained-operators/#memory-allocation">Memory Allocation</a>. </p>
+<p>Ideally, you want to allocate enough memory for Drill to perform all operations in memory. When data spills to disk, you will not see any difference in terms of how queries run; however, spilling to disk can impact performance due to the additional I/O required to write data to disk and read the data back. For more information, see <a href="/docs/sort-based-and-hash-based-memory-constrained-operators/#memory-allocation">Memory Allocation</a>.</p>
 
-<p><strong>Note:</strong> Drill 1.14 and later supports spilling to disk for the Hash Join, Hash Aggregate, and Sort operators. Drill 1.11, 1.12, and 1.13 supports spilling to disk for the Hash Aggregate and Sort operators. Releases of Drill prior to 1.11 only support spilling to disk for the Sort operator.  </p>
+<p><strong>Note:</strong> Drill 1.14 and later supports spilling to disk for the Hash Join, Hash Aggregate, and Sort operators. Drill 1.11, 1.12, and 1.13 supports spilling to disk for the Hash Aggregate and Sort operators. Releases of Drill prior to 1.11 only support spilling to disk for the Sort operator.</p>
 
-<p><strong>Spill Locations</strong> </p>
+<p><strong>Spill Locations</strong></p>
 
-<p>Spillable operators write data to a temporary work area on disk when they cannot process all of the data in memory. The default location of the temporary work area is <code>/tmp/drill/spill</code> on the local file system. </p>
+<p>Spillable operators write data to a temporary work area on disk when they cannot process all of the data in memory. The default location of the temporary work area is <code class="language-plaintext highlighter-rouge">/tmp/drill/spill</code> on the local file system.</p>
 
-<p>The <code>/tmp/drill/spill</code> directory should suffice for small workloads or examples; however, you should redirect the default spill location to a location with enough disk space to support spilling for large workloads.</p>
+<p>The <code class="language-plaintext highlighter-rouge">/tmp/drill/spill</code> directory should suffice for small workloads or examples; however, you should redirect the default spill location to a location with enough disk space to support spilling for large workloads.</p>
 
 <p><strong>Note:</strong> Spilled data may require more space than the table referenced in the query that is spilling the data. For example, when the underlying table is compressed (Parquet), or when the operator received data joined from multiple tables.</p>
 
-<p>When you configure the spill location, you can specify a single directory or a list of directories into which the spillable operators spill data.  </p>
+<p>When you configure the spill location, you can specify a single directory or a list of directories into which the spillable operators spill data.</p>
 
-<p><strong>Configuring Spill to Disk</strong>  </p>
+<p><strong>Configuring Spill to Disk</strong></p>
 
-<p>The <code>drill-override.conf</code> file, located in the <code>/conf</code> directory, contains options that set the spill locations for the spillable operators. An administrator can change the file system and directories into which the operators spill data. Refer to the <code>drill-override-example.conf</code> file included in the <code>/conf</code> directory for examples. </p>
+<p>The <code class="language-plaintext highlighter-rouge">drill-override.conf</code> file, located in the <code class="language-plaintext highlighter-rouge">/conf</code> directory, contains options that set the spill locations for the spillable operators. An administrator can change the file system and directories into which the operators spill data. Refer to the <code class="language-plaintext highlighter-rouge">drill-override-example.conf</code> file included in the <code class="language-plaintext highlighter-rouge">/conf</code> directory for examples.</p>
 
-<p>The following list describes the spill to disk configuration options:  </p>
+<p>The following list describes the spill to disk configuration options:</p>
 
 <ul>
-<li><p><strong>drill.exec.spill.fs</strong><br>
-Introduced in Drill 1.11. The default file system on the local machine into which the spillable operators spill data. You can configure this option so that data spills into a distributed file system, such as hdfs. For example, &quot;hdfs:///&quot;. The default setting is &quot;file:///&quot;.  </p></li>
-<li><p><strong>drill.exec.spill.directories</strong><br>
-Introduced in Drill 1.11. The list of directories into which the spillable operators spill data. The list must be an array with directories separated by a comma, for example [&quot;/fs1/drill/spill&quot; , &quot;/fs2/drill/spill&quot; , &quot;/fs3/drill/spill&quot;]. The default setting is [&quot;/tmp/drill/spill&quot;].  </p></li>
+  <li>
+    <p><strong>drill.exec.spill.fs</strong><br />
+Introduced in Drill 1.11. The default file system on the local machine into which the spillable operators spill data. You can configure this option so that data spills into a distributed file system, such as hdfs. For example, “hdfs:///”. The default setting is “file:///”.</p>
+  </li>
+  <li>
+    <p><strong>drill.exec.spill.directories</strong><br />
+Introduced in Drill 1.11. The list of directories into which the spillable operators spill data. The list must be an array with directories separated by a comma, for example [“/fs1/drill/spill” , “/fs2/drill/spill” , “/fs3/drill/spill”]. The default setting is [“/tmp/drill/spill”].</p>
+  </li>
 </ul>
 
-<p><strong>Note:</strong> The following options were available prior to Drill 1.11, but have since been deprecated and replaced with the options described above:  </p>
+<p><strong>Note:</strong> The following options were available prior to Drill 1.11, but have since been deprecated and replaced with the options described above:</p>
 
 <ul>
-<li>Drill.exec.sort.external.spill.fs (Replaced by drill.exec.spill.fs)</li>
-<li>Drill.exec.sort.external.spill.directories (Replaced by drill.exec.spill.directories)</li>
-<li>Drill.exec.hashagg.spill.fs (Replaced by drill.exec.spill.fs)<br></li>
+  <li>Drill.exec.sort.external.spill.fs (Replaced by drill.exec.spill.fs)</li>
+  <li>Drill.exec.sort.external.spill.directories (Replaced by drill.exec.spill.directories)</li>
+  <li>Drill.exec.hashagg.spill.fs (Replaced by drill.exec.spill.fs)</li>
 </ul>
 
 <h2 id="memory-allocation">Memory Allocation</h2>
 
-<p>Drill evenly splits the available memory among all instances of the spillable operators. When a query is parallelized, the number of operators is multiplied, which reduces the amount of memory given to each instance of the operators during a query. To see the difference in memory consumption between the operators, you can run a query and then view the query profile in the Drill Web UI. Optionally, you can disable the Hash operators, which forces Drill to use the Merge-Join and Streaming-Aggregate operators.  </p>
+<p>Drill evenly splits the available memory among all instances of the spillable operators. When a query is parallelized, the number of operators is multiplied, which reduces the amount of memory given to each instance of the operators during a query. To see the difference in memory consumption between the operators, you can run a query and then view the query profile in the Drill Web UI. Optionally, you can disable the Hash operators, which forces Drill to use the Merge-Join and Streaming-Aggregate operators.</p>
 
-<p><strong>Memory Allocation Configuration Options</strong>  </p>
+<p><strong>Memory Allocation Configuration Options</strong></p>
 
-<p>The <code>planner.memory.max_query_memory_per_node</code> and <code>planner.memory.percent_per_query</code> options set the amount of memory that Drill can allocate to a query on a node. Both options are enabled by default. Of these two options, Drill picks the setting that provides the most memory.  </p>
-
-<ul>
-<li><p><strong>planner.memory.max_query_memory_per_node</strong><br>
-The <code>planner.memory.max_query_memory_per_node</code> option is the minimum amount of memory available to Drill per query on a node. The default of 2 GB typically allows between two and three concurrent queries to run when the JVM is configured to use 8 GB of direct memory (default). When the memory requirement for Drill increases, the default of 2 GB is constraining. You must increase the amount of memory for queries to complete, unless the setting for the <code>planner.memory.percent_per_query</code> option allows for Drill to use more memory.  </p></li>
-<li><p><strong>planner.memory.percent_per_query</strong><br>
-Alternatively, the <code>planner.memory.percent_per_query</code> option sets the memory as a percentage of the total direct memory. The default is 5%. This value is only used when throttling is disabled. Setting the value to 0 disables the option. You can increase or decrease the value; however, you should set the percentage well below the JVM direct memory to account for the cases where Drill does not manage memory, such as for the less memory intensive operators. </p>
+<p>The <code class="language-plaintext highlighter-rouge">planner.memory.max_query_memory_per_node</code> and <code class="language-plaintext highlighter-rouge">planner.memory.percent_per_query</code> options set the amount of memory that Drill can allocate to a query on a node. Both options are enabled by default. Of these two options, Drill picks the setting that provides the most memory.</p>
 
 <ul>
-<li><p>The percentage is calculated using the following formula:    </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">  (1 - non-managed allowance)/concurrency  
-</code></pre></div></li>
-<li><p>The non-managed allowance is an assumed amount of system memory that non-managed operators will use. Non-managed operators do not spill to disk. The conservative assumption for the non-managed allowance is 50% of the total system memory. Concurrency is the number of concurrent queries that may run. The default assumption is 10 concurrent queries.  </p></li>
-<li><p>Based on the default assumptions, the default value of 5% is calculated, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">(1 - .50)/10 = 0.05  
-</code></pre></div></li>
-</ul></li>
+  <li>
+    <p><strong>planner.memory.max_query_memory_per_node</strong><br />
+The <code class="language-plaintext highlighter-rouge">planner.memory.max_query_memory_per_node</code> option is the minimum amount of memory available to Drill per query on a node. The default of 2 GB typically allows between two and three concurrent queries to run when the JVM is configured to use 8 GB of direct memory (default). When the memory requirement for Drill increases, the default of 2 GB is constraining. You must increase the amount of memory for queries to complete, unless the setting for the <code class="language-plaintext highlighter-rouge">planner.memory.percent_per_query</code> option allows for Drill to use more memory.</p>
+  </li>
+  <li>
+    <p><strong>planner.memory.percent_per_query</strong><br />
+Alternatively, the <code class="language-plaintext highlighter-rouge">planner.memory.percent_per_query</code> option sets the memory as a percentage of the total direct memory. The default is 5%. This value is only used when throttling is disabled. Setting the value to 0 disables the option. You can increase or decrease the value; however, you should set the percentage well below the JVM direct memory to account for the cases where Drill does not manage memory, such as for the less memory intensive operators.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> - The percentage is calculated using the following formula:    
+
+        (1 - non-managed allowance)/concurrency  
+
+ - The non-managed allowance is an assumed amount of system memory that non-managed operators will use. Non-managed operators do not spill to disk. The conservative assumption for the non-managed allowance is 50% of the total system memory. Concurrency is the number of concurrent queries that may run. The default assumption is 10 concurrent queries.  
+
+ - Based on the default assumptions, the default value of 5% is calculated, as shown:  
+
+      (1 - .50)/10 = 0.05  
+</code></pre></div>    </div>
+  </li>
 </ul>
 
-<p><strong>Increasing the Available Memory</strong>  </p>
+<p><strong>Increasing the Available Memory</strong></p>
 
-<p>You can increase the amount of available memory to Drill using the ALTER SYSTEM|SESSION SET commands with the <code>planner.memory.max_query_memory_per_node</code> or <code>planner.memory.percent_per_query</code> options, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   ALTER SYSTEM|SESSION SET `planner.memory.max_query_memory_per_node` = &lt;new_value&gt;
+<table>
+  <tbody>
+    <tr>
+      <td>You can increase the amount of available memory to Drill using the ALTER SYSTEM</td>
+      <td>SESSION SET commands with the <code class="language-plaintext highlighter-rouge">planner.memory.max_query_memory_per_node</code> or <code class="language-plaintext highlighter-rouge">planner.memory.percent_per_query</code> options, as shown:</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ALTER SYSTEM|SESSION SET `planner.memory.max_query_memory_per_node` = &lt;new_value&gt;
    //The default value is to 2147483648 bytes (2GB). 
-
+   
    ALTER SYSTEM|SESSION SET `planner.memory.percent_per_query` = &lt;new_value&gt;
    //The default value is 0.05.  
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="disabling-the-hash-operators">Disabling the Hash Operators</h2>
 
-<p>You can disable the Hash Aggregate and Hash Join operators. When you disable these operators, Drill creates alternative query plans that use the Sort operator and the Streaming Aggregate or the Merge Join operator. </p>
+<p>You can disable the Hash Aggregate and Hash Join operators. When you disable these operators, Drill creates alternative query plans that use the Sort operator and the Streaming Aggregate or the Merge Join operator.</p>
 
-<p>Use the ALTER SYSTEM|SESSION SET commands with the following options to disable the Hash Aggregate and Hash Join operators. Typically, you set the options at the session level unless you want the setting to persist across all sessions. </p>
+<table>
+  <tbody>
+    <tr>
+      <td>Use the ALTER SYSTEM</td>
+      <td>SESSION SET commands with the following options to disable the Hash Aggregate and Hash Join operators. Typically, you set the options at the session level unless you want the setting to persist across all sessions.</td>
+    </tr>
+  </tbody>
+</table>
 
-<p>The following options control the hash-based operators:  </p>
+<p>The following options control the hash-based operators:</p>
 
 <ul>
-<li><p><strong>planner.enable_hashagg</strong><br>
-Enables or disables hash aggregation; otherwise, Drill does a sort-based aggregation. This option is enabled by default. The default, and recommended, setting is true. Prior to Drill 1.11, the Hash Aggregate operator used an uncontrolled amount of memory (up to 10 GB), after which the operator ran out of memory. As of Drill 1.11, the Hash Aggregate operator can spill to disk.  </p></li>
-<li><p><strong>planner.enable_hashjoin</strong><br>
-Enables or disables hash joins. This option is enabled by default. Drill assumes that a query will have adequate memory to complete and tries to use the fastest operations possible. Prior to Drill 1.14, the Hash-Join operator used an uncontrolled amount of memory (up to 10 GB), after which the operator ran out of memory. As of Drill 1.14, this operator can spill to disk. This option is enabled by default.    </p></li>
-<li><p><strong>planner.enable_semijoin</strong><br>
-Enables or disables semi-join functionality inside the Hash Join. This option is enabled by default. When enabled, a semi-join flag inside the HashJoin flag is set to true, and Drill uses a semi-join to remove the distinct processing below the Hash Join. When disabled, Drill can still perform semi-joins, but the semi-joins are performed outside of the Hash Join, as shown in the following example:   </p></li>
+  <li>
+    <p><strong>planner.enable_hashagg</strong><br />
+Enables or disables hash aggregation; otherwise, Drill does a sort-based aggregation. This option is enabled by default. The default, and recommended, setting is true. Prior to Drill 1.11, the Hash Aggregate operator used an uncontrolled amount of memory (up to 10 GB), after which the operator ran out of memory. As of Drill 1.11, the Hash Aggregate operator can spill to disk.</p>
+  </li>
+  <li>
+    <p><strong>planner.enable_hashjoin</strong><br />
+Enables or disables hash joins. This option is enabled by default. Drill assumes that a query will have adequate memory to complete and tries to use the fastest operations possible. Prior to Drill 1.14, the Hash-Join operator used an uncontrolled amount of memory (up to 10 GB), after which the operator ran out of memory. As of Drill 1.14, this operator can spill to disk. This option is enabled by default.</p>
+  </li>
+  <li>
+    <p><strong>planner.enable_semijoin</strong><br />
+Enables or disables semi-join functionality inside the Hash Join. This option is enabled by default. When enabled, a semi-join flag inside the HashJoin flag is set to true, and Drill uses a semi-join to remove the distinct processing below the Hash Join. When disabled, Drill can still perform semi-joins, but the semi-joins are performed outside of the Hash Join, as shown in the following example:</p>
+  </li>
 </ul>
 
 <h3 id="example-query-plan-with-and-without-semi-join">Example: Query Plan with and without Semi-Join</h3>
 
-<p><strong>Semi-Join Disabled</strong><br>
-In the following query plan, you can see the HashAgg before the HashJoin. In the HashJoin flag, you can see that semi-join flag is set to false, indicating that a semi-join was not used.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">EXPLAIN PLAN FOR SELECT employee_id, full_name FROM cp.`employee.json` WHERE employee_id IN (SELECT employee_id FROM cp.`employee.json`);  
+<p><strong>Semi-Join Disabled</strong> <br />
+In the following query plan, you can see the HashAgg before the HashJoin. In the HashJoin flag, you can see that semi-join flag is set to false, indicating that a semi-join was not used.</p>
 
-+----------------------------------------------------------------------------------+----------------------------------------------------------------------------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>EXPLAIN PLAN FOR SELECT employee_id, full_name FROM cp.`employee.json` WHERE employee_id IN (SELECT employee_id FROM cp.`employee.json`);  
+
+|----------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
 |                                       text                                       |                                                            
-+----------------------------------------------------------------------------------+----------------------------------------------------------------------------------+
+|----------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
 | 00-00    Screen
 00-01      Project(employee_id=[$0], full_name=[$1])
 00-02        Project(employee_id=[$0], full_name=[$1])
@@ -1466,20 +1530,24 @@ In the following query plan, you can see the HashAgg before the HashJoin. In the
 00-06              HashAgg(group=[{0}])
 00-07                Scan(table=[[cp, employee.json]], groupscan=[EasyGroupScan [selectionRoot=classpath:/employee.json, numFiles=1, columns=[`employee_id`], files=[classpath:/employee.json]]])
 planner.enable_semijoin  
-</code></pre></div>
-<p><strong>Semi-Join Enabled</strong><br>
-In the following query plan, you can see that the HashAgg is absent. In the HashJoin flag, you can see that semi-join flag is set to true, indicating that a semi-join was used. Using the semi-join optimizes the query by reducing the amount of processing that Drill must perform on data.   </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">EXPLAIN PLAN FOR SELECT employee_id, full_name FROM cp.`employee.json` WHERE employee_id IN (SELECT employee_id FROM cp.`employee.json`);  
+</code></pre></div></div>
 
-+----------------------------------------------------------------------------------+----------------------------------------------------------------------------------+
+<p><strong>Semi-Join Enabled</strong> <br />
+In the following query plan, you can see that the HashAgg is absent. In the HashJoin flag, you can see that semi-join flag is set to true, indicating that a semi-join was used. Using the semi-join optimizes the query by reducing the amount of processing that Drill must perform on data.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>EXPLAIN PLAN FOR SELECT employee_id, full_name FROM cp.`employee.json` WHERE employee_id IN (SELECT employee_id FROM cp.`employee.json`);  
+
+|----------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
 |                                       text                                       |                                                            
-+----------------------------------------------------------------------------------+----------------------------------------------------------------------------------+
+|----------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
 | 00-00    Screen
 00-01      Project(employee_id=[$0], full_name=[$1])
 00-02        HashJoin(condition=[=($0, $2)], joinType=[inner], semi-join: =[true])
 00-04          Scan(table=[[cp, employee.json]], groupscan=[EasyGroupScan [selectionRoot=classpath:/employee.json, numFiles=1, columns=[`employee_id`, `full_name`], files=[classpath:/employee.json]]])
 00-03          Scan(table=[[cp, employee.json]], groupscan=[EasyGroupScan [selectionRoot=classpath:/employee.json, numFiles=1, columns=[`employee_id`], files=[classpath:/employee.json]]])
-</code></pre></div>
+</code></pre></div></div>
+
+
     
       
         <div class="doc-nav">
@@ -1496,7 +1564,7 @@ In the following query plan, you can see that the HashAgg is absent. In the Hash
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,97 +1369,109 @@
 
     </div>
 
-     Nov 2, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
-        <p>REPEATED CONTAINS searches for a keyword in an array. </p>
+        <p>REPEATED CONTAINS searches for a keyword in an array.</p>
 
 <h2 id="syntax">Syntax</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">REPEATED_CONTAINS(array_name, keyword)
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>REPEATED_CONTAINS(array_name, keyword)
+</code></pre></div></div>
+
 <ul>
-<li><p>array_name is a simple array, such as topping:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{
-. . .
-    &quot;topping&quot;:
-        [
-            &quot;None&quot;,
-            &quot;Glazed&quot;,
-            &quot;Sugar&quot;,
-            &quot;Powdered Sugar&quot;,
-            &quot;Chocolate with Sprinkles&quot;,
-            &quot;Chocolate&quot;,
-            &quot;Maple&quot;
-        ]
-}
-</code></pre></div></li>
-<li><p>keyword is a value in the array, such as &#39;Glazed&#39;.</p></li>
+  <li>
+    <p>array_name is a simple array, such as topping:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  {
+  . . .
+      "topping":
+          [
+              "None",
+              "Glazed",
+              "Sugar",
+              "Powdered Sugar",
+              "Chocolate with Sprinkles",
+              "Chocolate",
+              "Maple"
+          ]
+  }
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>keyword is a value in the array, such as ‘Glazed’.</p>
+  </li>
 </ul>
 
 <h2 id="usage-notes">Usage Notes</h2>
-
 <p>REPEATED_CONTAINS returns true if Drill finds a match; otherwise, the function returns false. The function supports regular expression wildcards, but not at the beginning of the keyword:</p>
 
 <ul>
-<li>Asterisk (*)</li>
-<li>Period (.)</li>
-<li>Question mark (?)</li>
-<li>Square bracketed ranges [a-z]</li>
-<li>Square bracketed characters [ch]</li>
-<li>Negated square bracketed ranges or characters [!ch].</li>
+  <li>Asterisk (*)</li>
+  <li>Period (.)</li>
+  <li>Question mark (?)</li>
+  <li>Square bracketed ranges [a-z]</li>
+  <li>Square bracketed characters [ch]</li>
+  <li>Negated square bracketed ranges or characters [!ch].</li>
 </ul>
 
 <p>Enclose keyword string values in single quotation marks. Do not enclose numerical keyword values in single quotation marks.</p>
 
 <h2 id="examples">Examples</h2>
-
-<p>The examples in this section use <code>testRepeatedWrite.json</code>. To download this file, go to <a href="https://github.com/apache/drill/tree/master/exec/java-exec/src/test/resources">Drill test resources</a> page, locate testRepeatedWrite.json in the list of files, and download it.</p>
+<p>The examples in this section use <code class="language-plaintext highlighter-rouge">testRepeatedWrite.json</code>. To download this file, go to <a href="https://github.com/apache/drill/tree/master/exec/java-exec/src/test/resources">Drill test resources</a> page, locate testRepeatedWrite.json in the list of files, and download it.</p>
 
 <p>Which donuts have glazed or glaze toppings?</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">    SELECT name, REPEATED_CONTAINS(topping, &#39;Glaze?&#39;) AS `Glazed?` FROM  dfs.`/Users/drilluser/testRepeatedWrite.json` WHERE type=&#39;donut&#39;;
 
-    +------------+------------+
-    |    name    |  Glazed?   |
-    +------------+------------+
-    | Cake       | true       |
-    | Raised     | true       |
-    | Old Fashioned | true       |
-    | Filled     | true       |
-    | Apple Fritter | true       |
-    +------------+------------+
-    5 rows selected (0.072 seconds)
-</code></pre></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	SELECT name, REPEATED_CONTAINS(topping, 'Glaze?') AS `Glazed?` FROM  dfs.`/Users/drilluser/testRepeatedWrite.json` WHERE type='donut';
+
+	|---------------|---------|
+	| name          | Glazed? |
+	|---------------|---------|
+	| Cake          | true    |
+	| Raised        | true    |
+	| Old Fashioned | true    |
+	| Filled        | true    |
+	| Apple Fritter | true    |
+	|---------------|---------|
+	5 rows selected (0.072 seconds)
+</code></pre></div></div>
+
 <p>Which objects have powdered sugar toppings? Use the asterisk wildcard instead of typing the entire keyword pair.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT name, REPEATED_CONTAINS(topping, &#39;P*r&#39;) AS `Powdered Sugar?` FROM  dfs.`/Users/drilluser/testRepeatedWrite.json` WHERE type=&#39;donut&#39;;
 
-+------------+-----------------+
-|    name    | Powdered Sugar? |
-+------------+-----------------+
-| Cake       | true            |
-| Raised     | true            |
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT name, REPEATED_CONTAINS(topping, 'P*r') AS `Powdered Sugar?` FROM  dfs.`/Users/drilluser/testRepeatedWrite.json` WHERE type='donut';
+
+|---------------|-----------------|
+| name          | Powdered Sugar? |
+|---------------|-----------------|
+| Cake          | true            |
+| Raised        | true            |
 | Old Fashioned | false           |
-| Filled     | true            |
+| Filled        | true            |
 | Apple Fritter | false           |
-+------------+-----------------+
+|---------------|-----------------|
 5 rows selected (0.089 seconds)
-</code></pre></div>
-<p>Which donuts have toppings beginning with the letters &quot;Map&quot; and ending in any two letters?</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT name, REPEATED_CONTAINS(topping, &#39;Map..&#39;) AS `Maple?` FROM  dfs.`/Users/drilluser/testRepeatedWrite.json` WHERE type=&#39;donut&#39;;
+</code></pre></div></div>
 
-+------------+------------+
-|    name    |   Maple?   |
-+------------+------------+
-| Cake       | true       |
-| Raised     | true       |
-| Old Fashioned | true       |
-| Filled     | true       |
-| Apple Fritter | false      |
-+------------+------------+
+<p>Which donuts have toppings beginning with the letters “Map” and ending in any two letters?</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT name, REPEATED_CONTAINS(topping, 'Map..') AS `Maple?` FROM  dfs.`/Users/drilluser/testRepeatedWrite.json` WHERE type='donut';
+
+|---------------|--------|
+| name          | Maple? |
+|---------------|--------|
+| Cake          | true   |
+| Raised        | true   |
+| Old Fashioned | true   |
+| Filled        | true   |
+| Apple Fritter | false  |
+|---------------|--------|
 5 rows selected (0.085 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
+
     
       
         <div class="doc-nav">
@@ -1444,7 +1488,7 @@
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

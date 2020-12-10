@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1335,38 +1367,43 @@
 
     </div>
 
-     Nov 2, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>Previous instructions assume that you make no changes to your Drill installation; that all your site-specific files reside in a separate site directory. Prior Drill versions put all  configurations within the Drill directory. If you chose to continue that pattern, or if you change the Drill installation, you must rebuild the Drill archive and configure Drill-on-YARN
-to upload your custom archive in place of the standard archive. The steps below explain the process.  </p>
+to upload your custom archive in place of the standard archive. The steps below explain the process.</p>
 
-<p>To change the contents of the Drill archive, you must perform two steps:  </p>
+<p>To change the contents of the Drill archive, you must perform two steps:</p>
 
 <ol>
-<li>Create an archive of the Drill install directory.<br></li>
-<li>Configure Drill-on-YARN to use that archive.<br></li>
+  <li>Create an archive of the Drill install directory.</li>
+  <li>Configure Drill-on-YARN to use that archive.</li>
 </ol>
 
 <h2 id="create-the-drill-archive">Create the Drill Archive</h2>
+<p>The first step is to create the master archive of your Drill files. Do the following with the master directory as the current directory.</p>
 
-<p>The first step is to create the master archive of your Drill files. Do the following with the master directory as the current directory.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   cd $MASTER_DIR tar -czf archive-name.tar.gz $DRILL_HOME 
-</code></pre></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   cd $MASTER_DIR tar -czf archive-name.tar.gz $DRILL_HOME 
+</code></pre></div></div>
+
 <p>//Replace “archivename” with the name you created.</p>
 
 <h2 id="configure-drill-on-yarn">Configure Drill-on-YARN</h2>
+<p>To use the archive,  modify your drill-on-yarn.conf file to identify the archive you must created:</p>
 
-<p>To use the archive,  modify your drill-on-yarn.conf file to identify the archive you must created:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   drill.yarn.drill-install.client-path: “/path/to/archive-name.tar.gz”  
-</code></pre></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   drill.yarn.drill-install.client-path: “/path/to/archive-name.tar.gz”  
+</code></pre></div></div>
+
 <p>YARN expects that, when extracting the master directory, that it creates a directory called
-archive-name that contains the Drill directories conf, jars, and so on. However, if archive-name is different than the name of the $DRILL_HOME directory, simply configure the correct name of the expanded folder:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   drill.yarn.drill-install.dir-name: “your-dir-name”  
-</code></pre></div>
+archive-name that contains the Drill directories conf, jars, and so on. However, if archive-name is different than the name of the $DRILL_HOME directory, simply configure the correct name of the expanded folder:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   drill.yarn.drill-install.dir-name: “your-dir-name”  
+</code></pre></div></div>
+
+
     
       
         <div class="doc-nav">
@@ -1383,7 +1420,7 @@ archive-name that contains the Drill directories conf, jars, and so on. However,
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

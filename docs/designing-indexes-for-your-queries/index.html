@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,198 +1369,205 @@
 
     </div>
 
-     Dec 18, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
-        <p>Design indexes that support your queries for maximum performance benefits. Use common query patterns that involve filters and ordering to define indexes. Weigh the benefits of indexes against their update and storage costs and take into consideration any index limitations.  </p>
+        <p>Design indexes that support your queries for maximum performance benefits. Use common query patterns that involve filters and ordering to define indexes. Weigh the benefits of indexes against their update and storage costs and take into consideration any index limitations.</p>
 
 <h2 id="identify-query-patterns">Identify Query Patterns</h2>
-
-<p>Query patterns, such as queries with filter conditions and ORDER BY clauses, indicate where indexes can improve performance. If a query does not contain selective filters, the overhead of using an index may cost more than a full table scan. You should also define your indexes such that a single index benefits either multiple queries or individual queries that you run most often.  </p>
+<p>Query patterns, such as queries with filter conditions and ORDER BY clauses, indicate where indexes can improve performance. If a query does not contain selective filters, the overhead of using an index may cost more than a full table scan. You should also define your indexes such that a single index benefits either multiple queries or individual queries that you run most often.</p>
 
 <h3 id="determine-potential-indexes-based-on-query-patterns">Determine Potential Indexes Based on Query Patterns</h3>
+<p>The following table describes the types and characteristics of indexes you might want to create based on some example query patterns:</p>
 
-<p>The following table describes the types and characteristics of indexes you might want to create based on some example query patterns:  </p>
-
-<table><thead>
-<tr>
-<th><strong>Identified Query Pattern</strong></th>
-<th><strong>Potential Indexes to Create</strong></th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Compares individual columns with selective filter conditions</td>
-<td>Define single column indexes on the columns that   you compare against. Verify that the columns contain supported data types.</td>
-</tr>
-<tr>
-<td>Filters against specific combinations of columns</td>
-<td>Define   composite column indexes instead of single column indexes. Specify the   sequence of the index keys so columns that appear in equality conditions are   the prefixes in the keys.</td>
-</tr>
-<tr>
-<td>Accesses a subset of columns   in a document, but does not filter or sort on these columns</td>
-<td>Add those columns as included columns in   indexes.</td>
-</tr>
-<tr>
-<td>Filters on a sub-column in a   nested document</td>
-<td>Define the index key on the sub-column.</td>
-</tr>
-<tr>
-<td>Filters on sub-columns in   nested documents that are array elements</td>
-<td>Define the index key using a container column   path: for example, arraycolumn[].subcolumn.</td>
-</tr>
-<tr>
-<td>Filters and projects using a   container column path</td>
-<td>Define the container column path as both an   indexed column and included column.</td>
-</tr>
-<tr>
-<td>Filters on individual   elements of an array, which can appear in any position in the array</td>
-<td>Define an index using a container column path:   for example, arraycolumn[].</td>
-</tr>
-<tr>
-<td>Issues Drill SQL queries with   filter conditions that contain CAST expressions</td>
-<td>Specify the CAST function when defining the   index key.</td>
-</tr>
-<tr>
-<td>Sorts on columns</td>
-<td>Define the sequence and order direction of the   index keys to match the sequence and order direction of the columns your   query sorts. If the sort order of the index keys matches the insertion order   of documents, define hashed indexes.</td>
-</tr>
-<tr>
-<td>Sorts on one set of columns   and filters on another set using equality conditions</td>
-<td>Define a composite index so that columns using   equality conditions are the prefixes in the index keys, followed by the sort   columns.</td>
-</tr>
-</tbody></table>
+<table>
+  <thead>
+    <tr>
+      <th><strong>Identified Query Pattern</strong></th>
+      <th><strong>Potential Indexes to Create</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Compares individual columns with selective filter conditions</td>
+      <td>Define single column indexes on the columns that   you compare against. Verify that the columns contain supported data types.</td>
+    </tr>
+    <tr>
+      <td>Filters against specific combinations of columns</td>
+      <td>Define   composite column indexes instead of single column indexes. Specify the   sequence of the index keys so columns that appear in equality conditions are   the prefixes in the keys.</td>
+    </tr>
+    <tr>
+      <td>Accesses a subset of columns   in a document, but does not filter or sort on these columns</td>
+      <td>Add those columns as included columns in   indexes.</td>
+    </tr>
+    <tr>
+      <td>Filters on a sub-column in a   nested document</td>
+      <td>Define the index key on the sub-column.</td>
+    </tr>
+    <tr>
+      <td>Filters on sub-columns in   nested documents that are array elements</td>
+      <td>Define the index key using a container column   path: for example, arraycolumn[].subcolumn.</td>
+    </tr>
+    <tr>
+      <td>Filters and projects using a   container column path</td>
+      <td>Define the container column path as both an   indexed column and included column.</td>
+    </tr>
+    <tr>
+      <td>Filters on individual   elements of an array, which can appear in any position in the array</td>
+      <td>Define an index using a container column path:   for example, arraycolumn[].</td>
+    </tr>
+    <tr>
+      <td>Issues Drill SQL queries with   filter conditions that contain CAST expressions</td>
+      <td>Specify the CAST function when defining the   index key.</td>
+    </tr>
+    <tr>
+      <td>Sorts on columns</td>
+      <td>Define the sequence and order direction of the   index keys to match the sequence and order direction of the columns your   query sorts. If the sort order of the index keys matches the insertion order   of documents, define hashed indexes.</td>
+    </tr>
+    <tr>
+      <td>Sorts on one set of columns   and filters on another set using equality conditions</td>
+      <td>Define a composite index so that columns using   equality conditions are the prefixes in the index keys, followed by the sort   columns.</td>
+    </tr>
+  </tbody>
+</table>
 
 <h2 id="evaluate-trade-offs-and-limitations">Evaluate Trade-Offs and Limitations</h2>
 
 <p>When designing indexes for optimization, consider the following trade-offs and limitations:</p>
 
 <h3 id="synchronizing-indexes">Synchronizing Indexes</h3>
-
-<p>When you design your indexes, remember that the data source must synchronize each index when you insert and update columns in the table. This impacts the throughput performance of inserts and updates because the data source must perform additional writes. The impact increases with each additional index.  </p>
+<p>When you design your indexes, remember that the data source must synchronize each index when you insert and update columns in the table. This impacts the throughput performance of inserts and updates because the data source must perform additional writes. The impact increases with each additional index.</p>
 
 <h3 id="index-storage-requirements">Index Storage Requirements</h3>
-
-<p>Consider the storage costs when creating indexes and deciding on the columns to add to the index. Indexes increase your storage requirements. The storage size depends on the number of indexed and included columns in the index and the size of values stored in those columns. As the size of the index increases, the cost of reading the index also increases.  </p>
+<p>Consider the storage costs when creating indexes and deciding on the columns to add to the index. Indexes increase your storage requirements. The storage size depends on the number of indexed and included columns in the index and the size of values stored in those columns. As the size of the index increases, the cost of reading the index also increases.</p>
 
 <h3 id="index-restrictions">Index Restrictions</h3>
+<p>When designing your indexes, make sure the indexes support the functionality you need.</p>
 
-<p>When designing your indexes, make sure the indexes support the functionality you need. </p>
+<p><strong>Examples</strong></p>
 
-<p><strong>Examples</strong>  </p>
+<p>The following examples illustrate the concepts behind index design, though they do not account for sizing, storage, and updates. Always weigh the benefits of indexes against these other requirements.</p>
 
-<p>The following examples illustrate the concepts behind index design, though they do not account for sizing, storage, and updates. Always weigh the benefits of indexes against these other requirements.  </p>
+<p>Suppose you have the following customer data in JSON format:</p>
 
-<p>Suppose you have the following customer data in JSON format:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{
-   &quot;_id&quot;: &quot;10000&quot;,
-   &quot;FullName&quot;: {
-      &quot;LastName&quot;: &quot;Smith&quot;,
-      &quot;FirstName&quot;: &quot;John&quot;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+   "_id": "10000",
+   "FullName": {
+      "LastName": "Smith",
+      "FirstName": "John"
    },
-   &quot;Address&quot;: {
-      &quot;Street&quot;: &quot;123 SE 22nd St.&quot;,
-      &quot;City&quot;: &quot;Oakland&quot;,
-      &quot;State&quot;: &quot;CA&quot;,
-      &quot;Zipcode&quot;: &quot;94601-1001&quot;
+   "Address": {
+      "Street": "123 SE 22nd St.",
+      "City": "Oakland",
+      "State": "CA",
+      "Zipcode": "94601-1001"
    },
-   &quot;Gender&quot;: &quot;M&quot;,
-   &quot;AccountBalance&quot;: 999.99,
-   &quot;Email&quot;: &quot;john.smith@company.com&quot;,
-   &quot;Phones&quot;: [
-      {&quot;Type&quot;: &quot;Home&quot;, &quot;Number&quot;: &quot;555-555-1234&quot;},
-      {&quot;Type&quot;: &quot;Mobile&quot;, &quot;Number&quot;: &quot;555-555-5678&quot;},
-      {&quot;Type&quot;: &quot;Work&quot;, &quot;Number&quot;: &quot;555-555-9012&quot;}
+   "Gender": "M",
+   "AccountBalance": 999.99,
+   "Email": "john.smith@company.com",
+   "Phones": [
+      {"Type": "Home", "Number": "555-555-1234"},
+      {"Type": "Mobile", "Number": "555-555-5678"},
+      {"Type": "Work", "Number": "555-555-9012"}
    ],
-   &quot;Hobbies&quot;: [&quot;Baseball&quot;, &quot;Cooking&quot;, &quot;Reading&quot;],
-   &quot;DateOfBirth&quot;: &quot;10/1/1985&quot;
+   "Hobbies": ["Baseball", "Cooking", "Reading"],
+   "DateOfBirth": "10/1/1985"
 }   
-</code></pre></div>
-<p>The following table contains columns in the document that are candidates for indexing based on the sample queries:  </p>
+</code></pre></div></div>
 
-<table><thead>
-<tr>
-<th>Query #</th>
-<th>Query</th>
-<th>Candidate   columns for Indexing</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>1</td>
-<td>Find all customers who were born in the 1970s.</td>
-<td>DateOfBirth</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Find all customers who have an account balance   greater than $10K. Order the information in descending order of balance.</td>
-<td>AccountBalance</td>
-</tr>
-<tr>
-<td>3</td>
-<td>List customers who live in   California, ordering the list by LastName, FirstName.</td>
-<td>Address.State     FullName.LastName     FullName.FirstName</td>
-</tr>
-<tr>
-<td>4</td>
-<td>Find the ids and emails of customers who live in   a specific zip code.</td>
-<td>Address.Zip</td>
-</tr>
-<tr>
-<td>5</td>
-<td>Find customers who live in a   specific set of states and have an account balance less than a specific   value.</td>
-<td>Address.State     AccountBalance</td>
-</tr>
-<tr>
-<td>6</td>
-<td>Find male customers with the   last name starting with the letter &quot;S&quot;.</td>
-<td>Gender     FullName.LastName</td>
-</tr>
-<tr>
-<td>7</td>
-<td>Find all customers who have a   mobile phone number with a prefix of &quot;650&quot;.</td>
-<td>Phones[].Type     Phones[].Number</td>
-</tr>
-</tbody></table>
+<p>The following table contains columns in the document that are candidates for indexing based on the sample queries:</p>
 
-<p>The following table contains indexes you might create to optimize the queries listed in the previous table and the reasons for doing so:  </p>
+<table>
+  <thead>
+    <tr>
+      <th>Query #</th>
+      <th>Query</th>
+      <th>Candidate   columns for Indexing</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Find all customers who were born in the 1970s.</td>
+      <td>DateOfBirth</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Find all customers who have an account balance   greater than $10K. Order the information in descending order of balance.</td>
+      <td>AccountBalance</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>List customers who live in   California, ordering the list by LastName, FirstName.</td>
+      <td>Address.State     FullName.LastName     FullName.FirstName</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Find the ids and emails of customers who live in   a specific zip code.</td>
+      <td>Address.Zip</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Find customers who live in a   specific set of states and have an account balance less than a specific   value.</td>
+      <td>Address.State     AccountBalance</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Find male customers with the   last name starting with the letter “S”.</td>
+      <td>Gender     FullName.LastName</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Find all customers who have a   mobile phone number with a prefix of “650”.</td>
+      <td>Phones[].Type     Phones[].Number</td>
+    </tr>
+  </tbody>
+</table>
 
-<table><thead>
-<tr>
-<th>Index</th>
-<th>Rationale</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Simple   index on DateOfBirth</td>
-<td>Optimizes the range condition on   DateOfBirth in query 1.     You need not create a hashed index, because it is unlikely that the order   of DateOfBirth correlates with the insert order of new data.</td>
-</tr>
-<tr>
-<td>Simple   index on AccountBalance, specified as a descending key</td>
-<td>Optimizes the range condition on   AccountBalance in query 2.     Descending order of key meets the ordering criteria in query 2.     Also optimizes the range condition on AccountBalance in query 5 in   combination with the index on Address.State.</td>
-</tr>
-<tr>
-<td>Composite   index on:     •Address.State     •FullName.LastName     •FullName.FirstName</td>
-<td>Optimizes both the equality   condition on Address.State and ordering in query 3.     Inclusion of the name columns in the index meets query 3 ordering.     Also optimizes the IN condition in query 5 when used in combination with   the index on AccountBalance</td>
-</tr>
-<tr>
-<td>Simple   index with:     •Indexed column on Address.Zip     •Included columns on Id and Email</td>
-<td>Optimizes the equality condition   on Address.Zip in query 4.     Adding the included columns avoids reading the JSON table in query 4.</td>
-</tr>
-<tr>
-<td>Composite   index on:     •Gender     •FullName.LastName</td>
-<td>Optimizes equality condition on   Gender and pattern matching condition on FullName.LastName for query 6.     Specifying Gender as the leading key in combination with FullName.LastName   results in more selective index lookups for query 6.</td>
-</tr>
-<tr>
-<td>Simple   index on Hobbies[]</td>
-<td>Optimizes the equality condition   on array elements of Hobbies in query 7:     {&quot;$eq&quot;:{&quot;Hobbies[]&quot;:&quot;Reading&quot;}}</td>
-</tr>
-<tr>
-<td>Composite   index on:     •Phones[].Type     •Phones[].Number</td>
-<td>Optimizes the following two   conditions in query 8:     •Equality condition on the Type subcolumn in nested documents in the Phones   array.     •Pattern matching condition on the Number subcolumn in nested documents in   the Phones array.</td>
-</tr>
-</tbody></table>
+<p>The following table contains indexes you might create to optimize the queries listed in the previous table and the reasons for doing so:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Index</th>
+      <th>Rationale</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Simple   index on DateOfBirth</td>
+      <td>Optimizes the range condition on   DateOfBirth in query 1.     You need not create a hashed index, because it is unlikely that the order   of DateOfBirth correlates with the insert order of new data.</td>
+    </tr>
+    <tr>
+      <td>Simple   index on AccountBalance, specified as a descending key</td>
+      <td>Optimizes the range condition on   AccountBalance in query 2.     Descending order of key meets the ordering criteria in query 2.     Also optimizes the range condition on AccountBalance in query 5 in   combination with the index on Address.State.</td>
+    </tr>
+    <tr>
+      <td>Composite   index on:     •Address.State     •FullName.LastName     •FullName.FirstName</td>
+      <td>Optimizes both the equality   condition on Address.State and ordering in query 3.     Inclusion of the name columns in the index meets query 3 ordering.     Also optimizes the IN condition in query 5 when used in combination with   the index on AccountBalance</td>
+    </tr>
+    <tr>
+      <td>Simple   index with:     •Indexed column on Address.Zip     •Included columns on Id and Email</td>
+      <td>Optimizes the equality condition   on Address.Zip in query 4.     Adding the included columns avoids reading the JSON table in query 4.</td>
+    </tr>
+    <tr>
+      <td>Composite   index on:     •Gender     •FullName.LastName</td>
+      <td>Optimizes equality condition on   Gender and pattern matching condition on FullName.LastName for query 6.     Specifying Gender as the leading key in combination with FullName.LastName   results in more selective index lookups for query 6.</td>
+    </tr>
+    <tr>
+      <td>Simple   index on Hobbies[]</td>
+      <td>Optimizes the equality condition   on array elements of Hobbies in query 7:     {“$eq”:{“Hobbies[]”:”Reading”}}</td>
+    </tr>
+    <tr>
+      <td>Composite   index on:     •Phones[].Type     •Phones[].Number</td>
+      <td>Optimizes the following two   conditions in query 8:     •Equality condition on the Type subcolumn in nested documents in the Phones   array.     •Pattern matching condition on the Number subcolumn in nested documents in   the Phones array.</td>
+    </tr>
+  </tbody>
+</table>
+
 
     
       
@@ -1546,7 +1585,7 @@
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

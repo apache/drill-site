@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,60 +1369,66 @@
 
     </div>
 
-     Dec 30, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
-        <p>Drill uses the Curator Framework to interact with ZooKeeper to discover services in a cluster. In addition to discovering services, Drill uses ZooKeeper to store certain cluster-level configuration and query profile information in znodes. A znode is an internal data tree in ZooKeeper that stores coordination and execution related information. If information in the znodes is not properly secured, cluster privacy and/or security is compromised.   </p>
+        <p>Drill uses the Curator Framework to interact with ZooKeeper to discover services in a cluster. In addition to discovering services, Drill uses ZooKeeper to store certain cluster-level configuration and query profile information in znodes. A znode is an internal data tree in ZooKeeper that stores coordination and execution related information. If information in the znodes is not properly secured, cluster privacy and/or security is compromised.</p>
 
-<p>Drill allows users to create a custom ACL (Access Control List) on the znodes to secure data. ACLs specify sets of ids and permissions that are associated with the ids. ZooKeeper uses ACLs to control access to znodes and secure the information they store.   </p>
+<p>Drill allows users to create a custom ACL (Access Control List) on the znodes to secure data. ACLs specify sets of ids and permissions that are associated with the ids. ZooKeeper uses ACLs to control access to znodes and secure the information they store.</p>
 
-<p>Prior to Drill 1.15, ZooKeeper ACLs in secure and unsecure clusters were set to [world:all], meaning that all users had create, delete, read, write, and administrator access to the zknodes. Starting in Drill 1.15, ACLs in unsecure clusters are set to [world:all]. ACLs in secure clusters are set to [authid: all], which provides only the authenticated user that created the znode with full access. Discovery znodes (znodes with the list of Drillbits) have an additional ACL set to [world:read] making the list of Drillbits readable by any user.   </p>
+<p>Prior to Drill 1.15, ZooKeeper ACLs in secure and unsecure clusters were set to [world:all], meaning that all users had create, delete, read, write, and administrator access to the zknodes. Starting in Drill 1.15, ACLs in unsecure clusters are set to [world:all]. ACLs in secure clusters are set to [authid: all], which provides only the authenticated user that created the znode with full access. Discovery znodes (znodes with the list of Drillbits) have an additional ACL set to [world:read] making the list of Drillbits readable by any user.</p>
 
 <ul>
-<li>View the <a href="https://github.com/apache/drill/blob/master/distribution/src/resources/drill-override-example.conf">drill-override-example.conf</a> file to see example ACL configurations.</li>
+  <li>View the <a href="https://github.com/apache/drill/blob/master/distribution/src/resources/drill-override-example.conf">drill-override-example.conf</a> file to see example ACL configurations.</li>
 </ul>
 
 <h2 id="securing-znodes">Securing znodes</h2>
-
-<p>Complete the following steps to create a custom ACL and secure znodes:  </p>
+<p>Complete the following steps to create a custom ACL and secure znodes:</p>
 
 <ol>
-<li>Write a class that implements the <code>ZKACLProvider</code> interface. This class will contain the ACLs that need to be set on the znodes. You can use  the <a href="https://github.com/apache/drill/blob/master/exec/java-exec/src/main/java/org/apache/drill/exec/coord/zk/ZKSecureACLProvider.java"><code>ZKSecureACLProvider</code> class as a sample reference</a>.<br></li>
-<li><p>Add the following dependency to the <code>pom</code> file of the project module created:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;groupId&gt;org.apache.drill.exec&lt;/groupId&gt;
-&lt;artifactId&gt;drill-java-exec&lt;/artifactId&gt;  
-</code></pre></div></li>
-<li><p>Refer to the steps listed at <a href="/docs/manually-adding-custom-functions-to-drill/">https://drill.apache.org/docs/manually-adding-custom-functions-to-drill/</a> to create a JAR and then add the JAR to Drill&#39;s classpath.  </p></li>
-<li><p>In <code>$DRILL_HOME/conf/drill-override.conf</code>, set <code>zk.acl_provider</code> to the <code>ZKACLProviderTemplate</code> type.  </p></li>
-<li><p>Restart Drill.</p></li>
+  <li>Write a class that implements the <code class="language-plaintext highlighter-rouge">ZKACLProvider</code> interface. This class will contain the ACLs that need to be set on the znodes. You can use  the <a href="https://github.com/apache/drill/blob/master/exec/java-exec/src/main/java/org/apache/drill/exec/coord/zk/ZKSecureACLProvider.java"><code class="language-plaintext highlighter-rouge">ZKSecureACLProvider</code> class as a sample reference</a>.</li>
+  <li>
+    <p>Add the following dependency to the <code class="language-plaintext highlighter-rouge">pom</code> file of the project module created:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;groupId&gt;org.apache.drill.exec&lt;/groupId&gt;
+ &lt;artifactId&gt;drill-java-exec&lt;/artifactId&gt;  
+</code></pre></div>    </div>
+  </li>
+  <li>Refer to the steps listed at <a href="/docs/manually-adding-custom-functions-to-drill/">https://drill.apache.org/docs/manually-adding-custom-functions-to-drill/</a> to create a JAR and then add the JAR to Drill’s classpath.</li>
+  <li>In <code class="language-plaintext highlighter-rouge">$DRILL_HOME/conf/drill-override.conf</code>, set <code class="language-plaintext highlighter-rouge">zk.acl_provider</code> to the <code class="language-plaintext highlighter-rouge">ZKACLProviderTemplate</code> type.</li>
+  <li>Restart Drill.</li>
 </ol>
 
-<p>When you restart Drill, the ACL, as mentioned in your custom class, is applied to the znode created when Drill starts.  </p>
+<p>When you restart Drill, the ACL, as mentioned in your custom class, is applied to the znode created when Drill starts.</p>
 
-<hr>
-
-<p><strong>NOTE</strong><br>
-Existing ACLs for persistent znodes will not be affected if a Drillbit is restarted with a different ACL setting. ACLs are applied only at znode creation time, and Drill does not recreate any znode that is already present. If you want to change an ACL for existing znodes, connect to the ZooKeeper server using zkCli and then use option a or b, as described:  </p>
-
-<ul>
-<li><p>a) Shutdown Drillbits, delete the persistent znodes, change the ACL settings and then restart the Drillbit   </p></li>
-<li><p>b) Manually change the ACLs on the existing znodes to reflect the new ACL settings, using the setAcl command in the zkCli.</p></li>
-</ul>
-
-<p>For either option to work, an authenticated connection between the zkCli and ZooKeeper Server must be established. </p>
-
-<hr>
-
-<p>For additional information, refer to:  </p>
+<hr />
+<p><strong>NOTE</strong><br />
+Existing ACLs for persistent znodes will not be affected if a Drillbit is restarted with a different ACL setting. ACLs are applied only at znode creation time, and Drill does not recreate any znode that is already present. If you want to change an ACL for existing znodes, connect to the ZooKeeper server using zkCli and then use option a or b, as described:</p>
 
 <ul>
-<li><a href="https://zookeeper.apache.org/doc/trunk/zookeeperOver.html">https://zookeeper.apache.org/doc/trunk/zookeeperOver.html</a><br></li>
-<li><a href="https://zookeeper.apache.org/doc/r3.1.2/zookeeperProgrammers.html#sc_ZooKeeperAccessControl">https://zookeeper.apache.org/doc/r3.1.2/zookeeperProgrammers.html#sc_ZooKeeperAccessControl</a><br></li>
-<li><a href="https://cwiki.apache.org/confluence/display/ZOOKEEPER/Zookeeper+and+SASL">https://cwiki.apache.org/confluence/display/ZOOKEEPER/Zookeeper+and+SASL</a></li>
+  <li>
+    <p>a) Shutdown Drillbits, delete the persistent znodes, change the ACL settings and then restart the Drillbit</p>
+  </li>
+  <li>
+    <p>b) Manually change the ACLs on the existing znodes to reflect the new ACL settings, using the setAcl command in the zkCli.</p>
+  </li>
 </ul>
+
+<p>For either option to work, an authenticated connection between the zkCli and ZooKeeper Server must be established.</p>
+
+<hr />
+
+<p>For additional information, refer to:</p>
+
+<ul>
+  <li><a href="https://zookeeper.apache.org/doc/trunk/zookeeperOver.html">https://zookeeper.apache.org/doc/trunk/zookeeperOver.html</a></li>
+  <li><a href="https://zookeeper.apache.org/doc/r3.1.2/zookeeperProgrammers.html#sc_ZooKeeperAccessControl">https://zookeeper.apache.org/doc/r3.1.2/zookeeperProgrammers.html#sc_ZooKeeperAccessControl</a></li>
+  <li><a href="https://cwiki.apache.org/confluence/display/ZOOKEEPER/Zookeeper+and+SASL">https://cwiki.apache.org/confluence/display/ZOOKEEPER/Zookeeper+and+SASL</a></li>
+</ul>
+
 
     
       
@@ -1408,7 +1446,7 @@ Existing ACLs for persistent znodes will not be affected if a Drillbit is restar
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

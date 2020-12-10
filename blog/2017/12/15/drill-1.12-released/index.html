@@ -137,67 +137,65 @@
   <div class="addthis_sharing_toolbox"></div>
 
   <article class="post-content">
-    <p>Today, we&#39;re happy to announce the availability of Drill 1.12.0. You can download it <a href="https://drill.apache.org/download/">here</a>.</p>
+    <p>Today, we’re happy to announce the availability of Drill 1.12.0. You can download it <a href="https://drill.apache.org/download/">here</a>.</p>
 
 <p>The release provides the following bug fixes and improvements:</p>
 
 <h2 id="kafka-and-opentsdb-storage-plugins-drill-4779-drill-5337">Kafka and OpenTSDB Storage Plugins (DRILL-4779, DRILL-5337)</h2>
-
-<p>You can configure Kafka and OpenTSDB as Drill data sources.  </p>
+<p>You can configure Kafka and OpenTSDB as Drill data sources.</p>
 
 <ul>
-<li>For Kafka storage plugin information, see the <a href="https://github.com/apache/drill/blob/master/contrib/storage-kafka/README.md">README</a> file. </li>
-<li><p>For OpenTSDB storage plugin information, see the <a href="https://github.com/apache/drill/blob/master/contrib/storage-opentsdb/README.md">README</a> file. Configure the OpenTSDB storage plugin in the Storage tab of the Drill Web Console, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{
- &quot;storage&quot;: {
-   openTSDB: {
-     type: &quot;openTSDB&quot;,
-     connection: &quot;http://localhost:10000&quot;,
-     enabled: false
-      }
-   }
- }   
-</code></pre></div></li>
+  <li>For Kafka storage plugin information, see the <a href="https://github.com/apache/drill/blob/master/contrib/storage-kafka/README.md">README</a> file.</li>
+  <li>
+    <p>For OpenTSDB storage plugin information, see the <a href="https://github.com/apache/drill/blob/master/contrib/storage-opentsdb/README.md">README</a> file. Configure the OpenTSDB storage plugin in the Storage tab of the Drill Web Console, as shown:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  {
+   "storage": {
+     openTSDB: {
+       type: "openTSDB",
+       connection: "http://localhost:10000",
+       enabled: false
+        }
+     }
+   }   
+</code></pre></div>    </div>
+  </li>
 </ul>
 
 <h2 id="queue-based-memory-assignment-for-buffering-operators-throttling-drill-5716">Queue-Based Memory Assignment for Buffering Operators (Throttling) (DRILL-5716)</h2>
-
-<p>Throttling limits the number of concurrent queries that run to prevent queries from failing with out-of-memory errors. When you enable throttling, you configure the number of concurrent queries that can run and the resource requirements for each query. Drill calculates the amount of memory to assign per query per node. See <a href="/docs/throttling/">Throttling</a> for more information. </p>
+<p>Throttling limits the number of concurrent queries that run to prevent queries from failing with out-of-memory errors. When you enable throttling, you configure the number of concurrent queries that can run and the resource requirements for each query. Drill calculates the amount of memory to assign per query per node. See <a href="/docs/throttling/">Throttling</a> for more information.</p>
 
 <h2 id="networking-functions">Networking Functions</h2>
-
-<p>Drill supports the following networking functions to facilitate network analysis using Drill:  </p>
+<p>Drill supports the following networking functions to facilitate network analysis using Drill:</p>
 
 <ul>
-<li><code>inet_aton(&lt;ip&gt;)</code>: Converts an IPv4 address into an integer</li>
-<li><code>inet_ntoa( &lt;int&gt;)</code>: Converts an integer IP into dotted decimal notation</li>
-<li><code>in_network( &lt;ip&gt;,&lt;cidr&gt; )</code>: Returns true if the IP address is in the given CIDR block</li>
-<li><code>address_count( &lt;cidr&gt; )</code>: Returns the number of IPs in a given CIDR block</li>
-<li><code>broadcast_address( &lt;cidr&gt; )</code>: Returns the broadcast address for a given CIDR block</li>
-<li><code>netmask(&lt;cidr&gt; )</code>: Returns the netmask for a given CIDR block</li>
-<li><code>low_address(&lt;cidr&gt;)</code>: Returns the first address in a given CIDR block</li>
-<li><code>high_address(&lt;cidr&gt;)</code>: Returns the last address in a given CIDR block</li>
-<li><code>url_encode( &lt;url&gt; )</code>: Returns a URL encoded string</li>
-<li><code>url_decode( &lt;url&gt; )</code>: Decodes ``a URL encoded string</li>
-<li><code>is_valid_IP(&lt;ip&gt;)</code>: Returns true if the IP is a valid IP address</li>
-<li><code>is_private_ip(&lt;ip&gt;)</code>: Returns true if the IP is a private IPv4 address</li>
-<li><code>is_valid_IPv4(&lt;ip&gt;)</code>: Returns true if the IP is a valid IPv4 address</li>
-<li><code>is_valid_IPv6(&lt;ip&gt;)</code>: Returns true if the IP is a valid IPv6 address<br></li>
+  <li><code class="language-plaintext highlighter-rouge">inet_aton(&lt;ip&gt;)</code>: Converts an IPv4 address into an integer</li>
+  <li><code class="language-plaintext highlighter-rouge">inet_ntoa( &lt;int&gt;)</code>: Converts an integer IP into dotted decimal notation</li>
+  <li><code class="language-plaintext highlighter-rouge">in_network( &lt;ip&gt;,&lt;cidr&gt; )</code>: Returns true if the IP address is in the given CIDR block</li>
+  <li><code class="language-plaintext highlighter-rouge">address_count( &lt;cidr&gt; )</code>: Returns the number of IPs in a given CIDR block</li>
+  <li><code class="language-plaintext highlighter-rouge">broadcast_address( &lt;cidr&gt; )</code>: Returns the broadcast address for a given CIDR block</li>
+  <li><code class="language-plaintext highlighter-rouge">netmask(&lt;cidr&gt; )</code>: Returns the netmask for a given CIDR block</li>
+  <li><code class="language-plaintext highlighter-rouge">low_address(&lt;cidr&gt;)</code>: Returns the first address in a given CIDR block</li>
+  <li><code class="language-plaintext highlighter-rouge">high_address(&lt;cidr&gt;)</code>: Returns the last address in a given CIDR block</li>
+  <li><code class="language-plaintext highlighter-rouge">url_encode( &lt;url&gt; )</code>: Returns a URL encoded string</li>
+  <li><code class="language-plaintext highlighter-rouge">url_decode( &lt;url&gt; )</code>: Decodes ``a URL encoded string</li>
+  <li><code class="language-plaintext highlighter-rouge">is_valid_IP(&lt;ip&gt;)</code>: Returns true if the IP is a valid IP address</li>
+  <li><code class="language-plaintext highlighter-rouge">is_private_ip(&lt;ip&gt;)</code>: Returns true if the IP is a private IPv4 address</li>
+  <li><code class="language-plaintext highlighter-rouge">is_valid_IPv4(&lt;ip&gt;)</code>: Returns true if the IP is a valid IPv4 address</li>
+  <li><code class="language-plaintext highlighter-rouge">is_valid_IPv6(&lt;ip&gt;)</code>: Returns true if the IP is a valid IPv6 address</li>
 </ul>
 
 <h2 id="ssl-support">SSL Support</h2>
-
-<p>Drill supports SSL to encrypt data passed between the Drill client and Drillbit. SSL also provides one-way authentication through which the Drill client verifies the identity of the Drillbit. The SASL feature in Drill provides authentication and an option to encrypt data, however the encryption feature is not available when using Plain authentication. If you need to use Plain authentication (certain BI tools only use Plain authentication), you can enable SSL to encrypt data. You can have both SASL and SSL enabled when using Plain authentication only. For any other scenario, using SSL and SASL encryption together is strongly discouraged. The Drill server requires an SSL certificate. The certificate can be self-signed or signed by a CA (Certificate Authority). SSL is not supported for communication between Drillbits.  </p>
+<p>Drill supports SSL to encrypt data passed between the Drill client and Drillbit. SSL also provides one-way authentication through which the Drill client verifies the identity of the Drillbit. The SASL feature in Drill provides authentication and an option to encrypt data, however the encryption feature is not available when using Plain authentication. If you need to use Plain authentication (certain BI tools only use Plain authentication), you can enable SSL to encrypt data. You can have both SASL and SSL enabled when using Plain authentication only. For any other scenario, using SSL and SASL encryption together is strongly discouraged. The Drill server requires an SSL certificate. The certificate can be self-signed or signed by a CA (Certificate Authority). SSL is not supported for communication between Drillbits.</p>
 
 <h2 id="network-encryption-support">Network Encryption Support</h2>
-
-<p>Drill 1.10 provided authentication support through Plain and Kerberos authentication mechanisms to authenticate the Drill client to Drillbit and Drillbit to Drillbit communication channels. Drill 1.11 extends that support to include encryption. Drill uses the Kerberos mechanism over the SASL framework to encrypt the communication channels. </p>
+<p>Drill 1.10 provided authentication support through Plain and Kerberos authentication mechanisms to authenticate the Drill client to Drillbit and Drillbit to Drillbit communication channels. Drill 1.11 extends that support to include encryption. Drill uses the Kerberos mechanism over the SASL framework to encrypt the communication channels.</p>
 
 <h2 id="access-to-paths-outside-the-current-workspace-drill-5964">Access to Paths Outside the Current Workspace (DRILL-5964)</h2>
-
 <p>A new parameter, allowAccessOutsideWorkspace, in the dfs storage plugin configuration prevents users from accessing paths outside the root of a workspace. The default value for the parameter is false. Set the parameter to true to allow users access outside of a workspace. If existing storage plugin configurations do not specify the parameter, users cannot access paths outside the configured workspaces.</p>
 
-<p>You can find a complete list of JIRAs resolved in the 1.12.0 release <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12341087&styleName=Html&projectId=12313820&Create=Create&atl_token=A5KQ-2QAV-T4JA-FDED%7Cd194b12b906cd370f36d15e8af60a94592b89038%7Clin">here</a>.</p>
+<p>You can find a complete list of JIRAs resolved in the 1.12.0 release <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12341087&amp;styleName=Html&amp;projectId=12313820&amp;Create=Create&amp;atl_token=A5KQ-2QAV-T4JA-FDED%7Cd194b12b906cd370f36d15e8af60a94592b89038%7Clin">here</a>.</p>
+
 
   </article>
  <div id="disqus_thread"></div>
@@ -221,7 +219,7 @@
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

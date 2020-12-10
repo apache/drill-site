@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1335,184 +1367,190 @@
 
     </div>
 
-     Dec 8, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
-        <p>Drill 1.9 introduces an asynchronous Parquet reader option that you can enable to improve the performance of the Parquet Scan operator. The Parquet Scan operator reads Parquet data. Reading Parquet data involves scanning the disk, decompressing and decoding the data, and writing data to internal memory structures (value vectors).  </p>
+        <p>Drill 1.9 introduces an asynchronous Parquet reader option that you can enable to improve the performance of the Parquet Scan operator. The Parquet Scan operator reads Parquet data. Reading Parquet data involves scanning the disk, decompressing and decoding the data, and writing data to internal memory structures (value vectors).</p>
 
-<p>When the asynchronous parquet reader option is enabled, the speed at which the Parquet reader scans, decompresses, and decodes the data increases. The scan operation uses a buffering read strategy that allows the file system to perform larger, sequential reads, which significantly improves query performance.  </p>
+<p>When the asynchronous parquet reader option is enabled, the speed at which the Parquet reader scans, decompresses, and decodes the data increases. The scan operation uses a buffering read strategy that allows the file system to perform larger, sequential reads, which significantly improves query performance.</p>
 
-<p>Typically, the Drill default settings provide the best performance for a wide variety of use cases. However, specific cases that require a high level of performance can benefit from tuning the Parquet Scan operator.  </p>
+<p>Typically, the Drill default settings provide the best performance for a wide variety of use cases. However, specific cases that require a high level of performance can benefit from tuning the Parquet Scan operator.</p>
 
 <h2 id="tuning-the-parquet-scan-operator">Tuning the Parquet Scan Operator</h2>
+<p>The <code class="language-plaintext highlighter-rouge">store.parquet.reader.pagereader.async</code> option turns the asynchronous Parquet reader on or off. The option is turned on by default. You can use the <a href="/docs/alter-session-command/">ALTER SESSION SET command</a> to enable the asynchronous Parquet reader option, as well as the options that control buffering and parallel decoding.</p>
 
-<p>The <code>store.parquet.reader.pagereader.async</code> option turns the asynchronous Parquet reader on or off. The option is turned on by default. You can use the <a href="/docs/alter-session-command/">ALTER SESSION SET command</a> to enable the asynchronous Parquet reader option, as well as the options that control buffering and parallel decoding.  </p>
+<p>When the asynchronous Page reader option is enabled, the Parquet Scan operator no longer reports operator wait time. Instead, it reports additional operator metrics that you can view in the query profile in the Drill Web UI.</p>
 
-<p>When the asynchronous Page reader option is enabled, the Parquet Scan operator no longer reports operator wait time. Instead, it reports additional operator metrics that you can view in the query profile in the Drill Web UI.  </p>
+<p>The <code class="language-plaintext highlighter-rouge">drill.exec.scan.threadpool_size</code> and <code class="language-plaintext highlighter-rouge">drill.exec.scan.decode_threadpool_size</code> parameters in the <code class="language-plaintext highlighter-rouge">drill-override.conf</code> file control the size of the threadpools that read and decode Parquet data when the asynchronous Parquet reader is enabled.</p>
 
-<p>The <code>drill.exec.scan.threadpool_size</code> and <code>drill.exec.scan.decode_threadpool_size</code> parameters in the <code>drill-override.conf</code> file control the size of the threadpools that read and decode Parquet data when the asynchronous Parquet reader is enabled.  </p>
+<p>For more information, see the <a href="https://github.com/parthchandra/drill/wiki/Parquet-file-reading-performance-improvement">functional specification</a>.</p>
 
-<p>For more information, see the <a href="https://github.com/parthchandra/drill/wiki/Parquet-file-reading-performance-improvement">functional specification</a>.  </p>
-
-<p>The following sections provide the configuration options and details:  </p>
+<p>The following sections provide the configuration options and details:</p>
 
 <h3 id="asynchronous-parquet-reader-options">Asynchronous Parquet Reader Options</h3>
 
-<p>The following table lists and describes the asynchronous Parquet reader options that you can enable or disable using the <a href="/docs/alter-session-command/">ALTER SESSION SET command</a>:  </p>
+<p>The following table lists and describes the asynchronous Parquet reader options that you can enable or disable using the <a href="/docs/alter-session-command/">ALTER SESSION SET command</a>:</p>
 
-<table><thead>
-<tr>
-<th>Option</th>
-<th>Description</th>
-<th>Type</th>
-<th>Default</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>store.parquet.reader.pagereader.async</td>
-<td>Enable the asynchronous page reader. This   pipelines the reading of data from disk for high performance.</td>
-<td>BOOLEAN</td>
-<td>TRUE</td>
-</tr>
-<tr>
-<td>store.parquet.reader.pagereader.bufferedread</td>
-<td>Enable buffered page reading. Can improve disk   scan speeds by buffering data, but increases memory usage. This option is   less useful when the number of columns increases.</td>
-<td>BOOLEAN</td>
-<td>TRUE</td>
-</tr>
-<tr>
-<td>store.parquet.reader.pagereader.buffersize</td>
-<td>The size of the buffer (in bytes) to use if   bufferedread is true. Has no effect otherwise.</td>
-<td>LONG</td>
-<td>4194304</td>
-</tr>
-<tr>
-<td>store.parquet.reader.pagereader.usefadvise</td>
-<td>If the file system supports it, the Parquet file   reader issues an fadvise call to enable file server side sequential reading   and caching. Since many HDFS implementations do not support this and because   this may have no effect in conditions of high concurrency, the option is set   to false. Useful for benchmarks and for performance critical queries.</td>
-<td>BOOLEAN</td>
-<td>FALSE</td>
-</tr>
-<tr>
-<td>store.parquet.reader.columnreader.async</td>
-<td>Turn on parallel decoding of column data from   Parquet to the in memory format. This increases CPU usage and is most useful   for compressed fixed width data. With increasing concurrency, this option may   cause queries to run slower and should be turned on only for performance   critical queries.</td>
-<td>BOOLEAN</td>
-<td>FALSE</td>
-</tr>
-</tbody></table>
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>store.parquet.reader.pagereader.async</td>
+      <td>Enable the asynchronous page reader. This   pipelines the reading of data from disk for high performance.</td>
+      <td>BOOLEAN</td>
+      <td>TRUE</td>
+    </tr>
+    <tr>
+      <td>store.parquet.reader.pagereader.bufferedread</td>
+      <td>Enable buffered page reading. Can improve disk   scan speeds by buffering data, but increases memory usage. This option is   less useful when the number of columns increases.</td>
+      <td>BOOLEAN</td>
+      <td>TRUE</td>
+    </tr>
+    <tr>
+      <td>store.parquet.reader.pagereader.buffersize</td>
+      <td>The size of the buffer (in bytes) to use if   bufferedread is true. Has no effect otherwise.</td>
+      <td>LONG</td>
+      <td>4194304</td>
+    </tr>
+    <tr>
+      <td>store.parquet.reader.pagereader.usefadvise</td>
+      <td>If the file system supports it, the Parquet file   reader issues an fadvise call to enable file server side sequential reading   and caching. Since many HDFS implementations do not support this and because   this may have no effect in conditions of high concurrency, the option is set   to false. Useful for benchmarks and for performance critical queries.</td>
+      <td>BOOLEAN</td>
+      <td>FALSE</td>
+    </tr>
+    <tr>
+      <td>store.parquet.reader.columnreader.async</td>
+      <td>Turn on parallel decoding of column data from   Parquet to the in memory format. This increases CPU usage and is most useful   for compressed fixed width data. With increasing concurrency, this option may   cause queries to run slower and should be turned on only for performance   critical queries.</td>
+      <td>BOOLEAN</td>
+      <td>FALSE</td>
+    </tr>
+  </tbody>
+</table>
 
 <h3 id="drillbit-configuration-parameters">Drillbit Configuration Parameters</h3>
+<p>The following table lists and describes the drillbit configuration parameters in <code class="language-plaintext highlighter-rouge">drill-override.conf</code> that control the size of the threadpools used by the asynchronous Parquet reader:</p>
 
-<p>The following table lists and describes the drillbit configuration parameters in <code>drill-override.conf</code> that control the size of the threadpools used by the asynchronous Parquet reader:  </p>
+<p><strong>Note:</strong> You must restart the drillbit for these configuration changes to take effect.</p>
 
-<p><strong>Note:</strong> You must restart the drillbit for these configuration changes to take effect.  </p>
-
-<table><thead>
-<tr>
-<th>Configuration Option</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>drill.exec.scan.threadpool_size</td>
-<td>The size of the thread pool used for reading   data from disk. Currently used only by the Parquet reader. This number should   ideally be a small multiple of the number of disks on the node. The   pipelining of the scan operator is very sensitive to the scan thread pool   size. For the best performance, set the number to 1-2 times the number of   disks on the node that are available to the distributed file system.</td>
-<td>8</td>
-</tr>
-<tr>
-<td>drill.exec.scan.decode_threadpool_size</td>
-<td>The size of the thread pool used for decoding   Parquet data.</td>
-<td>(number of cores+1)/2</td>
-</tr>
-</tbody></table>
+<table>
+  <thead>
+    <tr>
+      <th>Configuration Option</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>drill.exec.scan.threadpool_size</td>
+      <td>The size of the thread pool used for reading   data from disk. Currently used only by the Parquet reader. This number should   ideally be a small multiple of the number of disks on the node. The   pipelining of the scan operator is very sensitive to the scan thread pool   size. For the best performance, set the number to 1-2 times the number of   disks on the node that are available to the distributed file system.</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <td>drill.exec.scan.decode_threadpool_size</td>
+      <td>The size of the thread pool used for decoding   Parquet data.</td>
+      <td>(number of cores+1)/2</td>
+    </tr>
+  </tbody>
+</table>
 
 <h3 id="operator-metrics">Operator Metrics</h3>
+<p>When the asynchronous Parquet reader option is enabled, Drill provides the following additional operator metrics, which you can access in the query profile from the Drill Web UI:</p>
 
-<p>When the asynchronous Parquet reader option is enabled, Drill provides the following additional operator metrics, which you can access in the query profile from the Drill Web UI:  </p>
+<p><strong>Note:</strong> Time is measured in nanoseconds.</p>
 
-<p><strong>Note:</strong> Time is measured in nanoseconds.   </p>
-
-<table><thead>
-<tr>
-<th>Metric</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>NUM_DICT_PAGE_LOADS</td>
-<td>Number of dictionary pages read.</td>
-</tr>
-<tr>
-<td>NUM_DATA_PAGE_lOADS</td>
-<td>Number of data pages read.</td>
-</tr>
-<tr>
-<td>NUM_DATA_PAGES_DECODED</td>
-<td>Number of data pages decoded.</td>
-</tr>
-<tr>
-<td>NUM_DICT_PAGES_DECOMPRESSED</td>
-<td>Number of dictionary pages decompressed.</td>
-</tr>
-<tr>
-<td>NUM_DATA_PAGES_DECOMPRESSED</td>
-<td>Number of data pages decompressed.</td>
-</tr>
-<tr>
-<td>TOTAL_DICT_PAGE_READ_BYTES</td>
-<td>Total bytes read from disk for dictionary pages.</td>
-</tr>
-<tr>
-<td>TOTAL_DATA_PAGE_READ_BYTES</td>
-<td>Total bytes read from disk for data pages.</td>
-</tr>
-<tr>
-<td>TOTAL_DICT_DECOMPRESSED_BYTES</td>
-<td>Total bytes decompressed for dictionary pages.   Same as compressed bytes on disk.</td>
-</tr>
-<tr>
-<td>TOTAL_DATA_DECOMPRESSED_BYTES</td>
-<td>Total bytes decompressed for data pages. Same as   compressed bytes on disk.</td>
-</tr>
-<tr>
-<td>TIME_DICT_PAGE_LOADS</td>
-<td>Time spent reading dictionary pages   from disk.</td>
-</tr>
-<tr>
-<td>TIME_DATA_PAGE_LOADS</td>
-<td>Time spent reading data pages from   disk.</td>
-</tr>
-<tr>
-<td>TIME_DATA_PAGE_DECODE</td>
-<td>Time spend decoding data pages.</td>
-</tr>
-<tr>
-<td>TIME_DICT_PAGE_DECODE</td>
-<td>Time spent decoding dictionary pages.</td>
-</tr>
-<tr>
-<td>TIME_DICT_PAGES_DECOMPRESSED</td>
-<td>Time spent decompressing dictionary   pages.</td>
-</tr>
-<tr>
-<td>TIME_DATA_PAGES_DECOMPRESSED</td>
-<td>Time spent decompressing data pages.</td>
-</tr>
-<tr>
-<td>TIME_DISK_SCAN_WAIT</td>
-<td>The total time spent by the   Parquet Scan operator waiting for the data to be read from disk (completion   of an asynchronous disk read to complete). In general, if TIME_DISK_SCAN_WAIT   is high, then the query is disk bound and may benefit from faster drives.</td>
-</tr>
-<tr>
-<td>TIME_DISK_SCAN</td>
-<td>The time that the Parquet Scan   operator spent reading data from the disk (or more accurately, from the   filesystem). TIME_DISK_SCAN is the equivalent metric to the operator wait   time reported by the synchronous version of the Parquet reader.</td>
-</tr>
-</tbody></table>
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>NUM_DICT_PAGE_LOADS</td>
+      <td>Number of dictionary pages read.</td>
+    </tr>
+    <tr>
+      <td>NUM_DATA_PAGE_lOADS</td>
+      <td>Number of data pages read.</td>
+    </tr>
+    <tr>
+      <td>NUM_DATA_PAGES_DECODED</td>
+      <td>Number of data pages decoded.</td>
+    </tr>
+    <tr>
+      <td>NUM_DICT_PAGES_DECOMPRESSED</td>
+      <td>Number of dictionary pages decompressed.</td>
+    </tr>
+    <tr>
+      <td>NUM_DATA_PAGES_DECOMPRESSED</td>
+      <td>Number of data pages decompressed.</td>
+    </tr>
+    <tr>
+      <td>TOTAL_DICT_PAGE_READ_BYTES</td>
+      <td>Total bytes read from disk for dictionary pages.</td>
+    </tr>
+    <tr>
+      <td>TOTAL_DATA_PAGE_READ_BYTES</td>
+      <td>Total bytes read from disk for data pages.</td>
+    </tr>
+    <tr>
+      <td>TOTAL_DICT_DECOMPRESSED_BYTES</td>
+      <td>Total bytes decompressed for dictionary pages.   Same as compressed bytes on disk.</td>
+    </tr>
+    <tr>
+      <td>TOTAL_DATA_DECOMPRESSED_BYTES</td>
+      <td>Total bytes decompressed for data pages. Same as   compressed bytes on disk.</td>
+    </tr>
+    <tr>
+      <td>TIME_DICT_PAGE_LOADS</td>
+      <td>Time spent reading dictionary pages   from disk.</td>
+    </tr>
+    <tr>
+      <td>TIME_DATA_PAGE_LOADS</td>
+      <td>Time spent reading data pages from   disk.</td>
+    </tr>
+    <tr>
+      <td>TIME_DATA_PAGE_DECODE</td>
+      <td>Time spend decoding data pages.</td>
+    </tr>
+    <tr>
+      <td>TIME_DICT_PAGE_DECODE</td>
+      <td>Time spent decoding dictionary pages.</td>
+    </tr>
+    <tr>
+      <td>TIME_DICT_PAGES_DECOMPRESSED</td>
+      <td>Time spent decompressing dictionary   pages.</td>
+    </tr>
+    <tr>
+      <td>TIME_DATA_PAGES_DECOMPRESSED</td>
+      <td>Time spent decompressing data pages.</td>
+    </tr>
+    <tr>
+      <td>TIME_DISK_SCAN_WAIT</td>
+      <td>The total time spent by the   Parquet Scan operator waiting for the data to be read from disk (completion   of an asynchronous disk read to complete). In general, if TIME_DISK_SCAN_WAIT   is high, then the query is disk bound and may benefit from faster drives.</td>
+    </tr>
+    <tr>
+      <td>TIME_DISK_SCAN</td>
+      <td>The time that the Parquet Scan   operator spent reading data from the disk (or more accurately, from the   filesystem). TIME_DISK_SCAN is the equivalent metric to the operator wait   time reported by the synchronous version of the Parquet reader.</td>
+    </tr>
+  </tbody>
+</table>
 
 <h2 id="limitation">Limitation</h2>
+<p>The asynchronous Parquet reader option can increase the amount of memory required to read a single column of Parquet data up to 8MB. When the data in a column is less than 8MB, the reader uses less memory. Therefore, if a Parquet file has many columns (hundreds of columns), each column should have less than 8MB of data in each column.</p>
 
-<p>The asynchronous Parquet reader option can increase the amount of memory required to read a single column of Parquet data up to 8MB. When the data in a column is less than 8MB, the reader uses less memory. Therefore, if a Parquet file has many columns (hundreds of columns), each column should have less than 8MB of data in each column.  </p>
 
     
       
@@ -1530,7 +1568,7 @@
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

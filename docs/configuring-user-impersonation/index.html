@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,160 +1369,172 @@
 
     </div>
 
-     Apr 19, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
-        <p>Impersonation allows a service to act on behalf of a client while performing the action requested by the client. By default, user impersonation is disabled in Drill. You can configure user impersonation in the <DRILLINSTALL_HOME>/conf/drill-override.conf file.</p>
+        <p>Impersonation allows a service to act on behalf of a client while performing the action requested by the client. By default, user impersonation is disabled in Drill. You can configure user impersonation in the <DRILLINSTALL_HOME>/conf/drill-override.conf file.</DRILLINSTALL_HOME></p>
 
 <p>When you enable impersonation, Drill executes client requests as the user logged in to the client. Drill passes the user credentials to the file system, and the file system checks to see if the user has permission to access the data. When you enable authentication, Drill uses the pluggable authentication module (PAM) to authenticate a user’s identity before the user can access the Drillbit process. See User Authentication.</p>
 
 <p>If impersonation is not configured, Drill executes all of the client requests against the file system as the user that started the Drillbit service on the node. This is typically a privileged user. The file system verifies that the system user has permission to access the data.</p>
 
 <h2 id="example">Example</h2>
-
 <p>When impersonation is disabled and user Bob issues a query through the SQLLine client, SQLLine passes the query to the connecting Drillbit. The Drillbit executes the query as the system user that started the Drill process on the node. For the purpose of this example, we will assume that the system user has full access to the file system. Drill executes the query and returns the results back to the client.
-<img src="http://i.imgur.com/4XxQK2I.png" alt=""></p>
+<img src="http://i.imgur.com/4XxQK2I.png" alt="" /></p>
 
-<p>When impersonation is enabled and user Bob issues a query through the SQLLine client, the Drillbit uses Bob&#39;s credentials to access data in the file system. The file system checks to see if Bob has permission to access the data. If so, Drill returns the query results to the client. If Bob does not have permission, Drill returns an error.
-<img src="http://i.imgur.com/oigWqVg.png" alt=""></p>
+<p>When impersonation is enabled and user Bob issues a query through the SQLLine client, the Drillbit uses Bob’s credentials to access data in the file system. The file system checks to see if Bob has permission to access the data. If so, Drill returns the query results to the client. If Bob does not have permission, Drill returns an error.
+<img src="http://i.imgur.com/oigWqVg.png" alt="" /></p>
 
 <h2 id="impersonation-support">Impersonation Support</h2>
+<p>The following table lists the clients, storage plugins, and types of queries that you can use with impersonation in Drill:</p>
 
-<p>The following table lists the clients, storage plugins, and types of queries that you can use with impersonation in Drill:  </p>
-
-<table><thead>
-<tr>
-<th>Type</th>
-<th>Supported</th>
-<th>Not Supported</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Clients</td>
-<td>SQLLine, ODBC, JDBC, REST API, Drill Web   Console</td>
-<td></td>
-</tr>
-<tr>
-<td>Storage Plugins</td>
-<td>File System, Hive, MapR-DB</td>
-<td>HBase</td>
-</tr>
-<tr>
-<td>Queries</td>
-<td>When you enable impersonation, the setting   applies to queries on data and metadata. For example, if you issue the SHOW   SCHEMAS command, Drill impersonates the user logged into the client to access   the requested metadata. If you issue a SELECT query on a workspace, Drill   impersonates the user logged in to the client to access the requested data.   Drill applies impersonation to queries issued using the following commands:   SHOW SCHEMAS, SHOW DATABASES, SHOW TABLES, CTAS, SELECT, CREATE VIEW, DROP   VIEW, SHOW FILES. To successfully run the CTAS and CREATE VIEW commands, a   user must have write permissions on the directory where the table or view   will exist. Running these commands creates artifacts on the file system.</td>
-<td></td>
-</tr>
-</tbody></table>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Supported</th>
+      <th>Not Supported</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Clients</td>
+      <td>SQLLine, ODBC, JDBC, REST API, Drill Web   Console</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Storage Plugins</td>
+      <td>File System, Hive, MapR-DB</td>
+      <td>HBase</td>
+    </tr>
+    <tr>
+      <td>Queries</td>
+      <td>When you enable impersonation, the setting   applies to queries on data and metadata. For example, if you issue the SHOW   SCHEMAS command, Drill impersonates the user logged into the client to access   the requested metadata. If you issue a SELECT query on a workspace, Drill   impersonates the user logged in to the client to access the requested data.   Drill applies impersonation to queries issued using the following commands:   SHOW SCHEMAS, SHOW DATABASES, SHOW TABLES, CTAS, SELECT, CREATE VIEW, DROP   VIEW, SHOW FILES. To successfully run the CTAS and CREATE VIEW commands, a   user must have write permissions on the directory where the table or view   will exist. Running these commands creates artifacts on the file system.</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
 
 <h2 id="impersonation-and-views">Impersonation and Views</h2>
-
 <p>You can use views with impersonation to provide granular access to data and protect sensitive information. When you create a view, Drill stores the view definition in a file and suffixes the file with view.drill. For example, if you create a view named myview, Drill creates a view file named myview.view.drill and saves it in the current workspace or the workspace specified, such as dfs.views.myview. See <a href="/docs/create-view">CREATE VIEW</a> Command.</p>
 
 <p>You can create a view and grant read permissions on the view to give other users access to the data that the view references. When a user queries the view, Drill impersonates the view owner to access the underlying data. If the user tries to access the data directory, Drill returns a permission denied error. A user with read access to a view can create new views from the originating view to further restrict access on data.</p>
 
 <h3 id="view-permissions">View Permissions</h3>
+<p>A user must have write permission on a directory or workspace to create a view, as well as read access on the table(s) and/or view(s) that the view references. When a user creates a view, permission on the view is set to owner by default. Users can query an existing view or create new views from the view if they have read permissions on the view file and the directory or workspace where the view file is stored.</p>
 
-<p>A user must have write permission on a directory or workspace to create a view, as well as read access on the table(s) and/or view(s) that the view references. When a user creates a view, permission on the view is set to owner by default. Users can query an existing view or create new views from the view if they have read permissions on the view file and the directory or workspace where the view file is stored. </p>
+<p>When users query a view, Drill accesses the underlying data as the user that created the view. If a user does not have permission to access a view, the query fails and Drill returns an error. Only the view owner or a superuser can modify view permissions to change them from owner to group or world.</p>
 
-<p>When users query a view, Drill accesses the underlying data as the user that created the view. If a user does not have permission to access a view, the query fails and Drill returns an error. Only the view owner or a superuser can modify view permissions to change them from owner to group or world. </p>
-
-<p>The view owner or a superuser can modify permissions on the view file directly or they can set view permissions at the system or session level prior to creating any views. Any user that alters view permissions must have write access on the directory or workspace in which they are working. See Modifying Permissions on a View File and Modifying SYSTEM|SESSION Level View Permissions. </p>
+<table>
+  <tbody>
+    <tr>
+      <td>The view owner or a superuser can modify permissions on the view file directly or they can set view permissions at the system or session level prior to creating any views. Any user that alters view permissions must have write access on the directory or workspace in which they are working. See Modifying Permissions on a View File and Modifying SYSTEM</td>
+      <td>SESSION Level View Permissions.</td>
+    </tr>
+  </tbody>
+</table>
 
 <h3 id="modifying-permissions-on-a-view-file">Modifying Permissions on a View File</h3>
 
 <p>Only a view owner or a super user can modify permissions on a view file to change them from owner to group or world readable. Before you grant permission to users to access a view, verify that they have access to the directory or workspace in which the view file is stored.</p>
 
-<p>Use the <code>chmod</code> and <code>chown</code> commands with the appropriate octal code to change permissions on a view file:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">hadoop fs –chmod &lt;octal code&gt; &lt;file_name&gt;
-hadoop fs –chown &lt;user&gt;:&lt;group&gt; &lt;file_name&gt;
-</code></pre></div>
-<p>Example: <code>hadoop fs –chmod 750 employees.view.drill</code></p>
+<p>Use the <code class="language-plaintext highlighter-rouge">chmod</code> and <code class="language-plaintext highlighter-rouge">chown</code> commands with the appropriate octal code to change permissions on a view file:</p>
 
-<h3 id="modifying-system-session-level-view-permissions">Modifying SYSTEM|SESSION Level View Permissions</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hadoop fs –chmod &lt;octal code&gt; &lt;file_name&gt;
+hadoop fs –chown &lt;user&gt;:&lt;group&gt; &lt;file_name&gt; Example: `hadoop fs –chmod 750 employees.view.drill`
+</code></pre></div></div>
 
-<p>Use the <code>ALTER SESSION|SYSTEM</code> command with the <code>new_view_default_permissions</code> parameter and the appropriate octal code to set view permissions at the system or session level prior to creating a view.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">ALTER SESSION SET `new_view_default_permissions` = &#39;&lt;octal_code&gt;&#39;;
-ALTER SYSTEM SET `new_view_default_permissions` = &#39;&lt;octal_code&gt;&#39;;
-</code></pre></div>
-<p>Example: <code>ALTER SESSION SET `new_view_default_permissions` = &#39;777&#39;;</code></p>
+<h3 id="modifying-systemsession-level-view-permissions">Modifying SYSTEM|SESSION Level View Permissions</h3>
+
+<p>Use the <code class="language-plaintext highlighter-rouge">ALTER SESSION|SYSTEM</code> command with the <code class="language-plaintext highlighter-rouge">new_view_default_permissions</code> parameter and the appropriate octal code to set view permissions at the system or session level prior to creating a view.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ALTER SESSION SET `new_view_default_permissions` = '&lt;octal_code&gt;';
+ALTER SYSTEM SET `new_view_default_permissions` = '&lt;octal_code&gt;';
+</code></pre></div></div>
+
+<p>Example: <code class="language-plaintext highlighter-rouge">ALTER SESSION SET `new_view_default_permissions` = '777';</code></p>
 
 <p>After you set this parameter, Drill applies the same permissions on each view created during the session or across all sessions if set at the system level.</p>
 
 <h2 id="chained-impersonation">Chained Impersonation</h2>
+<p>You can configure Drill to allow chained impersonation on views when you enable impersonation in the <code class="language-plaintext highlighter-rouge">drill-override.conf</code> file. Chained impersonation controls the number of identity transitions that Drill can make when a user queries a view. Each identity transition is equal to one hop.</p>
 
-<p>You can configure Drill to allow chained impersonation on views when you enable impersonation in the <code>drill-override.conf</code> file. Chained impersonation controls the number of identity transitions that Drill can make when a user queries a view. Each identity transition is equal to one hop.</p>
-
-<p>An administrator can set the maximum number of hops on views to limit the number of times that Drill can impersonate a different user when other users query a view. The default maximum number of hops is set at 3. When the maximum number of hops is set to 0, Drill does not allow impersonation chaining, and a user can only read data for which they have direct permission to access. An administrator may set the chain length to 0 to protect highly sensitive data. </p>
+<p>An administrator can set the maximum number of hops on views to limit the number of times that Drill can impersonate a different user when other users query a view. The default maximum number of hops is set at 3. When the maximum number of hops is set to 0, Drill does not allow impersonation chaining, and a user can only read data for which they have direct permission to access. An administrator may set the chain length to 0 to protect highly sensitive data.</p>
 
 <p>The following example depicts a scenario where the maximum hop number is set to 3, and Drill must impersonate three users to access data when Chad queries a view that Jane created:</p>
 
-<p><img src="/docs/img/drill_imp_simple.PNG" alt=""></p>
+<p><img src="/images/docs/drill_imp_simple.PNG" alt="" /></p>
 
-<p>In the previous example, Joe created V2 from the view that user Frank created. In the following example, Joe created V3 by joining a view that Frank created with a view that Bob created. </p>
+<p>In the previous example, Joe created V2 from the view that user Frank created. In the following example, Joe created V3 by joining a view that Frank created with a view that Bob created.</p>
 
-<p><img src="/docs/img/user_hops_joined_view.PNG" alt="">  </p>
+<p><img src="/images/docs/user_hops_joined_view.PNG" alt="" /></p>
 
-<p>Although V3 was created by joining two different views, the number of hops remains at 3 because Drill does not read the views at the same time. Drill reads V2 first and then reads V1.  </p>
+<p>Although V3 was created by joining two different views, the number of hops remains at 3 because Drill does not read the views at the same time. Drill reads V2 first and then reads V1.</p>
 
-<p>In the next example, Bob queries V4 which was created by Frank. Frank&#39;s view was created from several underlying views. Charlie created V2 by joining Jane&#39;s V1 with Kris&#39;s V1.2. Kris&#39;s V1.2 was created from Amy&#39;s V1.1, increasing the complexity of the chaining. Assuming that the hop limit is set at 4, this scenario exceeds the limit.  </p>
+<p>In the next example, Bob queries V4 which was created by Frank. Frank’s view was created from several underlying views. Charlie created V2 by joining Jane’s V1 with Kris’s V1.2. Kris’s V1.2 was created from Amy’s V1.1, increasing the complexity of the chaining. Assuming that the hop limit is set at 4, this scenario exceeds the limit.</p>
 
-<p><img src="/docs/img/user_hops_four.PNG" alt="">  </p>
+<p><img src="/images/docs/user_hops_four.PNG" alt="" /></p>
 
 <p>When Bob queries Franks’s view, Drill returns an error stating that the query cannot complete because the number of hops required to access the data exceeds the maximum hop setting of 4.</p>
 
 <p>If users encounter this error, the administrator can increase the maximum hop setting to accommodate users running queries on views.</p>
 
 <h3 id="configuring-impersonation-and-chaining">Configuring Impersonation and Chaining</h3>
-
 <p>Chaining is a system-wide setting that applies to all views. Currently, Drill does not provide an option to  allow different chain lengths for different views.</p>
 
 <p>Complete the following steps on each Drillbit node to enable user impersonation, and set the maximum number of chained user hops that Drill allows:</p>
 
 <ol>
-<li>Navigate to <code>&lt;drill_installation_directory&gt;/conf/</code> and edit <code>drill-override.conf</code>.</li>
-<li><p>Under <code>drill.exec</code>, add the following:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">  drill.exec.impersonation: {
-        enabled: true,
-         max_chained_user_hops: 3
-  }
-</code></pre></div>
-<p>Alternatively, you can nest impersonation within the <code>drill.exec</code> block, as shown in the following example: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">      drill.exec: {
-           cluster-id: &quot;cluster_name&quot;,
-           zk.connect: &quot;&lt;hostname&gt;:&lt;port&gt;,&lt;hostname&gt;:&lt;port&gt;,&lt;hostname&gt;:&lt;port&gt;&quot;,
-           sys.store.provider.zk.blobroot: &quot;hdfs://&quot;,
-           impersonation: {
-             enabled: true,
-             max_chained_user_hops: 3
-           }
-         }
-</code></pre></div></li>
-<li><p>Verify that enabled is set to <code>‘true’</code>.</p></li>
-<li><p>Set the maximum number of chained user hops that you want Drill to allow.</p></li>
-<li><p>Restart the Drillbit process on each Drill node.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> &lt;DRILLINSTALL_HOME&gt;/bin/drillbit.sh restart
-</code></pre></div></li>
+  <li>Navigate to <code class="language-plaintext highlighter-rouge">&lt;drill_installation_directory&gt;/conf/</code> and edit <code class="language-plaintext highlighter-rouge">drill-override.conf</code>.</li>
+  <li>
+    <p>Under <code class="language-plaintext highlighter-rouge">drill.exec</code>, add the following:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   drill.exec.impersonation: {
+         enabled: true,
+          max_chained_user_hops: 3
+   }
+
+Alternatively, you can nest impersonation within the `drill.exec` block, as shown in the following example: 
+
+       drill.exec: {
+            cluster-id: "cluster_name",
+            zk.connect: "&lt;hostname&gt;:&lt;port&gt;,&lt;hostname&gt;:&lt;port&gt;,&lt;hostname&gt;:&lt;port&gt;",
+            sys.store.provider.zk.blobroot: "hdfs://",
+            impersonation: {
+              enabled: true,
+              max_chained_user_hops: 3
+            }
+          }
+</code></pre></div>    </div>
+  </li>
+  <li>Verify that enabled is set to <code class="language-plaintext highlighter-rouge">‘true’</code>.</li>
+  <li>Set the maximum number of chained user hops that you want Drill to allow.</li>
+  <li>
+    <p>Restart the Drillbit process on each Drill node.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;DRILLINSTALL_HOME&gt;/bin/drillbit.sh restart
+</code></pre></div>    </div>
+  </li>
 </ol>
 
 <h2 id="impersonation-and-chaining-example">Impersonation and Chaining Example</h2>
-
 <p>Frank is a senior HR manager at a company. Frank has access to all of the employee data because he is a member of the hr group. Frank created a table named “employees” in his home directory to store the employee data he uses. Only Frank has access to this table.</p>
 
-<p>drwx------      frank:hr     /user/frank/employees</p>
+<p>drwx——      frank:hr     /user/frank/employees</p>
 
 <p>Each record in the employees table consists of the following information:
 emp_id, emp_name, emp_ssn, emp_salary, emp_addr, emp_phone, emp_mgr</p>
 
 <p>Frank needs to share a subset of this information with Joe who is an HR manager reporting to Frank. To share the employee data, Frank creates a view called emp_mgr_view that accesses a subset of the data. The emp_mgr_view filters out sensitive employee information, such as the employee social security numbers, and only shows data for the employees that report directly to Joe. Frank and Joe both belong to the mgr group. Managers have read permission on Frank’s directory.</p>
 
-<p>rwxr-----     frank:mgr   /user/frank/emp_mgr_view.view.drill</p>
+<p>rwxr—–     frank:mgr   /user/frank/emp_mgr_view.view.drill</p>
 
 <p>The emp_mgr_view.view.drill file contains the following view definition:</p>
 
-<p>(view definition: SELECT emp_id, emp_name, emp_salary, emp_addr, emp_phone FROM `/user/frank/employee` WHERE emp_mgr = &#39;Joe&#39;)</p>
+<p>(view definition: SELECT emp_id, emp_name, emp_salary, emp_addr, emp_phone FROM `/user/frank/employee` WHERE emp_mgr = ‘Joe’)</p>
 
 <p>When Joe issues SELECT * FROM emp_mgr_view, Drill impersonates Frank when accessing the employee data, and the query returns the data that Joe has permission to see based on the view definition. The query results do not include any sensitive data because the view protects that information. If Joe tries to query the employees table directly, Drill returns an error or null values.</p>
 
@@ -1498,7 +1542,7 @@ emp_id, emp_name, emp_ssn, emp_salary, emp_addr, emp_phone, emp_mgr</p>
 
 <p>Joe needs to share employee contact data with his direct reports, so he creates a special view called emp_team_view to share the employee contact information with his team. Joe creates the view and writes it to his home directory. Joe and his reports belong to a group named joeteam. The joeteam group has read permissions on Joe’s home directory so they can query the view and create new views from it.</p>
 
-<p>rwxr-----     joe:joeteam   /user/joe/emp_team_view.view.drill</p>
+<p>rwxr—–     joe:joeteam   /user/joe/emp_team_view.view.drill</p>
 
 <p>The emp_team_view.view.drill file contains the following view definition:</p>
 
@@ -1524,7 +1568,7 @@ emp_id, emp_name, emp_ssn, emp_salary, emp_addr, emp_phone, emp_mgr</p>
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

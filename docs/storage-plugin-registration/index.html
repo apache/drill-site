@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1335,56 +1367,59 @@
 
     </div>
 
-     Jul 18, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>You connect Drill to data sources, such as a file system, Hive, or HBase through storage plugins. You can see the default enabled and disabled storage plugins on the Storage page in the Drill Web UI. You can easily enable and disable storage plugins, reconfigure storage plugins, and create new storage plugin configurations, as described in <a href="https://drill.apache.org/docs/configuring-storage-plugins/">Configuring Storage Plugins</a>.</p>
 
-<p>If <a href="/docs/configuring-web-console-and-rest-api-security/#https-support">HTTPS support</a> is not enabled (the default), go to <code>http://&lt;IP address&gt;:8047/storage</code> to view and configure a storage plugin. IP address is the host name or IP address of one of the installed Drillbits in a distributed system or <code>localhost</code> in an embedded system. If HTTPS support is enabled and you are <a href="/docs/configuring-web-console-and-rest-api-security/">authorized</a> to view and configure a storage plugin, go to <code>https://&lt;IP address&gt;:8047/storage</code>. </p>
+<p>If <a href="/docs/configuring-web-console-and-rest-api-security/#https-support">HTTPS support</a> is not enabled (the default), go to <code class="language-plaintext highlighter-rouge">http://&lt;IP address&gt;:8047/storage</code> to view and configure a storage plugin. IP address is the host name or IP address of one of the installed Drillbits in a distributed system or <code class="language-plaintext highlighter-rouge">localhost</code> in an embedded system. If HTTPS support is enabled and you are <a href="/docs/configuring-web-console-and-rest-api-security/">authorized</a> to view and configure a storage plugin, go to <code class="language-plaintext highlighter-rouge">https://&lt;IP address&gt;:8047/storage</code>.</p>
 
 <p>The Drill installation registers the following storage plugin configurations, with the cp and dfs storage plugins enabled by default; you must enable the other storage plugins:</p>
 
 <ul>
-<li><code>cp</code><br>
-Points to JAR files in the Drill classpath, such as <a href="/docs/querying-json-files/"><code>employee.json</code></a> that you can query. </li>
-<li><code>dfs</code><br>
+  <li><code class="language-plaintext highlighter-rouge">cp</code><br />
+ Points to JAR files in the Drill classpath, such as <a href="/docs/querying-json-files/"><code class="language-plaintext highlighter-rouge">employee.json</code></a> that you can query.</li>
+  <li><code class="language-plaintext highlighter-rouge">dfs</code><br />
 Points to the local file system, but you can configure this storage plugin to
-point to any distributed file system, such as a Hadoop or S3 file system. </li>
-<li><code>hbase</code><br>
-Provides a connection to HBase.</li>
-<li><code>hive</code><br>
-Integrates Drill with the Hive metadata abstraction of files, HBase, and libraries to read data and operate on SerDes and UDFs.</li>
-<li><code>mongo</code><br>
-Provides a connection to MongoDB data.</li>
-<li><code>kafka</code><br>
-Provides a connection to Kafka.</li>
-<li><code>kudu</code><br>
-Provides a connection to Kudu.</li>
-<li><code>opentsdb</code><br>
-Provides a connectin to OpenTSDB.</li>
+point to any distributed file system, such as a Hadoop or S3 file system.</li>
+  <li><code class="language-plaintext highlighter-rouge">hbase</code><br />
+ Provides a connection to HBase.</li>
+  <li><code class="language-plaintext highlighter-rouge">hive</code><br />
+ Integrates Drill with the Hive metadata abstraction of files, HBase, and libraries to read data and operate on SerDes and UDFs.</li>
+  <li><code class="language-plaintext highlighter-rouge">mongo</code><br />
+ Provides a connection to MongoDB data.</li>
+  <li><code class="language-plaintext highlighter-rouge">kafka</code><br />
+ Provides a connection to Kafka.</li>
+  <li><code class="language-plaintext highlighter-rouge">kudu</code><br />
+ Provides a connection to Kudu.</li>
+  <li><code class="language-plaintext highlighter-rouge">opentsdb</code><br />
+ Provides a connectin to OpenTSDB.</li>
 </ul>
 
-<p>In the <a href="/docs/about-the-mapr-sandbox/">Drill sandbox</a>, the <code>dfs</code> storage plugin configuration connects you to a Hadoop environment pre-configured with Drill. If you install Drill, <code>dfs</code> connects you to the root of your file system.</p>
+<p>In the <a href="/docs/about-the-mapr-sandbox/">Drill sandbox</a>, the <code class="language-plaintext highlighter-rouge">dfs</code> storage plugin configuration connects you to a Hadoop environment pre-configured with Drill. If you install Drill, <code class="language-plaintext highlighter-rouge">dfs</code> connects you to the root of your file system.</p>
 
 <h2 id="registering-a-storage-plugin-configuration">Registering a Storage Plugin Configuration</h2>
 
-<p>To register a new storage plugin configuration, enter a storage name, click <strong>CREATE</strong>, provide a configuration in JSON format, and click <strong>UPDATE</strong>. </p>
+<p>To register a new storage plugin configuration, enter a storage name, click <strong>CREATE</strong>, provide a configuration in JSON format, and click <strong>UPDATE</strong>.</p>
 
 <p>In Drill 1.2 and later, updating a storage plugin configuration and other storage plugin tasks require <a href="/docs/configuring-web-console-and-rest-api-security/">authorization</a> if security is enabled.</p>
 
 <h2 id="storage-plugin-configuration-persistence">Storage Plugin Configuration Persistence</h2>
 
-<p>Drill saves storage plugin configurations in a temporary directory (embedded mode) or in ZooKeeper (distributed mode). For example, on Mac OS X, Drill uses <code>/tmp/drill/sys.storage_plugins</code> to store storage plugin configurations. The temporary directory clears when you reboot. When you run drill in embedded mode, add the sys.store.provider.local.path option to the drill-override.conf file and the path for storing the plugin configurations. For example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> drill.exec: {
-    cluster-id: &quot;drillbits1&quot;,
-    zk.connect: &quot;localhost:2181&quot;,
-    sys.store.provider.local.path=&quot;/mypath&quot;
+<p>Drill saves storage plugin configurations in a temporary directory (embedded mode) or in ZooKeeper (distributed mode). For example, on Mac OS X, Drill uses <code class="language-plaintext highlighter-rouge">/tmp/drill/sys.storage_plugins</code> to store storage plugin configurations. The temporary directory clears when you reboot. When you run drill in embedded mode, add the sys.store.provider.local.path option to the drill-override.conf file and the path for storing the plugin configurations. For example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> drill.exec: {
+ 	cluster-id: "drillbits1",
+ 	zk.connect: "localhost:2181",
+ 	sys.store.provider.local.path="/mypath"
  }  
-</code></pre></div>
-<p>See <a href="/docs/persistent-configuration-storage/">Persistent Configuration Storage</a> for more information.  </p>
+</code></pre></div></div>
+
+<p>See <a href="/docs/persistent-configuration-storage/">Persistent Configuration Storage</a> for more information.</p>
+
 
     
       
@@ -1402,7 +1437,7 @@ Provides a connectin to OpenTSDB.</li>
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

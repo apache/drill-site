@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,68 +1369,71 @@
 
     </div>
 
-     Jul 20, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>Starting in version 1.14, Drill supports string distance functions. Typically, you use string distance functions in the WHERE clause of a query to measure the difference between two strings. For example, if you want to match a street address, but do not know how to spell a street name, you could issue a query on the data source with the street addresses:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT street_address
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT street_address
    FROM address-data
    WHERE cosine_distance( `street_address`, “1234 North Quail Ln” ) &lt;  0.5; 
-</code></pre></div>
-<p>The search would return addresses from rows with street addresses similar to 1234 North Quail Ln, such as:   </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   1234 N. Quail Lane
+</code></pre></div></div>
+
+<p>The search would return addresses from rows with street addresses similar to 1234 North Quail Ln, such as:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   1234 N. Quail Lane
    1234 N Quaile Lan  
-</code></pre></div>
-<p>Drill supports the following string distance functions:   </p>
+</code></pre></div></div>
+
+<p>Drill supports the following string distance functions:</p>
 
 <ul>
-<li><a href="/docs/string-distance-functions/#cosine_distance(string1,string2)"><code>cosine_distance(string1,string2)</code></a></li>
-<li><a href="/docs/string-distance-functions/#fuzzy_score(string1,string2)"><code>fuzzy_score(string1,string2)</code></a></li>
-<li><a href="/docs/string-distance-functions/#hamming_distance-(string1,string2)"><code>hamming_distance(string1,string2)</code></a></li>
-<li><a href="/docs/string-distance-functions/#jaccard_distance-(string1,string2)"><code>jaccard_distance(string1,string2)</code></a></li>
-<li><a href="/docs/string-distance-functions/#jaro_distance-(string1,string2)"><code>jaro_distance(string1,string2)</code></a></li>
-<li><a href="/docs/string-distance-functions/#levenshtein_distance-(string1,string2)"><code>levenshtein_distance(string1,string2)</code></a></li>
-<li><a href="/docs/string-distance-functions/#longest_common_substring_distance(string1,string2)"><code>longest_common_substring_distance(string1,string2)</code></a><br></li>
+  <li><a href="/docs/string-distance-functions/#cosine_distance(string1,string2)"><code class="language-plaintext highlighter-rouge">cosine_distance(string1,string2)</code></a></li>
+  <li><a href="/docs/string-distance-functions/#fuzzy_score(string1,string2)"><code class="language-plaintext highlighter-rouge">fuzzy_score(string1,string2)</code></a></li>
+  <li><a href="/docs/string-distance-functions/#hamming_distance-(string1,string2)"><code class="language-plaintext highlighter-rouge">hamming_distance(string1,string2)</code></a></li>
+  <li><a href="/docs/string-distance-functions/#jaccard_distance-(string1,string2)"><code class="language-plaintext highlighter-rouge">jaccard_distance(string1,string2)</code></a></li>
+  <li><a href="/docs/string-distance-functions/#jaro_distance-(string1,string2)"><code class="language-plaintext highlighter-rouge">jaro_distance(string1,string2)</code></a></li>
+  <li><a href="/docs/string-distance-functions/#levenshtein_distance-(string1,string2)"><code class="language-plaintext highlighter-rouge">levenshtein_distance(string1,string2)</code></a></li>
+  <li><a href="/docs/string-distance-functions/#longest_common_substring_distance(string1,string2)"><code class="language-plaintext highlighter-rouge">longest_common_substring_distance(string1,string2)</code></a></li>
 </ul>
 
 <h2 id="function-descriptions">Function Descriptions</h2>
+<p>The following sections describe each of the string distance functions that Drill supports.</p>
 
-<p>The following sections describe each of the string distance functions that Drill supports.   </p>
+<h3 id="cosine_distancestring1string2">cosine_distance(string1,string2)</h3>
 
-<h3 id="cosine_distance-string1-string2">cosine_distance(string1,string2)</h3>
+<p>Calculates the cosine distance between two strings.</p>
 
-<p>Calculates the cosine distance between two strings.  </p>
+<h3 id="fuzzy_scorestring1string2">fuzzy_score(string1,string2)</h3>
 
-<h3 id="fuzzy_score-string1-string2">fuzzy_score(string1,string2)</h3>
+<p>Calculates the cosine distance between two strings. A matching algorithm that is similar to the searching algorithms implemented in editors such as Sublime Text, TextMate, Atom, and others. One point is given for every matched character. Subsequent matches yield two bonus points. A higher score indicates a higher similarity.</p>
 
-<p>Calculates the cosine distance between two strings. A matching algorithm that is similar to the searching algorithms implemented in editors such as Sublime Text, TextMate, Atom, and others. One point is given for every matched character. Subsequent matches yield two bonus points. A higher score indicates a higher similarity. </p>
+<h3 id="hamming_distance-string1string2">hamming_distance (string1,string2)</h3>
 
-<h3 id="hamming_distance-string1-string2">hamming_distance (string1,string2)</h3>
+<p>The hamming distance between two strings of equal length is the number of positions at which the corresponding symbols are different. For further explanation about the Hamming Distance, refer to http://en.wikipedia.org/wiki/Hamming_distance.</p>
 
-<p>The hamming distance between two strings of equal length is the number of positions at which the corresponding symbols are different. For further explanation about the Hamming Distance, refer to <a href="http://en.wikipedia.org/wiki/Hamming_distance">http://en.wikipedia.org/wiki/Hamming_distance</a>.   </p>
+<h3 id="jaccard_distance-string1string2">jaccard_distance (string1,string2)</h3>
 
-<h3 id="jaccard_distance-string1-string2">jaccard_distance (string1,string2)</h3>
+<p>Measures the Jaccard distance of two sets of character sequence. <a href="https://en.wikipedia.org/wiki/Jaccard_index">Jaccard distance</a> is the dissimilarity between two sets. It is the complementary of Jaccard similarity.</p>
 
-<p>Measures the Jaccard distance of two sets of character sequence. <a href="https://en.wikipedia.org/wiki/Jaccard_index">Jaccard distance</a> is the dissimilarity between two sets. It is the complementary of Jaccard similarity.   </p>
+<h3 id="jaro_distance-string1string2">jaro_distance (string1,string2)</h3>
 
-<h3 id="jaro_distance-string1-string2">jaro_distance (string1,string2)</h3>
+<p>A similarity algorithm indicating the percentage of matched characters between two character sequences. The Jaro measure is the weighted sum of percentage of matched characters from each file and transposed characters. Winkler increased this measure for matching initial characters. This implementation is based on the <a href="https://en.wikipedia.org/wiki/Jaro–Winkler_distance">Jaro Winkler similarity algorithm</a>.</p>
 
-<p>A similarity algorithm indicating the percentage of matched characters between two character sequences. The Jaro measure is the weighted sum of percentage of matched characters from each file and transposed characters. Winkler increased this measure for matching initial characters. This implementation is based on the <a href="https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance">Jaro Winkler similarity algorithm</a>.  </p>
-
-<h3 id="levenshtein_distance-string1-string2">levenshtein_distance (string1,string2)</h3>
-
+<h3 id="levenshtein_distance-string1string2">levenshtein_distance (string1,string2)</h3>
 <p>An algorithm for measuring the difference between two character sequences. This is the number of changes needed to change one sequence into another, where each change is a single character modification (deletion, insertion, or substitution).</p>
 
-<h3 id="longest_common_substring_distance-string1-string2">longest_common_substring_distance(string1,string2)</h3>
+<h3 id="longest_common_substring_distancestring1string2">longest_common_substring_distance(string1,string2)</h3>
 
 <p>Returns the length of the longest sub-sequence that two strings have in common.
-Two strings that are entirely different, return a value of 0, and two strings that return a value of the commonly shared length implies that the strings are completely the same in value and position. This implementation is based on the <a href="https://en.wikipedia.org/wiki/Longest_common_subsequence_problem">Longest Commons Substring algorithm</a>.  </p>
+Two strings that are entirely different, return a value of 0, and two strings that return a value of the commonly shared length implies that the strings are completely the same in value and position. This implementation is based on the <a href="https://en.wikipedia.org/wiki/Longest_common_subsequence_problem">Longest Commons Substring algorithm</a>.</p>
 
 <p><strong>Note:</strong> Generally this algorithm is fairly inefficient, as for length m, n of the input
-CharSequence&#39;s left and right respectively, the runtime of the algorithm is O(m*n).  </p>
+CharSequence’s left and right respectively, the runtime of the algorithm is O(m*n).</p>
+
 
     
       
@@ -1416,7 +1451,7 @@ CharSequence&#39;s left and right respectively, the runtime of the algorithm is 
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

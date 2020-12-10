@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1335,9 +1367,9 @@
 
     </div>
 
-     Nov 2, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
@@ -1347,48 +1379,55 @@ locates the function for the request, Drill processes the query and applies
 the function during processing.</p>
 
 <p>Your Drill installation includes sample files in the Drill classpath. One
-sample file, <a href="/docs/querying-json-files/"><code>employee.json</code></a>, contains some fictitious employee data that you
+sample file, <a href="/docs/querying-json-files/"><code class="language-plaintext highlighter-rouge">employee.json</code></a>, contains some fictitious employee data that you
 can query with a custom function.</p>
 
 <h2 id="simple-function-example">Simple Function Example</h2>
 
-<p>This example uses the <code>myaddints</code> simple function in a query on the
-<code>employee.json</code> file.</p>
+<p>This example uses the <code class="language-plaintext highlighter-rouge">myaddints</code> simple function in a query on the
+<code class="language-plaintext highlighter-rouge">employee.json</code> file.</p>
 
 <p>If you issue the following query to Drill, you can see all of the employee
-data within the <code>employee.json</code> file:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT * FROM cp.`employee.json`;
-</code></pre></div>
+data within the <code class="language-plaintext highlighter-rouge">employee.json</code> file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; SELECT * FROM cp.`employee.json`;
+</code></pre></div></div>
+
 <p>The query returns the following results:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">| employee_id | full_name    | first_name | last_name  | position_id | position_title          |  store_id  | department_id | birth_da |
-+-------------+------------+------------+------------+-------------+----------------+------------+---------------+----------+-----------
-| 1101        | Steve Eurich | Steve      | Eurich     | 16          | Store Temporary Checker | 12         | 16            |
-| 1102        | Mary Pierson | Mary       | Pierson    | 16          | Store Temporary Checker | 12         | 16            |
-| 1103        | Leo Jones    | Leo        | Jones      | 16          | Store Temporary Checker | 12         | 16            |
-…
-</code></pre></div>
-<p>Since the <code>postion_id</code> and <code>store_id</code> columns contain integers, you can issue
-a query with the <code>myaddints</code> custom function on these columns to add the
+
+<p>| employee_id   | full_name    | first_name   | last_name    | position_id   | position_title          | store_id     | department_id   | birth_da   |
+	| ————- | ———— | ———— | ———— | ————- | —————-        | ———— | ————— | ———- | ———–
+	| 1101          | Steve Eurich | Steve        | Eurich       | 16            | Store Temporary Checker | 12           | 16              |
+	| 1102          | Mary Pierson | Mary         | Pierson      | 16            | Store Temporary Checker | 12           | 16              |
+	| 1103          | Leo Jones    | Leo          | Jones        | 16            | Store Temporary Checker | 12           | 16              |
+	…</p>
+
+<p>Since the <code class="language-plaintext highlighter-rouge">postion_id</code> and <code class="language-plaintext highlighter-rouge">store_id</code> columns contain integers, you can issue
+a query with the <code class="language-plaintext highlighter-rouge">myaddints</code> custom function on these columns to add the
 integers in the columns.</p>
 
-<p>The following query tells Drill to apply the <code>myaddints</code> function to the
-<code>position_id</code> and <code>store_id</code> columns in the <code>employee.json</code> file:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; SELECT myaddints(CAST(position_id AS int),CAST(store_id AS int)) FROM cp.`employee.json`;
-</code></pre></div>
+<p>The following query tells Drill to apply the <code class="language-plaintext highlighter-rouge">myaddints</code> function to the
+<code class="language-plaintext highlighter-rouge">position_id</code> and <code class="language-plaintext highlighter-rouge">store_id</code> columns in the <code class="language-plaintext highlighter-rouge">employee.json</code> file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; SELECT myaddints(CAST(position_id AS int),CAST(store_id AS int)) FROM cp.`employee.json`;
+</code></pre></div></div>
+
 <p>Since JSON files do not store information about data types, you must apply the
-<code>CAST</code> function in the query to tell Drill that the columns contain integer
+<code class="language-plaintext highlighter-rouge">CAST</code> function in the query to tell Drill that the columns contain integer
 values.</p>
 
 <p>The query returns the following results:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">+------------+
-|   EXPR$0   |
-+------------+
-| 28         |
-| 28         |
-| 36         |
-+------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|--------|
+| EXPR$0 |
+|--------|
+| 28     |
+| 28     |
+| 36     |
+|--------|
 …
-</code></pre></div>
+</code></pre></div></div>
+
     
       
         <div class="doc-nav">
@@ -1405,7 +1444,7 @@ values.</p>
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

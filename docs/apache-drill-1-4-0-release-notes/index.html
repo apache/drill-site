@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1 current_section "><a href="javascript: void(0);">Release Notes</a></li>
           <ul class="current_section">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1335,119 +1367,110 @@
 
     </div>
 
-     
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p><strong>Release date:</strong>  December 14, 2015</p>
 
-<p>Today, we&#39;re happy to announce the availability of Drill 1.4.0, providing the following bug fixes and improvements. </p>
+<p>Today, we’re happy to announce the availability of Drill 1.4.0, providing the following bug fixes and improvements.</p>
 
 <p>Drill 1.4 fixes an error that occurred when querying a Hive table using the HBaseStorageHandler (<a href="https://issues.apache.org/jira/browse/DRILL-3739">DRILL-3739</a>). To successfully query a Hive table using the HBaseStorageHandler, you need to configure the Hive storage plugin as described in the <a href="/docs/hive-storage-plugin/#connect-drill-to-the-hive-remote-metastore">Hive storage plugin documentation</a>.</p>
 
 <h2>        Sub-task
 </h2>
-
 <ul>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-3987'>DRILL-3987</a>] -         Create a POC VV extraction
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3987">DRILL-3987</a>] -         Create a POC VV extraction
 </li>
 </ul>
-                            
 
 <h2>        Bug
 </h2>
-
 <ul>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-2288'>DRILL-2288</a>] -         ScanBatch violates IterOutcome protocol for zero-row sources [was: missing JDBC metadata (schema) for 0-row results...]
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2288">DRILL-2288</a>] -         ScanBatch violates IterOutcome protocol for zero-row sources [was: missing JDBC metadata (schema) for 0-row results...]
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-2618'>DRILL-2618</a>] -         BasicFormatMatcher calls getFirstPath(...) without checking # of paths is not zero
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2618">DRILL-2618</a>] -         BasicFormatMatcher calls getFirstPath(...) without checking # of paths is not zero
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-2687'>DRILL-2687</a>] -         TINYINT/SMALLINT&#39;s clean not-implemented-yet messages are missing or late for views 
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2687">DRILL-2687</a>] -         TINYINT/SMALLINT&#39;s clean not-implemented-yet messages are missing or late for views 
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-2769'>DRILL-2769</a>] -         many(?) JDBC methods throw non-SQLException exceptions (e.g., UnsupportedOperationException, RuntimeException)
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2769">DRILL-2769</a>] -         many(?) JDBC methods throw non-SQLException exceptions (e.g., UnsupportedOperationException, RuntimeException)
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-3171'>DRILL-3171</a>] -         Storage Plugins : Two processes tried to update the storage plugin at the same time
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3171">DRILL-3171</a>] -         Storage Plugins : Two processes tried to update the storage plugin at the same time
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-3739'>DRILL-3739</a>] -         NPE on select from Hive for HBase table
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3739">DRILL-3739</a>] -         NPE on select from Hive for HBase table
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-3765'>DRILL-3765</a>] -         Partition prune rule is unnecessary fired multiple times. 
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3765">DRILL-3765</a>] -         Partition prune rule is unnecessary fired multiple times. 
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-3786'>DRILL-3786</a>] -         Query with window function fails with IllegalFormatConversionException
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3786">DRILL-3786</a>] -         Query with window function fails with IllegalFormatConversionException
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-3854'>DRILL-3854</a>] -         IOB Exception : CONVERT_FROM (sal, int_be)
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3854">DRILL-3854</a>] -         IOB Exception : CONVERT_FROM (sal, int_be)
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-3893'>DRILL-3893</a>] -          Issue with Drill after Hive Alters the Table
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3893">DRILL-3893</a>] -          Issue with Drill after Hive Alters the Table
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-3938'>DRILL-3938</a>] -         Hive: Failure reading from a partition when a new column is added to the table after the partition creation
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3938">DRILL-3938</a>] -         Hive: Failure reading from a partition when a new column is added to the table after the partition creation
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-4049'>DRILL-4049</a>] -         Workmanager.StatusThread is not terminated when Drillbit is shutdown
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-4049">DRILL-4049</a>] -         Workmanager.StatusThread is not terminated when Drillbit is shutdown
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-4082'>DRILL-4082</a>] -         Better error message when multiple versions of the same function are found by the classpath scanner
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-4082">DRILL-4082</a>] -         Better error message when multiple versions of the same function are found by the classpath scanner
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-4083'>DRILL-4083</a>] -         Drill not using HiveDrillNativeParquetScan if no column is needed to be read from HIVE
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-4083">DRILL-4083</a>] -         Drill not using HiveDrillNativeParquetScan if no column is needed to be read from HIVE
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-4089'>DRILL-4089</a>] -         Make JSON pretty printing configurable
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-4089">DRILL-4089</a>] -         Make JSON pretty printing configurable
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-4094'>DRILL-4094</a>] -         Respect -DskipTests=true for JDBC plugin tests
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-4094">DRILL-4094</a>] -         Respect -DskipTests=true for JDBC plugin tests
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-4108'>DRILL-4108</a>] -         Query on csv file w/ header fails with an exception when non existing column is requested
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-4108">DRILL-4108</a>] -         Query on csv file w/ header fails with an exception when non existing column is requested
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-4109'>DRILL-4109</a>] -         NPE in RecordIterator
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-4109">DRILL-4109</a>] -         NPE in RecordIterator
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-4119'>DRILL-4119</a>] -         Skew in hash distribution for varchar (and possibly other) types of data
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-4119">DRILL-4119</a>] -         Skew in hash distribution for varchar (and possibly other) types of data
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-4125'>DRILL-4125</a>] -         Illegal argument exception during merge join 
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-4125">DRILL-4125</a>] -         Illegal argument exception during merge join 
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-4128'>DRILL-4128</a>] -         null pointer at org.apache.drill.exec.vector.accessor.AbstractSqlAccessor.getString(AbstractSqlAccessor.java:101)
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-4128">DRILL-4128</a>] -         null pointer at org.apache.drill.exec.vector.accessor.AbstractSqlAccessor.getString(AbstractSqlAccessor.java:101)
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-4146'>DRILL-4146</a>] -         Concurrent queries hang in planner in ReflectiveRelMetadataProvider
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-4146">DRILL-4146</a>] -         Concurrent queries hang in planner in ReflectiveRelMetadataProvider
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-4159'>DRILL-4159</a>] -         TestCsvHeader sometimes fails due to ordering issue
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-4159">DRILL-4159</a>] -         TestCsvHeader sometimes fails due to ordering issue
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-4165'>DRILL-4165</a>] -         IllegalStateException in MergeJoin for a query against TPC-DS data
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-4165">DRILL-4165</a>] -         IllegalStateException in MergeJoin for a query against TPC-DS data
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-4176'>DRILL-4176</a>] -         Dynamic Schema Discovery is not done in case of Drill- Hive
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-4176">DRILL-4176</a>] -         Dynamic Schema Discovery is not done in case of Drill- Hive
 </li>
 </ul>
-                        
 
 <h2>        Improvement
 </h2>
-
 <ul>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-1522'>DRILL-1522</a>] -         Hbase convert_from queries are not pushed down
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-1522">DRILL-1522</a>] -         Hbase convert_from queries are not pushed down
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-2601'>DRILL-2601</a>] -         Print SQL query text along with query id in drillbit.log
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2601">DRILL-2601</a>] -         Print SQL query text along with query id in drillbit.log
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-3543'>DRILL-3543</a>] -         Add stats for external sort to a query profile
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3543">DRILL-3543</a>] -         Add stats for external sort to a query profile
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-4047'>DRILL-4047</a>] -         Select with options
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-4047">DRILL-4047</a>] -         Select with options
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-4053'>DRILL-4053</a>] -         Reduce metadata cache file size
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-4053">DRILL-4053</a>] -         Reduce metadata cache file size
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-4081'>DRILL-4081</a>] -         Handle schema changes in ExternalSort
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-4081">DRILL-4081</a>] -         Handle schema changes in ExternalSort
 </li>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-4124'>DRILL-4124</a>] -         Make all uses of AutoCloseables use addSuppressed exceptions to avoid noise in logs
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-4124">DRILL-4124</a>] -         Make all uses of AutoCloseables use addSuppressed exceptions to avoid noise in logs
 </li>
 </ul>
-                                                                    
 
 <h2>        Task
 </h2>
-
 <ul>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-4111'>DRILL-4111</a>] -         turn tests off in travis as they don&#39;t work there
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-4111">DRILL-4111</a>] -         turn tests off in travis as they don&#39;t work there
 </li>
 </ul>
-        
 
 <h2>        Test
 </h2>
-
 <ul>
-<li>[<a href='https://issues.apache.org/jira/browse/DRILL-3791'>DRILL-3791</a>] -         Test JDBC plugin with MySQL
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3791">DRILL-3791</a>] -         Test JDBC plugin with MySQL
 </li>
 </ul>
 
@@ -1467,7 +1490,7 @@
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

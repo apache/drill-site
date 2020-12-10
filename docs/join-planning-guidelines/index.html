@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,52 +1369,57 @@
 
     </div>
 
-     Nov 21, 2016
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>Drill uses distributed and broadcast joins to join tables. You can modify configuration settings in Drill to control how Drill plans joins in a query.</p>
 
 <h2 id="distributed-joins">Distributed Joins</h2>
+<p>For a distributed join, both sides of the join are hash distributed using one of the hash-based distribution operators on the join key. See Operators.</p>
 
-<p>For a distributed join, both sides of the join are hash distributed using one of the hash-based distribution operators on the join key. See Operators. </p>
+<p>If there are multiple join keys from each table, Drill considers the two following types of plans:</p>
+<ol>
+  <li>A plan where data is distributed on all keys.</li>
+  <li>A plan where data is distributed on each individual key.</li>
+</ol>
 
-<p>If there are multiple join keys from each table, Drill considers the two following types of plans:<br>
-1. A plan where data is distributed on all keys.<br>
-2. A plan where data is distributed on each individual key.  </p>
-
-<p>For a merge join, Drill sorts both sides of the join after performing the hash distribution. Drill can distribute both sides of a hash join or merge join, but cannot do so for a nested loop join. </p>
+<p>For a merge join, Drill sorts both sides of the join after performing the hash distribution. Drill can distribute both sides of a hash join or merge join, but cannot do so for a nested loop join.</p>
 
 <h2 id="broadcast-joins">Broadcast Joins</h2>
-
 <p>In a broadcast join, all of the selected records of one file are broadcast to the file on all other nodes before the join is performed. The inner side of the join is broadcast while the outer side is kept as-is without any re-distribution. The estimated cardinality of the inner child must be below the planner.broadcast_threshold parameter in order to be eligible for broadcast.  Drill can use broadcast joins for hash, merge, and nested loop joins.</p>
 
 <p>A broadcast join is useful when a large (fact) table is being joined to a relatively smaller (dimension) table. If the fact table is stored as many files in the distributed file system, instead of re-distributing the fact table over the network, it may be substantially cheaper to broadcast the inner side.  However, the broadcast sends the same data to all other nodes in the cluster.  Depending on the size of the cluster and the size of the data, it may not be the most efficient policy in some situations.</p>
 
 <h3 id="broadcast-join-options">Broadcast Join Options</h3>
-
 <p>You can increase the size and affinity for Drill to use broadcast joins with the ALTER SYSTEM or ALTER SESSION commands and options. Typically, you set the options at the session level unless you want the setting to persist across all sessions.</p>
 
-<p>The following configuration options in Drill control broadcast join behavior:  </p>
+<p>The following configuration options in Drill control broadcast join behavior:</p>
 
 <ul>
-<li><p><strong>planner.broadcast_factor</strong> </p>
+  <li>
+    <p><strong>planner.broadcast_factor</strong></p>
 
-<p>Controls the cost of doing a broadcast when performing a join.  The lower the setting, the cheaper it is to do a broadcast join compared to other types of distribution for a join, such as a hash distribution.  </p>
+    <p>Controls the cost of doing a broadcast when performing a join.  The lower the setting, the cheaper it is to do a broadcast join compared to other types of distribution for a join, such as a hash distribution.</p>
 
-<p>Default:1 Range: 0-1.7976931348623157e+308</p></li>
-<li><p><strong>planner.enable_broadcast_join</strong>  </p>
+    <p>Default:1 Range: 0-1.7976931348623157e+308</p>
+  </li>
+  <li>
+    <p><strong>planner.enable_broadcast_join</strong></p>
 
-<p>Changes the state of aggregation and join operators. The broadcast join can be used for hash join, merge join, and nested loop join. Use to join a large (fact) table to relatively smaller (dimension) tables.  </p>
+    <p>Changes the state of aggregation and join operators. The broadcast join can be used for hash join, merge join, and nested loop join. Use to join a large (fact) table to relatively smaller (dimension) tables.</p>
 
-<p>Default: true </p></li>
-<li><p><strong>planner.broadcast_threshold</strong>  </p>
+    <p>Default: true</p>
+  </li>
+  <li>
+    <p><strong>planner.broadcast_threshold</strong></p>
 
-<p>Threshold, in terms of a number of rows, that determines whether a broadcast join is chosen for a query. Regardless of the setting of the broadcast_join option (enabled or disabled), a broadcast join is not chosen unless the right side of the join is estimated to contain fewer rows than this threshold. The intent of this option is to avoid broadcasting too many rows for join purposes. Broadcasting involves sending data across nodes and is a network-intensive operation. (The &quot;right side&quot; of the join, which may itself be a join or simply a table, is determined by cost-based optimizations and heuristics during physical planning.)  </p>
+    <p>Threshold, in terms of a number of rows, that determines whether a broadcast join is chosen for a query. Regardless of the setting of the broadcast_join option (enabled or disabled), a broadcast join is not chosen unless the right side of the join is estimated to contain fewer rows than this threshold. The intent of this option is to avoid broadcasting too many rows for join purposes. Broadcasting involves sending data across nodes and is a network-intensive operation. (The “right side” of the join, which may itself be a join or simply a table, is determined by cost-based optimizations and heuristics during physical planning.)</p>
 
-<p>Default: 10000000 Range: 0-2147483647</p></li>
+    <p>Default: 10000000 Range: 0-2147483647</p>
+  </li>
 </ul>
 
     
@@ -1401,7 +1438,7 @@
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

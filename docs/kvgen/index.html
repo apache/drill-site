@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,17 +1369,19 @@
 
     </div>
 
-     Nov 2, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>Returns a list of the keys that exist in the map.</p>
 
 <h2 id="syntax">Syntax</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">KVGEN(column)
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>KVGEN(column)
+</code></pre></div></div>
+
 <p><em>column</em> is the name of a column.</p>
 
 <h2 id="usage-notes">Usage Notes</h2>
@@ -1356,53 +1390,59 @@
 represent data. For example, you store statistics
 about the number of interactions between the users on a social network
 in a JSON document store. User records appear as follows:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
    user_id : 12345,
    user_interactions : {
-       &quot;12633&quot; : 10,
-       &quot;25678&quot; : 25,
-       &quot;11111&quot; : 5
+       "12633" : 10,
+       "25678" : 25,
+       "11111" : 5
    }
 }
-</code></pre></div>
+</code></pre></div></div>
+
 <p>This record summarizes the interaction of one user with others. The record contains the user_id and a map between other
-users&#39; ids and the number of interactions recorded between them. A complete dataset stores the summary of user interactions and includes 12345 listed under user_interactions for user records 12633 and 25678. For example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{
+users’ ids and the number of interactions recorded between them. A complete dataset stores the summary of user interactions and includes 12345 listed under user_interactions for user records 12633 and 25678. For example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
         user_id: 12633,
         user_interactions : {
-            &quot;12345&quot; : 10,
-            &quot;27569&quot; : 104,
-            &quot;93033&quot; : 52
+            "12345" : 10,
+            "27569" : 104,
+            "93033" : 52
     }
 }
 {       user_id: 25678,
         user_interactions : {
-            &quot;12345&quot; : 25,
-            &quot;37886&quot; : 14,
-            &quot;87394&quot; : 5
+            "12345" : 25,
+            "37886" : 14,
+            "87394" : 5
     }
 }
-</code></pre></div>
-<p>To list the users that interact most, you need to use a subquery; otherwise, Drill operates on the data before the flattening and key generation occurs:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT t.flat_interactions.key, t.flat_interactions.`value` from (select flatten(kvgen(user_interactions)) as flat_interactions from dfs.`/drilluser/user_table.json`) as t order by t.flat_interactions.`value` DESC;
+</code></pre></div></div>
 
-+------------+------------+
-|   EXPR$0   |   EXPR$1   |
-+------------+------------+
-| 27569      | 104        |
-| 93033      | 52         |
-| 25678      | 25         |
-| 12345      | 25         |
-| 37886      | 14         |
-| 12633      | 10         |
-| 12345      | 10         |
-| 11111      | 5          |
-| 87394      | 5          |
-+------------+------------+
+<p>To list the users that interact most, you need to use a subquery; otherwise, Drill operates on the data before the flattening and key generation occurs:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT t.flat_interactions.key, t.flat_interactions.`value` from (select flatten(kvgen(user_interactions)) as flat_interactions from dfs.`/drilluser/user_table.json`) as t order by t.flat_interactions.`value` DESC;
+
+|--------|--------|
+| EXPR$0 | EXPR$1 |
+|--------|--------|
+| 27569  | 104    |
+| 93033  | 52     |
+| 25678  | 25     |
+| 12345  | 25     |
+| 37886  | 14     |
+| 12633  | 10     |
+| 12345  | 10     |
+| 11111  | 5      |
+| 87394  | 5      |
+|--------|--------|
 9 rows selected (0.093 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>KVGEN is useful when complex
-data files contain arbitrary maps that consist of relatively &quot;unknown&quot; column
+data files contain arbitrary maps that consist of relatively “unknown” column
 names. Instead of having to specify columns in the map to access the data, you
 can use KVGEN to return a list of the keys that exist in the map. KVGEN turns
 a map with a wide set of columns into an array of key-value pairs.</p>
@@ -1412,136 +1452,150 @@ keys or constrain the keys in some way. For example, you can use the
 <a href="/docs/flatten">FLATTEN</a> function to break the
 array down into multiple distinct rows and further query those rows.</p>
 
-<p>For example, assume that a JSON file named <code>simplemaps.json</code> contains this data:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{&quot;rec1&quot;:{&quot;a&quot;: &quot;valA&quot;, &quot;b&quot;: &quot;valB&quot;}}
-{&quot;rec1&quot;:{&quot;c&quot;: &quot;valC&quot;, &quot;d&quot;: &quot;valD&quot;}}
-</code></pre></div>
+<p>For example, assume that a JSON file named <code class="language-plaintext highlighter-rouge">simplemaps.json</code> contains this data:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{"rec1":{"a": "valA", "b": "valB"}}
+{"rec1":{"c": "valC", "d": "valD"}}
+</code></pre></div></div>
+
 <p>KVGEN would operate on this data as follows:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT KVGEN(rec1) FROM `simplemaps.json`;
-+------------+
-|   EXPR$0   |
-+------------+
-| [{&quot;key&quot;:&quot;a&quot;,&quot;value&quot;:&quot;valA&quot;},{&quot;key&quot;:&quot;b&quot;,&quot;value&quot;:&quot;valB&quot;}] |
-| [{&quot;key&quot;:&quot;c&quot;,&quot;value&quot;:&quot;valC&quot;},{&quot;key&quot;:&quot;d&quot;,&quot;value&quot;:&quot;valD&quot;}] |
-+------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT KVGEN(rec1) FROM `simplemaps.json`;
+|---------------------------------------------------------|
+| EXPR$0                                                  |
+|---------------------------------------------------------|
+| [{"key":"a","value":"valA"},{"key":"b","value":"valB"}] |
+| [{"key":"c","value":"valC"},{"key":"d","value":"valD"}] |
+|---------------------------------------------------------|
 2 rows selected (0.201 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Applying the FLATTEN function to this data would return:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{&quot;key&quot;: &quot;a&quot;, &quot;value&quot;: &quot;valA&quot;}
-{&quot;key&quot;: &quot;b&quot;, &quot;value&quot;: &quot;valB&quot;}
-{&quot;key&quot;: &quot;c&quot;, &quot;value&quot;: &quot;valC&quot;}
-{&quot;key&quot;: &quot;d&quot;, &quot;value&quot;: &quot;valD&quot;}
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{"key": "a", "value": "valA"}
+{"key": "b", "value": "valB"}
+{"key": "c", "value": "valC"}
+{"key": "d", "value": "valD"}
+</code></pre></div></div>
+
 <h2 id="example-different-data-type-values">Example: Different Data Type Values</h2>
 
-<p>Assume that a JSON file called <code>kvgendata.json</code> includes multiple records that
+<p>Assume that a JSON file called <code class="language-plaintext highlighter-rouge">kvgendata.json</code> includes multiple records that
 look like this one:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{
-    &quot;rownum&quot;: 1,
-    &quot;bigintegercol&quot;: {
-        &quot;int_1&quot;: 1,
-        &quot;int_2&quot;: 2,
-        &quot;int_3&quot;: 3
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+    "rownum": 1,
+    "bigintegercol": {
+        "int_1": 1,
+        "int_2": 2,
+        "int_3": 3
     },
-    &quot;varcharcol&quot;: {
-        &quot;varchar_1&quot;: &quot;abc&quot;,
-        &quot;varchar_2&quot;: &quot;def&quot;,
-        &quot;varchar_3&quot;: &quot;xyz&quot;
+    "varcharcol": {
+        "varchar_1": "abc",
+        "varchar_2": "def",
+        "varchar_3": "xyz"
     },
-    &quot;boolcol&quot;: {
-        &quot;boolean_1&quot;: true,
-        &quot;boolean_2&quot;: false,
-        &quot;boolean_3&quot;: true
+    "boolcol": {
+        "boolean_1": true,
+        "boolean_2": false,
+        "boolean_3": true
     },
-    &quot;float8col&quot;: {
-        &quot;f8_1&quot;: 1.1,
-        &quot;f8_2&quot;: 2.2
+    "float8col": {
+        "f8_1": 1.1,
+        "f8_2": 2.2
     },
-    &quot;complex&quot;: [
+    "complex": [
         {
-            &quot;col1&quot;: 3
+            "col1": 3
         },
         {
-            &quot;col2&quot;: 2,
-            &quot;col3&quot;: 1
+            "col2": 2,
+            "col3": 1
         },
         {
-            &quot;col1&quot;: 7
+            "col1": 7
         }
     ]
 }
-
+ 
 {
-    &quot;rownum&quot;: 3,
-    &quot;bigintegercol&quot;: {
-        &quot;int_1&quot;: 1,
-        &quot;int_3&quot;: 3
+    "rownum": 3,
+    "bigintegercol": {
+        "int_1": 1,
+        "int_3": 3
     },
-    &quot;varcharcol&quot;: {
-        &quot;varchar_1&quot;: &quot;abcde&quot;,
-        &quot;varchar_2&quot;: null,
-        &quot;varchar_3&quot;: &quot;xyz&quot;,
-        &quot;varchar_4&quot;: &quot;xyz2&quot;
+    "varcharcol": {
+        "varchar_1": "abcde",
+        "varchar_2": null,
+        "varchar_3": "xyz",
+        "varchar_4": "xyz2"
     },
-    &quot;boolcol&quot;: {
-        &quot;boolean_1&quot;: true,
-        &quot;boolean_2&quot;: false
+    "boolcol": {
+        "boolean_1": true,
+        "boolean_2": false
     },
-    &quot;float8col&quot;: {
-        &quot;f8_1&quot;: 1.1,
-        &quot;f8_3&quot;: 6.6
+    "float8col": {
+        "f8_1": 1.1,
+        "f8_3": 6.6
     },
-    &quot;complex&quot;: [
+    "complex": [
         {
-            &quot;col1&quot;: 2,
-            &quot;col3&quot;: 1
+            "col1": 2,
+            "col3": 1
         }
     ]
 }
 ...
-</code></pre></div>
-<p>A SELECT * query against this specific record returns the following row:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select * from dfs.`kvgendata.json` where rownum=1;
+</code></pre></div></div>
 
-+------------+---------------+------------+------------+------------+------------+
-|   rownum   | bigintegercol | varcharcol |  boolcol   | float8col  |  complex   |
-+------------+---------------+------------+------------+------------+------------+
-| 1          | {&quot;int_1&quot;:1,&quot;int_2&quot;:2,&quot;int_3&quot;:3} | {&quot;varchar_1&quot;:&quot;abc&quot;,&quot;varchar_2&quot;:&quot;def&quot;,&quot;varchar_3&quot;:&quot;xyz&quot;} | {&quot;boolean_1&quot;:true,&quot;boolean_2&quot;:false,&quot;boolean_3&quot;:true} | {&quot;f8_1&quot;:1.1,&quot;f8_2&quot;:2.2} | [{&quot;col1&quot;:3},{&quot;col2&quot;:2,&quot;col3&quot;:1},{&quot;col1&quot;:7}] |
-+------------+---------------+------------+------------+------------+------------+
+<p>A SELECT * query against this specific record returns the following row:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select * from dfs.`kvgendata.json` where rownum=1;
+ 
+|--------|---------------------------------|---------------------------------------------------------|-------------------------------------------------------|-------------------------|---------------------------------------------|
+| rownum | bigintegercol                   | varcharcol                                              | boolcol                                               | float8col               | complex                                     |
+|--------|---------------------------------|---------------------------------------------------------|-------------------------------------------------------|-------------------------|---------------------------------------------|
+| 1      | {"int_1":1,"int_2":2,"int_3":3} | {"varchar_1":"abc","varchar_2":"def","varchar_3":"xyz"} | {"boolean_1":true,"boolean_2":false,"boolean_3":true} | {"f8_1":1.1,"f8_2":2.2} | [{"col1":3},{"col2":2,"col3":1},{"col1":7}] |
+|--------|---------------------------------|---------------------------------------------------------|-------------------------------------------------------|-------------------------|---------------------------------------------|
 1 row selected (0.122 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>You can use the KVGEN function to turn the maps in this data into key-value
 pairs. For example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select kvgen(varcharcol) from dfs.yelp.`kvgendata.json`;
-+------------+
-|   EXPR$0   |
-+------------+
-| [{&quot;key&quot;:&quot;varchar_1&quot;,&quot;value&quot;:&quot;abc&quot;},{&quot;key&quot;:&quot;varchar_2&quot;,&quot;value&quot;:&quot;def&quot;},{&quot;key&quot;:&quot;varchar_3&quot;,&quot;value&quot;:&quot;xyz&quot;}] |
-| [{&quot;key&quot;:&quot;varchar_1&quot;,&quot;value&quot;:&quot;abcd&quot;}] |
-| [{&quot;key&quot;:&quot;varchar_1&quot;,&quot;value&quot;:&quot;abcde&quot;},{&quot;key&quot;:&quot;varchar_3&quot;,&quot;value&quot;:&quot;xyz&quot;},{&quot;key&quot;:&quot;varchar_4&quot;,&quot;value&quot;:&quot;xyz2&quot;}] |
-| [{&quot;key&quot;:&quot;varchar_1&quot;,&quot;value&quot;:&quot;abc&quot;},{&quot;key&quot;:&quot;varchar_2&quot;,&quot;value&quot;:&quot;def&quot;}] |
-+------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select kvgen(varcharcol) from dfs.yelp.`kvgendata.json`;
+|------------------------------------------------------------------------------------------------------------|
+| EXPR$0                                                                                                     |
+|------------------------------------------------------------------------------------------------------------|
+| [{"key":"varchar_1","value":"abc"},{"key":"varchar_2","value":"def"},{"key":"varchar_3","value":"xyz"}]    |
+| [{"key":"varchar_1","value":"abcd"}]                                                                       |
+| [{"key":"varchar_1","value":"abcde"},{"key":"varchar_3","value":"xyz"},{"key":"varchar_4","value":"xyz2"}] |
+| [{"key":"varchar_1","value":"abc"},{"key":"varchar_2","value":"def"}]                                      |
+|------------------------------------------------------------------------------------------------------------|
 4 rows selected (0.091 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Now you can apply the FLATTEN function to break out the key-value pairs into
 distinct rows:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select flatten(kvgen(varcharcol)) from dfs.yelp.`kvgendata.json`;
-+------------+
-|   EXPR$0   |
-+------------+
-| {&quot;key&quot;:&quot;varchar_1&quot;,&quot;value&quot;:&quot;abc&quot;} |
-| {&quot;key&quot;:&quot;varchar_2&quot;,&quot;value&quot;:&quot;def&quot;} |
-| {&quot;key&quot;:&quot;varchar_3&quot;,&quot;value&quot;:&quot;xyz&quot;} |
-| {&quot;key&quot;:&quot;varchar_1&quot;,&quot;value&quot;:&quot;abcd&quot;} |
-| {&quot;key&quot;:&quot;varchar_1&quot;,&quot;value&quot;:&quot;abcde&quot;} |
-| {&quot;key&quot;:&quot;varchar_3&quot;,&quot;value&quot;:&quot;xyz&quot;} |
-| {&quot;key&quot;:&quot;varchar_4&quot;,&quot;value&quot;:&quot;xyz2&quot;} |
-| {&quot;key&quot;:&quot;varchar_1&quot;,&quot;value&quot;:&quot;abc&quot;} |
-| {&quot;key&quot;:&quot;varchar_2&quot;,&quot;value&quot;:&quot;def&quot;} |
-+------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select flatten(kvgen(varcharcol)) from dfs.yelp.`kvgendata.json`;
+|-------------------------------------|
+| EXPR$0                              |
+|-------------------------------------|
+| {"key":"varchar_1","value":"abc"}   |
+| {"key":"varchar_2","value":"def"}   |
+| {"key":"varchar_3","value":"xyz"}   |
+| {"key":"varchar_1","value":"abcd"}  |
+| {"key":"varchar_1","value":"abcde"} |
+| {"key":"varchar_3","value":"xyz"}   |
+| {"key":"varchar_4","value":"xyz2"}  |
+| {"key":"varchar_1","value":"abc"}   |
+| {"key":"varchar_2","value":"def"}   |
+|-------------------------------------|
 9 rows selected (0.151 seconds)
-</code></pre></div>
-<p>For more examples of KVGEN and FLATTEN, see the examples in the section, <a href="/docs/json-data-model">&quot;JSON Data Model&quot;</a>.</p>
+</code></pre></div></div>
+
+<p>For more examples of KVGEN and FLATTEN, see the examples in the section, <a href="/docs/json-data-model">“JSON Data Model”</a>.</p>
 
     
       
@@ -1559,7 +1613,7 @@ distinct rows:</p>
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

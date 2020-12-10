@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,78 +1369,79 @@
 
     </div>
 
-     Nov 2, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>The ORDER BY clause sorts the result set of a query.</p>
 
 <h2 id="syntax">Syntax</h2>
-
 <p>The ORDER BY clause supports the following syntax:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   [ ORDER BY expression
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   [ ORDER BY expression
    [ ASC | DESC ]
    [ NULLS FIRST | NULLS LAST ]
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="parameters">Parameters</h2>
+<p><em>expression</em></p>
 
-<p><em>expression</em>  </p>
+<p>Defines the sort order of the query result set, typically by specifying one or more columns in the select list.</p>
 
-<p>Defines the sort order of the query result set, typically by specifying one or more columns in the select list.  </p>
-
-<p>You can also specify:  </p>
+<p>You can also specify:</p>
 
 <ul>
-<li>Columns that are not in the select list </li>
-<li>Expressions formed from one or more columns that exist in the tables referenced by the query</li>
-<li>Ordinal numbers that represent the position of select list entries (or the position of columns in the table if no select list exists)</li>
-<li>Aliases that define select list entries</li>
+  <li>Columns that are not in the select list</li>
+  <li>Expressions formed from one or more columns that exist in the tables referenced by the query</li>
+  <li>Ordinal numbers that represent the position of select list entries (or the position of columns in the table if no select list exists)</li>
+  <li>Aliases that define select list entries</li>
 </ul>
 
 <p>When the ORDER BY clause contains multiple expressions, the result set is sorted according to the first expression, then the second expression is applied to rows that have matching values from the first expression, and so on.</p>
 
-<p>ASC<br>
+<p>ASC<br />
 Specifies that the results should be returned in ascending order. If the order is not specified, ASC is the default.</p>
 
-<p>DESC<br>
-Specifies that the results should be returned in descending order. </p>
+<p>DESC<br />
+Specifies that the results should be returned in descending order.</p>
 
-<p>NULLS FIRST<br>
-Specifies that NULL values should be returned before non-NULL values.  </p>
+<p>NULLS FIRST<br />
+Specifies that NULL values should be returned before non-NULL values.</p>
 
-<p>NULLS LAST<br>
+<p>NULLS LAST<br />
 Specifies that NULL values should be returned after non-NULL values.</p>
 
 <h2 id="usage-notes">Usage Notes</h2>
-
 <ul>
-<li>NULL values are considered &quot;higher&quot; than all other values. With default ascending sort order, NULL values sort at the end.<br></li>
-<li>When a query does not contain an ORDER BY clause, the system returns result sets with no predictable ordering of the rows. The same query executed twice might return the result set in a different order.<br></li>
-<li>In any parallel system, when ORDER BY does not produce a unique ordering, the order of the rows is non-deterministic. That is, if the ORDER BY expression produces duplicate values, the return order of those rows may vary from other systems or from one run the system to the next.</li>
+  <li>NULL values are considered “higher” than all other values. With default ascending sort order, NULL values sort at the end.</li>
+  <li>When a query does not contain an ORDER BY clause, the system returns result sets with no predictable ordering of the rows. The same query executed twice might return the result set in a different order.</li>
+  <li>In any parallel system, when ORDER BY does not produce a unique ordering, the order of the rows is non-deterministic. That is, if the ORDER BY expression produces duplicate values, the return order of those rows may vary from other systems or from one run the system to the next.</li>
 </ul>
 
 <h2 id="examples">Examples</h2>
-
 <p>The following example query returns sales totals for each month in descending order, listing the highest sales month to the lowest sales month:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:&gt; select `month`, sum(order_total)
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:&gt; select `month`, sum(order_total)
    from orders group by `month` order by 2 desc;
-   +------------+------------+
-   | month | EXPR$1 |
-   +------------+------------+
-   | June | 950481 |
-   | May | 947796 |
-   | March | 836809 |
-   | April | 807291 |
-   | July | 757395 |
-   | October | 676236 |
-   | August | 572269 |
-   | February | 532901 |
+   |-----------|--------|
+   | month     | EXPR$1 |
+   |-----------|--------|
+   | June      | 950481 |
+   | May       | 947796 |
+   | March     | 836809 |
+   | April     | 807291 |
+   | July      | 757395 |
+   | October   | 676236 |
+   | August    | 572269 |
+   | February  | 532901 |
    | September | 373100 |
-   | January | 346536 |
-   +------------+------------+
-</code></pre></div>
+   | January   | 346536 |
+   |-----------|--------|
+</code></pre></div></div>
+
+
     
       
         <div class="doc-nav">
@@ -1425,7 +1458,7 @@ Specifies that NULL values should be returned after non-NULL values.</p>
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

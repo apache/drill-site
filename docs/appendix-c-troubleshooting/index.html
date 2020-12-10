@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1335,98 +1367,103 @@
 
     </div>
 
-     Nov 2, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>Drill-on-YARN starts a complex chain of events: the client starts the AM and the AM starts
 Drillbits, both using YARN. Many opportunities exist for configuration issues to derail the
-process. Below are a number of items to check if things go wrong.  </p>
+process. Below are a number of items to check if things go wrong.</p>
 
 <h2 id="client-start">Client Start</h2>
+<p>The Drill-on-YARN client prints all messages to the console. Some common errors are:</p>
 
-<p>The Drill-on-YARN client prints all messages to the console. Some common errors are:  </p>
-
-<p><strong>Missing HADOOP_HOME</strong><br>
+<p><strong>Missing HADOOP_HOME</strong>  <br />
 Drill-on-YARN requires access to your Hadoop configuration as described above. The client will
 display an error and fail if it is unable to load the DFS or YARN configuration, typically because
-HADOOP_HOME is not set.  </p>
+HADOOP_HOME is not set.</p>
 
 <p><strong>Missing/wrong Drill Archive</strong>
-Drill-on-YARN uploads your Drill archive to DFS. The client will fail if the archive configuration is missing, if the archive does not exist, is not readable, or is not in the correct format. Check that the drill.yarn.drill-install.client-path provides the full path name to the Drill archive.  </p>
+Drill-on-YARN uploads your Drill archive to DFS. The client will fail if the archive configuration is missing, if the archive does not exist, is not readable, or is not in the correct format. Check that the drill.yarn.drill-install.client-path provides the full path name to the Drill archive.</p>
 
-<p><strong>DFS Configuration or Connection Problems</strong>  </p>
+<p><strong>DFS Configuration or Connection Problems</strong></p>
 
 <p>The Drill-on-YARN client uploads the Drill archive and your site directory to your DFS. Possible
-problems here include:<br>
-● Missing DFS configuration in the Hadoop configuration folder<br>
-● Incorrect DFS configuration (wrong host or port)<br>
-● Missing permissions to write to the folder identified by the drill.yarn.dfs.app-dir configuration property (“/user/drill” by default.)  </p>
+problems here include:<br />
+● Missing DFS configuration in the Hadoop configuration folder<br />
+● Incorrect DFS configuration (wrong host or port)<br />
+● Missing permissions to write to the folder identified by the drill.yarn.dfs.app-dir configuration property (“/user/drill” by default.)</p>
 
-<p><strong>Wrong Version of the Drill Archive</strong>  </p>
+<p><strong>Wrong Version of the Drill Archive</strong></p>
 
 <p>Drill-on-YARN uploads a new copy of your site archive each time you start your Drill cluster.
 However, the Drill software archive is large, so Drill-on-YARN uploads the archive only when it
 changes. Drill detects changes by comparing the size of the DFS copy with your local copy.
 Most of the time this works fine. However, if you suspect that Drill has not uploaded the most 
 recent copy, you can force the client to perform an upload by either manually deleting the Drill
-archive from DFS, or using the f option:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   $DRILL_HOME/bin/drill-on-yarn.sh --site $DRILL_SITE start -f  
-</code></pre></div>
-<p><strong>Site Directory Problems</strong>  </p>
+archive from DFS, or using the f option:</p>
 
-<p>Drill creates a tar archive of your site directory using the following command:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   tar -C $DRILL_SITE -czf /some/tmp/dir/temp-name.tar.gz  
-</code></pre></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_HOME/bin/drill-on-yarn.sh --site $DRILL_SITE start -f  
+</code></pre></div></div>
+
+<p><strong>Site Directory Problems</strong></p>
+
+<p>Drill creates a tar archive of your site directory using the following command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   tar -C $DRILL_SITE -czf /some/tmp/dir/temp-name.tar.gz  
+</code></pre></div></div>
+
 <p>For some temporary directory selected by Java. This command can fail if your version of tar
 does not recognize the above arguments, if the site directory is not readable, or the temporary
-file cannot be created.  </p>
+file cannot be created.</p>
 
-<p><strong>YARN Application Launch Failure</strong>  </p>
+<p><strong>YARN Application Launch Failure</strong></p>
 
 <p>YARN may fail to launch the Drill AM for a number of reasons. The user running the
 Drill-on-YARN client may not have permission to launch YARN applications. YARN itself may
-encounter errors. Check the YARN log files for possible causes.  </p>
+encounter errors. Check the YARN log files for possible causes.</p>
 
 <p><strong>Diagnosing Post-Launch Problems</strong>
 If the Drill AM starts, but does not launch Drillbits, your next step is to check the Drill AM web UI using the link provided when the application starts. If the AM exits quickly, then the URL may
-not be valid. </p>
+not be valid.</p>
 
 <p>Instead, you can use YARN’s own Resource Manager UI to check the status of the application,
-using the Application ID provided when the application starts. Look at the application&#39;s log files
-for possible problems.  </p>
+using the Application ID provided when the application starts. Look at the application’s log files
+for possible problems.</p>
 
-<p><strong>Application Master Port Conflict</strong>  </p>
+<p><strong>Application Master Port Conflict</strong></p>
 
 <p>The Drill-on-YARN Application Master provides a web UI on port 8048 (one greater than the Drill
 web UI port) by default. However, if another application is already bound to that port, the AM will
-fail to launch. Select a different port, as follows:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   drill.yarn.http.port: 12345
-</code></pre></div>
+fail to launch. Select a different port, as follows:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   drill.yarn.http.port: 12345
+</code></pre></div></div>
+
 <p><strong>Multiple AMs</strong>
 It is easy to accidentally start multiple AMs for the same Drill cluster. Two lines of defense
-protect against this fault:  </p>
+protect against this fault:</p>
 
 <p>The Drill-on-YARN client look for an existing appid file and refuses to start a new AM when the
-file is present. (Use the f file if the file is not valid.) The AM registers with ZK and will automatically shut down if another AM is already registered. </p>
+file is present. (Use the f file if the file is not valid.) The AM registers with ZK and will automatically shut down if another AM is already registered.</p>
 
-<p><strong>Drillbit Failure</strong><br>
-● Finding launch, container, log directories<br>
-● Double drillbit with same ports  </p>
+<p><strong>Drillbit Failure</strong><br />
+● Finding launch, container, log directories<br />
+● Double drillbit with same ports</p>
 
-<p>Diagnostics<br>
-● Client<br>
-● Client provides AM web UI<br>
-● Finding launch, container, log directories<br>
-● Client status  </p>
+<p>Diagnostics<br />
+● Client<br />
+● Client provides AM web UI<br />
+● Finding launch, container, log directories<br />
+● Client status</p>
 
-<p>Fixing Problems<br>
-● Change config files<br>
-● If Drill archive changes, force new upload<br>
-● Missing app ID file (use a option)<br>
-● Stop existing app (f to force stop)<br>
+<p>Fixing Problems<br />
+● Change config files<br />
+● If Drill archive changes, force new upload<br />
+● Missing app ID file (use a option)<br />
+● Stop existing app (f to force stop)<br />
 ● Restart DoY (reuploads config)</p>
 
     
@@ -1445,7 +1482,7 @@ file is present. (Use the f file if the file is not valid.) The AM registers wit
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

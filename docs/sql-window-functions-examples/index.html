@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,88 +1369,97 @@
 
     </div>
 
-     Nov 2, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>The window function examples use a view named q1_sales that was created from a CSV file named emp_sales and stored in a directory on the local file system.</p>
 
-<p>The emp_sales.csv file contains the following information:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   +-----------------+-----------------+------------+--------+
-   |    emp_name     |     emp_mgr     | dealer_id  | sales  |
-   +-----------------+-----------------+------------+--------+
-   | Beverly Lang    | Mike Palomino   | 2          | 16233  |
-   | Kameko French   | Mike Palomino   | 2          | 16233  |
-   | Ursa George     | Rich Hernandez  | 3          | 15427  |
-   | Ferris Brown    | Dan Brodi       | 1          | 19745  |
-   | Noel Meyer      | Kari Phelps     | 1          | 19745  |
-   | Abel Kim        | Rich Hernandez  | 3          | 12369  |
-   | Raphael Hull    | Kari Phelps     | 1          | 8227   |
-   | Jack Salazar    | Kari Phelps     | 1          | 9710   |
-   | May Stout       | Rich Hernandez  | 3          | 9308   |
-   | Haviva Montoya  | Mike Palomino   | 2          | 9308   |
-   +-----------------+-----------------+------------+--------+
-</code></pre></div>
-<p>You can create a CSV file named emp_sales with this data.</p>
+<p>The emp_sales.csv file contains the following information:</p>
 
-<p>Drill was installed locally and a workspace was created in the <code>dfs</code> storage plugin configuration for the directory where the emp_sales.csv file is located. See <a href="https://drill.apache.org/docs/embedded-mode-prerequisites/">Installing Drill</a>.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   |----------------|----------------|-----------|-------|
+   | emp_name       | emp_mgr        | dealer_id | sales |
+   |----------------|----------------|-----------|-------|
+   | Beverly Lang   | Mike Palomino  | 2         | 16233 |
+   | Kameko French  | Mike Palomino  | 2         | 16233 |
+   | Ursa George    | Rich Hernandez | 3         | 15427 |
+   | Ferris Brown   | Dan Brodi      | 1         | 19745 |
+   | Noel Meyer     | Kari Phelps    | 1         | 19745 |
+   | Abel Kim       | Rich Hernandez | 3         | 12369 |
+   | Raphael Hull   | Kari Phelps    | 1         | 8227  |
+   | Jack Salazar   | Kari Phelps    | 1         | 9710  |
+   | May Stout      | Rich Hernandez | 3         | 9308  |
+   | Haviva Montoya | Mike Palomino  | 2         | 9308  |
+   |----------------|----------------|-----------|-------| You can create a CSV file named emp_sales with this data.
+</code></pre></div></div>
+
+<p>Drill was installed locally and a workspace was created in the <code class="language-plaintext highlighter-rouge">dfs</code> storage plugin configuration for the directory where the emp_sales.csv file is located. See <a href="https://drill.apache.org/docs/embedded-mode-prerequisites/">Installing Drill</a>.</p>
 
 <p>If you create a CSV file with the data provided, you can create workspace that points to the directory where you store the emp_sales.csv file. See <a href="https://drill.apache.org/docs/file-system-storage-plugin/">Configuring Storage Plugins</a>.</p>
 
 <p>When you run show schemas, Drill lists the workspace that you configured as a schema. In the following example, you can see dfs.emp listed. This is the workspace that points to the directory where the emp_sales.csv file is stored.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; show schemas;
-   +---------------------+
-   |     SCHEMA_NAME     |
-   +---------------------+
-   | INFORMATION_SCHEMA  |
-   | cp.default          |
-   | dfs.default         |
-   | dfs.emp             |
-   | dfs.root            |
-   | dfs.tmp             |
-   | sys                 |
-   +---------------------+  
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; show schemas;
+   |--------------------|
+   | SCHEMA_NAME        |
+   |--------------------|
+   | INFORMATION_SCHEMA |
+   | cp.default         |
+   | dfs.default        |
+   | dfs.emp            |
+   | dfs.root           |
+   | dfs.tmp            |
+   | sys                |
+   |--------------------|
+</code></pre></div></div>
+
 <p>You can then run the USE command to change to the schema with the file. All queries are executed against the schema that you use.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; use dfs.emp;
-   +-------+--------------------------------------+
-   |  ok   |               summary               |
-   +-------+--------------------------------------+
-   | true  | Default schema changed to [dfs.emp]  |
-   +-------+--------------------------------------+
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; use dfs.emp;
+   |------|-------------------------------------|
+   | ok   | summary                             |
+   |------|-------------------------------------|
+   | true | Default schema changed to [dfs.emp] |
+   |------|-------------------------------------|
+</code></pre></div></div>
+
 <p>To create the q1_sales view used in the examples, issue the following query with the CREATE VIEW command.</p>
 
 <p>Note: You must use column numbers when querying CSV files. Also, CAST the columns to a specific data type to avoid incorrect implicit casting by Drill. This can affect the accuracy of window function results. In Drill, the column array starts with 0 as the first column.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; create view q1_sales as select cast(columns[0] as varchar(30)) as emp_name, cast(columns[1] as varchar(30)) as emp_mgr, cast(columns[2] as int) as dealer_id, cast(columns[3] as int) as sales from `q1_sales.csv`;
-   +-------+-----------------------------------------------------------+
-   |  ok   |                          summary                        |
-   +-------+-----------------------------------------------------------+
-   | true  | View &#39;q1_sales&#39; created successfully in &#39;dfs.emp&#39; schema  |
-   +-------+-----------------------------------------------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; create view q1_sales as select cast(columns[0] as varchar(30)) as emp_name, cast(columns[1] as varchar(30)) as emp_mgr, cast(columns[2] as int) as dealer_id, cast(columns[3] as int) as sales from `q1_sales.csv`;
+   |------|----------------------------------------------------------|
+   | ok   | summary                                                  |
+   |------|----------------------------------------------------------|
+   | true | View 'q1_sales' created successfully in 'dfs.emp' schema |
+   |------|----------------------------------------------------------|
    1 row selected (0.134 seconds)  
-</code></pre></div>
-<p>Query the view to verify that all of the data appears correctly:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   select * from q1_sales; 
-   +-----------------+-----------------+------------+--------+
-   |    emp_name     |     emp_mgr     | dealer_id  | sales  |
-   +-----------------+-----------------+------------+--------+
-   | Beverly Lang    | Mike Palomino   | 2          | 16233  |
-   | Kameko French   | Mike Palomino   | 2          | 16233  |
-   | Ursa George     | Rich Hernandez  | 3          | 15427  |
-   | Ferris Brown    | Dan Brodi       | 1          | 19745  |
-   | Noel Meyer      | Kari Phelps     | 1          | 19745  |
-   | Abel Kim        | Rich Hernandez  | 3          | 12369  |
-   | Raphael Hull    | Kari Phelps     | 1          | 8227   |
-   | Jack Salazar    | Kari Phelps     | 1          | 9710   |
-   | May Stout       | Rich Hernandez  | 3          | 9308   |
-   | Haviva Montoya  | Mike Palomino   | 2          | 9308   |
-   +-----------------+-----------------+------------+--------+
+</code></pre></div></div>
+
+<p>Query the view to verify that all of the data appears correctly:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   select * from q1_sales; 
+   |----------------|----------------|-----------|-------|
+   | emp_name       | emp_mgr        | dealer_id | sales |
+   |----------------|----------------|-----------|-------|
+   | Beverly Lang   | Mike Palomino  | 2         | 16233 |
+   | Kameko French  | Mike Palomino  | 2         | 16233 |
+   | Ursa George    | Rich Hernandez | 3         | 15427 |
+   | Ferris Brown   | Dan Brodi      | 1         | 19745 |
+   | Noel Meyer     | Kari Phelps    | 1         | 19745 |
+   | Abel Kim       | Rich Hernandez | 3         | 12369 |
+   | Raphael Hull   | Kari Phelps    | 1         | 8227  |
+   | Jack Salazar   | Kari Phelps    | 1         | 9710  |
+   | May Stout      | Rich Hernandez | 3         | 9308  |
+   | Haviva Montoya | Mike Palomino  | 2         | 9308  |
+   |----------------|----------------|-----------|-------|
    10 rows selected (0.112 seconds)  
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Now, you can run the window function example queries on your machine.</p>
+
 
     
       
@@ -1436,7 +1477,7 @@
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

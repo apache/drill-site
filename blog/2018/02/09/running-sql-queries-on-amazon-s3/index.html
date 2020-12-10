@@ -137,17 +137,17 @@
   <div class="addthis_sharing_toolbox"></div>
 
   <article class="post-content">
-    <p>The functionality and sheer usefulness of Drill is growing fast.  If you&#39;re a user of some of the popular BI tools out there like Tableau or SAP Lumira, now is a good time to take a look at how Drill can make your life easier, especially if  you&#39;re faced with the task of quickly getting a handle on large sets of unstructured data.  With schema generated on the fly, you can save a lot of time and headaches by running SQL queries on the data where it rests without knowing much about columns or formats.  There&#39;s even more good news:  Drill also works with data stored in the cloud.  With a few simple steps, you can configure the S3 storage plugin for Drill and be off to the races running queries.  In this post we&#39;ll look at how to configure Drill to access data stored in an S3 bucket.</p>
+    <p>The functionality and sheer usefulness of Drill is growing fast.  If you’re a user of some of the popular BI tools out there like Tableau or SAP Lumira, now is a good time to take a look at how Drill can make your life easier, especially if  you’re faced with the task of quickly getting a handle on large sets of unstructured data.  With schema generated on the fly, you can save a lot of time and headaches by running SQL queries on the data where it rests without knowing much about columns or formats.  There’s even more good news:  Drill also works with data stored in the cloud.  With a few simple steps, you can configure the S3 storage plugin for Drill and be off to the races running queries.  In this post we’ll look at how to configure Drill to access data stored in an S3 bucket.</p>
 
-<p>If you&#39;re more of a visual person, you can skip this article entirely and <a href="https://www.youtube.com/watch?v=w8gZ2nn_ZUQ">go straight to a video</a> I put together that walks through an end-to-end example with Tableau.  This example is easily extended to other BI tools, as the steps are identical on the Drill side.</p>
+<p>If you’re more of a visual person, you can skip this article entirely and <a href="https://www.youtube.com/watch?v=w8gZ2nn_ZUQ">go straight to a video</a> I put together that walks through an end-to-end example with Tableau.  This example is easily extended to other BI tools, as the steps are identical on the Drill side.</p>
 
 <p>At a high level, configuring Drill to access S3 bucket data is accomplished with the following steps on each node running a drillbit.</p>
 
 <ul>
-<li>Download and install the <a href="http://www.jets3t.org/">JetS3t</a> JAR files and enable them.</li>
-<li>Add your S3 credentials in the relevant XML configuration file.</li>
-<li>Configure and enable the S3 storage plugin through the Drill web interface.</li>
-<li>Connect your BI tool of choice and query away.</li>
+  <li>Download and install the <a href="http://www.jets3t.org/">JetS3t</a> JAR files and enable them.</li>
+  <li>Add your S3 credentials in the relevant XML configuration file.</li>
+  <li>Configure and enable the S3 storage plugin through the Drill web interface.</li>
+  <li>Connect your BI tool of choice and query away.</li>
 </ul>
 
 <p>Consult the <a href="https://cwiki.apache.org/confluence/display/DRILL/Architectural+Overview">Architectural Overview</a> for a refresher on the architecture of Drill.</p>
@@ -159,16 +159,21 @@
 <h2 id="configuration-steps">Configuration Steps</h2>
 
 <p>To connect Drill to S3, all of the drillbit nodes will need to access code in the JetS3t library developed by Amazon.  As of this writing, 0.9.2 is the latest version but you might want to check <a href="https://jets3t.s3.amazonaws.com/toolkit/toolkit.html">the main page</a> to see if anything has been updated.  Be sure to get version 0.9.2 or later as earlier versions have a bug relating to reading Parquet data.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">wget http://bitbucket.org/jmurty/jets3t/downloads/jets3t-0.9.2.zip
-cp jets3t-0.9.2/jars/jets3t-0.9.2.jar <span class="nv">$DRILL_HOME</span>/jars/3rdparty
-</code></pre></div>
-<p>Next, enable the plugin by editing the file:</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$DRILL_HOME</span>/bin/hadoop_excludes.txt
-</code></pre></div>
-<p>and removing the line <code>jets3t</code>.</p>
 
-<p>Drill will need to know your S3 credentials in order to access data there. These credentials will need to be placed in the core-site.xml file for your installation.  If you already have a core-site.xml file configured for your environment, add the following parameters to it, otherwise create the file from scratch.  If you do end up creating it from scratch you will need to wrap these parameters with <code>&lt;configuration&gt;</code> and <code>&lt;/configuration&gt;</code>.</p>
-<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;property&gt;</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget http://bitbucket.org/jmurty/jets3t/downloads/jets3t-0.9.2.zip
+<span class="nb">cp </span>jets3t-0.9.2/jars/jets3t-0.9.2.jar <span class="nv">$DRILL_HOME</span>/jars/3rdparty
+</code></pre></div></div>
+
+<p>Next, enable the plugin by editing the file:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$DRILL_HOME</span>/bin/hadoop_excludes.txt
+</code></pre></div></div>
+
+<p>and removing the line <code class="language-plaintext highlighter-rouge">jets3t</code>.</p>
+
+<p>Drill will need to know your S3 credentials in order to access data there. These credentials will need to be placed in the core-site.xml file for your installation.  If you already have a core-site.xml file configured for your environment, add the following parameters to it, otherwise create the file from scratch.  If you do end up creating it from scratch you will need to wrap these parameters with <code class="language-plaintext highlighter-rouge">&lt;configuration&gt;</code> and <code class="language-plaintext highlighter-rouge">&lt;/configuration&gt;</code>.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;property&gt;</span>
   <span class="nt">&lt;name&gt;</span>fs.s3.awsAccessKeyId<span class="nt">&lt;/name&gt;</span>
   <span class="nt">&lt;value&gt;</span>ID<span class="nt">&lt;/value&gt;</span>
 <span class="nt">&lt;/property&gt;</span>
@@ -187,27 +192,28 @@ cp jets3t-0.9.2/jars/jets3t-0.9.2.jar <span class="nv">$DRILL_HOME</span>/jars/3
   <span class="nt">&lt;name&gt;</span>fs.s3n.awsSecretAccessKey<span class="nt">&lt;/name&gt;</span>
   <span class="nt">&lt;value&gt;</span>SECRET<span class="nt">&lt;/value&gt;</span>
 <span class="nt">&lt;/property&gt;</span>
-</code></pre></div>
+</code></pre></div></div>
+
 <p>The steps so far give Drill enough information to connect to the S3 service.  Remember, you have to do this on all the nodes running drillbit.</p>
 
-<p>Next, let&#39;s go into the Drill web interface and enable the S3 storage plugin.  In this case you only need to connect to <strong>one</strong> of the nodes because Drill&#39;s configuration is synchronized across the cluster.  Complete the following steps:</p>
+<p>Next, let’s go into the Drill web interface and enable the S3 storage plugin.  In this case you only need to connect to <strong>one</strong> of the nodes because Drill’s configuration is synchronized across the cluster.  Complete the following steps:</p>
 
 <ol>
-<li>Point your browser to <code>http://&lt;host&gt;:8047</code></li>
-<li>Select the &#39;Storage&#39; tab.</li>
-<li>A good starting configuration for S3 can be entirely the same as the <code>dfs</code> plugin, except the connection parameter is changed to <code>s3n://bucket</code>.  So first select the <code>Update</code> button for <code>dfs</code>, then select the text area and copy it into the clipboard (on Windows, ctrl-A, ctrl-C works).</li>
-<li>Press <code>Back</code>, then create a new plugin by typing the name into the <code>New Storage Plugin</code>, then press <code>Create</code>.  You can choose any name, but a good convention is to use <code>s3-&lt;bucketname&gt;</code> so you can easily identify it later.</li>
-<li>In the configuration area, paste the configuration you just grabbed from &#39;dfs&#39;.  Change the line <code>connection: &quot;file:///&quot;</code> to <code>connection: &quot;s3n://&lt;bucket&gt;&quot;</code>.</li>
-<li>Click <code>Update</code>.  You should see a message that indicates success.</li>
+  <li>Point your browser to <code class="language-plaintext highlighter-rouge">http://&lt;host&gt;:8047</code></li>
+  <li>Select the ‘Storage’ tab.</li>
+  <li>A good starting configuration for S3 can be entirely the same as the <code class="language-plaintext highlighter-rouge">dfs</code> plugin, except the connection parameter is changed to <code class="language-plaintext highlighter-rouge">s3n://bucket</code>.  So first select the <code class="language-plaintext highlighter-rouge">Update</code> button for <code class="language-plaintext highlighter-rouge">dfs</code>, then select the text area and copy it into the clipboard (on Windows, ctrl-A, ctrl-C works).</li>
+  <li>Press <code class="language-plaintext highlighter-rouge">Back</code>, then create a new plugin by typing the name into the <code class="language-plaintext highlighter-rouge">New Storage Plugin</code>, then press <code class="language-plaintext highlighter-rouge">Create</code>.  You can choose any name, but a good convention is to use <code class="language-plaintext highlighter-rouge">s3-&lt;bucketname&gt;</code> so you can easily identify it later.</li>
+  <li>In the configuration area, paste the configuration you just grabbed from ‘dfs’.  Change the line <code class="language-plaintext highlighter-rouge">connection: "file:///"</code> to <code class="language-plaintext highlighter-rouge">connection: "s3n://&lt;bucket&gt;"</code>.</li>
+  <li>Click <code class="language-plaintext highlighter-rouge">Update</code>.  You should see a message that indicates success.</li>
 </ol>
 
-<p>Note: Make sure the URI has scheme &quot;s3n&quot;, not &quot;s3&quot;. It will not work with &quot;s3&quot;.</p>
+<p>Note: Make sure the URI has scheme “s3n”, not “s3”. It will not work with “s3”.</p>
 
 <p>At this point you can run queries on the data directly and you have a couple of options on how you want to access it.  You can use Drill Explorer and create a custom view (based on an SQL query) that you can then access in Tableau or other BI tools, or just use Drill directly from within the tool.</p>
 
 <p>You may want to check out the <a href="http://www.youtube.com/watch?v=jNUsprJNQUg">Tableau demo</a>.</p>
 
-<p>With just a few lines of configuration, you&#39;ve just opened the vast world of data available in the Amazon cloud and reduced the amount of work you have to do in advance to access data stored there with SQL.  There are even some <a href="https://aws.amazon.com/datasets">public datasets</a> available directly on S3 that are great for experimentation.</p>
+<p>With just a few lines of configuration, you’ve just opened the vast world of data available in the Amazon cloud and reduced the amount of work you have to do in advance to access data stored there with SQL.  There are even some <a href="https://aws.amazon.com/datasets">public datasets</a> available directly on S3 that are great for experimentation.</p>
 
 <p>Happy Drilling!</p>
 
@@ -233,7 +239,7 @@ cp jets3t-0.9.2/jars/jets3t-0.9.2.jar <span class="nv">$DRILL_HOME</span>/jars/3
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

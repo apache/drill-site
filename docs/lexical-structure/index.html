@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1335,227 +1367,259 @@
 
     </div>
 
-     Sep 6, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>A SQL statement used in Drill can include one or more of the following parts:</p>
 
 <ul>
-<li>Clause, such as FROM</li>
-<li>Command, such as SELECT </li>
-<li>Expression, a combination of one or more values, operators, and SQL functions that evaluates to a value. For example, users.firstname is a period expression.</li>
-<li>Function, scalar and aggregate, such as sum</li>
-<li><p>Literal value</p>
+  <li>Clause, such as FROM</li>
+  <li>Command, such as SELECT</li>
+  <li>Expression, a combination of one or more values, operators, and SQL functions that evaluates to a value. For example, users.firstname is a period expression.</li>
+  <li>Function, scalar and aggregate, such as sum</li>
+  <li>
+    <p>Literal value</p>
 
-<ul>
-<li><a href="/docs/lexical-structure/#boolean">Boolean</a></li>
-<li><a href="/docs/lexical-structure/#identifier">Identifier</a></li>
-<li><a href="/docs/lexical-structure/#integer">Integer</a></li>
-<li><a href="/docs/lexical-structure/#numeric-constant">Numeric constant</a></li>
-<li><a href="/docs/lexical-structure/#string">String</a></li>
-</ul></li>
-<li><p>Operator, such as [NOT] IN, LIKE, and AND</p></li>
-<li><p>Predicate, such as a &gt; b in <code>SELECT * FROM myfile WHERE a &gt; b</code>.</p></li>
-<li><p><a href="/docs/lexical-structure/#storage-plugin-and-workspace-references">Storage plugin and workspace reference</a></p></li>
-<li><p>Whitespace</p></li>
-<li><p>Comment in the following format: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">/* This is a comment. */
-</code></pre></div></li>
+    <ul>
+      <li><a href="/docs/lexical-structure/#boolean">Boolean</a></li>
+      <li><a href="/docs/lexical-structure/#identifier">Identifier</a></li>
+      <li><a href="/docs/lexical-structure/#integer">Integer</a></li>
+      <li><a href="/docs/lexical-structure/#numeric-constant">Numeric constant</a></li>
+      <li><a href="/docs/lexical-structure/#string">String</a></li>
+    </ul>
+  </li>
+  <li>Operator, such as [NOT] IN, LIKE, and AND</li>
+  <li>Predicate, such as a &gt; b in <code class="language-plaintext highlighter-rouge">SELECT * FROM myfile WHERE a &gt; b</code>.</li>
+  <li><a href="/docs/lexical-structure/#storage-plugin-and-workspace-references">Storage plugin and workspace reference</a></li>
+  <li>Whitespace</li>
+  <li>
+    <p>Comment in the following format:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  /* This is a comment. */
+</code></pre></div>    </div>
+  </li>
 </ul>
 
 <h2 id="case-sensitivity">Case-Sensitivity</h2>
 
-<p>Drill is case-insensitive; however, data sources may be case-sensitive. The data source determines the case-sensitivity of table and column names.  </p>
+<p>Drill is case-insensitive; however, data sources may be case-sensitive. The data source determines the case-sensitivity of table and column names.</p>
 
 <h3 id="data-sources">Data Sources</h3>
 
-<p>When writing queries that reference tables or columns in case-sensitive data sources, you must reference the table or column exactly as it is stored in the data source. For example, if you query a table named “customers” in HBase, you cannot write the table name as “CUSTOMERS” in a query against the table because the data source distinguishes between upper and lower case.  </p>
+<p>When writing queries that reference tables or columns in case-sensitive data sources, you must reference the table or column exactly as it is stored in the data source. For example, if you query a table named “customers” in HBase, you cannot write the table name as “CUSTOMERS” in a query against the table because the data source distinguishes between upper and lower case.</p>
 
-<p>Table values referenced in a query are case-sensitive, for example:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT * FROM t WHERE col1=&#39;a&#39;;  
-</code></pre></div>
-<p>If values in col1 of table t are stored in uppercase, this query would not return any results because the query requested lowercase &#39;a&#39;.</p>
+<p>Table values referenced in a query are case-sensitive, for example:</p>
 
-<p>The following lists provide the case sensitivity of some data sources that Drill supports.  </p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT * FROM t WHERE col1='a';  
+</code></pre></div></div>
 
-<p><strong>Case-Insensitive</strong>  </p>
+<p>If values in col1 of table t are stored in uppercase, this query would not return any results because the query requested lowercase ‘a’.</p>
+
+<p>The following lists provide the case sensitivity of some data sources that Drill supports.</p>
+
+<p><strong>Case-Insensitive</strong></p>
 
 <ul>
-<li>JSON<br></li>
-<li>Hive<br></li>
-<li>Parquet<br></li>
+  <li>JSON</li>
+  <li>Hive</li>
+  <li>Parquet</li>
 </ul>
 
-<p><strong>Case-Sensitive</strong>  </p>
+<p><strong>Case-Sensitive</strong></p>
 
 <ul>
-<li>MapR Database (MapR-DB)</li>
-<li>HBase<br></li>
-<li>Table values, irrelevant of data source<br></li>
+  <li>MapR Database (MapR-DB)</li>
+  <li>HBase</li>
+  <li>Table values, irrelevant of data source</li>
 </ul>
 
 <h3 id="drill">Drill</h3>
 
-<p>Case-insensitivity in Drill applies to:  </p>
+<p>Case-insensitivity in Drill applies to:</p>
 
 <ul>
-<li>SQL functions<br></li>
-<li>SQL command names<br></li>
-<li>Storage plugin names (as of Drill 1.15)<br></li>
-<li>Workspace (schema) names (as of Drill 1.15)<br></li>
-<li>Table names in the Drill system storage plugins, which includes <code>information_schema</code> tables and <code>sys</code> tables (as of Drill 1.15)<br></li>
-<li><p>Keywords, for example SELECT and select are equivalent, as shown in the following queries:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">     SELECT * FROM dfs.`/Users/drilluser/ticket_sales.json`;
-     select * from DFS.`/Users/drilluser/ticket_sales.json`;  
-</code></pre></div></li>
+  <li>SQL functions</li>
+  <li>SQL command names</li>
+  <li>Storage plugin names (as of Drill 1.15)</li>
+  <li>Workspace (schema) names (as of Drill 1.15)</li>
+  <li>Table names in the Drill system storage plugins, which includes <code class="language-plaintext highlighter-rouge">information_schema</code> tables and <code class="language-plaintext highlighter-rouge">sys</code> tables (as of Drill 1.15)</li>
+  <li>
+    <p>Keywords, for example SELECT and select are equivalent, as shown in the following queries:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>       SELECT * FROM dfs.`/Users/drilluser/ticket_sales.json`;
+       select * from DFS.`/Users/drilluser/ticket_sales.json`;  
+</code></pre></div>    </div>
+  </li>
 </ul>
 
 <h3 id="storage-plugin-and-workspace-references">Storage Plugin and Workspace References</h3>
 
-<p>The case of the name used in a query and the name in the storage plugin definition do not have to match. For example, defining a storage plugin named <code>dfs</code> and then referring to the plugin as <code>DFS</code> or <code>dfs</code> in a query are both acceptable to Drill. For example, Drill can process both of the following queries:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT * FROM dfs.`/Users/drilluser/ticket_sales.json`;
+<p>The case of the name used in a query and the name in the storage plugin definition do not have to match. For example, defining a storage plugin named <code class="language-plaintext highlighter-rouge">dfs</code> and then referring to the plugin as <code class="language-plaintext highlighter-rouge">DFS</code> or <code class="language-plaintext highlighter-rouge">dfs</code> in a query are both acceptable to Drill. For example, Drill can process both of the following queries:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT * FROM dfs.`/Users/drilluser/ticket_sales.json`;
    SELECT * FROM DFS.`/Users/drilluser/ticket_sales.json`;  
-</code></pre></div>
-<p><strong>Note:</strong> Drill stores storage plugin and workspace names in lowercase, by default. If you upgrade to Drill 1.15, you can query storage plugin or schema names previously stored in uppercase using uppercase or lowercase text. If duplicate names exist, for example you have two storage plugins named DFS, one in uppercase and one in lowercase, Drill logs a warning and keeps only one storage plugin. Drill keeps the first storage plugin defined in the workspace configuration.   </p>
+</code></pre></div></div>
+
+<p><strong>Note:</strong> Drill stores storage plugin and workspace names in lowercase, by default. If you upgrade to Drill 1.15, you can query storage plugin or schema names previously stored in uppercase using uppercase or lowercase text. If duplicate names exist, for example you have two storage plugins named DFS, one in uppercase and one in lowercase, Drill logs a warning and keeps only one storage plugin. Drill keeps the first storage plugin defined in the workspace configuration.</p>
 
 <h2 id="literal-values">Literal Values</h2>
 
 <p>This section describes how to construct literals.</p>
 
 <h3 id="boolean">Boolean</h3>
-
 <p>Boolean values are true or false and are case-insensitive. Do not enclose the values in quotation marks.</p>
 
 <h3 id="date-and-time">Date and Time</h3>
-
 <p>Format dates using dashes (-) to separate year, month, and day. Format time using colons (:) to separate hours, minutes and seconds. Format timestamps using a date and a time. These literals are shown in the following examples:</p>
 
 <ul>
-<li><p>Date: 2008-12-15</p></li>
-<li><p>Time: 22:55:55.123...</p></li>
-<li><p>Timestamp: 2008-12-15 22:55:55.12345</p></li>
+  <li>
+    <p>Date: 2008-12-15</p>
+  </li>
+  <li>
+    <p>Time: 22:55:55.123…</p>
+  </li>
+  <li>
+    <p>Timestamp: 2008-12-15 22:55:55.12345</p>
+  </li>
 </ul>
 
 <p>If you have dates and times in other formats, use a <a href="/docs/data-type-conversion/">data type conversion function</a> in your queries.</p>
 
 <h3 id="identifiers">Identifiers</h3>
-
 <p>An identifier is a letter followed by any sequence of letters, digits, or the underscore. For example, names of tables, columns, and aliases are identifiers. Maximum length is 1024 characters. Enclose the following identifiers with identifier quotes:</p>
 
 <ul>
-<li>Keywords</li>
-<li>Identifiers that SQL cannot parse<br></li>
+  <li>Keywords</li>
+  <li>Identifiers that SQL cannot parse</li>
 </ul>
 
 <p><strong>Note:</strong>  The term “user” is a reserved keyword, however if you reference a field/column named “user” in a query and you enclose the term in back ticks (`user`), Drill does not treat `user` as an identifier. Instead, Drill treats `user` as a special function that calls the current user. To work around this issue, use a table alias when referencing the field/column. The table alias informs the parser that this identifier is not a function call, but a regular identifier. For example, assume a table alias “t.” Use t.`user` instead of `user` as shown:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT operation, t.`user`, uid FROM `dfs`.`/drill/student` t;
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT operation, t.`user`, uid FROM `dfs`.`/drill/student` t;
+</code></pre></div></div>
+
 <p>For example, enclose the SQL keywords date and time in identifier quotes when referring to column names, but not when referring to data types:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE TABLE dfs.tmp.sampleparquet AS 
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE dfs.tmp.sampleparquet AS 
 (SELECT trans_id, 
 cast(`date` AS date) transdate, 
 cast(`time` AS time) transtime, 
 cast(amount AS double) amountm,
 user_info, marketing_info, trans_info 
 FROM dfs.`/Users/drilluser/sample.json`);    
-</code></pre></div>
-<p>Table and column names are case-insensitive. Use identifier quotes to enclose names that contain special characters. Special characters are those other than the 52 Latin alphabet characters. For example, space and @ are special characters. </p>
+</code></pre></div></div>
+
+<p>Table and column names are case-insensitive. Use identifier quotes to enclose names that contain special characters. Special characters are those other than the 52 Latin alphabet characters. For example, space and @ are special characters.</p>
 
 <p>The following example shows the keyword Year enclosed in identifier quotes. Because the column alias contains the special space character, also enclose the alias in backticks, as shown in the following example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT extract(year from transdate) AS `Year`, t.user_info.cust_id AS `Customer Number` FROM dfs.tmp.`sampleparquet` t;
-+------------+-----------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT extract(year from transdate) AS `Year`, t.user_info.cust_id AS `Customer Number` FROM dfs.tmp.`sampleparquet` t;
+|------------|-----------------|
 |    Year    | Customer Number |
-+------------+-----------------+
+|------------|-----------------|
 | 2013       | 28              |
 | 2013       | 86623           |
 | 2013       | 11              |
 | 2013       | 666             |
 | 2013       | 999             |
-+------------+-----------------+
+|------------|-----------------|
 5 rows selected (0.051 seconds)  
-</code></pre></div>
+</code></pre></div></div>
+
 <h3 id="identifier-quotes">Identifier Quotes</h3>
+<p>Prior to Drill 1.11, the SQL parser in Drill only supported backticks as identifier quotes. As of Drill 1.11, the SQL parser can also use double quotes and square brackets. The default setting for identifier quotes is backticks. You can configure the type of identifier quotes used with the  <code class="language-plaintext highlighter-rouge">planner.parser.quoting_identifiers</code> configuration option, at the system or session level, as shown:</p>
 
-<p>Prior to Drill 1.11, the SQL parser in Drill only supported backticks as identifier quotes. As of Drill 1.11, the SQL parser can also use double quotes and square brackets. The default setting for identifier quotes is backticks. You can configure the type of identifier quotes used with the  <code>planner.parser.quoting_identifiers</code> configuration option, at the system or session level, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   ALTER SYSTEM|SESSION SET planner.parser.quoting_identifiers = &#39;&quot;&#39;;  
-   ALTER SYSTEM|SESSION SET planner.parser.quoting_identifiers = &#39;[&#39;;  
-   ALTER SYSTEM|SESSION SET planner.parser.quoting_identifiers = &#39;`&#39;;  
-</code></pre></div>
-<p>The following table lists the supported identifier quotes with their corresponding Unicode character:   </p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ALTER SYSTEM|SESSION SET planner.parser.quoting_identifiers = '"';  
+   ALTER SYSTEM|SESSION SET planner.parser.quoting_identifiers = '[';  
+   ALTER SYSTEM|SESSION SET planner.parser.quoting_identifiers = '`';  
+</code></pre></div></div>
 
-<table><thead>
-<tr>
-<th>Quoting   Identifier</th>
-<th>Unicode   Character</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Backticks</td>
-<td>&#39;GRAVE   ACCENT&#39; (U+0060)</td>
-</tr>
-<tr>
-<td>Double quotes</td>
-<td>&#39;QUOTATION   MARK&#39; (U+0022)</td>
-</tr>
-<tr>
-<td>Square brackets</td>
-<td>&#39;LEFT   SQUARE BRACKET&#39; (U+005B) and &#39;RIGHT SQUARE BRACKET&#39; (U+005D)</td>
-</tr>
-</tbody></table>
+<p>The following table lists the supported identifier quotes with their corresponding Unicode character:</p>
 
-<p>Alternatively, you can set the type of identifier using the <code>quoting_identifiers</code> property in the jdbc connection URL, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   jdbc:drill:zk=local;quoting_identifiers=[  
-</code></pre></div>
-<p><strong>Note:</strong> The identifier quotes used in queries must match the <code>planner.parser.quoting_identifiers</code> setting. If you use another type of identifier quotes, Drill returns an error.  </p>
+<table>
+  <thead>
+    <tr>
+      <th>Quoting   Identifier</th>
+      <th>Unicode   Character</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Backticks</td>
+      <td>‘GRAVE   ACCENT’ (U+0060)</td>
+    </tr>
+    <tr>
+      <td>Double quotes</td>
+      <td>‘QUOTATION   MARK’ (U+0022)</td>
+    </tr>
+    <tr>
+      <td>Square brackets</td>
+      <td>‘LEFT   SQUARE BRACKET’ (U+005B) and ‘RIGHT SQUARE BRACKET’ (U+005D)</td>
+    </tr>
+  </tbody>
+</table>
 
-<p>The following queries show the use of each type of identifier quotes:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   0: jdbc:drill:zk=local&gt; select `employee_id`, `full_name` from cp.`employee.json` limit 1;
-   +--------------+---------------+
-   | employee_id  |   full_name   |
-   +--------------+---------------+
-   | 1            | Sheri Nowmer  |
-   +--------------+---------------+
+<p>Alternatively, you can set the type of identifier using the <code class="language-plaintext highlighter-rouge">quoting_identifiers</code> property in the jdbc connection URL, as shown:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   jdbc:drill:zk=local;quoting_identifiers=[  
+</code></pre></div></div>
+
+<p><strong>Note:</strong> The identifier quotes used in queries must match the <code class="language-plaintext highlighter-rouge">planner.parser.quoting_identifiers</code> setting. If you use another type of identifier quotes, Drill returns an error.</p>
+
+<p>The following queries show the use of each type of identifier quotes:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; select `employee_id`, `full_name` from cp.`employee.json` limit 1;
+
+   |-------------|--------------|
+   | employee_id | full_name    |
+   |-------------|--------------|
+   | 1           | Sheri Nowmer |
+   |-------------|--------------|
    1 row selected (0.148 seconds)  
 
-   0: jdbc:drill:zk=local&gt; select &quot;employee_id&quot;, &quot;full_name&quot; from cp.&quot;employee.json&quot; limit 1;
-   +--------------+---------------+
-   | employee_id  |   full_name   |
-   +--------------+---------------+
-   | 1            | Sheri Nowmer  |
-   +--------------+---------------+
+   0: jdbc:drill:zk=local&gt; select "employee_id", "full_name" from cp."employee.json" limit 1;
+   |-------------|--------------|
+   | employee_id | full_name    |
+   |-------------|--------------|
+   | 1           | Sheri Nowmer |
+   |-------------|--------------|
    1 row selected (0.129 seconds)  
 
    0: jdbc:drill:zk=local&gt; select [employee_id], [full_name] from cp.[employee.json] limit 1;
-   +--------------+---------------+
-   | employee_id  |   full_name   |
-   +--------------+---------------+
-   | 1            | Sheri Nowmer  |
-   +--------------+---------------+
+   |-------------|--------------|
+   | employee_id | full_name    |
+   |-------------|--------------|
+   | 1           | Sheri Nowmer |
+   |-------------|--------------|
    1 row selected (0.14 seconds)  
-</code></pre></div>
+</code></pre></div></div>
+
 <h3 id="dots-in-column-names">Dots in Column Names</h3>
+<p>As of Drill 1.12, Drill supports dots in column names if the data source itself allows dots in column names, such as JSON and Parquet , as shown in the following example:</p>
 
-<p>As of Drill 1.12, Drill supports dots in column names if the data source itself allows dots in column names, such as JSON and Parquet , as shown in the following example:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT * FROM `test.json`;
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT * FROM `test.json`;
+   
+   |-------------------------------------------------|-------------------------------------------------|
+   | 0.0.1                                           | 0.1.2                                           |
+   |-------------------------------------------------|-------------------------------------------------|
+   | {"version":"0.0.1","date_created":"2014-03-15"} | {"version":"0.1.2","date_created":"2014-05-21"} |
+   |-------------------------------------------------|-------------------------------------------------|
+</code></pre></div></div>
 
-   +--------------------------------------------------------+----------------------------------------------------------+
-   |                      0.0.1                             |                      0.1.2                               |             
-   +--------------------------------------------------------+----------------------------------------------------------+
-   | {&quot;version&quot;:&quot;0.0.1&quot;,&quot;date_created&quot;:&quot;2014-03-15&quot;}        | {&quot;version&quot;:&quot;0.1.2&quot;,&quot;date_created&quot;:&quot;2014-05-21&quot;}          |
-   +--------------------------------------------------------+----------------------------------------------------------+  
-</code></pre></div>
-<p>When referencing column names with dots in queries, you must escape the dots with <a href="/docs/lexical-structure/#identifier-quotes">identifier quotes</a>, as shown in the following query:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT t.`0.1.2`.version FROM dfs.tmp.`test.json` t WHERE t.`0.1.2`.date_created=&#39;2014-05-21&#39;  
-</code></pre></div>
-<p>Drill also supports associative array indexing, for example <code>SELECT a, b.c, b[&#39;d.e&#39;]...</code>.  </p>
+<p>When referencing column names with dots in queries, you must escape the dots with <a href="/docs/lexical-structure/#identifier-quotes">identifier quotes</a>, as shown in the following query:</p>
 
-<p>Note that in this example, the <code>“d.e”</code> field is selected, not a map <code>“d”</code> with field <code>“e”</code> inside of it.   </p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT t.`0.1.2`.version FROM dfs.tmp.`test.json` t WHERE t.`0.1.2`.date_created='2014-05-21'  
+</code></pre></div></div>
+
+<p>Drill also supports associative array indexing, for example <code class="language-plaintext highlighter-rouge">SELECT a, b.c, b['d.e']...</code>.</p>
+
+<p>Note that in this example, the <code class="language-plaintext highlighter-rouge">“d.e”</code> field is selected, not a map <code class="language-plaintext highlighter-rouge">“d”</code> with field <code class="language-plaintext highlighter-rouge">“e”</code> inside of it.</p>
 
 <h3 id="integer">Integer</h3>
-
 <p>An integer value consists of an optional minus sign, -, followed by one or more digits.</p>
 
 <h3 id="numeric-constant">Numeric constant</h3>
@@ -1563,54 +1627,60 @@ FROM dfs.`/Users/drilluser/sample.json`);
 <p>Numeric constants include integers, floats, and values in E notation.</p>
 
 <ul>
-<li>Integers: 0-9 and a minus sign prefix</li>
-<li>Floats: a series of one or more decimal digits, followed by a period, ., and one or more digits in decimal places. There is no optional + sign. Leading or trailing zeros are required before and after decimal points. For example, 0.52 and 52.0. </li>
-<li><p>E notation: Approximate-value numerical literals in scientific notation consist of a mantissa and exponent. Either or both parts can be signed. For example: 1.2E3, 1.2E-3, -1.2E3, -1.2E-3. Values consist of an optional negative sign (using -), a floating point number, letters e or E, a positive or negative sign (+ or -), and an integer exponent. For example, the following JSON file has data in E notation in two records.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{&quot;trans_id&quot;:0,
- &quot;date&quot;:&quot;2013-07-26&quot;,
- &quot;time&quot;:&quot;04:56:59&quot;,
- &quot;amount&quot;:-2.6034345E+38,
- &quot;trans_info&quot;:{&quot;prod_id&quot;:[16],
- &quot;purch_flag&quot;:&quot;false&quot;
-}}
+  <li>Integers: 0-9 and a minus sign prefix</li>
+  <li>Floats: a series of one or more decimal digits, followed by a period, ., and one or more digits in decimal places. There is no optional + sign. Leading or trailing zeros are required before and after decimal points. For example, 0.52 and 52.0.</li>
+  <li>
+    <p>E notation: Approximate-value numerical literals in scientific notation consist of a mantissa and exponent. Either or both parts can be signed. For example: 1.2E3, 1.2E-3, -1.2E3, -1.2E-3. Values consist of an optional negative sign (using -), a floating point number, letters e or E, a positive or negative sign (+ or -), and an integer exponent. For example, the following JSON file has data in E notation in two records.</p>
 
-{&quot;trans_id&quot;:1,
- &quot;date&quot;:&quot;2013-05-16&quot;,
- &quot;time&quot;:&quot;07:31:54&quot;,
- &quot;amount&quot;:1.8887898E+38,
- &quot;trans_info&quot;:{&quot;prod_id&quot;:[],
- &quot;purch_flag&quot;:&quot;false&quot;
-}}
-</code></pre></div>
-<p>Aggregating the data in Drill produces scientific notation in the output:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT sum(amount) FROM dfs.`/Users/drilluser/sample2.json`;
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  {"trans_id":0,
+   "date":"2013-07-26",
+   "time":"04:56:59",
+   "amount":-2.6034345E+38,
+   "trans_info":{"prod_id":[16],
+   "purch_flag":"false"
+  }}
 
-+------------+
-|   EXPR$0   |
-+------------+
-| -7.146447E37 |
-+------------+
-1 row selected (0.044 seconds)
-</code></pre></div></li>
+  {"trans_id":1,
+   "date":"2013-05-16",
+   "time":"07:31:54",
+   "amount":1.8887898E+38,
+   "trans_info":{"prod_id":[],
+   "purch_flag":"false"
+  }} Aggregating the data in Drill produces scientific notation in the output:
+
+  SELECT sum(amount) FROM dfs.`/Users/drilluser/sample2.json`;
+
+  |--------------|
+  | EXPR$0       |
+  |--------------|
+  | -7.146447E37 |
+  |--------------|
+  1 row selected (0.044 seconds)
+</code></pre></div>    </div>
+  </li>
 </ul>
 
 <p>Drill represents invalid values, such as the square root of a negative number, as NaN.</p>
 
 <h3 id="string">String</h3>
+<p>Strings are characters enclosed in single quotation marks. To use a single quotation mark itself (apostrophe) in a string, escape it using a single quotation mark. For example, the value Martha’s Vineyard in the SOURCE column in the <code class="language-plaintext highlighter-rouge">vitalstat.json</code> file contains an apostrophe:</p>
 
-<p>Strings are characters enclosed in single quotation marks. To use a single quotation mark itself (apostrophe) in a string, escape it using a single quotation mark. For example, the value Martha&#39;s Vineyard in the SOURCE column in the <code>vitalstat.json</code> file contains an apostrophe:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">+------------+
-|   SOURCE   |
-+------------+
-| Martha&#39;s Vineyard |
-| Monroe County |
-+------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|-------------------|
+| SOURCE            |
+|-------------------|
+| Martha's Vineyard |
+| Monroe County     |
+|-------------------|
 2 rows selected (0.053 seconds)
-</code></pre></div>
-<p>To refer to the string Martha&#39;s Vineyard in a query, use single quotation marks to enclose the string and escape the apostophe using a single quotation mark:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM dfs.`/Users/drilluser/vitalstat.json` t 
-WHERE t.source = &#39;Martha&#39;&#39;s Vineyard&#39;;
-</code></pre></div>
+</code></pre></div></div>
+
+<p>To refer to the string Martha’s Vineyard in a query, use single quotation marks to enclose the string and escape the apostophe using a single quotation mark:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM dfs.`/Users/drilluser/vitalstat.json` t 
+WHERE t.source = 'Martha''s Vineyard';
+</code></pre></div></div>
+
+
     
       
         <div class="doc-nav">
@@ -1627,7 +1697,7 @@ WHERE t.source = &#39;Martha&#39;&#39;s Vineyard&#39;;
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

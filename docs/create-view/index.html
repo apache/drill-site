@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,9 +1369,9 @@
 
     </div>
 
-     Jan 7, 2019
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
@@ -1354,38 +1386,42 @@ existing views or any other available storage plugin data sources.</p>
 <h2 id="syntax">Syntax</h2>
 
 <p>The CREATE VIEW command supports the following syntax:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">CREATE [OR REPLACE] VIEW [workspace.]view_name [ (column_name [, ...]) ] AS query;
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE [OR REPLACE] VIEW [workspace.]view_name [ (column_name [, ...]) ] AS query;
+</code></pre></div></div>
+
 <p>Use CREATE VIEW to create a new view. Use CREATE OR REPLACE VIEW to replace an
 existing view with the same name. When you replace a view, the query must
 generate the same set of columns with the same column names and data types.</p>
 
-<p><strong>Note:</strong> Follow Drill’s rules for identifiers when you name the view. </p>
+<p><strong>Note:</strong> Follow Drill’s rules for identifiers when you name the view.</p>
 
 <h2 id="parameters">Parameters</h2>
 
-<p><em>workspace</em><br>
+<p><em>workspace</em><br />
 The location where you want the view to exist. By default, the view is created
 in the current workspace. See
 <a href="/docs/workspaces/">Workspaces</a>.</p>
 
-<p><em>view_name</em><br>
+<p><em>view_name</em><br />
 The name that you give the view. The view must have a unique name. It cannot
 have the same name as any other view or table in the workspace.</p>
 
-<p><em>column_name</em><br>
+<p><em>column_name</em><br />
 Optional list of column names in the view. If you do not supply column names,
 they are derived from the query.</p>
 
-<p><em>query</em><br>
+<p><em>query</em><br />
 A SELECT statement that defines the columns and rows in the view.</p>
 
 <h2 id="usage-notes">Usage Notes</h2>
 
-<p>By default, Drill returns a result set when you issue DDL statements, such as CREATE VIEW. If the client tool from which you connect to Drill (via JDBC) does not expect a result set when you issue DDL statements, set the <code>exec.query.return_result_set_for_ddl</code> option to false, as shown, to prevent the client from canceling queries:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SET `exec.query.return_result_set_for_ddl` = false  
+<p>By default, Drill returns a result set when you issue DDL statements, such as CREATE VIEW. If the client tool from which you connect to Drill (via JDBC) does not expect a result set when you issue DDL statements, set the <code class="language-plaintext highlighter-rouge">exec.query.return_result_set_for_ddl</code> option to false, as shown, to prevent the client from canceling queries:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SET `exec.query.return_result_set_for_ddl` = false  
 //This option is available in Drill 1.15 and later.   
-</code></pre></div>
+</code></pre></div></div>
+
 <p>When set to false, Drill returns the affected rows count, and the result set is null.</p>
 
 <h3 id="storage">Storage</h3>
@@ -1397,16 +1433,18 @@ when you create a view. Currently, Drill only supports views created in the
 file system or distributed file system.</p>
 
 <p>The following example shows a writable workspace as defined within the storage
-plugin in the <code>/tmp</code> directory of the file system:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;tmp&quot;: {
-      &quot;location&quot;: &quot;/tmp&quot;,
-      &quot;writable&quot;: true,
+plugin in the <code class="language-plaintext highlighter-rouge">/tmp</code> directory of the file system:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"tmp": {
+      "location": "/tmp",
+      "writable": true,
        }
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Drill stores the view definition in JSON format with the name that you specify
-when you run the CREATE VIEW command, suffixed <code>by .view.drill</code>. For example,
-if you create a view named <code>myview</code>, Drill stores the view in the designated
-workspace as <code>myview.view.drill</code>.</p>
+when you run the CREATE VIEW command, suffixed <code class="language-plaintext highlighter-rouge">by .view.drill</code>. For example,
+if you create a view named <code class="language-plaintext highlighter-rouge">myview</code>, Drill stores the view in the designated
+workspace as <code class="language-plaintext highlighter-rouge">myview.view.drill</code>.</p>
 
 <h2 id="related-commands">Related Commands</h2>
 
@@ -1414,9 +1452,9 @@ workspace as <code>myview.view.drill</code>.</p>
 following commands against the view:</p>
 
 <ul>
-<li>SELECT </li>
-<li>DESCRIBE </li>
-<li>DROP </li>
+  <li>SELECT</li>
+  <li>DESCRIBE</li>
+  <li>DROP</li>
 </ul>
 
 <div class="admonition note">
@@ -1433,77 +1471,92 @@ created for the steps in this example.</p>
 <p>Complete the following steps to create a view in Drill:</p>
 
 <ol>
-<li><p>Decide which workspace you will use to create the view, and verify that the writable option is set to “true.” You can use an existing workspace, or you can create a new workspace. See <a href="/docs/workspaces/">Workspaces</a> for more information.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;workspaces&quot;: {
-   &quot;donuts&quot;: {
-     &quot;location&quot;: &quot;/home/donuts&quot;,
-     &quot;writable&quot;: true,
-     &quot;defaultInputFormat&quot;: null
-   }
- },
-</code></pre></div></li>
-<li><p>Run SHOW DATABASES to verify that Drill recognizes the workspace.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; show databases;
-+-------------+
-| SCHEMA_NAME |
-+-------------+
-| dfs.default |
-| dfs.root  |
-| dfs.donuts  |
-| dfs.tmp   |
-| cp.default  |
-| sys       |
-| INFORMATION_SCHEMA |
-+-------------+
-</code></pre></div></li>
-<li><p>Use the writable workspace.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; use dfs.donuts;
-+------------+------------+
-|     ok    |  summary   |
-+------------+------------+
-| true      | Default schema changed to &#39;dfs.donuts&#39; |
-+------------+------------+
-</code></pre></div></li>
-<li><p>Test run the query that you plan to use with the CREATE VIEW command.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select id, type, name, ppu from `donuts.json`;
-+------------+------------+------------+------------+
-|     id    |   type    |   name    |    ppu    |
-+------------+------------+------------+------------+
-| 0001      | donut      | Cake     | 0.55      |
-+------------+------------+------------+------------+
-</code></pre></div></li>
-<li><p>Run the CREATE VIEW command with the query.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; create view mydonuts as select id, type, name, ppu from `donuts.json`;
-+------------+------------+
-|     ok    |  summary   |
-+------------+------------+
-| true      | View &#39;mydonuts&#39; created successfully in &#39;dfs.donuts&#39; schema |
-+------------+------------+
-</code></pre></div></li>
-<li><p>Create a new view in another workspace from the current workspace.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; create view dfs.tmp.yourdonuts as select id, type, name from `donuts.json`;
-+------------+------------+
-|   ok  |  summary   |
-+------------+------------+
-| true      | View &#39;yourdonuts&#39; created successfully in &#39;dfs.tmp&#39; schema |
-+------------+------------+
-</code></pre></div></li>
-<li><p>Query the view created in both workspaces.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select * from mydonuts;
-+------------+------------+------------+------------+
-|     id    |   type    |   name    |    ppu    |
-+------------+------------+------------+------------+
-| 0001      | donut      | Cake     | 0.55      |
-+------------+------------+------------+------------+
+  <li>
+    <p>Decide which workspace you will use to create the view, and verify that the writable option is set to “true.” You can use an existing workspace, or you can create a new workspace. See <a href="/docs/workspaces/">Workspaces</a> for more information.</p>
 
-0: jdbc:drill:zk=local&gt; select * from dfs.tmp.yourdonuts;
-+------------+------------+------------+
-|   id  |   type    |   name    |
-+------------+------------+------------+
-| 0001      | donut     | Cake      |
-+------------+------------+------------+
-</code></pre></div></li>
+    <p>“workspaces”: {
+      “donuts”: {
+        “location”: “/home/donuts”,
+        “writable”: true,
+        “defaultInputFormat”: null
+      }
+    },</p>
+  </li>
+  <li>
+    <p>Run SHOW DATABASES to verify that Drill recognizes the workspace.</p>
+
+    <p>0: jdbc:drill:zk=local&gt; show databases;
+   |——————–|
+   | SCHEMA_NAME        |
+   |——————–|
+   | dfs.default        |
+   | dfs.root           |
+   | dfs.donuts         |
+   | dfs.tmp            |
+   | cp.default         |
+   | sys                |
+   | INFORMATION_SCHEMA |
+   |——————–|</p>
+  </li>
+  <li>
+    <p>Use the writable workspace.</p>
+
+    <p>0: jdbc:drill:zk=local&gt; use dfs.donuts;
+   |——|—————————————-|
+   | ok   | summary                                |
+   |——|—————————————-|
+   | true | Default schema changed to ‘dfs.donuts’ |
+   |——|—————————————-|</p>
+  </li>
+  <li>
+    <p>Test run the query that you plan to use with the CREATE VIEW command.</p>
+
+    <p>0: jdbc:drill:zk=local&gt; select id, type, name, ppu from <code class="language-plaintext highlighter-rouge">donuts.json</code>;
+   |——|——-|——|——|
+   | id   | type  | name | ppu  |
+   |——|——-|——|——|
+   | 0001 | donut | Cake | 0.55 |
+   |——|——-|——|——|</p>
+  </li>
+  <li>
+    <p>Run the CREATE VIEW command with the query.</p>
+
+    <p>0: jdbc:drill:zk=local&gt; create view mydonuts as select id, type, name, ppu from <code class="language-plaintext highlighter-rouge">donuts.json</code>;
+   |——|————————————————————-|
+   | ok   | summary                                                     |
+   |——|————————————————————-|
+   | true | View ‘mydonuts’ created successfully in ‘dfs.donuts’ schema |
+   |——|————————————————————-|</p>
+  </li>
+  <li>
+    <p>Create a new view in another workspace from the current workspace.</p>
+
+    <p>0: jdbc:drill:zk=local&gt; create view dfs.tmp.yourdonuts as select id, type, name from <code class="language-plaintext highlighter-rouge">donuts.json</code>;
+   |——|————————————————————|
+   | ok   | summary                                                    |
+   |——|————————————————————|
+   | true | View ‘yourdonuts’ created successfully in ‘dfs.tmp’ schema |
+   |——|————————————————————|</p>
+  </li>
+  <li>
+    <p>Query the view created in both workspaces.</p>
+
+    <p>0: jdbc:drill:zk=local&gt; select * from mydonuts;
+   |——|——-|——|——|
+   | id   | type  | name | ppu  |
+   |——|——-|——|——|
+   | 0001 | donut | Cake | 0.55 |
+   |——|——-|——|——|</p>
+
+    <p>0: jdbc:drill:zk=local&gt; select * from dfs.tmp.yourdonuts;
+   |——|——-|——|
+   | id   | type  | name |
+   |——|——-|——|
+   | 0001 | donut | Cake |
+   |——|——-|——|</p>
+  </li>
 </ol>
+
 
     
       
@@ -1521,7 +1574,7 @@ created for the steps in this example.</p>
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

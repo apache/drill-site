@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,9 +1369,9 @@
 
     </div>
 
-     Nov 21, 2016
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
@@ -1347,39 +1379,42 @@
 (flat files), such as the following file types:</p>
 
 <ul>
-<li>CSV files (comma-separated values)</li>
-<li>TSV files (tab-separated values)</li>
-<li>PSV files (pipe-separated values)</li>
+  <li>CSV files (comma-separated values)</li>
+  <li>TSV files (tab-separated values)</li>
+  <li>PSV files (pipe-separated values)</li>
 </ul>
 
 <p>Follow these general guidelines for querying a plain text file:</p>
 
 <ul>
-<li>Use a storage plugin that defines the file format, such as comma-separated (CSV) or tab-separated values (TSV), of the data in the plain text file.</li>
-<li>In the SELECT statement, use the <code>COLUMNS[n]</code> syntax in lieu of column names, which do not exist in a plain text file. The first column is column <code>0</code>.</li>
-<li>In the FROM clause, use the path to the plain text file instead of using a table name. Enclose the path and file name in back ticks. </li>
+  <li>Use a storage plugin that defines the file format, such as comma-separated (CSV) or tab-separated values (TSV), of the data in the plain text file.</li>
+  <li>In the SELECT statement, use the <code class="language-plaintext highlighter-rouge">COLUMNS[n]</code> syntax in lieu of column names, which do not exist in a plain text file. The first column is column <code class="language-plaintext highlighter-rouge">0</code>.</li>
+  <li>In the FROM clause, use the path to the plain text file instead of using a table name. Enclose the path and file name in back ticks.</li>
 </ul>
 
 <p>Make sure that your registered storage plugins
 recognize the appropriate file types and extensions. For example, the
 following configuration expects PSV files (files with a pipe delimiter) to
-have a <code>tbl</code> extension, not a <code>psv</code> extension. Drill returns a &quot;file not
-found&quot; error if references to files in queries do not match these conditions.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&quot;formats&quot;: {
-    &quot;psv&quot;: {
-      &quot;type&quot;: &quot;text&quot;,
-      &quot;extensions&quot;: [
-        &quot;tbl&quot;
+have a <code class="language-plaintext highlighter-rouge">tbl</code> extension, not a <code class="language-plaintext highlighter-rouge">psv</code> extension. Drill returns a “file not
+found” error if references to files in queries do not match these conditions.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"formats": {
+    "psv": {
+      "type": "text",
+      "extensions": [
+        "tbl"
       ],
-      &quot;delimiter&quot;: &quot;|&quot;
+      "delimiter": "|"
     }
-</code></pre></div>
-<h2 id="select-from-a-csv-file">SELECT * FROM a CSV File</h2>
+</code></pre></div></div>
 
-<p>The first query selects rows from a <code>.csv</code> text file. The file contains seven
+<h2 id="select--from-a-csv-file">SELECT * FROM a CSV File</h2>
+
+<p>The first query selects rows from a <code class="language-plaintext highlighter-rouge">.csv</code> text file. The file contains seven
 records:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">$ more plays.csv
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ more plays.csv
+ 
 1599,As You Like It
 1601,Twelfth Night
 1594,Comedy of Errors
@@ -1387,34 +1422,38 @@ records:</p>
 1596,The Merchant of Venice
 1610,The Tempest
 1599,Hamlet
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Drill recognizes each row as an array of values and returns one column for
 each row.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select * from dfs.`/Users/brumsby/drill/plays.csv`;
 
-+-----------------------------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select * from dfs.`/Users/brumsby/drill/plays.csv`;
+ 
+|-----------------------------------|
 |              columns              |
-+-----------------------------------+
-| [&quot;1599&quot;,&quot;As You Like It&quot;]         |
-| [&quot;1601&quot;,&quot;Twelfth Night&quot;]          |
-| [&quot;1594&quot;,&quot;Comedy of Errors&quot;]       |
-| [&quot;1595&quot;,&quot;Romeo and Juliet&quot;]       |
-| [&quot;1596&quot;,&quot;The Merchant of Venice&quot;] |
-| [&quot;1610&quot;,&quot;The Tempest&quot;]            |
-| [&quot;1599&quot;,&quot;Hamlet&quot;]                 |
-+-----------------------------------+
+|-----------------------------------|
+| ["1599","As You Like It"]         |
+| ["1601","Twelfth Night"]          |
+| ["1594","Comedy of Errors"]       |
+| ["1595","Romeo and Juliet"]       |
+| ["1596","The Merchant of Venice"] |
+| ["1610","The Tempest"]            |
+| ["1599","Hamlet"]                 |
+|-----------------------------------|
 7 rows selected (0.089 seconds)
-</code></pre></div>
-<h2 id="columns-n-syntax">Columns[n] Syntax</h2>
+</code></pre></div></div>
 
-<p>You can use the <code>COLUMNS[n]</code> syntax in the SELECT list to return these CSV
+<h2 id="columnsn-syntax">Columns[n] Syntax</h2>
+
+<p>You can use the <code class="language-plaintext highlighter-rouge">COLUMNS[n]</code> syntax in the SELECT list to return these CSV
 rows in a more readable, column by column, format. (This syntax uses a zero-
-based index, so the first column is column <code>0</code>.)</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select columns[0], columns[1] from dfs.`/Users/brumsby/drill/plays.csv`;
+based index, so the first column is column <code class="language-plaintext highlighter-rouge">0</code>.)</p>
 
-+------------+------------------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select columns[0], columns[1] from dfs.`/Users/brumsby/drill/plays.csv`;
+ 
+|------------|------------------------|
 |   EXPR$0   |         EXPR$1         |
-+------------+------------------------+
+|------------|------------------------|
 | 1599       | As You Like It         |
 | 1601       | Twelfth Night          |
 | 1594       | Comedy of Errors       |
@@ -1422,17 +1461,19 @@ based index, so the first column is column <code>0</code>.)</p>
 | 1596       | The Merchant of Venice |
 | 1610       | The Tempest            |
 | 1599       | Hamlet                 |
-+------------+------------------------+
+|------------|------------------------|
 7 rows selected (0.137 seconds)
-</code></pre></div>
-<p>You can use aliases to return meaningful column names. Note that <code>YEAR</code> is a
-reserved word, so the <code>Year</code> alias must be enclosed by back ticks.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select columns[0] as `Year`, columns[1] as Play 
-from dfs.`/Users/brumsby/drill/plays.csv`;
+</code></pre></div></div>
 
-+------------+------------------------+
+<p>You can use aliases to return meaningful column names. Note that <code class="language-plaintext highlighter-rouge">YEAR</code> is a
+reserved word, so the <code class="language-plaintext highlighter-rouge">Year</code> alias must be enclosed by back ticks.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select columns[0] as `Year`, columns[1] as Play 
+from dfs.`/Users/brumsby/drill/plays.csv`;
+ 
+|------------|------------------------|
 |    Year    |    Play                |
-+------------+------------------------+
+|------------|------------------------|
 | 1599       | As You Like It         |
 | 1601       | Twelfth Night          |
 | 1594       | Comedy of Errors       |
@@ -1440,23 +1481,26 @@ from dfs.`/Users/brumsby/drill/plays.csv`;
 | 1596       | The Merchant of Venice |
 | 1610       | The Tempest            |
 | 1599       | Hamlet                 |
-+------------+------------------------+
+|------------|------------------------|
 7 rows selected (0.113 seconds)
-</code></pre></div>
-<p>You cannot refer to the aliases in subsequent clauses of the query. Use the
-original <code>columns[n]</code> syntax, as shown in the WHERE clause for the following
-example:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">0: jdbc:drill:zk=local&gt; select columns[0] as `Year`, columns[1] as Play 
-from dfs.`/Users/brumsby/drill/plays.csv` where columns[0]&gt;1599;
+</code></pre></div></div>
 
-+------------+---------------+
+<p>You cannot refer to the aliases in subsequent clauses of the query. Use the
+original <code class="language-plaintext highlighter-rouge">columns[n]</code> syntax, as shown in the WHERE clause for the following
+example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select columns[0] as `Year`, columns[1] as Play 
+from dfs.`/Users/brumsby/drill/plays.csv` where columns[0]&gt;1599;
+ 
+|------------|---------------|
 |    Year    |      Play     |
-+------------+---------------+
+|------------|---------------|
 | 1601       | Twelfth Night |
 | 1610       | The Tempest   |
-+------------+---------------+
+|------------|---------------|
 2 rows selected (0.201 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Note that the restriction with the use of aliases applies to queries against
 all data sources.</p>
 
@@ -1466,107 +1510,127 @@ all data sources.</p>
 Google internet site. The data in the file consists of phrases from books that
 Google scans and generates for its <a href="http://storage.googleapis.com/books/ngrams/books/datasetsv2.html">Google Books Ngram
 Viewer</a>. You
-use the data to find the relative frequencies of Ngrams. </p>
+use the data to find the relative frequencies of Ngrams.</p>
 
 <h3 id="about-the-data">About the Data</h3>
 
 <p>Each line in the TSV file has the following structure:</p>
 
-<p><code>ngram TAB year TAB match_count TAB volume_count NEWLINE</code></p>
+<p><code class="language-plaintext highlighter-rouge">ngram TAB year TAB match_count TAB volume_count NEWLINE</code></p>
 
 <p>For example, lines 1722089 and 1722090 in the file contain this data:</p>
 
-<table ><tbody><tr><th >ngram</th><th >year</th><th colspan="1" >match_count</th><th >volume_count</th></tr><tr><td ><p class="p1">Zoological Journal of the Linnean</p></td><td >2007</td><td colspan="1" >284</td><td >101</td></tr><tr><td colspan="1" ><p class="p1">Zoological Journal of the Linnean</p></td><td colspan="1" >2008</td><td colspan="1" >257</td><td colspan="1" >87</td></tr></tbody></table> 
-  
+<table><tbody><tr><th>ngram</th><th>year</th><th colspan="1">match_count</th><th>volume_count</th></tr><tr><td><p class="p1">Zoological Journal of the Linnean</p></td><td>2007</td><td colspan="1">284</td><td>101</td></tr><tr><td colspan="1"><p class="p1">Zoological Journal of the Linnean</p></td><td colspan="1">2008</td><td colspan="1">257</td><td colspan="1">87</td></tr></tbody></table>
 
-<p>In 2007, &quot;Zoological Journal of the Linnean&quot; occurred 284 times overall in 101
+<p>In 2007, “Zoological Journal of the Linnean” occurred 284 times overall in 101
 distinct books of the Google sample.</p>
 
 <h3 id="download-and-set-up-the-data">Download and Set Up the Data</h3>
 
-<p>After downloading the file, you use the <code>dfs</code> storage plugin, and then select
+<p>After downloading the file, you use the <code class="language-plaintext highlighter-rouge">dfs</code> storage plugin, and then select
 data from the file as you would a table. In the SELECT statement, enclose the
 path and name of the file in back ticks.</p>
 
 <ol>
-<li><p>Download the compressed Google Ngram data from this location:  </p>
+  <li>
+    <p>Download the compressed Google Ngram data from this location:</p>
 
-<p><a href="http://storage.googleapis.com/books/ngrams/books/googlebooks-eng-all-5gram-20120701-zo.gz">http://storage.googleapis.com/books/ngrams/books/googlebooks-eng-all-5gram-20120701-zo.gz</a></p></li>
-<li><p>Unzip the file.<br>
- A file named googlebooks-eng-all-5gram-20120701-zo appears.</p></li>
-<li><p>Change the file name to add a <code>.tsv</code> extension.<br>
-The Drill <code>dfs</code> storage plugin definition includes a TSV format that requires
-a file to have this extension. Later, you learn how to skip this step and query the GZ file directly.</p></li>
+    <p>http://storage.googleapis.com/books/ngrams/books/googlebooks-eng-all-5gram-20120701-zo.gz</p>
+  </li>
+  <li>
+    <p>Unzip the file.<br />
+A file named googlebooks-eng-all-5gram-20120701-zo appears.</p>
+  </li>
+  <li>
+    <p>Change the file name to add a <code class="language-plaintext highlighter-rouge">.tsv</code> extension.<br />
+The Drill <code class="language-plaintext highlighter-rouge">dfs</code> storage plugin definition includes a TSV format that requires
+a file to have this extension. Later, you learn how to skip this step and query the GZ file directly.</p>
+  </li>
 </ol>
 
 <h3 id="query-the-data">Query the Data</h3>
 
-<p>Get data about &quot;Zoological Journal of the Linnean&quot; that appears more than 250
+<p>Get data about “Zoological Journal of the Linnean” that appears more than 250
 times a year in the books that Google scans.</p>
 
 <ol>
-<li><p>Use the <code>dfs</code> storage plugin.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">  USE dfs;
-</code></pre></div></li>
-<li><p>Issue a SELECT statement to get the first three columns in the file.  </p>
+  <li>
+    <p>Use the <code class="language-plaintext highlighter-rouge">dfs</code> storage plugin.</p>
 
-<ul>
-<li>In the FROM clause of the example, substitute your path to the TSV file.<br></li>
-<li>Use aliases to replace the column headers, such as EXPR$0, with user-friendly column headers, Ngram, Publication Date, and Frequency.</li>
-<li>In the WHERE clause, enclose the string literal &quot;Zoological Journal of the Linnean&quot; in single quotation marks.<br></li>
-<li><p>Limit the output to 10 rows.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT COLUMNS[0] AS Ngram,
-       COLUMNS[1] AS Publication_Date,
-       COLUMNS[2] AS Frequency
-FROM `/Users/drilluser/Downloads/googlebooks-eng-all-5gram-20120701-zo.tsv`
-WHERE ((columns[0] = &#39;Zoological Journal of the Linnean&#39;)
-AND (columns[2] &gt; 250)) LIMIT 10;
-</code></pre></div></li>
-</ul>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> USE dfs;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Issue a SELECT statement to get the first three columns in the file.</p>
+    <ul>
+      <li>In the FROM clause of the example, substitute your path to the TSV file.</li>
+      <li>Use aliases to replace the column headers, such as EXPR$0, with user-friendly column headers, Ngram, Publication Date, and Frequency.</li>
+      <li>In the WHERE clause, enclose the string literal “Zoological Journal of the Linnean” in single quotation marks.</li>
+      <li>
+        <p>Limit the output to 10 rows.</p>
 
-<p>The output is:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> +------------------------------------+-------------------+------------+
- |               Ngram                | Publication_Date  | Frequency  |
- +------------------------------------+-------------------+------------+
- | Zoological Journal of the Linnean  | 1993              | 297        |
- | Zoological Journal of the Linnean  | 1997              | 255        |
- | Zoological Journal of the Linnean  | 2003              | 254        |
- | Zoological Journal of the Linnean  | 2007              | 284        |
- | Zoological Journal of the Linnean  | 2008              | 257        |
- +------------------------------------+-------------------+------------+
- 5 rows selected (1.175 seconds)
-</code></pre></div></li>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT COLUMNS[0] AS Ngram,
+        COLUMNS[1] AS Publication_Date,
+        COLUMNS[2] AS Frequency
+ FROM `/Users/drilluser/Downloads/googlebooks-eng-all-5gram-20120701-zo.tsv`
+ WHERE ((columns[0] = 'Zoological Journal of the Linnean')
+ AND (columns[2] &gt; 250)) LIMIT 10;
+</code></pre></div>        </div>
+      </li>
+    </ul>
+
+    <p>The output is:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|------------------------------------|-------------------|------------|
+|               Ngram                | Publication_Date  | Frequency  |
+|------------------------------------|-------------------|------------|
+| Zoological Journal of the Linnean  | 1993              | 297        |
+| Zoological Journal of the Linnean  | 1997              | 255        |
+| Zoological Journal of the Linnean  | 2003              | 254        |
+| Zoological Journal of the Linnean  | 2007              | 284        |
+| Zoological Journal of the Linnean  | 2008              | 257        |
+|------------------------------------|-------------------|------------|
+5 rows selected (1.175 seconds)
+</code></pre></div>    </div>
+  </li>
 </ol>
 
-<p>The Drill default storage plugins support common file formats. </p>
+<p>The Drill default storage plugins support common file formats.</p>
 
 <h2 id="querying-compressed-files">Querying Compressed Files</h2>
 
-<p>You can query compressed JSON and CSV files. You can specify a file extension in the <code>formats . . . extensions</code> property of the storage plugin configuration to include the gz extension in the file name, or you can rename files, for example, <code>proddata.json.gz</code> or <code>mydata.csv.gz</code>, as shown in the next example. To change the <code>formats . . . extensions</code> property, you can copy the <code>dfs</code> storage plugin configuration to create a custom configuration. Using the following property in a configuration, Drill can read JSON in gzipped filed named <code>somefile.gz</code>:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">    &quot;json&quot;: {
-      &quot;type&quot;: &quot;json&quot;,
-      &quot;extensions&quot;: [
-        &quot;gz&quot;
+<p>You can query compressed JSON and CSV files. You can specify a file extension in the <code class="language-plaintext highlighter-rouge">formats . . . extensions</code> property of the storage plugin configuration to include the gz extension in the file name, or you can rename files, for example, <code class="language-plaintext highlighter-rouge">proddata.json.gz</code> or <code class="language-plaintext highlighter-rouge">mydata.csv.gz</code>, as shown in the next example. To change the <code class="language-plaintext highlighter-rouge">formats . . . extensions</code> property, you can copy the <code class="language-plaintext highlighter-rouge">dfs</code> storage plugin configuration to create a custom configuration. Using the following property in a configuration, Drill can read JSON in gzipped filed named <code class="language-plaintext highlighter-rouge">somefile.gz</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    "json": {
+      "type": "json",
+      "extensions": [
+        "gz"
       ]
     },
-</code></pre></div>
+</code></pre></div></div>
+
 <h3 id="query-the-gz-file-directly">Query the GZ File Directly</h3>
 
-<p>This example covers how to query the GZ file containing the compressed TSV data. The GZ file name needs to be renamed to specify the type of delimited file, such as CSV or TSV. You add <code>.tsv</code> before the <code>.gz</code> extension in this example.</p>
+<p>This example covers how to query the GZ file containing the compressed TSV data. The GZ file name needs to be renamed to specify the type of delimited file, such as CSV or TSV. You add <code class="language-plaintext highlighter-rouge">.tsv</code> before the <code class="language-plaintext highlighter-rouge">.gz</code> extension in this example.</p>
 
 <ol>
-<li>Rename the GZ file <code>googlebooks-eng-all-5gram-20120701-zo.gz</code> to googlebooks-eng-all-5gram-20120701-zo.tsv.gz.</li>
-<li><p>Query the renamed GZ file directly to get data about &quot;Zoological Journal of the Linnean&quot; that appears more than 250 times a year in the books that Google scans. In the FROM clause, instead of using the full path to the file as you did in the last exercise, connect to the data using the storage plugin workspace name ngram.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"> SELECT COLUMNS[0], 
-        COLUMNS[1], 
-        COLUMNS[2] 
- FROM dfs.`/Users/drilluser/Downloads/googlebooks-eng-all-5gram-20120701-zo.tsv.gz` 
- WHERE ((columns[0] = &#39;Zoological Journal of the Linnean&#39;) 
- AND (columns[2] &gt; 250)) 
- LIMIT 10;
-</code></pre></div>
-<p>The 5 rows of output appear.  </p></li>
+  <li>Rename the GZ file <code class="language-plaintext highlighter-rouge">googlebooks-eng-all-5gram-20120701-zo.gz</code> to googlebooks-eng-all-5gram-20120701-zo.tsv.gz.</li>
+  <li>
+    <p>Query the renamed GZ file directly to get data about “Zoological Journal of the Linnean” that appears more than 250 times a year in the books that Google scans. In the FROM clause, instead of using the full path to the file as you did in the last exercise, connect to the data using the storage plugin workspace name ngram.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT COLUMNS[0], 
+       COLUMNS[1], 
+       COLUMNS[2] 
+FROM dfs.`/Users/drilluser/Downloads/googlebooks-eng-all-5gram-20120701-zo.tsv.gz` 
+WHERE ((columns[0] = 'Zoological Journal of the Linnean') 
+AND (columns[2] &gt; 250)) 
+LIMIT 10;
+</code></pre></div>    </div>
+
+    <p>The 5 rows of output appear.</p>
+  </li>
 </ol>
+
 
     
       
@@ -1584,7 +1648,7 @@ AND (columns[2] &gt; 250)) LIMIT 10;
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

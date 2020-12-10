@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,128 +1369,131 @@
 
     </div>
 
-     Jan 28, 2020
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>The following table provides a list of the SQL commands that Drill supports,
-with their descriptions and example syntax:  </p>
+with their descriptions and example syntax:</p>
 
-<table><thead>
-<tr>
-<th>Command</th>
-<th>Description</th>
-<th>Syntax</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><a href="/docs/set">ALTER SESSION SET</a></td>
-<td>The SET command replaces the ALTER SESSION SET command in Drill version 1.3 and later. ALTER SESSION is now just an alias for the SET command. See <a href="/docs/set">SET</a>.</td>
-<td>[ALTER SESSION] SET `option_name` = value;</td>
-</tr>
-<tr>
-<td><a href="/docs/analyze-table-refresh-metadata">ANALYZE TABLE REFRESH METADATA</a></td>
-<td>Computes and stores the table schema and table statistics to the Drill Metastore.</td>
-<td>ANALYZE TABLE [table_name &#124; table({table function name}(parameters))] [COLUMNS {(col1, col2, ...) &#124; NONE}] REFRESH METADATA [&#39;level&#39; LEVEL] [{COMPUTE &#124; ESTIMATE} &#124; STATISTICS [(column1, column2, ...)] [ SAMPLE number PERCENT ]]</td>
-</tr>
-<tr>
-<td><a href="/docs/analyze-table-compute-statistics">ANALYZE TABLE COMPUTE STATISTICS</a></td>
-<td>Computes statistics on Parquet data stored in tables and writes it to a JSON file in the <code>.stats.drill</code> directory.</td>
-<td>ANALYZE TABLE [workspace.]table_name COMPUTE STATISTICS [(column1, column2,...)] [SAMPLE number PERCENT]</td>
-</tr>
-<tr>
-<td><a href="/docs/alter-system">ALTER SYSTEM SET</a></td>
-<td>Changes a system setting. The new setting persists across all sessions. For a list of Drill options and their descriptions, see [Planning and Execution Options].</td>
-<td>ALTER SYSTEM SET `option_name` =  value;</td>
-</tr>
-<tr>
-<td><a href="/docs/alter-system">ALTER SYSTEM RESET</a></td>
-<td>Changes a system setting back to its default system setting. For a list of Drill options and their descriptions, see [Planning and Execution Options].</td>
-<td>ALTER SYSTEM RESET `option_name`;</td>
-</tr>
-<tr>
-<td><a href="/docs/alter-system">ALTER SYSTEM RESET ALL</a></td>
-<td>Changes all system settings back to their default system values. For a list of Drill options and their descriptions, see [Planning and Execution Options].</td>
-<td>ALTER SYSTEM RESET ALL;</td>
-</tr>
-<tr>
-<td><a href="/docs/create-table-as-ctas/">CREATE TABLE AS(CTAS)</a></td>
-<td>Creates a new table and populates the new table with rows returned from a SELECT query. Use the CREATE TABLE AS (CTAS) statement in place of INSERT INTO.</td>
-<td>CREATE TABLE name AS query;</td>
-</tr>
-<tr>
-<td><a href="/docs/create-temp-table-as-cttas/">CREATE TEMPORARY TABLE AS(CTTAS)</a></td>
-<td>Stores the results of a query in a temporary table.</td>
-<td>CREATE TEMPORARY TABLE name AS query;</td>
-</tr>
-<tr>
-<td><a href="/docs/create-view">CREATE VIEW</a></td>
-<td>Creates a virtual structure for the result set of a stored query.-</td>
-<td>CREATE [OR REPLACE] VIEW [workspace.]view_name [ (column_name [, ...]) ] AS query;</td>
-</tr>
-<tr>
-<td><a href="/docs/describe">DESCRIBE </a></td>
-<td>Returns information about columns in a table or view.</td>
-<td>DESCRIBE [workspace.]table_name</td>
-</tr>
-<tr>
-<td><a href="/docs/drop-view">DROP VIEW</a></td>
-<td>Removes a view.</td>
-<td>DROP VIEW [workspace.]view_name ;</td>
-</tr>
-<tr>
-<td><a href="/docs/explain">EXPLAIN PLAN FOR</a></td>
-<td>Returns the physical plan for a particular query.</td>
-<td>EXPLAIN PLAN FOR query;</td>
-</tr>
-<tr>
-<td><a href="/docs/explain">EXPLAIN PLAN WITHOUT IMPLEMENTATION FOR</a></td>
-<td>Returns the logical plan for a particular query.</td>
-<td>EXPLAIN PLAN WITHOUT IMPLEMENTATION FOR query;</td>
-</tr>
-<tr>
-<td><a href="/docs/reset">RESET</a></td>
-<td>Changes a session setting back to its default system setting. For a list of Drill options and their descriptions, see [Planning and Execution Options].</td>
-<td>[ALTER SESSION] RESET `option_name`;</td>
-</tr>
-<tr>
-<td><a href="/docs/select">SELECT</a></td>
-<td>Retrieves data from tables and files.</td>
-<td>[WITH subquery]SELECT column_list FROM table_name[WHERE clause] [GROUP BY clause][HAVING clause][ORDER BY clause];</td>
-</tr>
-<tr>
-<td><a href="/docs/set">SET</a></td>
-<td>Changes a system setting for the duration of a session. A session ends when you quit the Drill shell. For a list of Drill options and their descriptions, see [Planning and Execution Options].</td>
-<td>[ALTER SESSION] SET `option_name` = value;</td>
-</tr>
-<tr>
-<td><a href="/docs/show-databases-and-show-schemas">SHOW DATABASES</a></td>
-<td>Returns a list of available schemas. Equivalent to SHOW SCHEMAS.</td>
-<td>SHOW DATABASES;</td>
-</tr>
-<tr>
-<td><a href="/docs/show-files">SHOW FILES</a></td>
-<td>Returns a list of files in a file system schema.</td>
-<td>SHOW FILES IN&#124;FROM filesystem.`schema_name`;</td>
-</tr>
-<tr>
-<td><a href="/docs/show-databases-and-show-schemas">SHOW SCHEMAS</a></td>
-<td>Returns a list of available schemas. Equivalent to SHOW DATABASES.</td>
-<td>SHOW SCHEMAS;</td>
-</tr>
-<tr>
-<td><a href="/docs/show-tables">SHOW TABLES</a></td>
-<td>Returns a list of tables and views.</td>
-<td>SHOW TABLES;</td>
-</tr>
-<tr>
-<td><a href="/docs/use">USE</a></td>
-<td>Change to a particular schema. When you opt to use a particular schema, Drill issues queries on that schema only.</td>
-<td>USE schema_name;</td>
-</tr>
-</tbody></table>
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+      <th>Syntax</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="/docs/set">ALTER SESSION SET</a></td>
+      <td>The SET command replaces the ALTER SESSION SET command in Drill version 1.3 and later. ALTER SESSION is now just an alias for the SET command. See <a href="/docs/set">SET</a>.</td>
+      <td>[ALTER SESSION] SET `option_name` = value;</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/analyze-table-refresh-metadata">ANALYZE TABLE REFRESH METADATA</a></td>
+      <td>Computes and stores the table schema and table statistics to the Drill Metastore.</td>
+      <td>ANALYZE TABLE [table_name | table({table function name}(parameters))] [COLUMNS {(col1, col2, …) | NONE}] REFRESH METADATA [‘level’ LEVEL] [{COMPUTE | ESTIMATE} | STATISTICS [(column1, column2, …)] [ SAMPLE number PERCENT ]]</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/analyze-table-compute-statistics">ANALYZE TABLE COMPUTE STATISTICS</a></td>
+      <td>Computes statistics on Parquet data stored in tables and writes it to a JSON file in the <code class="language-plaintext highlighter-rouge">.stats.drill</code> directory.</td>
+      <td>ANALYZE TABLE [workspace.]table_name COMPUTE STATISTICS [(column1, column2,…)] [SAMPLE number PERCENT]</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/alter-system">ALTER SYSTEM SET</a></td>
+      <td>Changes a system setting. The new setting persists across all sessions. For a list of Drill options and their descriptions, see <a href="/docs/planning-and-execution-options/">Planning and Execution Options</a>.</td>
+      <td>ALTER SYSTEM SET `option_name` =  value;</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/alter-system">ALTER SYSTEM RESET</a></td>
+      <td>Changes a system setting back to its default system setting. For a list of Drill options and their descriptions, see <a href="/docs/planning-and-execution-options/">Planning and Execution Options</a>.</td>
+      <td>ALTER SYSTEM RESET `option_name`;</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/alter-system">ALTER SYSTEM RESET ALL</a></td>
+      <td>Changes all system settings back to their default system values. For a list of Drill options and their descriptions, see <a href="/docs/planning-and-execution-options/">Planning and Execution Options</a>.</td>
+      <td>ALTER SYSTEM RESET ALL;</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/create-table-as-ctas/">CREATE TABLE AS(CTAS)</a></td>
+      <td>Creates a new table and populates the new table with rows returned from a SELECT query. Use the CREATE TABLE AS (CTAS) statement in place of INSERT INTO.</td>
+      <td>CREATE TABLE name AS query;</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/create-temp-table-as-cttas/">CREATE TEMPORARY TABLE AS(CTTAS)</a></td>
+      <td>Stores the results of a query in a temporary table.</td>
+      <td>CREATE TEMPORARY TABLE name AS query;</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/create-view">CREATE VIEW</a></td>
+      <td>Creates a virtual structure for the result set of a stored query.-</td>
+      <td>CREATE [OR REPLACE] VIEW [workspace.]view_name [ (column_name [, …]) ] AS query;</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/describe">DESCRIBE </a></td>
+      <td>Returns information about columns in a table or view.</td>
+      <td>DESCRIBE [workspace.]table_name</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/drop-view">DROP VIEW</a></td>
+      <td>Removes a view.</td>
+      <td>DROP VIEW [workspace.]view_name ;</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/explain">EXPLAIN PLAN FOR</a></td>
+      <td>Returns the physical plan for a particular query.</td>
+      <td>EXPLAIN PLAN FOR query;</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/explain">EXPLAIN PLAN WITHOUT IMPLEMENTATION FOR</a></td>
+      <td>Returns the logical plan for a particular query.</td>
+      <td>EXPLAIN PLAN WITHOUT IMPLEMENTATION FOR query;</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/reset">RESET</a></td>
+      <td>Changes a session setting back to its default system setting. For a list of Drill options and their descriptions, see <a href="/docs/planning-and-execution-options/">Planning and Execution Options</a>.</td>
+      <td>[ALTER SESSION] RESET `option_name`;</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/select">SELECT</a></td>
+      <td>Retrieves data from tables and files.</td>
+      <td>[WITH subquery]SELECT column_list FROM table_name[WHERE clause] [GROUP BY clause][HAVING clause][ORDER BY clause];</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/set">SET</a></td>
+      <td>Changes a system setting for the duration of a session. A session ends when you quit the Drill shell. For a list of Drill options and their descriptions, see <a href="/docs/planning-and-execution-options/">Planning and Execution Options</a>.</td>
+      <td>[ALTER SESSION] SET `option_name` = value;</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/show-databases-and-show-schemas">SHOW DATABASES</a></td>
+      <td>Returns a list of available schemas. Equivalent to SHOW SCHEMAS.</td>
+      <td>SHOW DATABASES;</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/show-files">SHOW FILES</a></td>
+      <td>Returns a list of files in a file system schema.</td>
+      <td>SHOW FILES IN|FROM filesystem.`schema_name`;</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/show-databases-and-show-schemas">SHOW SCHEMAS</a></td>
+      <td>Returns a list of available schemas. Equivalent to SHOW DATABASES.</td>
+      <td>SHOW SCHEMAS;</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/show-tables">SHOW TABLES</a></td>
+      <td>Returns a list of tables and views.</td>
+      <td>SHOW TABLES;</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/use">USE</a></td>
+      <td>Change to a particular schema. When you opt to use a particular schema, Drill issues queries on that schema only.</td>
+      <td>USE schema_name;</td>
+    </tr>
+  </tbody>
+</table>
 
     
       
@@ -1476,7 +1511,7 @@ with their descriptions and example syntax:  </p>
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

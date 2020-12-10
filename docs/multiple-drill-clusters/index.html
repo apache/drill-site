@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1335,34 +1367,36 @@
 
     </div>
 
-     Nov 2, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
-        <p>Drill-on-YARN allows you to easily define multiple Drill clusters on a single YARN cluster. Each Drill cluster is a collection of Drillbits that work as an independent unit. For example, you might define one test cluster of a few machines on the same physical cluster that runs larger clusters for, say, Development and Marketing.  </p>
+        <p>Drill-on-YARN allows you to easily define multiple Drill clusters on a single YARN cluster. Each Drill cluster is a collection of Drillbits that work as an independent unit. For example, you might define one test cluster of a few machines on the same physical cluster that runs larger clusters for, say, Development and Marketing.</p>
 
 <p>Drill clusters coordinate using ZooKeeper, so you must assign each cluster a distinct ZooKeeper
 entry. YARN may launch Drillbits from different clusters on the same physical node, so each
-Drill cluster must use a distinct set of ports. Since each cluster requires its own setup, you must create a separate site directory for each. The instructions below explain the required setup.  </p>
+Drill cluster must use a distinct set of ports. Since each cluster requires its own setup, you must create a separate site directory for each. The instructions below explain the required setup.</p>
 
 <h2 id="create-a-new-site-directory">Create a New Site Directory</h2>
-
 <p>Create a new site directory for your new cluster. Let’s say that your new cluster has the name
 “second”. Using the same structure as before, create a new site directory under your master
-directory:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   export SECOND_SITE=$MASTER_DIR/second
+directory:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   export SECOND_SITE=$MASTER_DIR/second
    mkdir $SECOND_SITE  
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Copy files into this new site directory as you did to create the first one. You can copy and modify an existing set of files, or create the site from scratch.</p>
 
-<p>At a minimum, you must set the following configuration options in drill-override.conf:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   drill.exec: {
-           cluster-id: &quot;drillbits&quot;,
+<p>At a minimum, you must set the following configuration options in drill-override.conf:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   drill.exec: {
+           cluster-id: "drillbits",
            zk: {
-              root: &quot;second&quot;
-              connect: &quot;zkhost: 2181&quot;
+              root: "second"
+              connect: "zkhost: 2181"
            }
           rpc {
               user.server.port: 41010
@@ -1370,40 +1404,44 @@ directory:  </p>
           }
               http.port: 9047
    }  
-</code></pre></div>
+</code></pre></div></div>
+
 <p>You have two options for how your new cluster interacts with the existing cluster. The normal
 case is a shared-nothing scenario in which the two clusters are entirely independent at the
 configuration level. For this case, ensure that the zk.root name is distinct from any existing
 cluster.</p>
 
 <p>In the more advanced case, if both clusters share the same zk.root value, then they will
-share settings such as storage plugins. If the clusters share the same root, then they must have distinct cluster-id values.  </p>
+share settings such as storage plugins. If the clusters share the same root, then they must have distinct cluster-id values.</p>
 
 <p>In addition, the three ports must have values distinct from all other clusters. In the example
-above, we’ve added a 1 to the first digit of the default port numbers; you can choose any available ports.  </p>
+above, we’ve added a 1 to the first digit of the default port numbers; you can choose any available ports.</p>
 
 <h2 id="drill-on-yarn-configuration">Drill-on-YARN Configuration</h2>
-
 <p>Create the drill-on-yarn.conf file as described before. The following must be distinct
-for your cluster:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   drill.yarn: {
-          app-name: &quot;Second Cluster&quot;
+for your cluster:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   drill.yarn: {
+          app-name: "Second Cluster"
                  dfs: {
-                      app-dir: &quot;/user/drill2&quot;
+                      app-dir: "/user/drill2"
                  }
           http : {
                  port: 9048
             }
    }
-</code></pre></div>
-<p>That is, give your cluster a distinct name, a distinct upload directory in DFS, and a distinct port number.  </p>
+</code></pre></div></div>
+
+<p>That is, give your cluster a distinct name, a distinct upload directory in DFS, and a distinct port number.</p>
 
 <h2 id="start-the-cluster">Start the Cluster</h2>
+<p>Use the site directory for the second cluster to start the cluster:</p>
 
-<p>Use the site directory for the second cluster to start the cluster:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   $DRILL_HOME/bin/drill-on-yarn.sh site
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_HOME/bin/drill-on-yarn.sh site
    $SECOND_SITE start  
-</code></pre></div>
+</code></pre></div></div>
+
+
     
       
         <div class="doc-nav">
@@ -1420,7 +1458,7 @@ for your cluster:  </p>
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,9 +1369,9 @@
 
     </div>
 
-     Apr 10, 2019
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
@@ -1347,592 +1379,654 @@
 
 <p>This section covers the Drill <a href="/docs/data-type-conversion/#time-zone-limitation">time zone limitation</a> and defines the following date/time functions:</p>
 
-<table><thead>
-<tr>
-<th><strong>Function</strong></th>
-<th><strong>Return Type</strong></th>
-</tr>
-</thead><tbody>
-<tr>
-<td><a href="/docs/date-time-functions-and-arithmetic/#age">AGE(TIMESTAMP)</a></td>
-<td>INTERVALDAY or INTERVALYEAR</td>
-</tr>
-<tr>
-<td><a href="/docs/date-time-functions-and-arithmetic/#extract">EXTRACT(field from time_expression)</a></td>
-<td>DOUBLE</td>
-</tr>
-<tr>
-<td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">CURRENT_DATE</a></td>
-<td>DATE</td>
-</tr>
-<tr>
-<td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">CURRENT_TIME</a></td>
-<td>TIME</td>
-</tr>
-<tr>
-<td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">CURRENT_TIMESTAMP</a></td>
-<td>TIMESTAMP</td>
-</tr>
-<tr>
-<td><a href="/docs/date-time-functions-and-arithmetic/#date_add">DATE_ADD</a></td>
-<td>DATE, TIMESTAMP</td>
-</tr>
-<tr>
-<td><a href="/docs/date-time-functions-and-arithmetic/#date_diff">DATE_DIFF</a></td>
-<td>DATE, TIMESTAMP</td>
-</tr>
-<tr>
-<td><a href="/docs/date-time-functions-and-arithmetic/#date_part">DATE_PART</a></td>
-<td>DOUBLE</td>
-</tr>
-<tr>
-<td><a href="/docs/date-time-functions-and-arithmetic/#date_sub">DATE_SUB</a></td>
-<td>DATE, TIMESTAMP</td>
-</tr>
-<tr>
-<td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">LOCALTIME</a></td>
-<td>TIME</td>
-</tr>
-<tr>
-<td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">LOCALTIMESTAMP</a></td>
-<td>TIMESTAMP</td>
-</tr>
-<tr>
-<td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">NOW</a></td>
-<td>TIMESTAMP</td>
-</tr>
-<tr>
-<td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">TIMEOFDAY</a></td>
-<td>VARCHAR</td>
-</tr>
-<tr>
-<td><a href="/docs/date-time-functions-and-arithmetic/#unix_timestamp">UNIX_TIMESTAMP</a></td>
-<td>BIGINT</td>
-</tr>
-<tr>
-<td><a href="/docs/date-time-functions-and-arithmetic/#nearestdate">NEARESTDATE</a>**</td>
-<td>TIMESTAMP</td>
-</tr>
-<tr>
-<td><a href="/docs/date-time-functions-and-arithmetic/#timestampadd">TIMESTAMPADD</a>*</td>
-<td>Inferred based on unit of time</td>
-</tr>
-<tr>
-<td><a href="/docs/date-time-functions-and-arithmetic/#timestampdiff">TIMESTAMPDIFF</a>*</td>
-<td>Inferred based on unit of time</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
+<table>
+  <thead>
+    <tr>
+      <th><strong>Function</strong></th>
+      <th><strong>Return Type</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="/docs/date-time-functions-and-arithmetic/#age">AGE(TIMESTAMP)</a></td>
+      <td>INTERVALDAY or INTERVALYEAR</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/date-time-functions-and-arithmetic/#extract">EXTRACT(field from time_expression)</a></td>
+      <td>DOUBLE</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">CURRENT_DATE</a></td>
+      <td>DATE</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">CURRENT_TIME</a></td>
+      <td>TIME</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">CURRENT_TIMESTAMP</a></td>
+      <td>TIMESTAMP</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/date-time-functions-and-arithmetic/#date_add">DATE_ADD</a></td>
+      <td>DATE, TIMESTAMP</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/date-time-functions-and-arithmetic/#date_diff">DATE_DIFF</a></td>
+      <td>DATE, TIMESTAMP</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/date-time-functions-and-arithmetic/#date_part">DATE_PART</a></td>
+      <td>DOUBLE</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/date-time-functions-and-arithmetic/#date_sub">DATE_SUB</a></td>
+      <td>DATE, TIMESTAMP</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">LOCALTIME</a></td>
+      <td>TIME</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">LOCALTIMESTAMP</a></td>
+      <td>TIMESTAMP</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">NOW</a></td>
+      <td>TIMESTAMP</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">TIMEOFDAY</a></td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/date-time-functions-and-arithmetic/#unix_timestamp">UNIX_TIMESTAMP</a></td>
+      <td>BIGINT</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/date-time-functions-and-arithmetic/#nearestdate">NEARESTDATE</a>**</td>
+      <td>TIMESTAMP</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/date-time-functions-and-arithmetic/#timestampadd">TIMESTAMPADD</a>*</td>
+      <td>Inferred based on unit of time</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/date-time-functions-and-arithmetic/#timestampdiff">TIMESTAMPDIFF</a>*</td>
+      <td>Inferred based on unit of time</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
 
 <p>*Supported in Drill 1.15 and later.
 **Supported in Drill 1.16 and later.</p>
 
 <h2 id="age">AGE</h2>
-
 <p>Returns the interval between two timestamps or subtracts a timestamp from midnight of the current date.</p>
 
 <h3 id="age-syntax">AGE Syntax</h3>
 
-<p><code>AGE (timestamp[, timestamp])</code></p>
+<p><code class="language-plaintext highlighter-rouge">AGE (timestamp[, timestamp])</code></p>
 
 <p><em>timestamp</em> is the data and time formatted as shown in the following examples.</p>
 
 <h3 id="age-usage-notes">AGE Usage Notes</h3>
-
 <p>Cast string arguments to timestamp to include time data in the calculations of the interval.</p>
 
 <h3 id="age-examples">AGE Examples</h3>
 
 <p>Find the interval between midnight today, April 3, 2015, and June 13, 1957.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT AGE(&#39;1957-06-13&#39;) FROM (VALUES(1));
-+------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT AGE('1957-06-13') FROM (VALUES(1));
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | P703M23D   |
-+------------+
+|------------|
 1 row selected (0.064 seconds)
-</code></pre></div>
-<p>Find the interval between midnight today, May 21, 2015, and hire dates of employees 578 and 761 in the <a href="/docs/querying-json-files/"><code>employee.json</code></a> file installed with Drill. The file is installed with Drill and located in the Drill classpath.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT AGE(CAST(hire_date AS TIMESTAMP)) FROM cp.`employee.json` where employee_id IN( &#39;578&#39;,&#39;761&#39;);
-+------------------+
+</code></pre></div></div>
+
+<p>Find the interval between midnight today, May 21, 2015, and hire dates of employees 578 and 761 in the <a href="/docs/querying-json-files/"><code class="language-plaintext highlighter-rouge">employee.json</code></a> file installed with Drill. The file is installed with Drill and located in the Drill classpath.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT AGE(CAST(hire_date AS TIMESTAMP)) FROM cp.`employee.json` where employee_id IN( '578','761');
+|------------------|
 |      EXPR$0      |
-+------------------+
+|------------------|
 | P236MT25200S     |
 | P211M19DT25200S  |
-+------------------+
+|------------------|
 2 rows selected (0.121 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Find the interval between 11:10:10 PM on January 1, 2001 and 10:10:10 PM on January 1, 2001.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT AGE(CAST(&#39;2010-01-01 10:10:10&#39; AS TIMESTAMP), CAST(&#39;2001-01-01 11:10:10&#39; AS TIMESTAMP)) FROM (VALUES(1));
-+------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT AGE(CAST('2010-01-01 10:10:10' AS TIMESTAMP), CAST('2001-01-01 11:10:10' AS TIMESTAMP)) FROM (VALUES(1));
+|------------------|
 |      EXPR$0      |
-+------------------+
+|------------------|
 | P109M16DT82800S  |
-+------------------+
+|------------------|
 1 row selected (0.122 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>For information about how to read the interval data, see the <a href="/docs/date-time-and-timestamp/#intervalyear-and-intervalday">Interval section</a>.</p>
 
 <h2 id="date_add">DATE_ADD</h2>
-
 <p>Returns the sum of a date/time and a number of days/hours, or of a date/time and date/time interval.</p>
 
 <h3 id="date_add-syntax">DATE_ADD Syntax</h3>
-
 <ul>
-<li><code>DATE_ADD(keyword literal, integer)</code><br></li>
-<li><code>DATE_ADD(keyword literal, interval expr)</code><br></li>
-<li><code>DATE_ADD(column, integer)</code><br></li>
-<li><code>DATE_ADD(column, interval expr)</code><br></li>
+  <li><code class="language-plaintext highlighter-rouge">DATE_ADD(keyword literal, integer)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">DATE_ADD(keyword literal, interval expr)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">DATE_ADD(column, integer)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">DATE_ADD(column, interval expr)</code></li>
 </ul>
 
-<p><em>keyword</em> is the word date, time, or timestamp.<br>
-<em>literal</em> is a date, time, or timestamp literal.  For example, a date in yyyy-mm-dd format enclosed in single quotation marks.<br>
-<em>integer</em> is a number of days to add to the date/time.<br>
-<em>column</em> is date, time, or timestamp data in a data source column.<br>
-<em>interval</em> is the keyword interval.<br>
-<em>expr</em> is an interval expression, such as the name of a data source column containing interval data.  </p>
+<p><em>keyword</em> is the word date, time, or timestamp.<br />
+<em>literal</em> is a date, time, or timestamp literal.  For example, a date in yyyy-mm-dd format enclosed in single quotation marks.<br />
+<em>integer</em> is a number of days to add to the date/time.<br />
+<em>column</em> is date, time, or timestamp data in a data source column.<br />
+<em>interval</em> is the keyword interval.<br />
+<em>expr</em> is an interval expression, such as the name of a data source column containing interval data.</p>
 
 <h3 id="date_add-examples">DATE_ADD Examples</h3>
 
 <p>The following examples show how to use the syntax variations.</p>
 
-<p><strong><code>DATE_ADD(keyword literal, integer)</code> Syntax Example</strong></p>
+<p><strong><code class="language-plaintext highlighter-rouge">DATE_ADD(keyword literal, integer)</code> Syntax Example</strong></p>
 
-<p>Add two days to today&#39;s date May 15, 2015.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(date &#39;2015-05-15&#39;, 2) FROM (VALUES(1));
-+------------+
+<p>Add two days to today’s date May 15, 2015.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_ADD(date '2015-05-15', 2) FROM (VALUES(1));
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | 2015-05-17 |
-+------------+
+|------------|
 1 row selected (0.07 seconds)
-</code></pre></div>
-<p><strong><code>DATE_ADD(keyword literal, interval expr)</code> Syntax Example</strong></p>
+</code></pre></div></div>
 
-<p>Using the example data from the <a href="/docs/data-type-conversion/#casting-intervals">&quot;Casting Intervals&quot;</a> section, add intervals from the <code>intervals.json</code> file to a literal timestamp. Create an interval expression that casts the INTERVALDAY_col column, which contains P1D, P2D, and P3D, to a timestamp.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(timestamp &#39;2015-04-15 22:55:55&#39;, CAST(INTERVALDAY_col as interval second)) FROM dfs.`/Users/drilluser/apache-drill-1.0.0/intervals.json`;
-+------------------------+
+<p><strong><code class="language-plaintext highlighter-rouge">DATE_ADD(keyword literal, interval expr)</code> Syntax Example</strong></p>
+
+<p>Using the example data from the <a href="/docs/data-type-conversion/#casting-intervals">“Casting Intervals”</a> section, add intervals from the <code class="language-plaintext highlighter-rouge">intervals.json</code> file to a literal timestamp. Create an interval expression that casts the INTERVALDAY_col column, which contains P1D, P2D, and P3D, to a timestamp.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_ADD(timestamp '2015-04-15 22:55:55', CAST(INTERVALDAY_col as interval second)) FROM dfs.`/Users/drilluser/apache-drill-1.0.0/intervals.json`;
+|------------------------|
 |         EXPR$0         |
-+------------------------+
+|------------------------|
 | 2015-04-16 22:55:55.0  |
 | 2015-04-17 22:55:55.0  |
 | 2015-04-18 22:55:55.0  |
-+------------------------+
+|------------------------|
 3 rows selected (0.105 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>The query output is the sum of the timestamp and 1, 2, and 3 days corresponding to P1D, P2D, and P3D.</p>
 
 <p><strong>DATE_ADD(column, integer) Syntax Example</strong></p>
 
 <p>Add two days to the value in the birth_date column.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(CAST(birth_date AS date), 2) FROM cp.`employee.json` LIMIT 1;
-+-------------+
-|   EXPR$0    |
-+-------------+
-| 1961-08-28  |
-+-------------+
-1 row selected (0.209 seconds)
-</code></pre></div>
-<p><strong><code>DATE_ADD(column, interval expr)</code> Syntax Example</strong></p>
 
-<p>Add a 10 hour interval to the hire dates of employees listed in the <code>employee.json</code> file, which Drill includes in the installation.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_ADD(CAST(birth_date AS date), 2) FROM cp.`employee.json` LIMIT 1;
+|-------------|
+|   EXPR$0    |
+|-------------|
+| 1961-08-28  |
+|-------------|
+1 row selected (0.209 seconds)
+</code></pre></div></div>
+
+<p><strong><code class="language-plaintext highlighter-rouge">DATE_ADD(column, interval expr)</code> Syntax Example</strong></p>
+
+<p>Add a 10 hour interval to the hire dates of employees listed in the <code class="language-plaintext highlighter-rouge">employee.json</code> file, which Drill includes in the installation.</p>
 
 <ol>
-<li><p>Take a look at the employee data:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT * FROM cp.`employee.json` LIMIT 1;
-+--------------+---------------+-------------+------------+--------------+-----------------+-----------+----------------+-------------+------------------------+----------+----------------+------------------+-----------------+---------+--------------------+
-| employee_id  |   full_name   | first_name  | last_name  | position_id  | position_title  | store_id  | department_id  | birth_date  |       hire_date        |  salary  | supervisor_id  | education_level  | marital_status  | gender  |  management_role   |
-+--------------+---------------+-------------+------------+--------------+-----------------+-----------+----------------+-------------+------------------------+----------+----------------+------------------+-----------------+---------+--------------------+
-| 1            | Sheri Nowmer  | Sheri       | Nowmer     | 1            | President       | 0         | 1              | 1961-08-26  | 1994-12-01 00:00:00.0  | 80000.0  | 0              | Graduate Degree  | S               | F       | Senior Management  |
-+--------------+---------------+-------------+------------+--------------+-----------------+-----------+----------------+-------------+------------------------+----------+----------------+------------------+-----------------+---------+--------------------+
-1 row selected (0.137 seconds)
-</code></pre></div></li>
-<li><p>Look at the hire_dates for the employee 578 and 761 in <code>employee.json</code>.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT hire_date FROM cp.`employee.json` where employee_id IN( &#39;578&#39;,&#39;761&#39;);
-+------------------------+
-|       hire_date        |
-+------------------------+
-| 1996-01-01 00:00:00.0  |
-| 1998-01-01 00:00:00.0  |
-+------------------------+
-2 rows selected (0.135 seconds)
-</code></pre></div></li>
-<li><p>Cast the hire_dates of the employees 578 and 761 to a timestamp, and add 10 hours to the hire_date timestamp. Because Drill reads data from JSON as VARCHAR, you need to cast the hire_date to the TIMESTAMP type. </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(CAST(hire_date AS TIMESTAMP), interval &#39;10&#39; hour) FROM cp.`employee.json` where employee_id IN( &#39;578&#39;,&#39;761&#39;);
-+------------------------+
-|         EXPR$0         |
-+------------------------+
-| 1996-01-01 10:00:00.0  |
-| 1998-01-01 10:00:00.0  |
-+------------------------+
-2 rows selected (0.172 seconds)
-</code></pre></div></li>
+  <li>
+    <p>Take a look at the employee data:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT * FROM cp.`employee.json` LIMIT 1;
+ |--------------|---------------|-------------|------------|--------------|-----------------|-----------|----------------|-------------|------------------------|----------|----------------|------------------|-----------------|---------|--------------------|
+ | employee_id  |   full_name   | first_name  | last_name  | position_id  | position_title  | store_id  | department_id  | birth_date  |       hire_date        |  salary  | supervisor_id  | education_level  | marital_status  | gender  |  management_role   |
+ |--------------|---------------|-------------|------------|--------------|-----------------|-----------|----------------|-------------|------------------------|----------|----------------|------------------|-----------------|---------|--------------------|
+ | 1            | Sheri Nowmer  | Sheri       | Nowmer     | 1            | President       | 0         | 1              | 1961-08-26  | 1994-12-01 00:00:00.0  | 80000.0  | 0              | Graduate Degree  | S               | F       | Senior Management  |
+ |--------------|---------------|-------------|------------|--------------|-----------------|-----------|----------------|-------------|------------------------|----------|----------------|------------------|-----------------|---------|--------------------|
+ 1 row selected (0.137 seconds)
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Look at the hire_dates for the employee 578 and 761 in <code class="language-plaintext highlighter-rouge">employee.json</code>.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT hire_date FROM cp.`employee.json` where employee_id IN( '578','761');
+ |------------------------|
+ |       hire_date        |
+ |------------------------|
+ | 1996-01-01 00:00:00.0  |
+ | 1998-01-01 00:00:00.0  |
+ |------------------------|
+ 2 rows selected (0.135 seconds)
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Cast the hire_dates of the employees 578 and 761 to a timestamp, and add 10 hours to the hire_date timestamp. Because Drill reads data from JSON as VARCHAR, you need to cast the hire_date to the TIMESTAMP type.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT DATE_ADD(CAST(hire_date AS TIMESTAMP), interval '10' hour) FROM cp.`employee.json` where employee_id IN( '578','761');
+ |------------------------|
+ |         EXPR$0         |
+ |------------------------|
+ | 1996-01-01 10:00:00.0  |
+ | 1998-01-01 10:00:00.0  |
+ |------------------------|
+ 2 rows selected (0.172 seconds)
+</code></pre></div>    </div>
+  </li>
 </ol>
 
-<p><strong><code>DATE_ADD(keyword literal, integer)</code> Syntax Example</strong></p>
+<p><strong><code class="language-plaintext highlighter-rouge">DATE_ADD(keyword literal, integer)</code> Syntax Example</strong></p>
 
 <p>Add 1 year and 1 month to the timestamp 2015-04-15 22:55:55.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(timestamp &#39;2015-04-15 22:55:55&#39;, interval &#39;1-2&#39; year to month) FROM (VALUES(1));
-+------------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_ADD(timestamp '2015-04-15 22:55:55', interval '1-2' year to month) FROM (VALUES(1));
+|------------------------|
 |         EXPR$0         |
-+------------------------+
+|------------------------|
 | 2016-06-15 22:55:55.0  |
-+------------------------+
+|------------------------|
 1 row selected (0.106 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Add 1 day 2 and 1/2 hours and 45.100 seconds to the time 22:55:55.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(time &#39;22:55:55&#39;, interval &#39;1 2:30:45.100&#39; day to second) FROM (VALUES(1));
-+---------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_ADD(time '22:55:55', interval '1 2:30:45.100' day to second) FROM (VALUES(1));
+|---------------|
 |    EXPR$0     |
-+---------------+
+|---------------|
 | 01:26:40.100  |
-+---------------+
+|---------------|
 1 row selected (0.106 seconds)  
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="date_diff">DATE_DIFF</h2>
+<p>Returns the difference of a date/time and a number of days/hours, or of a date/time and date/time interval.</p>
 
-<p>Returns the difference of a date/time and a number of days/hours, or of a date/time and date/time interval.  </p>
+<p><strong>NOTE:</strong> You can use the Hive <code class="language-plaintext highlighter-rouge">DATEDIFF()</code> function in Drill with string values, as shown:</p>
 
-<p><strong>NOTE:</strong> You can use the Hive <code>DATEDIFF()</code> function in Drill with string values, as shown:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATEDIFF(&#39;1996-03-01&#39;, &#39;1997-02-10 17:32:00.0&#39;), TIMEOFDAY() FROM (VALUES(1));
-+---------+----------------------------------------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATEDIFF('1996-03-01', '1997-02-10 17:32:00.0'), TIMEOFDAY() FROM (VALUES(1));
+|---------|----------------------------------------------|
 | EXPR$0  |                    EXPR$1                    |
-+---------+----------------------------------------------+
+|---------|----------------------------------------------|
 | -346    | 2019-01-15 14:54:21.455 America/Los_Angeles  |
-+---------+----------------------------------------------+    
-</code></pre></div>
-<p>However, for date and timestamp values, use the <code>DATE_DIFF</code> function and convert the interval returned to a number, as shown:    </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TO_NUMBER(DATE_DIFF(DATE &#39;1996-03-01&#39;, TIMESTAMP &#39;1997-02-10 17:32:00.0&#39;), &#39;#&#39;), TIMEOFDAY() FROM (VALUES(1));
-+---------+----------------------------------------------+
-| EXPR$0  |                    EXPR$1                    |
-+---------+----------------------------------------------+
-| -346.0  | 2019-01-15 14:52:15.247 America/Los_Angeles  |
-+---------+----------------------------------------------+
-</code></pre></div>
-<h3 id="date_diff-syntax">DATE_DIFF Syntax</h3>
+|---------|----------------------------------------------|    
+</code></pre></div></div>
 
+<p>However, for date and timestamp values, use the <code class="language-plaintext highlighter-rouge">DATE_DIFF</code> function and convert the interval returned to a number, as shown:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TO_NUMBER(DATE_DIFF(DATE '1996-03-01', TIMESTAMP '1997-02-10 17:32:00.0'), '#'), TIMEOFDAY() FROM (VALUES(1));
+|---------|----------------------------------------------|
+| EXPR$0  |                    EXPR$1                    |
+|---------|----------------------------------------------|
+| -346.0  | 2019-01-15 14:52:15.247 America/Los_Angeles  |
+|---------|----------------------------------------------|
+</code></pre></div></div>
+
+<h3 id="date_diff-syntax">DATE_DIFF Syntax</h3>
 <ul>
-<li><code>DATE_DIFF(keyword literal, integer)</code><br></li>
-<li><code>DATE_DIFF(keyword literal, interval expr)</code><br></li>
-<li><code>DATE_DIFF(column, integer)</code><br></li>
-<li><code>DATE_DIFF(column, interval expr)</code><br></li>
+  <li><code class="language-plaintext highlighter-rouge">DATE_DIFF(keyword literal, integer)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">DATE_DIFF(keyword literal, interval expr)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">DATE_DIFF(column, integer)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">DATE_DIFF(column, interval expr)</code></li>
 </ul>
 
-<p><em>keyword</em> is the word date, time, or timestamp.<br>
-<em>literal</em> is a date, time, or timestamp literal.  For example, a date in yyyy-mm-dd format enclosed in single quotation marks.<br>
-<em>integer</em> is a number of days to subtract from the date/time.<br>
-<em>column</em> is date, time, or timestamp data in a data source column.<br>
-<em>interval</em> is the keyword interval.<br>
-<em>expr</em> is an interval expression, such as the name of a data source column containing interval data.  </p>
+<p><em>keyword</em> is the word date, time, or timestamp.<br />
+<em>literal</em> is a date, time, or timestamp literal.  For example, a date in yyyy-mm-dd format enclosed in single quotation marks.<br />
+<em>integer</em> is a number of days to subtract from the date/time.<br />
+<em>column</em> is date, time, or timestamp data in a data source column.<br />
+<em>interval</em> is the keyword interval.<br />
+<em>expr</em> is an interval expression, such as the name of a data source column containing interval data.</p>
 
 <h3 id="date_diff-examples">DATE_DIFF Examples</h3>
+<p>The following examples show how to use the syntax variations.</p>
 
-<p>The following examples show how to use the syntax variations.  </p>
-
-<p><strong>DATE_DIFF(keyword literal, integer) Syntax Example</strong>  </p>
+<p><strong>DATE_DIFF(keyword literal, integer) Syntax Example</strong></p>
 
 <p>Subtract two days from the date May 15, 2015.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_DIFF(date &#39;2015-05-15&#39;, 2) FROM (VALUES(1));
-+-------------+
-|   EXPR$0    |
-+-------------+
-| 2015-05-13  |
-+-------------+  
-</code></pre></div>
-<p><strong>DATE_DIFF(keyword literal, interval expr) Syntax Example</strong>  </p>
 
-<p>Using the example data from the <a href="/docs/data-type-conversion/#casting-intervals">&quot;Casting Intervals&quot;</a>  section, subtract intervals from the <code>intervals.json</code> file from a literal timestamp. Create an interval expression that casts the INTERVALDAY_col column, which contains P1D, P2D, and P3D, to a timestamp.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_DIFF(timestamp &#39;2015-04-15 22:55:55&#39;, CAST(INTERVALDAY_col as interval second)) FROM dfs.`/home/bee/intervals.json`;  
-+------------------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_DIFF(date '2015-05-15', 2) FROM (VALUES(1));
+|-------------|
+|   EXPR$0    |
+|-------------|
+| 2015-05-13  |
+|-------------|  
+</code></pre></div></div>
+
+<p><strong>DATE_DIFF(keyword literal, interval expr) Syntax Example</strong></p>
+
+<p>Using the example data from the <a href="/docs/data-type-conversion/#casting-intervals">“Casting Intervals”</a>  section, subtract intervals from the <code class="language-plaintext highlighter-rouge">intervals.json</code> file from a literal timestamp. Create an interval expression that casts the INTERVALDAY_col column, which contains P1D, P2D, and P3D, to a timestamp.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_DIFF(timestamp '2015-04-15 22:55:55', CAST(INTERVALDAY_col as interval second)) FROM dfs.`/home/bee/intervals.json`;  
+|------------------------|
 |         EXPR$0         |
-+------------------------+
+|------------------------|
 | 2015-04-14 22:55:55.0  |
 | 2015-04-13 22:55:55.0  |
 | 2015-04-12 22:55:55.0  |
-+------------------------+  
-</code></pre></div>
-<p>The query output is the difference of the timestamp and 1, 2, and 3 days corresponding to P1D, P2D, and P3D.  </p>
+|------------------------|  
+</code></pre></div></div>
 
-<p><strong>DATE_DIFF(column, integer) Syntax Example</strong>  </p>
+<p>The query output is the difference of the timestamp and 1, 2, and 3 days corresponding to P1D, P2D, and P3D.</p>
 
-<p>Subtract two days from the value in the birth_date column.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_DIFF(CAST(birth_date AS date), 2) as a FROM cp.`employee.json` LIMIT 1;
-+-------------+
+<p><strong>DATE_DIFF(column, integer) Syntax Example</strong></p>
+
+<p>Subtract two days from the value in the birth_date column.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_DIFF(CAST(birth_date AS date), 2) as a FROM cp.`employee.json` LIMIT 1;
+|-------------|
 |      a      |
-+-------------+
+|-------------|
 | 1961-08-24  |
-+-------------+  
-</code></pre></div>
-<p><strong>DATE_DIFF(column, interval expr) Syntax Example</strong>  </p>
+|-------------|  
+</code></pre></div></div>
 
-<p>Subtract a 10 hour interval from the hire dates of employees listed in the <code>employee.json</code> file, which Drill includes in the installation.</p>
+<p><strong>DATE_DIFF(column, interval expr) Syntax Example</strong></p>
+
+<p>Subtract a 10 hour interval from the hire dates of employees listed in the <code class="language-plaintext highlighter-rouge">employee.json</code> file, which Drill includes in the installation.</p>
 
 <p>Cast the hire_dates of the employees 578 and 761 to a timestamp, and subtract 10 hours from the hire_date timestamp. Drill reads data from JSON as VARCHAR; therefore, cast the hire_date to the TIMESTAMP type.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_DIFF(CAST(hire_date AS TIMESTAMP), interval &#39;10&#39; hour) FROM cp.`employee.json` where employee_id IN( &#39;578&#39;,&#39;761&#39;);
-+------------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_DIFF(CAST(hire_date AS TIMESTAMP), interval '10' hour) FROM cp.`employee.json` where employee_id IN( '578','761');
+|------------------------|
 |         EXPR$0         |
-+------------------------+
+|------------------------|
 | 1995-12-31 14:00:00.0  |
 | 1997-12-31 14:00:00.0  |
-+------------------------+  
-</code></pre></div>
-<p><strong>DATE_DIFF(keyword literal, integer) Syntax Example</strong>  </p>
+|------------------------|  
+</code></pre></div></div>
 
-<p>Subtract 1 year and 2 months from the timestamp 2015-04-15 22:55:55.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_DIFF(timestamp &#39;2015-04-15 22:55:55&#39;, interval &#39;1-2&#39; year to month) FROM (VALUES(1));
-+------------------------+
+<p><strong>DATE_DIFF(keyword literal, integer) Syntax Example</strong></p>
+
+<p>Subtract 1 year and 2 months from the timestamp 2015-04-15 22:55:55.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_DIFF(timestamp '2015-04-15 22:55:55', interval '1-2' year to month) FROM (VALUES(1));
+|------------------------|
 |         EXPR$0         |
-+------------------------+
+|------------------------|
 | 2014-02-15 22:55:55.0  |
-+------------------------+  
-</code></pre></div>
-<p>Subtract 1 day 2 and 1/2 hours and 45.100 seconds from the time 22:55:55.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_DIFF(time &#39;22:55:55&#39;, interval &#39;1 2:30:45.100&#39; day to second) FROM (VALUES(1));
-+---------------+
-|    EXPR$0     |
-+---------------+
-| 20:25:09.900  |
-+---------------+    
-</code></pre></div>
-<h2 id="date_part">DATE_PART</h2>
+|------------------------|  
+</code></pre></div></div>
 
+<p>Subtract 1 day 2 and 1/2 hours and 45.100 seconds from the time 22:55:55.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_DIFF(time '22:55:55', interval '1 2:30:45.100' day to second) FROM (VALUES(1));
+|---------------|
+|    EXPR$0     |
+|---------------|
+| 20:25:09.900  |
+|---------------|    
+</code></pre></div></div>
+
+<h2 id="date_part">DATE_PART</h2>
 <p>Returns a field of a date, time, timestamp, or interval.</p>
 
 <h3 id="date_part-syntax">DATE_PART Syntax</h3>
 
-<p><code>date_part(keyword, expression)</code>  </p>
+<p><code class="language-plaintext highlighter-rouge">date_part(keyword, expression)</code></p>
 
-<p><em>keyword</em> is year, month, day, hour, minute, or second enclosed in single quotation marks.<br>
+<p><em>keyword</em> is year, month, day, hour, minute, or second enclosed in single quotation marks.<br />
 <em>expression</em> is date, time, timestamp, or interval literal enclosed in single quotation marks.</p>
 
 <h3 id="date_part-usage-notes">DATE_PART Usage Notes</h3>
-
 <p>Use Unix Epoch timestamp in milliseconds as the expression to get the field of a timestamp.</p>
 
 <h3 id="date_part-examples">DATE_PART Examples</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_PART(&#39;day&#39;, &#39;2015-04-02&#39;) FROM (VALUES(1));
-+------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_PART('day', '2015-04-02') FROM (VALUES(1));
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | 2          |
-+------------+
+|------------|
 1 row selected (0.098 seconds)
 
-SELECT DATE_PART(&#39;hour&#39;, &#39;23:14:30.076&#39;) FROM (VALUES(1));
-+------------+
+SELECT DATE_PART('hour', '23:14:30.076') FROM (VALUES(1));
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | 23         |
-+------------+
+|------------|
 1 row selected (0.088 seconds)
-</code></pre></div>
-<p>Return the day part of the one year, 2 months, 10 days interval.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_PART(&#39;day&#39;, &#39;1:2:10&#39;) FROM (VALUES(1));
-+------------+
-|   EXPR$0   |
-+------------+
-| 10         |
-+------------+
-1 row selected (0.069 seconds)
-</code></pre></div>
-<h2 id="date_sub">DATE_SUB</h2>
+</code></pre></div></div>
 
+<p>Return the day part of the one year, 2 months, 10 days interval.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_PART('day', '1:2:10') FROM (VALUES(1));
+|------------|
+|   EXPR$0   |
+|------------|
+| 10         |
+|------------|
+1 row selected (0.069 seconds)
+</code></pre></div></div>
+
+<h2 id="date_sub">DATE_SUB</h2>
 <p>Returns the difference between a date/time and a number of days/hours, or between a date/time and date/time interval.</p>
 
 <h3 id="date_sub-syntax">DATE_SUB Syntax</h3>
 
-<p><code>DATE_SUB(keyword literal, integer)</code><br>
-<code>DATE_SUB(keyword literal, interval expr)</code><br>
-<code>DATE_SUB(column, integer)</code><br>
-<code>DATE_SUB(column, interval expr)</code>  </p>
+<p><code class="language-plaintext highlighter-rouge">DATE_SUB(keyword literal, integer)</code><br />
+<code class="language-plaintext highlighter-rouge">DATE_SUB(keyword literal, interval expr)</code><br />
+<code class="language-plaintext highlighter-rouge">DATE_SUB(column, integer)</code><br />
+<code class="language-plaintext highlighter-rouge">DATE_SUB(column, interval expr)</code></p>
 
-<p><em>keyword</em> is the word date, time, or timestamp.<br>
-<em>literal</em> is a date, time, or timestamp literal. For example, a date in yyyy-mm-dd format enclosed in single quotation marks.<br>
-<em>integer</em> is a number of days to subtract from the date, time, or timestamp.<br>
-<em>column</em> is date, time, or timestamp data in the data source.<br>
-<em>interval</em> is the keyword interval.<br>
-<em>expr</em> is an interval expression, such as the name of a data source column containing interval data.  </p>
+<p><em>keyword</em> is the word date, time, or timestamp.<br />
+<em>literal</em> is a date, time, or timestamp literal. For example, a date in yyyy-mm-dd format enclosed in single quotation marks. <br />
+<em>integer</em> is a number of days to subtract from the date, time, or timestamp.<br />
+<em>column</em> is date, time, or timestamp data in the data source.<br />
+<em>interval</em> is the keyword interval.<br />
+<em>expr</em> is an interval expression, such as the name of a data source column containing interval data.</p>
 
 <h3 id="date_sub-examples">DATE_SUB Examples</h3>
-
 <p>The following examples show how to apply the syntax variations.</p>
 
-<p><strong><code>DATE_SUB(keyword literal, integer)</code> Syntax Example</strong></p>
+<p><strong><code class="language-plaintext highlighter-rouge">DATE_SUB(keyword literal, integer)</code> Syntax Example</strong></p>
 
-<p>Subtract two days from today&#39;s date May 15, 2015.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(date &#39;2015-05-15&#39;, 2) FROM (VALUES(1));
-+------------+
+<p>Subtract two days from today’s date May 15, 2015.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_SUB(date '2015-05-15', 2) FROM (VALUES(1));
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | 2015-05-13 |
-+------------+
+|------------|
 1 row selected (0.088 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Subtact two months from April 15, 2015.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(date &#39;2015-04-15&#39;, interval &#39;2&#39; month) FROM (VALUES(1));
-+------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_SUB(date '2015-04-15', interval '2' month) FROM (VALUES(1));
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | 2015-02-15 |
-+------------+
+|------------|
 1 row selected (0.088 seconds)
-</code></pre></div>
-<p><strong><code>DATE_SUB(keyword literal, interval expr)</code> Syntax Example</strong></p>
+</code></pre></div></div>
+
+<p><strong><code class="language-plaintext highlighter-rouge">DATE_SUB(keyword literal, interval expr)</code> Syntax Example</strong></p>
 
 <p>Subtract 10 hours from the timestamp 2015-04-15 22:55:55.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(timestamp &#39;2015-04-15 22:55:55&#39;, interval &#39;10&#39; hour) FROM (VALUES(1));
-+------------------------+
-|         EXPR$0         |
-+------------------------+
-| 2015-04-15 12:55:55.0  |
-+------------------------+
-1 row selected (0.108 seconds)
-</code></pre></div>
-<p>Subtract 10 hours from the time 22 hours, 55 minutes, 55 seconds.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(time &#39;22:55:55&#39;, interval &#39;10&#39; hour) FROM (VALUES(1));
-+------------+
-|   EXPR$0   |
-+------------+
-| 12:55:55   |
-+------------+
-1 row selected (0.079 seconds)
-</code></pre></div>
-<p>Subtract 1 year and 1 month from the timestamp 2015-04-15 22:55:55.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(timestamp &#39;2015-04-15 22:55:55&#39;, interval &#39;1-2&#39; year to month) FROM (VALUES(1));
-+------------------------+
-|         EXPR$0         |
-+------------------------+
-| 2014-02-15 22:55:55.0  |
-+------------------------+
-1 row selected (0.108 seconds)
-</code></pre></div>
-<p>Subtract 1 day, 2 and 1/2 hours, and 45.100 seconds from the time 22:55:55.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_ADD(time &#39;22:55:55&#39;, interval &#39;1 2:30:45.100&#39; day to second) FROM (VALUES(1));
-+---------------+
-|    EXPR$0     |
-+---------------+
-| 01:26:40.100  |
-+---------------+
-1 row selected (0.095 seconds)
-</code></pre></div>
-<p><strong><code>DATE_SUB(column, integer)</code> Syntax Example</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(CAST(birth_date AS date), 2) FROM cp.`employee.json` LIMIT 1;
-+-------------+
-|   EXPR$0    |
-+-------------+
-| 1961-08-24  |
-+-------------+
-1 row selected (0.158 seconds)
-</code></pre></div>
-<p><strong><code>DATE_SUB(column, interval expr)</code> Syntax Example</strong></p>
 
-<p>The <code>employee.json</code> file, which Drill includes in the installation, lists the hire dates of employees. Cast the hire_dates of the employees 578 and 761 to a timestamp, and add 10 hours to the hire_date timestamp. Because Drill reads data from JSON as VARCHAR, you need to cast the hire_date to the TIMESTAMP type. </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT DATE_SUB(CAST(hire_date AS TIMESTAMP), interval &#39;10&#39; hour) FROM cp.`employee.json` WHERE employee_id IN( &#39;578&#39;,&#39;761&#39;);
-+------------------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_SUB(timestamp '2015-04-15 22:55:55', interval '10' hour) FROM (VALUES(1));
+|------------------------|
 |         EXPR$0         |
-+------------------------+
+|------------------------|
+| 2015-04-15 12:55:55.0  |
+|------------------------|
+1 row selected (0.108 seconds)
+</code></pre></div></div>
+
+<p>Subtract 10 hours from the time 22 hours, 55 minutes, 55 seconds.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_SUB(time '22:55:55', interval '10' hour) FROM (VALUES(1));
+|------------|
+|   EXPR$0   |
+|------------|
+| 12:55:55   |
+|------------|
+1 row selected (0.079 seconds)
+</code></pre></div></div>
+
+<p>Subtract 1 year and 1 month from the timestamp 2015-04-15 22:55:55.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_SUB(timestamp '2015-04-15 22:55:55', interval '1-2' year to month) FROM (VALUES(1));
+|------------------------|
+|         EXPR$0         |
+|------------------------|
+| 2014-02-15 22:55:55.0  |
+|------------------------|
+1 row selected (0.108 seconds)
+</code></pre></div></div>
+
+<p>Subtract 1 day, 2 and 1/2 hours, and 45.100 seconds from the time 22:55:55.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_ADD(time '22:55:55', interval '1 2:30:45.100' day to second) FROM (VALUES(1));
+|---------------|
+|    EXPR$0     |
+|---------------|
+| 01:26:40.100  |
+|---------------|
+1 row selected (0.095 seconds)
+</code></pre></div></div>
+
+<p><strong><code class="language-plaintext highlighter-rouge">DATE_SUB(column, integer)</code> Syntax Example</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_SUB(CAST(birth_date AS date), 2) FROM cp.`employee.json` LIMIT 1;
+|-------------|
+|   EXPR$0    |
+|-------------|
+| 1961-08-24  |
+|-------------|
+1 row selected (0.158 seconds)
+</code></pre></div></div>
+
+<p><strong><code class="language-plaintext highlighter-rouge">DATE_SUB(column, interval expr)</code> Syntax Example</strong></p>
+
+<p>The <code class="language-plaintext highlighter-rouge">employee.json</code> file, which Drill includes in the installation, lists the hire dates of employees. Cast the hire_dates of the employees 578 and 761 to a timestamp, and add 10 hours to the hire_date timestamp. Because Drill reads data from JSON as VARCHAR, you need to cast the hire_date to the TIMESTAMP type.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT DATE_SUB(CAST(hire_date AS TIMESTAMP), interval '10' hour) FROM cp.`employee.json` WHERE employee_id IN( '578','761');
+|------------------------|
+|         EXPR$0         |
+|------------------------|
 | 1995-12-31 14:00:00.0  |
 | 1997-12-31 14:00:00.0  |
-+------------------------+
+|------------------------|
 2 rows selected (0.161 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="other-date-and-time-functions">Other Date and Time Functions</h2>
 
 <p>The following examples show how to use these functions:</p>
 
 <ul>
-<li>CURRENT_DATE</li>
-<li>CURRENT_TIME</li>
-<li>CURRENT_TIMESTAMP</li>
-<li>LOCALTIME</li>
-<li>LOCALTIMESTAMP</li>
-<li>NOW</li>
-<li><p>TIMEOFDAY</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT CURRENT_DATE FROM (VALUES(1));
-+--------------+
-| current_date |
-+--------------+
-| 2015-04-02   |
-+--------------+
-1 row selected (0.077 seconds)
+  <li>CURRENT_DATE</li>
+  <li>CURRENT_TIME</li>
+  <li>CURRENT_TIMESTAMP</li>
+  <li>LOCALTIME</li>
+  <li>LOCALTIMESTAMP</li>
+  <li>NOW</li>
+  <li>
+    <p>TIMEOFDAY</p>
 
-SELECT CURRENT_TIME FROM (VALUES(1));
-+--------------+
-| current_time |
-+--------------+
-| 14:32:04.751 |
-+--------------+
-1 row selected (0.073 seconds)
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SELECT CURRENT_DATE FROM (VALUES(1));
+  |--------------|
+  | current_date |
+  |--------------|
+  | 2015-04-02   |
+  |--------------|
+  1 row selected (0.077 seconds)
 
-SELECT CURRENT_TIMESTAMP FROM (VALUES(1));
-+--------------------------+
-|    CURRENT_TIMESTAMP     |
-+--------------------------+
-| 2015-05-17 22:45:55.848  |
-+--------------------------+
-1 row selected (0.109 seconds)
+  SELECT CURRENT_TIME FROM (VALUES(1));
+  |--------------|
+  | current_time |
+  |--------------|
+  | 14:32:04.751 |
+  |--------------|
+  1 row selected (0.073 seconds)
 
-SELECT LOCALTIME FROM (VALUES(1));
+  SELECT CURRENT_TIMESTAMP FROM (VALUES(1));
+  |--------------------------|
+  |    CURRENT_TIMESTAMP     |
+  |--------------------------|
+  | 2015-05-17 22:45:55.848  |
+  |--------------------------|
+  1 row selected (0.109 seconds)
 
-+---------------+
-|   LOCALTIME   |
-+---------------+
-| 22:46:19.656  |
-+---------------+
-1 row selected (0.105 seconds)
+  SELECT LOCALTIME FROM (VALUES(1));
 
-SELECT LOCALTIMESTAMP FROM (VALUES(1));
+  |---------------|
+  |   LOCALTIME   |
+  |---------------|
+  | 22:46:19.656  |
+  |---------------|
+  1 row selected (0.105 seconds)
 
-+--------------------------+
-|      LOCALTIMESTAMP      |
-+--------------------------+
-| 2015-05-17 22:46:47.944  |
-+--------------------------+
-1 row selected (0.08 seconds)
+  SELECT LOCALTIMESTAMP FROM (VALUES(1));
 
-SELECT NOW() FROM (VALUES(1));
-+--------------------------+
-|          EXPR$0          |
-+--------------------------+
-| 2015-05-17 22:47:11.008  |
-+--------------------------+
-1 row selected (0.085 seconds)
-</code></pre></div></li>
+  |--------------------------|
+  |      LOCALTIMESTAMP      |
+  |--------------------------|
+  | 2015-05-17 22:46:47.944  |
+  |--------------------------|
+  1 row selected (0.08 seconds)
+
+  SELECT NOW() FROM (VALUES(1));
+  |--------------------------|
+  |          EXPR$0          |
+  |--------------------------|
+  | 2015-05-17 22:47:11.008  |
+  |--------------------------|
+  1 row selected (0.085 seconds)
+</code></pre></div>    </div>
+  </li>
 </ul>
 
 <p>If you set up Drill for <a href="/docs/data-type-conversion/#time-zone-limitation">UTC time</a>, TIMEOFDAY returns the result for the UTC time zone.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMEOFDAY() FROM (VALUES(1));
-+-----------------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TIMEOFDAY() FROM (VALUES(1));
+|-----------------------------|
 |           EXPR$0            |
-+-----------------------------+
+|-----------------------------|
 | 2015-04-02 22:05:02.424 UTC |
-+-----------------------------+
+|-----------------------------|
 1 row selected (1.191 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>If you did not set up Drill for UTC time, TIMEOFDAY returns the local date and time with time zone information.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMEOFDAY() FROM (VALUES(1));
-+----------------------------------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TIMEOFDAY() FROM (VALUES(1));
+|----------------------------------------------|
 |                    EXPR$0                    |
-+----------------------------------------------+
+|----------------------------------------------|
 | 2015-05-17 22:47:38.012 America/Los_Angeles  |
-+----------------------------------------------+
+|----------------------------------------------|
 1 row selected (0.08 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="extract">EXTRACT</h2>
 
 <p>Returns a component of a timestamp, time, date, or interval.</p>
 
 <h3 id="extract-syntax">EXTRACT Syntax</h3>
 
-<p><code>EXTRACT (extract_expression)</code>  </p>
+<p><code class="language-plaintext highlighter-rouge">EXTRACT (extract_expression)</code></p>
 
 <p><em>extract_expression</em> is:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">component FROM (timestamp | time | date | interval)
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>component FROM (timestamp | time | date | interval)
+</code></pre></div></div>
+
 <p><em>component</em> is one of the following time units: year, month, day, hour, minute, second.</p>
 
 <h3 id="extract-usage-notes">EXTRACT Usage Notes</h3>
@@ -1942,290 +2036,320 @@ SELECT NOW() FROM (VALUES(1));
 <h3 id="extract-examples">EXTRACT Examples</h3>
 
 <p>On the third day of the month, run the following function:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(day FROM NOW()), EXTRACT(day FROM CURRENT_DATE) FROM (VALUES(1));
 
-+------------+------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT EXTRACT(day FROM NOW()), EXTRACT(day FROM CURRENT_DATE) FROM (VALUES(1));
+
+|------------|------------|
 |   EXPR$0   |   EXPR$1   |
-+------------+------------+
+|------------|------------|
 | 3          | 3          |
-+------------+------------+
+|------------|------------|
 1 row selected (0.208 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>At 8:00 am, extract the hour from the value of CURRENT_DATE.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(hour FROM CURRENT_DATE) FROM (VALUES(1));
-+------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT EXTRACT(hour FROM CURRENT_DATE) FROM (VALUES(1));
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | 8          |
-+------------+
-</code></pre></div>
+|------------|
+</code></pre></div></div>
+
 <p>What is the hour component of this time: 17:12:28.5?</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(hour FROM TIME &#39;17:12:28.5&#39;) FROM (VALUES(1));
-+------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT EXTRACT(hour FROM TIME '17:12:28.5') FROM (VALUES(1));
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | 17         |
-+------------+
+|------------|
 1 row selected (0.056 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>What is the seconds component of this timestamp: 2001-02-16 20:38:40</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(SECOND FROM TIMESTAMP &#39;2001-02-16 20:38:40&#39;) FROM (VALUES(1));
-+------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT EXTRACT(SECOND FROM TIMESTAMP '2001-02-16 20:38:40') FROM (VALUES(1));
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | 40.0       |
-+------------+
+|------------|
 1 row selected (0.062 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="date-time-and-interval-arithmetic-functions">Date, Time, and Interval Arithmetic Functions</h2>
 
 <p>Is the day returned from the NOW function the same as the day returned from the CURRENT_DATE function?</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(day FROM NOW()) = EXTRACT(day FROM CURRENT_DATE) FROM (VALUES(1));
-+------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT EXTRACT(day FROM NOW()) = EXTRACT(day FROM CURRENT_DATE) FROM (VALUES(1));
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | true       |
-+------------+
+|------------|
 1 row selected (0.092 seconds)
-</code></pre></div>
-<p>Every 23 hours, a 4 hour task started. What time does the task end? </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIME &#39;04:00:00&#39; + interval &#39;23:00:00&#39; hour to second FROM (VALUES(1));
-+------------+
+</code></pre></div></div>
+
+<p>Every 23 hours, a 4 hour task started. What time does the task end?</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TIME '04:00:00' + interval '23:00:00' hour to second FROM (VALUES(1));
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | 03:00:00   |
-+------------+
+|------------|
 1 row selected (0.097 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Is the time 2:00 PM?</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT EXTRACT(hour FROM CURRENT_DATE) = 2 FROM (VALUES(1));
-+------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT EXTRACT(hour FROM CURRENT_DATE) = 2 FROM (VALUES(1));
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | false      |
-+------------+
+|------------|
 1 row selected (0.033 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="unix_timestamp">UNIX_TIMESTAMP</h2>
 
 <p>Returns UNIX Epoch time, which is the number of seconds elapsed since January 1, 1970.</p>
 
 <h3 id="unix_timestamp-syntax">UNIX_TIMESTAMP Syntax</h3>
 
-<p><code>UNIX_TIMESTAMP()</code><br>
-<code>UNIX_TIMESTAMP(string date)</code><br>
-<code>UNIX_TIMESTAMP(string date, string pattern)</code>  </p>
+<p><code class="language-plaintext highlighter-rouge">UNIX_TIMESTAMP()</code><br />
+<code class="language-plaintext highlighter-rouge">UNIX_TIMESTAMP(string date)</code><br />
+<code class="language-plaintext highlighter-rouge">UNIX_TIMESTAMP(string date, string pattern)</code></p>
 
 <p>These functions perform the following operations, respectively:</p>
 
 <ul>
-<li>Gets current Unix timestamp in seconds if given no arguments.<br></li>
-<li>Converts the time string in format yyyy-MM-dd HH:mm:ss to a Unix timestamp in seconds using the default timezone and locale.<br></li>
-<li>Converts the time string with the given pattern to a Unix time stamp in seconds.<br></li>
+  <li>Gets current Unix timestamp in seconds if given no arguments.</li>
+  <li>Converts the time string in format yyyy-MM-dd HH:mm:ss to a Unix timestamp in seconds using the default timezone and locale.</li>
+  <li>Converts the time string with the given pattern to a Unix time stamp in seconds.</li>
 </ul>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT UNIX_TIMESTAMP() FROM (VALUES(1));
-+-------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT UNIX_TIMESTAMP() FROM (VALUES(1));
+|-------------|
 |   EXPR$0    |
-+-------------+
+|-------------|
 | 1435711031  |
-+-------------+
+|-------------|
 1 row selected (0.749 seconds)
 
-SELECT UNIX_TIMESTAMP(&#39;2009-03-20 11:15:55&#39;) FROM (VALUES(1));
-+-------------+
+SELECT UNIX_TIMESTAMP('2009-03-20 11:15:55') FROM (VALUES(1));
+|-------------|
 |   EXPR$0    |
-+-------------+
+|-------------|
 | 1237572955  |
-+-------------+
+|-------------|
 1 row selected (1.848 seconds)
 
-SELECT UNIX_TIMESTAMP(&#39;2009-03-20&#39;, &#39;yyyy-MM-dd&#39;) FROM (VALUES(1));
-+-------------+
+SELECT UNIX_TIMESTAMP('2009-03-20', 'yyyy-MM-dd') FROM (VALUES(1));
+|-------------|
 |   EXPR$0    |
-+-------------+
+|-------------|
 | 1237532400  |
-+-------------+
+|-------------|
 1 row selected (0.181 seconds)
 
-SELECT UNIX_TIMESTAMP(&#39;2015-05-29 08:18:53.0&#39;, &#39;yyyy-MM-dd HH:mm:ss.SSS&#39;) FROM (VALUES(1));
-+-------------+
+SELECT UNIX_TIMESTAMP('2015-05-29 08:18:53.0', 'yyyy-MM-dd HH:mm:ss.SSS') FROM (VALUES(1));
+|-------------|
 |   EXPR$0    |
-+-------------+
+|-------------|
 | 1432912733  |
-+-------------+
+|-------------|
 1 row selected (0.171 seconds)  
-</code></pre></div>
-<h2 id="nearestdate">NEARESTDATE</h2>
+</code></pre></div></div>
 
-<p>Quickly and easily aggregates timestamp data by various units of time.   </p>
+<h2 id="nearestdate">NEARESTDATE</h2>
+<p>Quickly and easily aggregates timestamp data by various units of time.</p>
 
 <p><strong>Note:</strong> Drill 1.16 and later supports the NEARESTDATE function.</p>
 
 <h3 id="nearestdate-syntax">NEARESTDATE Syntax</h3>
 
-<p>NEARESTDATE(<em>column</em>, &#39;<em>interval</em>&#39; )   </p>
+<p>NEARESTDATE(<em>column</em>, ‘<em>interval</em>’ )</p>
 
 <h3 id="nearestdate-usage-notes">NEARESTDATE Usage Notes</h3>
-
 <ul>
-<li>Use with COUNT and GROUP BY to aggregate timestamp data. </li>
-<li><em>column</em> is a data source column with timestamp values.<br></li>
-<li><em>interval</em> is any of the following units of time: 
-
-<ul>
-<li>YEAR</li>
-<li>QUARTER</li>
-<li>MONTH</li>
-<li>WEEK_SUNDAY</li>
-<li>WEEK_MONDAY</li>
-<li>DAY</li>
-<li>HOUR</li>
-<li>HALF_HOUR</li>
-<li>QUARTER_HOUR</li>
-<li>MINUTE</li>
-<li>30SECOND</li>
-<li>15SECOND</li>
-<li>SECOND<br></li>
-</ul></li>
+  <li>Use with COUNT and GROUP BY to aggregate timestamp data.</li>
+  <li><em>column</em> is a data source column with timestamp values.</li>
+  <li><em>interval</em> is any of the following units of time:
+    <ul>
+      <li>YEAR</li>
+      <li>QUARTER</li>
+      <li>MONTH</li>
+      <li>WEEK_SUNDAY</li>
+      <li>WEEK_MONDAY</li>
+      <li>DAY</li>
+      <li>HOUR</li>
+      <li>HALF_HOUR</li>
+      <li>QUARTER_HOUR</li>
+      <li>MINUTE</li>
+      <li>30SECOND</li>
+      <li>15SECOND</li>
+      <li>SECOND</li>
+    </ul>
+  </li>
 </ul>
 
 <h3 id="nearestdate-examples">NEARESTDATE Examples</h3>
 
 <p>The following example uses the NEARESTDATE function to aggregate hire dates by year:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT NEARESTDATE(hire_date, &#39;YEAR&#39; ) AS hireDate, COUNT(*) AS `count` FROM cp.`employee.json` GROUP BY NEARESTDATE(hire_date, &#39;YEAR&#39;);
-+-----------------------+-------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT NEARESTDATE(hire_date, 'YEAR' ) AS hireDate, COUNT(*) AS `count` FROM cp.`employee.json` GROUP BY NEARESTDATE(hire_date, 'YEAR');
+|-----------------------|-------|
 |       hireDate        | count |
-+-----------------------+-------+
+|-----------------------|-------|
 | 1994-01-01 00:00:00.0 | 23    |
 | 1998-01-01 00:00:00.0 | 539   |
 | 1996-01-01 00:00:00.0 | 503   |
 | 1995-01-01 00:00:00.0 | 12    |
 | 1997-01-01 00:00:00.0 | 74    |
 | 1993-01-01 00:00:00.0 | 4     |
-+-----------------------+-------+   
-</code></pre></div>
-<p>The following example applies the NEARESTDATE function to a timestamp value (2019-02-01 07:22:00) and returns the timestamp value for each time unit indicated:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT nearestDate( TO_TIMESTAMP(&#39;2019-02-01 07:22:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;YEAR&#39;) AS nearest_year, nearestDate( TO_TIMESTAMP(&#39;2019-02-01 07:22:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;QUARTER&#39;) AS nearest_quarter, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:22:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;MONTH&#39;) AS nearest_month, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:22:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;DAY&#39;) AS nearest_day, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:22:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;WEEK_SUNDAY&#39;) AS nearest_week_sunday, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:22:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;WEEK_MONDAY&#39;) AS nearest_week_monday, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:22:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;HOUR&#39;) AS nearest_hour, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:42:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;HALF_HOUR&#39;) AS nearest_half_hour, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:48:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;QUARTER_HOUR&#39;) AS nearest_quarter_hour, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:22:00&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;MINUTE&#39;) AS nearest_minute, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:22:22&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;HALF_MINUTE&#39;) AS nearest_30second, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:22:22&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;QUARTER_MINUTE&#39;) AS nearest_15second, nearestDate( TO_TIMESTAMP(&#39;2019-02-15 07:22:31&#39;, &#39;yyyy-MM-dd HH:mm:ss&#39;), &#39;SECOND&#39;) AS nearest_second FROM (VALUES(1));
-+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+
+|-----------------------|-------|   
+</code></pre></div></div>
+
+<p>The following example applies the NEARESTDATE function to a timestamp value (2019-02-01 07:22:00) and returns the timestamp value for each time unit indicated:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT nearestDate( TO_TIMESTAMP('2019-02-01 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'YEAR') AS nearest_year, nearestDate( TO_TIMESTAMP('2019-02-01 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'QUARTER') AS nearest_quarter, nearestDate( TO_TIMESTAMP('2019-02-15 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'MONTH') AS nearest_month, nearestDate( TO_TIMESTAMP('2019-02-15 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'DAY') AS nearest_day, nearestDate( TO_TIMESTAMP('2019-02-15 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'WEEK_SUNDAY') AS nearest_week_sunday, nearestDate( TO_TIMESTAMP('2019-02-15 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'WEEK_MONDAY') AS nearest_week_monday, nearestDate( TO_TIMESTAMP('2019-02-15 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'HOUR') AS nearest_hour, nearestDate( TO_TIMESTAMP('2019-02-15 07:42:00', 'yyyy-MM-dd HH:mm:ss'), 'HALF_HOUR') AS nearest_half_hour, nearestDate( TO_TIMESTAMP('2019-02-15 07:48:00', 'yyyy-MM-dd HH:mm:ss'), 'QUARTER_HOUR') AS nearest_quarter_hour, nearestDate( TO_TIMESTAMP('2019-02-15 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'MINUTE') AS nearest_minute, nearestDate( TO_TIMESTAMP('2019-02-15 07:22:22', 'yyyy-MM-dd HH:mm:ss'), 'HALF_MINUTE') AS nearest_30second, nearestDate( TO_TIMESTAMP('2019-02-15 07:22:22', 'yyyy-MM-dd HH:mm:ss'), 'QUARTER_MINUTE') AS nearest_15second, nearestDate( TO_TIMESTAMP('2019-02-15 07:22:31', 'yyyy-MM-dd HH:mm:ss'), 'SECOND') AS nearest_second FROM (VALUES(1));
+|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|
 |     nearest_year      |    nearest_quarter    |     nearest_month     |      nearest_day      |  nearest_week_sunday  |  nearest_week_monday  |     nearest_hour      |   nearest_half_hour   | nearest_quarter_hour  |    nearest_minute     |   nearest_30second    |   nearest_15second    |    nearest_second     |
-+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+
+|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|
 | 2019-01-01 00:00:00.0 | 2019-01-01 00:00:00.0 | 2019-02-01 00:00:00.0 | 2019-02-15 00:00:00.0 | 2019-02-10 00:00:00.0 | 2019-02-11 00:00:00.0 | 2019-02-15 07:00:00.0 | 2019-02-15 07:30:00.0 | 2019-02-15 07:45:00.0 | 2019-02-15 07:22:00.0 | 2019-02-15 07:22:00.0 | 2019-02-15 07:22:15.0 | 2019-02-15 07:22:31.0 |
-+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+-----------------------+
-</code></pre></div>
+|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|
+</code></pre></div></div>
+
 <h2 id="timestampadd">TIMESTAMPADD</h2>
+<p>Adds an interval of time, in the given time units, to a datetime expression.</p>
 
-<p>Adds an interval of time, in the given time units, to a datetime expression.  </p>
-
-<p><strong>Note:</strong> Drill 1.15 and later supports the TIMESTAMPADD function.   </p>
+<p><strong>Note:</strong> Drill 1.15 and later supports the TIMESTAMPADD function.</p>
 
 <h3 id="timestampadd-syntax">TIMESTAMPADD Syntax</h3>
-
-<p>TIMESTAMPADD(<em>time_unit, interval, datetime_expression</em>)  </p>
+<p>TIMESTAMPADD(<em>time_unit, interval, datetime_expression</em>)</p>
 
 <h3 id="timestampadd-usage-notes">TIMESTAMPADD Usage Notes</h3>
-
 <ul>
-<li><em>datetime_expression</em> is a column or literal with date, time, or timestamp values. </li>
-<li><em>time_unit</em> is any of the following: Nanosecond, Microsecond, Second, Minute, Hour, Day, Month, Year, Week, Quarter</li>
-<li><em>interval</em> is the amount of <em>time_unit</em> to add. </li>
-<li>Drill uses the <em>time_unit</em> to infer the return type.</li>
-<li><p>You can include the <code>SQL_TSI_</code> prefix with the any of the supported time units, as shown: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPADD(SQL_TSI_MINUTE,5,TIME &#39;05:05:05&#39;);
-+-----------+
-|  EXPR$0   |
-+-----------+
-| 05:10:05  |
-+-----------+  
-</code></pre></div></li>
+  <li><em>datetime_expression</em> is a column or literal with date, time, or timestamp values.</li>
+  <li><em>time_unit</em> is any of the following: Nanosecond, Microsecond, Second, Minute, Hour, Day, Month, Year, Week, Quarter</li>
+  <li><em>interval</em> is the amount of <em>time_unit</em> to add.</li>
+  <li>Drill uses the <em>time_unit</em> to infer the return type.</li>
+  <li>
+    <p>You can include the <code class="language-plaintext highlighter-rouge">SQL_TSI_</code> prefix with the any of the supported time units, as shown:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SELECT TIMESTAMPADD(SQL_TSI_MINUTE,5,TIME '05:05:05');
+  |-----------|
+  |  EXPR$0   |
+  |-----------|
+  | 05:10:05  |
+  |-----------|  
+</code></pre></div>    </div>
+  </li>
 </ul>
 
 <h3 id="timestampadd-examples">TIMESTAMPADD Examples</h3>
 
-<p>Add three years to a date literal:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPADD(YEAR,3,DATE &#39;1982-05-06&#39;);
-+------------------------+
+<p>Add three years to a date literal:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TIMESTAMPADD(YEAR,3,DATE '1982-05-06');
+|------------------------|
 |         EXPR$0         |
-+------------------------+
+|------------------------|
 | 1985-05-06 00:00:00.0  |
-+------------------------+
-</code></pre></div>
+|------------------------|
+</code></pre></div></div>
+
 <p>Add a quarter (3 months) to the date values in the first column of the dates.csv file:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPADD(QUARTER, 1, CAST(COLUMNS[0] as date)) q1 FROM dfs.`/quarter/dates.csv`;
-+------------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TIMESTAMPADD(QUARTER, 1, CAST(COLUMNS[0] as date)) q1 FROM dfs.`/quarter/dates.csv`;
+|------------------------|
 |           q1           |
-+------------------------+
+|------------------------|
 | 2018-04-01 00:00:00.0  |
 | 2017-05-02 00:00:00.0  |
 | 2000-08-06 00:00:00.0  |
-+------------------------+  
-</code></pre></div>
+|------------------------|  
+</code></pre></div></div>
+
 <p>Dates in column[0] before applying the TIMESTAMPADD function:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT COLUMNS[0] FROM dfs.`/quarter/dates.csv`;
-+-------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT COLUMNS[0] FROM dfs.`/quarter/dates.csv`;
+|-------------|
 |   EXPR$0    |
-+-------------+
+|-------------|
 | 2018-01-01  |
 | 2017-02-02  |
 | 2000-05-06  |
-+-------------+
-</code></pre></div>
+|-------------|
+</code></pre></div></div>
+
 <h2 id="timestampdiff">TIMESTAMPDIFF</h2>
+<p>Calculates an interval of time, in the given time units, by subtracting <em>datetime_expression1</em> from <em>datetime_expression2</em> (<em>datetime_expression2</em> − <em>datetime_expression1</em>).</p>
 
-<p>Calculates an interval of time, in the given time units, by subtracting <em>datetime_expression1</em> from <em>datetime_expression2</em> (<em>datetime_expression2</em> − <em>datetime_expression1</em>).  </p>
-
-<p><strong>Note:</strong> Drill 1.15 and later supports the TIMESTAMPDIFF function.       </p>
+<p><strong>Note:</strong> Drill 1.15 and later supports the TIMESTAMPDIFF function.</p>
 
 <h3 id="timestampdiff-syntax">TIMESTAMPDIFF Syntax</h3>
-
-<p>TIMESTAMPDIFF(<em>time_unit, datetime_expression1, datetime_expression2</em>)  </p>
+<p>TIMESTAMPDIFF(<em>time_unit, datetime_expression1, datetime_expression2</em>)</p>
 
 <h3 id="timestampdiff-usage-notes">TIMESTAMPDIFF Usage Notes</h3>
-
 <ul>
-<li><em>datetime_expression</em> is a column or literal with date, time, or timestamp values. </li>
-<li><em>time_unit</em> is any of the following: Nanosecond, Microsecond, Second, Minute, Hour, Day, Month, Year, Week, Quarter</li>
-<li>You can include two date expressions, or one date expression with one datetime expression. </li>
-<li>Drill uses the <em>time_unit</em> to infer the return type.</li>
-<li><p>You can include the <code>SQL_TSI_</code> prefix with the any of the supported time units, as shown: </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(SQL_TSI_MONTH, DATE &#39;1982-05-06&#39;, DATE &#39;2018-12-26&#39;);
-+---------+
-| EXPR$0  |
-+---------+
-| 439     |
-+---------+  
-</code></pre></div></li>
+  <li><em>datetime_expression</em> is a column or literal with date, time, or timestamp values.</li>
+  <li><em>time_unit</em> is any of the following: Nanosecond, Microsecond, Second, Minute, Hour, Day, Month, Year, Week, Quarter</li>
+  <li>You can include two date expressions, or one date expression with one datetime expression.</li>
+  <li>Drill uses the <em>time_unit</em> to infer the return type.</li>
+  <li>
+    <p>You can include the <code class="language-plaintext highlighter-rouge">SQL_TSI_</code> prefix with the any of the supported time units, as shown:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SELECT TIMESTAMPDIFF(SQL_TSI_MONTH, DATE '1982-05-06', DATE '2018-12-26');
+  |---------|
+  | EXPR$0  |
+  |---------|
+  | 439     |
+  |---------|  
+</code></pre></div>    </div>
+  </li>
 </ul>
 
 <h3 id="timestampdiff-examples">TIMESTAMPDIFF Examples</h3>
 
-<p>Subtracts the date literal &#39;1982-05-06&#39; from the date literal &#39;2018-12-26&#39; and returns the difference in months:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(MONTH, DATE&#39;1982-05-06&#39;, DATE &#39;2018-12-26&#39;);
-+---------+
+<p>Subtracts the date literal ‘1982-05-06’ from the date literal ‘2018-12-26’ and returns the difference in months:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TIMESTAMPDIFF(MONTH, DATE'1982-05-06', DATE '2018-12-26');
+|---------|
 | EXPR$0  |
-+---------+
+|---------|
 | 439     |
-+---------+
-</code></pre></div>
-<p>Subtracts the date literal &#39;1970-01-15&#39; from the dates in the first column of the dates.csv file and returns the difference in seconds:    </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(SECOND, DATE &#39;1970-01-15&#39;, CAST(COLUMNS[0] as date)) a FROM dfs.`/quarter/dates.csv`
-+-------------+
+|---------|
+</code></pre></div></div>
+
+<p>Subtracts the date literal ‘1970-01-15’ from the dates in the first column of the dates.csv file and returns the difference in seconds:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TIMESTAMPDIFF(SECOND, DATE '1970-01-15', CAST(COLUMNS[0] as date)) a FROM dfs.`/quarter/dates.csv`
+|-------------|
 |      a      |
-+-------------+
+|-------------|
 | 1513555200  |
 | 1484784000  |
 | 956361600   |
-+-------------+
-</code></pre></div>
-<p>Subtracts the date in the third column from the date in the first column (columns[0]-columns[2]) of the dates.csv file and returns the difference in seconds:   </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TIMESTAMPDIFF(SECOND, CAST(COLUMNS[2] as date), CAST(COLUMNS[0] as date)) a from dfs.`/quarter/dates.csv`;
-+------------+
+|-------------|
+</code></pre></div></div>
+
+<p>Subtracts the date in the third column from the date in the first column (columns[0]-columns[2]) of the dates.csv file and returns the difference in seconds:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TIMESTAMPDIFF(SECOND, CAST(COLUMNS[2] as date), CAST(COLUMNS[0] as date)) a from dfs.`/quarter/dates.csv`;
+|------------|
 |     a      |
-+------------+
+|------------|
 | 0          |
 | 0          |
 | -92016000  |
-+------------+
-</code></pre></div>
+|------------|
+</code></pre></div></div>
+
     
       
         <div class="doc-nav">
@@ -2242,7 +2366,7 @@ SELECT UNIX_TIMESTAMP(&#39;2015-05-29 08:18:53.0&#39;, &#39;yyyy-MM-dd HH:mm:ss.
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

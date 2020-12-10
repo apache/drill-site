@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,529 +1369,780 @@
 
     </div>
 
-     Apr 12, 2019
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
         <p>You can use the following string functions in Drill queries:</p>
 
-<table><thead>
-<tr>
-<th>Function</th>
-<th>Return Type</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><a href="/docs/string-manipulation/#byte_substr">BYTE_SUBSTR</a></td>
-<td>BINARY or VARCHAR</td>
-</tr>
-<tr>
-<td><a href="/docs/string-manipulation/#char_length">CHAR_LENGTH</a></td>
-<td>INTEGER</td>
-</tr>
-<tr>
-<td><a href="/docs/string-manipulation/#concat">CONCAT</a></td>
-<td>VARCHAR</td>
-</tr>
-<tr>
-<td><a href="/docs/string-manipulation/#ilike">ILIKE</a></td>
-<td>BOOLEAN</td>
-</tr>
-<tr>
-<td><a href="/docs/string-manipulation/#initcap">INITCAP</a></td>
-<td>VARCHAR</td>
-</tr>
-<tr>
-<td><a href="/docs/string-manipulation/#length">LENGTH</a></td>
-<td>INTEGER</td>
-</tr>
-<tr>
-<td><a href="/docs/string-manipulation/#lower">LOWER</a></td>
-<td>VARCHAR</td>
-</tr>
-<tr>
-<td><a href="/docs/string-manipulation/#lpad">LPAD</a></td>
-<td>VARCHAR</td>
-</tr>
-<tr>
-<td><a href="/docs/string-manipulation/#ltrim">LTRIM</a></td>
-<td>VARCHAR</td>
-</tr>
-<tr>
-<td><a href="/docs/string-manipulation/#position">POSITION</a></td>
-<td>INTEGER</td>
-</tr>
-<tr>
-<td><a href="/docs/string-manipulation/#regexp_matches">REGEXP_MATCHES</a></td>
-<td>BOOLEAN</td>
-</tr>
-<tr>
-<td><a href="/docs/string-manipulation/#regexp_replace">REGEXP_REPLACE</a></td>
-<td>VARCHAR</td>
-</tr>
-<tr>
-<td><a href="/docs/string-manipulation/#rpad">RPAD</a></td>
-<td>VARCHAR</td>
-</tr>
-<tr>
-<td><a href="/docs/string-manipulation/#rtrim">RTRIM</a></td>
-<td>VARCHAR</td>
-</tr>
-<tr>
-<td><a href="/docs/string-manipulation/#strpos">STRPOS</a></td>
-<td>INTEGER</td>
-</tr>
-<tr>
-<td><a href="/docs/string-manipulation/#substr">SUBSTR</a></td>
-<td>VARCHAR</td>
-</tr>
-<tr>
-<td><a href="/docs/string-manipulation/#trim">TRIM</a></td>
-<td>VARCHAR</td>
-</tr>
-<tr>
-<td><a href="/docs/string-manipulation/#upper">UPPER</a></td>
-<td>VARCHAR</td>
-</tr>
-</tbody></table>
+<table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Return Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="/docs/string-manipulation/#byte_substr">BYTE_SUBSTR</a></td>
+      <td>BINARY or VARCHAR</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#char_length">CHAR_LENGTH</a></td>
+      <td>INTEGER</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#concat">CONCAT</a></td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#ilike">ILIKE</a></td>
+      <td>BOOLEAN</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#initcap">INITCAP</a></td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#length">LENGTH</a></td>
+      <td>INTEGER</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#like">LIKE</a></td>
+      <td>BOOLEAN</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#lower">LOWER</a></td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#lpad">LPAD</a></td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#ltrim">LTRIM</a></td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#position">POSITION</a></td>
+      <td>INTEGER</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#regexp_matches">REGEXP_MATCHES</a></td>
+      <td>BOOLEAN</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#regexp_replace">REGEXP_REPLACE</a></td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#repeat">REPEAT</a></td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#replace">REPLACE</a></td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#reverse">REVERSE</a></td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#rpad">RPAD</a></td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#rtrim">RTRIM</a></td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#split">SPLIT</a></td>
+      <td>INTEGER</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#strpos">STRPOS</a></td>
+      <td>INTEGER</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#substr">SUBSTR</a></td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#toascii">TOASCII</a></td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#trim">TRIM</a></td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/string-manipulation/#upper">UPPER</a></td>
+      <td>VARCHAR</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">
+As with indexes througout SQL, indexes into character strings are 1-based.
+  </p>
+</div>
 
 <h2 id="byte_substr">BYTE_SUBSTR</h2>
-
-<p>Returns in binary format a substring of a string.</p>
+<p>Returns in binary format a substring of the input string.</p>
 
 <h3 id="byte_substr-syntax">BYTE_SUBSTR Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">BYTE_SUBSTR( string-expression, start  [, length [(string-expression)]] )
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BYTE_SUBSTR( string-expression, start  [, length [(string-expression)]] )
+</code></pre></div></div>
+
 <p><em>string-expression</em> is the entire string, a column name having string values for example.
 <em>start</em> is a start position in the string. 1 is the first position.
-<em>length</em> is the number of characters to the right of the start position to include in the output expressed in either of the following ways:
-* As an integer. For example, 19 includes 19 characters to the right of the start position in the output.
-* AS length(string-expression). For example, length(my_string) includes the number of characters in my_string minus the number of the start position.</p>
+<em>length</em> is the number of characters to the right of the start position to include in the output expressed in either of the following ways:</p>
+<ul>
+  <li>As an integer. For example, 19 includes 19 characters to the right of the start position in the output.</li>
+  <li>AS length(string-expression). For example, length(my_string) includes the number of characters in my_string minus the number of the start position.</li>
+</ul>
 
 <h3 id="byte_substr-usage-notes">BYTE_SUBSTR Usage Notes</h3>
-
-<p>Combine the use of BYTE_SUBSTR and CONVERT_FROM to separate parts of a HBase composite key for example. </p>
+<p>Combine the use of BYTE_SUBSTR and CONVERT_FROM to separate parts of a HBase composite key for example.</p>
 
 <h3 id="byte_substr-examples">BYTE_SUBSTR Examples</h3>
 
 <p>A composite HBase row key consists of strings followed by a reverse timestamp (long). For example: AMZN_9223370655563575807. Use BYTE_SUBSTR and CONVERT_FROM to separate parts of a HBase composite key.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT CONVERT_FROM(BYTE_SUBSTR(row_key,6,19),&#39;UTF8&#39;) FROM root.`mydata` LIMIT 1;
-+---------------------+
-|       EXPR$0        |
-+---------------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CONVERT_FROM(BYTE_SUBSTR(row_key,6,19),'UTF8') FROM root.`mydata` LIMIT 1;
+|---------------------|
+| EXPR$0              |
+|---------------------|
 | 9223370655563575807 |
-+---------------------+
+|---------------------|
 1 rows selected (0.271 seconds)
 
-SELECT CONVERT_FROM(BYTE_SUBSTR(row_key,6,length(row_key)),&#39;UTF8&#39;) FROM root.`mydata` LIMIT 1;
-+---------------------+
+SELECT CONVERT_FROM(BYTE_SUBSTR(row_key,6,length(row_key)),'UTF8') FROM root.`mydata` LIMIT 1;
+|---------------------|
 |       EXPR$0        |
-+---------------------+
+|---------------------|
 | 9223370655563575807 |
-+---------------------+
+|---------------------|
 1 rows selected (0.271 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="char_length">CHAR_LENGTH</h2>
-
-<p>Returns the number of characters in a string.</p>
+<p>Returns the number of characters in the input string.</p>
 
 <h3 id="char_length-syntax">CHAR_LENGTH Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">CHAR_LENGTH(string)
-</code></pre></div>
-<h3 id="char_length-usage-notes">CHAR_LENGTH Usage Notes</h3>
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CHAR_LENGTH(string)
+</code></pre></div></div>
+
+<h3 id="char_length-usage-notes">CHAR_LENGTH Usage Notes</h3>
 <p>You can use the alias CHARACTER_LENGTH.</p>
 
 <h3 id="char_length-example">CHAR_LENGTH Example</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT CHAR_LENGTH(&#39;Drill rocks&#39;) FROM (VALUES(1));
 
-+------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CHAR_LENGTH('Drill rocks') FROM (VALUES(1));
+
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | 11         |
-+------------+
+|------------|
 1 row selected (0.127 seconds)
-</code></pre></div>
-<h2 id="concat">CONCAT</h2>
+</code></pre></div></div>
 
+<h2 id="concat">CONCAT</h2>
 <p>Concatenates arguments.</p>
 
 <h3 id="concat-syntax">CONCAT Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">CONCAT(string [, string [, ...] )
-</code></pre></div>
-<h3 id="concat-example">CONCAT Example</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT CONCAT(&#39;Drill&#39;, &#39; &#39;, 1.0, &#39; &#39;, &#39;release&#39;) FROM (VALUES(1));
 
-+--------------------+
-|       EXPR$0       |
-+--------------------+
-| Drill 1.0 release  |
-+--------------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CONCAT(string [, string [, ...] )
+</code></pre></div></div>
+
+<h3 id="concat-example">CONCAT Example</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CONCAT('Drill', ' ', 1.0, ' ', 'release') FROM (VALUES(1));
+
+|-------------------|
+| EXPR$0            |
+|-------------------|
+| Drill 1.0 release |
+|-------------------|
 1 row selected (0.134 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Alternatively, you can use the <a href="/docs/operators/#string-concatenate-operator">string concatenation operation</a> to concatenate strings.</p>
 
 <h2 id="ilike">ILIKE</h2>
-
-<p>Compares argument one and two and returns true if values match.</p>
+<p>Performs a case-insensitive comparison of the input string with a pattern and returns
+true in the case of a match.</p>
 
 <h3 id="ilike-syntax">ILIKE Syntax</h3>
 
-<p>ILIKE( string, string )</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ILIKE(string, pattern)
+</code></pre></div></div>
 
 <h3 id="ilike-examples">ILIKE Examples</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT ILIKE(&#39;abc&#39;, &#39;abc&#39;) FROM (VALUES(1));
-+---------+
-| EXPR$0  |
-+---------+
-| true    |
-+---------+
-1 row selected (0.185 seconds)
-</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">SELECT ILIKE(last_name, &#39;Spence&#39;) FROM cp.`employee.json` limit 3;
-+---------+
-| EXPR$0  |
-+---------+
-| false   |
-| false   |
-| true    |
-+---------+
-3 rows selected (0.17 seconds)
-</code></pre></div>
-<h2 id="initcap">INITCAP</h2>
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT ILIKE('abcde', 'ABC%') FROM (VALUES(1));
+|--------|
+| EXPR$0 |
+|--------|
+| true   |
+|--------|
+1 row selected (0.185 seconds)
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT ILIKE(last_name, 'Spence') FROM cp.`employee.json` limit 3;
+|--------|
+| EXPR$0 |
+|--------|
+| false  |
+| false  |
+| true   |
+|--------|
+3 rows selected (0.17 seconds)
+</code></pre></div></div>
+
+<h2 id="initcap">INITCAP</h2>
 <p>Returns the string using initial caps.</p>
 
 <h3 id="initcap-syntax">INITCAP Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">INITCAP(string)
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>INITCAP(string)
+</code></pre></div></div>
+
 <h3 id="initcap-examples">INITCAP Examples</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT INITCAP(&#39;apache drill release 1.0&#39;) FROM (VALUES(1));
 
-+---------------------------+
-|          EXPR$0           |
-+---------------------------+
-| Apache Drill Release 1.0  |
-+---------------------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT INITCAP('apache drill release 1.0') FROM (VALUES(1));
+
+|--------------------------|
+| EXPR$0                   |
+|--------------------------|
+| Apache Drill Release 1.0 |
+|--------------------------|
 1 row selected (0.106 seconds)
-</code></pre></div>
-<h2 id="length">LENGTH</h2>
+</code></pre></div></div>
 
+<h2 id="length">LENGTH</h2>
 <p>Returns the number of characters in the string.</p>
 
 <h3 id="length-syntax">LENGTH Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">LENGTH( string [, encoding] )
-</code></pre></div>
-<h3 id="length-example">LENGTH Example</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT LENGTH(&#39;apache drill release 1.0&#39;) FROM (VALUES(1));
 
-+------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LENGTH( string [, encoding] )
+</code></pre></div></div>
+
+<h3 id="length-example">LENGTH Example</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT LENGTH('apache drill release 1.0') FROM (VALUES(1));
+
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | 24         |
-+------------+
+|------------|
 1 row selected (0.127 seconds)
 
-SELECT LENGTH(row_key, &#39;UTF8&#39;) FROM root.`students`;
+SELECT LENGTH(row_key, 'UTF8') FROM root.`students`;
 
-+------------+
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | 8          |
 | 8          |
 | 8          |
 | 8          |
-+------------+
+|------------|
 4 rows selected (0.259 seconds)
-</code></pre></div>
-<h2 id="lower">LOWER</h2>
+</code></pre></div></div>
 
-<p>Converts characters in the string to lowercase.</p>
+<h2 id="like">LIKE</h2>
+<p>Performs a case-sensitive comparison of the input string with a pattern and returns
+true in the case of a match.</p>
+
+<h3 id="like-syntax">LIKE Syntax</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LIKE(string, pattern)
+</code></pre></div></div>
+<h3 id="like-examples">LIKE Examples</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT LIKE('abcde', 'ABC%') FROM (VALUES(1));
+|--------|
+| EXPR$0 |
+|--------|
+| false  |
+|--------|
+1 row selected (0.185 seconds)
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT LIKE(last_name, 'Spence') FROM cp.`employee.json` limit 3;
+|--------|
+| EXPR$0 |
+|--------|
+| false  |
+| false  |
+| true   |
+|--------|
+3 rows selected (0.17 seconds)
+</code></pre></div></div>
+
+<p>Alternatively, you can use the <a href="/docs/operators/#pattern-matching-operators">like operator</a> to compare a string with a pattern.</p>
+
+<h2 id="lower">LOWER</h2>
+<p>Converts the characters in the input string to lowercase.</p>
 
 <h3 id="lower-syntax">LOWER Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">LOWER (string)
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LOWER (string)
+</code></pre></div></div>
+
 <h3 id="lower-example">LOWER Example</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT LOWER(&#39;Apache Drill&#39;) FROM (VALUES(1));
 
-+---------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT LOWER('Apache Drill') FROM (VALUES(1));
+
+|---------------|
 |    EXPR$0     |
-+---------------+
+|---------------|
 | apache drill  |
-+---------------+
+|---------------|
 1 row selected (0.103 seconds)
-</code></pre></div>
-<h2 id="lpad">LPAD</h2>
+</code></pre></div></div>
 
-<p>Pads the string to the length specified by prepending the fill or a space. Truncates the string if longer than the specified length.
-. </p>
+<h2 id="lpad">LPAD</h2>
+<p>Pads the string to the length specified by prepending the fill or a space. Truncates the string if it is longer than the specified length.
+.</p>
 
 <h3 id="lpad-syntax">LPAD Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">LPAD (string, length [, fill text])
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LPAD (string, length [, fill text])
+</code></pre></div></div>
+
 <h3 id="lpad-example">LPAD Example</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT LPAD(&#39;Release 1.0&#39;, 27, &#39;of Apache Drill 1.0&#39;) FROM (VALUES(1));
 
-+------------------------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT LPAD('Release 1.0', 27, 'of Apache Drill 1.0') FROM (VALUES(1));
+
+|------------------------------|
 |            EXPR$0            |
-+------------------------------+
+|------------------------------|
 | of Apache Drill Release 1.0  |
-+------------------------------+
+|------------------------------|
 1 row selected (0.132 seconds)
-</code></pre></div>
-<h2 id="ltrim">LTRIM</h2>
+</code></pre></div></div>
 
-<p>Removes any characters from the beginning of string1 that match the characters in string2. </p>
+<h2 id="ltrim">LTRIM</h2>
+<p>Removes any characters from the beginning of string1 that match the characters in string2.</p>
 
 <h3 id="ltrim-syntax">LTRIM Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">LTRIM(string1, string2)
-</code></pre></div>
-<h3 id="ltrim-examples">LTRIM Examples</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT LTRIM(&#39;Apache Drill&#39;, &#39;Apache &#39;) FROM (VALUES(1));
 
-+------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LTRIM(string1, string2)
+</code></pre></div></div>
+
+<h3 id="ltrim-examples">LTRIM Examples</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT LTRIM('Apache Drill', 'Apache ') FROM (VALUES(1));
+
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | Drill      |
-+------------+
+|------------|
 1 row selected (0.131 seconds)
 
-SELECT LTRIM(&#39;A powerful tool Apache Drill&#39;, &#39;Apache &#39;) FROM (VALUES(1));
+SELECT LTRIM('A powerful tool Apache Drill', 'Apache ') FROM (VALUES(1));
 
-+----------------------------+
+|----------------------------|
 |           EXPR$0           |
-+----------------------------+
+|----------------------------|
 | owerful tool Apache Drill  |
-+----------------------------+
+|----------------------------|
 1 row selected (0.1 seconds)
-</code></pre></div>
-<h2 id="position">POSITION</h2>
+</code></pre></div></div>
 
-<p>Returns the location of a substring.</p>
+<h2 id="position">POSITION</h2>
+<p>Returns the location of the first occurrence of a substring of the input string, or 0 if the substring does not occur.</p>
 
 <h3 id="position-syntax">POSITION Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">POSITION(&#39;substring&#39; in &#39;string&#39;)
-</code></pre></div>
-<h3 id="position-example">POSITION Example</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT POSITION(&#39;c&#39; in &#39;Apache Drill&#39;) FROM (VALUES(1));
 
-+------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POSITION('substring' in 'string')
+</code></pre></div></div>
+
+<h3 id="position-example">POSITION Example</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT POSITION('c' in 'Apache Drill') FROM (VALUES(1));
+
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | 4          |
-+------------+
+|------------|
 1 row selected (0.12 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
 <h2 id="regexp_matches">REGEXP_MATCHES</h2>
 
-<p>Matches a regexp pattern to a target string. Returns a boolean value; true if the value matches the regexp, false if the value does not match the regexp.  </p>
+<p>Matches a regexp pattern to a target string. Returns a boolean value: true if the value matches the regexp, false if the value does not match the regexp.</p>
 
 <h3 id="regexp_matches-syntax">REGEXP_MATCHES Syntax</h3>
 
 <p>REGEXP_MATCHES(string_expression, pattern)</p>
 
-<p><em>string_expression</em> is the string to be matched.  </p>
+<p><em>string_expression</em> is the string to be matched.</p>
 
-<p><em>pattern</em> is the regular expression.  </p>
+<p><em>pattern</em> is the regular expression.</p>
 
 <h3 id="regexp_matches-examples">REGEXP_MATCHES Examples</h3>
 
-<p>Shows several POSIX metacharacters that return true for the given string expressions:   </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">select regexp_matches(&#39;abc&#39;, &#39;abc|def&#39;) as a, regexp_matches(&#39;cat&#39;, &#39;[hc]at$&#39;) as b,  regexp_matches(&#39;cat&#39;, &#39;.at&#39;) as c, regexp_matches(&#39;cat&#39;, &#39;[hc]at&#39;) as d, regexp_matches(&#39;cat&#39;, &#39;[^b]at&#39;) as e, regexp_matches(&#39;cat&#39;, &#39;^[hc]at&#39;) as f, regexp_matches(&#39;[a]&#39;, &#39;\[.\]&#39;) as g, regexp_matches(&#39;sat&#39;, &#39;s.*&#39;) as h, regexp_matches(&#39;sat&#39;,&#39;[^hc]at&#39;) as i, regexp_matches(&#39;hat&#39;, &#39;[hc]?at&#39;) as j, regexp_matches(&#39;cchchat&#39;, &#39;[hc]*at&#39;) as k, regexp_matches(&#39;chat&#39;, &#39;[hc]+at&#39;) as l;
+<p>Shows several POSIX metacharacters that return true for the given string expressions:</p>
 
-+------+------+------+------+------+------+------+------+------+------+------+------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select regexp_matches('abc', 'abc|def') as a, regexp_matches('cat', '[hc]at$') as b,  regexp_matches('cat', '.at') as c, regexp_matches('cat', '[hc]at') as d, regexp_matches('cat', '[^b]at') as e, regexp_matches('cat', '^[hc]at') as f, regexp_matches('[a]', '\[.\]') as g, regexp_matches('sat', 's.*') as h, regexp_matches('sat','[^hc]at') as i, regexp_matches('hat', '[hc]?at') as j, regexp_matches('cchchat', '[hc]*at') as k, regexp_matches('chat', '[hc]+at') as l;
+
+|------|------|------|------|------|------|------|------|------|------|------|------|
 |  a   |  b   |  c   |  d   |  e   |  f   |  g   |  h   |  i   |  j   |  k   |  l   |
-+------+------+------+------+------+------+------+------+------+------+------+------+
+|------|------|------|------|------|------|------|------|------|------|------|------|
 | true | true | true | true | true | true | true | true | true | true | true | true |
-+------+------+------+------+------+------+------+------+------+------+------+------+  
-</code></pre></div>
-<p>Shows case-sensitivity:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">select regexp_matches(&#39;abc&#39;, &#39;A*.C&#39;);
-+--------+
-| EXPR$0 |
-+--------+
-| false  |
-+--------+
+|------|------|------|------|------|------|------|------|------|------|------|------|  
+</code></pre></div></div>
 
-select regexp_matches(&#39;abc&#39;, &#39;a*.c&#39;);
-+--------+
+<p>Shows case-sensitivity:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select regexp_matches('abc', 'A*.C');
+|--------|
 | EXPR$0 |
-+--------+
+|--------|
+| false  |
+|--------|
+
+select regexp_matches('abc', 'a*.c');
+|--------|
+| EXPR$0 |
+|--------|
 | true   |
-+--------+
-</code></pre></div>
+|--------|
+</code></pre></div></div>
+
 <h2 id="regexp_replace">REGEXP_REPLACE</h2>
 
 <p>Substitutes new text for substrings that match <a href="http://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html">Java regular expression patterns</a>.</p>
 
 <h3 id="regexp_replace-syntax">REGEXP_REPLACE Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">REGEXP_REPLACE(source_char, pattern, replacement)
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>REGEXP_REPLACE(source_char, pattern, replacement)
+</code></pre></div></div>
+
 <p><em>source</em> is the character expression to be replaced.</p>
 
 <p><em>pattern</em> is the regular expression.</p>
 
 <p><em>replacement</em> is the string to substitute for the source.</p>
 
+<h3 id="regexp_replace-usage-notes">REGEXP_REPLACE Usage Notes</h3>
+
+<p>Capturing groups may defined in <em>pattern</em> using parentheses <code class="language-plaintext highlighter-rouge">(...)</code> and referenced by number from <em>replacement</em> using <code class="language-plaintext highlighter-rouge">$1</code>, <code class="language-plaintext highlighter-rouge">$2</code>, etc.</p>
+
 <h3 id="regexp_replace-examples">REGEXP_REPLACE Examples</h3>
 
-<p>Replace a&#39;s with b&#39;s in this string.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT REGEXP_REPLACE(&#39;abc, acd, ade, aef&#39;, &#39;a&#39;, &#39;b&#39;) FROM (VALUES(1));
-+---------------------+
-|       EXPR$0        |
-+---------------------+
-| bbc, bcd, bde, bef  |
-+---------------------+
-1 row selected (0.105 seconds)
-</code></pre></div>
-<p>Use the regular expression <em>a</em> followed by a period (.) in the same query to replace all a&#39;s and the subsequent character.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT REGEXP_REPLACE(&#39;abc, acd, ade, aef&#39;, &#39;a.&#39;,&#39;b&#39;) FROM (VALUES(1));
-+-----------------+
-|     EXPR$0      |
-+-----------------+
-| bc, bd, be, bf  |
-+-----------------+
-1 row selected (0.113 seconds)
-</code></pre></div>
-<h2 id="rpad">RPAD</h2>
+<p>Replace a’s with b’s in this string.</p>
 
-<p>Pads the string to the length specified. Appends the text you specify after the fill keyword using spaces for the fill if you provide no text or insufficient text to achieve the length.  Truncates the string if longer than the specified length.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT REGEXP_REPLACE('abc, acd, ade, aef', 'a', 'b') FROM (VALUES(1));
+|---------------------|
+|       EXPR$0        |
+|---------------------|
+| bbc, bcd, bde, bef  |
+|---------------------|
+1 row selected (0.105 seconds)
+</code></pre></div></div>
+
+<p>Use the regular expression <em>a</em> followed by a period (.) in the same query to replace all a’s and the subsequent character.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT REGEXP_REPLACE('abc, acd, ade, aef', 'a.','b') FROM (VALUES(1));
+|----------------|
+| EXPR$0         |
+|----------------|
+| bc, bd, be, bf |
+|----------------|
+1 row selected (0.113 seconds)
+</code></pre></div></div>
+
+<p>Extract the text inside double quotes using a capturing group.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT REGEXP_REPLACE('The quick "brown fox" jumps over...', '.*"(.*)".*', '$1') FROM (VALUES(1));
+|-----------|
+| EXPR$0    |
+|-----------|
+| brown fox |
+|-----------|
+</code></pre></div></div>
+
+<h2 id="repeat">REPEAT</h2>
+
+<p>Returns the input string repeated the specified number of times.</p>
+
+<h3 id="repeat-syntax">REPEAT Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>REPEAT(string, n_times)
+</code></pre></div></div>
+
+<h3 id="repeat-examples">REPEAT Examples</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT REPEAT('Drill', 3);
+|-----------------|
+| EXPR$0          |
+|-----------------|
+| DrillDrillDrill |
+|-----------------|
+</code></pre></div></div>
+
+<h2 id="replace">REPLACE</h2>
+
+<p>Replaces all occurrences of the specified substring with another specified substring.</p>
+
+<h3 id="replace-syntax">REPLACE Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>REPLACE(string, from, to)
+</code></pre></div></div>
+
+<h3 id="replace-examples">REPLACE Examples</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT REPLACE('The quick brown fox jumps...', 'jumps', 'sleeps')
+|-------------------------------|
+| EXPR$0                        |
+|-------------------------------|
+| The quick brown fox sleeps... |
+|-------------------------------|
+</code></pre></div></div>
+
+<h2 id="reverse">REVERSE</h2>
+<p>Returns the reverse of the input string.</p>
+
+<h3 id="reverse-syntax">REVERSE Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>REVERSE (string)
+</code></pre></div></div>
+
+<h3 id="reverse-example">REVERSE Example</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT REVERSE('abcdefg');
+|---------|
+| EXPR$0  |
+|---------|
+| gfedcba |
+|---------|
+</code></pre></div></div>
+
+<h2 id="rpad">RPAD</h2>
+<p>Pads the string to the length specified. Appends the text you specify after the fill keyword using spaces for the fill if you provide no text or insufficient text to achieve the length.  Truncates the string if it is longer than the specified length.</p>
 
 <h3 id="rpad-syntax">RPAD Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">RPAD (string, length [, fill text])
-</code></pre></div>
-<h3 id="rpad-example">RPAD Example</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT RPAD(&#39;Apache Drill &#39;, 22, &#39;Release 1.0&#39;) FROM (VALUES(1));
-+-------------------------+
-|         EXPR$0          |
-+-------------------------+
-| Apache Drill Release 1  |
-+-------------------------+
-1 row selected (0.107 seconds)
-</code></pre></div>
-<h2 id="rtrim">RTRIM</h2>
 
-<p>Removes any characters from the end of string1 that match the characters in string2.  </p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RPAD (string, length [, fill text])
+</code></pre></div></div>
+
+<h3 id="rpad-example">RPAD Example</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT RPAD('Apache Drill ', 22, 'Release 1.0') FROM (VALUES(1));
+|------------------------|
+| EXPR$0                 |
+|------------------------|
+| Apache Drill Release 1 |
+|------------------------|
+1 row selected (0.107 seconds)
+</code></pre></div></div>
+
+<h2 id="rtrim">RTRIM</h2>
+<p>Removes any characters from the end of string1 that match the characters in string2.</p>
 
 <h3 id="rtrim-syntax">RTRIM Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">RTRIM(string1, string2)
-</code></pre></div>
-<h3 id="rtrim-examples">RTRIM Examples</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT RTRIM(&#39;Apache Drill&#39;, &#39;Drill &#39;) FROM (VALUES(1));
 
-+------------+
-|   EXPR$0   |
-+------------+
-| Apache     |
-+------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTRIM(string1, string2)
+</code></pre></div></div>
+
+<h3 id="rtrim-examples">RTRIM Examples</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT RTRIM('Apache Drill', 'Drill ') FROM (VALUES(1));
+
+|--------|
+| EXPR$0 |
+|--------|
+| Apache |
+|--------|
 1 row selected (0.135 seconds)
 
-SELECT RTRIM(&#39;1.0 Apache Tomcat 1.0&#39;, &#39;Drill 1.0&#39;) from (VALUES(1));
-+--------------------+
+SELECT RTRIM('1.0 Apache Tomcat 1.0', 'Drill 1.0') from (VALUES(1));
+|--------------------|
 |       EXPR$0       |
-+--------------------+
+|--------------------|
 | 1.0 Apache Tomcat  |
-+--------------------+
+|--------------------|
 1 row selected (0.102 seconds)
-</code></pre></div>
-<h2 id="strpos">STRPOS</h2>
+</code></pre></div></div>
 
-<p>Returns the location of the substring in a string.</p>
+<h2 id="split">SPLIT</h2>
+<p>Splits the input string into a list of substrings using the specified delimiter character.</p>
+
+<h3 id="split-syntax">SPLIT Syntax</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SPLIT(string, delimiter)
+</code></pre></div></div>
+
+<h3 id="split-usage-notes">SPLIT Usage Notes</h3>
+<p>The <em>delimiter</em> must not be null and must contain a single character.</p>
+
+<h3 id="split-examples">SPLIT Examples</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT split('The quick brown fox jumps...', ' ');
+
+|------------------------------------|
+| EXPR$0                             |
+|------------------------------------|
+| [The, quick, brown, fox, jumps...] |
+|------------------------------------|
+</code></pre></div></div>
+
+<h2 id="strpos">STRPOS</h2>
+<p>Returns the location of the first occurrence of a substring of the input string, or 0 if the substring does not occur.</p>
 
 <h3 id="strpos-syntax">STRPOS Syntax</h3>
 
 <p>STRPOS(string, substring)</p>
 
 <h3 id="strpos-example">STRPOS Example</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT STRPOS(&#39;Apache Drill&#39;, &#39;Drill&#39;) FROM (VALUES(1));
 
-+------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT STRPOS('Apache Drill', 'Drill') FROM (VALUES(1));
+
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | 8          |
-+------------+
+|------------|
 1 row selected (0.22 seconds)
-</code></pre></div>
-<h2 id="substr">SUBSTR</h2>
+</code></pre></div></div>
 
-<p>Extracts characters from position 1 - x of the string an optional y times.</p>
+<h2 id="substr">SUBSTR</h2>
+<p>Returns</p>
+
+<ul>
+  <li>the substring of the input string starting the specified location and optionally having the specified length or</li>
+  <li>the first substring of the input string matching the specified regular expression.</li>
+</ul>
 
 <h3 id="substr-syntax">SUBSTR Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SUBSTR(string, x, y)
-</code></pre></div>
-<h3 id="substr-usage-notes">SUBSTR Usage Notes</h3>
 
-<p>You can use the alias SUBSTRING for this function.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SUBSTR(string, start)
+SUBSTR(string, start, length)
+SUBSTR(string, regexp)
+</code></pre></div></div>
+
+<h3 id="substr-usage-notes">SUBSTR Usage Notes</h3>
+<ol>
+  <li>If <em>start</em> specifies a location outside of <em>string</em> or if <em>length</em> &lt; 1 then the empty string <code class="language-plaintext highlighter-rouge">''</code> is returned.</li>
+  <li>If <em>length</em> is unspecified or if it specifies a substring that extends beyond the end of <em>string</em> then the returned substring extends to the end of the string.</li>
+  <li>If <em>regexp</em> does not match a substring of <em>string</em> then NULL is returned.</li>
+  <li>You can use the alias SUBSTRING for this function.</li>
+</ol>
 
 <h3 id="substr-example">SUBSTR Example</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT SUBSTR(&#39;Apache Drill&#39;, 8) FROM (VALUES(1));
 
-+------------+
-|   EXPR$0   |
-+------------+
-| Drill      |
-+------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT SUBSTR('Apache Drill', 8) FROM (VALUES(1));
+
+|--------|
+| EXPR$0 |
+|--------|
+| Drill  |
+|--------|
 1 row selected (0.134 seconds)
 
-SELECT SUBSTR(&#39;Apache Drill&#39;, 3, 2) FROM (VALUES(1));
+SELECT SUBSTR('Apache Drill', 3, 2) FROM (VALUES(1));
 
-+------------+
-|   EXPR$0   |
-+------------+
-| ac         |
-+------------+
+|--------|
+| EXPR$0 |
+|--------|
+| ac     |
+|--------|
 1 row selected (0.129 seconds)
-</code></pre></div>
-<h2 id="trim">TRIM</h2>
 
-<p>Removes any characters from the beginning, end, or both sides of string2 that match the characters in string1.  </p>
+SELECT SUBSTR('On 1970-01-01 the quick brown fox jumped...', '[\d-]+')
+
+|------------|
+| EXPR$0     |
+|------------|
+| 1970-01-01 |
+|------------|
+</code></pre></div></div>
+
+<!-- this function appears to be pointless because, from what I can tell, its VARCHAR input must already be in UTF-8
+
+## TOASCII
+Transcodes the input string from the specified input encoding to UTF-8.
+
+### TOASCII Syntax
+ 
+    TOASCII (string, encoding)
+
+### TOASCII Usage Notes
+
+1. In spite of the function's name, the output encoding is not limited to ASCII.
+2. The _encoding_ must identify a [`java.nio.charset.CharSet`](https://docs.oracle.com/javase/8/docs/api/java/nio/charset/Charset.html) installed in the JRE in which Drill is running.
+
+### TOASCII Example
+
+    SELECT TOASCII(cast(CONVERT_TO('hello', 'UTF16') as varchar))
+
+-->
+
+<h2 id="trim">TRIM</h2>
+<p>Removes any characters from the beginning, end, or both sides of string2 that match the characters in string1.</p>
 
 <h3 id="trim-syntax">TRIM Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">TRIM ([leading | trailing | both] [string1] from string2)
-</code></pre></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TRIM ([leading | trailing | both] [string1] from string2)
+</code></pre></div></div>
+
 <h3 id="trim-example">TRIM Example</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT TRIM(trailing &#39;l&#39; from &#39;Drill&#39;) FROM (VALUES(1));
-+------------+
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TRIM(trailing 'l' from 'Drill') FROM (VALUES(1));
+|------------|
 |   EXPR$0   |
-+------------+
+|------------|
 | Dri        |
-+------------+
+|------------|
 1 row selected (0.172 seconds)
 
-SELECT TRIM(both &#39;l&#39; from &#39;long live Drill&#39;) FROM (VALUES(1));
-+---------------+
+SELECT TRIM(both 'l' from 'long live Drill') FROM (VALUES(1));
+|---------------|
 |    EXPR$0     |
-+---------------+
+|---------------|
 | ong live Dri  |
-+---------------+
+|---------------|
 1 row selected (0.104 seconds)
 
-SELECT TRIM(leading &#39;l&#39; from &#39;long live Drill&#39;) FROM (VALUES(1));
-+-----------------+
+SELECT TRIM(leading 'l' from 'long live Drill') FROM (VALUES(1));
+|-----------------|
 |     EXPR$0      |
-+-----------------+
+|-----------------|
 | ong live Drill  |
-+-----------------+
+|-----------------|
 1 row selected (0.101 seconds)
-</code></pre></div>
-<h2 id="upper">UPPER</h2>
+</code></pre></div></div>
 
-<p>Converts characters in the string to uppercase.</p>
+<h2 id="upper">UPPER</h2>
+<p>Converts the characters in the input string to uppercase.</p>
 
 <h3 id="upper-syntax">UPPER Syntax</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">UPPER (string)
-</code></pre></div>
-<h3 id="upper-example">UPPER Example</h3>
-<div class="highlight"><pre><code class="language-text" data-lang="text">SELECT UPPER(&#39;Apache Drill&#39;) FROM (VALUES(1));
 
-+---------------+
-|    EXPR$0     |
-+---------------+
-| APACHE DRILL  |
-+---------------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>UPPER (string)
+</code></pre></div></div>
+
+<h3 id="upper-example">UPPER Example</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT UPPER('Apache Drill') FROM (VALUES(1));
+
+|--------------|
+| EXPR$0       |
+|--------------|
+| APACHE DRILL |
+|--------------|
 1 row selected (0.081 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
     
       
         <div class="doc-nav">
@@ -1876,7 +2159,7 @@ SELECT TRIM(leading &#39;l&#39; from &#39;long live Drill&#39;) FROM (VALUES(1))
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

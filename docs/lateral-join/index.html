@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,249 +1369,274 @@
 
     </div>
 
-     Dec 11, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
-        <p>Starting in Drill 1.15, the lateral join functionality is enabled by default. If you are running earlier versions of Drill, use the <a href="/docs/set/">SET</a> command to enable the <code>planner.enable_unnest_lateral</code> option.  </p>
+        <p>Starting in Drill 1.15, the lateral join functionality is enabled by default. If you are running earlier versions of Drill, use the <a href="/docs/set/">SET</a> command to enable the <code class="language-plaintext highlighter-rouge">planner.enable_unnest_lateral</code> option.</p>
 
 <p>A lateral join is essentially a foreach loop in SQL. A lateral join is represented by the keyword LATERAL with an inner subquery in the FROM clause, as shown in the following simple representation:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT &lt;columns&gt;
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT &lt;columns&gt;
    FROM &lt;tableReference&gt;
    LATERAL &lt;innerSubquery&gt;;
-</code></pre></div>
-<p>Similar to a correlated subquery, a lateral inner subquery can refer to fields in rows of the table reference to determine which rows to return. A lateral subquery iterates through each row in the table reference, evaluating the inner subquery for each row, like a foreach loop. The rows returned by the inner subquery are added to the result of the join with the outer query. Without the LATERAL keyword, each subquery is evaluated independently and cannot refer to items in FROM.  </p>
+</code></pre></div></div>
+
+<p>Similar to a correlated subquery, a lateral inner subquery can refer to fields in rows of the table reference to determine which rows to return. A lateral subquery iterates through each row in the table reference, evaluating the inner subquery for each row, like a foreach loop. The rows returned by the inner subquery are added to the result of the join with the outer query. Without the LATERAL keyword, each subquery is evaluated independently and cannot refer to items in FROM.</p>
 
 <h2 id="syntax">Syntax</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">...FROM tableReference  
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...FROM tableReference  
 
 tableReference:
-
+          
           with_subquery_table_name [ [ AS ] alias [ ( column_alias [, ...] ) ] ]
              | table_name [ [ AS ] alias [ ( column_alias [, ...] ) ] ]
              | ( subquery ) [ AS ] alias [ ( column_alias [, ...] ) ]
              | &lt;join_clause&gt;
              | [ LATERAL ] [&lt;lateral_join_type&gt;] &lt;lateral_subquery&gt; [ON TRUE]
-
+          
           join_clause:
-                tableReference &lt;join_type&gt; tableReference [ON &lt;join_condition&gt;]
-
+             	tableReference &lt;join_type&gt; tableReference [ON &lt;join_condition&gt;]
+          
           lateral_subquery:
                 &lt;unnest_table_expr&gt;
              | ( SELECT_clause FROM &lt;unnest_table_expr&gt; [,...] )
-
+          
           lateral_join_type:
           [INNER] JOIN
           LEFT [OUTER] JOIN
-
+          
           unnest_table_expr:
-           UNNEST &#39;(&#39; expression &#39;)&#39;  [AS] &lt;alias_table_name&gt;(&lt;alias_column_name&gt;)
-</code></pre></div>
+           UNNEST '(' expression ')'  [AS] &lt;alias_table_name&gt;(&lt;alias_column_name&gt;)
+</code></pre></div></div>
+
 <h2 id="parameters">Parameters</h2>
 
-<p>The following parameters are specific to lateral join. The list does not include all of the parameters applicable to the <a href="/docs/from-clause/">FROM clause</a>:  </p>
+<p>The following parameters are specific to lateral join. The list does not include all of the parameters applicable to the <a href="/docs/from-clause/">FROM clause</a>:</p>
 
 <ul>
-<li><p><em>join_clause</em><br>
- Identifies the tables with the data you want to join, the type of join to be performed on the tables, and the conditions on which to join the tables. Starting in Drill 1.14, Drill supports lateral joins. </p></li>
-<li><p><em>LATERAL</em><br>
- Keyword that represents a lateral join. A lateral join is essentially a foreach loop in SQL. A lateral join combines the results of the outer query with the results of a lateral subquery. When you use the UNNEST relational operator, Drill infers the LATERAL keyword. </p></li>
-<li><p><em>lateral_sub_query</em><br>
- A lateral subquery is like correlated subqueries except that you use a lateral subquery in the FROM clause instead of the WHERE clause. Also, lateral subqueries can return any number of rows; correlated subqueries return exactly one row.</p></li>
-<li><p><em>unnest_table_expr</em><br>
- References the table produced by the UNNEST relational operator. UNNEST converts a collection to a relation. You must use the UNNEST relational operator with LATERAL subqueries when a field contains repeated types, like an array of maps. You must also indicate an alias for the table produced by UNNEST. </p></li>
-<li><p><em>lateral_join_type</em><br>
- The type of join used with the lateral subquery. Lateral subqueries support [INNER] JOIN and LEFT [OUTER] JOIN, for example:    </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">...FROM table1 LEFT OUTER JOIN LATERAL (select a from t2) ON TRUE;  
-</code></pre></div>
-<p>If you do not indicate the join type, Drill infers an INNER JOIN.  </p></li>
-<li><p><em>ON TRUE</em><br>
- The join condition when the results of a lateral subquery are joined with fields in rows of the table referenced. This condition is implicit. You do not have to include the condition in the query.  </p></li>
+  <li>
+    <p><em>join_clause</em><br />
+   Identifies the tables with the data you want to join, the type of join to be performed on the tables, and the conditions on which to join the tables. Starting in Drill 1.14, Drill supports lateral joins.</p>
+  </li>
+  <li>
+    <p><em>LATERAL</em><br />
+   Keyword that represents a lateral join. A lateral join is essentially a foreach loop in SQL. A lateral join combines the results of the outer query with the results of a lateral subquery. When you use the UNNEST relational operator, Drill infers the LATERAL keyword.</p>
+  </li>
+  <li>
+    <p><em>lateral_sub_query</em><br />
+   A lateral subquery is like correlated subqueries except that you use a lateral subquery in the FROM clause instead of the WHERE clause. Also, lateral subqueries can return any number of rows; correlated subqueries return exactly one row.</p>
+  </li>
+  <li>
+    <p><em>unnest_table_expr</em><br />
+   References the table produced by the UNNEST relational operator. UNNEST converts a collection to a relation. You must use the UNNEST relational operator with LATERAL subqueries when a field contains repeated types, like an array of maps. You must also indicate an alias for the table produced by UNNEST.</p>
+  </li>
+  <li>
+    <p><em>lateral_join_type</em><br />
+   The type of join used with the lateral subquery. Lateral subqueries support [INNER] JOIN and LEFT [OUTER] JOIN, for example:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ...FROM table1 LEFT OUTER JOIN LATERAL (select a from t2) ON TRUE;  
+</code></pre></div>    </div>
+
+    <p>If you do not indicate the join type, Drill infers an INNER JOIN.</p>
+  </li>
+  <li>
+    <p><em>ON TRUE</em><br />
+   The join condition when the results of a lateral subquery are joined with fields in rows of the table referenced. This condition is implicit. You do not have to include the condition in the query.</p>
+  </li>
 </ul>
 
 <h2 id="usage-notes">Usage Notes</h2>
 
-<p><strong>LATERAL Subqueries</strong>  </p>
+<p><strong>LATERAL Subqueries</strong></p>
 
 <ul>
-<li><p>Lateral subqueries are similar to correlated subqueries except that you use a lateral subquery in the FROM clause instead of the WHERE clause. Also, lateral subqueries can return any number of rows; correlated subqueries return exactly one row.  </p></li>
-<li><p>You can use lateral subqueries with the LEFT OUTER and INNER join types, for example:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">...FROM table1 LEFT OUTER JOIN LATERAL (select a from t2) ON true;  
-</code></pre></div></li>
-<li><p>If you use the LATERAL keyword in a query, you must include the UNNEST relational operator in the subquery. However, if you use UNNEST without LATERAL, Drill infers the LATERAL keyword. </p></li>
-<li><p>Use LATERAL subqueries with the UNNEST operator when a field contains repeated types, like an array of maps.  </p></li>
-<li><p>Lateral subqueries support the following operators: </p>
+  <li>
+    <p>Lateral subqueries are similar to correlated subqueries except that you use a lateral subquery in the FROM clause instead of the WHERE clause. Also, lateral subqueries can return any number of rows; correlated subqueries return exactly one row.</p>
+  </li>
+  <li>
+    <p>You can use lateral subqueries with the LEFT OUTER and INNER join types, for example:</p>
 
-<ul>
-<li>Limit<br></li>
-<li>Filter<br></li>
-<li>Project<br></li>
-<li>TopN<br></li>
-<li>Sort<br></li>
-<li>HashAgg<br></li>
-</ul></li>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ...FROM table1 LEFT OUTER JOIN LATERAL (select a from t2) ON true;  
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>If you use the LATERAL keyword in a query, you must include the UNNEST relational operator in the subquery. However, if you use UNNEST without LATERAL, Drill infers the LATERAL keyword.</p>
+  </li>
+  <li>
+    <p>Use LATERAL subqueries with the UNNEST operator when a field contains repeated types, like an array of maps.</p>
+  </li>
+  <li>
+    <p>Lateral subqueries support the following operators:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> - Limit  
+ - Filter  
+ - Project  
+ - TopN  
+ - Sort  
+ - HashAgg  
+</code></pre></div>    </div>
+  </li>
 </ul>
 
-<p><strong>UNNEST Relational Operator</strong>  </p>
+<p><strong>UNNEST Relational Operator</strong></p>
 
 <ul>
-<li>A relational operator that behaves like a table function; UNNEST converts a collection to a relation.<br></li>
-<li>UNNEST works on arrays; it creates a table with one field and multiple rows (one row for each entry in the array).<br></li>
-<li>You can only use UNNEST in the FROM clause.<br></li>
-<li>You cannot use UNNEST without LATERAL; if you use UNNEST without LATERAL, Drill infers a LATERAL join.<br></li>
-<li>UNNEST can only unnest one column. However, the array in the column can be a multi-nested array.<br></li>
-<li>Unnests data in small chunks, which typically provides a performance advantage when applying filters or running subqueries.<br></li>
-<li>Unnest operators on each row of the source table; data can be partitioned without having to use a window function.<br></li>
-<li>For queries with nested laterals, you must provide a name (alias) for the table that UNNEST generates.<br></li>
-<li>UNNEST and LATERAL work similarly to FLATTEN, but differ from FLATTEN in the follow ways:<br>
-
-<ul>
-<li>UNNEST is a SQL standard, whereas FLATTEN is not.<br></li>
-<li>FLATTEN is only allowed in the SELECT list of query, not in the FROM clause.<br></li>
-<li>FLATTEN does not work with schema changes, but UNNEST can if the queries do not have hash aggregates. FLATTEN requires all data in a column to be of the same type. For example, if a column contains integers in some rows and float in others, UNNEST can process the query, whereas FLATTEN cannot.<br></li>
-<li>LATERAL and UNNEST cover a wider set of use cases than FLATTEN. For example, when you use LATERAL and UNNEST, Drill can perform a LEFT OUTER JOIN on data. If you used FLATTEN, Drill must scan the source table twice to perform an OUTER JOIN after flattening the data. Also, with LATERAL and UNNEST, you can apply a filter, aggregate, or limit on each row. With FLATTEN, the filter or aggregate is applied after flattening, however you cannot apply the limit on each row.<br></li>
-<li>FLATTEN unnests data into a table and processes the entire table; filters and subqueries are applied on the entire table at the same time.<br></li>
-</ul></li>
+  <li>A relational operator that behaves like a table function; UNNEST converts a collection to a relation.</li>
+  <li>UNNEST works on arrays; it creates a table with one field and multiple rows (one row for each entry in the array).</li>
+  <li>You can only use UNNEST in the FROM clause.</li>
+  <li>You cannot use UNNEST without LATERAL; if you use UNNEST without LATERAL, Drill infers a LATERAL join.</li>
+  <li>UNNEST can only unnest one column. However, the array in the column can be a multi-nested array.</li>
+  <li>Unnests data in small chunks, which typically provides a performance advantage when applying filters or running subqueries.</li>
+  <li>Unnest operators on each row of the source table; data can be partitioned without having to use a window function.</li>
+  <li>For queries with nested laterals, you must provide a name (alias) for the table that UNNEST generates.</li>
+  <li>UNNEST and LATERAL work similarly to FLATTEN, but differ from FLATTEN in the follow ways:<br />
+     - UNNEST is a SQL standard, whereas FLATTEN is not.<br />
+     - FLATTEN is only allowed in the SELECT list of query, not in the FROM clause.<br />
+     - FLATTEN does not work with schema changes, but UNNEST can if the queries do not have hash aggregates. FLATTEN requires all data in a column to be of the same type. For example, if a column contains integers in some rows and float in others, UNNEST can process the query, whereas FLATTEN cannot.  <br />
+     - LATERAL and UNNEST cover a wider set of use cases than FLATTEN. For example, when you use LATERAL and UNNEST, Drill can perform a LEFT OUTER JOIN on data. If you used FLATTEN, Drill must scan the source table twice to perform an OUTER JOIN after flattening the data. Also, with LATERAL and UNNEST, you can apply a filter, aggregate, or limit on each row. With FLATTEN, the filter or aggregate is applied after flattening, however you cannot apply the limit on each row.<br />
+     - FLATTEN unnests data into a table and processes the entire table; filters and subqueries are applied on the entire table at the same time.</li>
 </ul>
 
 <h2 id="lateral-join-query-examples">LATERAL Join Query Examples</h2>
 
-<p>The following sections provide query examples to demonstrate the use of lateral joins.  </p>
+<p>The following sections provide query examples to demonstrate the use of lateral joins.</p>
 
 <h3 id="simplified-query-using-lateral-and-unnest">Simplified Query using LATERAL and UNNEST</h3>
 
-<p>The following customer table contains customer data, including customer orders and returns, with the order and return data stored as complex types (arrays of maps). The store_id column is a foreign key.  </p>
+<p>The following customer table contains customer data, including customer orders and returns, with the order and return data stored as complex types (arrays of maps). The store_id column is a foreign key.</p>
 
-<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
- style='border-collapse:collapse'>
- <tr style='height:.5in'>
-  <td valign=top style='border:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;
-  height:.5in'>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'>cust_id</span></p>
+<table class="MsoNormalTable" border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse">
+ <tr style="height:.5in">
+  <td valign="top" style="border:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:.5in">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black">cust_id</span></p>
   </td>
-  <td valign=top style='border:solid black 1.0pt;border-left:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
-  height:.5in'>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'>cust_name</span></p>
+  <td valign="top" style="border:solid black 1.0pt;border-left:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:.5in">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black">cust_name</span></p>
   </td>
-  <td valign=top style='border:solid black 1.0pt;border-left:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
-  height:.5in'>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'>store_id<br>
+  <td valign="top" style="border:solid black 1.0pt;border-left:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:.5in">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black">store_id<br />
    </span></p>
   </td>
-  <td valign=top style='border:solid black 1.0pt;border-left:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
-  height:.5in'>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'>orders</span></p>
+  <td valign="top" style="border:solid black 1.0pt;border-left:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:.5in">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black">orders</span></p>
   </td>
-  <td valign=top style='border:solid black 1.0pt;border-left:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
-  height:.5in'>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'>returns</span></p>
+  <td valign="top" style="border:solid black 1.0pt;border-left:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:.5in">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black">returns</span></p>
   </td>
  </tr>
- <tr style='height:135.0pt'>
-  <td valign=top style='border:solid black 1.0pt;border-top:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
-  height:135.0pt'>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'>101</span></p>
+ <tr style="height:135.0pt">
+  <td valign="top" style="border:solid black 1.0pt;border-top:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:135.0pt">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black">101</span></p>
   </td>
-  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
-  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:135.0pt'>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'>Fred</span></p>
+  <td valign="top" style="border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:135.0pt">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black">Fred</span></p>
   </td>
-  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
-  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:135.0pt'>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'>5</span></p>
+  <td valign="top" style="border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:135.0pt">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black">5</span></p>
   </td>
-  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
-  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:135.0pt'>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'>[<br>
-   &nbsp;&nbsp;{order_id: 1, order_date: 10/10/2017, order_amount: $200, items:<br>
+  <td valign="top" style="border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:135.0pt">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black">[<br />
+   &nbsp;&nbsp;{order_id: 1, order_date: 10/10/2017, order_amount: $200, items:<br />
    &nbsp;[{type: “chair”, quantity: 3}, {type: ...} ] },</span></p>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'> &nbsp;&nbsp;{order_id: 2,
-  order_date:<br>
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black"> &nbsp;&nbsp;{order_id: 2,
+  order_date:<br />
    &nbsp;11/10/2017, order_amount: $500, &nbsp;items: [{type: “lamp”, quantity:
-  2},<br>
+  2},<br />
    &nbsp;{type: ...}]}</span></p>
   </td>
-  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
-  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:135.0pt'>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'> [ {order_id: 2,
-  return_date: 11/20/2017, return_amount: $200,<br>
+  <td valign="top" style="border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:135.0pt">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black"> [ {order_id: 2,
+  return_date: 11/20/2017, return_amount: $200,<br />
    &nbsp;items: [{type: ...} ] } ]</span></p>
   </td>
  </tr>
- <tr style='height:.5in'>
-  <td valign=top style='border:solid black 1.0pt;border-top:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
-  height:.5in'>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'>102</span></p>
+ <tr style="height:.5in">
+  <td valign="top" style="border:solid black 1.0pt;border-top:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:.5in">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black">102</span></p>
   </td>
-  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
-  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:.5in'>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'>Jack</span></p>
+  <td valign="top" style="border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:.5in">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black">Jack</span></p>
   </td>
-  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
-  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:.5in'>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'>7</span></p>
+  <td valign="top" style="border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:.5in">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black">7</span></p>
   </td>
-  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
-  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:.5in'>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'>&lt;orders<br>
+  <td valign="top" style="border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:.5in">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black">&lt;orders<br />
    &nbsp;data&gt;</span></p>
   </td>
-  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
-  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:.5in'>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'>&lt;returns<br>
+  <td valign="top" style="border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:.5in">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black">&lt;returns<br />
    &nbsp;data&gt;</span></p>
   </td>
  </tr>
- <tr style='height:23.0pt'>
-  <td valign=top style='border:solid black 1.0pt;border-top:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
-  height:23.0pt'></td>
-  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
-  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:23.0pt'>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'>...</span></p>
+ <tr style="height:23.0pt">
+  <td valign="top" style="border:solid black 1.0pt;border-top:none;padding:5.0pt 5.0pt 5.0pt 5.0pt;
+  height:23.0pt"></td>
+  <td valign="top" style="border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:23.0pt">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black">...</span></p>
   </td>
-  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
-  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:23.0pt'>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'>...</span></p>
+  <td valign="top" style="border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:23.0pt">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black">...</span></p>
   </td>
-  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
-  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:23.0pt'>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'>...</span></p>
+  <td valign="top" style="border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:23.0pt">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black">...</span></p>
   </td>
-  <td valign=top style='border-top:none;border-left:none;border-bottom:solid black 1.0pt;
-  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:23.0pt'>
-  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
-  normal'><span style='font-size:9.0pt;color:black'>...</span></p>
+  <td valign="top" style="border-top:none;border-left:none;border-bottom:solid black 1.0pt;
+  border-right:solid black 1.0pt;padding:5.0pt 5.0pt 5.0pt 5.0pt;height:23.0pt">
+  <p class="MsoNormal" style="margin-bottom:0in;margin-bottom:.0001pt;line-height:
+  normal"><span style="font-size:9.0pt;color:black">...</span></p>
   </td>
  </tr>
 </table>
 
-<p>If you want to query the Customer table for the average order amount for each customer in the month of November, you could write the following query, which uses a combination of a left outer join, group by, and the flatten function to unnest the orders field that contains complex types:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT t1.cust_name, t2.avg_orders
+<p>If you want to query the Customer table for the average order amount for each customer in the month of November, you could write the following query, which uses a combination of a left outer join, group by, and the flatten function to unnest the orders field that contains complex types:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT t1.cust_name, t2.avg_orders
    FROM  customer t1
    LEFT
    OUTER JOIN
-
+   
       (SELECT f.cust_id,
    AVG(f.order_amount) as avg_orders
          FROM (SELECT
@@ -1589,36 +1646,42 @@ tableReference:
    and date ‘11302017’
           GROUP BY
    f.cust_id
-
+   
       ) t2  on t1.cust_id =
    t2.cust_id  
-</code></pre></div>
-<p>However, this query is complex and inefficient. Writing the query with a lateral subquery resolves the inefficiencies:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT cust_name, avg_orders
+</code></pre></div></div>
+
+<p>However, this query is complex and inefficient. Writing the query with a lateral subquery resolves the inefficiencies:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT cust_name, avg_orders
    FROM customer c
    LATERAL (SELECT AVG(order_amount) as avg_orders FROM UNNEST(c.orders)o
    WHERE o.order_date BETWEEN date ‘11012017’ and date ‘11302017’);  
-</code></pre></div>
-<p>Note that the FROM clause in the subquery references the ‘orders’ array from the table alias ‘c’ which is the outer table.  The reference to an outer table within the subquery makes this look like a correlated subquery.  However, there is an important difference in that a correlated subquery is used in the WHERE clause whereas what we really want is the set of rows from the un-nested array exposed as a ‘sub-table’ such that relevant filtering, aggregation, and so on can be performed.  </p>
+</code></pre></div></div>
+
+<p>Note that the FROM clause in the subquery references the ‘orders’ array from the table alias ‘c’ which is the outer table.  The reference to an outer table within the subquery makes this look like a correlated subquery.  However, there is an important difference in that a correlated subquery is used in the WHERE clause whereas what we really want is the set of rows from the un-nested array exposed as a ‘sub-table’ such that relevant filtering, aggregation, and so on can be performed.</p>
 
 <h3 id="example-queries-with-lateral-unnest-and-aliases">Example Queries with LATERAL, UNNEST, and Aliases</h3>
 
-<p>The following query examples demonstrate the use of the LATERAL keyword and UNNEST relational operator with aliases.  </p>
+<p>The following query examples demonstrate the use of the LATERAL keyword and UNNEST relational operator with aliases.</p>
 
-<p><strong>Example 1: One level lateral with an alias and implicit LATERAL</strong>  </p>
+<p><strong>Example 1: One level lateral with an alias and implicit LATERAL</strong></p>
 
 <p>Drill infers a LATERAL join when you use the UNNEST relational operator. In the following query, UNNEST produces a table with one column that contains an unnested customer.c_orders column. In this query, the table produced by unnest is aliased as _orders and the column is aliased as c_order.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT 
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT 
      customer.c_name, customer.c_address, _orders.c_order.o_orderkey, _orders.c_order.o_totalprice
    FROM 
      dfs.`/Users/user1/work/data/complex/cust_order` customer, 
    UNNEST(customer.c_orders) _orders(c_order)
    ;  
-</code></pre></div>
-<p><strong>Example 2: One level lateral with an alias and explicit LATERAL</strong>  </p>
+</code></pre></div></div>
 
-<p>The following query contains the LATERAL keyword with a subquery that selects all the columns (SELECT *) from the table produced by the UNNEST relational operator. The table produced by UNNEST is aliased as _orders(c_order). The subquery result is a table aliased as t_orders. Drill performs the lateral join on the table that results from the subquery (t_orders). The query produces the same query plan as the previous example (Example 1) where LATERAL was inferred.  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT 
+<p><strong>Example 2: One level lateral with an alias and explicit LATERAL</strong></p>
+
+<p>The following query contains the LATERAL keyword with a subquery that selects all the columns (SELECT *) from the table produced by the UNNEST relational operator. The table produced by UNNEST is aliased as _orders(c_order). The subquery result is a table aliased as t_orders. Drill performs the lateral join on the table that results from the subquery (t_orders). The query produces the same query plan as the previous example (Example 1) where LATERAL was inferred.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT 
      customer.c_name, customer.c_address, t_orders.c_order.o_orderkey, t_orders.c_order.o_totalprice
    FROM 
      dfs.`/Users/user1/work/data/complex/cust_order` customer, 
@@ -1626,17 +1689,19 @@ tableReference:
    SELECT * from UNNEST(customer.c_orders) _orders(c_order)
    ) t_orders
    ;  
-</code></pre></div>
-<p><strong>Example 3: Multi-level lateral with alias</strong>  </p>
+</code></pre></div></div>
 
-<p>A multi-level lateral is a nested lateral query. When a query contains nested laterals, you must use aliases for the tables generated by the UNNEST relational operator. If you do not include aliases, the query parser cannot discern between table and column names and returns parsing errors. </p>
+<p><strong>Example 3: Multi-level lateral with alias</strong></p>
+
+<p>A multi-level lateral is a nested lateral query. When a query contains nested laterals, you must use aliases for the tables generated by the UNNEST relational operator. If you do not include aliases, the query parser cannot discern between table and column names and returns parsing errors.</p>
 
 <p>In the following query, the first level UNNEST (line 8) that corresponds to the first level LATERAL (line 5) produces a table with a single column that is aliased as _order(c_order). Since c_order is a map, the select clause in the corresponding subquery (line 7) projects only the required fields. As a result, the subquery produces a table that is aliased as t_orders(orderkey, orderamt, lineitems).</p>
 
-<p>The table t_orders is then processed by the second level LATERAL (line 10) and the corresponding second level UNNEST (line 13) will unnest the field t_orders.lineitems. The second level lateral subquery produces a table aliased as t_items. </p>
+<p>The table t_orders is then processed by the second level LATERAL (line 10) and the corresponding second level UNNEST (line 13) will unnest the field t_orders.lineitems. The second level lateral subquery produces a table aliased as t_items.</p>
 
 <p>Note that the SELECT in the outer query can now refer to the tables t_orders and t_items.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">    1: SELECT 
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    1: SELECT 
     2:   customer.c_name, customer.c_address, t_orders.orderkey, t_orders.orderamt, t_items.item.l_partkey, t_items.item.l_linenumber 
     3: FROM 
     4:   dfs.`/Users/pchandra/work/data/complex/cust_order` customer, 
@@ -1651,12 +1716,14 @@ tableReference:
    13:      FROM UNNEST(t_orders.lineitems) AS _items(item) 
    14:    ) t_items
    15: ;  
-</code></pre></div>
-<p><strong>Example 4: One level lateral with aggregation</strong>  </p>
+</code></pre></div></div>
+
+<p><strong>Example 4: One level lateral with aggregation</strong></p>
 
 <p>For every customer, the following query returns the number of orders for each priority level.
 The subquery that corresponds to the lateral, aggregates the order count, grouped by the priority, in the table _orders(c_order) produced by UNNEST.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT 
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT 
      customer.c_name, customer.c_address, t_orders.o_orderCount, t_orders.o_orderpriority
    FROM 
      dfs.`/Users/user1/work/data/complex/cust_order` customer, 
@@ -1664,17 +1731,19 @@ The subquery that corresponds to the lateral, aggregates the order count, groupe
       select count(_orders.c_order.o_orderkey) as o_orderCount, _orders.c_order.o_orderpriority as o_orderpriority from UNNEST(customer.c_orders) _orders(c_order) group by _orders.c_order.o_orderpriority
      ) t_orders
    ;  
-</code></pre></div>
+</code></pre></div></div>
+
 <h3 id="flatten-vs-lateral-and-unnest-queries">FLATTEN vs LATERAL and UNNEST Queries</h3>
 
-<p>Each of the following examples shows a query written with the FLATTEN function and also written with a lateral join and UNNEST relational operator, which performs like a table function. These queries demonstrate how to use LATERAL and UNNEST instead of FLATTEN to simplify the writing of such queries.   </p>
+<p>Each of the following examples shows a query written with the FLATTEN function and also written with a lateral join and UNNEST relational operator, which performs like a table function. These queries demonstrate how to use LATERAL and UNNEST instead of FLATTEN to simplify the writing of such queries.</p>
 
-<p><strong>Example 1</strong> </p>
+<p><strong>Example 1</strong></p>
 
-<p>The queries in this example return the order total for the top 50 customers.  </p>
+<p>The queries in this example return the order total for the top 50 customers.</p>
 
-<p><em>FLATTEN</em>  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT l.c_custkey, l.c_name, r.orderkey, 
+<p><em>FLATTEN</em></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT l.c_custkey, l.c_name, r.orderkey, 
    SUM(r.totalprice) sum_order 
    FROM customer l 
    INNER JOIN (SELECT g.custkey custkey, g.name, g.orderkey, g.totalprice totalprice 
@@ -1688,22 +1757,26 @@ The subquery that corresponds to the lateral, aggregates the order count, groupe
    GROUP BY l.c_custkey, l.c_name, r.orderkey 
    ORDER BY sum_order 
    LIMIT 50;  
-</code></pre></div>
-<p><em>LATERAL and UNNEST</em>   </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT customer.c_custkey, customer.c_name, orders.o_orderkey, sum(orders.o_totalprice) total_spending from customer, 
+</code></pre></div></div>
+
+<p><em>LATERAL and UNNEST</em></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT customer.c_custkey, customer.c_name, orders.o_orderkey, sum(orders.o_totalprice) total_spending from customer, 
    LATERAL (SELECT t.o.o_orderkey o_orderkey, t.o.o_totalprice o_totalprice 
    FROM
    UNNEST(customer.c_orders) t(o)) orders 
    GROUP BY customer.c_custkey, customer.c_name, orders.o_orderkey 
    ORDER BY total_spending
    LIMIT 50;  
-</code></pre></div>
-<p><strong>Example 2</strong>  </p>
+</code></pre></div></div>
 
-<p>The queries in this example return the first 2000 orders of the top 50 customers for orders greater than one thousand dollars. </p>
+<p><strong>Example 2</strong></p>
 
-<p><em>FLATTEN</em>   </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT l.c_custkey, l.c_name, r.orderkey, r.totalprice 
+<p>The queries in this example return the first 2000 orders of the top 50 customers for orders greater than one thousand dollars.</p>
+
+<p><em>FLATTEN</em></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT l.c_custkey, l.c_name, r.orderkey, r.totalprice 
    FROM customer l 
    LEFT OUTER JOIN (SELECT g.custkey custkey, g.name, g.orderkey, g.totalprice totalprice 
    FROM (SELECT row_number() OVER(PARTITION BY c_custkey) 
@@ -1717,9 +1790,11 @@ The subquery that corresponds to the lateral, aggregates the order count, groupe
    ON (l.c_custkey = r.custkey) 
    ORDER BY l.c_custkey, r.totalprice 
    LIMIT 50;
-</code></pre></div>
-<p><em>LATERAL and UNNEST</em>   </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT customer.c_custkey, customer.c_name, orders.o_orderkey, orders.o_totalprice 
+</code></pre></div></div>
+
+<p><em>LATERAL and UNNEST</em></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT customer.c_custkey, customer.c_name, orders.o_orderkey, orders.o_totalprice 
    FROM customer 
    LEFT JOIN LATERAL (SELECT t.o.o_orderkey o_orderkey, t.o.o_totalprice o_totalprice 
    FROM
@@ -1727,7 +1802,9 @@ The subquery that corresponds to the lateral, aggregates the order count, groupe
    WHERE t.o.o_totalprice &gt; 1000 LIMIT 2000) orders ON TRUE
    ORDER BY c_custkey, orders.o_totalprice
    LIMIT 50;  
-</code></pre></div>
+</code></pre></div></div>
+
+
     
       
         <div class="doc-nav">
@@ -1744,7 +1821,7 @@ The subquery that corresponds to the lateral, aggregates the order count, groupe
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>

@@ -294,8 +294,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
@@ -459,10 +457,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
             
           
@@ -487,10 +481,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
             
           
@@ -499,19 +489,15 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
           </ul>
@@ -886,6 +872,12 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/cryptography-functions/">Cryptography Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
             </ul>
             
           
@@ -1043,6 +1035,10 @@
             
           
             
+              <li class="toctree-l2"><a class="reference internal" href="/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
               <li class="toctree-l2"><a class="reference internal" href="/docs/json-data-model/">JSON Data Model</a></li>
             
           
@@ -1052,6 +1048,38 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
           </ul>
@@ -1169,6 +1197,10 @@
         
           <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
           <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
@@ -1337,9 +1369,9 @@
 
     </div>
 
-     Nov 2, 2018
-
-    <link href="/css/docpage.css" rel="stylesheet" type="text/css">
+    <!-- jt: we don't need to display a last-modified date on each page to users
+     Dec 10, 2020
+    --> 
 
     <div class="int_text" align="left">
       
@@ -1347,58 +1379,63 @@
 
 <h2 id="syntax">Syntax</h2>
 
-<p>The SELECT list supports the following syntax:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT  [ DISTINCT ] COLUMNS[n] | * | expression [ AS column_alias ] [, ...]  
-</code></pre></div>
+<p>The SELECT list supports the following syntax:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT  [ DISTINCT ] COLUMNS[n] | * | expression [ AS column_alias ] [, ...]  
+</code></pre></div></div>
+
 <h2 id="parameters">Parameters</h2>
+<p>COLUMNS[<em>n</em>]<br />
+Array columns are used for reading data from text files. Use the columns[<em>n</em>] syntax in the SELECT list to return rows from text files in a columnar format. This syntax uses a zero-based index, so the first column is column 0.</p>
 
-<p>COLUMNS[<em>n</em>]<br>
-Array columns are used for reading data from text files. Use the columns[<em>n</em>] syntax in the SELECT list to return rows from text files in a columnar format. This syntax uses a zero-based index, so the first column is column 0.  </p>
-
-<p>DISTINCT<br>
-An option that eliminates duplicate rows from the result set, based on matching values in one or more columns.
-* (asterisk)
-Returns the entire contents of the table or file.</p>
-
-<p><em>expression</em><br>
-An expression formed from one or more columns that exist in the tables, files, or directories referenced by the query. An expression can contain functions and aliases that define select list entries. You can also use a scalar aggregate subquery as the expression in the SELECT list. </p>
-
-<p><em>scalar aggregate subquery</em><br>
-A scalar aggregate subquery is a regular SELECT query in parentheses that returns exactly one column value from one row. The returned value is used in the outer query. The scalar aggregate subquery must include an aggregate function, such as MAX(), AVG(), or COUNT(). If the subquery returns zero rows, the value of the subquery expression is null. If it returns more than one row, Drill returns an error.  Scalar subqueries are not valid expressions in the following cases:  </p>
-
+<p>DISTINCT<br />
+An option that eliminates duplicate rows from the result set, based on matching values in one or more columns.</p>
 <ul>
-<li>As default values for expressions</li>
-<li>In GROUP BY and HAVING clauses<br></li>
+  <li>(asterisk)
+Returns the entire contents of the table or file.</li>
 </ul>
 
-<p>AS <em>column_alias</em><br>
-A temporary name for a column in the final result set. The AS keyword is optional.  </p>
+<p><em>expression</em><br />
+An expression formed from one or more columns that exist in the tables, files, or directories referenced by the query. An expression can contain functions and aliases that define select list entries. You can also use a scalar aggregate subquery as the expression in the SELECT list.</p>
+
+<p><em>scalar aggregate subquery</em><br />
+A scalar aggregate subquery is a regular SELECT query in parentheses that returns exactly one column value from one row. The returned value is used in the outer query. The scalar aggregate subquery must include an aggregate function, such as MAX(), AVG(), or COUNT(). If the subquery returns zero rows, the value of the subquery expression is null. If it returns more than one row, Drill returns an error.  Scalar subqueries are not valid expressions in the following cases:</p>
+
+<ul>
+  <li>As default values for expressions</li>
+  <li>In GROUP BY and HAVING clauses</li>
+</ul>
+
+<p>AS <em>column_alias</em><br />
+A temporary name for a column in the final result set. The AS keyword is optional.</p>
 
 <h2 id="examples">Examples</h2>
+<p>The following example shows a query with a scalar subquery expression:</p>
 
-<p>The following example shows a query with a scalar subquery expression:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT a1, (SELECT MAX(a2) FROM t2) AS max_a2 FROM t1;       
-   +-----+-------+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT a1, (SELECT MAX(a2) FROM t2) AS max_a2 FROM t1;       
+   |------|--------|
    | a1   | max_a2 |
-   +-----+-------+
-   | 1    | 9 |
-   | 2    | 9 |
-   | 3    | 9 |
-   | 4    | 9 |
-   | 5    | 9 |
-   | 6    | 9 |
-   | 7    | 9 |
-   | null | 9 |
-   | 9    | 9 |
-   | 10   | 9 |
-   +-----+-------+
+   |------|--------|
+   | 1    | 9      |
+   | 2    | 9      |
+   | 3    | 9      |
+   | 4    | 9      |
+   | 5    | 9      |
+   | 6    | 9      |
+   | 7    | 9      |
+   | null | 9      |
+   | 9    | 9      |
+   | 10   | 9      |
+   |------|--------|
    10 rows selected (0.244 seconds)
-</code></pre></div>
-<p>The following example shows a query with array columns that return rows in column format for easier readability:  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   SELECT COLUMNS[0], COLUMNS[1] FROM dfs.`/Users/brumsby/drill/plays.csv`;       
-   +------------+------------------------+
+</code></pre></div></div>
+
+<p>The following example shows a query with array columns that return rows in column format for easier readability:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT COLUMNS[0], COLUMNS[1] FROM dfs.`/Users/brumsby/drill/plays.csv`;       
+   |------------|------------------------|
    |   EXPR$0   |         EXPR$1         |
-   +------------+------------------------+
+   |------------|------------------------|
    | 1599       | As You Like It         |
    | 1601       | Twelfth Night          |
    | 1594       | Comedy of Errors       |
@@ -1406,9 +1443,11 @@ A temporary name for a column in the final result set. The AS keyword is optiona
    | 1596       | The Merchant of Venice |
    | 1610       | The Tempest            |
    | 1599       | Hamlet                 |
-   +------------+------------------------+
+   |------------|------------------------|
    7 rows selected (0.137 seconds)
-</code></pre></div>
+</code></pre></div></div>
+
+
     
       
         <div class="doc-nav">
@@ -1425,7 +1464,7 @@ A temporary name for a column in the final result set. The AS keyword is optiona
   <p class="push"></p>
 <div id="footer" class="mw">
 <div class="wrapper">
-Copyright © 2012-2014 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
 Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
 </div>
 </div>
