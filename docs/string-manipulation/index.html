@@ -1370,7 +1370,7 @@
     </div>
 
     <!-- jt: we don't need to display a last-modified date on each page to users
-     Dec 10, 2020
+     Dec 15, 2020
     --> 
 
     <div class="int_text" align="left">
@@ -1462,6 +1462,10 @@
       <td>INTEGER</td>
     </tr>
     <tr>
+      <td><a href="/docs/string-manipulation/#split_part">SPLIT_PART</a></td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
       <td><a href="/docs/string-manipulation/#strpos">STRPOS</a></td>
       <td>INTEGER</td>
     </tr>
@@ -1487,7 +1491,7 @@
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
   <p class="last">
-As with indexes througout SQL, indexes into character strings are 1-based.
+As is the case for indexes througout SQL, indexes into character strings are 1-based.
   </p>
 </div>
 
@@ -1997,8 +2001,30 @@ SELECT RTRIM('1.0 Apache Tomcat 1.0', 'Drill 1.0') from (VALUES(1));
 |------------------------------------|
 </code></pre></div></div>
 
+<h2 id="split_part">SPLIT_PART</h2>
+<p>Return the string part at <em>index</em> after splitting the input string using the specified delimiter.</p>
+
+<h3 id="split_part-syntax">SPLIT_PART Syntax</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SPLIT_PART(string, delimiter, index)
+</code></pre></div></div>
+
+<h3 id="split_part-usage-notes">SPLIT_PART Usage Notes</h3>
+<p>The <em>delimiter</em> string may be multiple characters long.  The <em>index</em> must be a positive integer.</p>
+
+<h3 id="split_part-examples">SPLIT_PART Examples</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT split_part('The | quick | brown | fox | jumps', ' | ', 4);
+
+|--------|
+| EXPR$0 |
+|--------|
+| fox    |
+|--------|
+</code></pre></div></div>
+
 <h2 id="strpos">STRPOS</h2>
-<p>Returns the location of the first occurrence of a substring of the input string, or 0 if the substring does not occur.</p>
+<p>Returns the location of the first occurrence of a substring of the input
+string, or 0 if the substring does not occur.</p>
 
 <h3 id="strpos-syntax">STRPOS Syntax</h3>
 
@@ -2008,11 +2034,11 @@ SELECT RTRIM('1.0 Apache Tomcat 1.0', 'Drill 1.0') from (VALUES(1));
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT STRPOS('Apache Drill', 'Drill') FROM (VALUES(1));
 
-|------------|
-|   EXPR$0   |
-|------------|
-| 8          |
-|------------|
+|--------|
+| EXPR$0 |
+|--------|
+| 8      |
+|--------|
 1 row selected (0.22 seconds)
 </code></pre></div></div>
 

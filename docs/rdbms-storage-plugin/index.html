@@ -1368,7 +1368,7 @@
     </div>
 
     <!-- jt: we don't need to display a last-modified date on each page to users
-     Dec 10, 2020
+     Dec 11, 2020
     --> 
 
     <div class="int_text" align="left">
@@ -1413,34 +1413,26 @@ section for the example of usage.</p>
 <ol>
   <li><a href="/docs/starting-drill-on-linux-and-mac-os-x/">Start the Drill shell</a>.</li>
   <li><a href="/docs/starting-the-web-console/">Start the Web UI</a>.</li>
-  <li>
-    <p>On the Storage tab, enter a name in <strong>New Storage Plugin</strong>. For example, enter <code class="language-plaintext highlighter-rouge">myplugin</code>.
-Each configuration registered with Drill must have a distinct name. Names are case-sensitive.</p>
+  <li>On the Storage tab, enter a name in <strong>New Storage Plugin</strong>. For example, enter <code class="language-plaintext highlighter-rouge">myplugin</code>.
+Each configuration registered with Drill must have a distinct name. Names are case-sensitive.</li>
+  <li>Click <strong>Create</strong>.</li>
+  <li>In Configuration, set the required properties using JSON formatting as shown in the following example. Change the properties to match your environment.
+    <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"driver"</span><span class="p">:</span><span class="w"> </span><span class="s2">"com.mysql.jdbc.Driver"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc:mysql://localhost:3306"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"root"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mypassword"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">  
+</span></code></pre></div>    </div>
+  </li>
+</ol>
 
-    <div class="admonition note">
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">The JDBC URL may differ depending on your installation and configuration. See the example configurations below for examples.  </p>
 </div>
-  </li>
-</ol>
-<p class="first admonition-title">Note</p>
-<p class="last">The URL differs depending on your installation and configuration. See the example configurations below for examples.  </p>
-<p>&lt;/div&gt;</p>
-<ol>
-  <li>Click <strong>Create</strong>.</li>
-  <li>
-    <p>In Configuration, set the required properties using JSON formatting as shown in the following example. Change the properties to match your environment.</p>
-
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> {
-   "type": "jdbc",
-   "driver": "com.mysql.jdbc.Driver",
-   "url": "jdbc:mysql://localhost:3306",
-   "username": "root",
-   "password": "mypassword",
-   "enabled": true
- }  
-</code></pre></div>    </div>
-  </li>
-  <li>Click <strong>Create</strong>.</li>
-</ol>
 
 <p>You can use the performance_schema database, which is installed with MySQL to query your MySQL performance_schema database. Include the names of the storage plugin configuration, the database, and table in dot notation the FROM clause as follows:</p>
 
@@ -1461,13 +1453,13 @@ Each configuration registered with Drill must have a distinct name. Names are ca
 
 <p>Download and install Oracle’s Thin <a href="http://www.oracle.com/technetwork/database/features/jdbc/default-2280470.html">ojdbc7.12.1.0.2.jar</a> driver and copy it to all nodes in your cluster.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-  type: "jdbc",
-  enabled: true,
-  driver: "oracle.jdbc.OracleDriver",
-  url: "jdbc:oracle:thin:user/password@1.2.3.4:1521/ORCL"
-}
-</code></pre></div></div>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"driver:"</span><span class="w"> </span><span class="s2">"oracle.jdbc.OracleDriver"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"url:"</span><span class="w"> </span><span class="s2">"jdbc:oracle:thin:user/password@1.2.3.4:1521/ORCL"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
 
 <h3 id="example-sql-server-configuration">Example SQL Server Configuration</h3>
 
@@ -1477,30 +1469,28 @@ Each configuration registered with Drill must have a distinct name. Names are ca
   <p class="first admonition-title">Note</p>
   <p class="last">You'll need to provide a database name as part of your JDBC connection string for Drill to correctly expose MSSQL schemas.  </p>
 </div>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-  type: "jdbc",
-  enabled: true,
-  driver: "com.microsoft.sqlserver.jdbc.SQLServerDriver",
-  url: "jdbc:sqlserver://1.2.3.4:1433;databaseName=mydatabase",
-  username: "user",
-  password: "password"
-}
-</code></pre></div></div>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"driver"</span><span class="p">:</span><span class="w"> </span><span class="s2">"com.microsoft.sqlserver.jdbc.SQLServerDriver"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc:sqlserver://1.2.3.4:1433;databaseName=mydatabase"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"password"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
 
 <h3 id="example-mysql-configuration">Example MySQL Configuration</h3>
 
 <p>For MySQL, Drill has been tested with MySQL’s <a href="http://dev.mysql.com/downloads/connector/j/">mysql-connector-java-5.1.37-bin.jar</a> driver. Copy this to all nodes.</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-  type: "jdbc",
-  enabled: true,
-  driver: "com.mysql.jdbc.Driver",
-  url: "jdbc:mysql://1.2.3.4",
-  username: "user",
-  password: "password"
-}  
-</code></pre></div></div>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"driver"</span><span class="p">:</span><span class="w"> </span><span class="s2">"com.mysql.jdbc.Driver"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc:mysql://1.2.3.4"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"password"</span><span class="w">
+</span><span class="p">}</span><span class="w">  
+</span></code></pre></div></div>
 
 <h3 id="example-postgres-configuration">Example Postgres Configuration</h3>
 
@@ -1512,61 +1502,60 @@ Each configuration registered with Drill must have a distinct name. Names are ca
   <p class="last">You'll need to provide a database name as part of your JDBC connection string for Drill to correctly expose Postgres tables.  </p>
 </div>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-  type: "jdbc",
-  enabled: true,
-  driver: "org.postgresql.Driver",
-  url: "jdbc:postgresql://1.2.3.4/mydatabase",
-  username: "user",
-  password: "password"
-}  
-</code></pre></div></div>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"driver"</span><span class="p">:</span><span class="w"> </span><span class="s2">"org.postgresql.Driver"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc:postgresql://1.2.3.4/mydatabase"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"password"</span><span class="w">
+</span><span class="p">}</span><span class="w">  
+</span></code></pre></div></div>
 
 <p>You may need to qualify a table name with a schema name for Drill to return data. For example, when querying a table named ips, you must issue the query against public.ips, as shown in the following example:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; use pgdb;          
-   |-------|-----------------------------------|
-   |  ok   |          	summary          	|
-   |-------|-----------------------------------|
-   | true  | Default schema changed to [pgdb]  |
-   |-------|-----------------------------------|
+   |------|----------------------------------|
+   | ok   | summary                          |
+   |------|----------------------------------|
+   | true | Default schema changed to [pgdb] |
+   |------|----------------------------------|
     
    0: jdbc:drill:zk=local&gt; show tables;          
-   |---------------|--------------------------|
-   | TABLE_SCHEMA  |        TABLE_NAME    	|
-   |---------------|--------------------------|
-   | pgdb.test 	| ips                  	|
-   | pgdb.test 	| pg_aggregate         	|
-   | pgdb.test 	| pg_am                	| 
-   …  
+   |--------------|--------------|
+   | TABLE_SCHEMA | TABLE_NAME   |
+   |--------------|--------------|
+   | pgdb.test    | ips          |
+   | pgdb.test    | pg_aggregate |
+   | pgdb.test    | pg_am        |
+   |--------------|--------------|
 
    0: jdbc:drill:zk=local&gt; select * from public.ips;          
-   |-------|----------|
-   | ipid  | ipv4dot  |
-   |-------|----------|
-   | 1 	| 1.2.3.4  |
-   | 2 	| 1.2.3.5  |
-   |-------|----------|
+   |------|---------|
+   | ipid | ipv4dot |
+   |------|---------|
+   | 1    | 1.2.3.4 |
+   | 2    | 1.2.3.5 |
+   |------|---------|
 </code></pre></div></div>
 
 <h3 id="example-of-postgres-configuration-with-sourceparameters-configuration-property">Example of Postgres Configuration with <code class="language-plaintext highlighter-rouge">sourceParameters</code> configuration property</h3>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
-  type: "jdbc",
-  enabled: true,
-  driver: "org.postgresql.Driver",
-  url: "jdbc:postgresql://1.2.3.4/mydatabase?defaultRowFetchSize=2",
-  username: "user",
-  password: "password",
-  sourceParameters: {
-    "minimumIdle": 5,
-    "autoCommit": false,
-    "connectionTestQuery": "select version() as postgresql_version",
-    "dataSource.cachePrepStmts": true,
-    "dataSource.prepStmtCacheSize": 250
-  }
-}  
-</code></pre></div></div>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"driver"</span><span class="p">:</span><span class="w"> </span><span class="s2">"org.postgresql.Driver"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc:postgresql://1.2.3.4/mydatabase?defaultRowFetchSize=2"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"password"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"sourceParameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"minimumIdle"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"autoCommit"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"connectionTestQuery"</span><span class="p">:</span><span class="w"> </span><span class="s2">"select version() as postgresql_version"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"dataSource.cachePrepStmts"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"dataSource.prepStmtCacheSize"</span><span class="p">:</span><span class="w"> </span><span class="mi">250</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">  
+</span></code></pre></div></div>
 
     
       
