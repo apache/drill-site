@@ -101,7 +101,9 @@
   </li>
   <li class='nav'><a href="/faq/">FAQ</a></li>
   <li class='nav'><a href="/blog/">Blog</a></li>
-  <li id="twitter-menu-item"><a href="https://twitter.com/apachedrill" title="apachedrill on twitter" target="_blank"><img src="/images/twitter_32_26_white.png" alt="twitter logo" align="center"></a> </li>
+  <li class="social-menu-item"><a href="https://twitter.com/apachedrill" title="apachedrill on twitter" target="_blank"><img src="/images/twitter_32_26_white.png" alt="twitter logo" align="center"></a> </li>
+  <li class="social-menu-item"><a href="https://apache-drill.slack.com/" title="Apache Drill Slack channels"
+      target="_blank"><img src="/images/slack-logo.svg" alt="Slack logo" align="center"></a> </li>
   <li class='search-bar'>
     <form id="drill-search-form">
       <input type="text" placeholder="Search Apache Drill" id="drill-search-term" />
@@ -500,6 +502,10 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/elasticsearch-plugin/">ElasticSearch Plugin</a></li>
+            
+          
           </ul>
         
       
@@ -699,6 +705,8 @@
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-drill-metastore/">Using Drill Metastore</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/drill-iceberg-metastore/">Drill Iceberg Metastore</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/rdbms-metastore/">RDBMS Metastore</a></li>
               
             </ul>
             
@@ -1082,6 +1090,10 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/xml-format-plugin/">XML Format Plugin</a></li>
+            
+          
           </ul>
         
       
@@ -1368,7 +1380,7 @@
     </div>
 
     <!-- jt: we don't need to display a last-modified date on each page to users
-     Dec 10, 2020
+    
     --> 
 
     <div class="int_text" align="left">
@@ -1413,26 +1425,29 @@ to read, but not write, Mongo data using Drill. Attempting to write data back to
   </li>
   <li>In the <a href="/docs/plugin-configuration-basics/#using-the-drill-web-console">Drill Web UI</a>, select the <strong>Storage</strong> tab.</li>
   <li>Under Disabled Storage Plugins, select <strong>Update</strong> to choose the <code class="language-plaintext highlighter-rouge">mongo</code> storage plugin configuration.</li>
-  <li>
-    <p>In the Configuration window, take a look at the default configuration:</p>
-
-    <p>{
-     “type”: “mongo”,
-     “connection”: “mongodb://localhost:27017/”,
-     “enabled”: false
-   }</p>
-
-    <div class="admonition note">
-</div>
+  <li>In the Configuration window, take a look at the default configuration:
+    <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">   </span><span class="p">{</span><span class="w">
+     </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mongo"</span><span class="p">,</span><span class="w">
+     </span><span class="nl">"connection"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mongodb://localhost:27017/"</span><span class="p">,</span><span class="w">
+     </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+   </span><span class="p">}</span><span class="w">
+</span></code></pre></div>    </div>
   </li>
 </ol>
-<p class="first admonition-title">Note</p>
-<p class="last">27017 is the default port for `mongodb` instances.  </p>
-<p>&lt;/div&gt; 
-     &lt;div class="admonition note"&gt;</p>
-<p class="first admonition-title">Note</p>
-<p class="last">In some cases you will need an authentication to perform certain `mongodb` queries. You can add login and password directly to connection URL: 'mongodb://root:password@localhost:27017/'  </p>
-<p>&lt;/div&gt;</p>
+
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">27017 is the default port for `mongodb` instances.  </p>
+</div>
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">In some cases you will need an authentication to perform certain `mongodb` queries. You can add login and password directly to connection URL: 'mongodb://root:password@localhost:27017/'.  </p>
+</div>
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">See more info [Connection String URI Format](https://docs.mongodb.com/v3.0/reference/connection-string/)  </p>
+</div>
+
 <ol>
   <li>Click <strong>Enable</strong> to enable the storage plugin.</li>
 </ol>

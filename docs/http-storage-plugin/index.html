@@ -101,7 +101,9 @@
   </li>
   <li class='nav'><a href="/faq/">FAQ</a></li>
   <li class='nav'><a href="/blog/">Blog</a></li>
-  <li id="twitter-menu-item"><a href="https://twitter.com/apachedrill" title="apachedrill on twitter" target="_blank"><img src="/images/twitter_32_26_white.png" alt="twitter logo" align="center"></a> </li>
+  <li class="social-menu-item"><a href="https://twitter.com/apachedrill" title="apachedrill on twitter" target="_blank"><img src="/images/twitter_32_26_white.png" alt="twitter logo" align="center"></a> </li>
+  <li class="social-menu-item"><a href="https://apache-drill.slack.com/" title="Apache Drill Slack channels"
+      target="_blank"><img src="/images/slack-logo.svg" alt="Slack logo" align="center"></a> </li>
   <li class='search-bar'>
     <form id="drill-search-form">
       <input type="text" placeholder="Search Apache Drill" id="drill-search-term" />
@@ -500,6 +502,10 @@
               <li class="toctree-l2 current"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/elasticsearch-plugin/">ElasticSearch Plugin</a></li>
+            
+          
           </ul>
         
       
@@ -699,6 +705,8 @@
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-drill-metastore/">Using Drill Metastore</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/drill-iceberg-metastore/">Drill Iceberg Metastore</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/rdbms-metastore/">RDBMS Metastore</a></li>
               
             </ul>
             
@@ -1082,6 +1090,10 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/xml-format-plugin/">XML Format Plugin</a></li>
+            
+          
           </ul>
         
       
@@ -1368,7 +1380,7 @@
     </div>
 
     <!-- jt: we don't need to display a last-modified date on each page to users
-     Dec 10, 2020
+    
     --> 
 
     <div class="int_text" align="left">
@@ -1614,6 +1626,13 @@ Drill will ignore all JSON content outside of the data path.</p>
 as that shown above. Drill assumes that the server will uses HTTP status codes to
 indicate a bad request or other error.</p>
 
+<h3 id="input-type">Input Type</h3>
+
+<p>The REST plugin accepts three different types of input: <code class="language-plaintext highlighter-rouge">json</code>, <code class="language-plaintext highlighter-rouge">csv</code> and <code class="language-plaintext highlighter-rouge">xml</code>.  The default is
+<code class="language-plaintext highlighter-rouge">json</code>.  If you are using <code class="language-plaintext highlighter-rouge">XML</code> as a data type, there is an additional configuration option called
+<code class="language-plaintext highlighter-rouge">xmlDataLevel</code> which reduces the level of unneeded nesting found in XML files.  You can find more
+information in the documentation for Drill’s XML format plugin.</p>
+
 <h4 id="authorization">Authorization</h4>
 
 <p><code class="language-plaintext highlighter-rouge">authType</code>: If your API requires authentication, specify the authentication
@@ -1758,7 +1777,8 @@ as <code class="language-plaintext highlighter-rouge">direct</code>.</p>
       </span><span class="nl">"authType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"none"</span><span class="p">,</span><span class="w">
       </span><span class="nl">"userName"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
       </span><span class="nl">"password"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"postBody"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+      </span><span class="nl">"postBody"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"inputType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"json"</span><span class="w">
     </span><span class="p">}</span><span class="w">
   </span><span class="p">}</span><span class="w">
 
@@ -1891,7 +1911,7 @@ supported). Join pushdown has the potential to improve performance if you use th
 joined to another table.</p>
   </li>
   <li>
-    <p>This plugin only reads JSON and CSV responses.</p>
+    <p>This plugin only reads JSON, CSV and XML response data.</p>
   </li>
   <li>
     <p><code class="language-plaintext highlighter-rouge">POST</code> bodies can only be in the format of key/value pairs. Some APIs accept
@@ -1948,7 +1968,7 @@ to ignore the extra content.</p>
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/druid-storage-plugin/">← Druid Storage Plugin</a></span><span class="next-toc"><a href="/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces →</a></span>
+  <span class="previous-toc"><a href="/docs/druid-storage-plugin/">← Druid Storage Plugin</a></span><span class="next-toc"><a href="/docs/elasticsearch-plugin/">ElasticSearch Plugin →</a></span>
 </div>
 
     

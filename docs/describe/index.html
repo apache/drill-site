@@ -101,7 +101,9 @@
   </li>
   <li class='nav'><a href="/faq/">FAQ</a></li>
   <li class='nav'><a href="/blog/">Blog</a></li>
-  <li id="twitter-menu-item"><a href="https://twitter.com/apachedrill" title="apachedrill on twitter" target="_blank"><img src="/images/twitter_32_26_white.png" alt="twitter logo" align="center"></a> </li>
+  <li class="social-menu-item"><a href="https://twitter.com/apachedrill" title="apachedrill on twitter" target="_blank"><img src="/images/twitter_32_26_white.png" alt="twitter logo" align="center"></a> </li>
+  <li class="social-menu-item"><a href="https://apache-drill.slack.com/" title="Apache Drill Slack channels"
+      target="_blank"><img src="/images/slack-logo.svg" alt="Slack logo" align="center"></a> </li>
   <li class='search-bar'>
     <form id="drill-search-form">
       <input type="text" placeholder="Search Apache Drill" id="drill-search-term" />
@@ -500,6 +502,10 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/elasticsearch-plugin/">ElasticSearch Plugin</a></li>
+            
+          
           </ul>
         
       
@@ -699,6 +705,8 @@
                 <li class="toctree-l3"><a class="reference internal" href="/docs/using-drill-metastore/">Using Drill Metastore</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/drill-iceberg-metastore/">Drill Iceberg Metastore</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/docs/rdbms-metastore/">RDBMS Metastore</a></li>
               
             </ul>
             
@@ -1082,6 +1090,10 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/xml-format-plugin/">XML Format Plugin</a></li>
+            
+          
           </ul>
         
       
@@ -1370,7 +1382,7 @@
     </div>
 
     <!-- jt: we don't need to display a last-modified date on each page to users
-     Dec 10, 2020
+    
     --> 
 
     <div class="int_text" align="left">
@@ -1380,10 +1392,9 @@
 <h2 id="syntax">Syntax</h2>
 
 <p>The DESCRIBE command supports the following syntax:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   DESCRIBE [workspace.]table_name|view_name [column_name]
-   DESCRIBE SCHEMA|DATABASE &lt;name&gt;[.workspace]
-   DESCRIBE (query)
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">DESCRIBE</span> <span class="p">[</span><span class="n">workspace</span><span class="p">.]</span><span class="k">table_name</span><span class="o">|</span><span class="n">view_name</span> <span class="p">[</span><span class="k">column_name</span><span class="p">]</span>
+<span class="k">DESCRIBE</span> <span class="k">SCHEMA</span><span class="o">|</span><span class="k">DATABASE</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">[.</span><span class="n">workspace</span><span class="p">]</span>
+<span class="k">DESCRIBE</span> <span class="p">(</span><span class="n">query</span><span class="p">)</span>
 </code></pre></div></div>
 
 <h2 id="parameters">Parameters</h2>
@@ -1438,105 +1449,98 @@ and HBase tables.</p>
 <p>Complete the following steps to use the DESCRIBE command:</p>
 
 <ol>
-  <li>
-    <p>Issue the USE command to switch to a particular schema.</p>
-
-    <p>0: jdbc:drill:zk=drilldemo:5181&gt; use hive;
-   |——|———————————-|
-   | ok   | summary                          |
-   |——|———————————-|
-   | true | Default schema changed to ‘hive’ |
-   |——|———————————-|
-   1 row selected (0.025 seconds)</p>
-  </li>
-  <li>
-    <p>Issue the SHOW TABLES command to see the existing tables in the schema.</p>
-
-    <p>0: jdbc:drill:zk=drilldemo:5181&gt; show tables;
-   |————–|————|
-   | TABLE_SCHEMA | TABLE_NAME |
-   |————–|————|
-   | hive.default | orders     |
-   | hive.default | products   |
-   |————–|————|
-   2 rows selected (0.438 seconds)</p>
-  </li>
-  <li>
-    <p>Issue the DESCRIBE command on a table.</p>
-
-    <p>0: jdbc:drill:zk=drilldemo:5181&gt; describe orders;
-   |————-|———–|————-|
-   | COLUMN_NAME | DATA_TYPE | IS_NULLABLE |
-   |————-|———–|————-|
-   | order_id    | BIGINT    | YES         |
-   | month       | VARCHAR   | YES         |
-   | purchdate   | TIMESTAMP | YES         |
-   | cust_id     | BIGINT    | YES         |
-   | state       | VARCHAR   | YES         |
-   | prod_id     | BIGINT    | YES         |
-   | order_total | INTEGER   | YES         |
-   |————-|———–|————-|
-   7 rows selected (0.64 seconds)</p>
-  </li>
-  <li>
-    <p>Issue the DESCRIBE command on a table in another schema from the current schema.</p>
-
-    <p>0: jdbc:drill:zk=drilldemo:5181&gt; describe hbase.customers;
-   |————-|———————–|————-|
-   | COLUMN_NAME | DATA_TYPE             | IS_NULLABLE |
-   |————-|———————–|————-|
-   | row_key     | ANY                   | NO          |
-   | address     | (VARCHAR(1), ANY) MAP | NO          |
-   | loyalty     | (VARCHAR(1), ANY) MAP | NO          |
-   | personal    | (VARCHAR(1), ANY) MAP | NO          |
-   |————-|———————–|————-|
-   4 rows selected (0.671 seconds)</p>
-  </li>
-  <li>
-    <p>Issue the DESCRIBE command on a view in another schema from the current schema.</p>
-
-    <p>0: jdbc:drill:zk=drilldemo:5181&gt; describe dfs.views.customers_vw;
-   |————-|———–|————-|
-   | COLUMN_NAME | DATA_TYPE | IS_NULLABLE |
-   |————-|———–|————-|
-   | cust_id     | BIGINT    | NO          |
-   | name        | VARCHAR   | NO          |
-   | address     | VARCHAR   | NO          |
-   | gender      | VARCHAR   | NO          |
-   | age         | VARCHAR   | NO          |
-   | agg_rev     | VARCHAR   | NO          |
-   | membership  | VARCHAR   | NO          |
-   |————-|———–|————-|
-   7 rows selected (0.403 seconds)</p>
-  </li>
-  <li>
-    <p>Issue the DESCRIBE SCHEMA command on <code class="language-plaintext highlighter-rouge">dfs.tmp</code> (the <code class="language-plaintext highlighter-rouge">dfs</code> schema and <code class="language-plaintext highlighter-rouge">tmp</code> workspace configured within the <code class="language-plaintext highlighter-rouge">dfs</code> schema) from the current schema.</p>
-
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 0: jdbc:drill:zk=drilldemo:5181&gt; describe schema dfs.tmp;  
-   
-       {
-         "type" : "file",
-         "enabled" : true,
-         "connection" : "file:///",
-         "config" : null,
-         "formats" : {
-           "psv" : {
-             "type" : "text",
-             "extensions" : [ "tbl" ],
-             "delimiter" : "|"
-           },
-           "csv" : {
-             "type" : "text",
-             "extensions" : [ "csv", "bcp" ],
-             "delimiter" : ","
-           },
-          ... 
-         },
-         "location" : "/tmp",
-         "writable" : true,
-         "defaultInputFormat" : null
-       }  
+  <li>Issue the USE command to switch to a particular schema.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=drilldemo:5181&gt; use hive;
+|------|----------------------------------|
+| ok   | summary                          |
+|------|----------------------------------|
+| true | Default schema changed to 'hive' |
+|------|----------------------------------|
+1 row selected (0.025 seconds)
 </code></pre></div>    </div>
+  </li>
+  <li>Issue the SHOW TABLES command to see the existing tables in the schema.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=drilldemo:5181&gt; show tables;
+|--------------|------------|
+| TABLE_SCHEMA | TABLE_NAME |
+|--------------|------------|
+| hive.default | orders     |
+| hive.default | products   |
+|--------------|------------|
+2 rows selected (0.438 seconds)
+</code></pre></div>    </div>
+  </li>
+  <li>Issue the DESCRIBE command on a table.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=drilldemo:5181&gt; describe orders;
+|-------------|-----------|-------------|
+| COLUMN_NAME | DATA_TYPE | IS_NULLABLE |
+|-------------|-----------|-------------|
+| order_id    | BIGINT    | YES         |
+| month       | VARCHAR   | YES         |
+| purchdate   | TIMESTAMP | YES         |
+| cust_id     | BIGINT    | YES         |
+| state       | VARCHAR   | YES         |
+| prod_id     | BIGINT    | YES         |
+| order_total | INTEGER   | YES         |
+|-------------|-----------|-------------|
+7 rows selected (0.64 seconds)
+</code></pre></div>    </div>
+  </li>
+  <li>Issue the DESCRIBE command on a table in another schema from the current schema.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=drilldemo:5181&gt; describe hbase.customers;
+|-------------|-----------------------|-------------|
+| COLUMN_NAME | DATA_TYPE             | IS_NULLABLE |
+|-------------|-----------------------|-------------|
+| row_key     | ANY                   | NO          |
+| address     | (VARCHAR(1), ANY) MAP | NO          |
+| loyalty     | (VARCHAR(1), ANY) MAP | NO          |
+| personal    | (VARCHAR(1), ANY) MAP | NO          |
+|-------------|-----------------------|-------------|
+4 rows selected (0.671 seconds)
+</code></pre></div>    </div>
+  </li>
+  <li>Issue the DESCRIBE command on a view in another schema from the current schema.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=drilldemo:5181&gt; describe dfs.views.customers_vw;
+|-------------|-----------|-------------|
+| COLUMN_NAME | DATA_TYPE | IS_NULLABLE |
+|-------------|-----------|-------------|
+| cust_id     | BIGINT    | NO          |
+| name        | VARCHAR   | NO          |
+| address     | VARCHAR   | NO          |
+| gender      | VARCHAR   | NO          |
+| age         | VARCHAR   | NO          |
+| agg_rev     | VARCHAR   | NO          |
+| membership  | VARCHAR   | NO          |
+|-------------|-----------|-------------|
+7 rows selected (0.403 seconds)  
+</code></pre></div>    </div>
+  </li>
+  <li>Issue the DESCRIBE SCHEMA command on <code class="language-plaintext highlighter-rouge">dfs.tmp</code> (the <code class="language-plaintext highlighter-rouge">dfs</code> schema and <code class="language-plaintext highlighter-rouge">tmp</code> workspace configured within the <code class="language-plaintext highlighter-rouge">dfs</code> schema) from the current schema.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=drilldemo:5181&gt; describe schema dfs.tmp;  
+</code></pre></div>    </div>
+    <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"file"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"enabled"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"connection"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"file:///"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"config"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"formats"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+ </span><span class="nl">"psv"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="nl">"type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"extensions"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"tbl"</span><span class="w"> </span><span class="p">],</span><span class="w">
+   </span><span class="nl">"delimiter"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"|"</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="nl">"csv"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="nl">"type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"extensions"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"csv"</span><span class="p">,</span><span class="w"> </span><span class="s2">"bcp"</span><span class="w"> </span><span class="p">],</span><span class="w">
+   </span><span class="nl">"delimiter"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">","</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+</span><span class="err">...</span><span class="w"> 
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"location"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"/tmp"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"writable"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"defaultInputFormat"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span><span class="p">}</span><span class="w">  
+</span></code></pre></div>    </div>
   </li>
 </ol>
 
