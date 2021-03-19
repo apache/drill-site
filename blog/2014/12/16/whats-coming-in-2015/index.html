@@ -49,45 +49,45 @@
     <a href="/docs/">Documentation</a>
     <ul>
       
-        <li><a href="/docs/getting-started/">Getting Started</a></li>
+        <li><a href="/docs/:slug/">Getting Started</a></li>
       
-        <li><a href="/docs/architecture/">Architecture</a></li>
+        <li><a href="/docs/:slug/">Architecture</a></li>
       
-        <li><a href="/docs/tutorials/">Tutorials</a></li>
+        <li><a href="/docs/:slug/">Tutorials</a></li>
       
-        <li><a href="/docs/drill-on-yarn/">Drill-on-YARN</a></li>
+        <li><a href="/docs/:slug/">Drill-on-YARN</a></li>
       
-        <li><a href="/docs/install-drill/">Install Drill</a></li>
+        <li><a href="/docs/:slug/">Install Drill</a></li>
       
-        <li><a href="/docs/configure-drill/">Configure Drill</a></li>
+        <li><a href="/docs/:slug/">Configure Drill</a></li>
       
-        <li><a href="/docs/connect-a-data-source/">Connect a Data Source</a></li>
+        <li><a href="/docs/:slug/">Connect a Data Source</a></li>
       
-        <li><a href="/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces</a></li>
+        <li><a href="/docs/:slug/">ODBC/JDBC Interfaces</a></li>
       
-        <li><a href="/docs/query-data/">Query Data</a></li>
+        <li><a href="/docs/:slug/">Query Data</a></li>
       
-        <li><a href="/docs/performance-tuning/">Performance Tuning</a></li>
+        <li><a href="/docs/:slug/">Performance Tuning</a></li>
       
-        <li><a href="/docs/log-and-debug/">Log and Debug</a></li>
+        <li><a href="/docs/:slug/">Log and Debug</a></li>
       
-        <li><a href="/docs/sql-reference/">SQL Reference</a></li>
+        <li><a href="/docs/:slug/">SQL Reference</a></li>
       
-        <li><a href="/docs/data-sources-and-file-formats/">Data Sources and File Formats</a></li>
+        <li><a href="/docs/:slug/">Data Sources and File Formats</a></li>
       
-        <li><a href="/docs/develop-custom-functions/">Develop Custom Functions</a></li>
+        <li><a href="/docs/:slug/">Develop Custom Functions</a></li>
       
-        <li><a href="/docs/troubleshooting/">Troubleshooting</a></li>
+        <li><a href="/docs/:slug/">Troubleshooting</a></li>
       
-        <li><a href="/docs/developer-information/">Developer Information</a></li>
+        <li><a href="/docs/:slug/">Developer Information</a></li>
       
-        <li><a href="/docs/release-notes/">Release Notes</a></li>
+        <li><a href="/docs/:slug/">Release Notes</a></li>
       
-        <li><a href="/docs/sample-datasets/">Sample Datasets</a></li>
+        <li><a href="/docs/:slug/">Sample Datasets</a></li>
       
-        <li><a href="/docs/project-bylaws/">Project Bylaws</a></li>
+        <li><a href="/docs/:slug/">Project Bylaws</a></li>
       
-        <li><a href="/docs/ecosystem/">Ecosystem</a></li>
+        <li><a href="/docs/:slug/">Ecosystem</a></li>
       
     </ul>
   </li>
@@ -157,7 +157,7 @@
 <p>Many organizations are now interested in providing Drill as a service to their users, supporting many users, groups and organizations with a single cluster. To do so, they need to be able to control who can access what data. Today’s volume and variety of data requires a new approach to access control. For example, it is becoming impractical for organizations to manage a standalone, centralized repository of permissions for every column/row of every table. Drill’s virtual datasets (views) provide a more scalable solution to access control:</p>
 
 <ul>
-  <li>The user creates a virtual dataset (<code class="language-plaintext highlighter-rouge">CREATE VIEW vd AS SELECT ...</code>), selecting the data to be exposed/shared. The virtual dataset is defined as a SQL statement. For example, a virtual dataset may represent only the records that were created in the last 30 days and don’t have the <code class="language-plaintext highlighter-rouge">restricted</code> flag. It could even mask some columns. Drill’s virtual datasets (just the SQL statement) are stored as files in the file system, so users can leverage file system permissions to control who can access the virtual dataset, without granting access to the source data.</li>
+  <li>The user creates a virtual dataset (<code>CREATE VIEW vd AS SELECT ...</code>), selecting the data to be exposed/shared. The virtual dataset is defined as a SQL statement. For example, a virtual dataset may represent only the records that were created in the last 30 days and don’t have the <code>restricted</code> flag. It could even mask some columns. Drill’s virtual datasets (just the SQL statement) are stored as files in the file system, so users can leverage file system permissions to control who can access the virtual dataset, without granting access to the source data.</li>
   <li>A virtual dataset is owned by a specific user and can only “select” data that the owner has access to. The data sources (HDFS, HBase, MongoDB, etc.) are responsible for access control decisions. Users and administrators do not need to define separate permissions inside Drill or utilize yet another centralized permission repository, such as Sentry and Ranger.</li>
 </ul>
 
@@ -167,42 +167,46 @@
 
 <p>JSON has emerged as the most common self-describing format, and Drill is able to query JSON files out of the box. Drill currently assumes that the JSON documents (or records) are stored sequentially in a file:</p>
 
-<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Lee"</span><span class="p">,</span><span class="w"> </span><span class="nl">"yelping_since"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2012-02"</span><span class="w"> </span><span class="p">}</span><span class="w">
-</span><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Matthew"</span><span class="p">,</span><span class="w"> </span><span class="nl">"yelping_since"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2011-12"</span><span class="w"> </span><span class="p">}</span><span class="w">
-</span><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Jasmine"</span><span class="p">,</span><span class="w"> </span><span class="nl">"yelping_since"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2010-09"</span><span class="w"> </span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
+<p><code>json
+{ "name": "Lee", "yelping_since": "2012-02" }
+{ "name": "Matthew", "yelping_since": "2011-12" }
+{ "name": "Jasmine", "yelping_since": "2010-09" }
+</code></p>
 
-<p>However, many JSON-based datasets, ranging from <a href="http://data.gov">data.gov</a> (government) datasets to Twitter API responses, are not organized as simple sequences of JSON documents. In some cases the actual records are listed as elements of an internal array inside a single JSON document. For example, consider the following file, which technically consists of a single JSON document, but really contains three records (under the <code class="language-plaintext highlighter-rouge">data.records</code> field):</p>
+<p>However, many JSON-based datasets, ranging from <a href="http://data.gov">data.gov</a> (government) datasets to Twitter API responses, are not organized as simple sequences of JSON documents. In some cases the actual records are listed as elements of an internal array inside a single JSON document. For example, consider the following file, which technically consists of a single JSON document, but really contains three records (under the <code>data.records</code> field):</p>
 
-<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="err">...</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"records"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Lee"</span><span class="p">,</span><span class="w"> </span><span class="nl">"yelping_since"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2012-02"</span><span class="w"> </span><span class="p">},</span><span class="w">
-      </span><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Matthew"</span><span class="p">,</span><span class="w"> </span><span class="nl">"yelping_since"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2011-12"</span><span class="w"> </span><span class="p">},</span><span class="w">
-      </span><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Jasmine"</span><span class="p">,</span><span class="w"> </span><span class="nl">"yelping_since"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2010-09"</span><span class="w"> </span><span class="p">}</span><span class="w">
-    </span><span class="p">]</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
+<p><code>json
+{
+  "metadata": ...,
+  "data": {
+    "records": [
+      { "name": "Lee", "yelping_since": "2012-02" },
+      { "name": "Matthew", "yelping_since": "2011-12" },
+      { "name": "Jasmine", "yelping_since": "2010-09" }
+    ]
+  }
+}
+</code></p>
 
-<p>The <code class="language-plaintext highlighter-rouge">FLATTEN</code> function in Drill 0.7+ takes an array and converts each item into a top-level record:</p>
+<p>The <code>FLATTEN</code> function in Drill 0.7+ takes an array and converts each item into a top-level record:</p>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">FLATTEN</span><span class="p">(</span><span class="k">data</span><span class="p">.</span><span class="n">records</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">dfs</span><span class="p">.</span><span class="n">tmp</span><span class="p">.</span><span class="nv">`foo.json`</span><span class="p">;</span>
-</code></pre></div></div>
+<p><code>sql
+SELECT FLATTEN(data.records) FROM dfs.tmp.`foo.json`;
+</code></p>
 
 <p>You can use this as an inner query (or inside a view):</p>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="k">SELECT</span> <span class="n">t</span><span class="p">.</span><span class="n">record</span><span class="p">.</span><span class="n">name</span> <span class="k">AS</span> <span class="n">name</span>
-  <span class="k">FROM</span> <span class="p">(</span><span class="k">SELECT</span> <span class="n">FLATTEN</span><span class="p">(</span><span class="k">data</span><span class="p">.</span><span class="n">records</span><span class="p">)</span> <span class="k">AS</span> <span class="n">record</span> <span class="k">FROM</span> <span class="n">dfs</span><span class="p">.</span><span class="n">tmp</span><span class="p">.</span><span class="nv">`test/foo.json`</span><span class="p">)</span> <span class="n">t</span><span class="p">;</span>
-<span class="o">+</span><span class="c1">------------+</span>
-<span class="o">|</span>    <span class="n">name</span>    <span class="o">|</span>
-<span class="o">+</span><span class="c1">------------+</span>
-<span class="o">|</span> <span class="n">Lee</span>        <span class="o">|</span>
-<span class="o">|</span> <span class="n">Matthew</span>    <span class="o">|</span>
-<span class="o">|</span> <span class="n">Jasmine</span>    <span class="o">|</span>
-<span class="o">+</span><span class="c1">------------+</span>
-</code></pre></div></div>
+<p><code>sql
+&gt; SELECT t.record.name AS name
+  FROM (SELECT FLATTEN(data.records) AS record FROM dfs.tmp.`test/foo.json`) t;
++------------+
+|    name    |
++------------+
+| Lee        |
+| Matthew    |
+| Jasmine    |
++------------+
+</code></p>
 
 <p>While this works today, the dataset is technically a single JSON document, so Drill ends up reading the entire dataset into memory. We’re developing a FLATTEN-pushdown mechanism that will enable the JSON reader to emit the individual records into the downstream operators, thereby making this work with datasets of arbitrary size. Once that’s implemented, users will be able to explore any JSON-based dataset in-situ (ie, without having to transform it).</p>
 
@@ -241,13 +245,14 @@
   <li>
     <p>Use a Drill query (or view) as the input to Spark. Drill is a powerful engine for extracting and pre-processing data from various data sources, thereby reducing development time and effort. Here’s an example:</p>
 
-    <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">val</span> <span class="nv">sc</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">SparkContext</span><span class="o">(</span><span class="n">conf</span><span class="o">)</span>
-  <span class="k">val</span> <span class="nv">result</span> <span class="k">=</span> <span class="nv">sc</span><span class="o">.</span><span class="py">drillRDD</span><span class="o">(</span><span class="s">"SELECT * FROM dfs.root.`path/to/logs` l, mongo.mydb.users u WHERE l.user_id = u.id GROUP BY ..."</span><span class="o">)</span>
-  <span class="k">val</span> <span class="nv">formatted</span> <span class="k">=</span> <span class="nv">result</span><span class="o">.</span><span class="py">map</span> <span class="o">{</span> <span class="n">r</span> <span class="k">=&gt;</span>
-    <span class="nf">val</span> <span class="o">(</span><span class="n">first</span><span class="o">,</span> <span class="n">last</span><span class="o">,</span> <span class="n">visits</span><span class="o">)</span> <span class="k">=</span> <span class="o">(</span><span class="nv">r</span><span class="o">.</span><span class="py">name</span><span class="o">.</span><span class="py">first</span><span class="o">,</span> <span class="nv">r</span><span class="o">.</span><span class="py">name</span><span class="o">.</span><span class="py">last</span><span class="o">,</span> <span class="nv">r</span><span class="o">.</span><span class="py">visits</span><span class="o">)</span>
-    <span class="n">s</span><span class="s">"$first $last $visits"</span>
-  <span class="o">}</span>
-</code></pre></div>    </div>
+    <p><code>scala
+  val sc = new SparkContext(conf)
+  val result = sc.drillRDD("SELECT * FROM dfs.root.`path/to/logs` l, mongo.mydb.users u WHERE l.user_id = u.id GROUP BY ...")
+  val formatted = result.map { r =&gt;
+    val (first, last, visits) = (r.name.first, r.name.last, r.visits)
+    s"$first $last $visits"
+  }
+ </code></p>
   </li>
   <li>
     <p>Use Drill to query Spark RDDs. Analysts will be able to use BI tools like MicroStrategy, Spotfire and Tableau to query in-memory data in Spark. In addition, Spark developers will be able to embed Drill execution in a Spark data pipeline, thereby enjoying the power of Drill’s schema-free, columnar execution engine.</p>

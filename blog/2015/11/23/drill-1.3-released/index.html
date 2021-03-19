@@ -49,45 +49,45 @@
     <a href="/docs/">Documentation</a>
     <ul>
       
-        <li><a href="/docs/getting-started/">Getting Started</a></li>
+        <li><a href="/docs/:slug/">Getting Started</a></li>
       
-        <li><a href="/docs/architecture/">Architecture</a></li>
+        <li><a href="/docs/:slug/">Architecture</a></li>
       
-        <li><a href="/docs/tutorials/">Tutorials</a></li>
+        <li><a href="/docs/:slug/">Tutorials</a></li>
       
-        <li><a href="/docs/drill-on-yarn/">Drill-on-YARN</a></li>
+        <li><a href="/docs/:slug/">Drill-on-YARN</a></li>
       
-        <li><a href="/docs/install-drill/">Install Drill</a></li>
+        <li><a href="/docs/:slug/">Install Drill</a></li>
       
-        <li><a href="/docs/configure-drill/">Configure Drill</a></li>
+        <li><a href="/docs/:slug/">Configure Drill</a></li>
       
-        <li><a href="/docs/connect-a-data-source/">Connect a Data Source</a></li>
+        <li><a href="/docs/:slug/">Connect a Data Source</a></li>
       
-        <li><a href="/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces</a></li>
+        <li><a href="/docs/:slug/">ODBC/JDBC Interfaces</a></li>
       
-        <li><a href="/docs/query-data/">Query Data</a></li>
+        <li><a href="/docs/:slug/">Query Data</a></li>
       
-        <li><a href="/docs/performance-tuning/">Performance Tuning</a></li>
+        <li><a href="/docs/:slug/">Performance Tuning</a></li>
       
-        <li><a href="/docs/log-and-debug/">Log and Debug</a></li>
+        <li><a href="/docs/:slug/">Log and Debug</a></li>
       
-        <li><a href="/docs/sql-reference/">SQL Reference</a></li>
+        <li><a href="/docs/:slug/">SQL Reference</a></li>
       
-        <li><a href="/docs/data-sources-and-file-formats/">Data Sources and File Formats</a></li>
+        <li><a href="/docs/:slug/">Data Sources and File Formats</a></li>
       
-        <li><a href="/docs/develop-custom-functions/">Develop Custom Functions</a></li>
+        <li><a href="/docs/:slug/">Develop Custom Functions</a></li>
       
-        <li><a href="/docs/troubleshooting/">Troubleshooting</a></li>
+        <li><a href="/docs/:slug/">Troubleshooting</a></li>
       
-        <li><a href="/docs/developer-information/">Developer Information</a></li>
+        <li><a href="/docs/:slug/">Developer Information</a></li>
       
-        <li><a href="/docs/release-notes/">Release Notes</a></li>
+        <li><a href="/docs/:slug/">Release Notes</a></li>
       
-        <li><a href="/docs/sample-datasets/">Sample Datasets</a></li>
+        <li><a href="/docs/:slug/">Sample Datasets</a></li>
       
-        <li><a href="/docs/project-bylaws/">Project Bylaws</a></li>
+        <li><a href="/docs/:slug/">Project Bylaws</a></li>
       
-        <li><a href="/docs/ecosystem/">Ecosystem</a></li>
+        <li><a href="/docs/:slug/">Ecosystem</a></li>
       
     </ul>
   </li>
@@ -145,7 +145,7 @@
 
 <p>Drill 1.3 utilizes a new library, called s3a, for reading data from S3. The s3a library includes improvements over the previous s3n library, such as higher performance and the ability to read large files (over 5GB).</p>
 
-<p>In addition to the new s3a library, Drill 1.3 makes it easier to set up your AWS credentials. Simply edit the file <code class="language-plaintext highlighter-rouge">conf/core-site.xml</code> in the Drill install directory. For more information, check out the <a href="/docs/s3-storage-plugin/">step-by-step instructions</a> in the documentation.</p>
+<p>In addition to the new s3a library, Drill 1.3 makes it easier to set up your AWS credentials. Simply edit the file <code>conf/core-site.xml</code> in the Drill install directory. For more information, check out the <a href="/docs/s3-storage-plugin/">step-by-step instructions</a> in the documentation.</p>
 
 <h2 id="heterogeneous-types">Heterogeneous Types</h2>
 
@@ -153,27 +153,27 @@
 
 <p>Drill 1.3 provides a collection of functions that enable you to test the data type of a value. For example, if you have a column that has both lists (arrays) and numbers, you can use the following query to extract the first element from the array values:</p>
 
-<p><code class="language-plaintext highlighter-rouge">SELECT 1 + CASE WHEN is_list(a) THEN a[0] ELSE a END FROM table;</code></p>
+<p><code>SELECT 1 + CASE WHEN is_list(a) THEN a[0] ELSE a END FROM table;</code></p>
 
 <h2 id="text-file-headers">Text File Headers</h2>
 
-<p>Drill is now able to parse the header row in a text file (CSV, TSV, etc.). Prior to Drill 1.3, data had to be accessed through the <code class="language-plaintext highlighter-rouge">columns</code> array:</p>
+<p>Drill is now able to parse the header row in a text file (CSV, TSV, etc.). Prior to Drill 1.3, data had to be accessed through the <code>columns</code> array:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT columns[0], columns[1] FROM dfs.`/path/to/users.csv`
-</code></pre></div></div>
+<pre><code>SELECT columns[0], columns[1] FROM dfs.`/path/to/users.csv`
+</code></pre>
 
 <p>With Drill 1.3, you can use the actual column names in the CSV file:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT name, address FROM dfs.`/path/to/users.csv`
-</code></pre></div></div>
+<pre><code>SELECT name, address FROM dfs.`/path/to/users.csv`
+</code></pre>
 
-<p>Enabling header parsing is as simple as setting the <code class="language-plaintext highlighter-rouge">extractHeader</code> parameter in the storage plugin configuration for the desired file extensions. For more information, check out <a href="/docs/text-files-csv-tsv-psv/">the documentation</a>.</p>
+<p>Enabling header parsing is as simple as setting the <code>extractHeader</code> parameter in the storage plugin configuration for the desired file extensions. For more information, check out <a href="/docs/text-files-csv-tsv-psv/">the documentation</a>.</p>
 
 <h2 id="sequence-files">Sequence Files</h2>
 
 <p>Drill now <a href="/docs/querying-sequence-files/">supports sequence files</a>, a format commonly used in the Hadoop ecosystem. A sequence file contains a series of keys and values, and querying it with Drill is as easy as querying any other self-describing format:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT *
+<pre><code>SELECT *
 FROM dfs.tmp.`simple.seq`
 LIMIT 1;
 +--------------+---------------+
@@ -181,11 +181,11 @@ LIMIT 1;
 +--------------+---------------+
 | [B@70828f46  | [B@b8c765f    |
 +--------------+---------------+
-</code></pre></div></div>
+</code></pre>
 
-<p>Drill’s <code class="language-plaintext highlighter-rouge">CONVERT_FROM</code> function makes it easy to decode the binary values:</p>
+<p>Drill’s <code>CONVERT_FROM</code> function makes it easy to decode the binary values:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CONVERT_FROM(binary_key, 'UTF8'), CONVERT_FROM(binary_value, 'UTF8')
+<pre><code>SELECT CONVERT_FROM(binary_key, 'UTF8'), CONVERT_FROM(binary_value, 'UTF8')
 FROM dfs.tmp.`simple.seq`
 LIMIT 1
 ;
@@ -194,7 +194,7 @@ LIMIT 1
 +-----------+-------------+
 | key0      |   value0    |
 +-----------+-------------+
-</code></pre></div></div>
+</code></pre>
 
 <h2 id="many-more-fixes">Many More Fixes</h2>
 

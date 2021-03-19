@@ -49,45 +49,45 @@
     <a href="/docs/">Documentation</a>
     <ul>
       
-        <li><a href="/docs/getting-started/">Getting Started</a></li>
+        <li><a href="/docs/:slug/">Getting Started</a></li>
       
-        <li><a href="/docs/architecture/">Architecture</a></li>
+        <li><a href="/docs/:slug/">Architecture</a></li>
       
-        <li><a href="/docs/tutorials/">Tutorials</a></li>
+        <li><a href="/docs/:slug/">Tutorials</a></li>
       
-        <li><a href="/docs/drill-on-yarn/">Drill-on-YARN</a></li>
+        <li><a href="/docs/:slug/">Drill-on-YARN</a></li>
       
-        <li><a href="/docs/install-drill/">Install Drill</a></li>
+        <li><a href="/docs/:slug/">Install Drill</a></li>
       
-        <li><a href="/docs/configure-drill/">Configure Drill</a></li>
+        <li><a href="/docs/:slug/">Configure Drill</a></li>
       
-        <li><a href="/docs/connect-a-data-source/">Connect a Data Source</a></li>
+        <li><a href="/docs/:slug/">Connect a Data Source</a></li>
       
-        <li><a href="/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces</a></li>
+        <li><a href="/docs/:slug/">ODBC/JDBC Interfaces</a></li>
       
-        <li><a href="/docs/query-data/">Query Data</a></li>
+        <li><a href="/docs/:slug/">Query Data</a></li>
       
-        <li><a href="/docs/performance-tuning/">Performance Tuning</a></li>
+        <li><a href="/docs/:slug/">Performance Tuning</a></li>
       
-        <li><a href="/docs/log-and-debug/">Log and Debug</a></li>
+        <li><a href="/docs/:slug/">Log and Debug</a></li>
       
-        <li><a href="/docs/sql-reference/">SQL Reference</a></li>
+        <li><a href="/docs/:slug/">SQL Reference</a></li>
       
-        <li><a href="/docs/data-sources-and-file-formats/">Data Sources and File Formats</a></li>
+        <li><a href="/docs/:slug/">Data Sources and File Formats</a></li>
       
-        <li><a href="/docs/develop-custom-functions/">Develop Custom Functions</a></li>
+        <li><a href="/docs/:slug/">Develop Custom Functions</a></li>
       
-        <li><a href="/docs/troubleshooting/">Troubleshooting</a></li>
+        <li><a href="/docs/:slug/">Troubleshooting</a></li>
       
-        <li><a href="/docs/developer-information/">Developer Information</a></li>
+        <li><a href="/docs/:slug/">Developer Information</a></li>
       
-        <li><a href="/docs/release-notes/">Release Notes</a></li>
+        <li><a href="/docs/:slug/">Release Notes</a></li>
       
-        <li><a href="/docs/sample-datasets/">Sample Datasets</a></li>
+        <li><a href="/docs/:slug/">Sample Datasets</a></li>
       
-        <li><a href="/docs/project-bylaws/">Project Bylaws</a></li>
+        <li><a href="/docs/:slug/">Project Bylaws</a></li>
       
-        <li><a href="/docs/ecosystem/">Ecosystem</a></li>
+        <li><a href="/docs/:slug/">Ecosystem</a></li>
       
     </ul>
   </li>
@@ -145,44 +145,48 @@ JIRAs</a>.</p>
 <p>Here’s a list of highlights from this newest version of Drill:</p>
 
 <h2 id="select-with-options">Select With Options</h2>
-<p>Queries that change storage plugin configuration options can now be written. For instance, to query the file <code class="language-plaintext highlighter-rouge">CO.dat</code>, the following can be used:</p>
+<p>Queries that change storage plugin configuration options can now be written. For instance, to query the file <code>CO.dat</code>, the following can be used:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM TABLE(dfs.`/path/to/CO.dat`(type =&gt; 'text'));
-</code></pre></div></div>
+<p><code>
+SELECT * FROM TABLE(dfs.`/path/to/CO.dat`(type =&gt; 'text'));
+</code></p>
 
-<p>If a version of <code class="language-plaintext highlighter-rouge">CO.dat</code> with a header is available, the first entries of the file can be parsed as column names by 
-passing an <code class="language-plaintext highlighter-rouge">extractHeader =&gt; true</code> argument. We can also use a pipe symbol, ‘|’, as the delimiter by passing 
-<code class="language-plaintext highlighter-rouge">fieldDelimiter</code>:</p>
+<p>If a version of <code>CO.dat</code> with a header is available, the first entries of the file can be parsed as column names by 
+passing an <code>extractHeader =&gt; true</code> argument. We can also use a pipe symbol, ‘|’, as the delimiter by passing 
+<code>fieldDelimiter</code>:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM TABLE(dfs.`/path/to/CO.dat`(type =&gt; 'text', fieldDelimiter =&gt; '|', extractHeader =&gt; true));
-</code></pre></div></div>
+<p><code>
+SELECT * FROM TABLE(dfs.`/path/to/CO.dat`(type =&gt; 'text', fieldDelimiter =&gt; '|', extractHeader =&gt; true));
+</code></p>
 
 <table>
   <tbody>
     <tr>
-      <td>Additionally, <code class="language-plaintext highlighter-rouge">lineDelimiter</code> can be used to indicate a deliminter for new lines, such as the double pipe, ‘</td>
+      <td>Additionally, <code>lineDelimiter</code> can be used to indicate a deliminter for new lines, such as the double pipe, ‘</td>
       <td> </td>
       <td>’, symbol in this example:</td>
     </tr>
   </tbody>
 </table>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM TABLE(dfs.`/path/to/CO.dat`(type =&gt; 'text', lineDelimiter =&gt; '||', fieldDelimiter =&gt; '|'));
-</code></pre></div></div>
+<p><code>
+SELECT * FROM TABLE(dfs.`/path/to/CO.dat`(type =&gt; 'text', lineDelimiter =&gt; '||', fieldDelimiter =&gt; '|'));
+</code></p>
 
 <h2 id="improved-behavior-for-csv-header-parsing">Improved Behavior For CSV Header Parsing</h2>
 <p>When header parsing is enabled, queries to CSV files no longer raise an exception if the indicated column does not 
-exist. Instead, Drill now returns <code class="language-plaintext highlighter-rouge">null</code> values for that column.</p>
+exist. Instead, Drill now returns <code>null</code> values for that column.</p>
 
 <h2 id="json-formatting">JSON Formatting</h2>
 <p>For more compact results, Drill’s default behavior of pretty-printing JSON can now be changed by setting the variable 
-<code class="language-plaintext highlighter-rouge">store.json.writer.uglify</code> to <code class="language-plaintext highlighter-rouge">true</code>. As in:</p>
+<code>store.json.writer.uglify</code> to <code>true</code>. As in:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ALTER SESSION SET store.json.writer.uglify = true;
-</code></pre></div></div>
+<p><code>
+ALTER SESSION SET store.json.writer.uglify = true;
+</code></p>
 
 <h2 id="better-logging">Better Logging</h2>
-<p>SQL query text is now logged to the <code class="language-plaintext highlighter-rouge">drillbit.log</code> file.</p>
+<p>SQL query text is now logged to the <code>drillbit.log</code> file.</p>
 
 <h2 id="other-improvements">Other Improvements</h2>
 <p>This version also features schema change compatible sorting, better Apache Hive support, and more efficient caching for Parquet file metadata.</p>

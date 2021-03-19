@@ -49,45 +49,45 @@
     <a href="/docs/">Documentation</a>
     <ul>
       
-        <li><a href="/docs/getting-started/">Getting Started</a></li>
+        <li><a href="/docs/:slug/">Getting Started</a></li>
       
-        <li><a href="/docs/architecture/">Architecture</a></li>
+        <li><a href="/docs/:slug/">Architecture</a></li>
       
-        <li><a href="/docs/tutorials/">Tutorials</a></li>
+        <li><a href="/docs/:slug/">Tutorials</a></li>
       
-        <li><a href="/docs/drill-on-yarn/">Drill-on-YARN</a></li>
+        <li><a href="/docs/:slug/">Drill-on-YARN</a></li>
       
-        <li><a href="/docs/install-drill/">Install Drill</a></li>
+        <li><a href="/docs/:slug/">Install Drill</a></li>
       
-        <li><a href="/docs/configure-drill/">Configure Drill</a></li>
+        <li><a href="/docs/:slug/">Configure Drill</a></li>
       
-        <li><a href="/docs/connect-a-data-source/">Connect a Data Source</a></li>
+        <li><a href="/docs/:slug/">Connect a Data Source</a></li>
       
-        <li><a href="/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces</a></li>
+        <li><a href="/docs/:slug/">ODBC/JDBC Interfaces</a></li>
       
-        <li><a href="/docs/query-data/">Query Data</a></li>
+        <li><a href="/docs/:slug/">Query Data</a></li>
       
-        <li><a href="/docs/performance-tuning/">Performance Tuning</a></li>
+        <li><a href="/docs/:slug/">Performance Tuning</a></li>
       
-        <li><a href="/docs/log-and-debug/">Log and Debug</a></li>
+        <li><a href="/docs/:slug/">Log and Debug</a></li>
       
-        <li><a href="/docs/sql-reference/">SQL Reference</a></li>
+        <li><a href="/docs/:slug/">SQL Reference</a></li>
       
-        <li><a href="/docs/data-sources-and-file-formats/">Data Sources and File Formats</a></li>
+        <li><a href="/docs/:slug/">Data Sources and File Formats</a></li>
       
-        <li><a href="/docs/develop-custom-functions/">Develop Custom Functions</a></li>
+        <li><a href="/docs/:slug/">Develop Custom Functions</a></li>
       
-        <li><a href="/docs/troubleshooting/">Troubleshooting</a></li>
+        <li><a href="/docs/:slug/">Troubleshooting</a></li>
       
-        <li><a href="/docs/developer-information/">Developer Information</a></li>
+        <li><a href="/docs/:slug/">Developer Information</a></li>
       
-        <li><a href="/docs/release-notes/">Release Notes</a></li>
+        <li><a href="/docs/:slug/">Release Notes</a></li>
       
-        <li><a href="/docs/sample-datasets/">Sample Datasets</a></li>
+        <li><a href="/docs/:slug/">Sample Datasets</a></li>
       
-        <li><a href="/docs/project-bylaws/">Project Bylaws</a></li>
+        <li><a href="/docs/:slug/">Project Bylaws</a></li>
       
-        <li><a href="/docs/ecosystem/">Ecosystem</a></li>
+        <li><a href="/docs/:slug/">Ecosystem</a></li>
       
     </ul>
   </li>
@@ -149,21 +149,22 @@
     <p>It has been about a month since the release of Drill 0.8, which included <a href="/blog/drill-0.8-released/">more than 240 improvements</a>. Today we’re happy to announce the availability of Drill 0.9, providing additional enhancements and bug fixes. In fact, this release includes <a href="https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12313820&amp;version=12328813">200 resolved JIRAs</a>. Some of the noteworthy features in Drill 0.9 are:</p>
 
 <ul>
-  <li><strong>Authentication</strong> (<a href="https://issues.apache.org/jira/browse/DRILL-2674">DRILL-2674</a>). Drill now supports username/password authentication through the Java and C++ clients, as well as JDBC and ODBC. On the server-side, Drill leverages Linux PAM to securely validate the credentials. Users can choose to use an external user directory such as Active Directory or LDAP. To enable authentication, set the <code class="language-plaintext highlighter-rouge">security.user.auth</code> option in <code class="language-plaintext highlighter-rouge">drill-override.conf</code>.</li>
-  <li><strong>Impersonation</strong> (<a href="https://issues.apache.org/jira/browse/DRILL-2363">DRILL-2363</a>). Queries now execute and access resources using the identity of the user who submitted the query. Previously, all queries would run as the same user (eg, <code class="language-plaintext highlighter-rouge">drill</code>). With the new impersonation capability, the query will fail if the submitting user does not have permission to read the requested file(s) in the distributed file system. To enable impersonation, set the <code class="language-plaintext highlighter-rouge">drill.exec.impersonation</code> option in <code class="language-plaintext highlighter-rouge">drill-override.conf</code>.</li>
-  <li><strong>Ownership chaining</strong>. Drill now allows views with different owners to be chained. This represents a very flexible access control solution. For example, an administrator with access to raw, sensitive data could create a view called <code class="language-plaintext highlighter-rouge">masked</code> which would expose only a subset of the data to other users. The administrator would enable users to read the <code class="language-plaintext highlighter-rouge">masked</code> view but not the raw data. Note that Drill provides an option <code class="language-plaintext highlighter-rouge">max_chained_user_hops</code> that specifies how many ownership changed are allowed in a chain, thereby providing administrators (or data stewards) more control over sharing of data.</li>
+  <li><strong>Authentication</strong> (<a href="https://issues.apache.org/jira/browse/DRILL-2674">DRILL-2674</a>). Drill now supports username/password authentication through the Java and C++ clients, as well as JDBC and ODBC. On the server-side, Drill leverages Linux PAM to securely validate the credentials. Users can choose to use an external user directory such as Active Directory or LDAP. To enable authentication, set the <code>security.user.auth</code> option in <code>drill-override.conf</code>.</li>
+  <li><strong>Impersonation</strong> (<a href="https://issues.apache.org/jira/browse/DRILL-2363">DRILL-2363</a>). Queries now execute and access resources using the identity of the user who submitted the query. Previously, all queries would run as the same user (eg, <code>drill</code>). With the new impersonation capability, the query will fail if the submitting user does not have permission to read the requested file(s) in the distributed file system. To enable impersonation, set the <code>drill.exec.impersonation</code> option in <code>drill-override.conf</code>.</li>
+  <li><strong>Ownership chaining</strong>. Drill now allows views with different owners to be chained. This represents a very flexible access control solution. For example, an administrator with access to raw, sensitive data could create a view called <code>masked</code> which would expose only a subset of the data to other users. The administrator would enable users to read the <code>masked</code> view but not the raw data. Note that Drill provides an option <code>max_chained_user_hops</code> that specifies how many ownership changed are allowed in a chain, thereby providing administrators (or data stewards) more control over sharing of data.</li>
   <li><strong>MongoDB authentication</strong> (<a href="https://issues.apache.org/jira/browse/DRILL-1502">DRILL-1502</a>). Drill can now connect to a MongoDB cluster that requires authentication.</li>
-  <li><strong>Extended JSON datatypes</strong>. Our friends at MongoDB invented <a href="http://docs.mongodb.org/manual/reference/mongodb-extended-json/">extended JSON</a> - a set of extensions to the JSON format for supporting additional data types. We decided to embrace extended JSON in Drill. For example, standard JSON doesn’t have a time type, so a time could be represented as either a string or a number: <code class="language-plaintext highlighter-rouge">{"foo": "19:20:30.450Z"}</code> is just a string. With extended JSON, the <code class="language-plaintext highlighter-rouge">$time</code> qualifier can be used to specify that <code class="language-plaintext highlighter-rouge">foo</code> is a time <code class="language-plaintext highlighter-rouge">{"foo": {"$time": "19:20:30.450Z"}}</code>.
-We now support a number of qualifiers including <code class="language-plaintext highlighter-rouge">$bin</code>, <code class="language-plaintext highlighter-rouge">$date</code>, <code class="language-plaintext highlighter-rouge">$time</code>, <code class="language-plaintext highlighter-rouge">$interval</code>, <code class="language-plaintext highlighter-rouge">$numberLong</code> and <code class="language-plaintext highlighter-rouge">$dateDay</code> (see <a href="https://github.com/apache/drill/blob/master/exec/java-exec/src/test/resources/vector/complex/extended.json">the example</a>). We’re in the process of adding some additional qualifiers to make sure that all of MongoDB’s extended types are supported (this is particularly important when querying data in MongoDB).</li>
+  <li><strong>Extended JSON datatypes</strong>. Our friends at MongoDB invented <a href="http://docs.mongodb.org/manual/reference/mongodb-extended-json/">extended JSON</a> - a set of extensions to the JSON format for supporting additional data types. We decided to embrace extended JSON in Drill. For example, standard JSON doesn’t have a time type, so a time could be represented as either a string or a number: <code>{"foo": "19:20:30.450Z"}</code> is just a string. With extended JSON, the <code>$time</code> qualifier can be used to specify that <code>foo</code> is a time <code>{"foo": {"$time": "19:20:30.450Z"}}</code>.
+We now support a number of qualifiers including <code>$bin</code>, <code>$date</code>, <code>$time</code>, <code>$interval</code>, <code>$numberLong</code> and <code>$dateDay</code> (see <a href="https://github.com/apache/drill/blob/master/exec/java-exec/src/test/resources/vector/complex/extended.json">the example</a>). We’re in the process of adding some additional qualifiers to make sure that all of MongoDB’s extended types are supported (this is particularly important when querying data in MongoDB).</li>
   <li><strong>Avro support</strong> (<a href="https://issues.apache.org/jira/browse/DRILL-1512">DRILL-1512</a>). Drill can now read Avro files. This patch was contributed by Andrew Selden at Elastic.co (formerly known as Elasticsearch).</li>
   <li><strong>Improved error messages</strong> (<a href="https://issues.apache.org/jira/browse/DRILL-2675">DRILL-2675</a> and more). It can be challenging for a complex distributed system like Drill to translate low-level internal conditions into actionable messages to the user. This release includes several enhancements that enable Drill to accomplish just that in a variety of cases.</li>
   <li><strong>Parquet and Calcite enhancements</strong> (<a href="https://issues.apache.org/jira/browse/DRILL-1410">DRILL-1410</a> and <a href="https://issues.apache.org/jira/browse/DRILL-1384">DRILL-1384</a>). Drill isn’t a traditional query engine - it’s the first analytical query engine with a JSON data model. This has required us to enhance Parquet (our columnar format) and Calcite (our SQL parser). These enhancements have now been contributed back to those projects, and Drill is using the latest versions which include these enhancements.</li>
   <li>
-    <p><strong>New sys tables for memory and thread information</strong> (<a href="https://issues.apache.org/jira/browse/DRILL-2275">DRILL-2275</a>). Drill includes two new <code class="language-plaintext highlighter-rouge">sys</code> tables that provide real-time metrics about memory utilization and threads on each of the nodes in the cluster. You can run a simple <code class="language-plaintext highlighter-rouge">SELECT *</code> to see what information is available:</p>
+    <p><strong>New sys tables for memory and thread information</strong> (<a href="https://issues.apache.org/jira/browse/DRILL-2275">DRILL-2275</a>). Drill includes two new <code>sys</code> tables that provide real-time metrics about memory utilization and threads on each of the nodes in the cluster. You can run a simple <code>SELECT *</code> to see what information is available:</p>
 
-    <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">sys</span><span class="p">.</span><span class="n">drillmemory</span><span class="p">;</span>
-  <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">sys</span><span class="p">.</span><span class="n">drillbitthreads</span><span class="p">;</span>
-</code></pre></div>    </div>
+    <p><code>sql
+  SELECT * FROM sys.drillmemory;
+  SELECT * FROM sys.drillbitthreads;
+ </code></p>
   </li>
   <li><strong>Support for very wide tables</strong> (<a href="https://issues.apache.org/jira/browse/DRILL-2739">DRILL-2739</a>). Drill previously had some issues with tables that had more than 4095 colums. This limitation has been addressed.</li>
 </ul>
