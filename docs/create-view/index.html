@@ -102,7 +102,7 @@
   <li class='nav'><a href="/faq/">FAQ</a></li>
   <li class='nav'><a href="/blog/">Blog</a></li>
   <li class="social-menu-item"><a href="https://twitter.com/apachedrill" title="apachedrill on twitter" target="_blank"><img src="/images/twitter_32_26_white.png" alt="twitter logo" align="center"></a> </li>
-  <li class="social-menu-item"><a href="https://apache-drill.slack.com/" title="Apache Drill Slack channels"
+  <li class="social-menu-item"><a href="https://join.slack.com/t/apache-drill/shared_invite/enQtNTQ4MjM1MDA3MzQ2LTJlYmUxMTRkMmUwYmQ2NTllYmFmMjU4MDk0NjYwZjBmYjg0MDZmOTE2ZDg0ZjBlYmI3Yjc4Y2I2NTQyNGVlZTc" title="Apache Drill Slack channels"
       target="_blank"><img src="/images/slack-logo.svg" alt="Slack logo" align="center"></a> </li>
   <li class='search-bar'>
     <form id="drill-search-form">
@@ -1450,9 +1450,9 @@ file system or distributed file system.</p>
 plugin in the <code class="language-plaintext highlighter-rouge">/tmp</code> directory of the file system:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"tmp": {
-      "location": "/tmp",
-      "writable": true,
-       }
+  "location": "/tmp",
+  "writable": true,
+}
 </code></pre></div></div>
 
 <p>Drill stores the view definition in JSON format with the name that you specify
@@ -1494,15 +1494,13 @@ created for the steps in this example.</p>
         “writable”: true,
         “defaultInputFormat”: null
       }
-    },</p>
+    }</p>
   </li>
-  <li>
-    <p>Run SHOW DATABASES to verify that Drill recognizes the workspace.</p>
-
-    <p>0: jdbc:drill:zk=local&gt; show databases;
-   |——————–|
+  <li>Run SHOW DATABASES to verify that Drill recognizes the workspace.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; show databases;
+   |--------------------|
    | SCHEMA_NAME        |
-   |——————–|
+   |--------------------|
    | dfs.default        |
    | dfs.root           |
    | dfs.donuts         |
@@ -1510,67 +1508,63 @@ created for the steps in this example.</p>
    | cp.default         |
    | sys                |
    | INFORMATION_SCHEMA |
-   |——————–|</p>
+   |--------------------|
+</code></pre></div>    </div>
   </li>
-  <li>
-    <p>Use the writable workspace.</p>
-
-    <p>0: jdbc:drill:zk=local&gt; use dfs.donuts;
-   |——|—————————————-|
+  <li>Use the writable workspace.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; use dfs.donuts;
+   |------|----------------------------------------|
    | ok   | summary                                |
-   |——|—————————————-|
-   | true | Default schema changed to ‘dfs.donuts’ |
-   |——|—————————————-|</p>
+   |------|----------------------------------------|
+   | true | Default schema changed to 'dfs.donuts' |
+   |------|----------------------------------------|
+</code></pre></div>    </div>
   </li>
-  <li>
-    <p>Test run the query that you plan to use with the CREATE VIEW command.</p>
-
-    <p>0: jdbc:drill:zk=local&gt; select id, type, name, ppu from <code class="language-plaintext highlighter-rouge">donuts.json</code>;
-   |——|——-|——|——|
+  <li>Test run the query that you plan to use with the CREATE VIEW command.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; select id, type, name, ppu from `donuts.json`;
+   |------|-------|------|------|
    | id   | type  | name | ppu  |
-   |——|——-|——|——|
+   |------|-------|------|------|
    | 0001 | donut | Cake | 0.55 |
-   |——|——-|——|——|</p>
+   |------|-------|------|------|
+</code></pre></div>    </div>
   </li>
-  <li>
-    <p>Run the CREATE VIEW command with the query.</p>
-
-    <p>0: jdbc:drill:zk=local&gt; create view mydonuts as select id, type, name, ppu from <code class="language-plaintext highlighter-rouge">donuts.json</code>;
-   |——|————————————————————-|
+  <li>Run the CREATE VIEW command with the query.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; create view mydonuts as select id, type, name, ppu from `donuts.json`;
+   |------|-------------------------------------------------------------|
    | ok   | summary                                                     |
-   |——|————————————————————-|
-   | true | View ‘mydonuts’ created successfully in ‘dfs.donuts’ schema |
-   |——|————————————————————-|</p>
+   |------|-------------------------------------------------------------|
+   | true | View 'mydonuts' created successfully in 'dfs.donuts' schema |
+   |------|-------------------------------------------------------------|
+</code></pre></div>    </div>
   </li>
-  <li>
-    <p>Create a new view in another workspace from the current workspace.</p>
-
-    <p>0: jdbc:drill:zk=local&gt; create view dfs.tmp.yourdonuts as select id, type, name from <code class="language-plaintext highlighter-rouge">donuts.json</code>;
-   |——|————————————————————|
+  <li>Create a new view in another workspace from the current workspace.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; create view dfs.tmp.yourdonuts as select id, type, name from `donuts.json`;
+   |------|------------------------------------------------------------|
    | ok   | summary                                                    |
-   |——|————————————————————|
-   | true | View ‘yourdonuts’ created successfully in ‘dfs.tmp’ schema |
-   |——|————————————————————|</p>
+   |------|------------------------------------------------------------|
+   | true | View 'yourdonuts' created successfully in 'dfs.tmp' schema |
+   |------|------------------------------------------------------------|
+</code></pre></div>    </div>
   </li>
-  <li>
-    <p>Query the view created in both workspaces.</p>
-
-    <p>0: jdbc:drill:zk=local&gt; select * from mydonuts;
-   |——|——-|——|——|
+  <li>Query the view created in both workspaces.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; select * from mydonuts;
+   |------|-------|------|------|
    | id   | type  | name | ppu  |
-   |——|——-|——|——|
+   |------|-------|------|------|
    | 0001 | donut | Cake | 0.55 |
-   |——|——-|——|——|</p>
-
-    <p>0: jdbc:drill:zk=local&gt; select * from dfs.tmp.yourdonuts;
-   |——|——-|——|
+   |------|-------|------|------|
+         
+         
+   0: jdbc:drill:zk=local&gt; select * from dfs.tmp.yourdonuts;
+   |------|-------|------|
    | id   | type  | name |
-   |——|——-|——|
+   |------|-------|------|
    | 0001 | donut | Cake |
-   |——|——-|——|</p>
+   |------|-------|------|
+</code></pre></div>    </div>
   </li>
 </ol>
-
 
     
       

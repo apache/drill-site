@@ -49,45 +49,45 @@
     <a href="/docs/">Documentation</a>
     <ul>
       
-        <li><a href="/docs/:slug/">Getting Started</a></li>
+        <li><a href="/docs/getting-started/">Getting Started</a></li>
       
-        <li><a href="/docs/:slug/">Architecture</a></li>
+        <li><a href="/docs/architecture/">Architecture</a></li>
       
-        <li><a href="/docs/:slug/">Tutorials</a></li>
+        <li><a href="/docs/tutorials/">Tutorials</a></li>
       
-        <li><a href="/docs/:slug/">Drill-on-YARN</a></li>
+        <li><a href="/docs/drill-on-yarn/">Drill-on-YARN</a></li>
       
-        <li><a href="/docs/:slug/">Install Drill</a></li>
+        <li><a href="/docs/install-drill/">Install Drill</a></li>
       
-        <li><a href="/docs/:slug/">Configure Drill</a></li>
+        <li><a href="/docs/configure-drill/">Configure Drill</a></li>
       
-        <li><a href="/docs/:slug/">Connect a Data Source</a></li>
+        <li><a href="/docs/connect-a-data-source/">Connect a Data Source</a></li>
       
-        <li><a href="/docs/:slug/">ODBC/JDBC Interfaces</a></li>
+        <li><a href="/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces</a></li>
       
-        <li><a href="/docs/:slug/">Query Data</a></li>
+        <li><a href="/docs/query-data/">Query Data</a></li>
       
-        <li><a href="/docs/:slug/">Performance Tuning</a></li>
+        <li><a href="/docs/performance-tuning/">Performance Tuning</a></li>
       
-        <li><a href="/docs/:slug/">Log and Debug</a></li>
+        <li><a href="/docs/log-and-debug/">Log and Debug</a></li>
       
-        <li><a href="/docs/:slug/">SQL Reference</a></li>
+        <li><a href="/docs/sql-reference/">SQL Reference</a></li>
       
-        <li><a href="/docs/:slug/">Data Sources and File Formats</a></li>
+        <li><a href="/docs/data-sources-and-file-formats/">Data Sources and File Formats</a></li>
       
-        <li><a href="/docs/:slug/">Develop Custom Functions</a></li>
+        <li><a href="/docs/develop-custom-functions/">Develop Custom Functions</a></li>
       
-        <li><a href="/docs/:slug/">Troubleshooting</a></li>
+        <li><a href="/docs/troubleshooting/">Troubleshooting</a></li>
       
-        <li><a href="/docs/:slug/">Developer Information</a></li>
+        <li><a href="/docs/developer-information/">Developer Information</a></li>
       
-        <li><a href="/docs/:slug/">Release Notes</a></li>
+        <li><a href="/docs/release-notes/">Release Notes</a></li>
       
-        <li><a href="/docs/:slug/">Sample Datasets</a></li>
+        <li><a href="/docs/sample-datasets/">Sample Datasets</a></li>
       
-        <li><a href="/docs/:slug/">Project Bylaws</a></li>
+        <li><a href="/docs/project-bylaws/">Project Bylaws</a></li>
       
-        <li><a href="/docs/:slug/">Ecosystem</a></li>
+        <li><a href="/docs/ecosystem/">Ecosystem</a></li>
       
     </ul>
   </li>
@@ -102,7 +102,7 @@
   <li class='nav'><a href="/faq/">FAQ</a></li>
   <li class='nav'><a href="/blog/">Blog</a></li>
   <li class="social-menu-item"><a href="https://twitter.com/apachedrill" title="apachedrill on twitter" target="_blank"><img src="/images/twitter_32_26_white.png" alt="twitter logo" align="center"></a> </li>
-  <li class="social-menu-item"><a href="https://apache-drill.slack.com/" title="Apache Drill Slack channels"
+  <li class="social-menu-item"><a href="https://join.slack.com/t/apache-drill/shared_invite/enQtNTQ4MjM1MDA3MzQ2LTJlYmUxMTRkMmUwYmQ2NTllYmFmMjU4MDk0NjYwZjBmYjg0MDZmOTE2ZDg0ZjBlYmI3Yjc4Y2I2NTQyNGVlZTc" title="Apache Drill Slack channels"
       target="_blank"><img src="/images/slack-logo.svg" alt="Slack logo" align="center"></a> </li>
   <li class='search-bar'>
     <form id="drill-search-form">
@@ -162,54 +162,51 @@
 
 <p>To connect Drill to S3, all of the drillbit nodes will need to access code in the JetS3t library developed by Amazon.  As of this writing, 0.9.2 is the latest version but you might want to check <a href="https://jets3t.s3.amazonaws.com/toolkit/toolkit.html">the main page</a> to see if anything has been updated.  Be sure to get version 0.9.2 or later as earlier versions have a bug relating to reading Parquet data.</p>
 
-<p><code>bash
-wget http://bitbucket.org/jmurty/jets3t/downloads/jets3t-0.9.2.zip
-cp jets3t-0.9.2/jars/jets3t-0.9.2.jar $DRILL_HOME/jars/3rdparty
-</code></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget http://bitbucket.org/jmurty/jets3t/downloads/jets3t-0.9.2.zip
+<span class="nb">cp </span>jets3t-0.9.2/jars/jets3t-0.9.2.jar <span class="nv">$DRILL_HOME</span>/jars/3rdparty
+</code></pre></div></div>
 
 <p>Next, enable the plugin by editing the file:</p>
 
-<p><code>bash
-$DRILL_HOME/bin/hadoop_excludes.txt
-</code></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$DRILL_HOME</span>/bin/hadoop_excludes.txt
+</code></pre></div></div>
 
-<p>and removing the line <code>jets3t</code>.</p>
+<p>and removing the line <code class="language-plaintext highlighter-rouge">jets3t</code>.</p>
 
-<p>Drill will need to know your S3 credentials in order to access data there. These credentials will need to be placed in the core-site.xml file for your installation.  If you already have a core-site.xml file configured for your environment, add the following parameters to it, otherwise create the file from scratch.  If you do end up creating it from scratch you will need to wrap these parameters with <code>&lt;configuration&gt;</code> and <code>&lt;/configuration&gt;</code>.</p>
+<p>Drill will need to know your S3 credentials in order to access data there. These credentials will need to be placed in the core-site.xml file for your installation.  If you already have a core-site.xml file configured for your environment, add the following parameters to it, otherwise create the file from scratch.  If you do end up creating it from scratch you will need to wrap these parameters with <code class="language-plaintext highlighter-rouge">&lt;configuration&gt;</code> and <code class="language-plaintext highlighter-rouge">&lt;/configuration&gt;</code>.</p>
 
-<p>```xml</p>
-<property>
-  <name>fs.s3.awsAccessKeyId</name>
-  <value>ID</value>
-</property>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>fs.s3.awsAccessKeyId<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>ID<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
 
-<property>
-  <name>fs.s3.awsSecretAccessKey</name>
-  <value>SECRET</value>
-</property>
+<span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>fs.s3.awsSecretAccessKey<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>SECRET<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
 
-<property>
-  <name>fs.s3n.awsAccessKeyId</name>
-  <value>ID</value>
-</property>
+<span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>fs.s3n.awsAccessKeyId<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>ID<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
 
-<property>
-  <name>fs.s3n.awsSecretAccessKey</name>
-  <value>SECRET</value>
-</property>
-<p>```</p>
+<span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>fs.s3n.awsSecretAccessKey<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>SECRET<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+</code></pre></div></div>
 
 <p>The steps so far give Drill enough information to connect to the S3 service.  Remember, you have to do this on all the nodes running drillbit.</p>
 
 <p>Next, let’s go into the Drill web interface and enable the S3 storage plugin.  In this case you only need to connect to <strong>one</strong> of the nodes because Drill’s configuration is synchronized across the cluster.  Complete the following steps:</p>
 
 <ol>
-  <li>Point your browser to <code>http://&lt;host&gt;:8047</code></li>
+  <li>Point your browser to <code class="language-plaintext highlighter-rouge">http://&lt;host&gt;:8047</code></li>
   <li>Select the ‘Storage’ tab.</li>
-  <li>A good starting configuration for S3 can be entirely the same as the <code>dfs</code> plugin, except the connection parameter is changed to <code>s3n://bucket</code>.  So first select the <code>Update</code> button for <code>dfs</code>, then select the text area and copy it into the clipboard (on Windows, ctrl-A, ctrl-C works).</li>
-  <li>Press <code>Back</code>, then create a new plugin by typing the name into the <code>New Storage Plugin</code>, then press <code>Create</code>.  You can choose any name, but a good convention is to use <code>s3-&lt;bucketname&gt;</code> so you can easily identify it later.</li>
-  <li>In the configuration area, paste the configuration you just grabbed from ‘dfs’.  Change the line <code>connection: "file:///"</code> to <code>connection: "s3n://&lt;bucket&gt;"</code>.</li>
-  <li>Click <code>Update</code>.  You should see a message that indicates success.</li>
+  <li>A good starting configuration for S3 can be entirely the same as the <code class="language-plaintext highlighter-rouge">dfs</code> plugin, except the connection parameter is changed to <code class="language-plaintext highlighter-rouge">s3n://bucket</code>.  So first select the <code class="language-plaintext highlighter-rouge">Update</code> button for <code class="language-plaintext highlighter-rouge">dfs</code>, then select the text area and copy it into the clipboard (on Windows, ctrl-A, ctrl-C works).</li>
+  <li>Press <code class="language-plaintext highlighter-rouge">Back</code>, then create a new plugin by typing the name into the <code class="language-plaintext highlighter-rouge">New Storage Plugin</code>, then press <code class="language-plaintext highlighter-rouge">Create</code>.  You can choose any name, but a good convention is to use <code class="language-plaintext highlighter-rouge">s3-&lt;bucketname&gt;</code> so you can easily identify it later.</li>
+  <li>In the configuration area, paste the configuration you just grabbed from ‘dfs’.  Change the line <code class="language-plaintext highlighter-rouge">connection: "file:///"</code> to <code class="language-plaintext highlighter-rouge">connection: "s3n://&lt;bucket&gt;"</code>.</li>
+  <li>Click <code class="language-plaintext highlighter-rouge">Update</code>.  You should see a message that indicates success.</li>
 </ol>
 
 <p>Note: Make sure the URI has scheme “s3n”, not “s3”. It will not work with “s3”.</p>
