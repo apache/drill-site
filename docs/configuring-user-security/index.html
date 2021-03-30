@@ -338,8 +338,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Configure Drill</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Configure Drill</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configure-drill-introduction/">Configure Drill Introduction</a></li>
@@ -351,7 +351,7 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">Securing Drill</a></li>
-              <ul style="display: none">
+              <ul style="">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/securing-drill-introduction/">Securing Drill Introduction</a></li>
               
@@ -364,6 +364,8 @@
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-inbound-impersonation/">Configuring Inbound Impersonation</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+              
+                <li class="toctree-l3 current"><a class="reference internal" href="/docs/configuring-user-security/">Configuring User Security</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/configuring-plain-security/">Configuring Plain Security</a></li>
               
@@ -1364,6 +1366,10 @@
   <li><a href="/docs/">Docs</a></li>
  
   
+    <li><a href="/docs/configure-drill/">Configure Drill</a></li>
+  
+    <li><a href="/docs/securing-drill/">Securing Drill</a></li>
+  
   <li>Configuring User Security</li>
 </nav>
 
@@ -1385,14 +1391,59 @@
 
     <div class="int_text" align="left">
       
-        <ul>
-        
-      </ul>
+        <h2 id="authentication">Authentication</h2>
+
+<p>Authentication is the process of establishing confidence of authenticity. A Drill client user is authenticated when a Drillbit confirms the identity it is presented with.  Drill supports several authentication mechanisms through which users can prove their identity before accessing cluster data:</p>
+
+<ul>
+  <li><strong>Kerberos</strong> - Featuring Drill client to Drillbit encryption, as of Drill 1.11. See <a href="/docs/configuring-kerberos-security/">Configuring Kerberos Security</a>.</li>
+  <li><strong>SPNEGO</strong> - Drill 1.13 and later supports the Simple and Protected GSS-API Negotiation mechanism (SPNEGO) to extend the Kerberos-based single sign-on authentication mechanism to HTTP. See <a href="/docs/configuring-drill-to-use-spnego-for-http-authentication/">Configuring Drill to use SPNEGO for HTTP Authentication</a>.</li>
+  <li><strong>Plain</strong> - Also known as basic authentication (auth), which is username and password-based authentication through the Linux Pluggable Authentication Module (PAM). See <a href="/docs/configuring-plain-security/">Configuring Plain Security</a>.</li>
+  <li><strong>Custom authenticators</strong> - See <a href="/docs/creating-custom-authenticators">Creating Custom Authenticators</a>.</li>
+</ul>
+
+<p>These authentication options are available through JDBC and ODBC interfaces.</p>
+
+<h2 id="encryption">Encryption</h2>
+
+<p>Drill 1.11 introduces client-to-drillbit encryption for over-the-wire security using the Kerberos to:</p>
+
+<ul>
+  <li>Ensure data integrity and privacy</li>
+  <li>Prevent data tampering and snooping</li>
+</ul>
+
+<p>See <a href="/docs/configuring-kerberos-security/">Configuring Kerberos Security</a> for information about how to enable a drillbit for encryption.</p>
+
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">The Plain mechanism does not support encryption.  </p>
+</div>
+
+<p><strong>Cipher Strength</strong></p>
+
+<p>By default, the highest security level is negotiated during the SASL handshake for each client-to-drillbit connection so that the AES-256 ciper is used when supported by key distribution center (KDC) encryption types. See <a href="http://web.mit.edu/kerberos/krb5-1.13/doc/admin/enctypes.html](http://web.mit.edu/kerberos/krb5-1.13/doc/admin/enctypes.html" title="Encryption Types">Encryption Types</a> in the MIT Kerberos documentation for details about specific combinations of cipher algorithms.</p>
+
+<p><strong>Client Compatibility</strong></p>
+
+<p>The following table shows Drill client version compatibility with secure Drill clusters enabled with encryption. Drill 1.10 clients and lower do not support encryption and will not be allowed to connect to a drillbit with encryption enabled.</p>
+
+<p><img src="/images/docs/client-encrypt-compatibility.png" alt="compatEncrypt" /></p>
+
+<p>See <em>Client Encryption</em> in <a href="/docs/configuring-kerberos-authentication/#client-encryption">Configuring Kerberos Security</a> for the client connection string parameter, <code class="language-plaintext highlighter-rouge">sasl_encrypt</code> usage information.</p>
+
+<h2 id="impersonation">Impersonation</h2>
+
+<p>Enabling both user impersonation and authentication is recommended to restrict access to data and improve security. When user impersonation is enabled, Drill executes the client requests as the authenticated user. Otherwise, Drill executes client requests as the user that started the drillbit process.</p>
+
+<p>For more information, see <a href="/docs/configuring-user-impersonation/">Configuring User Impersonation</a> and <a href="/docs/configuring-inbound-impersonation/">Configuring Inbound Impersonation</a>.</p>
+
+
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="">← </a></span><span class="next-toc"><a href=""> →</a></span>
+  <span class="previous-toc"><a href="/docs/configuring-user-impersonation-with-hive-authorization/">← Configuring User Impersonation with Hive Authorization</a></span><span class="next-toc"><a href="/docs/configuring-plain-security/">Configuring Plain Security →</a></span>
 </div>
 
     
