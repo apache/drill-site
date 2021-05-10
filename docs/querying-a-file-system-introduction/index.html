@@ -890,6 +890,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/ip-network-functions/">IP Network functions</a></li>
+              
             </ul>
             
           
@@ -1432,6 +1434,7 @@ your registered storage plugins. For example, PSV files may be defined with a
 <code class="language-plaintext highlighter-rouge">.tbl</code> extension, while CSV files are defined with a <code class="language-plaintext highlighter-rouge">.csv</code> extension.</p>
 
 <h2 id="implicit-columns">Implicit Columns</h2>
+
 <p>Drill 1.8 introduces implicit columns. Implicit columns provide file information, such as the directory path to a file and the file extension. You can query implicit columns in files, directories, nested directories, and files.</p>
 
 <p>The following table lists the implicit columns available and their descriptions:</p>
@@ -1439,39 +1442,43 @@ your registered storage plugins. For example, PSV files may be defined with a
 <table>
   <thead>
     <tr>
-      <th>Implicit   Column Name</th>
+      <th>Implicit Column Name</th>
       <th>Description</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>FQN</td>
-      <td>The   fully qualified name. Contains the full path to the file, including the file   name.</td>
+      <td>The fully qualified name. Contains the full path to the file, including the file name.</td>
     </tr>
     <tr>
       <td>FILEPATH</td>
-      <td>The   full path to the file, without the file name.</td>
+      <td>The full path to the file, without the file name.</td>
     </tr>
     <tr>
       <td>FILENAME</td>
-      <td>The   file name with the file extension. Does not include the path to the file.</td>
+      <td>The file name with the file extension. Does not include the path to the file.</td>
     </tr>
     <tr>
       <td>SUFFIX</td>
-      <td>The   file suffix without the dot (.) at the beginning.</td>
+      <td>The file suffix without the dot (.) at the beginning.</td>
+    </tr>
+    <tr>
+      <td>LMT</td>
+      <td>The last modification time of the file as recorded by the containing file system</td>
     </tr>
   </tbody>
 </table>
 
 <p>To access implicit columns, you must explicitly include the columns in a query, as shown in the following example:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; SELECT fqn, filepath, filename, suffix FROM dfs.`/dev/data/files/test.csvh` LIMIT 1;  
-   
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; SELECT fqn, filepath, filename, suffix FROM dfs.`/dev/data/files/test.csvh` LIMIT 1;
+
    |-------------------------------------|--------------------------|---------------|----------------|
    |             fqn                     |      filepath            |  filename     | suffix         |
    |-------------------------------------|--------------------------|---------------|----------------|
    | /dev/data/files/test.csvh           | /dev/data/files          | test.csvh     | csvh           |
-   |-------------------------------------|--------------------------|---------------|----------------|   
+   |-------------------------------------|--------------------------|---------------|----------------|
 </code></pre></div></div>
 
 <div class="admonition note">
@@ -1488,7 +1495,7 @@ your registered storage plugins. For example, PSV files may be defined with a
   </tbody>
 </table>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ALTER SYSTEM SET `drill.exec.storage.implicit.suffix.column.label` = appendix;  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ALTER SYSTEM SET `drill.exec.storage.implicit.suffix.column.label` = appendix;
 </code></pre></div></div>
 
 <p>Use the following configuration options to change the default implicit column names:</p>
@@ -1498,7 +1505,6 @@ your registered storage plugins. For example, PSV files may be defined with a
    drill.exec.storage.implicit.filename.column.label
    drill.exec.storage.implicit.suffix.column.label
 </code></pre></div></div>
-
 
     
       

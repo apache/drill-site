@@ -890,6 +890,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/ip-network-functions/">IP Network functions</a></li>
+              
             </ul>
             
           
@@ -1420,6 +1422,11 @@
       <td>BIT</td>
     </tr>
     <tr>
+      <td>BIT_AND(expression), BIT_OR(expression)</td>
+      <td>INT, BIGINT</td>
+      <td> </td>
+    </tr>
+    <tr>
       <td>COUNT(*)</td>
       <td>-</td>
       <td>BIGINT</td>
@@ -1604,6 +1611,32 @@ SELECT BOOL_OR(last_name = 'Spence') FROM cp.`employee.json`;
 <ol>
   <li>EVERY is nearly an alias for BOOL_AND but returns a TINYINT rather than a BIT.</li>
 </ol>
+
+<h2 id="bit_and-and-bit_or">BIT_AND and BIT_OR</h2>
+<p>Returns the result of a bitwise AND (resp. OR) over the specified expression.</p>
+
+<h3 id="bit_and-and-bit_or-syntax">BIT_AND and BIT_OR Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BIT_AND(expression)
+BIT_OR(expression)
+</code></pre></div></div>
+
+<h3 id="bit_and-and-bit_or-examples">BIT_AND and BIT_OR Examples</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT BIT_AND(position_id) FROM cp.`employee.json`;
+|--------|
+| EXPR$0 |
+|--------|
+| 0      |
+|--------|
+
+SELECT BIT_OR(position_id) FROM cp.`employee.json`;
+|--------|
+| EXPR$0 |
+|--------|
+| 31     |
+|--------|
+</code></pre></div></div>
 
 <h2 id="count">COUNT</h2>
 <p>Returns the number of rows that match the given criteria.</p>

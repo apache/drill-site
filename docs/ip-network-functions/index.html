@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Hive-to-Drill Data Type Mapping - Apache Drill</title>
+<title>IP Network functions - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -830,8 +830,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">SQL Reference</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">SQL Reference</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/sql-reference-introduction/">SQL Reference Introduction</a></li>
@@ -860,7 +860,7 @@
           
             
               <li class="toctree-l2"><a href="javascript: void(0);">SQL Functions</a></li>
-              <ul style="display: none">
+              <ul style="">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/about-sql-function-examples/">About SQL Function Examples</a></li>
               
@@ -890,7 +890,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/ip-network-functions/">IP Network functions</a></li>
+                <li class="toctree-l3 current"><a class="reference internal" href="/docs/ip-network-functions/">IP Network functions</a></li>
               
             </ul>
             
@@ -1029,15 +1029,15 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Data Sources and File Formats</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">Data Sources and File Formats</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/data-sources-and-file-formats-introduction/">Data Sources and File Formats Introduction</a></li>
             
           
             
-              <li class="toctree-l2 current"><a class="reference internal" href="/docs/hive-to-drill-data-type-mapping/">Hive-to-Drill Data Type Mapping</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/docs/hive-to-drill-data-type-mapping/">Hive-to-Drill Data Type Mapping</a></li>
             
           
             
@@ -1368,20 +1368,22 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/data-sources-and-file-formats/">Data Sources and File Formats</a></li>
+    <li><a href="/docs/sql-reference/">SQL Reference</a></li>
   
-  <li>Hive-to-Drill Data Type Mapping</li>
+    <li><a href="/docs/sql-functions/">SQL Functions</a></li>
+  
+  <li>IP Network functions</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/data-sources-and-file-formats/020-hive-to-drill-data-type-mapping.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/sql-reference/sql-functions/100-ip-net-functions.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>Hive-to-Drill Data Type Mapping</h1>
+      <h1>IP Network functions</h1>
 
     </div>
 
@@ -1391,219 +1393,97 @@
 
     <div class="int_text" align="left">
       
-        <p>Using Drill you can read tables created in Hive that use data types compatible with Drill. Drill currently does not support writing Hive tables. The map of SQL types and Hive types shows that several Hive types need to be cast to the supported SQL type in a Drill query:</p>
+        <p><strong>Introduced in release:</strong> 1.12.</p>
 
-<ul>
-  <li>TINYINT and SMALLINT<br />
- Cast these types to INTEGER.</li>
-  <li>BINARY<br />
-Cast the Hive BINARY type to VARCHAR.</li>
-</ul>
-
-<div class="admonition note">
-  <p class="first admonition-title">Note</p>
-  <p class="last">In the 1.7 release, Drill automatically converts the Hive CHAR data type to VARCHAR. You no longer need to cast the Hive CHAR data type to VARCHAR when querying Hive tables.  </p>
-</div>
-
-<h2 id="map-of-sql-and-hive-types">Map of SQL and Hive Types</h2>
-<!-- See DRILL-1570 -->
+<p>A set of functions for common computations on IP network addresses.</p>
 
 <table>
   <thead>
     <tr>
-      <th>Supported SQL Type</th>
-      <th>Hive Type</th>
+      <th>Function</th>
+      <th>Output</th>
       <th>Description</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>BIGINT</td>
-      <td>BIGINT</td>
-      <td>8-byte signed integer</td>
+      <td>inet_aton(<ip>)</ip></td>
+      <td>INT</td>
+      <td>Converts an IPv4 address into an integer</td>
     </tr>
     <tr>
+      <td>inet_ntoa( <int>)</int></td>
+      <td>VARCHAR</td>
+      <td>Converts an integer IP into dotted decimal notation</td>
+    </tr>
+    <tr>
+      <td>in_network( <ip>,<cidr> )</cidr></ip></td>
       <td>BOOLEAN</td>
+      <td>Returns true if the IP address is in the given CIDR block</td>
+    </tr>
+    <tr>
+      <td>address_count( <cidr> )</cidr></td>
+      <td>INT</td>
+      <td>Returns the number of IPs in a given CIDR block</td>
+    </tr>
+    <tr>
+      <td>broadcast_address( <cidr> )</cidr></td>
+      <td>VARCHAR</td>
+      <td>Returns the broadcast address for a given CIDR block</td>
+    </tr>
+    <tr>
+      <td>netmask(<cidr> )</cidr></td>
+      <td>VARCHAR</td>
+      <td>Returns the netmask for a given CIDR block</td>
+    </tr>
+    <tr>
+      <td>low_address(<cidr>)</cidr></td>
+      <td>VARCHAR</td>
+      <td>Returns the first address in a given CIDR block</td>
+    </tr>
+    <tr>
+      <td>high_address(<cidr>)</cidr></td>
+      <td>VARCHAR</td>
+      <td>Returns the last address in a given CIDR block</td>
+    </tr>
+    <tr>
+      <td>url_encode( <url> )</url></td>
+      <td>VARCHAR</td>
+      <td>Returns a URL encoded string</td>
+    </tr>
+    <tr>
+      <td>url_decode( <url> )</url></td>
+      <td>VARCHAR</td>
+      <td>Decodes a URL encoded string</td>
+    </tr>
+    <tr>
+      <td>is_valid_IP(<ip>)</ip></td>
       <td>BOOLEAN</td>
-      <td>TRUE (1) or FALSE (0)</td>
+      <td>Returns true if the IP is a valid IP address</td>
     </tr>
     <tr>
-      <td>VARCHAR</td>
-      <td>CHAR</td>
-      <td>Character string, fixed-length max 255</td>
+      <td>is_private_ip(<ip>)</ip></td>
+      <td>BOOLEAN</td>
+      <td>Returns true if the IP is a private IPv4 address</td>
     </tr>
     <tr>
-      <td>DATE</td>
-      <td>DATE</td>
-      <td>Years months and days in the form in the form YYYY-­MM-­DD</td>
+      <td>is_valid_IPv4(<ip>)</ip></td>
+      <td>BOOLEAN</td>
+      <td>Returns true if the IP is a valid IPv4 address</td>
     </tr>
     <tr>
-      <td>DECIMAL*</td>
-      <td>DECIMAL</td>
-      <td>38-digit precision</td>
-    </tr>
-    <tr>
-      <td>FLOAT</td>
-      <td>FLOAT</td>
-      <td>4-byte single precision floating point number</td>
-    </tr>
-    <tr>
-      <td>DOUBLE</td>
-      <td>DOUBLE</td>
-      <td>8-byte double precision floating point number</td>
-    </tr>
-    <tr>
-      <td>INTEGER</td>
-      <td>INT, TINYINT, SMALLINT</td>
-      <td>1-, 2-, or 4-byte signed integer</td>
-    </tr>
-    <tr>
-      <td>INTERVAL</td>
-      <td>N/A</td>
-      <td>A day-time or year-month interval</td>
-    </tr>
-    <tr>
-      <td>TIME</td>
-      <td>N/A</td>
-      <td>Hours minutes seconds 24-hour basis</td>
-    </tr>
-    <tr>
-      <td>N/A</td>
-      <td>TIMESTAMP</td>
-      <td>Conventional UNIX Epoch timestamp.</td>
-    </tr>
-    <tr>
-      <td>TIMESTAMP</td>
-      <td>TIMESTAMP</td>
-      <td>JDBC timestamp in yyyy-mm-dd hh:mm:ss format</td>
-    </tr>
-    <tr>
-      <td>None</td>
-      <td>STRING</td>
-      <td>Binary string (16)</td>
-    </tr>
-    <tr>
-      <td>VARCHAR</td>
-      <td>VARCHAR</td>
-      <td>Character string variable length</td>
-    </tr>
-    <tr>
-      <td>VARBINARY</td>
-      <td>BINARY</td>
-      <td>Binary string</td>
+      <td>is_valid_IPv6(<ip>)</ip></td>
+      <td>BOOLEAN</td>
+      <td>Returns true if the IP is a valid IPv6 address</td>
     </tr>
   </tbody>
 </table>
-
-<p>* In this release, Drill disables the DECIMAL data type, including casting to DECIMAL and reading DECIMAL types from Parquet and Hive. To enable the DECIMAL type, set the <code class="language-plaintext highlighter-rouge">planner.enable_decimal_data_type</code> option to <code class="language-plaintext highlighter-rouge">true</code>.</p>
-
-<h2 id="unsupported-types">Unsupported Types</h2>
-<p>Drill does not support the following Hive types:</p>
-
-<ul>
-  <li>LIST</li>
-  <li>MAP</li>
-  <li>STRUCT</li>
-  <li>TIMESTAMP (Unix Epoch format)</li>
-  <li>UNION</li>
-</ul>
-
-<p>Currently, the Apache Hive version used by Drill does not support the Hive timestamp in Unix Epoch format. The workaround is to use the JDBC format for the timestamp, which Hive accepts and Drill uses. The type mapping example shows how to use the workaround as follows.</p>
-
-<ul>
-  <li>The timestamp value appears in the example CSV file in JDBC format: 2015-03-25 01:23:15.</li>
-  <li>Workaround: The Hive table defines column i in the CREATE EXTERNAL TABLE command as a timestamp column.</li>
-  <li>The Drill extract function verifies that Drill interprets the timestamp correctly.</li>
-</ul>
-
-<h2 id="type-mapping-example">Type Mapping Example</h2>
-<p>This example demonstrates the mapping of Hive data types to Drill data types. Using a CSV that has the following contents, you create a Hive table having values of different supported types:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 8223372036854775807,true,3.5,-1231.4,3.14,42,"SomeText",2015-03-25,2015-03-25 01:23:15 
-</code></pre></div></div>
-
-<h3 id="example-assumptions">Example Assumptions</h3>
-<p>The example makes the following assumptions:</p>
-
-<ul>
-  <li>The CSV resides in the following location in the Drill sandbox: <code class="language-plaintext highlighter-rouge">/mapr/demo.mapr.com/data/</code></li>
-  <li>You <a href="/docs/supported-data-types/#enabling-the-decimal-type">enabled the DECIMAL data type</a> in Drill.</li>
-</ul>
-
-<h3 id="define-an-external-table-in-hive">Define an External Table in Hive</h3>
-
-<p>In Hive, you define an external table using the following query:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hive&gt; CREATE EXTERNAL TABLE types_demo ( 
-      a bigint, 
-      b boolean, 
-      c DECIMAL(3, 2), 
-      d double, 
-      e float, 
-      f INT, 
-      g VARCHAR(64), 
-      h date,
-      i timestamp
-      ) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' 
-      LINES TERMINATED BY '\n' 
-      STORED AS TEXTFILE LOCATION '/mapr/demo.mapr.com/data/mytypes.csv';
-</code></pre></div></div>
-
-<p>* In this release, Drill disables the DECIMAL data type, including casting to DECIMAL and reading DECIMAL types from Parquet and Hive. To enable the DECIMAL type, set the <code class="language-plaintext highlighter-rouge">planner.enable_decimal_data_type</code> option to <code class="language-plaintext highlighter-rouge">true</code>.</p>
-
-<p>You check that Hive mapped the data from the CSV to the typed values as as expected:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hive&gt; SELECT * FROM types_demo;
-OK
-8223372036854775807	true	3.5	-1231.4	3.14	42	"SomeText"	2015-03-25   2015-03-25 01:23:15
-Time taken: 0.524 seconds, Fetched: 1 row(s)
-</code></pre></div></div>
-
-<h3 id="connect-drill-to-hive-and-query-the-data">Connect Drill to Hive and Query the Data</h3>
-
-<div class="admonition note">
-  <p class="first admonition-title">Note</p>
-  <p class="last">Drill 1.8 implements the IF EXISTS parameter for the DROP TABLE and DROP VIEW commands, making IF a reserved word in Drill. As a result, you must include backticks around the Hive \``IF`` conditional function when you use it in a query on Hive tables. Alternatively, you can use the CASE statement instead of the IF function.  </p>
-</div>
-
-<p>In Drill, you use the <a href="/docs/hive-storage-plugin">Hive storage plugin</a>. Using the Hive storage plugin connects Drill to the Hive metastore containing the data.</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; USE hive;
-|------|----------------------------------|
-| ok   | summary                          |
-|------|----------------------------------|
-| true | Default schema changed to 'hive' |
-|------|----------------------------------|
-1 row selected (0.067 seconds)
-</code></pre></div></div>
-
-<p>The data in the Hive table shows the expected values.</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; SELECT * FROM hive.`types_demo`;
-|---------------------|------|------|---------|------|----|------------|------------|-----------------------|
-| a                   | b    | c    | d       | e    | f  | g          | h          | i                     |
-|---------------------|------|------|---------|------|----|------------|------------|-----------------------|
-| 8223372036854775807 | true | 3.50 | -1231.4 | 3.14 | 42 | "SomeText" | 2015-03-25 | 2015-03-25 01:23:15.0 |
-|---------------------|------|------|---------|------|----|------------|------------|-----------------------|
-1 row selected (1.262 seconds)
-</code></pre></div></div>
-
-<p>To validate that Drill interprets the timestamp in column i correctly, use the extract function to extract part of the date:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; select extract(year from i) from hive.`types_demo`;
-|--------|
-| EXPR$0 |
-|--------|
-| 2015   |
-|--------|
-1 row selected (0.387 seconds)
-</code></pre></div></div>
 
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/data-sources-and-file-formats-introduction/">← Data Sources and File Formats Introduction</a></span><span class="next-toc"><a href="/docs/deploying-and-using-a-hive-udf/">Deploying and Using a Hive UDF →</a></span>
+  <span class="previous-toc"><a href="/docs/time-series-analysis-functions/">← Time Series Analysis Functions</a></span><span class="next-toc"><a href="/docs/sql-window-functions/">SQL Window Functions →</a></span>
 </div>
 
     
