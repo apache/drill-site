@@ -1454,10 +1454,13 @@
 <p><strong>Parameters</strong></p>
 
 <ul>
-  <li>queryType–SQL, PHYSICAL, or LOGICAL are valid types. Use only “SQL”. Other types are for internal use only.</li>
-  <li>query–A SQL query that runs in Drill.</li>
-  <li>autoLimit–Limits the number of rows returned from the result set. (Drill 1.16+)</li>
+  <li><code class="language-plaintext highlighter-rouge">queryType</code>–SQL, PHYSICAL, or LOGICAL are valid types. Use only “SQL”. Other types are for internal use only.</li>
+  <li><code class="language-plaintext highlighter-rouge">query</code>–A SQL query that runs in Drill.</li>
+  <li><code class="language-plaintext highlighter-rouge">autoLimit</code>–Limits the number of rows returned from the result set. (Drill 1.16+)</li>
+  <li><code class="language-plaintext highlighter-rouge">defaultSchema</code>–Sets the default schema for the query.  Equavalent to executing a <code class="language-plaintext highlighter-rouge">USE &lt;schema&gt;</code> prior to the query. (Drill 1.18+)</li>
 </ul>
+
+<p>For Drill 1.19+ Drill switched to a streaming HTTP connection for REST queries.  The result being that</p>
 
 <p><strong>Request Body</strong></p>
 
@@ -1489,6 +1492,75 @@
    } ]
  }
 </code></pre></div></div>
+
+<p><strong>Error Reporting</strong>
+Drill 1.19 added a streaming REST interface with the goal of reducing the response times from REST calls. As of Drill 1.19, error reporting is no longer enabled by default and in the event of a failed query, you will just get results as shown below:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"queryId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1fa0acc2-e507-6688-69fe-02fc627c8c47"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"queryState"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FAILED"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<p>To re-enable error reporting you will have to set the <code class="language-plaintext highlighter-rouge">http.rest.errors.verbose</code> to <code class="language-plaintext highlighter-rouge">true</code> as shown below:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"query"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SELECT * FROM cp.`employee123321123321.json` LIMIT 20"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"queryType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SQL"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"options"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"drill.exec.http.rest.errors.verbose"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<p>The above call will result in the response shown below.  Note that the response will contain the <code class="language-plaintext highlighter-rouge">exception</code>, the <code class="language-plaintext highlighter-rouge">errorMessage</code> and the <code class="language-plaintext highlighter-rouge">stackTrace</code> in separate fields.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"queryId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1f9c72aa-bafb-2d58-ebfa-5cd3f21f4ddd"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"exception"</span><span class="p">:</span><span class="w"> </span><span class="s2">"org.apache.calcite.runtime.CalciteContextException"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"errorMessage"</span><span class="p">:</span><span class="w"> </span><span class="s2">"From line 1, column 15 to line 1, column 16: Object 'employee123321123321.json' not found within 'cp': Object 'employee123321123321.json' not found within 'cp'"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"stackTrace"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"org.apache.calcite.runtime.CalciteContextException: From line 1, column 15 to line 1, column 16: Object 'employee123321123321.json' not found within 'cp': Object 'employee123321123321.json' not found within 'cp'"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at .......(:0)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.runtime.Resources$ExInstWithCause.ex(Resources.java:463)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.sql.SqlUtil.newContextException(SqlUtil.java:835)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.sql.SqlUtil.newContextException(SqlUtil.java:820)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.sql.validate.SqlValidatorImpl.newValidationError(SqlValidatorImpl.java:4881)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.sql.validate.IdentifierNamespace.resolveImpl(IdentifierNamespace.java:127)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.sql.validate.IdentifierNamespace.validateImpl(IdentifierNamespace.java:177)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.sql.validate.AbstractNamespace.validate(AbstractNamespace.java:84)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.sql.validate.SqlValidatorImpl.validateNamespace(SqlValidatorImpl.java:1009)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.sql.validate.SqlValidatorImpl.validateQuery(SqlValidatorImpl.java:969)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.sql.validate.SqlValidatorImpl.validateFrom(SqlValidatorImpl.java:3129)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.drill.exec.planner.sql.conversion.DrillValidator.validateFrom(DrillValidator.java:63)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.sql.validate.SqlValidatorImpl.validateFrom(SqlValidatorImpl.java:3111)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.drill.exec.planner.sql.conversion.DrillValidator.validateFrom(DrillValidator.java:63)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.sql.validate.SqlValidatorImpl.validateSelect(SqlValidatorImpl.java:3383)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.sql.validate.SelectNamespace.validateImpl(SelectNamespace.java:60)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.sql.validate.AbstractNamespace.validate(AbstractNamespace.java:84)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.sql.validate.SqlValidatorImpl.validateNamespace(SqlValidatorImpl.java:1009)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.sql.validate.SqlValidatorImpl.validateQuery(SqlValidatorImpl.java:969)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.sql.SqlSelect.validate(SqlSelect.java:216)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.sql.validate.SqlValidatorImpl.validateScopedExpression(SqlValidatorImpl.java:944)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.sql.validate.SqlValidatorImpl.validate(SqlValidatorImpl.java:651)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.drill.exec.planner.sql.conversion.SqlConverter.validate(SqlConverter.java:189)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.drill.exec.planner.sql.handlers.DefaultSqlHandler.validateNode(DefaultSqlHandler.java:641)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.drill.exec.planner.sql.handlers.DefaultSqlHandler.validateAndConvert(DefaultSqlHandler.java:195)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.drill.exec.planner.sql.handlers.DefaultSqlHandler.getPlan(DefaultSqlHandler.java:169)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.drill.exec.planner.sql.DrillSqlWorker.getQueryPlan(DrillSqlWorker.java:283)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.drill.exec.planner.sql.DrillSqlWorker.getPhysicalPlan(DrillSqlWorker.java:163)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.drill.exec.planner.sql.DrillSqlWorker.convertPlan(DrillSqlWorker.java:128)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.drill.exec.planner.sql.DrillSqlWorker.getPlan(DrillSqlWorker.java:93)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.drill.exec.work.foreman.Foreman.runSQL(Foreman.java:592)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.drill.exec.work.foreman.Foreman.run(Foreman.java:273)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at .......(:0)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"Caused by: org.apache.calcite.sql.validate.SqlValidatorException: Object 'employee123321123321.json' not found within 'cp'"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at .......(:0)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.runtime.Resources$ExInstWithCause.ex(Resources.java:463)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">at org.apache.calcite.runtime.Resources$ExInst.ex(Resources.java:572)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"</span><span class="se">\t</span><span class="s2">... 31 more"</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="nl">"queryState"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FAILED"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
 
 <h2 id="profiles">Profiles</h2>
 

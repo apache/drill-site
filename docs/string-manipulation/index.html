@@ -2020,14 +2020,15 @@ SELECT RTRIM('1.0 Apache Tomcat 1.0', 'Drill 1.0') from (VALUES(1));
 </code></pre></div></div>
 
 <h2 id="split_part">SPLIT_PART</h2>
-<p>Return the string part at <em>index</em> after splitting the input string using the specified delimiter.</p>
+<p>Return the string part at <em>start</em> or from <em>start</em> to <em>end</em> after splitting the input string using the specified delimiter.</p>
 
 <h3 id="split_part-syntax">SPLIT_PART Syntax</h3>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SPLIT_PART(string, delimiter, index)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SPLIT_PART(string, delimiter, start[, end])
 </code></pre></div></div>
 
 <h3 id="split_part-usage-notes">SPLIT_PART Usage Notes</h3>
-<p>The <em>delimiter</em> string may be multiple characters long.  The <em>index</em> must be a positive integer.</p>
+<p>The <em>delimiter</em> string may be multiple characters long. The <em>start</em> must be a positive integer.
+The <em>end</em> must be greater than or equal to <em>start</em> if provided.</p>
 
 <h3 id="split_part-examples">SPLIT_PART Examples</h3>
 
@@ -2038,6 +2039,22 @@ SELECT RTRIM('1.0 Apache Tomcat 1.0', 'Drill 1.0') from (VALUES(1));
 |--------|
 | fox    |
 |--------|
+
+SELECT split_part('The | quick | brown | fox | jumps', ' | ', 4, 5);
+
+|--------------|
+|    EXPR$0    |
+|--------------|
+| fox | jumps  |
+|--------------|
+
+SELECT split_part('The | quick | brown | fox | jumps', ' | ', 4, 10);
+
+|--------------|
+|    EXPR$0    |
+|--------------|
+| fox | jumps  |
+|--------------|
 </code></pre></div></div>
 
 <h2 id="strpos">STRPOS</h2>
