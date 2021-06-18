@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Securing Drill - Apache Drill</title>
+<title>Splunk Plugin - Apache Drill</title>
 
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='//fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -338,8 +338,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Configure Drill</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">Configure Drill</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/configure-drill-introduction/">Configure Drill Introduction</a></li>
@@ -350,8 +350,8 @@
             
           
             
-              <li class="toctree-l2 current"><a href="javascript: void(0);">Securing Drill</a></li>
-              <ul style="">
+              <li class="toctree-l2"><a href="javascript: void(0);">Securing Drill</a></li>
+              <ul style="display: none">
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/securing-drill-introduction/">Securing Drill Introduction</a></li>
               
@@ -432,8 +432,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Connect a Data Source</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Connect a Data Source</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/connect-a-data-source-introduction/">Connect a Data Source Introduction</a></li>
@@ -511,7 +511,7 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/docs/splunk-plugin/">Splunk Plugin</a></li>
+              <li class="toctree-l2 current"><a class="reference internal" href="/docs/splunk-plugin/">Splunk Plugin</a></li>
             
           
           </ul>
@@ -1376,20 +1376,20 @@
   <li><a href="/docs/">Docs</a></li>
  
   
-    <li><a href="/docs/configure-drill/">Configure Drill</a></li>
+    <li><a href="/docs/connect-a-data-source/">Connect a Data Source</a></li>
   
-  <li>Securing Drill</li>
+  <li>Splunk Plugin</li>
 </nav>
 
 <div class="main-content-wrapper">
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/configure-drill/031-securing-drill.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/connect-a-data-source/plugins/140-splunk-storage-plugin.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>Securing Drill</h1>
+      <h1>Splunk Plugin</h1>
 
     </div>
 
@@ -1399,59 +1399,238 @@
 
     <div class="int_text" align="left">
       
-        <ul>
-        
-          <li><a href="/docs/securing-drill-introduction/">Securing Drill Introduction</a></li>
-        
-      
-          <li><a href="/docs/secure-communication-paths/">Secure Communication Paths</a></li>
-        
-      
-          <li><a href="/docs/roles-and-privileges/">Roles and Privileges</a></li>
-        
-      
-          <li><a href="/docs/configuring-user-impersonation/">Configuring User Impersonation</a></li>
-        
-      
-          <li><a href="/docs/configuring-inbound-impersonation/">Configuring Inbound Impersonation</a></li>
-        
-      
-          <li><a href="/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
-        
-      
-          <li><a href="/docs/configuring-user-security/">Configuring User Security</a></li>
-        
-      
-          <li><a href="/docs/configuring-plain-security/">Configuring Plain Security</a></li>
-        
-      
-          <li><a href="/docs/configuring-ssl-tls-for-encryption/">Configuring SSL/TLS for Encryption</a></li>
-        
-      
-          <li><a href="/docs/using-libpam4j-as-the-pam-authenticator/">Using libpam4j as the PAM Authenticator</a></li>
-        
-      
-          <li><a href="/docs/using-jpam-as-the-pam-authenticator/">Using jpam as the PAM Authenticator</a></li>
-        
-      
-          <li><a href="/docs/configuring-kerberos-security/">Configuring Kerberos Security</a></li>
-        
-      
-          <li><a href="/docs/configuring-drill-to-use-spnego-for-http-authentication/">Configuring Drill to use SPNEGO for HTTP Authentication</a></li>
-        
-      
-          <li><a href="/docs/configuring-web-ui-and-rest-api-security/">Configuring Web UI and REST API Security</a></li>
-        
-      
-          <li><a href="/docs/configuring-custom-acls-to-secure-znodes/">Configuring Custom ACLs to Secure znodes</a></li>
-        
-      
-      </ul>
+        <p><strong>Introduced in release:</strong> 1.19</p>
+
+<p>Drill’s Splunk storage plugin allows you to execute SQL queries against Splunk
+indexes. This storage plugin implementation is based on
+<a href="https://calcite.apache.org/javadocAggregate/org/apache/calcite/adapter/splunk/package-summary.html">Apache Calcite adapter for Splunk</a>.</p>
+
+<h2 id="configuration">Configuration</h2>
+
+<p>To connect Drill to Splunk, create a new storage plugin with a configuration
+containing the following properties.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+   </span><span class="nl">"type"</span><span class="p">:</span><span class="s2">"splunk"</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"changeme"</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"hostname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localhost"</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">8089</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"earliestTime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-14d"</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"latestTime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"now"</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="configuration-options">Configuration Options</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>type</td>
+      <td>(none)</td>
+      <td>Set to “splunk” to use this plugin</td>
+    </tr>
+    <tr>
+      <td>username</td>
+      <td>null</td>
+      <td>Splunk username to be used by Drill</td>
+    </tr>
+    <tr>
+      <td>password</td>
+      <td>null</td>
+      <td>Splunk password to be used by Drill</td>
+    </tr>
+    <tr>
+      <td>hostname</td>
+      <td>null</td>
+      <td>Splunk host to be queried by Drill</td>
+    </tr>
+    <tr>
+      <td>port</td>
+      <td>null</td>
+      <td>TCP port over which Drill will connect to Splunk.</td>
+    </tr>
+    <tr>
+      <td>earliestTime</td>
+      <td>null</td>
+      <td>Global earliest record timestamp default</td>
+    </tr>
+    <tr>
+      <td>latestTime</td>
+      <td>null</td>
+      <td>Global latest record timestamp default</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="understanding-splunks-data-model">Understanding Splunk’s Data Model</h2>
+
+<p>Splunk’s primary use case is analyzing event logs with a timestamp. As such,
+data is indexed by the timestamp, with the most recent data being indexed first.
+By default, Splunk will sort the data in reverse chronological order. Large
+Splunk installations will put older data into buckets of hot, warm and cold
+storage with the “cold” storage on the slowest and cheapest disks.</p>
+
+<p>With this understood, it is <strong>very</strong> important to put time boundaries on your
+Splunk queries. The Drill plugin allows you to set default values in the
+configuration such that every query you run will be bounded by these boundaries.
+Alternatively, you can set the time boundaries at query time. In either case,
+you will achieve the best performance when you ask Splunk for the smallest
+amount of data possible.</p>
+
+<h2 id="understanding-drills-data-model-for-splunk">Understanding Drill’s Data Model for Splunk</h2>
+
+<p>Drill treats Splunk indexes as tables. Splunk’s access model does not restrict
+to the catalog, but does restrict access to the actual data. It is therefore
+possible that you can see the names of indexes to which you do not have access.
+You can view the list of available indexes with a <code class="language-plaintext highlighter-rouge">SHOW TABLES IN splunk</code> query.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apache drill&gt; SHOW TABLES IN splunk;
++--------------+----------------+
+| TABLE_SCHEMA |   TABLE_NAME   |
++--------------+----------------+
+| splunk       | summary        |
+| splunk       | splunklogger   |
+| splunk       | _thefishbucket |
+| splunk       | _audit         |
+| splunk       | _internal      |
+| splunk       | _introspection |
+| splunk       | main           |
+| splunk       | history        |
+| splunk       | _telemetry     |
++--------------+----------------+
+9 rows selected (0.304 seconds)
+</code></pre></div></div>
+
+<p>To query Splunk from Drill, use the following format:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">&lt;</span><span class="n">fields</span><span class="o">&gt;</span>
+<span class="k">FROM</span> <span class="n">splunk</span><span class="p">.</span><span class="o">&lt;</span><span class="k">index</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<h2 id="bounding-your-queries">Bounding Your Queries</h2>
+
+<p>When you learn to query Splunk via their interface, the first thing you learn is
+to bound your queries so that they are looking at the shortest time span
+possible. When using Drill to query Splunk, it is advisable to do the same
+thing, and Drill offers two ways to accomplish this: via the configuration and
+at query time.</p>
+
+<h3 id="bounding-your-queries-at-query-time">Bounding your Queries at Query Time</h3>
+
+<p>The easiest way to bound your query is to do so at querytime via special filters
+in the <code class="language-plaintext highlighter-rouge">WHERE</code> clause. There are two special fields, <code class="language-plaintext highlighter-rouge">earliestTime</code> and
+<code class="language-plaintext highlighter-rouge">latestTime</code> which can be set to bound the query. If they are not set, the query
+will be bounded to the defaults set in the configuration. You can use any of the
+time formats specified in
+<a href="https://docs.splunk.com/Documentation/Splunk/8.0.3/SearchReference/SearchTimeModifiers">the Splunk documentation</a></p>
+
+<p>So if you wanted to see your data for the last 15 minutes, you could execute the
+following query:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">&lt;</span><span class="n">fields</span><span class="o">&gt;</span>
+<span class="k">FROM</span> <span class="n">splunk</span><span class="p">.</span><span class="o">&lt;</span><span class="k">index</span><span class="o">&gt;</span>
+<span class="k">WHERE</span> <span class="n">earliestTime</span><span class="o">=</span><span class="s1">'-15m'</span> <span class="k">AND</span> <span class="n">latestTime</span><span class="o">=</span><span class="s1">'now'</span>
+</code></pre></div></div>
+
+<p>The variables set in a query override the defaults from the configuration.</p>
+
+<h2 id="data-types">Data Types</h2>
+
+<p>Splunk does not have sophisticated data types and unfortunately does not provide
+metadata from its query results. With the exception of the fields below, Drill
+will interpret all fields as <code class="language-plaintext highlighter-rouge">VARCHAR</code> and hence you will have to convert them
+to the appropriate data type at query time.</p>
+
+<h4 id="timestamp-fields">Timestamp Fields</h4>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">_indextime</code></li>
+  <li><code class="language-plaintext highlighter-rouge">_time</code></li>
+</ul>
+
+<h4 id="numeric-fields">Numeric Fields</h4>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">date_hour</code></li>
+  <li><code class="language-plaintext highlighter-rouge">date_mday</code></li>
+  <li><code class="language-plaintext highlighter-rouge">date_minute</code></li>
+  <li><code class="language-plaintext highlighter-rouge">date_second</code></li>
+  <li><code class="language-plaintext highlighter-rouge">date_year</code></li>
+  <li><code class="language-plaintext highlighter-rouge">linecount</code></li>
+</ul>
+
+<h3 id="nested-data">Nested Data</h3>
+
+<p>Splunk has two different types of nested data which roughly map to Drill’s
+<code class="language-plaintext highlighter-rouge">LIST</code> and <code class="language-plaintext highlighter-rouge">MAP</code> data types. Unfortunately, there is no easy way to identify
+whether a field is a nested field at querytime as Splunk does not provide any
+metadata and therefore all fields are treated as <code class="language-plaintext highlighter-rouge">VARCHAR</code>.</p>
+
+<p>However, Drill does have built in functions to easily convert Splunk multifields
+into Drill <code class="language-plaintext highlighter-rouge">LIST</code> and <code class="language-plaintext highlighter-rouge">MAP</code> data types. For a LIST, simply use the
+<code class="language-plaintext highlighter-rouge">SPLIT(&lt;field&gt;, ' ')</code> function to split the field into a <code class="language-plaintext highlighter-rouge">LIST</code>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">MAP</code> data types are rendered as JSON in Splunk. Fortunately JSON can easily be
+parsed into a Drill Map by using the <code class="language-plaintext highlighter-rouge">convert_fromJSON()</code> function. The query
+below demonstrates how to convert a JSON column into a Drill <code class="language-plaintext highlighter-rouge">MAP</code>.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">convert_fromJSON</span><span class="p">(</span><span class="n">_raw</span><span class="p">)</span> 
+<span class="k">FROM</span> <span class="n">splunk</span><span class="p">.</span><span class="n">spl</span>
+<span class="k">WHERE</span> <span class="n">spl</span> <span class="o">=</span> <span class="s1">'| makeresults
+| eval _raw="{</span><span class="se">\"</span><span class="s1">pc</span><span class="se">\"</span><span class="s1">:{</span><span class="se">\"</span><span class="s1">label</span><span class="se">\"</span><span class="s1">:</span><span class="se">\"</span><span class="s1">PC</span><span class="se">\"</span><span class="s1">,</span><span class="se">\"</span><span class="s1">count</span><span class="se">\"</span><span class="s1">:24,</span><span class="se">\"</span><span class="s1">peak24</span><span class="se">\"</span><span class="s1">:12},</span><span class="se">\"</span><span class="s1">ps3</span><span class="se">\"</span><span class="s1">:
+{</span><span class="se">\"</span><span class="s1">label</span><span class="se">\"</span><span class="s1">:</span><span class="se">\"</span><span class="s1">PS3</span><span class="se">\"</span><span class="s1">,</span><span class="se">\"</span><span class="s1">count</span><span class="se">\"</span><span class="s1">:51,</span><span class="se">\"</span><span class="s1">peak24</span><span class="se">\"</span><span class="s1">:10},</span><span class="se">\"</span><span class="s1">xbox</span><span class="se">\"</span><span class="s1">:
+{</span><span class="se">\"</span><span class="s1">label</span><span class="se">\"</span><span class="s1">:</span><span class="se">\"</span><span class="s1">XBOX360</span><span class="se">\"</span><span class="s1">,</span><span class="se">\"</span><span class="s1">count</span><span class="se">\"</span><span class="s1">:40,</span><span class="se">\"</span><span class="s1">peak24</span><span class="se">\"</span><span class="s1">:11},</span><span class="se">\"</span><span class="s1">xone</span><span class="se">\"</span><span class="s1">:
+{</span><span class="se">\"</span><span class="s1">label</span><span class="se">\"</span><span class="s1">:</span><span class="se">\"</span><span class="s1">XBOXONE</span><span class="se">\"</span><span class="s1">,</span><span class="se">\"</span><span class="s1">count</span><span class="se">\"</span><span class="s1">:105,</span><span class="se">\"</span><span class="s1">peak24</span><span class="se">\"</span><span class="s1">:99},</span><span class="se">\"</span><span class="s1">ps4</span><span class="se">\"</span><span class="s1">:
+{</span><span class="se">\"</span><span class="s1">label</span><span class="se">\"</span><span class="s1">:</span><span class="se">\"</span><span class="s1">PS4</span><span class="se">\"</span><span class="s1">,</span><span class="se">\"</span><span class="s1">count</span><span class="se">\"</span><span class="s1">:200,</span><span class="se">\"</span><span class="s1">peak24</span><span class="se">\"</span><span class="s1">:80}}"'</span>
+</code></pre></div></div>
+
+<h3 id="selecting-fields">Selecting Fields</h3>
+
+<p>When you execute a query in Drill for Splunk, the fields you select are pushed
+down to Splunk. Therefore, it will always be more efficient to explicitly
+specify fields to push down to Splunk rather than using <code class="language-plaintext highlighter-rouge">SELECT *</code> queries.</p>
+
+<h3 id="special-fields">Special Fields</h3>
+
+<p>There are several fields which can be included in a Drill query</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">spl</code>: If you just want to send an SPL query to Splunk, this will do that.</li>
+  <li><code class="language-plaintext highlighter-rouge">earliestTime</code>: Overrides the <code class="language-plaintext highlighter-rouge">earliestTime</code> setting in the configuration.</li>
+  <li><code class="language-plaintext highlighter-rouge">latestTime</code>: Overrides the <code class="language-plaintext highlighter-rouge">latestTime</code> setting in the configuration.</li>
+</ul>
+
+<h3 id="sorting-results">Sorting Results</h3>
+
+<p>Due to the nature of Splunk indexes, data will always be returned in reverse
+chronological order. Thus, sorting is not necessary if that is the desired
+order.</p>
+
+<h2 id="sending-arbitrary-spl-to-splunk">Sending Arbitrary SPL to Splunk</h2>
+
+<p>There is a special table called <code class="language-plaintext highlighter-rouge">spl</code> which you can use to send arbitrary
+queries to Splunk. If you use this table, you must include a query in the <code class="language-plaintext highlighter-rouge">spl</code>
+filter as shown below:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span>
+<span class="k">FROM</span> <span class="n">splunk</span><span class="p">.</span><span class="n">spl</span>
+<span class="k">WHERE</span> <span class="n">spl</span><span class="o">=</span><span class="s1">'&lt;your SPL query&gt;'</span>
+</code></pre></div></div>
+
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/docs/configuring-drill-memory/">← Configuring Drill Memory</a></span><span class="next-toc"><a href="/docs/securing-drill-introduction/">Securing Drill Introduction →</a></span>
+  <span class="previous-toc"><a href="/docs/elasticsearch-plugin/">← ElasticSearch Plugin</a></span><span class="next-toc"><a href="/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces →</a></span>
 </div>
 
     
