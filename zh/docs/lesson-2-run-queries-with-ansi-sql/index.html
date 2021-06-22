@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+<meta name=viewport content="width=device-width, initial-scale=1">
+
+
+<title>Lesson 2: Run Queries with ANSI SQL - Apache Drill</title>
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
+<link href="/css/site.css" rel="stylesheet" type="text/css"/>
+
+<link rel="shortcut icon" href="/zh/favicon.ico" type="image/x-icon"/>
+<link rel="icon" href="/zh/favicon.ico" type="image/x-icon"/>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" language="javascript" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js" language="javascript" type="text/javascript"></script>
+<script language="javascript" type="text/javascript" src="/js/modernizr.custom.js"></script>
+<script language="javascript" type="text/javascript" src="/js/script.js"></script>
+<script language="javascript" type="text/javascript" src="/js/drill.js"></script>
+
+</head>
+
+
+<body onResize="resized();">
+  <div class="page-wrap">
+    <div class="bui"></div>
+
+<div id="menu" class="mw">
+<ul>
+  <li class='toc-categories'>
+  <a class="expand-toc-icon" href="javascript:void(0);"><i class="fa fa-bars"></i></a>
+  </li>
+  <li class="logo"><a href="/zh/"></a></li>
+  <li class='expand-menu'>
+  <a href="javascript:void(0);"><span class='menu-text'>Menu</span><span class='expand-icon'><i class="fa fa-bars"></i></span></a>
+  </li>
+  <li class="clear-float"></li>
+  <li class="nav">
+	<a>Language</a>
+	<ul>
+		
+		<li>
+			<a  href="/docs/lesson-2-run-queries-with-ansi-sql/" >en</a>
+		</li>
+		
+		<li>
+			<a style="font-weight: bold;" href="/zh/docs/lesson-2-run-queries-with-ansi-sql/" >zh</a>
+		</li>
+		
+	</ul>
+  </li>
+  <li class="apache-link">
+    <a href="/zh/apacheASF/">Apache</a>
+  </li>
+  <li class="poweredby">
+    <a href="/zh/poweredBy">Powered By</a>
+  </li>
+  <li class="documentation-menu">
+    <a href="/zh/docs/">Documentation</a>
+    <ul>
+      
+        <li><a href="/zh/docs/getting-started/">开始 (Getting Started)</a></li>
+      
+        <li><a href="/zh/docs/architecture/">Architecture</a></li>
+      
+        <li><a href="/zh/docs/tutorials/">Tutorials</a></li>
+      
+        <li><a href="/zh/docs/drill-on-yarn/">Drill-on-YARN</a></li>
+      
+        <li><a href="/zh/docs/install-drill/">Install Drill</a></li>
+      
+        <li><a href="/zh/docs/configure-drill/">Configure Drill</a></li>
+      
+        <li><a href="/zh/docs/connect-a-data-source/">Connect a Data Source</a></li>
+      
+        <li><a href="/zh/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces</a></li>
+      
+        <li><a href="/zh/docs/query-data/">Query Data</a></li>
+      
+        <li><a href="/zh/docs/performance-tuning/">Performance Tuning</a></li>
+      
+        <li><a href="/zh/docs/log-and-debug/">Log and Debug</a></li>
+      
+        <li><a href="/zh/docs/sql-reference/">SQL Reference</a></li>
+      
+        <li><a href="/zh/docs/data-sources-and-file-formats/">Data Sources and File Formats</a></li>
+      
+        <li><a href="/zh/docs/develop-custom-functions/">Develop Custom Functions</a></li>
+      
+        <li><a href="/zh/docs/troubleshooting/">Troubleshooting</a></li>
+      
+        <li><a href="/zh/docs/developer-information/">Developer Information</a></li>
+      
+        <li><a href="/zh/docs/release-notes/">Release Notes</a></li>
+      
+        <li><a href="/zh/docs/sample-datasets/">Sample Datasets</a></li>
+      
+        <li><a href="/zh/docs/project-bylaws/">Project Bylaws</a></li>
+      
+        <li><a href="/zh/docs/ecosystem/">Ecosystem</a></li>
+      
+    </ul>
+  </li>
+  <li class='nav'>
+    <a href="/zh/community-resources/">Community</a>
+    <ul>
+      <li><a href="/zh/team/">Team</a></li>
+      <li><a href="/zh/mailinglists/">Mailing Lists</a></li>
+      <li><a href="/zh/community-resources/">Community Resources</a></li>
+    </ul>
+  </li>
+  <li class='nav'><a href="/zh/faq/">FAQ</a></li>
+  <li class='nav'><a href="/blog/">Blog</a></li>
+  <li class="social-menu-item"><a href="https://twitter.com/apachedrill" title="apachedrill on twitter" target="_blank"><img src="/images/twitter_32_26_white.png" alt="twitter logo" align="center"></a> </li>
+  <li class="social-menu-item"><a href="https://join.slack.com/t/apache-drill/shared_invite/enQtNTQ4MjM1MDA3MzQ2LTJlYmUxMTRkMmUwYmQ2NTllYmFmMjU4MDk0NjYwZjBmYjg0MDZmOTE2ZDg0ZjBlYmI3Yjc4Y2I2NTQyNGVlZTc" title="Apache Drill Slack channels"
+      target="_blank"><img src="/images/slack-logo.svg" alt="Slack logo" align="center"></a> </li>
+  <li class='search-bar'>
+    <form id="drill-search-form">
+      <input type="text" placeholder="Search Apache Drill" id="drill-search-term" />
+      <button type="submit">
+        <i class="fa fa-search"></i>
+      </button>
+    </form>
+  </li>
+  <li class="d">
+    <a href="/zh/download/">
+      <i class="fa fa-cloud-download"></i> Download
+    </a>
+  </li>
+</ul>
+</div>
+
+    <link href="/css/content.css" rel="stylesheet" type="text/css">
+
+
+      
+
+
+
+
+<aside class="sidebar">
+  <div class="docsidebar">
+    <div class="docsidebarwrapper">
+      <ul style="display: block;">
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">开始 (Getting Started)</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-introduction/">钻头介绍 (Drill Introduction)</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/why-drill/">为什么钻 (Why Drill)</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Architecture</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/architecture-introduction/">Architecture Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-query-execution/">Drill Query Execution</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/core-modules/">Core Modules</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/performance/">Performance</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Tutorials</a></li>
+          <ul class="current_section">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/tutorials-introduction/">Tutorials Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-in-10-minutes/">Drill in 10 Minutes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/analyzing-the-yelp-academic-dataset/">Analyzing the Yelp Academic Dataset</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Learn Drill with the MapR Sandbox</a></li>
+              <ul style="">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/about-the-mapr-sandbox/">About the MapR Sandbox</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-the-apache-drill-sandbox/">Installing the Apache Drill Sandbox</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/getting-to-know-the-drill-sandbox/">Getting to Know the Drill Sandbox</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/lesson-1-learn-about-the-data-set/">Lesson 1: Learn about the Data Set</a></li>
+              
+                <li class="toctree-l3 current"><a class="reference internal" href="/zh/docs/lesson-2-run-queries-with-ansi-sql/">Lesson 2: Run Queries with ANSI SQL</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/lesson-3-run-queries-on-complex-data-types/">Lesson 3: Run Queries on Complex Data Types</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/summary/">Summary</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/analyzing-highly-dynamic-datasets/">Analyzing Highly Dynamic Datasets</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/analyzing-social-media/">Analyzing Social Media</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/analyzing-data-using-window-functions/">Analyzing Data Using Window Functions</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Drill-on-YARN</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-on-yarn-introduction/">Drill-on-YARN Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/creating-a-basic-drill-cluster/">Creating a Basic Drill Cluster</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/launch-drill-under-yarn/">Launch Drill Under YARN</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configuration-reference/">Configuration Reference</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-on-yarn-command-line-tool/">Drill-on-YARN Command-Line Tool</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-the-drill-on-yarn-web-ui/">Using the Drill-on-YARN Web UI</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/multiple-drill-clusters/">Multiple Drill Clusters</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/enabling-web-ui-security/">Enabling Web UI Security</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/appendix-a-release-note-issues/">Appendix A: Release Note Issues</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/appendix-b-drill-env-sh-settings/">Appendix B: drill-env.sh Settings</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/appendix-c-troubleshooting/">Appendix C: Troubleshooting</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/appendix-d-recreate-the-drill-archive/">Appendix D: Recreate the Drill Archive</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Install Drill</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/install-drill-introduction/">Install Drill Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/migrating-parquet-data/">Migrating Parquet Data</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Installing Drill in Embedded Mode</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-drill-on-windows/">Installing Drill on Windows</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/starting-drill-on-windows/">Starting Drill on Windows</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Installing Drill in Distributed Mode</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/distributed-mode-prerequisites/">Distributed Mode Prerequisites</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-drill-on-the-cluster/">Installing Drill on the Cluster</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/starting-drill-in-distributed-mode/">Starting Drill in Distributed Mode</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/starting-the-web-ui/">Starting the Web UI</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/stopping-drill/">Stopping Drill</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/identifying-multiple-drill-versions-in-a-cluster/">Identifying Multiple Drill Versions in a Cluster</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Configure Drill</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configure-drill-introduction/">Configure Drill Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configuring-drill-memory/">Configuring Drill Memory</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Securing Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/securing-drill-introduction/">Securing Drill Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/secure-communication-paths/">Secure Communication Paths</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/roles-and-privileges/">Roles and Privileges</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-user-impersonation/">Configuring User Impersonation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-inbound-impersonation/">Configuring Inbound Impersonation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-user-security/">Configuring User Security</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-plain-security/">Configuring Plain Security</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-ssl-tls-for-encryption/">Configuring SSL/TLS for Encryption</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-libpam4j-as-the-pam-authenticator/">Using libpam4j as the PAM Authenticator</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-jpam-as-the-pam-authenticator/">Using jpam as the PAM Authenticator</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-kerberos-security/">Configuring Kerberos Security</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-drill-to-use-spnego-for-http-authentication/">Configuring Drill to use SPNEGO for HTTP Authentication</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-web-ui-and-rest-api-security/">Configuring Web UI and REST API Security</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-custom-acls-to-secure-znodes/">Configuring Custom ACLs to Secure znodes</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Configuring a Multitenant Cluster</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-a-multitenant-cluster-introduction/">Configuring a Multitenant Cluster Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-multitenant-resources/">Configuring Multitenant Resources</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-resources-for-a-shared-drillbit/">Configuring Resources for a Shared Drillbit</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Configuration Options</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuration-options-introduction/">Configuration Options Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/start-up-options/">Start-Up Options</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/planning-and-execution-options/">Planning and Execution Options</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/persistent-configuration-storage/">Persistent Configuration Storage</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/global-query-list/">Global Query List</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/ports-used-by-drill/">Ports Used by Drill</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configuring-the-drill-shell/">Configuring the Drill Shell</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configuring-cgroups-to-control-cpu-usage/">Configuring cgroups to Control CPU Usage</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Connect a Data Source</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/connect-a-data-source-introduction/">Connect a Data Source Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/storage-plugin-registration/">Storage Plugin Registration</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Storage Plugin Configuration</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/plugin-configuration-basics/">Plugin Configuration Basics</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-storage-plugins/">Configuring Storage Plugins</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/workspaces/">Workspaces</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drill-default-input-format/">Drill Default Input Format</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/file-system-storage-plugin/">File System Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hive-storage-plugin/">Hive Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/rdbms-storage-plugin/">RDBMS Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/mongodb-storage-plugin/">MongoDB Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/mapr-db-format/">MapR-DB Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/s3-storage-plugin/">S3 Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/kafka-storage-plugin/">Kafka Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/elasticsearch-storage-plugin/">ElasticSearch Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/splunk-storage-plugin/">Splunk Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/cassandra-storage-plugin/">Cassandra Storage Plugin</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">ODBC/JDBC Interfaces</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/interfaces-introduction/">Interfaces Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-the-jdbc-driver/">Using the JDBC Driver</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-jdbc-with-squirrel-on-windows/">Using JDBC with SQuirreL on Windows</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Installing the ODBC Driver</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-the-driver-on-linux/">Installing the Driver on Linux</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-the-driver-on-mac-os-x/">Installing the Driver on Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-the-driver-on-windows/">Installing the Driver on Windows</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Configuring ODBC</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/odbc-configuration-reference/">ODBC Configuration Reference</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/logging-and-tracing/">Logging and Tracing</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-odbc-on-linux/">Configuring ODBC on Linux</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-odbc-on-mac-os-x/">Configuring ODBC on Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-odbc-on-windows/">Configuring ODBC on Windows</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/testing-the-odbc-connection/">Testing the ODBC Connection</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Using Drill Explorer</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drill-explorer-introduction/">Drill Explorer Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/connecting-drill-explorer-to-data/">Connecting Drill Explorer to Data</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/browsing-data-and-defining-views/">Browsing Data and Defining Views</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Using Drill with BI Tools</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-drill-with-bi-tools-introduction/">Using Drill with BI Tools Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/tableau-examples/">Tableau Examples</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-microstrategy-analytics-with-apache-drill/">Using MicroStrategy Analytics with Apache Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-tibco-spotfire-desktop-with-drill/">Using Tibco Spotfire Desktop with Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-tibco-spotfire-server-with-drill/">Configuring Tibco Spotfire Server with Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-qlik-sense-with-drill/">Using Qlik Sense with Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-apache-drill-with-tableau-10-2/">Using Apache Drill with Tableau 10.2</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-apache-drill-with-tableau-9-desktop/">Using Apache Drill with Tableau 9 Desktop</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-information-builders-webfocus-with-apache-drill/">Using Information Builders’ WebFOCUS with Apache Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-jreport-with-drill/">Configuring JReport with Drill</a></li>
+              
+            </ul>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Query Data</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/query-data-introduction/">Query Data Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Querying a File System</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-a-file-system-introduction/">Querying a File System Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-avro-files/">Querying Avro Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-json-files/">Querying JSON Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-parquet-files/">Querying Parquet Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-plain-text-files/">Querying Plain Text Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-directories/">Querying Directories</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-sequence-files/">Querying Sequence Files</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/querying-hbase/">Querying HBase</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Querying Complex Data</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-complex-data-introduction/">Querying Complex Data Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sample-data-donuts/">Sample Data: Donuts</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/selecting-flat-data/">Selecting Flat Data</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-sql-functions-clauses-and-joins/">Using SQL Functions, Clauses, and Joins</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/selecting-nested-data-for-a-column/">Selecting Nested Data for a Column</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/selecting-multiple-columns-within-nested-data/">Selecting Multiple Columns Within Nested Data</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/querying-hive/">Querying Hive</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/querying-the-information-schema/">Querying the INFORMATION SCHEMA</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Querying Indexes</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-indexes-introduction/">Querying Indexes Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/queries-that-qualify-for-index-based-query-plans/">Queries that Qualify for Index-Based Query Plans</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/types-of-indexes/">Types of Indexes</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/index-selection/">Index Selection</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/designing-indexes-for-your-queries/">Designing Indexes for Your Queries</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-index-planning/">Configuring Index Planning</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/verifying-index-use/">Verifying Index Use</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/querying-system-tables/">Querying System Tables</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/monitoring-and-canceling-queries-in-the-drill-web-ui/">Monitoring and Canceling Queries in the Drill Web UI</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Performance Tuning</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Drill Metastore</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-drill-metastore/">Using Drill Metastore</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drill-iceberg-metastore/">Drill Iceberg Metastore</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/rdbms-metastore/">RDBMS Metastore</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/performance-tuning-introduction/">Performance Tuning Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Partition Pruning</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/partition-pruning-introduction/">Partition Pruning Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/how-to-partition-data/">How to Partition Data</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/asynchronous-parquet-reader/">Asynchronous Parquet Reader</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/optimizing-parquet-metadata-reading/">Optimizing Parquet Metadata Reading</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/parquet-filter-pushdown/">Parquet Filter Pushdown</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hive-metadata-caching/">Hive Metadata Caching</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/choosing-a-storage-format/">Choosing a Storage Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Query Plans and Tuning</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-plans-and-tuning-introduction/">Query Plans and Tuning Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/join-planning-guidelines/">Join Planning Guidelines</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/guidelines-for-optimizing-aggregation/">Guidelines for Optimizing Aggregation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/modifying-query-planning-options/">Modifying Query Planning Options</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sort-based-and-hash-based-memory-constrained-operators/">Sort-Based and Hash-Based Memory-Constrained Operators</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/enabling-query-queuing/">Enabling Query Queuing</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/throttling/">Throttling</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/controlling-parallelization-to-balance-performance-with-multi-tenancy/">Controlling Parallelization to Balance Performance with Multi-Tenancy</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Identifying Performance Issues</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-plans/">Query Plans</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-profiles/">Query Profiles</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Performance Tuning Reference</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-profile-column-descriptions/">Query Profile Column Descriptions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/physical-operators/">Physical Operators</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/monitoring-metrics/">Monitoring Metrics</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Log and Debug</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/log-and-debug-introduction/">Log and Debug Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/error-messages/">Error Messages</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/modify-logback-xml/">Modify logback.xml</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/review-the-java-stack-trace/">Review the Java Stack Trace</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/query-audit-logging/">Query Audit Logging</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">SQL Reference</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/sql-reference-introduction/">SQL Reference Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Data Types</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/supported-data-types/">Supported Data Types</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/date-time-and-timestamp/">Date, Time, and Timestamp</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/handling-different-data-types/">Handling Different Data Types</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/lexical-structure/">Lexical Structure</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/operators/">Operators</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Functions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/about-sql-function-examples/">About SQL Function Examples</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/math-and-trig/">Math and Trig</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/data-type-conversion/">Data Type Conversion</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/data-type-functions/">Data Type Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/date-time-functions-and-arithmetic/">Date/Time Functions and Arithmetic</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/string-manipulation/">String Manipulation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/aggregate-and-aggregate-statistical/">Aggregate and Aggregate Statistical</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/functions-for-handling-nulls/">Functions for Handling Nulls</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/phonetic-functions/">Phonetic Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/string-distance-functions/">String Distance Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/cryptography-functions/">Cryptography Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/ip-networking-functions/">IP Networking functions</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Window Functions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sql-window-functions-introduction/">SQL Window Functions Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/aggregate-window-functions/">Aggregate Window Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/ranking-window-functions/">Ranking Window Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/value-window-functions/">Value Window Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sql-window-functions-examples/">SQL Window Functions Examples</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Nested Data Functions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/nested-data-limitations/">Nested Data Limitations</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/flatten/">FLATTEN</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/kvgen/">KVGEN</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/repeated-count/">REPEATED_COUNT</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/repeated-contains/">REPEATED_CONTAINS</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/query-directory-functions/">Query Directory Functions</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Commands</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/supported-sql-commands/">Supported SQL Commands</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/analyze-table-refresh-metadata/">ANALYZE TABLE REFRESH METADATA</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/analyze-table-compute-statistics/">ANALYZE TABLE COMPUTE STATISTICS</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/set/">SET</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/refresh-table-metadata/">REFRESH TABLE METADATA</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/reset/">RESET</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/alter-system/">ALTER SYSTEM</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-or-replace-schema/">CREATE OR REPLACE SCHEMA</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-table-as-ctas/">CREATE TABLE AS (CTAS)</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-temporary-table-as-cttas/">CREATE TEMPORARY TABLE AS (CTTAS)</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-function-using-jar/">CREATE FUNCTION USING JAR</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/partition-by-clause/">PARTITION BY Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-view/">CREATE VIEW</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/describe/">DESCRIBE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drop-function-using-jar/">DROP FUNCTION USING JAR</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drop-table/">DROP TABLE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drop-view/">DROP VIEW</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/explain/">EXPLAIN</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/lateral-join/">LATERAL Join</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/select/">SELECT</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/select-list/">SELECT List</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/from-clause/">FROM Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/group-by-clause/">GROUP BY Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/having-clause/">HAVING Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/limit-clause/">LIMIT Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/offset-clause/">OFFSET Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/order-by-clause/">ORDER BY Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/union-set-operator/">UNION Set Operator</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/where-clause/">WHERE Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/with-clause/">WITH Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/show-databases-and-show-schemas/">SHOW DATABASES and SHOW SCHEMAS</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/show-files/">SHOW FILES</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/show-tables/">SHOW TABLES</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/use/">USE</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Conditional Expressions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/case/">CASE</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/reserved-keywords/">Reserved Keywords</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/sql-extensions/">SQL Extensions</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Data Sources and File Formats</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/data-sources-and-file-formats-introduction/">Data Sources and File Formats Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hive-to-drill-data-type-mapping/">Hive-to-Drill Data Type Mapping</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/deploying-and-using-a-hive-udf/">Deploying and Using a Hive UDF</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/parquet-format/">Parquet Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/json-data-model/">JSON Data Model</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/text-files-csv-tsv-psv/">Text Files: CSV, TSV, PSV</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/xml-format-plugin/">XML Format Plugin</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Develop Custom Functions</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/develop-custom-functions-introduction/">Develop Custom Functions Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/developing-a-simple-function/">Developing a Simple Function</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/tutorial-develop-a-simple-function/">Tutorial: Develop a Simple Function</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/developing-an-aggregate-function/">Developing an Aggregate Function</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Adding Custom Functions to Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/adding-custom-functions-to-drill-introduction/">Adding Custom Functions to Drill Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/manually-adding-custom-functions-to-drill/">Manually Adding Custom Functions to Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/creating-custom-authenticators/">Creating Custom Authenticators</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/dynamic-udfs/">Dynamic UDFs</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-custom-functions-in-queries/">Using Custom Functions in Queries</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/custom-function-interfaces/">Custom Function Interfaces</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a class="reference internal" href="/zh/docs/troubleshooting/">Troubleshooting</a></li>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Developer Information</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">REST API</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/rest-api-introduction/">REST API Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/submitting-queries-from-the-rest-api-when-impersonation-is-enabled-and-authentication-is-disabled/">Submitting Queries from the REST API when Impersonation is Enabled and Authentication is Disabled</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/use-postman-to-run-sql-queries-on-drill-data-sources/">Use Postman to Run SQL Queries on Drill Data Sources</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Develop Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/compiling-drill-from-source/">Compiling Drill from Source</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/useful-information-for-drill-developers/">Useful Information for Drill Developers</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Contribute to Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/apache-drill-contribution-guidelines/">Apache Drill Contribution Guidelines</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/apache-drill-contribution-ideas/">Apache Drill Contribution Ideas</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Design Docs</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drill-plan-syntax/">Drill Plan Syntax</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/rpc-overview/">RPC Overview</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-stages/">Query Stages</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/useful-research/">Useful Research</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/value-vectors/">Value Vectors</a></li>
+              
+            </ul>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-19-0-release-notes/">Apache Drill 1.19.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-16-0-release-notes/">Apache Drill 1.16.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-15-0-release-notes/">Apache Drill 1.15.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-14-0-release-notes/">Apache Drill 1.14.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-13-0-release-notes/">Apache Drill 1.13.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-12-0-release-notes/">Apache Drill 1.12.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-11-0-release-notes/">Apache Drill 1.11.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-10-0-release-notes/">Apache Drill 1.10.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-9-0-release-notes/">Apache Drill 1.9.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-8-0-release-notes/">Apache Drill 1.8.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-7-0-release-notes/">Apache Drill 1.7.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-6-0-release-notes/">Apache Drill 1.6.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-5-0-release-notes/">Apache Drill 1.5.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-4-0-release-notes/">Apache Drill 1.4.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-3-0-release-notes/">Apache Drill 1.3.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-2-0-release-notes/">Apache Drill 1.2.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-1-0-release-notes/">Apache Drill 1.1.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-0-0-release-notes/">Apache Drill 1.0.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-9-0-release-notes/">Apache Drill 0.9.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-8-0-release-notes/">Apache Drill 0.8.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-7-0-release-notes/">Apache Drill 0.7.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-6-0-release-notes/">Apache Drill 0.6.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-5-0-release-notes/">Apache Drill 0.5.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-4-0-release-notes/">Apache Drill 0.4.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-m1-release-notes-apache-drill-alpha/">Apache Drill M1 Release Notes (Apache Drill Alpha)</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Sample Datasets</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/enron-emails/">Enron Emails</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/wikipedia-edit-history/">Wikipedia Edit History</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a class="reference internal" href="/zh/docs/project-bylaws/">Project Bylaws</a></li>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Ecosystem</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-saiku-analytics-with-apache-drill/">Using Saiku Analytics with Apache Drill</a></li>
+            
+          
+          </ul>
+        
+      
+      </ul>
+
+    </div>
+  </div>
+</aside>
+
+
+<nav class="breadcrumbs">
+  <li><a href="/zh/docs/">Docs</a></li>
+ 
+  
+    <li><a href="/zh/docs/tutorials/">Tutorials</a></li>
+  
+    <li><a href="/zh/docs/learn-drill-with-the-mapr-sandbox/">Learn Drill with the MapR Sandbox</a></li>
+  
+  <li>Lesson 2: Run Queries with ANSI SQL</li>
+</nav>
+
+
+<div class="main-content-wrapper">
+  <div class="main-content">
+
+    
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/en/tutorials/learn-drill-with-the-mapr-sandbox/040-lesson-2-run-queries-with-ansi-sql.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+    
+
+    <div class="int_title left">
+      <h1>Lesson 2: Run Queries with ANSI SQL</h1>
+
+    </div>
+
+    <!-- jt: we don't need to display a last-modified date on each page to users
+    
+    --> 
+
+    <div class="int_text" align="left">
+      
+        <h2 id="goal">Goal</h2>
+
+<p>This lesson shows how to do some standard SQL analysis in Apache Drill: for
+example, summarizing data by using simple aggregate functions and connecting
+data sources by using joins. Note that Apache Drill provides ANSI SQL support,
+not a “SQL-like” interface.</p>
+
+<h2 id="queries-in-this-lesson">Queries in This Lesson</h2>
+
+<p>Now that you know what the data sources look like in their raw form, using
+select * queries, try running some simple but more useful queries on each data
+source. These queries demonstrate how Drill supports ANSI SQL constructs and
+also how you can combine data from different data sources in a single SELECT
+statement.</p>
+
+<ul>
+  <li>Show an aggregate query on a single file or table. Use GROUP BY, WHERE, HAVING, and ORDER BY clauses.</li>
+  <li>Perform joins between Hive, MapR-DB, and file system data sources.</li>
+  <li>Use table and column aliases.</li>
+  <li>Create a Drill view.</li>
+</ul>
+
+<h2 id="aggregation">Aggregation</h2>
+
+<h3 id="set-the-schema-to-hive">Set the schema to hive:</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; use hive.`default`;
+|-------|-------------------------------------------|
+|  ok   |                  summary                  |
+|-------|-------------------------------------------|
+| true  | Default schema changed to [hive.default]  |
+|-------|-------------------------------------------|
+1 row selected 
+</code></pre></div></div>
+
+<h3 id="return-sales-totals-by-month">Return sales totals by month:</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; select `month`, sum(order_total)
+from orders group by `month` order by 2 desc;
+|------------|---------|
+|   month    | EXPR$1  |
+|------------|---------|
+| June       | 950481  |
+| May        | 947796  |
+| March      | 836809  |
+| April      | 807291  |
+| July       | 757395  |
+| October    | 676236  |
+| August     | 572269  |
+| February   | 532901  |
+| September  | 373100  |
+| January    | 346536  |
+|------------|---------|
+10 rows selected 
+</code></pre></div></div>
+
+<p>Drill supports SQL aggregate functions such as SUM, MAX, AVG, and MIN.
+Standard SQL clauses work in the same way in Drill queries as in relational
+database queries.</p>
+
+<p>Note that back ticks are required for the “month” column only because “month”
+is a reserved word in SQL.</p>
+
+<h3 id="return-the-top-20-sales-totals-by-month-and-state">Return the top 20 sales totals by month and state:</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; select `month`, state, sum(order_total) as sales from orders group by `month`, state
+order by 3 desc limit 20;
+|-----------|--------|---------|
+|   month   | state  |  sales  |
+|-----------|--------|---------|
+| May       | ca     | 119586  |
+| June      | ca     | 116322  |
+| April     | ca     | 101363  |
+| March     | ca     | 99540   |
+| July      | ca     | 90285   |
+| October   | ca     | 80090   |
+| June      | tx     | 78363   |
+| May       | tx     | 77247   |
+| March     | tx     | 73815   |
+| August    | ca     | 71255   |
+| April     | tx     | 68385   |
+| July      | tx     | 63858   |
+| February  | ca     | 63527   |
+| June      | fl     | 62199   |
+| June      | ny     | 62052   |
+| May       | fl     | 61651   |
+| May       | ny     | 59369   |
+| October   | tx     | 55076   |
+| March     | fl     | 54867   |
+| March     | ny     | 52101   |
+|-----------|--------|---------|
+20 rows selected 
+</code></pre></div></div>
+
+<p>Note the alias for the result of the SUM function. Drill supports column
+aliases and table aliases.</p>
+
+<h2 id="having-clause">HAVING Clause</h2>
+
+<p>This query uses the HAVING clause to constrain an aggregate result.</p>
+
+<h3 id="set-the-workspace-to-dfsclicks">Set the workspace to dfs.clicks</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; use dfs.clicks;
+|-------|-----------------------------------------|
+|  ok   |                 summary                 |
+|-------|-----------------------------------------|
+| true  | Default schema changed to [dfs.clicks]  |
+|-------|-----------------------------------------|
+1 row selected
+</code></pre></div></div>
+
+<h3 id="return-total-number-of-clicks-for-devices-that-indicate-high-click-throughs">Return total number of clicks for devices that indicate high click-throughs:</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; select t.user_info.device, count(*) from `clicks/clicks.json` t 
+group by t.user_info.device
+having count(*) &gt; 1000;
+|---------|---------|
+| EXPR$0  | EXPR$1  |
+|---------|---------|
+| IOS5    | 11814   |
+| AOS4.2  | 5986    |
+| IOS6    | 4464    |
+| IOS7    | 3135    |
+| AOS4.4  | 1562    |
+| AOS4.3  | 3039    |
+|---------|---------|
+6 rows selected
+</code></pre></div></div>
+
+<p>The aggregate is a count of the records for each different mobile device in
+the clickstream data. Only the activity for the devices that registered more
+than 1000 transactions qualify for the result set.</p>
+
+<h2 id="union-operator">UNION Operator</h2>
+
+<p>Use the same workspace as before (dfs.clicks).</p>
+
+<h3 id="combine-clicks-activity-from-before-and-after-the-marketing-campaign">Combine clicks activity from before and after the marketing campaign</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; select t.trans_id transaction, t.user_info.cust_id customer from `clicks/clicks.campaign.json` t 
+union all 
+select u.trans_id, u.user_info.cust_id  from `clicks/clicks.json` u limit 5;
+|-------------|------------|
+| transaction |  customer  |
+|-------------|------------|
+| 35232       | 18520      |
+| 31995       | 17182      |
+| 35760       | 18228      |
+| 37090       | 17015      |
+| 37838       | 18737      |
+|-------------|------------|
+</code></pre></div></div>
+
+<p>This UNION ALL query returns rows that exist in two files (and includes any
+duplicate rows from those files): <code class="language-plaintext highlighter-rouge">clicks.campaign.json</code> and <code class="language-plaintext highlighter-rouge">clicks.json</code>.</p>
+
+<h2 id="subqueries">Subqueries</h2>
+
+<h3 id="set-the-workspace-to-hive">Set the workspace to hive:</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; use hive.`default`;
+|-------|-------------------------------------------|
+|  ok   |                  summary                  |
+|-------|-------------------------------------------|
+| true  | Default schema changed to [hive.default]  |
+|-------|-------------------------------------------|
+1 row selected
+</code></pre></div></div>
+
+<h3 id="compare-order-totals-across-states">Compare order totals across states:</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; select ny_sales.cust_id, ny_sales.total_orders, ca_sales.total_orders
+from
+(select o.cust_id, sum(o.order_total) as total_orders from hive.orders o where state = 'ny' group by o.cust_id) ny_sales
+left outer join
+(select o.cust_id, sum(o.order_total) as total_orders from hive.orders o where state = 'ca' group by o.cust_id) ca_sales
+on ny_sales.cust_id = ca_sales.cust_id
+order by ny_sales.cust_id
+limit 20;
+|------------|------------|------------|
+|  cust_id   |  ny_sales  |  ca_sales  |
+|------------|------------|------------|
+| 1001       | 72         | 47         |
+| 1002       | 108        | 198        |
+| 1003       | 83         | null       |
+| 1004       | 86         | 210        |
+| 1005       | 168        | 153        |
+| 1006       | 29         | 326        |
+| 1008       | 105        | 168        |
+| 1009       | 443        | 127        |
+| 1010       | 75         | 18         |
+| 1012       | 110        | null       |
+| 1013       | 19         | null       |
+| 1014       | 106        | 162        |
+| 1015       | 220        | 153        |
+| 1016       | 85         | 159        |
+| 1017       | 82         | 56         |
+| 1019       | 37         | 196        |
+| 1020       | 193        | 165        |
+| 1022       | 124        | null       |
+| 1023       | 166        | 149        |
+| 1024       | 233        | null       |
+|------------|------------|------------|
+</code></pre></div></div>
+
+<p>This example demonstrates Drill support for subqueries.</p>
+
+<h2 id="cast-function">CAST Function</h2>
+
+<h3 id="use-the-maprdb-workspace">Use the maprdb workspace:</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; use maprdb;
+|-------|-------------------------------------|
+|  ok   |               summary               |
+|-------|-------------------------------------|
+| true  | Default schema changed to [maprdb]  |
+|-------|-------------------------------------|
+1 row selected (0.088 seconds)
+</code></pre></div></div>
+
+<h3 id="return-customer-data-with-appropriate-data-types">Return customer data with appropriate data types</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; select cast(row_key as int) as cust_id, cast(t.personal.name as varchar(20)) as name, 
+cast(t.personal.gender as varchar(10)) as gender, cast(t.personal.age as varchar(10)) as age,
+cast(t.address.state as varchar(4)) as state, cast(t.loyalty.agg_rev as dec(7,2)) as agg_rev, 
+cast(t.loyalty.membership as varchar(20)) as membership
+from customers t limit 5;
+|----------|----------------------|-----------|-----------|--------|----------|-------------|
+| cust_id  |         name         |  gender   |    age    | state  | agg_rev  | membership  |
+|----------|----------------------|-----------|-----------|--------|----------|-------------|
+| 10001    | "Corrine Mecham"     | "FEMALE"  | "15-20"   | "va"   | 197.00   | "silver"    |
+| 10005    | "Brittany Park"      | "MALE"    | "26-35"   | "in"   | 230.00   | "silver"    |
+| 10006    | "Rose Lokey"         | "MALE"    | "26-35"   | "ca"   | 250.00   | "silver"    |
+| 10007    | "James Fowler"       | "FEMALE"  | "51-100"  | "me"   | 263.00   | "silver"    |
+| 10010    | "Guillermo Koehler"  | "OTHER"   | "51-100"  | "mn"   | 202.00   | "silver"    |
+|----------|----------------------|-----------|-----------|--------|----------|-------------|
+</code></pre></div></div>
+
+<p>Note the following features of this query:</p>
+
+<ul>
+  <li>The CAST function is required for every column in the table. This function returns the MapR-DB/HBase binary data as readable integers and strings. Alternatively, you can use CONVERT_TO/CONVERT_FROM functions to decode the string columns. CONVERT_TO/CONVERT_FROM are more efficient than CAST in most cases. Use only CONVERT_TO to convert binary types to any type other than VARCHAR.</li>
+  <li>The row_key column functions as the primary key of the table (a customer ID in this case).</li>
+  <li>The table alias t is required; otherwise the column family names would be parsed as table names and the query would return an error.</li>
+</ul>
+
+<h3 id="remove-the-quotes-from-the-strings">Remove the quotes from the strings:</h3>
+
+<p>You can use the regexp_replace function to remove the quotes around the
+strings in the query results. For example, to return a state name va instead
+of “va”:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; select cast(row_key as int), regexp_replace(cast(t.address.state as varchar(10)),'"','')
+from customers t limit 1;
+|------------|------------|
+|   EXPR$0   |   EXPR$1   |
+|------------|------------|
+| 10001      | va         |
+|------------|------------|
+1 row selected
+</code></pre></div></div>
+
+<h2 id="create-view-command">CREATE VIEW Command</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; use dfs.views;
+|-------|----------------------------------------|
+|  ok   |                summary                 |
+|-------|----------------------------------------|
+| true  | Default schema changed to [dfs.views]  |
+|-------|----------------------------------------|
+1 row selected
+</code></pre></div></div>
+
+<h3 id="use-a-mutable-workspace">Use a mutable workspace:</h3>
+
+<p>A mutable (or writable) workspace is a workspace that is enabled for “write”
+operations. This attribute is part of the storage plugin configuration. You
+can create Drill views and tables in mutable workspaces.</p>
+
+<h3 id="create-a-view-on-a-mapr-db-table">Create a view on a MapR-DB table</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; create or replace view custview as select cast(row_key as int) as cust_id,
+cast(t.personal.name as varchar(20)) as name, 
+cast(t.personal.gender as varchar(10)) as gender, 
+cast(t.personal.age as varchar(10)) as age, 
+cast(t.address.state as varchar(4)) as state,
+cast(t.loyalty.agg_rev as dec(7,2)) as agg_rev,
+cast(t.loyalty.membership as varchar(20)) as membership
+from maprdb.customers t;
+|-------|-------------------------------------------------------------|
+|  ok   |                           summary                           |
+|-------|-------------------------------------------------------------|
+| true  | View 'custview' created successfully in 'dfs.views' schema  |
+|-------|-------------------------------------------------------------|
+1 row selected
+</code></pre></div></div>
+
+<p>Drill provides CREATE OR REPLACE VIEW syntax similar to relational databases
+to create views. Use the OR REPLACE option to make it easier to update the
+view later without having to remove it first. Note that the FROM clause in
+this example must refer to maprdb.customers. The MapR-DB tables are not
+directly visible to the dfs.views workspace.</p>
+
+<p>Unlike a traditional database where views typically are DBA/developer-driven
+operations, file system-based views in Drill are very lightweight. A view is
+simply a special file with a specific extension (.drill). You can store views
+even in your local file system or point to a specific workspace. You can
+specify any query against any Drill data source in the body of the CREATE VIEW
+statement.</p>
+
+<p>Drill provides a decentralized metadata model. Drill is able to query metadata
+defined in data sources such as Hive, HBase, and the file system. Drill also
+supports the creation of metadata in the file system.</p>
+
+<h3 id="query-data-from-the-view">Query data from the view:</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; select * from custview limit 1;
+|----------|-------------------|-----------|----------|--------|----------|-------------|
+| cust_id  |       name        |  gender   |   age    | state  | agg_rev  | membership  |
+|----------|-------------------|-----------|----------|--------|----------|-------------|
+| 10001    | "Corrine Mecham"  | "FEMALE"  | "15-20"  | "va"   | 197.00   | "silver"    |
+|----------|-------------------|-----------|----------|--------|----------|-------------|
+1 row selected
+</code></pre></div></div>
+
+<p>Once the users know what data is available by exploring it directly from the file system, views can be used as a way to read the data into downstream tools such as Tableau and MicroStrategy for analysis and visualization. For these tools, a view appears simply as a “table” with selectable “columns” in it.</p>
+
+<h2 id="query-across-data-sources">Query Across Data Sources</h2>
+
+<p>Continue using <code class="language-plaintext highlighter-rouge">dfs.views</code> for this query.</p>
+
+<h3 id="join-the-customers-view-and-the-orders-table">Join the customers view and the orders table:</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; select membership, sum(order_total) as sales from hive.orders, custview
+where orders.cust_id=custview.cust_id
+group by membership order by 2;
+|------------|------------|
+| membership |   sales    |
+|------------|------------|
+| "basic"    | 380665     |
+| "silver"   | 708438     |
+| "gold"     | 2787682    |
+|------------|------------|
+3 rows selected
+</code></pre></div></div>
+
+<p>In this query, we are reading data from a MapR-DB table (represented by
+custview) and combining it with the order information in Hive. When doing
+cross data source queries such as this, you need to use fully qualified
+table/view names. For example, the orders table is prefixed by “hive,” which
+is the storage plugin name registered with Drill. We are not using any prefix
+for “custview” because we explicitly switched the dfs.views workspace where
+custview is stored.</p>
+
+<p>Note: If the results of any of your queries appear to be truncated because the
+rows are wide, set the maximum width of the display to 10000:</p>
+
+<p>Do not use a semicolon for this SET command.</p>
+
+<h3 id="join-the-customers-orders-and-clickstream-data">Join the customers, orders, and clickstream data:</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; select custview.membership, sum(orders.order_total) as sales from hive.orders, custview,
+dfs.`/mapr/demo.mapr.com/data/nested/clicks/clicks.json` c 
+where orders.cust_id=custview.cust_id and orders.cust_id=c.user_info.cust_id 
+group by custview.membership order by 2;
+|------------|------------|
+| membership |   sales    |
+|------------|------------|
+| "basic"    | 372866     |
+| "silver"   | 728424     |
+| "gold"     | 7050198    |
+|------------|------------|
+3 rows selected
+</code></pre></div></div>
+
+<p>This three-way join selects from three different data sources in one query:</p>
+
+<ul>
+  <li>hive.orders table</li>
+  <li>custview (a view of the HBase customers table)</li>
+  <li>clicks.json file</li>
+</ul>
+
+<p>The join column for both sets of join conditions is the cust_id column. The
+views workspace is used for this query so that custview can be accessed. The
+hive.orders table is also visible to the query.</p>
+
+<p>However, note that the JSON file is not directly visible from the views
+workspace, so the query specifies the full path to the file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dfs.`/mapr/demo.mapr.com/data/nested/clicks/clicks.json`
+</code></pre></div></div>
+
+<h2 id="whats-next">What’s Next</h2>
+
+<p>Go to <a href="/zh/docs/lesson-3-run-queries-on-complex-data-types">Lesson 3: Run Queries on Complex Data Types</a>.</p>
+
+
+    
+      
+        <div class="doc-nav">
+  
+  <span class="previous-toc"><a href="/zh/docs/lesson-1-learn-about-the-data-set/">← Lesson 1: Learn about the Data Set</a></span><span class="next-toc"><a href="/zh/docs/lesson-3-run-queries-on-complex-data-types/">Lesson 3: Run Queries on Complex Data Types →</a></span>
+</div>
+
+    
+    </div>
+  </div>
+</div>
+
+  </div>
+  <p class="push"></p>
+<div id="footer" class="mw">
+<div class="wrapper">
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
+</div>
+</div>
+
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-53379651-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-548b2caa33765e8d" async="async"></script>
+
+</body>
+</html>
