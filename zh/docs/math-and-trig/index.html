@@ -63,7 +63,7 @@
     <a href="/zh/docs/">Documentation</a>
     <ul>
       
-        <li><a href="/zh/docs/getting-started/">开始 (Getting Started)</a></li>
+        <li><a href="/zh/docs/getting-started/">新手开始</a></li>
       
         <li><a href="/zh/docs/architecture/">Architecture</a></li>
       
@@ -148,15 +148,15 @@
       <ul style="display: block;">
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">开始 (Getting Started)</a></li>
+          <li class="toctree-l1"><a href="javascript: void(0);">新手开始</a></li>
           <ul style="display: none">
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-introduction/">钻头介绍 (Drill Introduction)</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-introduction/">什么是 Drill</a></li>
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/why-drill/">为什么钻 (Why Drill)</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/why-drill/">为什么选择 Drill</a></li>
             
           
           </ul>
@@ -896,8 +896,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/zh/docs/string-manipulation/">String Manipulation</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/aggregate-and-aggregate-statistical/">Aggregate and Aggregate Statistical</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/zh/docs/functions-for-handling-nulls/">Functions for Handling Nulls</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/zh/docs/phonetic-functions/">Phonetic Functions</a></li>
@@ -1416,7 +1414,9 @@
 
     <div class="int_text" align="left">
       
-        <p>Drill supports the math functions shown in the following table of math functions plus trig functions listed at the end of this section. Most math functions and all trig functions take these input types:</p>
+        <p>Drill supports the math functions shown in the following table of math functions
+plus trig functions listed at the end of this section. Most math functions and
+all trig functions take these input types:</p>
 
 <ul>
   <li>INTEGER</li>
@@ -1428,9 +1428,12 @@
 </ul>
 
 <p>* Not supported. Drill treats SMALLINT as INT when reading from Parquet.<br />
-** Drill implicitly casts DECIMAL to DOUBLE for functions that take DOUBLE.</p>
+**
+Drill implicitly casts DECIMAL to DOUBLE for functions that take DOUBLE.</p>
 
-<p>Exceptions are the LSHIFT and RSHIFT functions, which take all types except FLOAT and DOUBLE types. DEGREES, EXP, RADIANS, and the multiple LOG functions take the input types in this list plus the DECIMAL type.</p>
+<p>Exceptions are the LSHIFT and RSHIFT functions, which take all types except
+FLOAT and DOUBLE types. DEGREES, EXP, RADIANS, and the multiple LOG functions
+take the input types in this list plus the DECIMAL type.</p>
 
 <h2 id="table-of-math-functions">Table of Math Functions</h2>
 
@@ -1443,6 +1446,21 @@
     </tr>
   </thead>
   <tbody>
+    <tr>
+      <td>`&amp;`(x, y)</td>
+      <td>Same as input</td>
+      <td>Returns the bitwise AND of x with y.</td>
+    </tr>
+    <tr>
+      <td>`|`(x, y)</td>
+      <td>Same as input</td>
+      <td>Returns the bitwise OR of x with y.</td>
+    </tr>
+    <tr>
+      <td>`^`(x, y)</td>
+      <td>Same as input</td>
+      <td>Returns the bitwise XOR of x with y.</td>
+    </tr>
     <tr>
       <td>ABS(x)</td>
       <td>Same as input</td>
@@ -1568,27 +1586,31 @@
 
 <h2 id="math-function-examples">Math Function Examples</h2>
 
-<p>Examples in this section use the <code class="language-plaintext highlighter-rouge">input2.json</code> file. Download the <code class="language-plaintext highlighter-rouge">input2.json</code> file from the <a href="https://github.com/apache/drill/tree/master/exec/java-exec/src/test/resources/jsoninput">Drill source code</a> page. You need to use a FROM clause in Drill queries.</p>
+<p>Examples in this section use the <code class="language-plaintext highlighter-rouge">input2.json</code> file. Download the <code class="language-plaintext highlighter-rouge">input2.json</code>
+file from the
+<a href="https://github.com/apache/drill/tree/master/exec/java-exec/src/test/resources/jsoninput">Drill source code</a>
+page.</p>
 
-<h3 id="abs-example">ABS Example</h3>
-<p>Get the absolute value of the integer key in <code class="language-plaintext highlighter-rouge">input2.json</code>. The following snippet of input2.json shows the relevant integer content:</p>
+<p>The following snippet of input2.json shows the relevant numeric content:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{ "integer" : 2010,
-  "float"   : 17.4,
-  "x": {
-    "y": "kevin",
-    "z": "paul"
-. . .
-}
-{ "integer" : -2002,
-  "float"   : -1.2
-}
-. . .
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w"> </span><span class="nl">"integer"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">2010</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"float"</span><span class="w">   </span><span class="p">:</span><span class="w"> </span><span class="mf">17.4</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"x"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"y"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kevin"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"z"</span><span class="p">:</span><span class="w"> </span><span class="s2">"paul"</span><span class="w">
+</span><span class="err">.</span><span class="w"> </span><span class="err">.</span><span class="w"> </span><span class="err">.</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="p">{</span><span class="w"> </span><span class="nl">"integer"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">-2002</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"float"</span><span class="w">   </span><span class="p">:</span><span class="w"> </span><span class="mf">-1.2</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="err">.</span><span class="w"> </span><span class="err">.</span><span class="w"> </span><span class="err">.</span><span class="w">
+</span></code></pre></div></div>
 
-SELECT `integer` FROM dfs.`/Users/drill/input2.json`;
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="nv">`integer`</span> <span class="k">FROM</span> <span class="n">dfs</span><span class="p">.</span><span class="nv">`/Users/drill/input2.json`</span><span class="p">;</span>
 </code></pre></div></div>
 
-<p>The output shows values not shown in the snippet. You can take a look at all the values in the input2.json file.</p>
+<p>The output shows integer values not shown in the snippet. You can take
+a look at all the values in the input2.json file.</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|------------|
 |  integer   |
@@ -1599,10 +1621,34 @@ SELECT `integer` FROM dfs.`/Users/drill/input2.json`;
 | 6005       |
 |------------|
 4 rows selected (0.113 seconds)
+</code></pre></div></div>
 
-SELECT ABS(`integer`) FROM dfs.`/Users/drill/input2.json`;
+<h3 id="bitwise-logical-function-examples">Bitwise Logical Function Examples</h3>
 
-|------------|
+<p>Note that backticks are required around function names which include
+special characters.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="nv">`&amp;`</span><span class="p">(</span><span class="nv">`integer`</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span> <span class="k">as</span> <span class="n">last_nibble</span> <span class="k">FROM</span> <span class="n">dfs</span><span class="p">.</span><span class="nv">`Users/drill/input2.json`</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|-------------|
+| last_nibble |
+|-------------|
+| 10          |
+| 14          |
+| 1           |
+| 5           |
+|-------------|
+4 rows selected (0.354 seconds)
+</code></pre></div></div>
+
+<h3 id="abs-example">ABS Example</h3>
+
+<p>Get the absolute value of the integer key in <code class="language-plaintext highlighter-rouge">input2.json</code>.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="k">ABS</span><span class="p">(</span><span class="nv">`integer`</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">dfs</span><span class="p">.</span><span class="nv">`/Users/drill/input2.json`</span><span class="p">;</span>
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|------------|
 |   EXPR$0   |
 |------------|
 | 2010       |
@@ -1614,18 +1660,28 @@ SELECT ABS(`integer`) FROM dfs.`/Users/drill/input2.json`;
 </code></pre></div></div>
 
 <h3 id="ceil-example">CEIL Example</h3>
-<p>Get the ceiling of float key values in input2.json. The input2.json file contains these float key values:</p>
+
+<p>Get the ceiling of float key values in input2.json. The input2.json file
+contains these float key values:</p>
 
 <ul>
-  <li>17.4</li>
-  <li>-1.2</li>
-  <li>1.2</li>
+  <li>
+    <p>17.4</p>
+  </li>
+  <li>
+    <p>-1.2</p>
+  </li>
   <li>
     <p>1.2</p>
+  </li>
+  <li>
+    <p>1.2</p>
+  </li>
+</ul>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SELECT CEIL(`float`) FROM dfs.`/Users/drill/input2.json`;
-
-  |------------|
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">CEIL</span><span class="p">(</span><span class="nv">`float`</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">dfs</span><span class="p">.</span><span class="nv">`/Users/drill/input2.json`</span><span class="p">;</span>
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  |------------|
   |   EXPR$0   |
   |------------|
   | 18.0       |
@@ -1634,16 +1690,15 @@ SELECT ABS(`integer`) FROM dfs.`/Users/drill/input2.json`;
   | 2.0        |
   |------------|
   4 rows selected (0.647 seconds)
-</code></pre></div>    </div>
-  </li>
-</ul>
+</code></pre></div></div>
 
 <h3 id="floor-example">FLOOR Example</h3>
+
 <p>Get the floor of float key values in input2.json.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT FLOOR(`float`) FROM dfs.`/Users/drill/input2.json`;
-
-|------------|
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">FLOOR</span><span class="p">(</span><span class="nv">`float`</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">dfs</span><span class="p">.</span><span class="nv">`/Users/drill/input2.json`</span><span class="p">;</span>
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|------------|
 |   EXPR$0   |
 |------------|
 | 17.0       |
@@ -1655,47 +1710,51 @@ SELECT ABS(`integer`) FROM dfs.`/Users/drill/input2.json`;
 </code></pre></div></div>
 
 <h3 id="round-examples">ROUND Examples</h3>
-<p>Open input2.json and change the first float value from 17.4 to 3.14159. Get values of the float columns in input2.json rounded as follows:</p>
+
+<p>Open input2.json and change the first float value from 17.4 to 3.14159. Get
+values of the float columns in input2.json rounded as follows:</p>
 
 <ul>
-  <li>Rounded to the nearest integer.</li>
+  <li>
+    <p>Rounded to the nearest integer.</p>
+  </li>
   <li>
     <p>Rounded to the fourth decimal place.</p>
-
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SELECT ROUND(`float`) FROM dfs.`/Users/drill/input2.json`;
-
-  |------------|
-  |   EXPR$0   |
-  |------------|
-  | 3.0        |
-  | -1.0       |
-  | 1.0        |
-  | 1.0        |
-  |------------|
-  4 rows selected (0.061 seconds)
-
-  SELECT ROUND(`float`, 4) FROM dfs.`/Users/drill/input2.json`;
-
-  |------------|
-  |   EXPR$0   |
-  |------------|
-  | 3.1416     |
-  | -1.2       |
-  | 1.2        |
-  | 1.2        |
-  |------------|
-  4 rows selected (0.059 seconds)
-</code></pre></div>    </div>
   </li>
 </ul>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">ROUND</span><span class="p">(</span><span class="nv">`float`</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">dfs</span><span class="p">.</span><span class="nv">`/Users/drill/input2.json`</span><span class="p">;</span>
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    |------------|
+    |   EXPR$0   |
+    |------------|
+    | 3.0        |
+    | -1.0       |
+    | 1.0        |
+    | 1.0        |
+    |------------|
+    4 rows selected (0.061 seconds)
+</code></pre></div></div>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">ROUND</span><span class="p">(</span><span class="nv">`float`</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">dfs</span><span class="p">.</span><span class="nv">`/Users/drill/input2.json`</span><span class="p">;</span>
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    |------------|
+    |   EXPR$0   |
+    |------------|
+    | 3.1416     |
+    | -1.2       |
+    | 1.2        |
+    | 1.2        |
+    |------------|
+    4 rows selected (0.059 seconds)
+</code></pre></div></div>
 
 <h3 id="log-examples">LOG Examples</h3>
 
 <p>Get the base 2 log of 64.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT LOG(2, 64) FROM (VALUES(1));
-
-|------------|
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">LOG</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">64</span><span class="p">)</span> <span class="k">FROM</span> <span class="p">(</span><span class="k">VALUES</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|------------|
 |   EXPR$0   |
 |------------|
 | 6.0        |
@@ -1705,9 +1764,9 @@ SELECT ABS(`integer`) FROM dfs.`/Users/drill/input2.json`;
 
 <p>Get the common log of 100.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT LOG10(100) FROM (VALUES(1));
-
-|------------|
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">LOG10</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="k">FROM</span> <span class="p">(</span><span class="k">VALUES</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|------------|
 |   EXPR$0   |
 |------------|
 | 2.0        |
@@ -1717,9 +1776,9 @@ SELECT ABS(`integer`) FROM dfs.`/Users/drill/input2.json`;
 
 <p>Get the natural log of 7.5.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT LOG(7.5) FROM (VALUES(1));
-
-|---------------------|
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">LOG</span><span class="p">(</span><span class="mi">7</span><span class="p">.</span><span class="mi">5</span><span class="p">)</span> <span class="k">FROM</span> <span class="p">(</span><span class="k">VALUES</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|---------------------|
 |       EXPR$0        |
 |---------------------|
 | 2.0149030205422647  |
@@ -1772,35 +1831,35 @@ Hyperbolic tangent of hyperbolic angle x in radians</p>
 
 <h3 id="trig-examples">Trig Examples</h3>
 
-<p>Find the sine and tangent of a 45 degree angle. First convert degrees to radians for use in the SIN() function.</p>
+<p>Find the sine and tangent of a 45 degree angle. First convert degrees to radians
+for use in the SIN() function.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT RADIANS(30) AS Degrees FROM (VALUES(1));
-
-|------------|
-|  Degrees   |
-|------------|
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">RADIANS</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span> <span class="k">AS</span> <span class="n">Radians</span> <span class="k">FROM</span> <span class="p">(</span><span class="k">VALUES</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|--------------------|
+|  Radians           |
+|--------------------|
 | 0.7853981633974483 |
-|------------|
+|--------------------|
 1 row selected (0.045 seconds)
-
-SELECT SIN(0.7853981633974483) AS `Sine of 30 degrees` FROM (VALUES(1));
-
-|-----------------------|
+</code></pre></div></div>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">SIN</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">7853981633974483</span><span class="p">)</span> <span class="k">AS</span> <span class="nv">`Sine of 45 degrees`</span> <span class="k">FROM</span> <span class="p">(</span><span class="k">VALUES</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|-----------------------|
 |  Sine of 45 degrees   |
 |-----------------------|
 |  0.7071067811865475   |
 |-----------------------|
 1 row selected (0.059 seconds)
-
-SELECT TAN(0.7853981633974483) AS `Tangent of 30 degrees` from (VALUES(1));
-
-|-----------------------|
+</code></pre></div></div>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">TAN</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">7853981633974483</span><span class="p">)</span> <span class="k">AS</span> <span class="nv">`Tangent of 45 degrees`</span> <span class="k">from</span> <span class="p">(</span><span class="k">VALUES</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|-----------------------|
 | Tangent of 45 degrees |
 |-----------------------|
 | 0.9999999999999999    |
 |-----------------------|
 </code></pre></div></div>
-
 
     
       

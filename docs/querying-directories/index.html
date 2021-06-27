@@ -896,8 +896,6 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/string-manipulation/">String Manipulation</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/docs/aggregate-and-aggregate-statistical/">Aggregate and Aggregate Statistical</a></li>
-              
                 <li class="toctree-l3"><a class="reference internal" href="/docs/functions-for-handling-nulls/">Functions for Handling Nulls</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/phonetic-functions/">Phonetic Functions</a></li>
@@ -1571,6 +1569,36 @@ explain plan for select dir0 from `/logs` group by dir0;
 
 <p>You can use <a href="/docs/query-directory-functions/">query directory functions</a> to restrict a query to one of a number of subdirectories and to prevent Drill from scanning all data in directories.</p>
 
+<h2 id="querying-multiple-directories-in-one-query-by-wildcard-matching">Querying Multiple Directories in One Query by Wildcard Matching</h2>
+
+<p>You can query multiple directories and multiple files in one query with the help of Wildcard Matching conveniently.</p>
+
+<ol>
+  <li>
+    <p>Query a set of directories:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT * FROM dfs.`multilevel/parquet/{1994,1995}`;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Query all files in a directory:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELETCT * FROM dfs.`multilevel/parquet/1994/*`;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Query multiple directories by single character wildcard matching:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT * FROM dfs.`multilevel/parquet/199?/*`
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Query multiple directories by single character range wildcard matching:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT * FROM dfs.`multilevel/parquet/199[4-5]/*`
+</code></pre></div>    </div>
+  </li>
+</ol>
 
     
       
