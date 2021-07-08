@@ -114,7 +114,7 @@
     </ul>
   </li>
   <li class='nav'><a href="/zh/faq/">FAQ</a></li>
-  <li class='nav'><a href="/blog/">Blog</a></li>
+  <li class='nav'><a href="/zh/blog/">Blog</a></li>
   <li class="social-menu-item"><a href="https://twitter.com/apachedrill" title="apachedrill on twitter" target="_blank"><img src="/images/twitter_32_26_white.png" alt="twitter logo" align="center"></a> </li>
   <li class="social-menu-item"><a href="https://join.slack.com/t/apache-drill/shared_invite/enQtNTQ4MjM1MDA3MzQ2LTJlYmUxMTRkMmUwYmQ2NTllYmFmMjU4MDk0NjYwZjBmYjg0MDZmOTE2ZDg0ZjBlYmI3Yjc4Y2I2NTQyNGVlZTc" title="Apache Drill Slack channels"
       target="_blank"><img src="/images/slack-logo.svg" alt="Slack logo" align="center"></a> </li>
@@ -896,6 +896,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/zh/docs/string-manipulation/">String Manipulation</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/aggregate-and-aggregate-statistical/">Aggregate and Aggregate Statistical</a></li>
+              
                 <li class="toctree-l3"><a class="reference internal" href="/zh/docs/functions-for-handling-nulls/">Functions for Handling Nulls</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/zh/docs/phonetic-functions/">Phonetic Functions</a></li>
@@ -1481,16 +1483,18 @@
   <li><code class="language-plaintext highlighter-rouge">defaultSchema</code>–Sets the default schema for the query.  Equavalent to executing a <code class="language-plaintext highlighter-rouge">USE &lt;schema&gt;</code> prior to the query. (Drill 1.18+)</li>
 </ul>
 
-<p>For Drill 1.19+ Drill switched to a streaming HTTP connection for REST queries.  The result being that</p>
+<p>In Drill 1.19+ Drill switched to a streaming HTTP connection for REST queries
+with the result that query result sets are no longer buffered in their entirety
+in heap memory before being returned to the HTTP requestor.</p>
 
 <p><strong>Request Body</strong></p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    {
-      "queryType" : "SQL",
-      "query" : "&lt;Drill query&gt;",
-	  "autoLimit" : "&lt;rows returned&gt;"
-    }
-</code></pre></div></div>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"queryType"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"SQL"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"query"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;Drill query&gt;"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"autoLimit"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;rows returned&gt;"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
 
 <p><strong>Example</strong></p>
 
@@ -1499,23 +1503,24 @@
 
 <p><strong>Response Body</strong></p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> {
-   "columns" : [ "id", "type", "name", "ppu", "sales", "batters", "topping", "filling" ],
-   "rows" : [ {
-     "id" : "0001",
-     "sales" : "35",
-     "name" : "Cake",
-     "topping" : "[{\"id\":\"5001\",\"type\":\"None\"},{\"id\":\"5002\",\"type\":\"Glazed\"},{\"id\":\"5005\",\"type\":\"Sugar\"},{\"id\":\"5007\",\"type\":\"Powdered Sugar\"},{\"id\":\"5006\",\"type\":\"Chocolate with Sprinkles\"},{\"id\":\"5003\",\"type\":\"Chocolate\"},{\"id\":\"5004\",\"type\":\"Maple\"}]",
-     "ppu" : "0.55",
-     "type" : "donut",
-     "batters" : "{\"batter\":[{\"id\":\"1001\",\"type\":\"Regular\"},{\"id\":\"1002\",\"type\":\"Chocolate\"},{\"id\":\"1003\",\"type\":\"Blueberry\"},{\"id\":\"1004\",\"type\":\"Devil's Food\"}]}",
-     "filling" : "[]"
-   } ]
- }
-</code></pre></div></div>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"columns"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"id"</span><span class="p">,</span><span class="w"> </span><span class="s2">"type"</span><span class="p">,</span><span class="w"> </span><span class="s2">"name"</span><span class="p">,</span><span class="w"> </span><span class="s2">"ppu"</span><span class="p">,</span><span class="w"> </span><span class="s2">"sales"</span><span class="p">,</span><span class="w"> </span><span class="s2">"batters"</span><span class="p">,</span><span class="w"> </span><span class="s2">"topping"</span><span class="p">,</span><span class="w"> </span><span class="s2">"filling"</span><span class="w"> </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"rows"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"0001"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"sales"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"35"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Cake"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"topping"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"[{</span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">5001</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">type</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">None</span><span class="se">\"</span><span class="s2">},{</span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">5002</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">type</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">Glazed</span><span class="se">\"</span><span class="s2">},{</span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">5005</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">type</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">Sugar</span><span class="se">\"</span><span class="s2">},{</span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">5007</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">type</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">Powdered Sugar</span><span class="se">\"</span><span class="s2">},{</span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">5006</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">type</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">Chocolate with Sprinkles</span><span class="se">\"</span><span class="s2">},{</span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">5003</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">type</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">Chocolate</span><span class="se">\"</span><span class="s2">},{</span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">5004</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">type</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">Maple</span><span class="se">\"</span><span class="s2">}]"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"ppu"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"0.55"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"donut"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"batters"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">batter</span><span class="se">\"</span><span class="s2">:[{</span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">1001</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">type</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">Regular</span><span class="se">\"</span><span class="s2">},{</span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">1002</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">type</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">Chocolate</span><span class="se">\"</span><span class="s2">},{</span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">1003</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">type</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">Blueberry</span><span class="se">\"</span><span class="s2">},{</span><span class="se">\"</span><span class="s2">id</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">1004</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">type</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">Devil's Food</span><span class="se">\"</span><span class="s2">}]}"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"filling"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"[]"</span><span class="w">
+  </span><span class="p">}</span><span class="w"> </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
 
-<p><strong>Error Reporting</strong>
-Drill 1.19 added a streaming REST interface with the goal of reducing the response times from REST calls. As of Drill 1.19, error reporting is no longer enabled by default and in the event of a failed query, you will just get results as shown below:</p>
+<p><strong>Error Reporting</strong></p>
+
+<p>Drill 1.19 added a streaming REST interface with the goal of reducing the response times from REST calls. As of Drill 1.19, error reporting is no longer enabled by default and in the event of a failed query, you will only get results as shown below.</p>
 
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
     </span><span class="nl">"queryId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1fa0acc2-e507-6688-69fe-02fc627c8c47"</span><span class="p">,</span><span class="w">
