@@ -4,11 +4,62 @@
     <title>Apache Drill - Schema-free SQL for Hadoop, NoSQL and Cloud Storage</title>
     <description>The official user documentation for Apache Drill.
 </description>
-    <link>/</link>
-    <atom:link href="/zh/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 08 Jul 2021 14:57:25 +0200</pubDate>
-    <lastBuildDate>Thu, 08 Jul 2021 14:57:25 +0200</lastBuildDate>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/zh/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Fri, 09 Jul 2021 15:37:50 +0200</pubDate>
+    <lastBuildDate>Fri, 09 Jul 2021 15:37:50 +0200</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
+    
+      <item>
+        <title>Streaming data from Drill REST API</title>
+        <description>&lt;p&gt;Anyone who’s used a UNIX pipe, or even just watched something on Netflix, is at least a little familiar with the idea of processing data in a streaming fashion.  While your data are in small volume compared to available memory and I/O speeds, streaming is something you can afford to dispense.  But if you cannot fit an entire dataset in RAM, or when if you have to download an entire 4K movie before you can start playing it, then streaming can make a game changing difference.&lt;/p&gt;
+
+&lt;p&gt;With the relase of version 1.19, Drill will stream JSON query result data over an HTTP response to the client that initiated the query using the REST API.  And if anything can easily get big compared to your available RAM or network speeds, its query results coming out of Drill.  It’s important to note here that JSON over HTTP is never going to be the most efficient way to move big data around&lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;.  JDBC, ODBC and &lt;a href=&quot;https://uwekorn.com/2019/11/17/fast-jdbc-access-in-python-using-pyarrow-jvm.html&quot;&gt;innovations around them&lt;/a&gt; will always win a speed race and simply copying CTASed Parquet files out of your big data storage pool (be that HDFS, S3, or something else) is probably going to beat everything else you try.&lt;/p&gt;
+
+&lt;p&gt;Where JSON and HTTP &lt;em&gt;do&lt;/em&gt; win on universality: today it’s hard to image a client hardware and software stack that doesn’t provide JSON and HTTP out of the box with minimal effort.  So it’s important that they work as well as is possible.  The new streaming query results materialisation on the server side means that Drill’s heap memory isn’t pressurised by having to buffer entire result sets before starting to transmit them over the network.  Even existing REST API clients that do no stream processing of their own benefit from better reliability because of this.&lt;/p&gt;
+
+&lt;p&gt;To fully realise the benefits of streaming query result data, clients can &lt;em&gt;themselves&lt;/em&gt; operate on the HTTP response they receive in a streaming fashion, thereby potentially starting to process records before Drill has even finished materialsing them.  At the transport level (when there are enough results to warrant it), the HTTP response headers from the Drill REST API will include a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Transfer-Encoding: chunked&lt;/code&gt; header indicating that data transmission in chunks will ensue.  Most HTTP client libraries will abstract this implementation detail, instead presenting developers with a stream which they can provide as the input to a streaming JSON parser.&lt;/p&gt;
+
+&lt;p&gt;Streaming HTTP client developers should note well that the schema of JSON query result is &lt;em&gt;not&lt;/em&gt; a &lt;a href=&quot;https://en.wikipedia.org/wiki/JSON_streaming&quot;&gt;streaming JSON format&lt;/a&gt; like “JSON lines”.  This means that you should take care to avoid parsing any entire object which is a parent of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rows&lt;/code&gt; property in the query result, thereby parsing the essentailly the entire payload in a single step.  The newly released version 1.1.0 of the Python &lt;a href=&quot;https://pypi.org/project/sqlalchemy-drill/&quot;&gt;sqlalchemy-drill&lt;/a&gt; library includes &lt;a href=&quot;https://github.com/JohnOmernik/sqlalchemy-drill/blob/master/sqlalchemy_drill/drilldbapi/_drilldbapi.py&quot;&gt;an implementation of a streaming HTTP client&lt;/a&gt; which might make for a useful reference.&lt;/p&gt;
+
+&lt;p&gt;In closing, and for a bit of fun, here’s the log from a short IPython session where I use sqlalchemy-drill to run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SELECT *&lt;/code&gt; on a remote 17 billion record table over a 0.5 Mbit/s link and start receiving (a steady trickle of) rows in seconds.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-ipython&quot;&gt;In [4]: r = engine.execute('select count(*) from dfs.ws.big_table')
+INFO:drilldbapi:received Drill query ID 1f211888-cc20-fe6f-69d1-6584c5caa2df.
+INFO:drilldbapi:opened a row data stream of 1 columns.
+
+In [5]: next(r)
+Out[5]: (17437571247,)
+
+In [6]: r = engine.execute('select * from dfs.ws.big_table')
+INFO:drilldbapi:received Drill query ID 1f211838-73df-1506-a74e-f5695f6b0ff5.
+INFO:drilldbapi:opened a row data stream of 21 columns.
+
+In [7]: while True:
+   ...:     _ = next(r)
+      ...:
+      INFO:drilldbapi:streamed 10000 rows.
+      INFO:drilldbapi:streamed 20000 rows.
+      INFO:drilldbapi:streamed 30000 rows.
+      INFO:drilldbapi:streamed 40000 rows.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;JSON representations of tabular big data are typically extremely compressible and you can reduce the bytes sent over the network by 10-20x by enabling HTTP response compression on a web server like Apache placed in front of the Drill REST API. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Fri, 09 Jul 2021 00:00:00 +0200</pubDate>
+        <link>http://localhost:4000/blog/2021/07/09/streaming-data-from-the-rest-api/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/2021/07/09/streaming-data-from-the-rest-api/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
     
       <item>
         <title>Drill 1.19 Released</title>
@@ -40,8 +91,8 @@
 &lt;p&gt;You can find a complete list of improvements and JIRAs resolved in the 1.19.0 release &lt;a href=&quot;/docs/apache-drill-1-19-0-release-notes/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Thu, 10 Jun 2021 00:00:00 +0200</pubDate>
-        <link>/blog/2021/06/10/drill-1.19-released/</link>
-        <guid isPermaLink="true">/blog/2021/06/10/drill-1.19-released/</guid>
+        <link>http://localhost:4000/blog/2021/06/10/drill-1.19-released/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/2021/06/10/drill-1.19-released/</guid>
         
         
         <category>blog</category>
@@ -64,8 +115,8 @@
 &lt;p&gt;You can find a complete list of improvements and JIRAs resolved in the 1.18.0 release &lt;a href=&quot;/docs/apache-drill-1-18-0-release-notes/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Sat, 05 Sep 2020 00:00:00 +0200</pubDate>
-        <link>/blog/2020/09/05/drill-1.18-released/</link>
-        <guid isPermaLink="true">/blog/2020/09/05/drill-1.18-released/</guid>
+        <link>http://localhost:4000/blog/2020/09/05/drill-1.18-released/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/2020/09/05/drill-1.18-released/</guid>
         
         
         <category>blog</category>
@@ -106,8 +157,8 @@
 
 </description>
         <pubDate>Thu, 26 Dec 2019 00:00:00 +0200</pubDate>
-        <link>/blog/2019/12/26/drill-1.17-released/</link>
-        <guid isPermaLink="true">/blog/2019/12/26/drill-1.17-released/</guid>
+        <link>http://localhost:4000/blog/2019/12/26/drill-1.17-released/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/2019/12/26/drill-1.17-released/</guid>
         
         
         <category>blog</category>
@@ -119,8 +170,8 @@
         <description>
 </description>
         <pubDate>Thu, 02 May 2019 00:00:00 +0200</pubDate>
-        <link>/blog/2019/05/02/drill-user-meetup/</link>
-        <guid isPermaLink="true">/blog/2019/05/02/drill-user-meetup/</guid>
+        <link>http://localhost:4000/blog/2019/05/02/drill-user-meetup/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/2019/05/02/drill-user-meetup/</guid>
         
         
         <category>blog</category>
@@ -155,8 +206,8 @@
 
 </description>
         <pubDate>Thu, 02 May 2019 00:00:00 +0200</pubDate>
-        <link>/blog/2019/05/02/drill-1.16-released/</link>
-        <guid isPermaLink="true">/blog/2019/05/02/drill-1.16-released/</guid>
+        <link>http://localhost:4000/blog/2019/05/02/drill-1.16-released/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/2019/05/02/drill-1.16-released/</guid>
         
         
         <category>blog</category>
@@ -188,8 +239,8 @@
 
 </description>
         <pubDate>Mon, 31 Dec 2018 00:00:00 +0200</pubDate>
-        <link>/blog/2018/12/31/drill-1.15-released/</link>
-        <guid isPermaLink="true">/blog/2018/12/31/drill-1.15-released/</guid>
+        <link>http://localhost:4000/blog/2018/12/31/drill-1.15-released/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/2018/12/31/drill-1.15-released/</guid>
         
         
         <category>blog</category>
@@ -223,8 +274,8 @@
 &lt;/ul&gt;
 </description>
         <pubDate>Sat, 01 Dec 2018 00:00:00 +0200</pubDate>
-        <link>/blog/2018/12/01/learning-apache-drill-book/</link>
-        <guid isPermaLink="true">/blog/2018/12/01/learning-apache-drill-book/</guid>
+        <link>http://localhost:4000/blog/2018/12/01/learning-apache-drill-book/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/2018/12/01/learning-apache-drill-book/</guid>
         
         
         <category>blog</category>
@@ -236,8 +287,8 @@
         <description>
 </description>
         <pubDate>Tue, 16 Oct 2018 21:18:04 +0200</pubDate>
-        <link>/blog/2018/10/16/drill-user-meetup/</link>
-        <guid isPermaLink="true">/blog/2018/10/16/drill-user-meetup/</guid>
+        <link>http://localhost:4000/blog/2018/10/16/drill-user-meetup/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/2018/10/16/drill-user-meetup/</guid>
         
         
         <category>blog</category>
@@ -249,42 +300,8 @@
         <description>
 </description>
         <pubDate>Tue, 16 Oct 2018 21:18:04 +0200</pubDate>
-        <link>/blog/2018/10/16/drill-developer-day/</link>
-        <guid isPermaLink="true">/blog/2018/10/16/drill-developer-day/</guid>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Drill 1.14 Released</title>
-        <description>&lt;p&gt;Today, we’re happy to announce the availability of Drill 1.14.0. You can download it &lt;a href=&quot;https://drill.apache.org/download/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;The release provides the following bug fixes and improvements:&lt;/p&gt;
-
-&lt;h2 id=&quot;run-drill-in-a-docker-container-drill-6346&quot;&gt;Run Drill in a Docker Container (DRILL-6346)&lt;/h2&gt;
-&lt;p&gt;Running Drill in a Docker container is the simplest way to start using Drill; all you need is the Docker client installed on your machine. You simply run a Docker command, and your Docker client downloads the Drill Docker image from the apache-drill repository on Docker Hub and then brings up a container with Apache Drill running in embedded mode. See &lt;a href=&quot;/docs/running-drill-on-docker/&quot;&gt;Running Drill on Docker&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;export-and-save-storage-plugin-configurations-drill-4580&quot;&gt;Export and Save Storage Plugin Configurations (DRILL-4580)&lt;/h2&gt;
-&lt;p&gt;You can export and save your storage plugin configurations from the Storage page in the Drill Web UI. See &lt;a href=&quot;/docs/configuring-storage-plugins/#exporting-storage-plugin-configurations&quot;&gt;Exporting Storage Plugin Configurations&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;manage-storage-plugin-configurations-in-a-configuration-file-drill-6494&quot;&gt;Manage Storage Plugin Configurations in a Configuration File (DRILL-6494)&lt;/h2&gt;
-&lt;p&gt;You can manage storage plugin configurations in the Drill configuration file,  storage-plugins-override.conf. When you provide the storage plugin configurations in the storage-plugins-override.conf file, Drill reads the file and configures the plugins during start-up. See &lt;a href=&quot;https://drill.apache.org/docs/configuring-storage-plugins/#configuring-storage-plugins-with-the-storage-plugins-override.conf-file&quot;&gt;Configuring Storage Plugins with the storage-plugins-override.conf File&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;query-metadata-in-various-image-formats-drill-4364&quot;&gt;Query Metadata in Various Image Formats (DRILL-4364)&lt;/h2&gt;
-&lt;p&gt;The metadata format plugin is useful for querying a large number of image files stored in a distributed file system. You do not have to build a metadata repository in advance.&lt;br /&gt;
-See &lt;a href=&quot;/docs/image-metadata-format-plugin/&quot;&gt;Image Metadata Format Plugin&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;set-hive-properties-at-the-session-level-drill-6575&quot;&gt;Set Hive Properties at the Session Level (DRILL-6575)&lt;/h2&gt;
-&lt;p&gt;The store.hive.conf.properties option enables you to specify Hive properties at the session level using the SET command. See &lt;a href=&quot;/docs/hive-storage-plugin/#setting-hive-properties&quot;&gt;Setting Hive Properties&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;You can find a complete list of JIRAs resolved in the 1.14.0 release &lt;a href=&quot;/docs/apache-drill-1-14-0-release-notes/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-</description>
-        <pubDate>Sun, 05 Aug 2018 00:00:00 +0200</pubDate>
-        <link>/blog/2018/08/05/drill-1.14-released/</link>
-        <guid isPermaLink="true">/blog/2018/08/05/drill-1.14-released/</guid>
+        <link>http://localhost:4000/blog/2018/10/16/drill-developer-day/</link>
+        <guid isPermaLink="true">http://localhost:4000/blog/2018/10/16/drill-developer-day/</guid>
         
         
         <category>blog</category>
