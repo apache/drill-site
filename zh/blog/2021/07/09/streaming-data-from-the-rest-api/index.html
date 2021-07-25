@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Streaming data from Drill REST API - Apache Drill</title>
+<title>Streaming data from the Drill REST API - Apache Drill</title>
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -67,7 +67,7 @@
       
         <li><a href="/zh/docs/architecture/">Architecture</a></li>
       
-        <li><a href="/zh/docs/tutorials/">Tutorials</a></li>
+        <li><a href="/zh/docs/tutorials/">教程</a></li>
       
         <li><a href="/zh/docs/drill-on-yarn/">Drill-on-YARN</a></li>
       
@@ -139,7 +139,7 @@
 <div class="post int_text">
   <header class="post-header">
     <div class="int_title">
-      <h1 class="post-title">Streaming data from Drill REST API</h1>
+      <h1 class="post-title">Streaming data from the Drill REST API</h1>
     </div>
     <p class="post-meta">
     
@@ -155,7 +155,7 @@
   <article class="post-content">
     <p>Anyone who’s used a UNIX pipe, or even just watched something on Netflix, is at least a little familiar with the idea of processing data in a streaming fashion.  While your data are small in size compared to available memory and I/O speeds, streaming is something you can afford to dispense with.  But when you cannot fit an entire dataset in RAM, or when you have to download an entire 4K movie before you can start playing it, then streaming data processing can make a game changing difference.</p>
 
-<p>With the release of version 1.19, Drill will stream JSON query result data over an HTTP response to the client that initiated the query using the REST API.  And if anything can easily get big compared to your available RAM or network speed, it’s query results coming back from Drill.  It’s important to note here that JSON over HTTP is never going to be the most <em>efficient</em> way to move big data around<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup>.  JDBC, ODBC and <a href="https://uwekorn.com/2019/11/17/fast-jdbc-access-in-python-using-pyarrow-jvm.html">innovations around them</a> will always win a speed race, and simply network mounting or copying CTASed Parquet files out of your big data storage pool (be that HDFS, S3, or something else) is probably going to beat everything else you try once you’ve got really big data volumes.</p>
+<p>With the release of version 1.19, Drill will stream JSON query result data over an HTTP response to the client that initiated the query using the REST API.  And if anything can easily get big compared to your available RAM or network speed, it’s query results coming back from Drill.  It’s important to note here that JSON over HTTP is never going to be the most <em>efficient</em> way to move big data around<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup>.  JDBC, ODBC and <a href="https://uwekorn.com/2019/11/17/fast-jdbc-access-in-python-using-pyarrow-jvm.html">innovations around them</a> will always win a speed race over JSON/HTTP, and simply network mounting or copying Parquet files out of your big data storage pool (be that HDFS, S3, or something else) is probably going to beat everything else you try once you’ve got really big data volumes.</p>
 
 <p>Where JSON and HTTP <em>do</em> win is universality: today it’s hard to imagine a client hardware and software stack that doesn’t provide JSON and HTTP out of the box with minimal effort.  So it’s important that they work as well as is possible, in spite of the alternatives that exist.  The new streaming query results delivery on the server side means that Drill’s heap memory isn’t pressurised by having to buffer entire result sets before it starts to transmit them over the network.  Even existing REST API clients that do no stream processing of their own will benefit from better reliability because of this.</p>
 
