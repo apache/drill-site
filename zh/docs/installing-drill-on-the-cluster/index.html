@@ -1418,6 +1418,8 @@
       
         <p>You install Drill on nodes in the cluster, configure a cluster ID, and add Zookeeper information, as described in the following steps:</p>
 
+<h3 id="install">Install</h3>
+
 <ol>
   <li>Download the latest version of Apache Drill <a href="http://apache.mirrors.hoobly.com/drill/drill-1.19.0/apache-drill-1.19.0.tar.gz">here</a> or from the <a href="http://www.apache.org/dyn/closer.cgi/drill/drill-1.19.0/apache-drill-1.19.0.tar.gz">Apache Drill mirror site</a> with the command appropriate for your system:
     <ul>
@@ -1425,22 +1427,60 @@
       <li><code class="language-plaintext highlighter-rouge">curl -o apache-drill-1.19.0.tar.gz http://apache.mirrors.hoobly.com/drill/drill-1.19.0/apache-drill-1.19.0.tar.gz</code></li>
     </ul>
   </li>
-  <li>Extract the tarball to the directory of your choice, such as <code class="language-plaintext highlighter-rouge">/opt</code>:<br />
-  <code class="language-plaintext highlighter-rouge">tar -xzvf apache-drill-&lt;version&gt;.tar.gz</code></li>
-  <li>
-    <p>In <code class="language-plaintext highlighter-rouge">drill-override.conf,</code> use the Drill <code class="language-plaintext highlighter-rouge">cluster ID</code>, and provide ZooKeeper host names and port numbers to configure a connection to your ZooKeeper quorum.<br />
-    a. Edit <code class="language-plaintext highlighter-rouge">drill-override.conf</code> located in the <code class="language-plaintext highlighter-rouge">conf</code> directory.<br />
-    b. Provide a unique <code class="language-plaintext highlighter-rouge">cluster-id</code> and the ZooKeeper host names and port numbers in <code class="language-plaintext highlighter-rouge">zk.connect</code>. If you install Drill on multiple nodes, assign the same <code class="language-plaintext highlighter-rouge">cluster ID</code> to each Drill node so that all Drill nodes share the same ID. The default ZooKeeper port on the open source version of Apache Drill is 2181.</p>
-
-    <p><strong>Example</strong></p>
-
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>drill.exec:{
- cluster-id: "&lt;mydrillcluster&gt;",
- zk.connect: "&lt;zkhostname1&gt;:&lt;port&gt;,&lt;zkhostname2&gt;:&lt;port&gt;,&lt;zkhostname3&gt;:&lt;port&gt;"
-}
-</code></pre></div>    </div>
-  </li>
+  <li>Extract the tarball to the directory of your choice, such as <code class="language-plaintext highlighter-rouge">/opt</code>:
+<code class="language-plaintext highlighter-rouge">tar -xf apache-drill-&lt;version&gt;.tar.gz</code></li>
 </ol>
+
+<h3 id="optional-create-the-site-directory">(Optional) Create the site directory</h3>
+
+<p>The site directory contains your site-specific files for Drill.  Putting these in a separate directory to the Drill installation means that upgrading Drill will not clobber your configuration and custom code.  It is possible to skip this step, meaning that your configuration and custom code will live in the <code class="language-plaintext highlighter-rouge">$DRILL_HOME/conf</code> and <code class="language-plaintext highlighter-rouge">$DRILL_HOME/jars/3rdparty</code> subdirectories respectively.</p>
+
+<p>Create the site directory in a suitable location, e.g.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">DRILL_SITE</span><span class="o">=</span>/etc/drill-site
+<span class="nb">mkdir</span> <span class="nv">$DRILL_SITE</span>
+</code></pre></div></div>
+
+<p>When you do a fresh install, Drill includes a conf directory under $DRILL_HOME. Use the files
+in that directory to create your site directory.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cp</span> <span class="nv">$DRILL_HOME</span>/conf/drilloverrideexample.conf <span class="se">\</span>
+<span class="nv">$DRILL_SITE</span>/drilloverride.conf
+<span class="nb">cp</span> <span class="nv">$DRILL_HOME</span>/conf/drill-on-yarnexample.conf <span class="se">\</span>
+<span class="nv">$DRILL_SITE</span>/drill-on-yarn.conf
+<span class="nb">cp</span> <span class="nv">$DRILL_HOME</span>/conf/drillenv.sh <span class="nv">$DRILL_SITE</span>
+</code></pre></div></div>
+
+<p>You will use the site directory each time you start Drill by using the <code class="language-plaintext highlighter-rouge">--site</code> (or <code class="language-plaintext highlighter-rouge">--config</code>) option. The following are examples.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>drillbit.sh <span class="nt">--site</span> <span class="nv">$DRILL_SITE</span>
+drill-on-yarn.sh <span class="nt">--site</span> <span class="nv">$DRILL_SITE</span>
+</code></pre></div></div>
+
+<p>Once you have created your site directory, upgrades are trivial. Simply delete the old Drill
+distribution and install the new one. Your files remain unchanged in the site directory.</p>
+
+<h3 id="zookeeper-configuration">ZooKeeper configuration</h3>
+
+<p>In <code class="language-plaintext highlighter-rouge">drill-override.conf,</code> use the Drill <code class="language-plaintext highlighter-rouge">cluster ID</code>, and provide ZooKeeper host names and port numbers to configure a connection to your ZooKeeper quorum.</p>
+
+<ol>
+  <li>Edit <code class="language-plaintext highlighter-rouge">drill-override.conf</code> located in the <code class="language-plaintext highlighter-rouge">conf</code> directory.</li>
+  <li>Provide a unique <code class="language-plaintext highlighter-rouge">cluster-id</code> and the ZooKeeper host names and port numbers in <code class="language-plaintext highlighter-rouge">zk.connect</code>. If you install Drill on multiple nodes, assign the same cluster ID to each Drill node so that all Drill nodes share the same ID. The default ZooKeeper port on the open source version of Apache Drill is 2181.</li>
+</ol>
+
+<p><strong>Example</strong></p>
+
+<div class="language-hocon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">drill.exec</span><span class="p">:{</span><span class="w">
+  </span><span class="nl">cluster-id</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;mydrillcluster&gt;"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">zk.connect</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;zkhostname1&gt;:&lt;port&gt;,&lt;zkhostname2&gt;:&lt;port&gt;,&lt;zkhostname3&gt;:&lt;port&gt;"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="custom-jars">Custom JARs</h3>
+
+<p>If you develop custom code (data sources or user-defined functions, a.k.a. UDFs), place the Java JAR
+files in $DRILL_SITE/jars.</p>
 
 
     
