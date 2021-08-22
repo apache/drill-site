@@ -234,6 +234,10 @@
               <li class="toctree-l2 current"><a class="reference internal" href="/zh/docs/analyzing-data-using-window-functions/">通过窗口函数分析数据集</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/orchestrating-queries-with-airflow/">Orchestrating queries with Airflow</a></li>
+            
+          
           </ul>
         
       
@@ -1414,31 +1418,31 @@
 
     <div class="int_text" align="left">
       
-        <p>This tutorial briefly introduces the analytics in Drill 1.2, namely ANSI SQL-compliant analytic and window functions. Drill supports the following SQL window functions:</p>
+        <p>本教程简要介绍了 Drill 1.2 中的分析工具，也就是符合 ANSI 标准的 SQL 分析工具和窗口函数。Drill 支持以下 SQL 窗口函数：</p>
 
 <ul>
-  <li>PARTITION BY and OVER clauses</li>
-  <li>A variety of aggregated window functions for Sum, Max, Min, Count, Avg</li>
-  <li>Analytic functions such as First_Value, Last_Value, Lead, Lag, NTile, Row_Number, and Rank</li>
+  <li>PARTITION BY 和 OVER 字句</li>
+  <li>针对 Sum, Max, Min, Count, Avg 的多种聚合窗口函数</li>
+  <li>分析函数如 First_Value, Last_Value, Lead, Lag, NTile, Row_Number 和 Rank</li>
 </ul>
 
-<p>Window functions are highly versatile. You can reduce the joins, subqueries, and explicit cursors that you need to write. Window functions solve a variety of use cases with minimal coding effort.</p>
+<p>窗口函数是高度通用的。你可以避免很多连接、子查询和显式游标的查询。窗口函数以最少的代码量解决了多种问题。</p>
 
-<p>This tutorial builds on previous tutorials, <a href="/zh/docs/analyzing-the-yelp-academic-dataset/">Analyzing the Yelp Academic Dataset</a> and <a href="/zh/docs/analyzing-highly-dynamic-datasets/">Analyzing Highly Dynamic Datasets</a>, and uses the same Yelp dataset.</p>
+<p>本教程建立在之前教程的基础上，<a href="/zh/docs/analyzing-the-yelp-academic-dataset/">分析 Yelp 学术数据集</a> 和 <a href="/zh/docs/analyzing-highly-dynamic-datasets/">分析高动态数据集</a>， 使用了相同的 Yelp 数据集。</p>
 
 <hr />
 
-<h2 id="getting-started">Getting Started</h2>
+<h2 id="准备开始">准备开始</h2>
 
 <ol>
   <li>
-    <p>To get started, download the <a href="http://www.yelp.com/dataset_challenge">Yelp</a> (business reviews) now.</p>
+    <p>下载 Yelp 商家评价数据集 <a href="http://www.yelp.com/dataset_challenge">Yelp</a>。</p>
   </li>
   <li>
-    <p><a href="/zh/docs/analyzing-the-yelp-academic-dataset/#installing-and-starting-drill">Install and start Drill</a>.</p>
+    <p><a href="/zh/docs/analyzing-the-yelp-academic-dataset/#installing-and-starting-drill">安装并启动 Drill</a>.</p>
   </li>
   <li>
-    <p>List the available schemas in Drill.</p>
+    <p>列出 Drill 中可用的 schema。</p>
 
     <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SHOW schemas;
  |---------------------|
@@ -1457,7 +1461,7 @@
 </code></pre></div>    </div>
   </li>
   <li>
-    <p>Switch to using the workspace in which Yelp data is loaded.</p>
+    <p>切换到加载 Yelp 数据的工作区。</p>
 
     <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> USE dfs.yelp;
 
@@ -1471,7 +1475,7 @@
 </code></pre></div>    </div>
   </li>
   <li>
-    <p>Start with exploring one of the datasets available in Yelp dataset - the business information.</p>
+    <p>首先分析 Yelp 数据集中的可用数据集的 - 业务信息。</p>
 
     <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT * FROM `business.json` LIMIT 1;
 
@@ -1487,11 +1491,11 @@
 
 <hr />
 
-<h2 id="use-window-functions-for-simple-queries">Use Window Functions for Simple Queries</h2>
+<h2 id="使用窗口函数来简单查询">使用窗口函数来简单查询</h2>
 
 <ol>
   <li>
-    <p>Get the top Yelp businesses based on the number reviews in each city and the row number of the business.</p>
+    <p>根据每个城市的评论数量和商家的行号，获取排名靠前的 Yelp 商家</p>
 
     <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT name, city, review_count, row_number()
  OVER (PARTITION BY city ORDER BY review_count DESC) AS rownum 
@@ -1520,7 +1524,7 @@
 </code></pre></div>    </div>
   </li>
   <li>
-    <p>Check the number reviews for each business compared to the average number of reviews across all business in the city.</p>
+    <p>对比每个商家的评论数量与所在城市中所有商家的平均评论数量。</p>
 
     <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT name, city,review_count,
  Avg(review_count) OVER (PARTITION BY City) AS city_reviews_avg
@@ -1549,7 +1553,7 @@
 </code></pre></div>    </div>
   </li>
   <li>
-    <p>Check how the number of reviews for each business contribute to the total number of reviews for all businesses in the city.</p>
+    <p>对比每个商家的评论数量与所在城市中所有商家的评论总数。</p>
 
     <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT name, city,review_count,
  Sum(review_count) OVER (PARTITION BY City) AS city_reviews_sum
@@ -1581,11 +1585,11 @@
 
 <hr />
 
-<h2 id="use-window-functions-for-complex-queries">Use Window Functions for Complex Queries</h2>
+<h2 id="对复杂查询使用窗口函数">对复杂查询使用窗口函数</h2>
 
 <ol>
   <li>
-    <p>List Top 10 cities and their highest ranked businesses in terms of number of reviews. Use Drill window functions such as rank, dense_rank in these queries.</p>
+    <p>列出评论数排名前 10 的城市以及该城市中排名最高的商家。在这些查询中使用 Drill 窗口函数，例如 rank、dense_rank。</p>
 
     <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> WITH X
  AS
@@ -1616,7 +1620,7 @@
 </code></pre></div>    </div>
   </li>
   <li>
-    <p>Compare the number of reviews for each business with the top and bottom review counts in the city.</p>
+    <p>将每个商家的评论数与所在城市的最高和最低的评论数进行比较。</p>
 
     <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT name, city, review_count,
  FIRST_VALUE(review_count)
@@ -1648,7 +1652,7 @@
 </code></pre></div>    </div>
   </li>
   <li>
-    <p>Compare the number of reviews with the number of reviews for the previous and following businesses.</p>
+    <p>将商家评论数量与其在评论数排名中的前一位和后一位的商家评论数量进行比较。</p>
 
     <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT city, review_count, name,
  LAG(review_count, 1) OVER(PARTITION BY city ORDER BY review_count DESC) 
@@ -1685,7 +1689,7 @@
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/zh/docs/analyzing-social-media/">← 分析社交媒体</a></span><span class="next-toc"><a href="/zh/docs/drill-on-yarn/">Drill-on-YARN →</a></span>
+  <span class="previous-toc"><a href="/zh/docs/analyzing-social-media/">← 分析社交媒体</a></span><span class="next-toc"><a href="/zh/docs/orchestrating-queries-with-airflow/">Orchestrating queries with Airflow →</a></span>
 </div>
 
     
