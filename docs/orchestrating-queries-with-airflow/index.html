@@ -1418,7 +1418,7 @@
 
     <div class="int_text" align="left">
       
-        <p>This tutorial walks through the development of Apache Airflow DAG that implements a basic ETL process using Apache Drill.  We’ll install Airflow into a Python virtualenv using pip before writing and testing our new DAG.  Consult the <a href="https://airflow.apache.org/docs/apache-airflow/stable/installation.html">Airflow installation documentation</a> for more information about installing Airflow.</p>
+        <p>This tutorial walks through the development of an Apache Airflow DAG that implements a basic ETL process using Apache Drill.  We’ll install Airflow into a Python virtualenv using pip before writing and testing our new DAG.  Consult the <a href="https://airflow.apache.org/docs/apache-airflow/stable/installation.html">Airflow installation documentation</a> for more information about installing Airflow.</p>
 
 <p>I’ll be issuing commands using a shell on a Debian Linux machine in this tutorial but it should be possible with a little translation to follow along on other platforms.</p>
 
@@ -1439,11 +1439,11 @@ virtualenv <span class="nt">-p</span> /usr/bin/python3 <span class="nv">$VIRT_EN
 
 <h2 id="install-airflow">Install Airflow</h2>
 
-<p>If you’ve read their installation guide you’ll have seen that the Airflow project provides constraints files the pin the versions of its Python package dependencies to known-good versions.  In many cases things work fine without constraints but, for the sake of reproducibility, we’ll apply the constraints file applicable to our Python version using the script 0they provide for the purpose.</p>
+<p>If you’ve read their installation guide, you’ll have seen that the Airflow project provides constraints files that pin its Python package dependencies to known-good versions.  In many cases things work fine without constraints but, for the sake of reproducibility, we’ll apply the constraints file applicable to our Python version using the script they provide for the purpose.</p>
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">AIRFLOW_VERSION</span><span class="o">=</span>2.1.2
 <span class="nv">PYTHON_VERSION</span><span class="o">=</span><span class="s2">"</span><span class="si">$(</span>python <span class="nt">--version</span> | <span class="nb">cut</span> <span class="nt">-d</span> <span class="s2">" "</span> <span class="nt">-f</span> 2 | <span class="nb">cut</span> <span class="nt">-d</span> <span class="s2">"."</span> <span class="nt">-f</span> 1-2<span class="si">)</span><span class="s2">"</span>
 <span class="nv">CONSTRAINT_URL</span><span class="o">=</span><span class="s2">"https://raw.githubusercontent.com/apache/airflow/constraints-</span><span class="k">${</span><span class="nv">AIRFLOW_VERSION</span><span class="k">}</span><span class="s2">/constraints-</span><span class="k">${</span><span class="nv">PYTHON_VERSION</span><span class="k">}</span><span class="s2">.txt"</span>
-pip <span class="nb">install</span> <span class="s2">"apache-0airflow==</span><span class="k">${</span><span class="nv">AIRFLOW_VERSION</span><span class="k">}</span><span class="s2">"</span> <span class="nt">--constraint</span> <span class="s2">"</span><span class="k">${</span><span class="nv">CONSTRAINT_URL</span><span class="k">}</span><span class="s2">"</span>
+pip <span class="nb">install</span> <span class="s2">"apache-airflow==</span><span class="k">${</span><span class="nv">AIRFLOW_VERSION</span><span class="k">}</span><span class="s2">"</span> <span class="nt">--constraint</span> <span class="s2">"</span><span class="k">${</span><span class="nv">CONSTRAINT_URL</span><span class="k">}</span><span class="s2">"</span>
 pip <span class="nb">install </span>apache-airflow-providers-apache-drill
 </code></pre></div></div>
 
@@ -1452,7 +1452,7 @@ pip <span class="nb">install </span>apache-airflow-providers-apache-drill
 <p>We’re just experimenting here so we’ll have Airflow set up a local SQLite database and add an admin user for ourselves.</p>
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Optional: change Airflow's data dir from the default of ~/airflow</span>
 <span class="nb">export </span><span class="nv">AIRFLOW_HOME</span><span class="o">=</span>~/Development/airflow
-<span class="nb">mkdir</span> <span class="nt">-p</span> ~/Development/airflow/
+<span class="nb">mkdir</span> <span class="nt">-p</span> ~/Development/airflow
 
 <span class="c"># Create a new SQLite database for Airflow</span>
 airflow db init
@@ -1469,7 +1469,7 @@ airflow <span class="nb">users </span>create <span class="se">\</span>
 
 <h2 id="configure-a-drill-connection">Configure a Drill connection</h2>
 
-<p>At this point we should have a working Airflow installation. Fire up the web UI with <code class="language-plaintext highlighter-rouge">airflow webserver</code> and browse to http://localhost:8080.  Click on Admin -&gt; Connections.  Add a new Drill connection called <code class="language-plaintext highlighter-rouge">drill_tutorial</code>, setting configuration according to your Drill environment.  If you’re using embedded mode Drill locally like I am then you’ll want the following config.</p>
+<p>At this point we should have a working Airflow installation. Fire up the web UI with <code class="language-plaintext highlighter-rouge">airflow webserver</code> and browse to http://localhost:8080.  Click on Admin -&gt; Connections and add a new Drill connection called <code class="language-plaintext highlighter-rouge">drill_tutorial</code>, setting configuration according to your Drill environment.  If you’re using embedded mode Drill locally like I am, then you’ll want the following config.</p>
 
 <table>
   <thead>
@@ -1508,15 +1508,15 @@ airflow <span class="nb">users </span>create <span class="se">\</span>
 
 <h2 id="explore-the-source-data">Explore the source data</h2>
 
-<p>If you’ve built ETLs before you know that you can’t build anything until you’ve come to grips with the source data.  Let’s obtain a sample of the first 1m rows from the source take a look.</p>
+<p>If you’ve developed ETLs before you know that you can’t build anything until you’ve come to grips with the source data.  Let’s obtain a sample of the first 1m rows from the source take a look.</p>
 
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-s</span> https://data.cdc.gov/api/views/vbim-akqf/rows.csv<span class="se">\?</span>accessType<span class="se">\=</span>DOWNLOAD | pv <span class="nt">-lSs</span> 1000000 <span class="o">&gt;</span> /tmp/cdc_covid_cases.csvh
 </code></pre></div></div>
 
-<p>You can replace <code class="language-plaintext highlighter-rouge">pv -lSs 1000000</code> above with <code class="language-plaintext highlighter-rouge">head -n1000000</code> or just drop it if you don’t mind fetching the whole file.  Downloading it with a web browser will also work fine.  Note that for a default Drill installation, saving with the file extension <code class="language-plaintext highlighter-rouge">.csvh</code> does matter for what follows because it will set <code class="language-plaintext highlighter-rouge">extractHeader = true</code> when this CSV file is queried, and this file does include a header.</p>
+<p>You can replace <code class="language-plaintext highlighter-rouge">pv -lSs 1000000</code> above with <code class="language-plaintext highlighter-rouge">head -n1000000</code>, or just drop it if you don’t mind fetching the whole file.  Downloading the CSV file with a web browser will also get the job done.  Note that for a default Drill installation, saving with the file extension <code class="language-plaintext highlighter-rouge">.csvh</code> does matter for what follows because it will set the option <code class="language-plaintext highlighter-rouge">extractHeader = true</code> when this CSV file is queried, something that the SQL code to come relies on.</p>
 
-<p>It’s time to break out Drill.  Instead of dumping my entire interactive SQL session here, I’ll just list queries that I ran and the corresponding observations that I made.</p>
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">dfs</span><span class="p">.</span><span class="n">tmp</span><span class="p">.</span><span class="nv">`cdc_covid_case.csvh`</span>
+<p>It’s time to break out Drill.  Instead of dumping my entire interactive SQL session here, I’ll just list relevant queries that I ran and the corresponding observations that I made.</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">dfs</span><span class="p">.</span><span class="n">tmp</span><span class="p">.</span><span class="nv">`cdc_covid_case.csvh`</span><span class="p">;</span>
 <span class="c1">-- 1. In date fields, the empty string '' can be converted to SQL NULL</span>
 <span class="c1">-- 2. Age groups can be split into two numerical fields, with the final</span>
 <span class="c1">--    group being unbounded above.</span>
@@ -1535,7 +1535,7 @@ airflow <span class="nb">users </span>create <span class="se">\</span>
 <span class="c1">--    so they cannot be transformed to nullable booleans</span>
 </code></pre></div></div>
 
-<p>So… this is what it feels like to be a data scientist 😆.  Jokes aside, we learned a lot of neccesary stuff pretty quickly there and it’s easy to see that we could have carried on for a long way, testing ranges, casts and regexps and even creating reports if we didn’t reign ourselves in.  Let’s skip forward to the ETL statement I ended up creating after exploring.</p>
+<p>So… this is what it feels like to be a data scientist 😆!  Jokes aside, we learned a lot of neccesary stuff pretty quickly there and it’s easy to see that we could have carried on for a long way, testing ranges, casts and regexps and even creating reports if we didn’t reign ourselves in.  Let’s skip forward to the ETL statement I ended up creating after exploring.</p>
 
 <h2 id="develop-a-ctas-create-table-as-select-etl">Develop a CTAS (Create Table As Select) ETL</h2>
 
@@ -1598,13 +1598,13 @@ airflow <span class="nb">users </span>create <span class="se">\</span>
 
 <h2 id="develop-an-airflow-dag">Develop an Airflow DAG</h2>
 
-<p>The definition of our DAG will reside in a single Python script.  The complete listing of that script follows immediately, with my commentary continuing as inline source code comments.  You should save this script to a new file at <code class="language-plaintext highlighter-rouge">$AIRFLOW_HOME/dags/drill_tutorial.py</code>.</p>
+<p>The definition of our DAG will reside in a single Python script.  The complete listing of that script follows immediately, with my commentary continuing as inline source code comments.  You should save this script to a new file at <code class="language-plaintext highlighter-rouge">$AIRFLOW_HOME/dags/drill-tutorial.py</code>.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">'''
 Uses the Apache Drill provider to transform, load and report from COVID case
 data downloaded from the website of the CDC.
 
-Data source citatation.
+Data source citation.
 
 Centers for Disease Control and Prevention, COVID-19 Response. COVID-19 Case
 Surveillance Public Data Access, Summary, and Limitations.
