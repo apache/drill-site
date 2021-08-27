@@ -107,25 +107,6 @@ date:
 
 Do not fill in or alter the date: field. Jekyll and git take care of that when you commit the file.
 
-## One Time Setup for Redirecting gh-pages
-
-Locally install the `jekyll-redirect-from` gem:
-
-```
-gem install jekyll-redirect-from
-```
-
-On any page you want to redirect, add the redirect_to: and the URL to the front matter. For example:
-
-```
----
-title: "Configuring Multitenant Resources"
-parent: "Configuring a Multitenant Cluster"
-date:
-redirect_to:
-  - http://<new_url>
----
-```
 # Multilingual
 
 Multilingual support was added to the website in June 2021 using the polyglot Jekyll plugin.  The fallback language is set to English which means that when a translated page is not available the English version will be shown.   This means that a language which is incompletely translated is still deployable with no adverse effects.
