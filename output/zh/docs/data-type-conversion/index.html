@@ -1,0 +1,2734 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+<meta name=viewport content="width=device-width, initial-scale=1">
+
+
+<title>Data Type Conversion - Apache Drill</title>
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
+<link href="/css/site.css" rel="stylesheet" type="text/css"/>
+
+<link rel="shortcut icon" href="/zh/favicon.ico" type="image/x-icon"/>
+<link rel="icon" href="/zh/favicon.ico" type="image/x-icon"/>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" language="javascript" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js" language="javascript" type="text/javascript"></script>
+<script language="javascript" type="text/javascript" src="/js/modernizr.custom.js"></script>
+<script language="javascript" type="text/javascript" src="/js/script.js"></script>
+<script language="javascript" type="text/javascript" src="/js/drill.js"></script>
+
+</head>
+
+
+<body onResize="resized();">
+  <div class="page-wrap">
+    <div class="bui"></div>
+
+<div id="menu" class="mw">
+<ul>
+  <li class='toc-categories'>
+  <a class="expand-toc-icon" href="javascript:void(0);"><i class="fa fa-bars"></i></a>
+  </li>
+  <li class="logo"><a href="/zh/"></a></li>
+  <li class='expand-menu'>
+  <a href="javascript:void(0);"><span class='menu-text'>Menu</span><span class='expand-icon'><i class="fa fa-bars"></i></span></a>
+  </li>
+  <li class="clear-float"></li>
+  <li class="nav">
+	<a>Language</a>
+	<ul>
+		
+		<li>
+			<a  href="/docs/data-type-conversion/" >en</a>
+		</li>
+		
+		<li>
+			<a style="font-weight: bold;" href="/zh/docs/data-type-conversion/" >zh</a>
+		</li>
+		
+	</ul>
+  </li>
+  <li class="apache-link">
+    <a href="/zh/apacheASF/">Apache</a>
+  </li>
+  <li class="poweredby">
+    <a href="/zh/poweredBy">Powered By</a>
+  </li>
+  <li class="documentation-menu">
+    <a href="/zh/docs/">Documentation</a>
+    <ul>
+      
+        <li><a href="/zh/docs/getting-started/">新手开始</a></li>
+      
+        <li><a href="/zh/docs/architecture/">Architecture</a></li>
+      
+        <li><a href="/zh/docs/tutorials/">教程</a></li>
+      
+        <li><a href="/zh/docs/drill-on-yarn/">Drill-on-YARN</a></li>
+      
+        <li><a href="/zh/docs/install-drill/">Install Drill</a></li>
+      
+        <li><a href="/zh/docs/configure-drill/">Configure Drill</a></li>
+      
+        <li><a href="/zh/docs/connect-a-data-source/">Connect a Data Source</a></li>
+      
+        <li><a href="/zh/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces</a></li>
+      
+        <li><a href="/zh/docs/query-data/">Query Data</a></li>
+      
+        <li><a href="/zh/docs/performance-tuning/">Performance Tuning</a></li>
+      
+        <li><a href="/zh/docs/log-and-debug/">Log and Debug</a></li>
+      
+        <li><a href="/zh/docs/sql-reference/">SQL Reference</a></li>
+      
+        <li><a href="/zh/docs/data-sources-and-file-formats/">Data Sources and File Formats</a></li>
+      
+        <li><a href="/zh/docs/develop-custom-functions/">Develop Custom Functions</a></li>
+      
+        <li><a href="/zh/docs/troubleshooting/">Troubleshooting</a></li>
+      
+        <li><a href="/zh/docs/developer-information/">Developer Information</a></li>
+      
+        <li><a href="/zh/docs/release-notes/">Release Notes</a></li>
+      
+        <li><a href="/zh/docs/sample-datasets/">Sample Datasets</a></li>
+      
+        <li><a href="/zh/docs/project-bylaws/">Project Bylaws</a></li>
+      
+        <li><a href="/zh/docs/ecosystem/">Ecosystem</a></li>
+      
+    </ul>
+  </li>
+  <li class='nav'>
+    <a href="/zh/community-resources/">Community</a>
+    <ul>
+      <li><a href="/zh/team/">Team</a></li>
+      <li><a href="/zh/mailinglists/">Mailing Lists</a></li>
+      <li><a href="/zh/community-resources/">Community Resources</a></li>
+    </ul>
+  </li>
+  <li class='nav'><a href="/zh/faq/">FAQ</a></li>
+  <li class='nav'><a href="/zh/blog/">Blog</a></li>
+  <li class="social-menu-item"><a href="https://twitter.com/apachedrill" title="apachedrill on twitter" target="_blank"><img src="/images/twitter_32_26_white.png" alt="twitter logo" align="center"></a> </li>
+  <li class="social-menu-item"><a href="https://join.slack.com/t/apache-drill/shared_invite/enQtNTQ4MjM1MDA3MzQ2LTJlYmUxMTRkMmUwYmQ2NTllYmFmMjU4MDk0NjYwZjBmYjg0MDZmOTE2ZDg0ZjBlYmI3Yjc4Y2I2NTQyNGVlZTc" title="Apache Drill Slack channels"
+      target="_blank"><img src="/images/slack-logo.svg" alt="Slack logo" align="center"></a> </li>
+  <li class='search-bar'>
+    <form id="drill-search-form">
+      <input type="text" placeholder="Search Apache Drill" id="drill-search-term" />
+      <button type="submit">
+        <i class="fa fa-search"></i>
+      </button>
+    </form>
+  </li>
+  <li class="d">
+    <a href="/zh/download/">
+      <i class="fa fa-cloud-download"></i> Download
+    </a>
+  </li>
+</ul>
+</div>
+
+    <link href="/css/content.css" rel="stylesheet" type="text/css">
+
+
+      
+
+
+
+
+<aside class="sidebar">
+  <div class="docsidebar">
+    <div class="docsidebarwrapper">
+      <ul style="display: block;">
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">新手开始</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-introduction/">什么是 Drill</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/why-drill/">为什么选择 Drill</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Architecture</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/architecture-introduction/">Architecture Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-query-execution/">Drill Query Execution</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/core-modules/">Core Modules</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/performance/">Performance</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">教程</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/tutorials-introduction/">教程介绍</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-in-10-minutes/">10分钟了解 Drill</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/analyzing-the-yelp-academic-dataset/">分析 Yelp 学术数据集</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">搭配 MapR Sandbox 学习 Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/about-the-mapr-sandbox/">关于 MapR 沙盒</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-the-apache-drill-sandbox/">安装 Apache Drill SandBox</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/getting-to-know-the-drill-sandbox/">了解 Drill Sandbox</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/lesson-1-learn-about-the-data-set/">第一课: 学习数据集</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/lesson-2-run-queries-with-ansi-sql/">第二课: 使用 ANSI SQL 查询</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/lesson-3-run-queries-on-complex-data-types/">第三课: 查询复杂数据类型</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/summary/">总结</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/analyzing-highly-dynamic-datasets/">分析高动态数据集</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/analyzing-social-media/">分析社交媒体</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/analyzing-data-using-window-functions/">通过窗口函数分析数据集</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/orchestrating-queries-with-airflow/">Orchestrating queries with Airflow</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Drill-on-YARN</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-on-yarn-introduction/">Drill-on-YARN Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/creating-a-basic-drill-cluster/">Creating a Basic Drill Cluster</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/launch-drill-under-yarn/">Launch Drill Under YARN</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configuration-reference/">Configuration Reference</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-on-yarn-command-line-tool/">Drill-on-YARN Command-Line Tool</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-the-drill-on-yarn-web-ui/">Using the Drill-on-YARN Web UI</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/multiple-drill-clusters/">Multiple Drill Clusters</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/enabling-web-ui-security/">Enabling Web UI Security</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/appendix-a-release-note-issues/">Appendix A: Release Note Issues</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/appendix-b-drill-env-sh-settings/">Appendix B: drill-env.sh Settings</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/appendix-c-troubleshooting/">Appendix C: Troubleshooting</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/appendix-d-recreate-the-drill-archive/">Appendix D: Recreate the Drill Archive</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Install Drill</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/install-drill-introduction/">Install Drill Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/migrating-parquet-data/">Migrating Parquet Data</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Installing Drill in Embedded Mode</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-drill-on-windows/">Installing Drill on Windows</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/starting-drill-on-windows/">Starting Drill on Windows</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Installing Drill in Distributed Mode</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/distributed-mode-prerequisites/">Distributed Mode Prerequisites</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-drill-on-the-cluster/">Installing Drill on the Cluster</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/starting-drill-in-distributed-mode/">Starting Drill in Distributed Mode</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/starting-the-web-ui/">Starting the Web UI</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/stopping-drill/">Stopping Drill</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/identifying-multiple-drill-versions-in-a-cluster/">Identifying Multiple Drill Versions in a Cluster</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Configure Drill</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configure-drill-introduction/">Configure Drill Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configuring-drill-memory/">Configuring Drill Memory</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Securing Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/securing-drill-introduction/">Securing Drill Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/secure-communication-paths/">Secure Communication Paths</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/roles-and-privileges/">Roles and Privileges</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-user-impersonation/">Configuring User Impersonation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-inbound-impersonation/">Configuring Inbound Impersonation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-user-security/">Configuring User Security</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-plain-security/">Configuring Plain Security</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-ssl-tls-for-encryption/">Configuring SSL/TLS for Encryption</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-libpam4j-as-the-pam-authenticator/">Using libpam4j as the PAM Authenticator</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-jpam-as-the-pam-authenticator/">Using jpam as the PAM Authenticator</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-kerberos-security/">Configuring Kerberos Security</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-drill-to-use-spnego-for-http-authentication/">Configuring Drill to use SPNEGO for HTTP Authentication</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-web-ui-and-rest-api-security/">Configuring Web UI and REST API Security</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-custom-acls-to-secure-znodes/">Configuring Custom ACLs to Secure znodes</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Configuring a Multitenant Cluster</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-a-multitenant-cluster-introduction/">Configuring a Multitenant Cluster Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-multitenant-resources/">Configuring Multitenant Resources</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-resources-for-a-shared-drillbit/">Configuring Resources for a Shared Drillbit</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Configuration Options</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuration-options-introduction/">Configuration Options Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/start-up-options/">Start-Up Options</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/planning-and-execution-options/">Planning and Execution Options</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/persistent-configuration-storage/">Persistent Configuration Storage</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/global-query-list/">Global Query List</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/ports-used-by-drill/">Ports Used by Drill</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configuring-the-drill-shell/">Configuring the Drill Shell</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configuring-cgroups-to-control-cpu-usage/">Configuring cgroups to Control CPU Usage</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Connect a Data Source</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/connect-a-data-source-introduction/">Connect a Data Source Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/storage-plugin-registration/">Storage Plugin Registration</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Storage Plugin Configuration</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/plugin-configuration-basics/">Plugin Configuration Basics</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-storage-plugins/">Configuring Storage Plugins</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/workspaces/">Workspaces</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drill-default-input-format/">Drill Default Input Format</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/file-system-storage-plugin/">File System Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hive-storage-plugin/">Hive Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/rdbms-storage-plugin/">RDBMS Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/mongodb-storage-plugin/">MongoDB Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/mapr-db-format/">MapR-DB Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/s3-storage-plugin/">S3 Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/kafka-storage-plugin/">Kafka Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/elasticsearch-storage-plugin/">ElasticSearch Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/splunk-storage-plugin/">Splunk Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/cassandra-storage-plugin/">Cassandra Storage Plugin</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">ODBC/JDBC Interfaces</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/interfaces-introduction/">Interfaces Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-the-jdbc-driver/">Using the JDBC Driver</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-jdbc-with-squirrel-on-windows/">Using JDBC with SQuirreL on Windows</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Installing the ODBC Driver</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-the-driver-on-linux/">Installing the Driver on Linux</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-the-driver-on-mac-os-x/">Installing the Driver on Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-the-driver-on-windows/">Installing the Driver on Windows</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Configuring ODBC</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/odbc-configuration-reference/">ODBC Configuration Reference</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/logging-and-tracing/">Logging and Tracing</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-odbc-on-linux/">Configuring ODBC on Linux</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-odbc-on-mac-os-x/">Configuring ODBC on Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-odbc-on-windows/">Configuring ODBC on Windows</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/testing-the-odbc-connection/">Testing the ODBC Connection</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Using Drill Explorer</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drill-explorer-introduction/">Drill Explorer Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/connecting-drill-explorer-to-data/">Connecting Drill Explorer to Data</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/browsing-data-and-defining-views/">Browsing Data and Defining Views</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Using Drill with BI Tools</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-drill-with-bi-tools-introduction/">Using Drill with BI Tools Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/tableau-examples/">Tableau Examples</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-microstrategy-analytics-with-apache-drill/">Using MicroStrategy Analytics with Apache Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-tibco-spotfire-desktop-with-drill/">Using Tibco Spotfire Desktop with Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-tibco-spotfire-server-with-drill/">Configuring Tibco Spotfire Server with Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-qlik-sense-with-drill/">Using Qlik Sense with Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-apache-drill-with-tableau-10-2/">Using Apache Drill with Tableau 10.2</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-apache-drill-with-tableau-9-desktop/">Using Apache Drill with Tableau 9 Desktop</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-information-builders-webfocus-with-apache-drill/">Using Information Builders’ WebFOCUS with Apache Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-jreport-with-drill/">Configuring JReport with Drill</a></li>
+              
+            </ul>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Query Data</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/query-data-introduction/">Query Data Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Querying a File System</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-a-file-system-introduction/">Querying a File System Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-avro-files/">Querying Avro Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-json-files/">Querying JSON Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-parquet-files/">Querying Parquet Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-plain-text-files/">Querying Plain Text Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-directories/">Querying Directories</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-sequence-files/">Querying Sequence Files</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/querying-hbase/">Querying HBase</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Querying Complex Data</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-complex-data-introduction/">Querying Complex Data Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sample-data-donuts/">Sample Data: Donuts</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/selecting-flat-data/">Selecting Flat Data</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-sql-functions-clauses-and-joins/">Using SQL Functions, Clauses, and Joins</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/selecting-nested-data-for-a-column/">Selecting Nested Data for a Column</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/selecting-multiple-columns-within-nested-data/">Selecting Multiple Columns Within Nested Data</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/querying-hive/">Querying Hive</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/querying-the-information-schema/">Querying the INFORMATION SCHEMA</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Querying Indexes</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-indexes-introduction/">Querying Indexes Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/queries-that-qualify-for-index-based-query-plans/">Queries that Qualify for Index-Based Query Plans</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/types-of-indexes/">Types of Indexes</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/index-selection/">Index Selection</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/designing-indexes-for-your-queries/">Designing Indexes for Your Queries</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-index-planning/">Configuring Index Planning</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/verifying-index-use/">Verifying Index Use</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/querying-system-tables/">Querying System Tables</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/monitoring-and-canceling-queries-in-the-drill-web-ui/">Monitoring and Canceling Queries in the Drill Web UI</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Performance Tuning</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Drill Metastore</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-drill-metastore/">Using Drill Metastore</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drill-iceberg-metastore/">Drill Iceberg Metastore</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/rdbms-metastore/">RDBMS Metastore</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/performance-tuning-introduction/">Performance Tuning Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Partition Pruning</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/partition-pruning-introduction/">Partition Pruning Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/how-to-partition-data/">How to Partition Data</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/asynchronous-parquet-reader/">Asynchronous Parquet Reader</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/optimizing-parquet-metadata-reading/">Optimizing Parquet Metadata Reading</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/parquet-filter-pushdown/">Parquet Filter Pushdown</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hive-metadata-caching/">Hive Metadata Caching</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/choosing-a-storage-format/">Choosing a Storage Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Query Plans and Tuning</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-plans-and-tuning-introduction/">Query Plans and Tuning Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/join-planning-guidelines/">Join Planning Guidelines</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/guidelines-for-optimizing-aggregation/">Guidelines for Optimizing Aggregation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/modifying-query-planning-options/">Modifying Query Planning Options</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sort-based-and-hash-based-memory-constrained-operators/">Sort-Based and Hash-Based Memory-Constrained Operators</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/enabling-query-queuing/">Enabling Query Queuing</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/throttling/">Throttling</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/controlling-parallelization-to-balance-performance-with-multi-tenancy/">Controlling Parallelization to Balance Performance with Multi-Tenancy</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Identifying Performance Issues</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-plans/">Query Plans</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-profiles/">Query Profiles</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Performance Tuning Reference</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-profile-column-descriptions/">Query Profile Column Descriptions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/physical-operators/">Physical Operators</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/monitoring-metrics/">Monitoring Metrics</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Log and Debug</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/log-and-debug-introduction/">Log and Debug Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/error-messages/">Error Messages</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/modify-logback-xml/">Modify logback.xml</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/review-the-java-stack-trace/">Review the Java Stack Trace</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/query-audit-logging/">Query Audit Logging</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">SQL Reference</a></li>
+          <ul class="current_section">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/sql-reference-introduction/">SQL Reference Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Data Types</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/supported-data-types/">Supported Data Types</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/date-time-and-timestamp/">Date, Time, and Timestamp</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/handling-different-data-types/">Handling Different Data Types</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/lexical-structure/">Lexical Structure</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/operators/">Operators</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Functions</a></li>
+              <ul style="">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/about-sql-function-examples/">About SQL Function Examples</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/math-and-trig/">Math and Trig</a></li>
+              
+                <li class="toctree-l3 current"><a class="reference internal" href="/zh/docs/data-type-conversion/">Data Type Conversion</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/data-type-functions/">Data Type Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/date-time-functions-and-arithmetic/">Date/Time Functions and Arithmetic</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/string-manipulation/">String Manipulation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/aggregate-and-aggregate-statistical/">Aggregate and Aggregate Statistical</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/functions-for-handling-nulls/">Functions for Handling Nulls</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/phonetic-functions/">Phonetic Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/string-distance-functions/">String Distance Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/cryptography-functions/">Cryptography Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/ip-networking-functions/">IP Networking functions</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Window Functions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sql-window-functions-introduction/">SQL Window Functions Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/aggregate-window-functions/">Aggregate Window Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/ranking-window-functions/">Ranking Window Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/value-window-functions/">Value Window Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sql-window-functions-examples/">SQL Window Functions Examples</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Nested Data Functions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/nested-data-limitations/">Nested Data Limitations</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/flatten/">FLATTEN</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/kvgen/">KVGEN</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/repeated-count/">REPEATED_COUNT</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/repeated-contains/">REPEATED_CONTAINS</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/query-directory-functions/">Query Directory Functions</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Commands</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/supported-sql-commands/">Supported SQL Commands</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/analyze-table-refresh-metadata/">ANALYZE TABLE REFRESH METADATA</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/analyze-table-compute-statistics/">ANALYZE TABLE COMPUTE STATISTICS</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/set/">SET</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/refresh-table-metadata/">REFRESH TABLE METADATA</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/reset/">RESET</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/alter-system/">ALTER SYSTEM</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-or-replace-schema/">CREATE OR REPLACE SCHEMA</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-table-as-ctas/">CREATE TABLE AS (CTAS)</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-temporary-table-as-cttas/">CREATE TEMPORARY TABLE AS (CTTAS)</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-function-using-jar/">CREATE FUNCTION USING JAR</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/partition-by-clause/">PARTITION BY Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-view/">CREATE VIEW</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/describe/">DESCRIBE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drop-function-using-jar/">DROP FUNCTION USING JAR</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drop-table/">DROP TABLE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drop-view/">DROP VIEW</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/explain/">EXPLAIN</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/lateral-join/">LATERAL Join</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/select/">SELECT</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/select-list/">SELECT List</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/from-clause/">FROM Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/group-by-clause/">GROUP BY Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/having-clause/">HAVING Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/limit-clause/">LIMIT Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/offset-clause/">OFFSET Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/order-by-clause/">ORDER BY Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/union-set-operator/">UNION Set Operator</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/where-clause/">WHERE Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/with-clause/">WITH Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/show-databases-and-show-schemas/">SHOW DATABASES and SHOW SCHEMAS</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/show-files/">SHOW FILES</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/show-tables/">SHOW TABLES</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/use/">USE</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Conditional Expressions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/case/">CASE</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/reserved-keywords/">Reserved Keywords</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/sql-extensions/">SQL Extensions</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Data Sources and File Formats</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/data-sources-and-file-formats-introduction/">Data Sources and File Formats Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hive-to-drill-data-type-mapping/">Hive-to-Drill Data Type Mapping</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/deploying-and-using-a-hive-udf/">Deploying and Using a Hive UDF</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/parquet-format/">Parquet Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/json-data-model/">JSON Data Model</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/text-files-csv-tsv-psv/">Text Files: CSV, TSV, PSV</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/xml-format-plugin/">XML Format Plugin</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Develop Custom Functions</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/develop-custom-functions-introduction/">Develop Custom Functions Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/developing-a-simple-function/">Developing a Simple Function</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/tutorial-develop-a-simple-function/">Tutorial: Develop a Simple Function</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/developing-an-aggregate-function/">Developing an Aggregate Function</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Adding Custom Functions to Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/adding-custom-functions-to-drill-introduction/">Adding Custom Functions to Drill Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/manually-adding-custom-functions-to-drill/">Manually Adding Custom Functions to Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/creating-custom-authenticators/">Creating Custom Authenticators</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/dynamic-udfs/">Dynamic UDFs</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-custom-functions-in-queries/">Using Custom Functions in Queries</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/custom-function-interfaces/">Custom Function Interfaces</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a class="reference internal" href="/zh/docs/troubleshooting/">Troubleshooting</a></li>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Developer Information</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">REST API</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/rest-api-introduction/">REST API Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/submitting-queries-from-the-rest-api-when-impersonation-is-enabled-and-authentication-is-disabled/">Submitting Queries from the REST API when Impersonation is Enabled and Authentication is Disabled</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/use-postman-to-run-sql-queries-on-drill-data-sources/">Use Postman to Run SQL Queries on Drill Data Sources</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Develop Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/compiling-drill-from-source/">Compiling Drill from Source</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/useful-information-for-drill-developers/">Useful Information for Drill Developers</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Contribute to Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/apache-drill-contribution-guidelines/">Apache Drill Contribution Guidelines</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/apache-drill-contribution-ideas/">Apache Drill Contribution Ideas</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Design Docs</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drill-plan-syntax/">Drill Plan Syntax</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/rpc-overview/">RPC Overview</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-stages/">Query Stages</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/useful-research/">Useful Research</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/value-vectors/">Value Vectors</a></li>
+              
+            </ul>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-19-0-release-notes/">Apache Drill 1.19.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-16-0-release-notes/">Apache Drill 1.16.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-15-0-release-notes/">Apache Drill 1.15.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-14-0-release-notes/">Apache Drill 1.14.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-13-0-release-notes/">Apache Drill 1.13.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-12-0-release-notes/">Apache Drill 1.12.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-11-0-release-notes/">Apache Drill 1.11.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-10-0-release-notes/">Apache Drill 1.10.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-9-0-release-notes/">Apache Drill 1.9.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-8-0-release-notes/">Apache Drill 1.8.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-7-0-release-notes/">Apache Drill 1.7.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-6-0-release-notes/">Apache Drill 1.6.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-5-0-release-notes/">Apache Drill 1.5.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-4-0-release-notes/">Apache Drill 1.4.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-3-0-release-notes/">Apache Drill 1.3.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-2-0-release-notes/">Apache Drill 1.2.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-1-0-release-notes/">Apache Drill 1.1.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-0-0-release-notes/">Apache Drill 1.0.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-9-0-release-notes/">Apache Drill 0.9.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-8-0-release-notes/">Apache Drill 0.8.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-7-0-release-notes/">Apache Drill 0.7.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-6-0-release-notes/">Apache Drill 0.6.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-5-0-release-notes/">Apache Drill 0.5.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-4-0-release-notes/">Apache Drill 0.4.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-m1-release-notes-apache-drill-alpha/">Apache Drill M1 Release Notes (Apache Drill Alpha)</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Sample Datasets</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/enron-emails/">Enron Emails</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/wikipedia-edit-history/">Wikipedia Edit History</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a class="reference internal" href="/zh/docs/project-bylaws/">Project Bylaws</a></li>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Ecosystem</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-saiku-analytics-with-apache-drill/">Using Saiku Analytics with Apache Drill</a></li>
+            
+          
+          </ul>
+        
+      
+      </ul>
+
+    </div>
+  </div>
+</aside>
+
+
+<nav class="breadcrumbs">
+  <li><a href="/zh/docs/">Docs</a></li>
+ 
+  
+    <li><a href="/zh/docs/sql-reference/">SQL Reference</a></li>
+  
+    <li><a href="/zh/docs/sql-functions/">SQL Functions</a></li>
+  
+  <li>Data Type Conversion</li>
+</nav>
+
+
+<div class="main-content-wrapper">
+  <div class="main-content">
+
+    
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/en/sql-reference/sql-functions/020-data-type-conversion.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+    
+
+    <div class="int_title left">
+      <h1>Data Type Conversion</h1>
+
+    </div>
+
+    <!-- jt: we don't need to display a last-modified date on each page to users
+    
+    --> 
+
+    <div class="int_text" align="left">
+      
+        <p>Drill supports the following functions for casting and converting data types:</p>
+
+<ul>
+  <li><a href="/zh/docs/data-type-conversion/#cast">CAST</a></li>
+  <li><a href="/zh/docs/data-type-conversion/#convert_to-and-convert_from">CONVERT_TO and CONVERT_FROM</a></li>
+  <li><a href="/zh/docs/data-type-conversion/#string_binary-function">STRING_BINARY</a> and <a href="/zh/docs/data-type-conversion/#binary_string-function">BINARY_STRING</a></li>
+  <li><a href="/zh/docs/data-type-conversion/#other-data-type-conversions">Other Data Type Conversions</a></li>
+</ul>
+
+<p>Starting in Drill 1.15, all cast and data type conversion functions return null for an empty string (‘’) when the <code class="language-plaintext highlighter-rouge">drill.exec.functions.cast_empty_string_to_null</code> option is enabled, for example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CAST('' AS DATE), TO_TIMESTAMP('', 'yyyy-MM-dd HH:mm:ss') FROM (VALUES(2));
+|---------|---------|
+| EXPR$0  | EXPR$1  |
+|---------|---------|
+| null    | null    |
+|---------|---------|
+</code></pre></div></div>
+
+<p>Prior to 1.15, casting an empty string to null only worked for numeric types; in Drill 1.15 and later casting an empty string to null also works for date and time data types, including DATE, TIME, TIMESTAMP, INTERVAL YEAR, INTERVAL MONTH, and INTERVAL DAY.</p>
+
+<h2 id="cast">CAST</h2>
+
+<p>The CAST function converts an entity, such as an expression that evaluates to a single value, from one type to another.</p>
+
+<h3 id="cast-syntax">CAST Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CAST (&lt;expression&gt; AS &lt;data type&gt;)
+</code></pre></div></div>
+
+<p><em>expression</em></p>
+
+<p>A combination of one or more values, operators, and SQL functions that evaluate to a value</p>
+
+<p><em>data type</em></p>
+
+<p>The target data type, such as INTEGER or DATE, to which to cast the expression</p>
+
+<h3 id="cast-usage-notes">CAST Usage Notes</h3>
+
+<p>Use CONVERT_TO and CONVERT_FROM instead of the CAST function for converting binary data types.</p>
+
+<p>See the following tables for information about the data types to use for casting:</p>
+
+<ul>
+  <li><a href="/zh/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">CONVERT_TO and CONVERT_FROM Data Types</a></li>
+  <li><a href="/zh/docs/supported-data-types">Supported Data Types for Casting</a></li>
+  <li><a href="/zh/docs/supported-data-types/#explicit-type-casting-maps">Explicit Type Casting Maps</a></li>
+</ul>
+
+<h2 id="data-type-conversion-examples">Data Type Conversion Examples</h2>
+
+<p>The following examples show how to cast a string to a number, a number to a string, and one type of number to another.</p>
+
+<h3 id="casting-a-character-string-to-a-number">Casting a Character String to a Number</h3>
+<p>You can cast strings or numeric values to decimals, even if they contain decimal points. In cases where a value has a scale and precision greater than the scale and precision specified in the query, the value is rounded to fit the specified scale and precision.</p>
+
+<p>You cannot cast a character string that includes a decimal point to an INT or BIGINT. For example, if you have “1200.50” in a JSON file, attempting to select and cast the string to an INT fails. As a workaround, cast to a FLOAT or DOUBLE type, and then cast to an INT, assuming you want to lose digits to the right of the decimal point.</p>
+
+<p>The following example shows how to cast a character to a DECIMAL having two decimal places.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CAST('1' as DECIMAL(28, 2)) FROM (VALUES(1));
+|------------|
+|   EXPR$0   |
+|------------|
+| 1.00       |
+|------------|
+</code></pre></div></div>
+
+<h3 id="casting-a-number-to-a-character-string">Casting a Number to a Character String</h3>
+<p>The first example shows Drill casting a number to a VARCHAR having a length of 3 bytes: The result is a 3-character string, 456. Drill supports the CHAR and CHARACTER VARYING alias.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CAST(456 as VARCHAR(3)) FROM (VALUES(1));
+|------------|
+|   EXPR$0   |
+|------------|
+| 456        |
+|------------|
+1 row selected (0.08 seconds)
+
+SELECT CAST(456 as CHAR(3)) FROM (VALUES(1));
+|------------|
+|   EXPR$0   |
+|------------|
+| 456        |
+|------------|
+1 row selected (0.093 seconds)
+</code></pre></div></div>
+
+<h3 id="casting-from-one-type-of-number-to-another">Casting from One Type of Number to Another</h3>
+
+<p>Cast an integer to a decimal.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CAST(-2147483648 AS DECIMAL(28,8)) FROM (VALUES(1));
+|-----------------|
+|     EXPR$0      |
+|-----------------|
+| -2.147483648E9  |
+|-----------------|  
+</code></pre></div></div>
+
+<h3 id="casting-intervals">Casting Intervals</h3>
+
+<p>To cast interval data to interval types you can query from a data source such as JSON, for example, use the following syntax, respectively:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CAST (column_name AS INTERVAL DAY)
+CAST (column_name AS INTERVAL YEAR)
+CAST (column_name AS INTERVAL SECOND)
+</code></pre></div></div>
+
+<p>For example, a JSON file named <code class="language-plaintext highlighter-rouge">intervals.json</code> contains the following objects:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{ "INTERVALYEAR_col":"P1Y", "INTERVALDAY_col":"P1D", "INTERVAL_col":"P1Y1M1DT1H1M" }
+{ "INTERVALYEAR_col":"P2Y", "INTERVALDAY_col":"P2D", "INTERVAL_col":"P2Y2M2DT2H2M" }
+{ "INTERVALYEAR_col":"P3Y", "INTERVALDAY_col":"P3D", "INTERVAL_col":"P3Y3M3DT3H3M" }
+</code></pre></div></div>
+
+<p>Create a table in Parquet from the interval data in the <code class="language-plaintext highlighter-rouge">intervals.json</code> file.</p>
+
+<ol>
+  <li>
+    <p>Set the storage format to Parquet.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ALTER SESSION SET `store.format` = 'parquet';
+
+ |-------|------------------------|
+ |  ok   |        summary         |
+ |-------|------------------------|
+ | true  | store.format updated.  |
+ |-------|------------------------|
+ 1 row selected (0.072 seconds)
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Use a CTAS statement to cast text from a JSON file to year and day intervals and to write the data to a Parquet table:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> CREATE TABLE dfs.tmp.parquet_intervals AS 
+ (SELECT CAST( INTERVALYEAR_col as INTERVAL YEAR) INTERVALYEAR_col, 
+         CAST( INTERVALDAY_col as INTERVAL DAY) INTERVALDAY_col,
+         CAST( INTERVAL_col as INTERVAL SECOND) INTERVAL_col 
+ FROM dfs.`/Users/drill/intervals.json`);
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Take a look at what Drill wrote to the Parquet file:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT * FROM dfs.`tmp`.parquet_intervals;
+ |-------------------|------------------|---------------|
+ | INTERVALYEAR_col  | INTERVALDAY_col  | INTERVAL_col  |
+ |-------------------|------------------|---------------|
+ | P12M              | P1D              | P1DT3660S     |
+ | P24M              | P2D              | P2DT7320S     |
+ | P36M              | P3D              | P3DT10980S    |
+ |-------------------|------------------|---------------|
+ 3 rows selected (0.082 seconds)
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>Because you cast the INTERVAL_col to INTERVAL SECOND, Drill returns the interval data representing the year, month, day, hour, minute, and second.</p>
+
+<h2 id="convert_to-and-convert_from">CONVERT_TO and CONVERT_FROM</h2>
+
+<p>The CONVERT_TO and CONVERT_FROM functions convert binary data to/from Drill internal types based on the little or big endian encoding of the data.</p>
+
+<h3 id="convert_to-and-convert_from-syntax">CONVERT_TO and CONVERT_FROM Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CONVERT_TO (column, type)
+
+CONVERT_FROM(column, type)
+</code></pre></div></div>
+
+<p><em>column</em> is the name of a column Drill reads.</p>
+
+<p><em>type</em> is one of the encoding types listed in the <a href="/zh/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">CONVERT_TO/FROM data types</a> table.</p>
+
+<h3 id="convert_to-and-convert_from-usage-notes">CONVERT_TO and CONVERT_FROM Usage Notes</h3>
+
+<ul>
+  <li>
+    <p>CONVERT_FROM and CONVERT_TO methods transform a known binary representation/encoding to a Drill internal format. Use CONVERT_TO and CONVERT_FROM instead of the CAST function for converting binary data types. CONVERT_TO/FROM functions work for data in a binary representation and are more efficient to use than CAST.</p>
+  </li>
+  <li>
+    <p>Drill can optimize scans on HBase tables when you use the *_BE encoded types shown in section  <a href="/zh/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">“Data Types for CONVERT_TO and CONVERT_FROM Functions”</a> on big endian-encoded data. You need to use the HBase storage plugin and query data as described in <a href="/zh/docs/querying-hbase">“Querying Hbase”</a>. To write Parquet binary data, convert SQL data <em>to</em> binary data and store the data in a Parquet table while creating a table as a selection (CTAS).</p>
+  </li>
+  <li>
+    <p>CONVERT_TO also converts an SQL data type to complex types, including HBase byte arrays, JSON and Parquet arrays, and maps. CONVERT_FROM converts from complex types, including HBase arrays, JSON and Parquet arrays and maps to an SQL data type.</p>
+  </li>
+  <li>
+    <p>You can use <a href="/zh/docs/data-type-conversion/#string_binary-function">STRING_BINARY</a> and <a href="/zh/docs/data-type-conversion/#binary_string-function">BINARY_STRING</a> custom Drill functions with CONVERT_TO and CONVERT_FROM to get meaningful results.</p>
+  </li>
+  <li>
+    <p>Drill 1.13 and later supports <a href="/zh/docs/json-data-model/">NaN and Infinity values as numeric data types</a>. 
+You can use the convert_to and convert_from functions in queries on JSON data with NaN and Infinity values, as shown in the following query examples:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      select convert_fromJSON('{"num": 55, "nan": NaN, "inf": -Infinity}'); 
+      select convert_fromJSON(jsonColumn) from mysql.someTable;  
+      select string_binary(convert_toJSON(convert_fromJSON(jsonColumn) from mysql.someTable;
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="conversion-of-data-types-examples">Conversion of Data Types Examples</h3>
+
+<p>This example shows how to use the CONVERT_FROM function to convert HBase data to a SQL type. The example summarizes and continues the <a href="/zh/docs/querying-hbase">“Query HBase”</a> example. The <a href="/zh/docs/querying-hbase">“Query HBase”</a> example stores the following data in the students table on the Drill Sandbox:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>USE maprdb;
+
+SELECT * FROM students;
+    
+|-------------|---------------------|---------------------------------------------------------------------------|
+|   row_key   |  account            |                               address                                     |
+|-------------|---------------------|---------------------------------------------------------------------------|
+| [B@e6d9eb7  | {"name":"QWxpY2U="} | {"state":"Q0E=","street":"MTIzIEJhbGxtZXIgQXY=","zipcode":"MTIzNDU="}     |
+| [B@2823a2b4 | {"name":"Qm9i"}     | {"state":"Q0E=","street":"MSBJbmZpbml0ZSBMb29w","zipcode":"MTIzNDU="}     |
+| [B@3b8eec02 | {"name":"RnJhbms="} | {"state":"Q0E=","street":"NDM1IFdhbGtlciBDdA==","zipcode":"MTIzNDU="}     |
+| [B@242895da | {"name":"TWFyeQ=="} | {"state":"Q0E=","street":"NTYgU291dGhlcm4gUGt3eQ==","zipcode":"MTIzNDU="} |
+|-------------|---------------------|---------------------------------------------------------------------------|
+4 rows selected (1.335 seconds)
+</code></pre></div></div>
+
+<p>You use the CONVERT_FROM function to decode the binary data, selecting a data type to use from the <a href="/zh/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">list of supported types</a>. JSON supports strings. To convert bytes to strings, use the UTF8 type:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CONVERT_FROM(row_key, 'UTF8') AS studentid, 
+       CONVERT_FROM(students.account.name, 'UTF8') AS name, 
+       CONVERT_FROM(students.address.state, 'UTF8') AS state, 
+       CONVERT_FROM(students.address.street, 'UTF8') AS street, 
+       CONVERT_FROM(students.address.zipcode, 'UTF8') AS zipcode FROM students;
+
+|------------|------------|------------|------------------|------------|
+| studentid  |    name    |   state    |      street      |  zipcode   |
+|------------|------------|------------|------------------|------------|
+| student1   | Alice      | CA         | 123 Ballmer Av   | 12345      |
+| student2   | Bob        | CA         | 1 Infinite Loop  | 12345      |
+| student3   | Frank      | CA         | 435 Walker Ct    | 12345      |
+| student4   | Mary       | CA         | 56 Southern Pkwy | 12345      |
+|------------|------------|------------|------------------|------------|
+4 rows selected (0.504 seconds)
+</code></pre></div></div>
+
+<p>This example converts VARCHAR data to a JSON map:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CONVERT_FROM('{x:100, y:215.6}' ,'JSON') AS MYCOL FROM (VALUES(1));
+|----------------------|
+|        MYCOL         |
+|----------------------|
+| {"x":100,"y":215.6}  |
+|----------------------|
+1 row selected (0.163 seconds)
+</code></pre></div></div>
+
+<p>This example uses a list of BIGINT data as input and returns a repeated list of vectors:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CONVERT_FROM('[ [1, 2], [3, 4], [5]]' ,'JSON') AS MYCOL1 FROM (VALUES(1));
+|------------|
+|   mycol1   |
+|------------|
+| [[1,2],[3,4],[5]] |
+|------------|
+1 row selected (0.054 seconds)
+</code></pre></div></div>
+
+<p>This example uses a map as input to return a repeated list vector (JSON).</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CONVERT_FROM('[{a : 100, b: 200}, {a:300, b: 400}]' ,'JSON') AS MYCOL1  FROM (VALUES(1));
+|----------------------------------------|
+|                 MYCOL1                 |
+|----------------------------------------|
+| [{"a":100,"b":200},{"a":300,"b":400}]  |
+|----------------------------------------|
+</code></pre></div></div>
+
+<h3 id="set-up-a-storage-plugin-for-working-with-hbase">Set Up a Storage Plugin for Working with HBase</h3>
+
+<p>This example assumes you are working in the Drill Sandbox. You modify the <code class="language-plaintext highlighter-rouge">dfs</code> storage plugin slightly and use that plugin for this example.</p>
+
+<ol>
+  <li>
+    <p>Copy/paste the <code class="language-plaintext highlighter-rouge">dfs</code> storage plugin definition to a newly created plugin called myplugin.</p>
+  </li>
+  <li>
+    <p>Change the root location to “/mapr/demo.mapr.com/tables”. After this change, you can read a table in the <code class="language-plaintext highlighter-rouge">tables</code> directory. You can write a converted version of the table in the <code class="language-plaintext highlighter-rouge">tmp</code> directory because the writable property is true.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> {
+   "type": "file",
+   "enabled": true,
+   "connection": "maprfs:///",
+   "workspaces": {
+     "root": {
+       "location": "/mapr/demo.mapr.com/tables",
+       "writable": true,
+       "defaultInputFormat": null
+     },
+     
+     . . .
+
+     "tmp": {
+       "location": "/tmp",
+       "writable": true,
+       "defaultInputFormat": null
+     }
+
+     . . .
+     
+   "formats": {
+     . . .
+     "maprdb": {
+       "type": "maprdb"
+     }
+   }
+ }
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="convert-the-binary-hbase-students-table-to-json-data">Convert the Binary HBase Students Table to JSON Data</h3>
+
+<p>First, you set the storage format to JSON. Next, you use the CREATE TABLE AS (CTAS) statement to convert from a selected file of a different format, HBase in this example, to the storage format. You then convert the JSON file to Parquet using a similar procedure. Set the storage format to Parquet, and use a CTAS statement to convert to Parquet from JSON. In each case, you <a href="/zh/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">select UTF8</a> as the file format because the data you are converting from and then to consists of strings.</p>
+
+<ol>
+  <li>
+    <p>Start Drill on the Drill Sandbox and set the default storage format from Parquet to JSON.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ALTER SESSION SET `store.format`='json';
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Use CONVERT_FROM queries to convert the binary data in the HBase students table to JSON, and store the JSON data in a file. You select a data type to use from the supported. JSON supports strings. To convert binary to strings, use the UTF8 type.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> CREATE TABLE tmp.`to_json` AS SELECT 
+     CONVERT_FROM(row_key, 'UTF8') AS `studentid`, 
+     CONVERT_FROM(students.account.name, 'UTF8') AS name, 
+     CONVERT_FROM(students.address.state, 'UTF8') AS state, 
+     CONVERT_FROM(students.address.street, 'UTF8') AS street, 
+     CONVERT_FROM(students.address.zipcode, 'UTF8') AS zipcode 
+ FROM root.`students`;
+
+ |------------|---------------------------|
+ |  Fragment  | Number of records written |
+ |------------|---------------------------|
+ | 0_0        | 4                         |
+ |------------|---------------------------|
+ 1 row selected (0.41 seconds)
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Navigate to the output.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> cd /mapr/demo.mapr.com/tmp/to_json
+ ls Output is:
+
+ 0_0_0.json
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Take a look at the output of <code class="language-plaintext highlighter-rouge">to_json</code>:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> {
+   "studentid" : "student1",
+   "name" : "Alice",
+   "state" : "CA",
+   "street" : "123 Ballmer Av",
+   "zipcode" : "12345"
+ } {
+   "studentid" : "student2",
+   "name" : "Bob",
+   "state" : "CA",
+   "street" : "1 Infinite Loop",
+   "zipcode" : "12345"
+ } {
+   "studentid" : "student3",
+   "name" : "Frank",
+   "state" : "CA",
+   "street" : "435 Walker Ct",
+   "zipcode" : "12345"
+ } {
+   "studentid" : "student4",
+   "name" : "Mary",
+   "state" : "CA",
+   "street" : "56 Southern Pkwy",
+   "zipcode" : "12345"
+ }
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Set up Drill to store data in Parquet format.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ALTER SESSION SET `store.format`='parquet';
+ |-------|------------------------|
+ |  ok   |        summary         |
+ |-------|------------------------|
+ | true  | store.format updated.  |
+ |-------|------------------------|
+ 1 row selected (0.07 seconds)
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Use CONVERT_TO to convert the JSON data to a binary format in the Parquet file.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> CREATE TABLE tmp.`json2parquet` AS SELECT 
+     CONVERT_TO(studentid, 'UTF8') AS id, 
+     CONVERT_TO(name, 'UTF8') AS name, 
+     CONVERT_TO(state, 'UTF8') AS state, 
+     CONVERT_TO(street, 'UTF8') AS street, 
+     CONVERT_TO(zipcode, 'UTF8') AS zip 
+ FROM tmp.`to_json`;
+
+ |------------|---------------------------|
+ |  Fragment  | Number of records written |
+ |------------|---------------------------|
+ | 0_0        | 4                         |
+ |------------|---------------------------|
+ 1 row selected (0.414 seconds)
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Take a look at the meaningless output from sqlline:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT * FROM tmp.`json2parquet`;
+ |-------------|-------------|-------------|-------------|-------------|
+ |      id     |    name     |    state    |   street    |     zip     |
+ |-------------|-------------|-------------|-------------|-------------|
+ | [B@224388b2 | [B@7fc36fb0 | [B@77d9cd57 | [B@7c384839 | [B@530dd5e5 |
+ | [B@3155d7fc | [B@7ad6fab1 | [B@37e4b978 | [B@94c91f3  | [B@201ed4a  |
+ | [B@4fb2c078 | [B@607a2f28 | [B@75ae1c93 | [B@79d63340 | [B@5dbeed3d |
+ | [B@2fcfec74 | [B@7baccc31 | [B@d91e466  | [B@6529eb7f | [B@232412bc |
+ |-------------|-------------|-------------|-------------|-------------|
+ 4 rows selected (0.12 seconds)
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Use CONVERT_FROM to read the Parquet data:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT CONVERT_FROM(id, 'UTF8') AS id, 
+        CONVERT_FROM(name, 'UTF8') AS name, 
+        CONVERT_FROM(state, 'UTF8') AS state, 
+        CONVERT_FROM(street, 'UTF8') AS address, 
+        CONVERT_FROM(zip, 'UTF8') AS zip 
+ FROM tmp.`json2parquet2`;
+
+ |------------|------------|------------|------------------|------------|
+ |     id     |    name    |   state    |  address         |    zip     |
+ |------------|------------|------------|------------------|------------|
+ | student1   | Alice      | CA         | 123 Ballmer Av   | 12345      |
+ | student2   | Bob        | CA         | 1 Infinite Loop  | 12345      |
+ | student3   | Frank      | CA         | 435 Walker Ct    | 12345      |
+ | student4   | Mary       | CA         | 56 Southern Pkwy | 12345      |
+ |------------|------------|------------|------------------|------------|
+ 4 rows selected (0.182 seconds)
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="string_binary-function">STRING_BINARY function</h2>
+
+<p>Prints the bytes that are printable, and prints a hexadecimal
+representation for bytes that are not printable. This function is modeled after the hbase utilities.</p>
+
+<h3 id="string_binary-syntax">STRING_BINARY Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>STRING_BINARY(expression)
+</code></pre></div></div>
+
+<p><em>expression</em> is a byte array, such as {(byte)0xca, (byte)0xfe, (byte)0xba, (byte)0xbe}</p>
+
+<p>You can use this function with CONVERT_TO when you want to test the effects of a conversion.</p>
+
+<h3 id="string_binary-examples">STRING_BINARY Examples</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT
+  STRING_BINARY(CONVERT_TO(1, 'INT')) as i,
+  STRING_BINARY(CONVERT_TO(1, 'INT_BE')) as i_be,
+  STRING_BINARY(CONVERT_TO(1, 'BIGINT')) as l,
+  STRING_BINARY(CONVERT_TO(1, 'BIGINT')) as l_be,
+  STRING_BINARY(CONVERT_TO(1, 'INT_HADOOPV')) as l_be
+FROM (VALUES (1));
+</code></pre></div></div>
+<p>Output is:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|-------------------|-------------------|-----------------------------------|-----------------------------------|--------|
+|         i         |       i_be        |                 l                 |               l_be                | l_be0  |
+|-------------------|-------------------|-----------------------------------|-----------------------------------|--------|
+| \x01\x00\x00\x00  | \x00\x00\x00\x01  | \x01\x00\x00\x00\x00\x00\x00\x00  | \x01\x00\x00\x00\x00\x00\x00\x00  | \x01   |
+|-------------------|-------------------|-----------------------------------|-----------------------------------|--------|
+1 row selected (0.323 seconds)
+</code></pre></div></div>
+<p>Encode ‘hello’ in UTF-8 and UTF-16 VARBINARY encoding and return the results as a VARCHAR.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT
+  STRING_BINARY(CONVERT_TO('hello', 'UTF8')) u8,
+  STRING_BINARY(CONVERT_TO('hello', 'UTF16')) u16
+FROM (VALUES (1));
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|--------|------------------------------------|
+|   u8   |                u16                 |
+|--------|------------------------------------|
+| hello  | \xFE\xFF\x00h\x00e\x00l\x00l\x00o  |
+|--------|------------------------------------|
+1 row selected (0.168 seconds)
+</code></pre></div></div>
+
+<h2 id="binary_string-function">BINARY_STRING function</h2>
+
+<p>Converts a string that is the hexadecimal encoding of a sequence of bytes into a VARBINARY value.</p>
+
+<h3 id="binary_string-syntax">BINARY_STRING Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BINARY_STRING(expression)
+</code></pre></div></div>
+
+<p><em>expression</em> is a hexadecimal string, such as <code class="language-plaintext highlighter-rouge">"\xca\xfe\xba\xbe"</code>.</p>
+
+<p>This function returns a byte array, such as {(byte)0xca, (byte)0xfe, (byte)0xba, (byte)0xbe}.</p>
+
+<h3 id="binary_string-example">BINARY_STRING Example</h3>
+
+<p>Converts a VARBINARY type into a hexadecimal-encoded string.</p>
+
+<h3 id="binary_string-syntax-1">BINARY_STRING Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>BINARY_STRING(expression)
+</code></pre></div></div>
+
+<p><em>expression</em> is a byte array, such as {(byte)0xca, (byte)0xfe, (byte)0xba, (byte)0xbe}.</p>
+
+<p>This function returns a hexadecimal-encoded string, such as <code class="language-plaintext highlighter-rouge">"\xca\xfe\xba\xbe"</code>. You can use this function with CONVERT_FROM/TO for meaningful results.</p>
+
+<h3 id="binary_string-examples">BINARY_STRING Examples</h3>
+
+<p>Decode the hexadecimal string 000000C8 expressed in four octets <code class="language-plaintext highlighter-rouge">\x00\x00\x00\xC8</code> into an integer equivalent using big endian encoding.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CONVERT_FROM(BINARY_STRING('\x00\x00\x00\xC8'), 'INT_BE') AS cnvrt
+FROM (VALUES (1));
+</code></pre></div></div>
+
+<p>Output is:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|--------|
+| cnvrt  |
+|--------|
+| 200    |
+|--------|
+1 row selected (0.133 seconds)
+</code></pre></div></div>
+
+<p>Decode the same hexadecimal string into an integer using little endian encoding.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CONVERT_FROM(BINARY_STRING('\x00\x00\x00\xC8'), 'INT') AS cnvrt FROM (VALUES (1));
+</code></pre></div></div>
+
+<p>Output is:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|-------------|
+|    cnvrt    |
+|-------------|
+| -939524096  |
+|-------------|
+1 row selected (0.133 seconds)
+</code></pre></div></div>
+
+<p>Convert a hexadecimal number BEBAFECA to its decimal equivalent and then to its VARBINARY equivalent, which is how the value is represented in HBase.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CONVERT_FROM(BINARY_STRING('\xBE\xBA\xFE\xCA'), 'INT_BE') FROM (VALUES (1));
+
+|--------------|
+|    EXPR$0    |
+|--------------|
+| -1095041334  |
+|--------------|
+
+SELECT CONVERT_TO(-1095041334, 'INT_BE') FROM (VALUES (1));
+
+|--------------|
+|    EXPR$0    |
+|--------------|
+| [B@10c24faf  |
+|--------------|
+1 row selected (0.161 seconds)
+</code></pre></div></div>
+
+<h2 id="other-data-type-conversions">Other Data Type Conversions</h2>
+<p>Drill supports the format for date and time literals shown in the following examples:</p>
+
+<ul>
+  <li>
+    <p>2008-12-15</p>
+  </li>
+  <li>
+    <p>22:55:55.123…</p>
+  </li>
+</ul>
+
+<p>If you have dates and times in other formats, use a data type conversion function to perform the following conversions:</p>
+
+<ul>
+  <li>A TIMESTAMP, DATE, TIME, INTEGER, FLOAT, or DOUBLE to a character string, which is of type VARCHAR</li>
+  <li>A character string to a DATE</li>
+  <li>A character string to a NUMBER</li>
+</ul>
+
+<p>The following table lists data type formatting functions that you can
+use in your Drill queries as described in this section:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Return Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="/zh/docs/data-type-conversion/#to_char">TO_CHAR</a>(expression, format)</td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
+      <td><a href="/zh/docs/data-type-conversion/#to_date">TO_DATE</a>(expression, format)</td>
+      <td>DATE</td>
+    </tr>
+    <tr>
+      <td><a href="/zh/docs/data-type-conversion/#to_number">TO_NUMBER</a>(VARCHAR, format)</td>
+      <td>DECIMAL</td>
+    </tr>
+    <tr>
+      <td><a href="/zh/docs/data-type-conversion/#to_timestamp">TO_TIMESTAMP</a>(VARCHAR, format)</td>
+      <td>TIMESTAMP</td>
+    </tr>
+    <tr>
+      <td><a href="/zh/docs/data-type-conversion/#to_timestamp">TO_TIMESTAMP</a>(DOUBLE)</td>
+      <td>TIMESTAMP</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="format-specifiers-for-numerical-conversions">Format Specifiers for Numerical Conversions</h3>
+<p>Use the following Java format specifiers for converting numbers:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Symbol</th>
+      <th>Location</th>
+      <th>Meaning</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>Number</td>
+      <td>Digit</td>
+    </tr>
+    <tr>
+      <td>#</td>
+      <td>Number</td>
+      <td>Digit, zero shows as absent</td>
+    </tr>
+    <tr>
+      <td>.</td>
+      <td>Number</td>
+      <td>Decimal separator or monetary decimal separator</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>Number</td>
+      <td>Minus sign</td>
+    </tr>
+    <tr>
+      <td>,</td>
+      <td>Number</td>
+      <td>Grouping separator</td>
+    </tr>
+    <tr>
+      <td>E</td>
+      <td>Number</td>
+      <td>Separates mantissa and exponent in scientific notation. Need not be quoted in prefix or suffix.</td>
+    </tr>
+    <tr>
+      <td>;</td>
+      <td>Subpattern boundary</td>
+      <td>Separates positive and negative subpatterns</td>
+    </tr>
+    <tr>
+      <td>%</td>
+      <td>Prefix or suffix</td>
+      <td>Multiply by 100 and show as percentage</td>
+    </tr>
+    <tr>
+      <td>\u2030</td>
+      <td>Prefix or suffix</td>
+      <td>Multiply by 1000 and show as per mille value</td>
+    </tr>
+    <tr>
+      <td>_ (\u00A4)</td>
+      <td>Prefix or suffix</td>
+      <td>Currency sign, replaced by currency symbol. If doubled, replaced by international currency symbol. If present in a pattern, the monetary decimal separator is used instead of the decimal separator.</td>
+    </tr>
+    <tr>
+      <td>’</td>
+      <td>Prefix or suffix</td>
+      <td>Used to quote special characters in a prefix or suffix, for example, “’#’#”” formats 123 to ““#123””. To create a single quote itself, use two in a row: “# o’‘clock”.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="format-specifiers-for-datetime-conversions">Format Specifiers for Date/Time Conversions</h3>
+
+<p>Use the following Joda format specifiers for date/time conversions:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Symbol</th>
+      <th>Meaning</th>
+      <th>Presentation</th>
+      <th>Examples</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>G</td>
+      <td>era</td>
+      <td>text</td>
+      <td>AD</td>
+    </tr>
+    <tr>
+      <td>C</td>
+      <td>century of era (&gt;=0)</td>
+      <td>number</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>Y</td>
+      <td>year of era (&gt;=0)</td>
+      <td>year</td>
+      <td>1996</td>
+    </tr>
+    <tr>
+      <td>x</td>
+      <td>weekyear</td>
+      <td>year</td>
+      <td>1996</td>
+    </tr>
+    <tr>
+      <td>w</td>
+      <td>week of weekyear</td>
+      <td>number</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <td>e</td>
+      <td>day of week</td>
+      <td>number</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>E</td>
+      <td>day of week</td>
+      <td>text</td>
+      <td>Tuesday; Tue</td>
+    </tr>
+    <tr>
+      <td>y</td>
+      <td>year</td>
+      <td>year</td>
+      <td>1996</td>
+    </tr>
+    <tr>
+      <td>D</td>
+      <td>day of year</td>
+      <td>number</td>
+      <td>189</td>
+    </tr>
+    <tr>
+      <td>M</td>
+      <td>month of year</td>
+      <td>month</td>
+      <td>July; Jul; 07</td>
+    </tr>
+    <tr>
+      <td>d</td>
+      <td>day of month</td>
+      <td>number</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <td>a</td>
+      <td>halfday of day</td>
+      <td>text</td>
+      <td>PM</td>
+    </tr>
+    <tr>
+      <td>K</td>
+      <td>hour of halfday (0~11)</td>
+      <td>number</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>h</td>
+      <td>clockhour of halfday (1~12) number</td>
+      <td>12</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>H</td>
+      <td>hour of day (0~23)</td>
+      <td>number</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>k</td>
+      <td>clockhour of day (1~24)</td>
+      <td>number</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <td>m</td>
+      <td>minute of hour</td>
+      <td>number</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <td>s</td>
+      <td>second of minute</td>
+      <td>number</td>
+      <td>55</td>
+    </tr>
+    <tr>
+      <td>S</td>
+      <td>fraction of second</td>
+      <td>number</td>
+      <td>978</td>
+    </tr>
+    <tr>
+      <td>z</td>
+      <td>time zone</td>
+      <td>text</td>
+      <td>Pacific Standard Time; PST</td>
+    </tr>
+    <tr>
+      <td>Z</td>
+      <td>time zone offset/id</td>
+      <td>zone</td>
+      <td>-0800; -08:00; America/Los_Angeles</td>
+    </tr>
+    <tr>
+      <td>’</td>
+      <td>single quotation mark, escape for text delimiter</td>
+      <td>literal</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">The Joda format specifiers are case-sensitive.  </p>
+</div>
+
+<p>For more information about specifying a format, refer to one of the following format specifier documents:</p>
+
+<ul>
+  <li><a href="http://docs.oracle.com/javase/7/docs/api/java/text/DecimalFormat.html">Java DecimalFormat class</a> format specifiers</li>
+  <li><a href="http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html">Joda DateTimeFormat class</a> format specifiers</li>
+</ul>
+
+<h2 id="to_char">TO_CHAR</h2>
+
+<p>TO_CHAR converts a number, date, time, or timestamp expression to a character string.</p>
+
+<h3 id="to_char-syntax">TO_CHAR Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TO_CHAR (expression, 'format')
+</code></pre></div></div>
+
+<p><em>expression</em> is a INTEGER, FLOAT, DOUBLE, DATE, TIME, or TIMESTAMP expression.</p>
+
+<p><em>‘format’</em> is a format specifier enclosed in single quotation marks that sets a pattern for the output formatting.</p>
+
+<h3 id="to_char-usage-notes">TO_CHAR Usage Notes</h3>
+
+<p>You can use the ‘z’ option to identify the time zone in TO_TIMESTAMP to make sure the timestamp has the timezone in it, as shown in the TO_TIMESTAMP description.</p>
+
+<h3 id="to_char-examples">TO_CHAR Examples</h3>
+
+<p>Convert a FLOAT to a character string. The format specifications use a comma to separate thousands and round-off to three decimal places.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TO_CHAR(1256.789383, '#,###.###') FROM (VALUES(1));
+|------------|
+|   EXPR$0   |
+|------------|
+| 1,256.789  |
+|------------|
+1 row selected (1.767 seconds)
+</code></pre></div></div>
+
+<p>Convert an integer to a character string.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TO_CHAR(125677.4567, '#,###.###') FROM (VALUES(1));
+|--------------|
+|    EXPR$0    |
+|--------------|
+| 125,677.457  |
+|--------------|
+1 row selected (0.083 seconds)
+</code></pre></div></div>
+
+<p>Convert a date to a character string.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TO_CHAR((CAST('2008-2-23' AS DATE)), 'yyyy-MMM-dd') FROM (VALUES(1));
+|--------------|
+|    EXPR$0    |
+|--------------|
+| 2008-Feb-23  |
+|--------------|
+1 row selected (0.166 seconds)
+</code></pre></div></div>
+
+<p>Convert a time to a string.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TO_CHAR(CAST('12:20:30' AS TIME), 'HH mm ss') FROM (VALUES(1));
+|------------|
+|   EXPR$0   |
+|------------|
+| 12 20 30   |
+|------------|
+1 row selected (0.07 seconds)
+</code></pre></div></div>
+
+<p>Convert a timestamp to a string.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TO_CHAR(CAST('2015-2-23 12:00:00' AS TIMESTAMP), 'yyyy MMM dd HH:mm:ss') FROM (VALUES(1));
+|-----------------------|
+|        EXPR$0         |
+|-----------------------|
+| 2015 Feb 23 12:00:00  |
+|-----------------------|
+1 row selected (0.142 seconds)
+</code></pre></div></div>
+
+<h2 id="to_date">TO_DATE</h2>
+<p>Converts a character string or a UNIX epoch timestamp to a date.</p>
+
+<h3 id="to_date-syntax">TO_DATE Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TO_DATE (expression [, 'format'])
+</code></pre></div></div>
+
+<p><em>expression</em> is a character string enclosed in single quotation marks or a Unix epoch timestamp in milliseconds, not enclosed in single quotation marks.</p>
+
+<p><em>‘format’</em> is a character string that specifies the format of <em>expression</em>. Only use this option when the <em>expression</em> is a character string, not a UNIX epoch timestamp.</p>
+
+<h3 id="to_date-usage-notes">TO_DATE Usage Notes</h3>
+<p>Specify a format using patterns defined in <a href="http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html">Joda DateTimeFormat class</a>. The TO_TIMESTAMP function takes a Unix epoch timestamp. The TO_DATE function takes a UNIX epoch timestamp in milliseconds. The <a href="/zh/docs/date-time-functions-and-arithmetic/#unix_timestamp">UNIX_TIMESTAMP</a> function converts a time string to a UNIX timestamp in seconds.</p>
+
+<p>To compare dates in the WHERE clause, use TO_DATE on the value in the date column and in the comparison value. For example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT &lt;fields&gt; FROM &lt;plugin&gt; WHERE TO_DATE(&lt;field&gt;, &lt;format&gt;) &lt; TO_DATE (&lt;value&gt;, &lt;format&gt;);
+</code></pre></div></div>
+
+<p>For example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TO_DATE(`date`, 'yyyy-MM-dd') FROM `sample.json`;
+
+|------------|
+|   EXPR$0   |
+|------------|
+| 2013-07-26 |
+| 2013-05-16 |
+| 2013-06-09 |
+| 2013-07-19 |
+| 2013-07-21 |
+|------------|
+5 rows selected (0.134 seconds)
+
+SELECT TO_DATE(`date`, 'yyyy-MM-dd') FROM `sample.json` WHERE TO_DATE(`date`, 'yyyy-MM-dd') &lt; TO_DATE('2013-07-20', 'yyyy-MM-dd');
+
+|------------|
+|   EXPR$0   |
+|------------|
+| 2013-05-16 |
+| 2013-06-09 |
+| 2013-07-19 |
+|------------|
+3 rows selected (0.177 seconds)
+</code></pre></div></div>
+
+<h3 id="to_date-examples">TO_DATE Examples</h3>
+<p>The first example converts a character string to a date. The second example extracts the year to verify that Drill recognizes the date as a date type.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TO_DATE('2015-FEB-23', 'yyyy-MMM-dd') FROM (VALUES(1));
+|------------|
+|   EXPR$0   |
+|------------|
+| 2015-02-23 |
+|------------|
+1 row selected (0.077 seconds)
+
+SELECT EXTRACT(year from mydate) `extracted year` FROM (SELECT TO_DATE('2015-FEB-23', 'yyyy-MMM-dd') AS mydate FROM (VALUES(1)));
+
+|------------|
+|   myyear   |
+|------------|
+| 2015       |
+|------------|
+1 row selected (0.128 seconds)
+</code></pre></div></div>
+
+<p>The following example converts a UNIX epoch timestamp to a date.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TO_DATE(1427849046000) FROM (VALUES(1));
+|------------|
+|   EXPR$0   |
+|------------|
+| 2015-04-01 |
+|------------|
+1 row selected (0.082 seconds)
+</code></pre></div></div>
+
+<h2 id="to_number">TO_NUMBER</h2>
+
+<p>TO_NUMBER converts a character string to a formatted number using a format specification.</p>
+
+<h3 id="syntax">Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TO_NUMBER ('string', 'format')
+</code></pre></div></div>
+
+<p><em>‘string’</em> is a character string enclosed in single quotation marks.</p>
+
+<p><em>‘format’</em> is one or more <a href="http://docs.oracle.com/javase/7/docs/api/java/text/DecimalFormat.html">Java DecimalFormat class</a> specifiers enclosed in single quotation marks that set a pattern for the output formatting.</p>
+
+<h3 id="to_number-usage-notes">TO_NUMBER Usage Notes</h3>
+<p>The data type of the output of TO_NUMBER is a numeric. You can use the following <a href="http://docs.oracle.com/javase/7/docs/api/java/text/DecimalFormat.html">Java DecimalFormat class</a> specifiers to set the output formatting.</p>
+
+<ul>
+  <li>
+    <p>#<br />
+Digit placeholder.</p>
+  </li>
+  <li>
+    <p>0<br />
+Digit placeholder. If a value has a digit in the position where the zero ‘0’ appears in the format string, that digit appears in the output; otherwise, a ‘0’ appears in that position in the output.</p>
+  </li>
+  <li>
+    <p>.<br />
+Decimal point. Make the first ‘.’ character in the format string the location of the decimal separator in the value; ignore any additional ‘.’ characters.</p>
+  </li>
+  <li>
+    <p>,<br />
+Comma grouping separator.</p>
+  </li>
+  <li>
+    <p>E
+Exponent. Separates mantissa and exponent in scientific notation.</p>
+  </li>
+</ul>
+
+<h3 id="to_number-examples">TO_NUMBER Examples</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TO_NUMBER('987,966', '######') FROM (VALUES(1));
+|------------|
+|   EXPR$0   |
+|------------|
+| 987.0      |
+|------------|
+
+SELECT TO_NUMBER('987.966', '###.###') FROM (VALUES(1));
+|------------|
+|   EXPR$0   |
+|------------|
+| 987.966    |
+|------------|
+1 row selected (0.063 seconds)
+
+SELECT TO_NUMBER('12345', '##0.##E0') FROM (VALUES(1));
+|------------|
+|   EXPR$0   |
+|------------|
+| 12345.0    |
+|------------|
+1 row selected (0.069 seconds)
+</code></pre></div></div>
+
+<h2 id="to_time">TO_TIME</h2>
+<p>Converts a character string to a time.</p>
+
+<h3 id="to_time-syntax">TO_TIME Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TO_TIME (expression [, 'format'])
+</code></pre></div></div>
+
+<p><em>expression</em> is a character string enclosed in single quotation marks or milliseconds, not enclosed in single quotation marks.</p>
+
+<p><em>‘format’</em> is a format specifier enclosed in single quotation marks that sets a pattern for the output formatting. Use this option only when the expression is a character string, not milliseconds.</p>
+
+<h2 id="to_time-usage-notes">TO_TIME Usage Notes</h2>
+<p>Specify a format using patterns defined in <a href="http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html">Joda DateTimeFormat class</a>.</p>
+
+<h3 id="to_time-examples">TO_TIME Examples</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TO_TIME('12:20:30', 'HH:mm:ss') FROM (VALUES(1));
+|------------|
+|   EXPR$0   |
+|------------|
+| 12:20:30   |
+|------------|
+1 row selected (0.067 seconds)
+</code></pre></div></div>
+
+<p>Convert 828550000 milliseconds (23 hours 55 seconds) to the time.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT to_time(82855000) FROM (VALUES(1));
+|------------|
+|   EXPR$0   |
+|------------|
+| 23:00:55   |
+|------------|
+1 row selected (0.086 seconds)
+</code></pre></div></div>
+
+<h2 id="to_timestamp">TO_TIMESTAMP</h2>
+
+<h3 id="to_timestamp-syntax">TO_TIMESTAMP Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TO_TIMESTAMP (expression [, 'format'])
+</code></pre></div></div>
+
+<p><em>expression</em> is a character string enclosed in single quotation marks or a UNIX epoch timestamp, not enclosed in single quotation marks.</p>
+
+<p><em>‘format’</em> is a character string that specifies the format of <em>expression</em>. Only use this option when the <em>expression</em> is a character string, not a UNIX epoch timestamp.</p>
+
+<h3 id="to_timestamp-usage-notes">TO_TIMESTAMP Usage Notes</h3>
+<p>Specify a format using patterns defined in <a href="http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html">Joda DateTimeFormat class</a>. The TO_TIMESTAMP function takes a Unix epoch timestamp. The TO_DATE function takes a UNIX epoch timestamp in milliseconds.</p>
+
+<h3 id="to_timestamp-examples">TO_TIMESTAMP Examples</h3>
+
+<p>Convert a date to a timestamp.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TO_TIMESTAMP('2008-2-23 12:00:00', 'yyyy-MM-dd HH:mm:ss') FROM (VALUES(1));
+|------------------------|
+|         EXPR$0         |
+|------------------------|
+| 2008-02-23 12:00:00.0  |
+|------------------------|
+1 row selected (0.126 seconds)
+</code></pre></div></div>
+
+<p>Convert Unix Epoch time to a timestamp.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TO_TIMESTAMP(1427936330) FROM (VALUES(1));
+|------------------------|
+|         EXPR$0         |
+|------------------------|
+| 2015-04-01 17:58:50.0  |
+|------------------------|
+1 row selected (0.114 seconds)
+</code></pre></div></div>
+
+<p>Convert a UTC date to a timestamp offset from the UTC time zone code.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z') AS Original, 
+       TO_CHAR(TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z'), 'z') AS New_TZ 
+FROM (VALUES(1));
+
+|------------------------|---------|
+|        Original        | New_TZ  |
+|------------------------|---------|
+| 2015-03-30 20:49:00.0  | UTC     |
+|------------------------|---------|
+1 row selected (0.148 seconds)  
+</code></pre></div></div>
+
+<h2 id="enabling-time-zone-offset">Enabling Time Zone Offset</h2>
+
+<p>Starting in Drill 1.16, the <code class="language-plaintext highlighter-rouge">store.hive.maprdb_json.read_timestamp_with_timezone_offset</code> option enables Drill to read timestamp values with a timezone offset when using the hive plugin with the Drill native MaprDB JSON reader enabled through the  <code class="language-plaintext highlighter-rouge">store.hive.maprdb_json.optimize_scan_with_native_reader option</code>. The <code class="language-plaintext highlighter-rouge">store.hive.maprdb_json.read_timestamp_with_timezone_offset</code> option is disabled (set to ‘false’) by default. You can enable this option from the Options page in the Drill Web UI or from the command line using the SET or ALTER SYSTEM commands.</p>
+
+<p><strong>Important</strong><br />
+Internally, Drill stores timestamp values in UTC format, for example 2018-01-01T20:12:12.123Z. When you enable the timezone offset option, select on a table returns different timestamp values. If you filter on timestamp values when this option is enabled, you must include the new timestamp value in the filter condition.</p>
+
+<p>For example, look at the timestamp values when the <code class="language-plaintext highlighter-rouge">store.hive.maprdb_json.read_timestamp_with_timezone_offset</code> option is disabled (set to ‘false’):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select * from dfs.`/tmp/timestamp`;
+-------------------------------------------------------
+_id	datestring	datetimestamp
+-------------------------------------------------------
+1	2018-01-01 12:12:12.123	2018-01-01 20:12:12.123
+2	9999-12-31 23:59:59.999	10000-01-01 07:59:59.999
+-------------------------------------------------------  
+</code></pre></div></div>
+
+<p>When the option is enabled (set to ‘true’), you can see the difference in the timestamp values returned:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select * from dfs.`/tmp/timestamp`;
+------------------------------------------------------
+_id	datestring	datetimestamp
+------------------------------------------------------
+1	2018-01-01 12:12:12.123	2018-01-01 12:12:12.123
+2	9999-12-31 23:59:59.999	9999-12-31 23:59:59.999
+------------------------------------------------------  
+</code></pre></div></div>
+
+<p>When the option is enabled, queries that filter on timestamp values must include the new timestamp value in the filter condition, as shown:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select * from dfs.`/tmp/timestamp` where datetimestamp=timestamp '2018-01-01 12:12:12.123';
+------------------------------------------------------
+_id	datestring	datetimestamp
+------------------------------------------------------
+1	2018-01-01 12:12:12.123	2018-01-01 12:12:12.123
+------------------------------------------------------  
+</code></pre></div></div>
+
+<p>Notice that the WHERE clause uses the <code class="language-plaintext highlighter-rouge">2018-01-01 12:12:12.123</code> format versus the <code class="language-plaintext highlighter-rouge">2018-01-01 20:12:12.123</code> format.</p>
+
+<h2 id="time-zone-limitation">Time Zone Limitation</h2>
+
+<p>Drill does not support conversion of a date, time, or timestamp from one time zone to another. Queries of data associated with a time zone can return inconsistent results or an error. For more information, see the <a href="http://www.openkb.info/2015/05/understanding-drills-timestamp-and.html#.VUzhotpVhHw">“Understanding Drill’s Timestamp and Timezone”</a> blog. The Drill time zone is based on the operating system time zone unless you override it. To work around the limitation, configure Drill to use <a href="http://www.timeanddate.com/time/aboututc.html">UTC</a>-based time, convert your data to UTC timestamps, and perform date/time operation in UTC.</p>
+
+<ol>
+  <li>
+    <p>Take a look at the Drill time zone configuration by running the TIMEOFDAY function or by querying the system.options table. This TIMEOFDAY function returns the local date and time with time zone information.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT TIMEOFDAY() FROM (VALUES(1));
+
+ |----------------------------------------------|
+ |                    EXPR$0                    |
+ |----------------------------------------------|
+ | 2015-05-17 22:37:29.516 America/Los_Angeles  |
+ |----------------------------------------------|
+ 1 row selected (0.108 seconds)
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Configure the default time zone format in <drill installation="" directory="">/conf/drill-env.sh by adding `-Duser.timezone=UTC` to DRILL_JAVA_OPTS. For example:</drill></p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> export DRILL_JAVA_OPTS="-Xms1G -Xmx$DRILL_MAX_HEAP -XX:MaxDirectMemorySize=$DRILL_MAX_DIRECT_MEMORY -XX:MaxPermSize=512M -XX:ReservedCodeCacheSize=1G -ea -Duser.timezone=UTC"
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Restart the Drill shell.</p>
+  </li>
+  <li>
+    <p>Confirm that Drill is now set to UTC:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT TIMEOFDAY() FROM (VALUES(1));
+
+ |-----------------------------|
+ |            EXPR$0           |
+ |-----------------------------|
+ | 2015-05-17 14:37:57.082 UTC |
+ |-----------------------------|
+ 1 row selected (0.087 seconds)
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>You can use the ‘z’ option to identify the time zone in TO_TIMESTAMP to make sure the timestamp has the timezone in it. Also, use the ‘z’ option to identify the time zone in a timestamp using the TO_CHAR function. For example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z') AS Original, 
+       TO_CHAR(TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z'), 'z') AS TimeZone 
+       FROM (VALUES(1));
+
+|------------------------|-----------|
+|        Original        | TimeZone  |
+|------------------------|-----------|
+| 2015-03-30 20:49:00.0  | UTC       |
+|------------------------|-----------|
+1 row selected (0.097 seconds)  
+</code></pre></div></div>
+
+<!-- DRILL-448 Support timestamp with time zone -->
+
+<!-- Apache Drill    
+Apache DrillDRILL-1141
+ISNUMERIC should be implemented as a SQL function
+SELECT count(columns[0]) as number FROM dfs.`bla` WHERE ISNUMERIC(columns[0])=1
+ -->
+
+    
+      
+        <div class="doc-nav">
+  
+  <span class="previous-toc"><a href="/zh/docs/math-and-trig/">← Math and Trig</a></span><span class="next-toc"><a href="/zh/docs/data-type-functions/">Data Type Functions →</a></span>
+</div>
+
+    
+    </div>
+  </div>
+</div>
+
+  </div>
+  <p class="push"></p>
+<div id="footer" class="mw">
+<div class="wrapper">
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
+</div>
+</div>
+
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-53379651-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-548b2caa33765e8d" async="async"></script>
+
+</body>
+</html>

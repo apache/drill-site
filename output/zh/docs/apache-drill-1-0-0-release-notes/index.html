@@ -1,0 +1,1954 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+<meta name=viewport content="width=device-width, initial-scale=1">
+
+
+<title>Apache Drill 1.0.0 Release Notes - Apache Drill</title>
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
+<link href="/css/site.css" rel="stylesheet" type="text/css"/>
+
+<link rel="shortcut icon" href="/zh/favicon.ico" type="image/x-icon"/>
+<link rel="icon" href="/zh/favicon.ico" type="image/x-icon"/>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" language="javascript" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js" language="javascript" type="text/javascript"></script>
+<script language="javascript" type="text/javascript" src="/js/modernizr.custom.js"></script>
+<script language="javascript" type="text/javascript" src="/js/script.js"></script>
+<script language="javascript" type="text/javascript" src="/js/drill.js"></script>
+
+</head>
+
+
+<body onResize="resized();">
+  <div class="page-wrap">
+    <div class="bui"></div>
+
+<div id="menu" class="mw">
+<ul>
+  <li class='toc-categories'>
+  <a class="expand-toc-icon" href="javascript:void(0);"><i class="fa fa-bars"></i></a>
+  </li>
+  <li class="logo"><a href="/zh/"></a></li>
+  <li class='expand-menu'>
+  <a href="javascript:void(0);"><span class='menu-text'>Menu</span><span class='expand-icon'><i class="fa fa-bars"></i></span></a>
+  </li>
+  <li class="clear-float"></li>
+  <li class="nav">
+	<a>Language</a>
+	<ul>
+		
+		<li>
+			<a  href="/docs/apache-drill-1-0-0-release-notes/" >en</a>
+		</li>
+		
+		<li>
+			<a style="font-weight: bold;" href="/zh/docs/apache-drill-1-0-0-release-notes/" >zh</a>
+		</li>
+		
+	</ul>
+  </li>
+  <li class="apache-link">
+    <a href="/zh/apacheASF/">Apache</a>
+  </li>
+  <li class="poweredby">
+    <a href="/zh/poweredBy">Powered By</a>
+  </li>
+  <li class="documentation-menu">
+    <a href="/zh/docs/">Documentation</a>
+    <ul>
+      
+        <li><a href="/zh/docs/getting-started/">新手开始</a></li>
+      
+        <li><a href="/zh/docs/architecture/">Architecture</a></li>
+      
+        <li><a href="/zh/docs/tutorials/">教程</a></li>
+      
+        <li><a href="/zh/docs/drill-on-yarn/">Drill-on-YARN</a></li>
+      
+        <li><a href="/zh/docs/install-drill/">Install Drill</a></li>
+      
+        <li><a href="/zh/docs/configure-drill/">Configure Drill</a></li>
+      
+        <li><a href="/zh/docs/connect-a-data-source/">Connect a Data Source</a></li>
+      
+        <li><a href="/zh/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces</a></li>
+      
+        <li><a href="/zh/docs/query-data/">Query Data</a></li>
+      
+        <li><a href="/zh/docs/performance-tuning/">Performance Tuning</a></li>
+      
+        <li><a href="/zh/docs/log-and-debug/">Log and Debug</a></li>
+      
+        <li><a href="/zh/docs/sql-reference/">SQL Reference</a></li>
+      
+        <li><a href="/zh/docs/data-sources-and-file-formats/">Data Sources and File Formats</a></li>
+      
+        <li><a href="/zh/docs/develop-custom-functions/">Develop Custom Functions</a></li>
+      
+        <li><a href="/zh/docs/troubleshooting/">Troubleshooting</a></li>
+      
+        <li><a href="/zh/docs/developer-information/">Developer Information</a></li>
+      
+        <li><a href="/zh/docs/release-notes/">Release Notes</a></li>
+      
+        <li><a href="/zh/docs/sample-datasets/">Sample Datasets</a></li>
+      
+        <li><a href="/zh/docs/project-bylaws/">Project Bylaws</a></li>
+      
+        <li><a href="/zh/docs/ecosystem/">Ecosystem</a></li>
+      
+    </ul>
+  </li>
+  <li class='nav'>
+    <a href="/zh/community-resources/">Community</a>
+    <ul>
+      <li><a href="/zh/team/">Team</a></li>
+      <li><a href="/zh/mailinglists/">Mailing Lists</a></li>
+      <li><a href="/zh/community-resources/">Community Resources</a></li>
+    </ul>
+  </li>
+  <li class='nav'><a href="/zh/faq/">FAQ</a></li>
+  <li class='nav'><a href="/zh/blog/">Blog</a></li>
+  <li class="social-menu-item"><a href="https://twitter.com/apachedrill" title="apachedrill on twitter" target="_blank"><img src="/images/twitter_32_26_white.png" alt="twitter logo" align="center"></a> </li>
+  <li class="social-menu-item"><a href="https://join.slack.com/t/apache-drill/shared_invite/enQtNTQ4MjM1MDA3MzQ2LTJlYmUxMTRkMmUwYmQ2NTllYmFmMjU4MDk0NjYwZjBmYjg0MDZmOTE2ZDg0ZjBlYmI3Yjc4Y2I2NTQyNGVlZTc" title="Apache Drill Slack channels"
+      target="_blank"><img src="/images/slack-logo.svg" alt="Slack logo" align="center"></a> </li>
+  <li class='search-bar'>
+    <form id="drill-search-form">
+      <input type="text" placeholder="Search Apache Drill" id="drill-search-term" />
+      <button type="submit">
+        <i class="fa fa-search"></i>
+      </button>
+    </form>
+  </li>
+  <li class="d">
+    <a href="/zh/download/">
+      <i class="fa fa-cloud-download"></i> Download
+    </a>
+  </li>
+</ul>
+</div>
+
+    <link href="/css/content.css" rel="stylesheet" type="text/css">
+
+
+      
+
+
+
+
+<aside class="sidebar">
+  <div class="docsidebar">
+    <div class="docsidebarwrapper">
+      <ul style="display: block;">
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">新手开始</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-introduction/">什么是 Drill</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/why-drill/">为什么选择 Drill</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Architecture</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/architecture-introduction/">Architecture Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-query-execution/">Drill Query Execution</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/core-modules/">Core Modules</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/performance/">Performance</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">教程</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/tutorials-introduction/">教程介绍</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-in-10-minutes/">10分钟了解 Drill</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/analyzing-the-yelp-academic-dataset/">分析 Yelp 学术数据集</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">搭配 MapR Sandbox 学习 Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/about-the-mapr-sandbox/">关于 MapR 沙盒</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-the-apache-drill-sandbox/">安装 Apache Drill SandBox</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/getting-to-know-the-drill-sandbox/">了解 Drill Sandbox</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/lesson-1-learn-about-the-data-set/">第一课: 学习数据集</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/lesson-2-run-queries-with-ansi-sql/">第二课: 使用 ANSI SQL 查询</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/lesson-3-run-queries-on-complex-data-types/">第三课: 查询复杂数据类型</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/summary/">总结</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/analyzing-highly-dynamic-datasets/">分析高动态数据集</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/analyzing-social-media/">分析社交媒体</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/analyzing-data-using-window-functions/">通过窗口函数分析数据集</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/orchestrating-queries-with-airflow/">Orchestrating queries with Airflow</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Drill-on-YARN</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-on-yarn-introduction/">Drill-on-YARN Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/creating-a-basic-drill-cluster/">Creating a Basic Drill Cluster</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/launch-drill-under-yarn/">Launch Drill Under YARN</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configuration-reference/">Configuration Reference</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-on-yarn-command-line-tool/">Drill-on-YARN Command-Line Tool</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-the-drill-on-yarn-web-ui/">Using the Drill-on-YARN Web UI</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/multiple-drill-clusters/">Multiple Drill Clusters</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/enabling-web-ui-security/">Enabling Web UI Security</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/appendix-a-release-note-issues/">Appendix A: Release Note Issues</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/appendix-b-drill-env-sh-settings/">Appendix B: drill-env.sh Settings</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/appendix-c-troubleshooting/">Appendix C: Troubleshooting</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/appendix-d-recreate-the-drill-archive/">Appendix D: Recreate the Drill Archive</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Install Drill</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/install-drill-introduction/">Install Drill Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/migrating-parquet-data/">Migrating Parquet Data</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Installing Drill in Embedded Mode</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-drill-on-windows/">Installing Drill on Windows</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/starting-drill-on-windows/">Starting Drill on Windows</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Installing Drill in Distributed Mode</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/distributed-mode-prerequisites/">Distributed Mode Prerequisites</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-drill-on-the-cluster/">Installing Drill on the Cluster</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/starting-drill-in-distributed-mode/">Starting Drill in Distributed Mode</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/starting-the-web-ui/">Starting the Web UI</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/stopping-drill/">Stopping Drill</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/identifying-multiple-drill-versions-in-a-cluster/">Identifying Multiple Drill Versions in a Cluster</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Configure Drill</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configure-drill-introduction/">Configure Drill Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configuring-drill-memory/">Configuring Drill Memory</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Securing Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/securing-drill-introduction/">Securing Drill Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/secure-communication-paths/">Secure Communication Paths</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/roles-and-privileges/">Roles and Privileges</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-user-impersonation/">Configuring User Impersonation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-inbound-impersonation/">Configuring Inbound Impersonation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-user-security/">Configuring User Security</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-plain-security/">Configuring Plain Security</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-ssl-tls-for-encryption/">Configuring SSL/TLS for Encryption</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-libpam4j-as-the-pam-authenticator/">Using libpam4j as the PAM Authenticator</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-jpam-as-the-pam-authenticator/">Using jpam as the PAM Authenticator</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-kerberos-security/">Configuring Kerberos Security</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-drill-to-use-spnego-for-http-authentication/">Configuring Drill to use SPNEGO for HTTP Authentication</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-web-ui-and-rest-api-security/">Configuring Web UI and REST API Security</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-custom-acls-to-secure-znodes/">Configuring Custom ACLs to Secure znodes</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Configuring a Multitenant Cluster</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-a-multitenant-cluster-introduction/">Configuring a Multitenant Cluster Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-multitenant-resources/">Configuring Multitenant Resources</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-resources-for-a-shared-drillbit/">Configuring Resources for a Shared Drillbit</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Configuration Options</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuration-options-introduction/">Configuration Options Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/start-up-options/">Start-Up Options</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/planning-and-execution-options/">Planning and Execution Options</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/persistent-configuration-storage/">Persistent Configuration Storage</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/global-query-list/">Global Query List</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/ports-used-by-drill/">Ports Used by Drill</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configuring-the-drill-shell/">Configuring the Drill Shell</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configuring-cgroups-to-control-cpu-usage/">Configuring cgroups to Control CPU Usage</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Connect a Data Source</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/connect-a-data-source-introduction/">Connect a Data Source Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/storage-plugin-registration/">Storage Plugin Registration</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Storage Plugin Configuration</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/plugin-configuration-basics/">Plugin Configuration Basics</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-storage-plugins/">Configuring Storage Plugins</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/workspaces/">Workspaces</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drill-default-input-format/">Drill Default Input Format</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/file-system-storage-plugin/">File System Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hive-storage-plugin/">Hive Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/rdbms-storage-plugin/">RDBMS Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/mongodb-storage-plugin/">MongoDB Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/mapr-db-format/">MapR-DB Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/s3-storage-plugin/">S3 Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/kafka-storage-plugin/">Kafka Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/elasticsearch-storage-plugin/">ElasticSearch Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/splunk-storage-plugin/">Splunk Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/cassandra-storage-plugin/">Cassandra Storage Plugin</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">ODBC/JDBC Interfaces</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/interfaces-introduction/">Interfaces Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-the-jdbc-driver/">Using the JDBC Driver</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-jdbc-with-squirrel-on-windows/">Using JDBC with SQuirreL on Windows</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Installing the ODBC Driver</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-the-driver-on-linux/">Installing the Driver on Linux</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-the-driver-on-mac-os-x/">Installing the Driver on Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-the-driver-on-windows/">Installing the Driver on Windows</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Configuring ODBC</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/odbc-configuration-reference/">ODBC Configuration Reference</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/logging-and-tracing/">Logging and Tracing</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-odbc-on-linux/">Configuring ODBC on Linux</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-odbc-on-mac-os-x/">Configuring ODBC on Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-odbc-on-windows/">Configuring ODBC on Windows</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/testing-the-odbc-connection/">Testing the ODBC Connection</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Using Drill Explorer</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drill-explorer-introduction/">Drill Explorer Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/connecting-drill-explorer-to-data/">Connecting Drill Explorer to Data</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/browsing-data-and-defining-views/">Browsing Data and Defining Views</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Using Drill with BI Tools</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-drill-with-bi-tools-introduction/">Using Drill with BI Tools Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/tableau-examples/">Tableau Examples</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-microstrategy-analytics-with-apache-drill/">Using MicroStrategy Analytics with Apache Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-tibco-spotfire-desktop-with-drill/">Using Tibco Spotfire Desktop with Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-tibco-spotfire-server-with-drill/">Configuring Tibco Spotfire Server with Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-qlik-sense-with-drill/">Using Qlik Sense with Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-apache-drill-with-tableau-10-2/">Using Apache Drill with Tableau 10.2</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-apache-drill-with-tableau-9-desktop/">Using Apache Drill with Tableau 9 Desktop</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-information-builders-webfocus-with-apache-drill/">Using Information Builders’ WebFOCUS with Apache Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-jreport-with-drill/">Configuring JReport with Drill</a></li>
+              
+            </ul>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Query Data</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/query-data-introduction/">Query Data Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Querying a File System</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-a-file-system-introduction/">Querying a File System Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-avro-files/">Querying Avro Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-json-files/">Querying JSON Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-parquet-files/">Querying Parquet Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-plain-text-files/">Querying Plain Text Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-directories/">Querying Directories</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-sequence-files/">Querying Sequence Files</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/querying-hbase/">Querying HBase</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Querying Complex Data</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-complex-data-introduction/">Querying Complex Data Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sample-data-donuts/">Sample Data: Donuts</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/selecting-flat-data/">Selecting Flat Data</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-sql-functions-clauses-and-joins/">Using SQL Functions, Clauses, and Joins</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/selecting-nested-data-for-a-column/">Selecting Nested Data for a Column</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/selecting-multiple-columns-within-nested-data/">Selecting Multiple Columns Within Nested Data</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/querying-hive/">Querying Hive</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/querying-the-information-schema/">Querying the INFORMATION SCHEMA</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Querying Indexes</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-indexes-introduction/">Querying Indexes Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/queries-that-qualify-for-index-based-query-plans/">Queries that Qualify for Index-Based Query Plans</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/types-of-indexes/">Types of Indexes</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/index-selection/">Index Selection</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/designing-indexes-for-your-queries/">Designing Indexes for Your Queries</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-index-planning/">Configuring Index Planning</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/verifying-index-use/">Verifying Index Use</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/querying-system-tables/">Querying System Tables</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/monitoring-and-canceling-queries-in-the-drill-web-ui/">Monitoring and Canceling Queries in the Drill Web UI</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Performance Tuning</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Drill Metastore</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-drill-metastore/">Using Drill Metastore</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drill-iceberg-metastore/">Drill Iceberg Metastore</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/rdbms-metastore/">RDBMS Metastore</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/performance-tuning-introduction/">Performance Tuning Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Partition Pruning</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/partition-pruning-introduction/">Partition Pruning Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/how-to-partition-data/">How to Partition Data</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/asynchronous-parquet-reader/">Asynchronous Parquet Reader</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/optimizing-parquet-metadata-reading/">Optimizing Parquet Metadata Reading</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/parquet-filter-pushdown/">Parquet Filter Pushdown</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hive-metadata-caching/">Hive Metadata Caching</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/choosing-a-storage-format/">Choosing a Storage Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Query Plans and Tuning</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-plans-and-tuning-introduction/">Query Plans and Tuning Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/join-planning-guidelines/">Join Planning Guidelines</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/guidelines-for-optimizing-aggregation/">Guidelines for Optimizing Aggregation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/modifying-query-planning-options/">Modifying Query Planning Options</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sort-based-and-hash-based-memory-constrained-operators/">Sort-Based and Hash-Based Memory-Constrained Operators</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/enabling-query-queuing/">Enabling Query Queuing</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/throttling/">Throttling</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/controlling-parallelization-to-balance-performance-with-multi-tenancy/">Controlling Parallelization to Balance Performance with Multi-Tenancy</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Identifying Performance Issues</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-plans/">Query Plans</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-profiles/">Query Profiles</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Performance Tuning Reference</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-profile-column-descriptions/">Query Profile Column Descriptions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/physical-operators/">Physical Operators</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/monitoring-metrics/">Monitoring Metrics</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Log and Debug</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/log-and-debug-introduction/">Log and Debug Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/error-messages/">Error Messages</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/modify-logback-xml/">Modify logback.xml</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/review-the-java-stack-trace/">Review the Java Stack Trace</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/query-audit-logging/">Query Audit Logging</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">SQL Reference</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/sql-reference-introduction/">SQL Reference Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Data Types</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/supported-data-types/">Supported Data Types</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/date-time-and-timestamp/">Date, Time, and Timestamp</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/handling-different-data-types/">Handling Different Data Types</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/lexical-structure/">Lexical Structure</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/operators/">Operators</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Functions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/about-sql-function-examples/">About SQL Function Examples</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/math-and-trig/">Math and Trig</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/data-type-conversion/">Data Type Conversion</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/data-type-functions/">Data Type Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/date-time-functions-and-arithmetic/">Date/Time Functions and Arithmetic</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/string-manipulation/">String Manipulation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/aggregate-and-aggregate-statistical/">Aggregate and Aggregate Statistical</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/functions-for-handling-nulls/">Functions for Handling Nulls</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/phonetic-functions/">Phonetic Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/string-distance-functions/">String Distance Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/cryptography-functions/">Cryptography Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/ip-networking-functions/">IP Networking functions</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Window Functions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sql-window-functions-introduction/">SQL Window Functions Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/aggregate-window-functions/">Aggregate Window Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/ranking-window-functions/">Ranking Window Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/value-window-functions/">Value Window Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sql-window-functions-examples/">SQL Window Functions Examples</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Nested Data Functions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/nested-data-limitations/">Nested Data Limitations</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/flatten/">FLATTEN</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/kvgen/">KVGEN</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/repeated-count/">REPEATED_COUNT</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/repeated-contains/">REPEATED_CONTAINS</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/query-directory-functions/">Query Directory Functions</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Commands</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/supported-sql-commands/">Supported SQL Commands</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/analyze-table-refresh-metadata/">ANALYZE TABLE REFRESH METADATA</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/analyze-table-compute-statistics/">ANALYZE TABLE COMPUTE STATISTICS</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/set/">SET</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/refresh-table-metadata/">REFRESH TABLE METADATA</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/reset/">RESET</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/alter-system/">ALTER SYSTEM</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-or-replace-schema/">CREATE OR REPLACE SCHEMA</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-table-as-ctas/">CREATE TABLE AS (CTAS)</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-temporary-table-as-cttas/">CREATE TEMPORARY TABLE AS (CTTAS)</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-function-using-jar/">CREATE FUNCTION USING JAR</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/partition-by-clause/">PARTITION BY Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-view/">CREATE VIEW</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/describe/">DESCRIBE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drop-function-using-jar/">DROP FUNCTION USING JAR</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drop-table/">DROP TABLE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drop-view/">DROP VIEW</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/explain/">EXPLAIN</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/lateral-join/">LATERAL Join</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/select/">SELECT</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/select-list/">SELECT List</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/from-clause/">FROM Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/group-by-clause/">GROUP BY Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/having-clause/">HAVING Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/limit-clause/">LIMIT Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/offset-clause/">OFFSET Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/order-by-clause/">ORDER BY Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/union-set-operator/">UNION Set Operator</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/where-clause/">WHERE Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/with-clause/">WITH Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/show-databases-and-show-schemas/">SHOW DATABASES and SHOW SCHEMAS</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/show-files/">SHOW FILES</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/show-tables/">SHOW TABLES</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/use/">USE</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Conditional Expressions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/case/">CASE</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/reserved-keywords/">Reserved Keywords</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/sql-extensions/">SQL Extensions</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Data Sources and File Formats</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/data-sources-and-file-formats-introduction/">Data Sources and File Formats Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hive-to-drill-data-type-mapping/">Hive-to-Drill Data Type Mapping</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/deploying-and-using-a-hive-udf/">Deploying and Using a Hive UDF</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/parquet-format/">Parquet Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/json-data-model/">JSON Data Model</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/text-files-csv-tsv-psv/">Text Files: CSV, TSV, PSV</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/xml-format-plugin/">XML Format Plugin</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Develop Custom Functions</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/develop-custom-functions-introduction/">Develop Custom Functions Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/developing-a-simple-function/">Developing a Simple Function</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/tutorial-develop-a-simple-function/">Tutorial: Develop a Simple Function</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/developing-an-aggregate-function/">Developing an Aggregate Function</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Adding Custom Functions to Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/adding-custom-functions-to-drill-introduction/">Adding Custom Functions to Drill Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/manually-adding-custom-functions-to-drill/">Manually Adding Custom Functions to Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/creating-custom-authenticators/">Creating Custom Authenticators</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/dynamic-udfs/">Dynamic UDFs</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-custom-functions-in-queries/">Using Custom Functions in Queries</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/custom-function-interfaces/">Custom Function Interfaces</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a class="reference internal" href="/zh/docs/troubleshooting/">Troubleshooting</a></li>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Developer Information</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">REST API</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/rest-api-introduction/">REST API Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/submitting-queries-from-the-rest-api-when-impersonation-is-enabled-and-authentication-is-disabled/">Submitting Queries from the REST API when Impersonation is Enabled and Authentication is Disabled</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/use-postman-to-run-sql-queries-on-drill-data-sources/">Use Postman to Run SQL Queries on Drill Data Sources</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Develop Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/compiling-drill-from-source/">Compiling Drill from Source</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/useful-information-for-drill-developers/">Useful Information for Drill Developers</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Contribute to Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/apache-drill-contribution-guidelines/">Apache Drill Contribution Guidelines</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/apache-drill-contribution-ideas/">Apache Drill Contribution Ideas</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Design Docs</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drill-plan-syntax/">Drill Plan Syntax</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/rpc-overview/">RPC Overview</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-stages/">Query Stages</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/useful-research/">Useful Research</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/value-vectors/">Value Vectors</a></li>
+              
+            </ul>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Release Notes</a></li>
+          <ul class="current_section">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-19-0-release-notes/">Apache Drill 1.19.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-16-0-release-notes/">Apache Drill 1.16.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-15-0-release-notes/">Apache Drill 1.15.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-14-0-release-notes/">Apache Drill 1.14.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-13-0-release-notes/">Apache Drill 1.13.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-12-0-release-notes/">Apache Drill 1.12.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-11-0-release-notes/">Apache Drill 1.11.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-10-0-release-notes/">Apache Drill 1.10.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-9-0-release-notes/">Apache Drill 1.9.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-8-0-release-notes/">Apache Drill 1.8.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-7-0-release-notes/">Apache Drill 1.7.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-6-0-release-notes/">Apache Drill 1.6.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-5-0-release-notes/">Apache Drill 1.5.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-4-0-release-notes/">Apache Drill 1.4.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-3-0-release-notes/">Apache Drill 1.3.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-2-0-release-notes/">Apache Drill 1.2.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-1-0-release-notes/">Apache Drill 1.1.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2 current"><a class="reference internal" href="/zh/docs/apache-drill-1-0-0-release-notes/">Apache Drill 1.0.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-9-0-release-notes/">Apache Drill 0.9.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-8-0-release-notes/">Apache Drill 0.8.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-7-0-release-notes/">Apache Drill 0.7.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-6-0-release-notes/">Apache Drill 0.6.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-5-0-release-notes/">Apache Drill 0.5.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-4-0-release-notes/">Apache Drill 0.4.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-m1-release-notes-apache-drill-alpha/">Apache Drill M1 Release Notes (Apache Drill Alpha)</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Sample Datasets</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/enron-emails/">Enron Emails</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/wikipedia-edit-history/">Wikipedia Edit History</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a class="reference internal" href="/zh/docs/project-bylaws/">Project Bylaws</a></li>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Ecosystem</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-saiku-analytics-with-apache-drill/">Using Saiku Analytics with Apache Drill</a></li>
+            
+          
+          </ul>
+        
+      
+      </ul>
+
+    </div>
+  </div>
+</aside>
+
+
+<nav class="breadcrumbs">
+  <li><a href="/zh/docs/">Docs</a></li>
+ 
+  
+    <li><a href="/zh/docs/release-notes/">Release Notes</a></li>
+  
+  <li>Apache Drill 1.0.0 Release Notes</li>
+</nav>
+
+
+<div class="main-content-wrapper">
+  <div class="main-content">
+
+    
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/en/rn/030-1.0.0-rn.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+    
+
+    <div class="int_title left">
+      <h1>Apache Drill 1.0.0 Release Notes</h1>
+
+    </div>
+
+    <!-- jt: we don't need to display a last-modified date on each page to users
+    
+    --> 
+
+    <div class="int_text" align="left">
+      
+        <p><strong>Release date:</strong> May 19, 2015</p>
+
+<p>Today we’re happy to announce the availability of Drill 1.0.0, providing additional enhancements and bug fixes. This release includes the following new features, enhancements, unresolved issues, and bug fixes:</p>
+
+<h2>        Sub-task
+</h2>
+<ul>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2150">DRILL-2150</a>] -         Create an abstraction for repeated value vectors.
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2358">DRILL-2358</a>] -         Ensure DrillScanRel differentiates skip-all, scan-all &amp; scan-some in a backward compatible fashion
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2893">DRILL-2893</a>] -         ScanBatch throws a NullPointerException instead of returning OUT_OF_MEMORY
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2895">DRILL-2895</a>] -         AbstractRecordBatch.buildSchema() should properly handle OUT_OF_MEMORY outcome
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2902">DRILL-2902</a>] -         Add support for context UDFs: user (and its synonyms session_user, system_user) and current_schema
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2905">DRILL-2905</a>] -         RootExec implementations should properly handle IterOutcome.OUT_OF_MEMORY
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2920">DRILL-2920</a>] -         properly handle OutOfMemoryException
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2947">DRILL-2947</a>] -         AllocationHelper.allocateNew() doesn&#39;t have a consistent behavior when it can&#39;t allocate
+</li>
+</ul>
+
+<h2> Unresolved Issues
+</h2>
+<ul>
+    <li>[<a href="https://issues.apache.org/jira/browse/DRILL-1868">DRILL-1868</a>] Aliases are not allowed in WHERE, HAVING and GROUP BY clauses. Drill should return an error when such aliases are encountered, but instead Drill returns an incorrect result. 
+    </li>
+    <li>[<a href="https://issues.apache.org/jira/browse/DRILL-2015">DRILL-2015</a>] Casting a numeric value that does not fit the data type of the value and causes overflow returns an incorrect result. 
+    </li>
+    <li>[<a href="https://issues.apache.org/jira/browse/DRILL-2355">DRILL-2355</a>] Drill output from the TRUNC function in some cases includes an extra .0 in the result. Drill binds TRUNC functions having two input parameters to the function holder. The output type of TRUNC functions is FLOAT8 when the input is FLOAT8, resulting in the extra .0. 
+    </li>
+</ul>
+<h2>        Bug Fixes
+</h2>
+<ul>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-148">DRILL-148</a>] -         Remove sandbox directory from source control, it is no longer utilized
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-625">DRILL-625</a>] -         Server does not release resources even after client connection is closed
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-708">DRILL-708</a>] -         TRUNC(n1) function returns a decimal instead of int
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-994">DRILL-994</a>] -         Reduce hbase timeout when it is not reachable
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-1245">DRILL-1245</a>] -         Drill should pinpoint to the &quot;Problem Record&quot; when it fails to parse a json file
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-1440">DRILL-1440</a>] -         Allow delimited files to have customizable quote characters
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-1460">DRILL-1460</a>] -         JsonReader fails reading files with decimal numbers and integers in the same field
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-1502">DRILL-1502</a>] -         Can&#39;t connect to mongo when requiring auth
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-1503">DRILL-1503</a>] -         CTAS does not work against mongo plugin
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-1542">DRILL-1542</a>] -         Early fragment termination causes non running intermediate fragments to error
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-1545">DRILL-1545</a>] -         Json files can only be read when they have a .json extension
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-1727">DRILL-1727</a>] -         REPEATED_CONTAINS sometimes doesn&#39;t work
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-1827">DRILL-1827</a>] -         Unit test framework reports expected and actual values backwards in unordered comparison
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-1832">DRILL-1832</a>] -         Select * from json file failed with java.lang.IllegalArgumentException: null
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-1866">DRILL-1866</a>] -         Tests that include limit sporadically fail when run as part of entire test suite on Linux
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-1891">DRILL-1891</a>] -         Error message does not get propagated correctly when reading from JSON file
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-1973">DRILL-1973</a>] -         Tableau query causes parsing error
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-1980">DRILL-1980</a>] -         Create table with a Cast to interval day results in a file which cannot be read
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2005">DRILL-2005</a>] -         Create table fails to write out a parquet file created from hive- read works fine
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2006">DRILL-2006</a>] -         Implement text reader with advanced capabilities
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2036">DRILL-2036</a>] -         select * query returns wrong result when column name in json file changes case
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2073">DRILL-2073</a>] -         Filter on a field in a nested repeated type throws an exception
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2074">DRILL-2074</a>] -         Queries fail with OutOfMemory Exception when Hash Join &amp; Agg are turned off
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2085">DRILL-2085</a>] -         Failed to propagate error
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2091">DRILL-2091</a>] -         NPE in AbstractSqlAccessor
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2093">DRILL-2093</a>] -         Columns of time and timestamp data type are not stored correctly in json format on CTAS
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2140">DRILL-2140</a>] -         RPC Error querying JSON with empty nested maps
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2141">DRILL-2141</a>] -         Data type error in group by and order by for JSON
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2158">DRILL-2158</a>] -          Failure while attempting to start Drillbit in embedded mode. 
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2179">DRILL-2179</a>] -         better handle column called &#39;Timestamp&#39;
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2181">DRILL-2181</a>] -         Throw proper error message when flatten is used within an &#39;order by&#39; or &#39;group by&#39;
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2201">DRILL-2201</a>] -         clear error message on join on complex type
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2208">DRILL-2208</a>] -         Error message must be updated when query contains operations on a flattened column
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2219">DRILL-2219</a>] -         Concurrent modification exception in TopLevelAllocator if a child allocator is added during loop in close()
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2221">DRILL-2221</a>] -         CTAS (JSON) creates unreadable files when writing empty arrays
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2228">DRILL-2228</a>] -         Projecting &#39;*&#39; returns all nulls when we have flatten in a filter and order by
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2229">DRILL-2229</a>] -         SQL syntax errors should use SQLSyntaxErrorException
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2232">DRILL-2232</a>] -         Flatten functionality not well defined when we use flatten in an order by without projecting it
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2264">DRILL-2264</a>] -         Incorrect data when we use aggregate functions with flatten
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2277">DRILL-2277</a>] -         COUNT(*) should return 0 instead of an empty result set when there are no records
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2281">DRILL-2281</a>] -         Drill never returns when we use aggregate functions after a join with an order by
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2292">DRILL-2292</a>] -         CTAS broken when we have repeated maps
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2301">DRILL-2301</a>] -         Query fails when multiple table aliases are provided for CTEs
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2340">DRILL-2340</a>] -         count(*) fails with subquery not containing limit
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2350">DRILL-2350</a>] -         Star query failed with exception on JSON data
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2376">DRILL-2376</a>] -         UNION ALL on Aggregates with GROUP BY returns incomplete results
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2404">DRILL-2404</a>] -         After we cancel a query, DRILL sometimes hangs for the next query
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2408">DRILL-2408</a>] -         CTAS should not create empty folders when underlying query returns no results
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2411">DRILL-2411</a>] -         Scalar SUM/AVG over empty result set returns no rows instead of NULL
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2423">DRILL-2423</a>] -         DROP VIEW against non-existent views fails with ZK error
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2425">DRILL-2425</a>] -         Wrong results when identifier change cases within the same data file
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2437">DRILL-2437</a>] -         enhance exception injection to support session level injections
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2452">DRILL-2452</a>] -         ResultSet.getDouble should not throw an exception when the underlying type is a FLOAT
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2476">DRILL-2476</a>] -         Handle IterOutcome.STOP in buildSchema()
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2506">DRILL-2506</a>] -         IOOB with order by and limit
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2511">DRILL-2511</a>] -         Assert with full outer join when one of the join predicates is of a required type (nullabe parquet)
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2528">DRILL-2528</a>] -         Drill-JDBC-All Jar uses outdated classes
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2532">DRILL-2532</a>] -         Glob not always fired for DFS storage engine
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2533">DRILL-2533</a>] -         Metrics displayed in the profile UI should be rounded off instead of being truncated
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2535">DRILL-2535</a>] -         Column labels on drill profile page are incorrect
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2536">DRILL-2536</a>] -         Peak Mem column in the profile page displays 0 when value is less than 1MB
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2545">DRILL-2545</a>] -         Killing a JDBC client program does not kill the query on drillbits
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2548">DRILL-2548</a>] -         JDBC driver prints misleading SQL exception on getting record batches with no data
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2552">DRILL-2552</a>] -         ZK disconnect to foreman node results in hung query on client
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2554">DRILL-2554</a>] -         Incorrect results for repeated values when using jdbc
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2569">DRILL-2569</a>] -         Minor fragmentId in Profile UI gets truncated to the last 2 digits
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2570">DRILL-2570</a>] -         Broken JDBC-All Jar packaging can cause missing XML classes
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2589">DRILL-2589</a>] -         Creating a view with duplicate column names should fail or give a warning to the user
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2598">DRILL-2598</a>] -         Order by with limit on complex type throw IllegalStateException
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2617">DRILL-2617</a>] -         Errors in the execution stack will cause DeferredException to throw an IllegalStateException
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2624">DRILL-2624</a>] -         org.apache.drill.common.StackTrace prints garbage for line numbers
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2662">DRILL-2662</a>] -         Exception type not being included when propagating exception message
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2723">DRILL-2723</a>] -         Inaccurate row count estimate for text files results in BroadcastExchange
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2750">DRILL-2750</a>] -         Running 1 or more queries against Drillbits having insufficient DirectMem renders the Drillbits in an unusable state
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2753">DRILL-2753</a>] -         Implicit cast fails when comparing a double column and a varchar literal
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2754">DRILL-2754</a>] -         Allocation bug in splitAndTransfer method causing some flatten queries to fail
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2755">DRILL-2755</a>] -         Use and handle InterruptedException during query processing
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2757">DRILL-2757</a>] -         Verify operators correctly handle low memory conditions and cancellations
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2776">DRILL-2776</a>] -         querying a .json file that contains a repeated type returns the wrong results 
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2778">DRILL-2778</a>] -         Killing the drillbit which is the foreman results in hung sqlline
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2780">DRILL-2780</a>] -         java.lang.IllegalStateException files open exceptions in drillbit.out
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2793">DRILL-2793</a>] -         Killing a non foreman node results in direct memory being held on
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2801">DRILL-2801</a>] -         ORDER BY produces extra records
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2806">DRILL-2806</a>] -         Querying data from compressed csv file returns nulls and unreadable data
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2809">DRILL-2809</a>] -         Increase the default value of partitioner_sender_threads_factor
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2811">DRILL-2811</a>] -         Need option to specify Drillbit in the connection URI to connect to that specific Drillbit
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2816">DRILL-2816</a>] -         system error does not display the original Exception message
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2823">DRILL-2823</a>] -         Merge join should use implicit cast
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2824">DRILL-2824</a>] -         Function resolution should be deterministic
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2826">DRILL-2826</a>] -         Improve resilience to memory leaks and unclosed allocators
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2841">DRILL-2841</a>] -         Web UI very slow in a multi node machine
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2847">DRILL-2847</a>] -         DrillBufs from the RPC layer are being leaked
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2848">DRILL-2848</a>] -         Disable decimal data type by default
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2849">DRILL-2849</a>] -         Difference in query results over CSV file created by CTAS, compared to results over original CSV file 
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2865">DRILL-2865</a>] -         Drillbit runs out of memory on multiple consecutive CTAS
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2870">DRILL-2870</a>] -         Fix return type of aggregate functions to be nullable
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2871">DRILL-2871</a>] -         Plan for TPC-H 20 changed with DRILL-1384 (or DRILL-2761) causing performance degradation
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2872">DRILL-2872</a>] -         Result from json file returns data from map type fields as &quot;null&quot;
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2875">DRILL-2875</a>] -         IllegalStateException when querying the public yelp json dataset
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2878">DRILL-2878</a>] -         FragmentExecutor.closeOutResources() is not called if an exception happens in the Foreman before the fragment executor starts running
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2884">DRILL-2884</a>] -         Have cancel() cause &quot;query canceled&quot; rather than just &quot;ResultSet closed&quot;
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2886">DRILL-2886</a>] -         JDBC driver doesn&#39;t detect lost connection
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2887">DRILL-2887</a>] -         Fix bad applications of JdbcTest.connect()
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2889">DRILL-2889</a>] -         Rename JdbcTest to JdbcTestBase.
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2894">DRILL-2894</a>] -         FixedValueVectors shouldn&#39;t set it&#39;s data buffer to null when it fails to allocate it
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2897">DRILL-2897</a>] -         Update Limit 0 to avoid parallelization
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2904">DRILL-2904</a>] -         Fix wrong &quot;before rows&quot; message to &quot;after rows&quot; message
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2907">DRILL-2907</a>] -         Drill performance degrades significantly over time - resource leak
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2914">DRILL-2914</a>] -         regression: Mondrian query534.q, drill give wrong result
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2921">DRILL-2921</a>] -         Query with a mix of distinct and not distinct scalar aggregates runs out of memory
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2927">DRILL-2927</a>] -         Pending query in resource queue starts after timeout
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2928">DRILL-2928</a>] -         C++ Client - io_service needs to be reset if it runs out of work
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2932">DRILL-2932</a>] -         Error text reported via System.out.println rather than thrown SQLException&#39;s message
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2934">DRILL-2934</a>] -         Exception when distinct aggregate is compared to numeric literal with decimal point 
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2936">DRILL-2936</a>] -         TPCH 4 and 18 SF100 hangs when hash agg is turned off
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2940">DRILL-2940</a>] -         Large allocations are not released until GC kicks in
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2942">DRILL-2942</a>] -         Allow Use of epoll RPC layer on Linux
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2943">DRILL-2943</a>] -         Drill parsing error during deserialization for an Order-By
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2944">DRILL-2944</a>] -         Switch to G1GC to reduce GC cpu overhead.
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2951">DRILL-2951</a>] -         Tables are not visible when Drillbit is specified in the connection URL
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2953">DRILL-2953</a>] -         Group By + Order By query results are not ordered.
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2957">DRILL-2957</a>] -         Netty Memory Manager doesn&#39;t move empty chunks between lists
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2959">DRILL-2959</a>] -         Compression codecs are leaking or slow to recapture memory
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2960">DRILL-2960</a>] -         Default hive storage plugin missing from fresh drill install
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2961">DRILL-2961</a>] -         Statement.setQueryTimeout() should throw a SQLException
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2962">DRILL-2962</a>] -         Correlated subquery with scalar aggregate or scalar aggregate with expression throws  and error
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2963">DRILL-2963</a>] -         Exists with empty left batch causes IllegalStateException
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2966">DRILL-2966</a>] -         HAVING clause with CASE statement with IN predicate causes assertion
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2968">DRILL-2968</a>] -         crash on parquet file
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2971">DRILL-2971</a>] -         If Bit&lt;&gt;Bit connection is unexpectedly closed and we were already blocked on writing to socket, we&#39;ll stay forever in ResettableBarrier.await()
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2973">DRILL-2973</a>] -         Error messages not showing up in sqlline
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2976">DRILL-2976</a>] -         Set default of extended JSON support for output to false until issues are resolved
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2977">DRILL-2977</a>] -         In WorkManager, startFragmentPendingRemote() and addFragmentRunner() need to be permuted
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2978">DRILL-2978</a>] -         FragmentManager is not removed from the WorkEventBus if it&#39;s FragmentExecutor is cancelled before it starts running
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2979">DRILL-2979</a>] -         Storage HBase doesn&#39;t support customized hbase property zookeeper.znode.parent
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2989">DRILL-2989</a>] -         TPCDS Query corrupts Drillbits and causing subsequent unrelated queries to hang (and timeout)
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2993">DRILL-2993</a>] -         SQLLine hangs when we cancel a query in the middle of displaying results
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2994">DRILL-2994</a>] -         Incorrect error message when disconnecting from server (using direct connection to drillbit)
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2998">DRILL-2998</a>] -         Update C++ client to send/receive heartbeat message 
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3000">DRILL-3000</a>] -         I got JIRA report #3000.  Now ... to use it for good or evil?
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3001">DRILL-3001</a>] -         Some functional tests fail when new text reader is disabled
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3005">DRILL-3005</a>] -         Spurious Error messages when using PrintingResultsListener
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3006">DRILL-3006</a>] -         CTAS with interval data type creates invalid parquet file
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3007">DRILL-3007</a>] -         Update Drill configuration settings to avoid mmap threshold increases on Linux
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3009">DRILL-3009</a>] -         Reduce the IN list threshold to take advantage of Values operator
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3010">DRILL-3010</a>] -         Convert bad command error messages into UserExceptions in SqlHandlers
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3012">DRILL-3012</a>] -         Values Operator doesn&#39;t propagate operator id
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3017">DRILL-3017</a>] -         NPE when cleaning up some RecordReader implementations
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3018">DRILL-3018</a>] -         Queries with scalar aggregate  and non equality (non correlated) fail to plan
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3020">DRILL-3020</a>] -         Some exception message text not displayed in SQLLine, etc.; copy to thrown SQLException&#39;s message
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3022">DRILL-3022</a>] -         Ensure sequential shutdown of Drillbits
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3033">DRILL-3033</a>] -         Add memory leak fixes found so far in DRILL-1942 to 1.0
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3037">DRILL-3037</a>] -         Unable to query on hdfs after moving to 0.9.0 version
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3046">DRILL-3046</a>] -         Memory Leak after cancelling a query
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3047">DRILL-3047</a>] -         Command failed while establishing connection
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3048">DRILL-3048</a>] -         Disable assertions by default
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3049">DRILL-3049</a>] -         Increase sort spooling threshold
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3050">DRILL-3050</a>] -         Increase query context max memory
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3051">DRILL-3051</a>] -         Integer overflow in TimedRunnable
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3052">DRILL-3052</a>] -         canceling a fragment executor before it starts running will cause the Foreman to wait indefinitely for a terminal message from that fragment
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3057">DRILL-3057</a>] -         A query that used to work before now fails in the optimizer
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3058">DRILL-3058</a>] -         RemoteConnection of RPC double closes the connection
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3061">DRILL-3061</a>] -         Fix memory leaks in TestDrillbitResilience
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3062">DRILL-3062</a>] -         regression: Mondrian query447.q - lots of rows missing in result set
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3063">DRILL-3063</a>] -         TestQueriesOnLargeFile leaks memory with 16M limit
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3065">DRILL-3065</a>] -         Memory Leak at ExternalSortBatch
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3066">DRILL-3066</a>] -         AtomicRemainder - Tried to close remainder, but it has already been closed.
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3069">DRILL-3069</a>] -         Wrong result for aggregate query with filter  on SF100 
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3070">DRILL-3070</a>] -         Memory Leak when we run out of memory
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3071">DRILL-3071</a>] -         RecordBatchLoader#load leaks memory if an exception is thrown while loading the batch.
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3072">DRILL-3072</a>] -         Profile UI fails to load when there is an empty json profile
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3074">DRILL-3074</a>] -         ReconnectingClient.waitAndRun can stuck in infinite loop if it fails to establish the connection
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3077">DRILL-3077</a>] -         sqlline&#39;s return code is 0 even when it force exits due to failed sql command
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3079">DRILL-3079</a>] -         Move JSON Execution Plan parsing to FragmentExecutor
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3080">DRILL-3080</a>] -         Error message is invalid if workload queue times out
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3081">DRILL-3081</a>] -         Fix situation where Drill reports null &lt;--&gt; null in connection error
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3085">DRILL-3085</a>] -         In ExternalSortBatch, Memory Leak in Runtime Generation Code
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3087">DRILL-3087</a>] -         Union All returns incorrect results.
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3088">DRILL-3088</a>] -         IllegalStateException: Cleanup before finished. 0 out of 1 strams have finished
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3089">DRILL-3089</a>] -         Revert to 4 forked test and allow override from command line
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3092">DRILL-3092</a>] -         Memory leak when an allocation fails near the creation of a RecordBatchData object
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3093">DRILL-3093</a>] -         Leaking RawBatchBuffer
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3098">DRILL-3098</a>] -         Set Unix style &quot;line.separator&quot; for tests
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3099">DRILL-3099</a>] -         FileSelection&#39;s selectionRoot does not include the scheme and authority
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3100">DRILL-3100</a>] -         TestImpersonationDisabledWithMiniDFS fails on Windows
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3101">DRILL-3101</a>] -         Setting &quot;slice_target&quot; to 1 changes the order of the columns in a &quot;select *&quot; query with order by
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3103">DRILL-3103</a>] -         EncoderException: RpcEncoder must produce at least one message.
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3105">DRILL-3105</a>] -         OutOfMemoryError: GC overhead limit exceeded
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3107">DRILL-3107</a>] -         Dynamic partition pruning fails on Windows (TestDirectoryExplorerUDFs)
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3109">DRILL-3109</a>] -         Cancellation from sqlline is broken with the updated version
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3110">DRILL-3110</a>] -         OutOfMemoryError causes memory accounting leak 
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3112">DRILL-3112</a>] -         Drill UI profile page shows exceptions where a long running query is submitted via the UI
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3114">DRILL-3114</a>] -         Sqlline throws exception at launch
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3115">DRILL-3115</a>] -         SQLLine colors do not work well with CYGWIN
+</li>
+</ul>
+
+<h2>        Improvement
+</h2>
+<ul>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-1662">DRILL-1662</a>] -         drillbit.sh stop should timeout
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2433">DRILL-2433</a>] -         Implicit cast between date and timestamp is missing in joins
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2508">DRILL-2508</a>] -         Add new column to sys.options table that exposes whether or not the current system value is the default
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2602">DRILL-2602</a>] -         Throw an error on schema change during streaming aggregation
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2697">DRILL-2697</a>] -         Pause injections should pause indefinitely until signalled
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2725">DRILL-2725</a>] -         Faster work assignment logic
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2772">DRILL-2772</a>] -         Display status of query when viewing the query&#39;s profile page
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2946">DRILL-2946</a>] -         Tableau 9.0 Desktop Enablement Document
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2955">DRILL-2955</a>] -         Enable color in sqlline for exceptions
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2969">DRILL-2969</a>] -         Readers don&#39;t report number of records read in profile
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2981">DRILL-2981</a>] -         Add simplified activity log
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2982">DRILL-2982</a>] -         Tableau 9.0 Server Enablement Documentation
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2984">DRILL-2984</a>] -         UserException is logging through its parent class logger
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3027">DRILL-3027</a>] -         Add convenience methods to test builder for creating nested baseline values
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3053">DRILL-3053</a>] -         add unchecked exception injection site in ChildAllocator
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-3084">DRILL-3084</a>] -         Add drill-* convenience methods for common cli startup commands
+</li>
+</ul>
+
+<h2>        New Feature
+</h2>
+<ul>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-1573">DRILL-1573</a>] -         Add configuration to skip header row in text files
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2382">DRILL-2382</a>] -         enhance exception injection to support node-specific injections
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2383">DRILL-2383</a>] -         add exception and pause injections for testing drillbit stability
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2658">DRILL-2658</a>] -         Add ilike and regex substring functions
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2958">DRILL-2958</a>] -         Move Drill to alternative cost-based planner for Join planning
+</li>
+</ul>
+
+<h2>        Task
+</h2>
+<ul>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2316">DRILL-2316</a>] -         Docs Enhancement: Data Sources and File Formats, Basics Tutorial
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2336">DRILL-2336</a>] -         configuration storage plugin docs update
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2364">DRILL-2364</a>] -         JSON Data Model Reference 2nd draft
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2381">DRILL-2381</a>] -         write lexical structures section, JSON/Parquet reference fixes, updates to data types
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2397">DRILL-2397</a>] -         Enhance SQL Ref Data Types docs
+</li>
+<li>[<a href="https://issues.apache.org/jira/browse/DRILL-2736">DRILL-2736</a>] -         review feedback on multitenancy and user auth
+</li>
+</ul>
+
+<p>You can now <a href="/zh/download/">download Drill 1.0.0</a>.</p>
+
+
+    
+      
+        <div class="doc-nav">
+  
+  <span class="previous-toc"><a href="/zh/docs/apache-drill-1-1-0-release-notes/">← Apache Drill 1.1.0 Release Notes</a></span><span class="next-toc"><a href="/zh/docs/apache-drill-0-9-0-release-notes/">Apache Drill 0.9.0 Release Notes →</a></span>
+</div>
+
+    
+    </div>
+  </div>
+</div>
+
+  </div>
+  <p class="push"></p>
+<div id="footer" class="mw">
+<div class="wrapper">
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
+</div>
+</div>
+
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-53379651-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-548b2caa33765e8d" async="async"></script>
+
+</body>
+</html>

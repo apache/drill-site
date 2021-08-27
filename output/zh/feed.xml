@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Apache Drill - Schema-free SQL for Hadoop, NoSQL and Cloud Storage</title>
+    <description>The official user documentation for Apache Drill.
+</description>
+    <link>/</link>
+    <atom:link href="/zh/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Fri, 27 Aug 2021 09:35:50 +0000</pubDate>
+    <lastBuildDate>Fri, 27 Aug 2021 09:35:50 +0000</lastBuildDate>
+    <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Drill provider for Airflow</title>
+        <description>&lt;p&gt;You’re building a new report, visualisation or ML model.  Most of the data involved comes from sources well known to you but a new source has become available, allowing your team to measure and model new variables.  Eager to get to a prototype and an early sense of what the new analytics look like, you head straight for the first order of business and start to construct a first version of the dataset upon which your final output will be based.&lt;/p&gt;
+
+&lt;p&gt;The data sources you need to combine are immediately accessible but heteregenous: transactional data in PostgreSQL must be combined with data from another team that uses Splunk, lookup data maintained by operational team in an Excel spreadsheet, thousands of XML exports received from a partner and some Parquet files already in your big data environment just for good measure.&lt;/p&gt;
+
+&lt;p&gt;Using Drill iteratively you query and join in each data source one at a time, applying grouping, filtering and other intensive transformations as you go, finally producing a dataset with the fields and grain you need.  You store it by adding CREATE TABLE AS in front of your final SELECT then write a few counting and summing queries against the original data sources and your transformed dataset to check that your code produces the expected outputs.&lt;/p&gt;
+
+&lt;p&gt;Apart from possibly configuring some new storage plugins in the Drill web UI, you have so far not left your SQL editor.  The onerous data exploration and plumbing parts of your project have flashed by in a blaze of SQL, and you move your dataset into the next tool for visualisation or modelling.  The results are good and you know that your users will immediately ask for the outputs to incorporate new data on a regular schedule.&lt;/p&gt;
+
+&lt;p&gt;While Drill can assemble your dataset on the fly, as it did while you prototyped,  doing that for the full set takes over 40 minutes, places more load than you’d like in office hours on to your data sources and limits you to the history that the sources keep, in some cases only a few weeks.&lt;/p&gt;
+
+&lt;p&gt;It’s time for ETL, you concede.  In the past that meant you had to choose between keeping your working Drill SQL and scheduling it using 70s Unix tools like Cron and Bash, seeing what you could jury-rig using some ETL software and interfaces to Drill like like ODBC and JDBC, or recreating your Drill SQL entirely in (perhaps multiple) other tools and languages, perhaps Spark and Python.  But this time you can do things differently…&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://airflow.apache.org&quot;&gt;Apache Airflow&lt;/a&gt; is a workflow engine built in the Python programming ecosystem that has grown into a leading choice for orchestrating big data pipelines, amongst its other applications.  Perhaps the first point to understand about Airflow in the context of ETL is that it is designed only for workflow &lt;em&gt;control&lt;/em&gt;, and not for data flow.  This makes it different from some of the ETL tools you might have encountered like Microsoft’s SSIS or Pentaho’s PDI which handle both control and data flow: these ETL tools will &lt;em&gt;themselves&lt;/em&gt; connect to a data source and stream data records from it.&lt;/p&gt;
+
+&lt;p&gt;In contrast Airflow is, unless you’re doing it wrong, used only to instruct other software like Spark, Beam, PostgreSQL, Bash, Celery, Scikit-learn scripts, Slack, (… the list of providers is long and varied) to kick off actions at scheduled times.  While Airflow does load its schedules from the crontab format, a comparison to cron stops there.  Airflow can resolve and execute complex job DAGs with options for clustering, parallelism, retries, backfilling and performance monitoring.&lt;/p&gt;
+
+&lt;p&gt;The exciting news for Drill users is that &lt;a href=&quot;https://pypi.org/project/apache-airflow-providers-apache-drill/&quot;&gt;a new provider package adding support for Drill&lt;/a&gt; was added to Airflow this month.  This provider is based on the &lt;a href=&quot;https://pypi.org/project/sqlalchemy-drill/&quot;&gt;sqlalchemy-drill package&lt;/a&gt; which provides Drill connectivity for Python programs.  This means that you can add tasks which execute queries on Drill to your Airflow DAGs without any hacky intermediate shell scripts, or build new Airflow operators that use the Drill hook.&lt;/p&gt;
+
+&lt;p&gt;A new tutorial that walks through the development of a simple Airflow DAG that uses the Drill provider &lt;a href=&quot;/docs/orchestrating-queries-with-airflow/&quot;&gt;is available here&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 05 Aug 2021 00:00:00 +0000</pubDate>
+        <link>/blog/2021/08/05/drill-provider-for-airflow/</link>
+        <guid isPermaLink="true">/blog/2021/08/05/drill-provider-for-airflow/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Streaming data from the Drill REST API</title>
+        <description>&lt;p&gt;Anyone who’s used a UNIX pipe, or even just watched something on Netflix, is at least a little familiar with the idea of processing data in a streaming fashion.  While your data are small in size compared to available memory and I/O speeds, streaming is something you can afford to dispense with.  But when you cannot fit an entire dataset in RAM, or when you have to download an entire 4K movie before you can start playing it, then streaming data processing can make a game changing difference.&lt;/p&gt;
+
+&lt;p&gt;With the release of version 1.19, Drill will stream JSON query result data over an HTTP response to the client that initiated the query using the REST API.  And if anything can easily get big compared to your available RAM or network speed, it’s query results coming back from Drill.  It’s important to note here that JSON over HTTP is never going to be the most &lt;em&gt;efficient&lt;/em&gt; way to move big data around&lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;.  JDBC, ODBC and &lt;a href=&quot;https://uwekorn.com/2019/11/17/fast-jdbc-access-in-python-using-pyarrow-jvm.html&quot;&gt;innovations around them&lt;/a&gt; will always win a speed race over JSON/HTTP, and simply network mounting or copying Parquet files out of your big data storage pool (be that HDFS, S3, or something else) is probably going to beat everything else you try once you’ve got really big data volumes.&lt;/p&gt;
+
+&lt;p&gt;Where JSON and HTTP &lt;em&gt;do&lt;/em&gt; win is universality: today it’s hard to imagine a client hardware and software stack that doesn’t provide JSON and HTTP out of the box with minimal effort.  So it’s important that they work as well as is possible, in spite of the alternatives that exist.  The new streaming query results delivery on the server side means that Drill’s heap memory isn’t pressurised by having to buffer entire result sets before it starts to transmit them over the network.  Even existing REST API clients that do no stream processing of their own will benefit from better reliability because of this.&lt;/p&gt;
+
+&lt;p&gt;To fully realise the benefits of streaming query result data, clients can &lt;em&gt;themselves&lt;/em&gt; operate on the HTTP response they receive in a streaming fashion, thereby potentially starting to process records before Drill has even finished materialising them and avoiding holding the full set in memory if they choose.  At the transport level (when there are enough results to warrant it), the HTTP response headers from the Drill REST API will include a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Transfer-Encoding: chunked&lt;/code&gt; header indicating that data transmission in chunks will ensue.  Most HTTP client libraries will abstract this implementation detail, instead presenting you with a stream which you can provide as the input to a streaming JSON parser.&lt;/p&gt;
+
+&lt;p&gt;If you set out to develop a streaming HTTP client for the Drill REST API, do take note that the schema of the JSON query result is &lt;em&gt;not&lt;/em&gt; a &lt;a href=&quot;https://en.wikipedia.org/wiki/JSON_streaming&quot;&gt;streaming JSON format&lt;/a&gt; like “JSON lines”.  This means that you must be careful about which JSON objects you parse entirely in a single call, particularly avoiding any parent of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rows&lt;/code&gt; property in the query result which would see you parse essentially the entire payload in a single step.  The newly released version 1.1.0 of the Python &lt;a href=&quot;https://pypi.org/project/sqlalchemy-drill/&quot;&gt;sqlalchemy-drill&lt;/a&gt; library includes &lt;a href=&quot;https://github.com/JohnOmernik/sqlalchemy-drill/blob/master/sqlalchemy_drill/drilldbapi/_drilldbapi.py&quot;&gt;an implementation of a streaming HTTP client&lt;/a&gt; based on the &lt;a href=&quot;https://pypi.org/project/ijson/&quot;&gt;ijson&lt;/a&gt; streaming JSON parser which might make for a useful reference.&lt;/p&gt;
+
+&lt;p&gt;In closing, and for a bit of fun, here’s the log from a short IPython session where I use sqlalchemy-drill to run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SELECT *&lt;/code&gt; on a remote 17 billion record table over a 0.5 Mbit/s link and start scanning through (a steady trickle of) rows in seconds.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-ipython&quot;&gt;In [4]: r = engine.execute('select count(*) from dfs.ws.big_table')
+INFO:drilldbapi:received Drill query ID 1f211888-cc20-fe6f-69d1-6584c5caa2df.
+INFO:drilldbapi:opened a row data stream of 1 columns.
+
+In [5]: next(r)
+Out[5]: (17437571247,)
+
+In [6]: r = engine.execute('select * from dfs.ws.big_table')
+INFO:drilldbapi:received Drill query ID 1f211838-73df-1506-a74e-f5695f6b0ff5.
+INFO:drilldbapi:opened a row data stream of 21 columns.
+
+In [7]: while True:
+   ...:     _ = next(r)
+      ...:
+      INFO:drilldbapi:streamed 10000 rows.
+      INFO:drilldbapi:streamed 20000 rows.
+      INFO:drilldbapi:streamed 30000 rows.
+      INFO:drilldbapi:streamed 40000 rows.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;Some mitigation is possible.  JSON representations of tabular big data are typically extremely compressible and you can reduce the bytes sent over the network by 10-20x by enabling HTTP response compression on a web server like Apache placed in front of the Drill REST API. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Fri, 09 Jul 2021 00:00:00 +0000</pubDate>
+        <link>/blog/2021/07/09/streaming-data-from-the-rest-api/</link>
+        <guid isPermaLink="true">/blog/2021/07/09/streaming-data-from-the-rest-api/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Drill 1.19 Released</title>
+        <description>&lt;p&gt;今天, we’re happy to announce the availability of Drill 1.19.0. You can download it &lt;a href=&quot;https://drill.apache.org/download/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;this-release-provides-the-following-new-features&quot;&gt;This release provides the following new Features:&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-92&quot;&gt;DRILL-92&lt;/a&gt; - Cassandra Storage Plugin&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-3637&quot;&gt;DRILL-3637&lt;/a&gt; - Elasticsearch Storage Plugin&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7823&quot;&gt;DRILL-7823&lt;/a&gt; - XML Storage Plugin&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7751&quot;&gt;DRILL-7751&lt;/a&gt; - Splunk Storage Plugin&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-5940&quot;&gt;DRILL-5940&lt;/a&gt; - Avro with schema registry support for Kafka&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7855&quot;&gt;DRILL-7855&lt;/a&gt; - Secure mechanism for specifying storage plugin credentials&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7921&quot;&gt;DRILL-7921&lt;/a&gt; - Linux ARM64 based system support&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-6953&quot;&gt;DRILL-6953&lt;/a&gt; - Rowset based JSON reader&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7733&quot;&gt;DRILL-7733&lt;/a&gt; - Use streaming for REST JSON queries&lt;/li&gt;
+  &lt;li&gt;Several plugins have been converted to the Enhanced Vector Framework (EVF)
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7525&quot;&gt;DRILL-7525&lt;/a&gt; - Convert SequenceFiles to EVF&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7532&quot;&gt;DRILL-7532&lt;/a&gt; - Convert SysLog to EVF&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7533&quot;&gt;DRILL-7533&lt;/a&gt; - Convert Pcapng to EVF&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7534&quot;&gt;DRILL-7534&lt;/a&gt; - Convert HTTPD format plugin to EVF&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7536&quot;&gt;DRILL-7533&lt;/a&gt; - Convert Image Format to EVF&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You can find a complete list of improvements and JIRAs resolved in the 1.19.0 release &lt;a href=&quot;/docs/apache-drill-1-19-0-release-notes/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 10 Jun 2021 00:00:00 +0000</pubDate>
+        <link>/blog/2021/06/10/drill-1.19-released/</link>
+        <guid isPermaLink="true">/blog/2021/06/10/drill-1.19-released/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Drill 1.18 Released</title>
+        <description>&lt;p&gt;Today, we’re happy to announce the availability of Drill 1.18.0. You can download it &lt;a href=&quot;https://drill.apache.org/download/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;this-release-provides-the-following-new-features&quot;&gt;This release provides the following new Features:&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-6835&quot;&gt;DRILL-6835&lt;/a&gt; - Schema Provision using File / Table Function&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7326&quot;&gt;DRILL-7326&lt;/a&gt; - Support repeated lists for CTAS parquet format&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7343&quot;&gt;DRILL-7343&lt;/a&gt; - Add User-Agent UDFs to Drill&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7374&quot;&gt;DRILL-7374&lt;/a&gt; - Support for IPV6 address&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You can find a complete list of improvements and JIRAs resolved in the 1.18.0 release &lt;a href=&quot;/docs/apache-drill-1-18-0-release-notes/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 05 Sep 2020 00:00:00 +0000</pubDate>
+        <link>/blog/2020/09/05/drill-1.18-released/</link>
+        <guid isPermaLink="true">/blog/2020/09/05/drill-1.18-released/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Drill 1.17 Released</title>
+        <description>&lt;p&gt;Today, we’re happy to announce the availability of Drill 1.17.0. You can download it &lt;a href=&quot;https://drill.apache.org/download/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This release provides the following bug fixes and improvements:&lt;/p&gt;
+
+&lt;h2 id=&quot;hive-complex-types-support&quot;&gt;Hive complex types support:&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7251&quot;&gt;DRILL-7251&lt;/a&gt; - Read Hive array without nulls&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7252&quot;&gt;DRILL-7252&lt;/a&gt; - Read Hive map using Dict&amp;lt;K,V&amp;gt; vector&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7253&quot;&gt;DRILL-7253&lt;/a&gt; - Read Hive struct without nulls&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7254&quot;&gt;DRILL-7254&lt;/a&gt; - Read Hive union without nulls&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7268&quot;&gt;DRILL-7268&lt;/a&gt; - Read Hive array with parquet native reader&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;new-format-plugins-support&quot;&gt;New format plugins support:&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-4303&quot;&gt;DRILL-4303&lt;/a&gt; - ESRI Shapefile (shp) format plugin&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7177&quot;&gt;DRILL-7177&lt;/a&gt; - Format Plugin for Excel Files&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-6096&quot;&gt;DRILL-6096&lt;/a&gt; - Provide mechanisms to specify field delimiters and quoted text for TextRecordWriter&lt;/li&gt;
+  &lt;li&gt;Parquet format improvements, including runtime row group pruning (&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7062&quot;&gt;DRILL-7062&lt;/a&gt;), empty parquet creation (&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7156&quot;&gt;DRILL-7156&lt;/a&gt;), reading (&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-4517&quot;&gt;DRILL-4517&lt;/a&gt;) support, and more.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;metastore-support&quot;&gt;Metastore support:&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7272&quot;&gt;DRILL-7272&lt;/a&gt; - Implement Drill Iceberg Metastore plugin&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7273&quot;&gt;DRILL-7273&lt;/a&gt; - Create operator for handling metadata&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7357&quot;&gt;DRILL-7357&lt;/a&gt; - Expose Drill Metastore data through INFORMATION_SCHEMA&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You can find a complete list of improvements and JIRAs resolved in the 1.17.0 release &lt;a href=&quot;/docs/apache-drill-1-17-0-release-notes/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 26 Dec 2019 00:00:00 +0000</pubDate>
+        <link>/blog/2019/12/26/drill-1.17-released/</link>
+        <guid isPermaLink="true">/blog/2019/12/26/drill-1.17-released/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Drill User Meetup 2019</title>
+        <description>
+</description>
+        <pubDate>Thu, 02 May 2019 00:00:00 +0000</pubDate>
+        <link>/blog/2019/05/02/drill-user-meetup/</link>
+        <guid isPermaLink="true">/blog/2019/05/02/drill-user-meetup/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Drill 1.16 Released</title>
+        <description>&lt;p&gt;Today, we’re happy to announce the availability of Drill 1.16.0. You can download it &lt;a href=&quot;https://drill.apache.org/download/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This release provides the following bug fixes and improvements:&lt;/p&gt;
+
+&lt;h2 id=&quot;table-statistics&quot;&gt;Table Statistics&lt;/h2&gt;
+&lt;p&gt;The &lt;a href=&quot;/docs/analyze-table/&quot;&gt;ANALYZE TABLE statement&lt;/a&gt;  computes statistics and generates histograms for numeric data types.&lt;/p&gt;
+
+&lt;h2 id=&quot;schema-provisioning-for-text-files&quot;&gt;Schema Provisioning for Text Files&lt;/h2&gt;
+&lt;p&gt;The &lt;a href=&quot;/docs/create-or-replace-schema/&quot;&gt;CREATE OR REPLACE SCHEMA command&lt;/a&gt; defines a schema for text files. (In Drill 1.16, this feature is in preview status.)&lt;/p&gt;
+
+&lt;h2 id=&quot;parquet-metadata-caching-improvements&quot;&gt;Parquet Metadata Caching Improvements&lt;/h2&gt;
+&lt;p&gt;The &lt;a href=&quot;/docs/refresh-table-metadata/&quot;&gt;REFRESH TABLE METADATA command&lt;/a&gt; can generate metadata cache files for specific columns.&lt;/p&gt;
+
+&lt;h2 id=&quot;drill-web-ui-enhancements&quot;&gt;Drill Web UI Enhancements&lt;/h2&gt;
+&lt;p&gt;Enhancements include: &lt;br /&gt;
+	- &lt;a href=&quot;https://drill.apache.org/docs/configuring-storage-plugins/#exporting-storage-plugin-configurations&quot;&gt;Storage plugin management improvements&lt;/a&gt;&lt;br /&gt;
+	- &lt;a href=&quot;/docs/query-profiles/#query-profile-warnings&quot;&gt;Query progress indicators and warnings &lt;/a&gt; &lt;br /&gt;
+	- Ability to &lt;a href=&quot;/docs/planning-and-execution-options/#setting-an-auto-limit-on-the-number-of-rows-returned-for-result-sets&quot;&gt;limit the result size for better UI response&lt;/a&gt; &lt;br /&gt;
+	- Ability to &lt;a href=&quot;/docs/query-profiles/#viewing-a-query-profile&quot;&gt;sort the list of profiles in the Drill Web UI&lt;/a&gt; &lt;br /&gt;
+	- &lt;a href=&quot;/docs/starting-the-web-ui/#running-queries-from-the-web-ui&quot;&gt;Display query state in query result page&lt;/a&gt; &lt;br /&gt;
+	- &lt;a href=&quot;https://drill.apache.org/docs/planning-and-execution-options/#setting-options-from-the-drill-web-ui&quot;&gt;Button to reset the options filter&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;You can find a complete list of improvements and JIRAs resolved in the 1.16.0 release &lt;a href=&quot;/docs/apache-drill-1-16-0-release-notes/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 02 May 2019 00:00:00 +0000</pubDate>
+        <link>/blog/2019/05/02/drill-1.16-released/</link>
+        <guid isPermaLink="true">/blog/2019/05/02/drill-1.16-released/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Drill 1.15 Released</title>
+        <description>&lt;p&gt;Today, we’re happy to announce the availability of Drill 1.15.0. You can download it &lt;a href=&quot;https://drill.apache.org/download/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The release provides the following bug fixes and improvements:&lt;/p&gt;
+
+&lt;h2 id=&quot;sqlline-upgrade-to-16-drill-3853&quot;&gt;SQLLine upgrade to 1.6 (DRILL-3853)&lt;/h2&gt;
+&lt;p&gt;An upgrade to SQLLine 1.6 includes additional commands and the ability to add a custom SQLLine configuration. See &lt;a href=&quot;/docs/configuring-the-drill-shell/&quot;&gt;Configuring the Drill Shell&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;index-support-drill-6381&quot;&gt;Index support (DRILL-6381)&lt;/h2&gt;
+&lt;p&gt;Drill can leverage indexes (primary or secondary) in data sources to create index-based query plans. An index-based query plan leverages indexes to access date instead of full table scans. Currently, Drill only supports indexes for the MapR-DB storage plugin. See &lt;a href=&quot;/docs/querying-indexes/&quot;&gt;Querying Indexes&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;ability-to-create-custom-acls-to-secure-znodes-drill-5671&quot;&gt;Ability to create custom ACLs to secure znodes (DRILL-5671)&lt;/h2&gt;
+&lt;p&gt;Drill uses ZooKeeper to store certain cluster-level configuration and query profile information in znodes. A znode is an internal data tree in ZooKeeper that stores coordination and execution related information. Starting in Drill 1.15, you can create a custom ACL (Access Control List) on the znodes to secure data. See &lt;a href=&quot;/docs/configuring-custom-acls-to-secure-znodes/&quot;&gt;Configuring Custom ACLs to Secure znodes&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;information_schema-files-table-drill-6680&quot;&gt;INFORMATION_SCHEMA FILES table (DRILL-6680)&lt;/h2&gt;
+&lt;p&gt;The INFORMATION_SCHEMA contains a FILES table that you can query for information about directories and files stored in the workspaces configured within your S3 and file system storage plugin configurations. See &lt;a href=&quot;https://drill.apache.org/docs/querying-the-information-schema/#files&quot;&gt;INFORMATION_SCHEMA&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;system-functions-table-drill-3988&quot;&gt;System functions table (DRILL-3988)&lt;/h2&gt;
+&lt;p&gt;You can query the system functions table exposes the available SQL functions in Drill and also detects UDFs that have been dynamically loaded into Drill. See &lt;a href=&quot;https://drill.apache.org/docs/querying-system-tables/#querying-the-functions-table&quot;&gt;Querying the functions table&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;You can find a complete list of improvements and JIRAs resolved in the 1.15.0 release &lt;a href=&quot;/docs/apache-drill-1-15-0-release-notes/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 31 Dec 2018 00:00:00 +0000</pubDate>
+        <link>/blog/2018/12/31/drill-1.15-released/</link>
+        <guid isPermaLink="true">/blog/2018/12/31/drill-1.15-released/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Learning Apache Drill book from O'Reilly Media</title>
+        <description>&lt;p&gt;The following summary of the book is (provided by the authors)[https://github.com/cgivre/drillbook].&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;images/cover.jpg&quot; height=&quot;350&quot; align=&quot;right&quot; /&gt;In this practical book, Drill committers Charles Givre and Paul Rogers show analysts and data scientists how to query and analyze raw data using this powerful tool. Data scientists today spend about 80% of their time just gathering and cleaning data. With this book, you’ll learn how Drill helps you analyze data more effectively to drive down time to insight.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Use Drill to clean, prepare, and summarize delimited data for further analysis&lt;/li&gt;
+  &lt;li&gt;Query file types including logfiles, Parquet, JSON, and other complex formats&lt;/li&gt;
+  &lt;li&gt;Query Hadoop, relational databases, MongoDB, and Kafka with standard SQL&lt;/li&gt;
+  &lt;li&gt;Connect to Drill programmatically using a variety of languages&lt;/li&gt;
+  &lt;li&gt;Use Drill even with challenging or ambiguous file formats&lt;/li&gt;
+  &lt;li&gt;Perform sophisticated analysis by extending Drill’s functionality with user-defined functions&lt;/li&gt;
+  &lt;li&gt;Facilitate data analysis for network security, image metadata, and machine learning&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;purchasing&quot;&gt;Purchasing&lt;/h2&gt;
+&lt;p&gt;You can download an electronic copy of Learning Apache Drill on Safari Books http://shop.oreilly.com/product/0636920142898.do or on Amazon.&lt;/p&gt;
+
+&lt;h2 id=&quot;authors&quot;&gt;Authors&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Charles Givre CISSP, Lead Data Scientist, Deutsche Bank, Co-Founder GTK Cyber http://www.thedataist.com&lt;/li&gt;
+  &lt;li&gt;Paul Rogers, Big Data Engineer, Cloudera&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 01 Dec 2018 00:00:00 +0000</pubDate>
+        <link>/blog/2018/12/01/learning-apache-drill-book/</link>
+        <guid isPermaLink="true">/blog/2018/12/01/learning-apache-drill-book/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Drill User Meetup 2018</title>
+        <description>
+</description>
+        <pubDate>Tue, 16 Oct 2018 19:18:04 +0000</pubDate>
+        <link>/blog/2018/10/16/drill-user-meetup/</link>
+        <guid isPermaLink="true">/blog/2018/10/16/drill-user-meetup/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+  </channel>
+</rss>
