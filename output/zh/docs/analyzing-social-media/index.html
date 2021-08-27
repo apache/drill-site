@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+<meta name=viewport content="width=device-width, initial-scale=1">
+
+
+<title>分析社交媒体 - Apache Drill</title>
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
+<link href="/css/site.css" rel="stylesheet" type="text/css"/>
+
+<link rel="shortcut icon" href="/zh/favicon.ico" type="image/x-icon"/>
+<link rel="icon" href="/zh/favicon.ico" type="image/x-icon"/>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" language="javascript" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js" language="javascript" type="text/javascript"></script>
+<script language="javascript" type="text/javascript" src="/js/modernizr.custom.js"></script>
+<script language="javascript" type="text/javascript" src="/js/script.js"></script>
+<script language="javascript" type="text/javascript" src="/js/drill.js"></script>
+
+</head>
+
+
+<body onResize="resized();">
+  <div class="page-wrap">
+    <div class="bui"></div>
+
+<div id="menu" class="mw">
+<ul>
+  <li class='toc-categories'>
+  <a class="expand-toc-icon" href="javascript:void(0);"><i class="fa fa-bars"></i></a>
+  </li>
+  <li class="logo"><a href="/zh/"></a></li>
+  <li class='expand-menu'>
+  <a href="javascript:void(0);"><span class='menu-text'>Menu</span><span class='expand-icon'><i class="fa fa-bars"></i></span></a>
+  </li>
+  <li class="clear-float"></li>
+  <li class="nav">
+	<a>Language</a>
+	<ul>
+		
+		<li>
+			<a  href="/docs/analyzing-social-media/" >en</a>
+		</li>
+		
+		<li>
+			<a style="font-weight: bold;" href="/zh/docs/analyzing-social-media/" >zh</a>
+		</li>
+		
+	</ul>
+  </li>
+  <li class="apache-link">
+    <a href="/zh/apacheASF/">Apache</a>
+  </li>
+  <li class="poweredby">
+    <a href="/zh/poweredBy">Powered By</a>
+  </li>
+  <li class="documentation-menu">
+    <a href="/zh/docs/">Documentation</a>
+    <ul>
+      
+        <li><a href="/zh/docs/getting-started/">新手开始</a></li>
+      
+        <li><a href="/zh/docs/architecture/">Architecture</a></li>
+      
+        <li><a href="/zh/docs/tutorials/">教程</a></li>
+      
+        <li><a href="/zh/docs/drill-on-yarn/">Drill-on-YARN</a></li>
+      
+        <li><a href="/zh/docs/install-drill/">Install Drill</a></li>
+      
+        <li><a href="/zh/docs/configure-drill/">Configure Drill</a></li>
+      
+        <li><a href="/zh/docs/connect-a-data-source/">Connect a Data Source</a></li>
+      
+        <li><a href="/zh/docs/odbc-jdbc-interfaces/">ODBC/JDBC Interfaces</a></li>
+      
+        <li><a href="/zh/docs/query-data/">Query Data</a></li>
+      
+        <li><a href="/zh/docs/performance-tuning/">Performance Tuning</a></li>
+      
+        <li><a href="/zh/docs/log-and-debug/">Log and Debug</a></li>
+      
+        <li><a href="/zh/docs/sql-reference/">SQL Reference</a></li>
+      
+        <li><a href="/zh/docs/data-sources-and-file-formats/">Data Sources and File Formats</a></li>
+      
+        <li><a href="/zh/docs/develop-custom-functions/">Develop Custom Functions</a></li>
+      
+        <li><a href="/zh/docs/troubleshooting/">Troubleshooting</a></li>
+      
+        <li><a href="/zh/docs/developer-information/">Developer Information</a></li>
+      
+        <li><a href="/zh/docs/release-notes/">Release Notes</a></li>
+      
+        <li><a href="/zh/docs/sample-datasets/">Sample Datasets</a></li>
+      
+        <li><a href="/zh/docs/project-bylaws/">Project Bylaws</a></li>
+      
+        <li><a href="/zh/docs/ecosystem/">Ecosystem</a></li>
+      
+    </ul>
+  </li>
+  <li class='nav'>
+    <a href="/zh/community-resources/">Community</a>
+    <ul>
+      <li><a href="/zh/team/">Team</a></li>
+      <li><a href="/zh/mailinglists/">Mailing Lists</a></li>
+      <li><a href="/zh/community-resources/">Community Resources</a></li>
+    </ul>
+  </li>
+  <li class='nav'><a href="/zh/faq/">FAQ</a></li>
+  <li class='nav'><a href="/zh/blog/">Blog</a></li>
+  <li class="social-menu-item"><a href="https://twitter.com/apachedrill" title="apachedrill on twitter" target="_blank"><img src="/images/twitter_32_26_white.png" alt="twitter logo" align="center"></a> </li>
+  <li class="social-menu-item"><a href="https://join.slack.com/t/apache-drill/shared_invite/enQtNTQ4MjM1MDA3MzQ2LTJlYmUxMTRkMmUwYmQ2NTllYmFmMjU4MDk0NjYwZjBmYjg0MDZmOTE2ZDg0ZjBlYmI3Yjc4Y2I2NTQyNGVlZTc" title="Apache Drill Slack channels"
+      target="_blank"><img src="/images/slack-logo.svg" alt="Slack logo" align="center"></a> </li>
+  <li class='search-bar'>
+    <form id="drill-search-form">
+      <input type="text" placeholder="Search Apache Drill" id="drill-search-term" />
+      <button type="submit">
+        <i class="fa fa-search"></i>
+      </button>
+    </form>
+  </li>
+  <li class="d">
+    <a href="/zh/download/">
+      <i class="fa fa-cloud-download"></i> Download
+    </a>
+  </li>
+</ul>
+</div>
+
+    <link href="/css/content.css" rel="stylesheet" type="text/css">
+
+
+      
+
+
+
+
+<aside class="sidebar">
+  <div class="docsidebar">
+    <div class="docsidebarwrapper">
+      <ul style="display: block;">
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">新手开始</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-introduction/">什么是 Drill</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/why-drill/">为什么选择 Drill</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Architecture</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/architecture-introduction/">Architecture Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-query-execution/">Drill Query Execution</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/core-modules/">Core Modules</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/performance/">Performance</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">教程</a></li>
+          <ul class="current_section">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/tutorials-introduction/">教程介绍</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-in-10-minutes/">10分钟了解 Drill</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/analyzing-the-yelp-academic-dataset/">分析 Yelp 学术数据集</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">搭配 MapR Sandbox 学习 Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/about-the-mapr-sandbox/">关于 MapR 沙盒</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-the-apache-drill-sandbox/">安装 Apache Drill SandBox</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/getting-to-know-the-drill-sandbox/">了解 Drill Sandbox</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/lesson-1-learn-about-the-data-set/">第一课: 学习数据集</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/lesson-2-run-queries-with-ansi-sql/">第二课: 使用 ANSI SQL 查询</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/lesson-3-run-queries-on-complex-data-types/">第三课: 查询复杂数据类型</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/summary/">总结</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/analyzing-highly-dynamic-datasets/">分析高动态数据集</a></li>
+            
+          
+            
+              <li class="toctree-l2 current"><a class="reference internal" href="/zh/docs/analyzing-social-media/">分析社交媒体</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/analyzing-data-using-window-functions/">通过窗口函数分析数据集</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/orchestrating-queries-with-airflow/">Orchestrating queries with Airflow</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Drill-on-YARN</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-on-yarn-introduction/">Drill-on-YARN Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/creating-a-basic-drill-cluster/">Creating a Basic Drill Cluster</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/launch-drill-under-yarn/">Launch Drill Under YARN</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configuration-reference/">Configuration Reference</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/drill-on-yarn-command-line-tool/">Drill-on-YARN Command-Line Tool</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-the-drill-on-yarn-web-ui/">Using the Drill-on-YARN Web UI</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/multiple-drill-clusters/">Multiple Drill Clusters</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/enabling-web-ui-security/">Enabling Web UI Security</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/appendix-a-release-note-issues/">Appendix A: Release Note Issues</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/appendix-b-drill-env-sh-settings/">Appendix B: drill-env.sh Settings</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/appendix-c-troubleshooting/">Appendix C: Troubleshooting</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/appendix-d-recreate-the-drill-archive/">Appendix D: Recreate the Drill Archive</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Install Drill</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/install-drill-introduction/">Install Drill Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/migrating-parquet-data/">Migrating Parquet Data</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Installing Drill in Embedded Mode</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/embedded-mode-prerequisites/">Embedded Mode Prerequisites</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/running-drill-on-docker/">Running Drill on Docker</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-drill-on-linux-and-mac-os-x/">Installing Drill on Linux and Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/starting-drill-on-linux-and-mac-os-x/">Starting Drill on Linux and Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-drill-on-windows/">Installing Drill on Windows</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/starting-drill-on-windows/">Starting Drill on Windows</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Installing Drill in Distributed Mode</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/distributed-mode-prerequisites/">Distributed Mode Prerequisites</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-drill-on-the-cluster/">Installing Drill on the Cluster</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/starting-drill-in-distributed-mode/">Starting Drill in Distributed Mode</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/starting-the-web-ui/">Starting the Web UI</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/stopping-drill/">Stopping Drill</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/identifying-multiple-drill-versions-in-a-cluster/">Identifying Multiple Drill Versions in a Cluster</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Configure Drill</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configure-drill-introduction/">Configure Drill Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configuring-drill-memory/">Configuring Drill Memory</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Securing Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/securing-drill-introduction/">Securing Drill Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/secure-communication-paths/">Secure Communication Paths</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/roles-and-privileges/">Roles and Privileges</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-user-impersonation/">Configuring User Impersonation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-inbound-impersonation/">Configuring Inbound Impersonation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-user-impersonation-with-hive-authorization/">Configuring User Impersonation with Hive Authorization</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-user-security/">Configuring User Security</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-plain-security/">Configuring Plain Security</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-ssl-tls-for-encryption/">Configuring SSL/TLS for Encryption</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-libpam4j-as-the-pam-authenticator/">Using libpam4j as the PAM Authenticator</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-jpam-as-the-pam-authenticator/">Using jpam as the PAM Authenticator</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-kerberos-security/">Configuring Kerberos Security</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-drill-to-use-spnego-for-http-authentication/">Configuring Drill to use SPNEGO for HTTP Authentication</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-web-ui-and-rest-api-security/">Configuring Web UI and REST API Security</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-custom-acls-to-secure-znodes/">Configuring Custom ACLs to Secure znodes</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Configuring a Multitenant Cluster</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-a-multitenant-cluster-introduction/">Configuring a Multitenant Cluster Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-multitenant-resources/">Configuring Multitenant Resources</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-resources-for-a-shared-drillbit/">Configuring Resources for a Shared Drillbit</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Configuration Options</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuration-options-introduction/">Configuration Options Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/start-up-options/">Start-Up Options</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/planning-and-execution-options/">Planning and Execution Options</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/persistent-configuration-storage/">Persistent Configuration Storage</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/global-query-list/">Global Query List</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/ports-used-by-drill/">Ports Used by Drill</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configuring-the-drill-shell/">Configuring the Drill Shell</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configuring-cgroups-to-control-cpu-usage/">Configuring cgroups to Control CPU Usage</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Connect a Data Source</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/connect-a-data-source-introduction/">Connect a Data Source Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/storage-plugin-registration/">Storage Plugin Registration</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Storage Plugin Configuration</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/plugin-configuration-basics/">Plugin Configuration Basics</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-storage-plugins/">Configuring Storage Plugins</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/workspaces/">Workspaces</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drill-default-input-format/">Drill Default Input Format</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/file-system-storage-plugin/">File System Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hbase-storage-plugin/">HBase Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hive-storage-plugin/">Hive Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/rdbms-storage-plugin/">RDBMS Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/mongodb-storage-plugin/">MongoDB Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/mapr-db-format/">MapR-DB Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/s3-storage-plugin/">S3 Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/kafka-storage-plugin/">Kafka Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/azure-blob-storage-plugin/">Azure Blob Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/druid-storage-plugin/">Druid Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/http-storage-plugin/">HTTP Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/elasticsearch-storage-plugin/">ElasticSearch Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/splunk-storage-plugin/">Splunk Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/cassandra-storage-plugin/">Cassandra Storage Plugin</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">ODBC/JDBC Interfaces</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/interfaces-introduction/">Interfaces Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-the-jdbc-driver/">Using the JDBC Driver</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-jdbc-with-squirrel-on-windows/">Using JDBC with SQuirreL on Windows</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Installing the ODBC Driver</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-the-driver-on-linux/">Installing the Driver on Linux</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-the-driver-on-mac-os-x/">Installing the Driver on Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/installing-the-driver-on-windows/">Installing the Driver on Windows</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Configuring ODBC</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/odbc-configuration-reference/">ODBC Configuration Reference</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/logging-and-tracing/">Logging and Tracing</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-odbc-on-linux/">Configuring ODBC on Linux</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-odbc-on-mac-os-x/">Configuring ODBC on Mac OS X</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-odbc-on-windows/">Configuring ODBC on Windows</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/testing-the-odbc-connection/">Testing the ODBC Connection</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Using Drill Explorer</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drill-explorer-introduction/">Drill Explorer Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/connecting-drill-explorer-to-data/">Connecting Drill Explorer to Data</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/browsing-data-and-defining-views/">Browsing Data and Defining Views</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Using Drill with BI Tools</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-drill-with-bi-tools-introduction/">Using Drill with BI Tools Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/tableau-examples/">Tableau Examples</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-microstrategy-analytics-with-apache-drill/">Using MicroStrategy Analytics with Apache Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-tibco-spotfire-desktop-with-drill/">Using Tibco Spotfire Desktop with Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-tibco-spotfire-server-with-drill/">Configuring Tibco Spotfire Server with Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-qlik-sense-with-drill/">Using Qlik Sense with Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-apache-drill-with-tableau-10-2/">Using Apache Drill with Tableau 10.2</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-apache-drill-with-tableau-9-desktop/">Using Apache Drill with Tableau 9 Desktop</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-apache-drill-with-tableau-9-server/">Using Apache Drill with Tableau 9 Server</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-information-builders-webfocus-with-apache-drill/">Using Information Builders’ WebFOCUS with Apache Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-jreport-with-drill/">Configuring JReport with Drill</a></li>
+              
+            </ul>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Query Data</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/query-data-introduction/">Query Data Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Querying a File System</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-a-file-system-introduction/">Querying a File System Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-avro-files/">Querying Avro Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-json-files/">Querying JSON Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-parquet-files/">Querying Parquet Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-plain-text-files/">Querying Plain Text Files</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-directories/">Querying Directories</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-sequence-files/">Querying Sequence Files</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/querying-hbase/">Querying HBase</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Querying Complex Data</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-complex-data-introduction/">Querying Complex Data Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sample-data-donuts/">Sample Data: Donuts</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/selecting-flat-data/">Selecting Flat Data</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-sql-functions-clauses-and-joins/">Using SQL Functions, Clauses, and Joins</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/selecting-nested-data-for-a-column/">Selecting Nested Data for a Column</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/selecting-multiple-columns-within-nested-data/">Selecting Multiple Columns Within Nested Data</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/querying-hive/">Querying Hive</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/querying-the-information-schema/">Querying the INFORMATION SCHEMA</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Querying Indexes</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/querying-indexes-introduction/">Querying Indexes Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/queries-that-qualify-for-index-based-query-plans/">Queries that Qualify for Index-Based Query Plans</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/types-of-indexes/">Types of Indexes</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/index-selection/">Index Selection</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/designing-indexes-for-your-queries/">Designing Indexes for Your Queries</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/configuring-index-planning/">Configuring Index Planning</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/verifying-index-use/">Verifying Index Use</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/querying-system-tables/">Querying System Tables</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/monitoring-and-canceling-queries-in-the-drill-web-ui/">Monitoring and Canceling Queries in the Drill Web UI</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Performance Tuning</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Drill Metastore</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/using-drill-metastore/">Using Drill Metastore</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drill-iceberg-metastore/">Drill Iceberg Metastore</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/rdbms-metastore/">RDBMS Metastore</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/performance-tuning-introduction/">Performance Tuning Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Partition Pruning</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/partition-pruning-introduction/">Partition Pruning Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/how-to-partition-data/">How to Partition Data</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/asynchronous-parquet-reader/">Asynchronous Parquet Reader</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/optimizing-parquet-metadata-reading/">Optimizing Parquet Metadata Reading</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/parquet-filter-pushdown/">Parquet Filter Pushdown</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hive-metadata-caching/">Hive Metadata Caching</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/choosing-a-storage-format/">Choosing a Storage Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Query Plans and Tuning</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-plans-and-tuning-introduction/">Query Plans and Tuning Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/join-planning-guidelines/">Join Planning Guidelines</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/guidelines-for-optimizing-aggregation/">Guidelines for Optimizing Aggregation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/modifying-query-planning-options/">Modifying Query Planning Options</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sort-based-and-hash-based-memory-constrained-operators/">Sort-Based and Hash-Based Memory-Constrained Operators</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/enabling-query-queuing/">Enabling Query Queuing</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/throttling/">Throttling</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/controlling-parallelization-to-balance-performance-with-multi-tenancy/">Controlling Parallelization to Balance Performance with Multi-Tenancy</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Identifying Performance Issues</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-plans/">Query Plans</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-profiles/">Query Profiles</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Performance Tuning Reference</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-profile-column-descriptions/">Query Profile Column Descriptions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/physical-operators/">Physical Operators</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/monitoring-metrics/">Monitoring Metrics</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Log and Debug</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/log-and-debug-introduction/">Log and Debug Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/error-messages/">Error Messages</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/modify-logback-xml/">Modify logback.xml</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/review-the-java-stack-trace/">Review the Java Stack Trace</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/query-audit-logging/">Query Audit Logging</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">SQL Reference</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/sql-reference-introduction/">SQL Reference Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Data Types</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/supported-data-types/">Supported Data Types</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/date-time-and-timestamp/">Date, Time, and Timestamp</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/handling-different-data-types/">Handling Different Data Types</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/lexical-structure/">Lexical Structure</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/operators/">Operators</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Functions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/about-sql-function-examples/">About SQL Function Examples</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/math-and-trig/">Math and Trig</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/data-type-conversion/">Data Type Conversion</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/data-type-functions/">Data Type Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/date-time-functions-and-arithmetic/">Date/Time Functions and Arithmetic</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/string-manipulation/">String Manipulation</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/aggregate-and-aggregate-statistical/">Aggregate and Aggregate Statistical</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/functions-for-handling-nulls/">Functions for Handling Nulls</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/phonetic-functions/">Phonetic Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/string-distance-functions/">String Distance Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/cryptography-functions/">Cryptography Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sql-dialect-compatibility-functions/">SQL dialect compatibility functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/gis-functions/">GIS functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/time-series-analysis-functions/">Time Series Analysis Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/ip-networking-functions/">IP Networking functions</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Window Functions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sql-window-functions-introduction/">SQL Window Functions Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/aggregate-window-functions/">Aggregate Window Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/ranking-window-functions/">Ranking Window Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/value-window-functions/">Value Window Functions</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/sql-window-functions-examples/">SQL Window Functions Examples</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Nested Data Functions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/nested-data-limitations/">Nested Data Limitations</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/flatten/">FLATTEN</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/kvgen/">KVGEN</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/repeated-count/">REPEATED_COUNT</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/repeated-contains/">REPEATED_CONTAINS</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/query-directory-functions/">Query Directory Functions</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Commands</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/supported-sql-commands/">Supported SQL Commands</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/analyze-table-refresh-metadata/">ANALYZE TABLE REFRESH METADATA</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/analyze-table-compute-statistics/">ANALYZE TABLE COMPUTE STATISTICS</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/set/">SET</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/refresh-table-metadata/">REFRESH TABLE METADATA</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/reset/">RESET</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/alter-system/">ALTER SYSTEM</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-or-replace-schema/">CREATE OR REPLACE SCHEMA</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-table-as-ctas/">CREATE TABLE AS (CTAS)</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-temporary-table-as-cttas/">CREATE TEMPORARY TABLE AS (CTTAS)</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-function-using-jar/">CREATE FUNCTION USING JAR</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/partition-by-clause/">PARTITION BY Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/create-view/">CREATE VIEW</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/describe/">DESCRIBE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drop-function-using-jar/">DROP FUNCTION USING JAR</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drop-table/">DROP TABLE</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drop-view/">DROP VIEW</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/explain/">EXPLAIN</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/lateral-join/">LATERAL Join</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/select/">SELECT</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/select-list/">SELECT List</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/from-clause/">FROM Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/group-by-clause/">GROUP BY Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/having-clause/">HAVING Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/limit-clause/">LIMIT Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/offset-clause/">OFFSET Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/order-by-clause/">ORDER BY Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/union-set-operator/">UNION Set Operator</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/where-clause/">WHERE Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/with-clause/">WITH Clause</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/show-databases-and-show-schemas/">SHOW DATABASES and SHOW SCHEMAS</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/show-files/">SHOW FILES</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/show-tables/">SHOW TABLES</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/use/">USE</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">SQL Conditional Expressions</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/case/">CASE</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/reserved-keywords/">Reserved Keywords</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/sql-extensions/">SQL Extensions</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Data Sources and File Formats</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/data-sources-and-file-formats-introduction/">Data Sources and File Formats Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hive-to-drill-data-type-mapping/">Hive-to-Drill Data Type Mapping</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/deploying-and-using-a-hive-udf/">Deploying and Using a Hive UDF</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/parquet-format/">Parquet Format</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/logfile-plugin/">Logfile Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/json-data-model/">JSON Data Model</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/text-files-csv-tsv-psv/">Text Files: CSV, TSV, PSV</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/sequence-files/">Sequence Files</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/httpd-format-plugin/">HTTPD Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/image-metadata-format-plugin/">Image Metadata Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/syslog-format-plugin/">Syslog Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/ltsv-format-plugin/">LTSV Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/spss-format-plugin/">SPSS Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/esri-shapefile-format-plugin/">ESRI Shapefile Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/excel-format-plugin/">Excel Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/hdf5-format-plugin/">HDF5 Format Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/xml-format-plugin/">XML Format Plugin</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Develop Custom Functions</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/develop-custom-functions-introduction/">Develop Custom Functions Introduction</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/developing-a-simple-function/">Developing a Simple Function</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/tutorial-develop-a-simple-function/">Tutorial: Develop a Simple Function</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/developing-an-aggregate-function/">Developing an Aggregate Function</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Adding Custom Functions to Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/adding-custom-functions-to-drill-introduction/">Adding Custom Functions to Drill Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/manually-adding-custom-functions-to-drill/">Manually Adding Custom Functions to Drill</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/creating-custom-authenticators/">Creating Custom Authenticators</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/dynamic-udfs/">Dynamic UDFs</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-custom-functions-in-queries/">Using Custom Functions in Queries</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/custom-function-interfaces/">Custom Function Interfaces</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a class="reference internal" href="/zh/docs/troubleshooting/">Troubleshooting</a></li>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Developer Information</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">REST API</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/rest-api-introduction/">REST API Introduction</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/submitting-queries-from-the-rest-api-when-impersonation-is-enabled-and-authentication-is-disabled/">Submitting Queries from the REST API when Impersonation is Enabled and Authentication is Disabled</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/use-postman-to-run-sql-queries-on-drill-data-sources/">Use Postman to Run SQL Queries on Drill Data Sources</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Develop Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/compiling-drill-from-source/">Compiling Drill from Source</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/useful-information-for-drill-developers/">Useful Information for Drill Developers</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Contribute to Drill</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/apache-drill-contribution-guidelines/">Apache Drill Contribution Guidelines</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/apache-drill-contribution-ideas/">Apache Drill Contribution Ideas</a></li>
+              
+            </ul>
+            
+          
+            
+              <li class="toctree-l2"><a href="javascript: void(0);">Design Docs</a></li>
+              <ul style="display: none">
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/drill-plan-syntax/">Drill Plan Syntax</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/rpc-overview/">RPC Overview</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/query-stages/">Query Stages</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/useful-research/">Useful Research</a></li>
+              
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/value-vectors/">Value Vectors</a></li>
+              
+            </ul>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Release Notes</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-19-0-release-notes/">Apache Drill 1.19.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-18-0-release-notes/">Apache Drill 1.18.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-17-0-release-notes/">Apache Drill 1.17.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-16-0-release-notes/">Apache Drill 1.16.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-15-0-release-notes/">Apache Drill 1.15.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-14-0-release-notes/">Apache Drill 1.14.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-13-0-release-notes/">Apache Drill 1.13.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-12-0-release-notes/">Apache Drill 1.12.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-11-0-release-notes/">Apache Drill 1.11.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-10-0-release-notes/">Apache Drill 1.10.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-9-0-release-notes/">Apache Drill 1.9.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-8-0-release-notes/">Apache Drill 1.8.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-7-0-release-notes/">Apache Drill 1.7.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-6-0-release-notes/">Apache Drill 1.6.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-5-0-release-notes/">Apache Drill 1.5.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-4-0-release-notes/">Apache Drill 1.4.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-3-0-release-notes/">Apache Drill 1.3.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-2-0-release-notes/">Apache Drill 1.2.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-1-0-release-notes/">Apache Drill 1.1.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-1-0-0-release-notes/">Apache Drill 1.0.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-9-0-release-notes/">Apache Drill 0.9.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-8-0-release-notes/">Apache Drill 0.8.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-7-0-release-notes/">Apache Drill 0.7.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-6-0-release-notes/">Apache Drill 0.6.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-5-0-release-notes/">Apache Drill 0.5.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-0-4-0-release-notes/">Apache Drill 0.4.0 Release Notes</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/apache-drill-m1-release-notes-apache-drill-alpha/">Apache Drill M1 Release Notes (Apache Drill Alpha)</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Sample Datasets</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/enron-emails/">Enron Emails</a></li>
+            
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/wikipedia-edit-history/">Wikipedia Edit History</a></li>
+            
+          
+          </ul>
+        
+      
+        
+          <li class="toctree-l1"><a class="reference internal" href="/zh/docs/project-bylaws/">Project Bylaws</a></li>
+        
+      
+        
+          <li class="toctree-l1"><a href="javascript: void(0);">Ecosystem</a></li>
+          <ul style="display: none">
+          
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/using-saiku-analytics-with-apache-drill/">Using Saiku Analytics with Apache Drill</a></li>
+            
+          
+          </ul>
+        
+      
+      </ul>
+
+    </div>
+  </div>
+</aside>
+
+
+<nav class="breadcrumbs">
+  <li><a href="/zh/docs/">Docs</a></li>
+ 
+  
+    <li><a href="/zh/docs/tutorials/">教程</a></li>
+  
+  <li>分析社交媒体</li>
+</nav>
+
+
+<div class="main-content-wrapper">
+  <div class="main-content">
+
+    
+      <a class="edit-link" href="https://github.com/apache/drill/blob/gh-pages/_docs/zh/tutorials/060-analyzing-social-media.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+    
+
+    <div class="int_title left">
+      <h1>分析社交媒体</h1>
+
+    </div>
+
+    <!-- jt: we don't need to display a last-modified date on each page to users
+    
+    --> 
+
+    <div class="int_text" align="left">
+      
+        <p>本教程介绍了如何使用 Apache Drill 分析原生 JSON 格式的 Twitter 数据。首先，使用 Apache Flume 处理 Twitter 数据流并过滤关键字和语言类型，然后使用 Drill 分析数据。最后，运行 MicroStrategy 以获得交互式报告和分析。</p>
+
+<h2 id="社交媒体分析所需准备">社交媒体分析所需准备</h2>
+
+<ul>
+  <li>Twitter 开发者账户</li>
+  <li>亚马逊云服务账户</li>
+  <li>亚马逊云服务中加载一个 MapR 节点</li>
+  <li>亚马逊云服务中加载一个 MicroStrategy 实例</li>
+</ul>
+
+<h2 id="配置亚马逊云服务环境">配置亚马逊云服务环境</h2>
+
+<p>在亚马逊云服务 (AWS) 上配置环境包括以下任务：</p>
+
+<ul>
+  <li>创建一个 Twitter 开发者账户并注册一个 Twitter 应用程序</li>
+  <li>在开启的 AWS MapR 节点中配置 Flume 和 Drill</li>
+  <li>在 AWS 虚拟机中配置 MicroStrategy</li>
+  <li>配置 MicroStrategy 来使用 Drill 运行报告和分析</li>
+</ul>
+
+<p>本教程假设你已熟悉 MicroStrategy。有关使用 MicroStrategy 的信息，请参考 <a href="http://www.microstrategy.com/Strategy/media/downloads/products/cloud/cloud_aws-user-guide.pdf">MicroStrategy documentation</a>。</p>
+
+<hr />
+
+<h2 id="订阅-twitter-新消息并建立-flume-凭证">订阅 Twitter 新消息并建立 Flume 凭证</h2>
+
+<p>以下步骤订阅 Twitter 新消息并获取 Twitter 证书使 Flume 将 Twitter 设置为数据源：</p>
+
+<ol>
+  <li>打开 dev.twitter.com 页面并登陆。</li>
+  <li>点击页面底部 Tools 中的 <strong>Manage Your Apps</strong>。</li>
+  <li>点击 <strong>Create New App</strong> 并填写表格，创建 App。</li>
+  <li>点击 <strong>Keys and Access Tokens</strong> 选项卡，创建一个新的秘钥，并点击 <strong>Create My Access Token</strong>。只读权限即可创建秘钥。</li>
+  <li>复制 Twitter App 中的以下证书用于配置 Flume：
+    <ul>
+      <li>Consumer Key</li>
+      <li>Consumer Secret</li>
+      <li>Access Token</li>
+      <li>Access Token Secret</li>
+    </ul>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="在-aws-虚拟机中配置-mapr-节点">在 AWS 虚拟机中配置 MapR 节点</h2>
+
+<p>你需要在 AWS 中加载名为 ami-4dedc47d 的 MapR 节点。AMI 已经配置了 Flume、Drill 和特定工具，以支持来自 Twitter 和 Drill 查询数据流。AMI 社区免费开放使用 AMI，具有 6GB 根驱动器和 100GB 数据驱动器。作为一个小节点，丰富的硬件资源将显著加快 Twitter 数据查询的响应时间。</p>
+
+<ol>
+  <li>在 AWS 中启动一个实例。AMI 镜像预先配置为具有4个 vCPU 和 32GB 内存的 m2.2xlarge 型实例。</li>
+  <li>选择 AMI id 为 ami-4dedc47d。</li>
+  <li>确保虚拟机已分配外部 IP 地址；弹性 IP 更好，但不是必需的。</li>
+  <li>确认安全验证是否应用于与实例上打开的 TCP 和 UDP 端口。此时，节点上的所有端口应处于打开状态。</li>
+  <li>配置并启动实例后，在 AWS EC2 管理界面中重启节点以完成配置。</li>
+</ol>
+
+<p>该节点配置了所需的 Flume 和 Drill。接下来，使用所需的证书和关键字更新 Flume 配置文件。</p>
+
+<hr />
+
+<h2 id="更新-flume-配置文件">更新 Flume 配置文件</h2>
+
+<ol>
+  <li>使用 AWS 凭证登录 ec2-user。</li>
+  <li>使用 <code class="language-plaintext highlighter-rouge">su – mapr</code> 切换到节点上的 MapR 用户。</li>
+  <li>使用步骤一中的 Twitter App 证书更新 <code class="language-plaintext highlighter-rouge">&lt;FLUME HOME&gt;/conf</code> 目录中的 Flume 配置文件 <code class="language-plaintext highlighter-rouge">flume-env.sh</code> 和 <code class="language-plaintext highlighter-rouge">flume.conf</code>。请参考<a href="https://github.com/mapr/mapr-demos/tree/master/drill-twitter-MSTR/flume">sample files</a>。</li>
+  <li>输入所需的关键字，以逗号分隔。使用空格分隔多个关键字。</li>
+  <li>如果要过滤特定语言的推文，需要通过以逗号分隔的 ISO 639-1 <a href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">语言代码</a>。如果不需要语言类型过滤，请将参数留空。</li>
+  <li>以用户 <code class="language-plaintext highlighter-rouge">MapR</code> 切换到 FLUME HOME 目录，并以用户 <code class="language-plaintext highlighter-rouge">MapR</code> 在命令行执行命令：</li>
+  <li>
+    <p>通过下命令启动 Flume：</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ./bin/flume-ng agent --conf ./conf/ -f ./conf/flume.conf -Dflume.root.logger=INFO,console -n TwitterAgent
+</code></pre></div>    </div>
+  </li>
+  <li>输入 <code class="language-plaintext highlighter-rouge">CTRL+a</code> 使程序退出前台，然后输入 <code class="language-plaintext highlighter-rouge">d</code> 使程序后台运行。要使程序返回屏幕终端，只需输入 screen -r 即可重新连接。Twitter 数据会加载进系统。</li>
+  <li>
+    <p>运行以下命令来查看 Twitter 数据所占磁盘空间</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  du –h /mapr/drill_demo/twitter/feed.
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>数据加载需要等待 20-30 分钟，加载完成之后才可以开始查询数据。</p>
+
+<hr />
+
+<h2 id="在-aws-虚拟机中配置-microstrategy">在 AWS 虚拟机中配置 MicroStrategy</h2>
+
+<p>MicroStrategy 为 AWS 虚拟机提供各种适配类型。MicroStrategy 有30天的免费试用。AWS 也会针对平台和操作系统收取费用。</p>
+
+<p>如要在 AWS 中配置 MicroStrategy：</p>
+
+<ol>
+  <li>在 <a href="http://www.microstrategy.com/us/analytics/analytics-on-aws">MicroStrategy website</a>页面, 点击 <strong>Get started</strong>。</li>
+  <li>选择用户的数量，比如选择25个用户。</li>
+  <li>选择 AWS 的使用地区。强烈建议给 MapR 节点和 MicroStrategy 实例选择和 AWS 相同的使用地区。</li>
+  <li>点击 <strong>Continue</strong>。</li>
+  <li>在手动启动选项卡上, 点击 <strong>Launch with EC2 Console</strong>, 然后选择 <strong>r3.large instance</strong>
+一个 r3.large 的 EC2 实例足以满足 25 个用户的用户量。</li>
+  <li>点击 <strong>Configure Instance Details</strong>。</li>
+  <li>选择适当的网络设置和网段，最好与您配置的 MapR 节点处在相同的网络中。</li>
+  <li>保留默认存储类型。</li>
+  <li>给实例分配标签以方便识别。</li>
+  <li>选择一个允许外部 IP 访问的安全组，并打开所有端口，不必担心存在安全问题。</li>
+  <li>在 AWS 控制台中，启动一个实例，当 AWS 报告该实例正在运行时，选择该实例并单击 <strong>Connect</strong>。</li>
+  <li>点击 <strong>Get Password</strong> 来获得 OS 的管理员密码。</li>
+</ol>
+
+<div class="admonition important">
+  <p class="first admonition-title">Important</p>
+  <p class="last">确保 MicroStrategy 实例具有公共 IP；弹性 IP 更佳，但不是必需  </p>
+</div>
+
+<p>该实例现在可通过 RDP 访问并绑定 AWS 的证书和安全验证。</p>
+
+<hr />
+
+<h2 id="配置-microstrategy">配置 MicroStrategy</h2>
+
+<p>你需要使用 ODBC 驱动程序来配置，使 MicroStrategy 可以与 Drill 集成。安装完成后的 MicroStrategy 套件，包含许多实用的 Twitter 数据报告模板。你可以修改报告模板或使用模板来创建新的报告和分析模型。</p>
+
+<ol>
+  <li>使用 ODBC 管理员配置名为 <code class="language-plaintext highlighter-rouge">Twitter</code> 的 DSN 系统。MapR ODBC 驱动程序的快速入门版本需要 DSN 系统。</li>
+  <li><a href="http://package.mapr.com/tools/MapR-ODBC/MapR_Drill/MapRDrill_odbc_v0.08.1.0618/MapRDrillODBC32.msi">下载用于 Drill 的 MapR ODBC 驱动程序的快速入门版本</a>。</li>
+  <li><a href="http://drill.apache.org/docs/using-microstrategy-analytics-with-apache-drill">配置 ODBC 驱动程序</a> 使 MicroStrategy Analytics 中可以使用 Drill。
+Drill 是程序的一部分，不需要配置。</li>
+  <li>如果 MapR 节点和 MicroStrategy 实例位于同一网络，使用 AWS 虚拟机私有 IP（推荐）。</li>
+  <li>下载 <a href="https://github.com/mapr/mapr-demos/blob/master/drill-twitter-MSTR/MSTR/DrillTwitterProjectPackage.mmp">Drill 和 Twitter 配置</a> 配置 Windows 中的 MicroStrategy 可以使用 Git，同时使 Windows 全面兼容 Git。</li>
+</ol>
+
+<hr />
+
+<h2 id="导入报告">导入报告</h2>
+
+<ol>
+  <li>在 MicroStrategy Developer，选择 <strong>Schema &gt; Create New Project</strong> 来创建新的项目。</li>
+  <li>点击 <strong>Create Project</strong> 给新项目命名。</li>
+  <li>点击 <strong>OK</strong>。
+新项目出现在 MicroStrategy Developer。</li>
+  <li>打开 MicroStrategy Object Manager。</li>
+  <li>连接到 Project Source 并管理员登录
+<img src="/images/docs/socialmed1.png" alt="project sources" /></li>
+  <li>在 MicroStrategy Object Manager 中的 MicroStrategy Analytics Modules，选择组件所应用的项目。比如，选择 <strong>Twitter analysis Apache Drill</strong>。  <br />
+<img src="/images/docs/socialmed2.png" alt="project sources" /></li>
+  <li>选择 <strong>Tools &gt; Import Configuration Package</strong>。</li>
+  <li>打开组件配置文件，并点击 <strong>Proceed</strong>。<br />
+<img src="/images/docs/socialmed3.png" alt="project sources" /><br />
+项目对应的报告便会生成到 MicroStrategy 中。</li>
+</ol>
+
+<p>你可以在 MicroStrategy Developer 中测试和修改报告。并在必要时修改权限。</p>
+
+<hr />
+
+<h2 id="更新-schema">更新 Schema</h2>
+
+<ol>
+  <li>在 MicroStrategy Developer 中, 选择 <strong>Schema &gt; Update Schema</strong>。</li>
+  <li>在 Schema Update 中，勾中所有选项，并点击 <strong>Update</strong>。<br />
+<img src="/images/docs/socialmed4.png" alt="project sources" /></li>
+</ol>
+
+<hr />
+
+<h2 id="创建用户并设置密码">创建用户并设置密码</h2>
+
+<ol>
+  <li>点击 Administration.</li>
+  <li>点击 User Manager, 然后点击 <strong>Everyone</strong>.</li>
+  <li>点击右键创建新用户，或点击 <strong>Administrator</strong> 来编辑密码.</li>
+</ol>
+
+<hr />
+
+<h2 id="关于报告">关于报告</h2>
+
+<p>组件中有18个报告模板。大多数报告会提示根据需要指定日期范围、输出条件和所需字段。该组件包包含三个主要类别的报告：</p>
+
+<ul>
+  <li>数量统计：指定日期和时间的推文总量。</li>
+  <li>热门列表：显示热门推文、转推、热门话题和用户。</li>
+  <li>关键字：根据推文或者转推中的内容来统计关键字。</li>
+</ul>
+
+<p>你可以复制和修改报告或将报告作为模板并通过 Drill 查询 Twitter。</p>
+
+<p>你可以通过 MicroStrategy Developer 或 Web 界面访问报告。MicroStrategy Developer 提供了比 Web 界面更强大的接口来修改或添加新报告，但需要对节点进行 RDP 访问。</p>
+
+<hr />
+
+<h2 id="使用网页界面">使用网页界面</h2>
+
+<ol>
+  <li>使用 Web 浏览器，输入 Web 界面的 URL：<br />
+      http://<MSTR node="" name="" or="" IP="" address="">/MicroStrategy/asp/Main.aspx</MSTR></li>
+  <li>使用初始账户或管理员账户登录，并通过证书初始化 Developer。</li>
+  <li>在 MicroStrategy Web 用户页面上，选择用于加载分析组件的项目：<strong>Drill Twitter Analysis</strong>。<br />
+<img src="/images/docs/socialmed5.png" alt="choose project" /></li>
+  <li>选择 <strong>Shared Reports</strong>.<br />
+将出现包含三个主要报告类别的文件夹。
+<img src="/images/docs/socialmed6.png" alt="project sources" /></li>
+  <li>选择一个报告，并按提示操作。例如，要按日期范围统计热门推文语言种类，请输入所需的 Date_Start 和 Date_End。 
+<img src="/images/docs/socialmed7.png" alt="project sources" /></li>
+  <li>点击 <strong>Run Report</strong>.<br />
+直方图报告会按日期范围显示排名靠前的推文语言种类。
+<img src="/images/docs/socialmed8.png" alt="project sources" /></li>
+  <li>要刷新数据或重新输入参数，请选择 <strong>Data &gt; Refresh</strong> 或 <strong>Data &gt; Re-prompt</strong>.</li>
+</ol>
+
+<h2 id="浏览-apache-drill-twitter-分析报告">浏览 Apache Drill Twitter 分析报告</h2>
+
+<p>MicroStrategy Developer 报告位于组件安装路径中的 Public Objects 文件夹中
+   <img src="/images/docs/socialmed9.png" alt="project sources" />
+许多报告要求按提示选择合适的参数。例如，选择右侧栏中的 Top Hashtags 报告。此报告需要提供开始日期和结束日期来指定你感兴趣的时间范围；默认情况下，是以当前时间为基准最近两个月的数据。你还可以指定要返回的热门话题的数量；默认是热度前10的热门话题。<br />
+   <img src="/images/docs/socialmed10.png" alt="project sources" />
+会出现一个带有热门话题和它在指定参数范围内出现次数的条形图报告。
+   <img src="/images/docs/socialmed11.png" alt="project sources" /></p>
+
+<p>组件中还提供了其他报告。例如，此报告按小时显示推文总数：
+   <img src="/images/docs/socialmed12.png" alt="tweets by hour" />
+此报告显示日期范围内的最高转推次数，以及该日期范围内的原始推文日期和计数。<br />
+   <img src="/images/docs/socialmed13.png" alt="retweets report" /></p>
+
+<hr />
+
+<h2 id="总结">总结</h2>
+
+<p>在本教程中，学习了如何配置环境以使用 Apache Flume 传输 Twitter 数据流。然后学习了如何通过 Apache Drill 使用 SQL 分析原生 JSON 格式的数据，以及如何使用 MicroStrategy 运行交互式报告和分析。</p>
+
+    
+      
+        <div class="doc-nav">
+  
+  <span class="previous-toc"><a href="/zh/docs/analyzing-highly-dynamic-datasets/">← 分析高动态数据集</a></span><span class="next-toc"><a href="/zh/docs/analyzing-data-using-window-functions/">通过窗口函数分析数据集 →</a></span>
+</div>
+
+    
+    </div>
+  </div>
+</div>
+
+  </div>
+  <p class="push"></p>
+<div id="footer" class="mw">
+<div class="wrapper">
+Copyright © 2012-2020 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
+Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
+</div>
+</div>
+
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-53379651-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-548b2caa33765e8d" async="async"></script>
+
+</body>
+</html>
