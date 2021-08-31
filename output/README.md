@@ -1,36 +1,30 @@
-The Apache Drill website is built using [Jekyll](http://jekyllrb.com/), from Markdown sources in the
-[drill/gh-pages](https://github.com/apache/drill/tree/gh-pages branch of the main Drill code repository.
-Changes made anywhere downstream of that will be lost in the next build and deploy cycle.
+**N.B.** As of 2021-08-27, documentation is no longer kept in drill/gh-pages.  All documentation, including both the source Markdown and the generated HTML is now kept in this repository.
 
-To make documenation contributions easier, pull requests to the gh-pages branch do not require any
-additional process, such as the creation of a JIRA ticket.
+The Apache Drill website is built by [Jekyll](http://jekyllrb.com/) from Markdown sources in designated branches of this repository.  The build process flows from left to right in the following table.
+
+| Source Markdown branch                                                  | Generated HTML branch                                                           | Publish URL                     |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------- |
+| [drill-site/master](https://github.com/apache/drill-site/tree/master)   | [drill-site/asf-site](https://github.com/apache/drill-site/tree/asf-site)       | https://drill.apache.org        |
+| [drill-site/staging](https://github.com/apache/drill-site/tree/staging) | [drill-site/asf-staging](https://github.com/apache/drill-site/tree/asf-staging) | https://drill.staged.apache.org |
+
+To make documenation contributions easier, pull requests to this repository do not require the creation of JIRA ticket.  Nevertheless, a Drill project commiter will still need to check and merge a submitted PR.
+
+# Continuous Integration
+
+When new commits are pushed to any of the listed source Markdown branches, a Jekyll website build will be kicked off.  You can monitor the build, which normally runs in about 3 minutes, and view its logs at https://ci2.apache.org/.  Once the build completes, the resulting website will automatically be committed to the corresponding HTML branch in the table above.  The commit to the HTML branch will result in a deployment to the corresponding publish URL.  While it is possible to push commits directly to the HTML branches to effect website updates, it's almost certain that you never want to do this and should be working in one of the Markdown branches.
+
+At the time of writing, the staging website has no designated reponsibility and you may freely use it to test things out without worrying about what you clobber there.  Note that this means that others can freely clobber your staging deployments too.
+
+# Building locally
+
+For more extensive documentation contributions it is beneficial to build and serve the website locally.
 
 # Configuring env
 
-1. Install `ruby`
-2. Install `bundler` and `jekyll` `v3.9.0`:
-
-```
-gem install bundler jekyll:3.9.0
-```
-
-3. Install Jekyll plugins.
-
-```
-gem install jekyll-redirect-from:0.9.1
-gem install jekyll-polyglot
-```
-
-5. Install Python 3
-
-Please make sure that specific versions of libraries are installed since building the site with other versions
-may cause some issues like including md document index into the references, etc.
-
-## Note for existing contributors
-
-The software version numbers above underwent a major increase in 2020 and the Markdown processor
-changed from Redcarpet to Kramdown. Please check the versions in your environment if you're having
-trouble generating the site.
+1. Install the Ruby language and Bundler.
+2. Clone this repository and checkout a source Markdown branch.
+3. In the project root directory, install gems with `bundle install`.
+4. Install Python 3.
 
 # Documentation Guidelines
 
@@ -64,13 +58,11 @@ Best practices:
 To preview the website on your local machine:
 
 ```bash
-jekyll build --config _config.yml,_config-prod.yml
-_tools/createdatadocs.py
-jekyll serve --config _config.yml,_config-prod.yml [--livereload] [--incremental]
+bundle exec jekyll build
+bundle exec jekyll serve [--livereload] [--incremental]
 ```
 
-Note that you can skip the first two commands (and only run `jekyll serve`) if you haven't changed the title or
-path of any of the documentation pages.
+Once you're happy with the results, commit to the source Markdown branch and push to your fork, or directly to drill-site if you're a Drill committer.
 
 ## One Time Setup for Last-Modified-Date
 
@@ -109,50 +101,21 @@ Do not fill in or alter the date: field. Jekyll and git take care of that when y
 
 # Multilingual
 
-Multilingual support was added to the website in June 2021 using the polyglot Jekyll plugin.  The fallback language is set to English which means that when a translated page is not available the English version will be shown.   This means that a language which is incompletely translated is still deployable with no adverse effects.
+Multilingual support was added to the website in June 2021 using the polyglot Jekyll plugin. The fallback language is set to English which means that when a translated page is not available the English version will be shown. This means that a language which is incompletely translated is still deployable with no adverse effects.
 
 ## Add a new language
 
-1. Add the two-letter language code (`lang-code` forthwith) to the `languages` property in _config.yml.
+1. Add the two-letter language code (`lang-code` forthwith) to the `languages` property in \_config.yml.
 2. Add a `lang-code/` subdirectory to the root directory.
 3. Add a `lang-code/` subdirectory to each collection that will be translated, e.g. `_docs/lang-code/`.
-4. Check the `exclude_from_localization` list in _config.yml to ensure that the content you
-want to translate is not excluded from processing by the multlingual plugin.
+4. Check the `exclude_from_localization` list in \_config.yml to ensure that the content you
+   want to translate is not excluded from processing by the multlingual plugin.
 
 ## Add translated site pages
 
-The English versions of "site" pages such as index.html are stored in the root directory.  Create corresponding translated pages under `lang-code/` in which you set `lang` in the front matter to `lang-code` and leave the `permalink` the same as the English page.
+The English versions of "site" pages such as index.html are stored in the root directory. Create corresponding translated pages under `lang-code/` in which you set `lang` in the front matter to `lang-code` and leave the `permalink` the same as the English page.
 
 ## Add translated collection pages
 
-The English versions of "collection" pages such as the markdown under _docs/ are stored in an en/ subdirectory of the collection root.  Create corresponding translated pages in the collection under `lang-code/` in which you translate both `title` and `parent` in the front matter but leave the `slug` the same as the English page and set `lang` to `lang-code`.  Once you've translated the `title` of a parent page, you will need to provide files for each of its children (which can still contain the original English content) and in each set `parent` to the translated `title` of the parent.
+The English versions of "collection" pages such as the markdown under \_docs/ are stored in an en/ subdirectory of the collection root. Create corresponding translated pages in the collection under `lang-code/` in which you translate both `title` and `parent` in the front matter but leave the `slug` the same as the English page and set `lang` to `lang-code`. Once you've translated the `title` of a parent page, you will need to provide files for each of its children (which can still contain the original English content) and in each set `parent` to the translated `title` of the parent.
 
-# Compiling the Website
-
-Once the website is ready, you'll need to compile the site to static HTML so that it can then be published to Apache. This is as simple as running the `jekyll build` command. The `_config-prod.yml` configuration file causes a few changes to the site:
-
-- The `noindex` meta tag is removed. We want the production site to be indexed by search engines, but we don't want the staging site to be indexed.
-- The base URL is set to `/`. The production site is at `/`, whereas the staging site is at `/drill` (convenient for previewing on GitHub Pages: <http://apache.github.io/drill>).
-
-```bash
-jekyll build --config _config.yml,_config-prod.yml
-_tools/createdatadocs.py
-jekyll serve --config _config.yml,_config-prod.yml
-```
-
-# Uploading to the Apache Website (Drill Committers Only)
-
-Apache project websites use a system called svnpubsub for publishing. Basically, the static HTML needs to be pushed by one of the committers into the Apache SVN.
-
-```bash
-git clone -b asf-site https://gitbox.apache.org/repos/asf/drill-site.git ../drill-site
-rm -rf ../drill-site/*
-cp -R _site/* ../drill-site/
-cd ../drill-site
-git status
-git add *
-git commit -m "Website update"
-git push
-```
-
-The updates should then be live: <http://drill.apache.org>.
