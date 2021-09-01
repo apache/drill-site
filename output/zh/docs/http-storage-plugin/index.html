@@ -1622,6 +1622,29 @@ feature if the API is strict about parameter ordering.</p>
 <p>At present Drill does not enforce that parameters are provided in the query: Drill
 assumes parameters are optional.</p>
 
+<h4 id="api-connection-credentials-provider">API connection credentials provider</h4>
+
+<p>Starting from Drill 1.20.0, it is possible to use <a href="https://github.com/apache/drill/blob/master/docs/dev/PluginCredentialsProvider.md#plugin-credentials-provider">Credentials Provider</a> for specifying
+API connection credentials.</p>
+
+<p><code class="language-plaintext highlighter-rouge">credentialsProvider</code> property should be used to configure credentials provider, similar to the way
+how it is used for storage plugins:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+   </span><span class="nl">"credentialsProvider"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"credentialsProviderType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PlainCredentialsProvider"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"credentials"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+         </span><span class="nl">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user1"</span><span class="p">,</span><span class="w">
+         </span><span class="nl">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user1Pass"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+   </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>It is possible to use any available credential provider type for API connections, including custom implementations.
+Please refer to <a href="https://github.com/apache/drill/blob/master/docs/dev/PluginCredentialsProvider.md#developer-notes">Developer notes</a>
+for more details for creating custom credential provider implementations without changing Drill’s code.</p>
+
 <h3 id="data-path">Data Path</h3>
 
 <p>REST responses often have structure beyond the data you want to query. For example:</p>
