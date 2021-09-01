@@ -1,30 +1,31 @@
 ---
-title: "Orchestrating queries with Airflow"
+title: "使用 Airflow 编排查询"
 slug: "Orchestrating queries with Airflow"
 parent: "教程"
+lang: "zh"
 ---
 
-This tutorial walks through the development of Apache Airflow DAG that implements a basic ETL process using Apache Drill.  We'll install Airflow into a Python virtualenv using pip before writing and testing our new DAG.  Consult the [Airflow installation documentation](https://airflow.apache.org/docs/apache-airflow/stable/installation.html) for more information about installing Airflow.
+本教程将介绍通过 Apache Airflow DAG 的开发以使用 Apache Drill 实现基本的 ETL 流程。在编写和测试我们的新 DAG 之前，我们将使用 pip 将 Airflow 安装到 Python virtualenv 中。参考 [Airflow installation documentation](https://airflow.apache.org/docs/apache-airflow/stable/installation.html) 获得有关安装 Airflow 的更多信息。
 
-I'll be issuing commands using a shell on a Debian Linux machine in this tutorial but it should be possible with a little translation to follow along on other platforms.
+在本教程中，我将在 Debian Linux 机器上使用 shell 运行指令，在其他平台上进行简单转换后也可实现相同的功能。
 
-## Prerequisites
+## 准备开始
 
-1. A Python >= 3.6 installation, including pip and optionally virtualenv.
-2. A Drill installation where you have access to run queries and add new storage providers.  I'll be running an embedded mode Drill 1.19.
+1. 安装高于 3.6 版本的 Python，包括 pip 和可选的 virtualenv。
+2. 在一个有查询权限和新增存储权限的主机上安装 Drill，我将以嵌入式模式运行 Drill 1.19。
 
-## (Optional) Set up a virtualenv
+## (可选) 配置 virtualenv
 
-Create and activate a new virtualenv called "airflow".  If needed, adjust the Python interpreter path and virtualenv target path arguments for your environment.
+创建并激活一个新的名为 “airflow” 的 virtualenv。如有必要，给你的环境调整 Python 解释器路径和 virtualenv 目标路径。
 ```sh
 VIRT_ENV_HOME=~/.local/lib/virtualenv
 virtualenv -p /usr/bin/python3 $VIRT_ENV_HOME/airflow
 . $VIRT_ENV_HOME/airflow/activate
 ```
 
-## Install Airflow
+## 安装 Airflow
 
-If you've read their installation guide you'll have seen that the Airflow project provides constraints files the pin the versions of its Python package dependencies to known-good versions.  In many cases things work fine without constraints but, for the sake of reproducibility, we'll apply the constraints file applicable to our Python version using the script 0they provide for the purpose.
+如果你阅读了安装指南，就会看到 Airflow 项目提供了约束文件，将 Python 的依赖对应到稳定版本。在大多数情况下，不需约束文件即可正常工作，但为了可重复，我们将使用脚本来适配不同 Python 版本的约束文件。
 ```sh
 AIRFLOW_VERSION=2.1.2
 PYTHON_VERSION="$(python --version | cut -d " " -f 2 | cut -d "." -f 1-2)"
@@ -33,18 +34,18 @@ pip install "apache-0airflow==${AIRFLOW_VERSION}" --constraint "${CONSTRAINT_URL
 pip install apache-airflow-providers-apache-drill
 ```
 
-## Initialise Airflow
+## 初始化 Airflow
 
-We're just experimenting here so we'll have Airflow set up a local SQLite database and add an admin user for ourselves.
+因为只是教程示例，因此我们为 Airflow 设置一个本地 SQLite 数据库，并为我们自己添加一个管理员用户。
 ```sh
-# Optional: change Airflow's data dir from the default of ~/airflow
+# 可选: 将 Airflow 的数据目录从默认值更改为 ~/airflow
 export0 AIRFLOW_HOME=~/Development/airflow
 mkdir -p ~/Development/airflow/
 
-# Create a new SQLite database for Airflow
+# 为 Airflow 创建一个新的 SQLite 数据库
 airflow db init
 
-# Add an admin user
+# 添加管理员用户
 airflow users create \
 	--username admin \
 	--firstname FIRST_NAME \
@@ -54,9 +55,9 @@ airflow users create \
 	--password admin
 ```
 
-## Configure a Drill connection
+## 配置 Drill 连接
 
-At this point we should have a working Airflow installation. Fire up the web UI with `airflow webserver` and browse to http://localhost:8080.  Click on Admin -> Connections.  Add a new Drill connection called `drill_tutorial`, setting configuration according to your Drill environment.  If you're using embedded mode Drill locally like I am then you'll want the following config.
+目前，我们已有一个可以正常运行的 Airflow。通过指令 `airflow webserver` 启动 Web UI 并在浏览器输入 http://localhost:8080。点击 Admin -> Connections。添加名为 `drill_tutorial` 的 Drill 的连接，根据 Drill 的环境调整设置。如果你使用嵌入式模式启动 Drill，那么你需要以下配置。
 
 | Setting   | Value                                                        |
 | --------- | ------------------------------------------------------------ |
@@ -66,44 +67,40 @@ At this point we should have a working Airflow installation. Fire up the web UI 
 | Port      | 8047                                                         |
 | Extra     | {"dialect_driver": "drill+sadrill", "storage_plugin": "dfs"} |
 
-Note that the sqlalchemy-drill dialect and driver information must be specified in the `Extra` field.  See [the sqlalchemy-drill documentation](https://github.com/JohnOmernik/sqlalchemy-drill) for more information about its configuration. 
+请注意，必须在 `Extra` 字段中指定 sqlalchemy-drill 类型和驱动程序信息。参考 [the sqlalchemy-drill documentation](https://github.com/JohnOmernik/sqlalchemy-drill) 获得有关其配置的更多信息.
 
-After you've saved the new connection you can shut the Airflow web UI down with ctrl+c.
+保存新连接后，可以使用 ctrl+c 关闭 Airflow Web UI。
 
-## Explore the source data
+## 探索源数据
 
-If you've built ETLs before you know that you can't build anything until you've come to grips with the source data.  Let's obtain a sample of the first 1m rows from the source take a look.
+只有了解源数据后，才可以建立有效的 ETL 流程。让我们从源数据中获取前一百万行的样本做初步了解。
 
 ```sh
 curl -s https://data.cdc.gov/api/views/vbim-akqf/rows.csv\?accessType\=DOWNLOAD | pv -lSs 1000000 > /tmp/cdc_covid_cases.csvh
 ```
 
-You can replace `pv -lSs 1000000` above with `head -n1000000` or just drop it if you don't mind fetching the whole file.  Downloading it with a web browser will also work fine.  Note that for a default Drill installation, saving with the file extension `.csvh` does matter for what follows because it will set `extractHeader = true` when this CSV file is queried, and this file does include a header.
+你可以替换 `pv -lSs 1000000` 为 `head -n1000000` 或者直接浏览文件。使用网络浏览器下载也可以。请注意，对于 Drill，使用扩展名 `.csvh` 保存文件对接下来的步骤很重要，因为查询CSV文件时会自动设置 `extractHeader = true`，并确保此文件包含该设置。
 
-It's time to break out Drill.  Instead of dumping my entire interactive SQL session here, I'll just list queries that I ran and the corresponding observations that I made.
+下面对 Drill 进行操作，区别于将所有的操作列出来，我只列出运行的查询以及相对应的结果：
 ```sql
 select * from dfs.tmp.`cdc_covid_case.csvh`
--- 1. In date fields, the empty string '' can be converted to SQL NULL
--- 2. Age groups can be split into two numerical fields, with the final
---    group being unbounded above.
+-- 1. 在日期字段中，空字符串 '' 可以转换为 SQL NULL
+-- 2. 年龄组可以分为两个数字字段，最后一个组是无界的。
 
 select age_group, count() from dfs.tmp.`cdc_covid_case.csvh` group by age_group;
 select sex, count() from dfs.tmp.`cdc_covid_case.csvh` group by sex;
 select race_ethnicity_combined, count() from dfs.tmp.`cdc_covid_case.csvh` group by race_ethnicity_combined;
--- 3. The string 'Missing' can be transformed to SQL NULL
--- 4. I should really uncover what the difference between 'NA' and 'Missing' is
--- 	  but for this tutorial 'NA' is going to transformed to NULL too
--- 5. race_ethnicity_combined could possibly be split into two fields but we'll
---    leave it as is for this tutorial.
+-- 3. 字符串 'Missing' 可以转换为 SQL NULL
+-- 4. 'NA' 也将转换为 NULL
+-- 5. Race_ethnicity_combined 可以分为两个字段，但在本教程中我们将保持原样。
 
 select hosp_yn, count() from dfs.tmp.`cdc_covid_case.csvh` group by hosp_yn;
--- 6. In addition to 'Missing, indicator variables have three possible values
---    so they cannot be transformed to nullable booleans
+-- 6. 除了 'Missing 之外，指标变量还有三个可能的值，所以它们不能转换为可为空的布尔值。
 ```
 
-So... this is what it feels like to be a data scientist 😆.  Jokes aside, we learned a lot of neccesary stuff pretty quickly there and it's easy to see that we could have carried on for a long way, testing ranges, casts and regexps and even creating reports if we didn't reign ourselves in.  Let's skip forward to the ETL statement I ended up creating after exploring.
+下面介绍如何创建 ETL 流程。
 
-## Develop a CTAS (Create Table As Select) ETL
+## 开发 CTAS (Create Table As Select) ETL 流程
 
 ```sql
 drop table if exists dfs.tmp.cdc_covid_cases;
@@ -151,44 +148,42 @@ from
 	age_parse;
 ```
 
-That's a substantial SQL statement but it covers a fair amount of transformation work and takes us all the way to an output of one (or more) Parquet files, efficient and clean representations of our dataset that are well suited for analytical or ML work.  Consider what we have _not_ done to get this far.
+这是一个重要的 SQL 语句，涵盖了相当多的转换工作，并最终输出为 Parquet 列存格式，高效并清晰的表示数据集，非常适合分析或机器学习。然而我们可以再进一步：
 
-- We have no configuration hidden in the checkboxes and wizards of an ETL package,
-- we have not had to add another language to the SQL we used to explore and test trasformations at the outset and
-- we have not worried about performance or how to parallelise our data flow because we've left that aspect to Drill.
+- 我们没有在 ETL 的复选框和向导中隐藏配置。
+- 我们不必在开始探索和测试转换时给 SQL 添加另一种语言。
+- 我们不必担心性能或如何并行处理我们的数据流，因为这方面优化应该交给 Drill 处理。
 
-In addition, while I've yet to hear of SQL winning a language beauty contest, our ETL code feels obvious, self-contained and maintainable.  I'd have no qualms with reviewing a line-by-line diff of this code to isolate a change after a hiatus of months or years, nor any with pointing a SQL-conversant colleague at it with little or even no introduction.  The veteran coder knows that these mundane advantages can swing an extended campaign.
+此外，虽然 SQL 不是最简洁的语言，但我们的 ETL 流程清晰且可维护。我相信几个月后，一个精通 SQL 的同事，在没有文档的情况下，依然可以读懂并修改代码。这些优点可以方便对代码进行扩展。
 
-To complete this step, save the CTAS script above into a new file at `$AIRFLOW_HOME/dags/cdc_covid_cases.drill.sql`.  The double file extension is just a little convention I use to indicate both the dialect and the language of my SQL scripts, and entirely optional if it's not to your taste.
+接下来，请将上面的 CTAS 脚本保存到新文件中 `$AIRFLOW_HOME/dags/cdc_covid_cases.drill.sql`。双文件扩展名只是处理 SQL 脚本类型和语言的一种方式，可以根据自己的习惯自行选择。
 
-## Develop an Airflow DAG
+## 开发 Airflow DAG
 
-The definition of our DAG will reside in a single Python script.  The complete listing of that script follows immediately, with my commentary continuing as inline source code comments.  You should save this script to a new file at `$AIRFLOW_HOME/dags/drill_tutorial.py`.
+我们的 DAG 定义保存在单个 Python 脚本中。该脚本的完整列表将在后面列出。请将此脚本保存到一个新文件中 `$AIRFLOW_HOME/dags/drill_tutorial.py`。
 
 ```python
 '''
-Uses the Apache Drill provider to transform, load and report from COVID case
-data downloaded from the website of the CDC.
+使用 Apache Drill 来转换、加载和报告 COVID 案例。
 
-Data source citatation.
+数据来源引用：
 
-Centers for Disease Control and Prevention, COVID-19 Response. COVID-19 Case
-Surveillance Public Data Access, Summary, and Limitations.
+疾病控制和预防中心，COVID-19 报告。COVID-19 病历监控公共数据访问，摘要和限制。
 
 https://data.cdc.gov/Case-Surveillance/COVID-19-Case-Surveillance-Public-Use-Data/vbim-akqf
 '''
 from datetime import timedelta
 
 from airflow import DAG
-# We'll use a PythonOperator to stage COVID-19 CSV file from the CDC web site
+# 使用 PythonOperator 从 CDC 网站缓存 COVID-19 CSV 文件
 from airflow.operators.python import PythonOperator
-# We'll use DrillOperators to kick off queries against the COVID-19 data
+# 使用 DrillOperators 启动对 COVID-19 数据的查询
 from airflow.providers.apache.drill.operators.drill import DrillOperator
 from airflow.utils.dates import days_ago
-# We can assume requests is present because sqlalchemy-drill requires it
+# 假设请求是存在的，因为 sqlalchemy-drill 需要这些请求
 import requests
-# These args will get passed on to each operator
-# You can override them on a per-task basis during operator initialization
+# 传递这些参数
+# 每个新任务可以传递新的参数
 default_args = {
     'owner': 'Joe Public',
     'depends_on_past': False,
@@ -202,10 +197,9 @@ default_args = {
 
 def stage_from_www(src_url, tgt_path):
     '''
-    Uses the Requests lib to GET case surveillance data from CDC to a local
-    path.  If you're in a distributed environment you'll want to replace the
-    local filesystem with HDFS, S3, etc.  Another option is to configure
-    Drill's HTTP storage plugin to fetch the data directly from the source.
+    使用 Request 库将病例监控数据从 CDC 下载到本地。如果是分布式环境，用 HDFS、S3 等替换本地文件系统。
+    另一种选择是使用 Drill 提供的 HTTP 存储插件来直接从数据源获取数据。
+    请注意：避免在内存中缓存大量数据集（启用流式响应）
     '''
     resp = requests.get(
         src_url,
@@ -219,14 +213,14 @@ with DAG(
     'drill_tutorial',
     default_args=default_args,
     description='Drill tutorial that loads COVID-19 case data from the CDC.',
-    schedule_interval=timedelta(weeks=2),  # source is updated every two weeks
+    schedule_interval=timedelta(weeks=2),  # 数据源每两周更新一次
     start_date=days_ago(0),
 ) as dag:
 
-    # Use this module's docstring for DAG's documentation (visible in the web UI)
+    # 将此模块的字符串用于 DAG 的文档 (在 Web UI 中可视化)。
     dag.doc_md = __doc__
 
-    # First task is a PythonOperator to GET the CSV data from the CDC website
+    # 第一个任务是使用 PythonOperator 从 CDC 网站获取 CSV 数据。
     stage_from_www_task = PythonOperator(
         task_id='stage_from_www',
         python_callable=stage_from_www,
@@ -239,10 +233,8 @@ with DAG(
     stage_from_www.doc = 'Download COVID case CSV data from the CDC using ' \
         'an HTTP GET'
 
-    # Second task is a DrillOperator the executes our CTAS ETL from an external
-    # script.  It's also possible to specify inline SQL, and to split  this
-    # multi-statement SQL script across tasks e.g. if you prefer to have
-    # the inital DROP TABLE be a separate task.
+    # 第二个任务是通过 DrillOperator 的外部脚本执行 CTAS 的 ETL 流程。
+    # 也可以指定 SQL，并跨任务拆分此多语句的 SQL 脚本。也就是将初始 DROP TABLE 设为单独的任务。
     ctas_etl_task = DrillOperator(
         drill_conn_id='drill_tutorial',
         task_id='ctas_etl',
@@ -251,10 +243,8 @@ with DAG(
 
     ctas_etl_task.doc = 'Recreate dfs.tmp.cdc_covid_cases using CTAS'
 
-    # Third task is a DrillOperator that produces a daily case count report.
-    # We just write the report back out to dfs.tmp as human-readable CSV, but
-    # you should imagine using Airflow to route and deliver it in any number
-    # of ways.
+    # 第三个任务是通过 DrillOperator 生成每日案例计数报告。
+    # 将报告由 dfs.tmp 格式转换为可读的 CSV 格式, 使用 Airflow 可以用多种方式实现。
     daily_count_report_task = DrillOperator(
         drill_conn_id='drill_tutorial',
         task_id='drill_report',
@@ -278,38 +268,38 @@ with DAG(
 
     daily_count_report_task.doc = 'Report daily case counts to CSV'
 
-    # Specify the edges of the DAG, i.e. the task dependencies
+    # 指定 DAG 的依赖关系。
     stage_from_www_task >> ctas_etl_task >> daily_count_report_task
 age_parse;
 ```
 
-## Manually launch the Airflow DAG
+## 手动启动 Airflow DAG
 
-You can harmlessly test the Python syntax of a DAG script by running it through the interpreter.
+可以通过解释器运行 DAG 脚本来测试 Python 语法。
 ```sh
 python3 $AIRFLOW_HOME/dags/drill-tutorial.py
 ```
 
-If all is well Python will exit without errors and you can proceed to ensure that your Drillbit is running, then launch a test run of you DAG using airflow.
+如果一切正常，Python 将无错误退出，接着确认 Drillbit 运行正常, 然后启动 airflow 测试 DAG。
 ```sh
 airflow dags test drill_tutorial $(date +%Y-%m-%d)
 ```
 
-After a delay while the COVID case dataset is downloaded to your machine you should start to see all of the queries executed on Drill logged to your console by sqlalchemy-drill.  The DAG execution should have produced two outputs.
+将 COVID 案例数据集下载到本地一段时间后，可以看到在 Drill 上执行的所有查询都通过 sqlalchemy-drill 记录到控制台。DAG 执行后会产生两个文件。
 
-1. A Parquet dataset at `$TMPDIR/cdc_covid_cases` at the individual case grain.
-2. A CSV daily surveilled case count report at `$TMPDIR/cdc_daily_counts`.
+1. 一个 Parquet 格式的数据集位于 `$TMPDIR/cdc_covid_cases`。
+2. 一个 CSV 格式的每日监控的病例数报告位于 `$TMPDIR/cdc_daily_counts`。
 
-Try some OLAP in Drill with the first and take a look at the second in a spreadsheet or text editor.
+在 Drill 中使用 OLAP 查看第一个文件，然后在电子表格或文本编辑器中查看第二个文件。
 
-Congratulations, you built an ETL using Apache Airflow and Apache Drill!
+目前为止，你已使用 Apache Airflow 和 Apache Drill 构建了 ETL 流程！
 
-## Next steps
+## 下一步
 
-- [Read about Airflow scheduling](https://airflow.apache.org/docs/apache-airflow/1.10.1/scheduler.html) and run the scheduler as a daemon to have your job run automatically.
-- Try adapting the DAG here to work with other data sources.  If you have databases, files and web services in your own environment those will be natural choices, otherwise you can look around online for more public datasets and APIs.
-- Instead of replacing the target dataset, try adding new partitions to an existing dataset by aiming CTAS at date-labelled subdirectories.
-- Keep an eye out for data crunching steps in existing workflows, including those which are not strictly ETL pipelines, where Drill could shoulder some of the load.
+- [了解 Airflow scheduling](https://airflow.apache.org/docs/apache-airflow/1.10.1/scheduler.html) 后台运行 scheduler 以使任务自动运行。
+- 调整 DAG 使用其他数据源。如果你在自己的环境中拥有数据库、文件和 Web 服务，那么这些数据源是很好的选择。你也可以在线查看更多公共数据集和 API。
+- 尝试通过将 CTAS 指向带有日期的子目录来给现有的数据集添加新分区。
+- 留意现有流程中的数据处理步骤，包括那些不是严格意义上 ETL 的步骤，应该交由 Drill 来处理。
 
-Thanks for joining us for this tutorial and happy Drilling!
+感谢完成本教程，希望你喜欢上 Drill！
 
