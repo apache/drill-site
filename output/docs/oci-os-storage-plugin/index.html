@@ -450,8 +450,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Connect a Data Source</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Connect a Data Source</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/connect-a-data-source-introduction/">Connect a Data Source Introduction</a></li>
@@ -502,6 +502,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/s3-storage-plugin/">S3 Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2 current"><a class="reference internal" href="/docs/oci-os-storage-plugin/">OCI OS Storage Plugin</a></li>
             
           
             
@@ -1394,6 +1398,8 @@
   <li><a href="/docs/">Docs</a></li>
  
   
+    <li><a href="/docs/connect-a-data-source/">Connect a Data Source</a></li>
+  
   <li>OCI OS Storage Plugin</li>
 </nav>
 
@@ -1416,14 +1422,79 @@
 
     <div class="int_text" align="left">
       
-        <ul>
-        
-      </ul>
+        <p><strong>Introduced in release:</strong> 1.20</p>
+
+<p>Similar to S3 Storage Plugin Drill can be configured to query Oracle Cloud Infrastructure (OCI) Object Storage (OS). 
+The ability to query this cloud storage is implemented by using Oracle HDFS library.</p>
+
+<p>To connect Drill to OCI OS:</p>
+
+<ul>
+  <li>Provide your OCI credentials.</li>
+  <li>Configure the OCI OS storage plugin with an OS bucket name.</li>
+</ul>
+
+<p>For additional information, refer to the <a href="https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/hdfsconnector.htm">HDFS Connector for Object Storage</a> documentation.</p>
+
+<h2 id="configuring-the-oci-os-storage-plugin">Configuring the OCI OS Storage Plugin</h2>
+
+<p>The <strong>Storage</strong> page in the Drill Web UI provides an OCI storage plugin that you configure to connect Drill to the OCI OS distributed file system registered in <code class="language-plaintext highlighter-rouge">core-site.xml</code>. If you did not define your OCI credentials in the <code class="language-plaintext highlighter-rouge">core-site.xml</code> file, you can define them in the storage plugin configuration. You can define the credentials directly in the OCI storage plugin configuration, or you can configure the OCI storage plugin to use an external provider.</p>
+
+<p>To configure the OCI OS storage plugin, log in to the Drill Web UI at <code class="language-plaintext highlighter-rouge">http://&lt;drill-hostname&gt;:8047</code>. The <code class="language-plaintext highlighter-rouge">drill-hostname</code> is a node on which Drill is running. Go to the <strong>Storage</strong> page and click <strong>Update</strong> next to the OCI OS storage plugin option or <strong>Create</strong> new if it doesn’t exist yet.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+ 	"type": "file",
+"connection": "oci://{bucket_name}@{namespace}/",
+"config": {
+	"fs.oci.client.hostname": "https://objectstorage.us-ashburn-1.oraclecloud.com",
+	"fs.oci.client.auth.tenantId": "ocid1.tenancy.oc1..exampleuniqueID",
+	"fs.oci.client.auth.userId": "ocid1.user.oc1..exampleuniqueID",
+	"fs.oci.client.auth.fingerprint": "20:3b:97:13:55:1c:5b:0d:d3:37:d8:50:4e:c5:3a:34",
+	"fs.oci.client.auth.pemfilepath": "/opt/drill/conf/oci_api_key.pem"
+    },
+  "workspaces": {
+    ...
+  }  
+</code></pre></div></div>
+
+<p><strong>Note:</strong> The <code class="language-plaintext highlighter-rouge">"config"</code> block in the OCI storage plugin configuration contains properties to define your OCI credentials. Do not include the <code class="language-plaintext highlighter-rouge">"config"</code> block in your OCI OS storage plugin configuration if you defined your OCI credentials in the <code class="language-plaintext highlighter-rouge">core-site.xml</code> file.</p>
+
+<p>To configure the plugin in core-site.xml file, navigate to the $DRILL_HOME/conf or $DRILL_SITE directory, and rename the core-site-example.xml file to core-site.xml</p>
+
+<p>Configure the OCI OS storage plugin configuration to use an external provider for credentials or directly add the credentials in the configuration itself, as described below. Click <strong>Update</strong> to save the configuration when done.</p>
+
+<h2 id="providing-oci-os-credentials">Providing OCI OS Credentials</h2>
+
+<p>You can use different <a href="https://github.com/apache/drill/blob/master/docs/dev/PluginCredentialsProvider.md">Plugin credentials provider</a> for OCI OS Storage Plugin</p>
+
+<h3 id="providing-oci-os-credentials-1">Providing OCI OS Credentials</h3>
+
+<p><a href="`VaultCredentialsProvider`">VaultCredentialsProvider</a> can be configured to keep OCI OS properties as a secrets. The example of Drill OCI Storage plugin with <code class="language-plaintext highlighter-rouge">VaultCredentialsProvider</code>:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "type": "file",
+  "connection": "oci://objectstorage-test-my-app-site-548c762a46e549ba@id1kowo7idm1/",
+  "workspaces": {...},
+  "formats": {...},
+  "credentialsProvider": {
+    "credentialsProviderType": "VaultCredentialsProvider",
+    "secretPath": "secret/drill/oci",
+    "propertyNames": {
+      "fs.oci.client.hostname": "fs.oci.client.hostname",
+      "fs.oci.client.auth.tenantId": "fs.oci.client.auth.tenantId",
+      "fs.oci.client.auth.userId": "fs.oci.client.auth.userId",
+      "fs.oci.client.auth.fingerprint": "fs.oci.client.auth.fingerprint",
+      "fs.oci.client.auth.pemfilepath": "fs.oci.client.auth.pemfilepath"
+    }
+  },
+  "enabled": true
+}
+</code></pre></div></div>
+
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="">← </a></span><span class="next-toc"><a href=""> →</a></span>
+  <span class="previous-toc"><a href="/docs/s3-storage-plugin/">← S3 Storage Plugin</a></span><span class="next-toc"><a href="/docs/opentsdb-storage-plugin/">OpenTSDB Storage Plugin →</a></span>
 </div>
 
     
