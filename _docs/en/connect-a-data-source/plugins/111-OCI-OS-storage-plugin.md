@@ -3,6 +3,9 @@ title: "OCI OS Storage Plugin"
 slug: "OCI OS Storage Plugin"
 parent: "Connect a Data Source"
 ---
+
+**Introduced in release:** 1.20
+
 Similar to S3 Storage Plugin Drill can be configured to query Oracle Cloud Infrastructure (OCI) Object Storage (OS). 
 The ability to query this cloud storage is implemented by using Oracle HDFS library.
 
