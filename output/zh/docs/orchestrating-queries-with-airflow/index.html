@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>Orchestrating queries with Airflow - Apache Drill</title>
+<title>使用 Airflow 编排查询 - Apache Drill</title>
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href='https://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'/>
@@ -186,8 +186,8 @@
         
       
         
-          <li class="toctree-l1 current_section "><a href="javascript: void(0);">教程</a></li>
-          <ul class="current_section">
+          <li class="toctree-l1"><a href="javascript: void(0);">教程</a></li>
+          <ul style="display: none">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/zh/docs/tutorials-introduction/">教程介绍</a></li>
@@ -235,7 +235,7 @@
             
           
             
-              <li class="toctree-l2 current"><a class="reference internal" href="/zh/docs/orchestrating-queries-with-airflow/">Orchestrating queries with Airflow</a></li>
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/orchestrating-queries-with-airflow/">Orchestrating queries with Airflow</a></li>
             
           
           </ul>
@@ -1394,9 +1394,7 @@
   <li><a href="/zh/docs/">Docs</a></li>
  
   
-    <li><a href="/zh/docs/tutorials/">教程</a></li>
-  
-  <li>Orchestrating queries with Airflow</li>
+  <li>使用 Airflow 编排查询</li>
 </nav>
 
 
@@ -1408,7 +1406,7 @@
     
 
     <div class="int_title left">
-      <h1>Orchestrating queries with Airflow</h1>
+      <h1>使用 Airflow 编排查询</h1>
 
     </div>
 
@@ -1418,343 +1416,14 @@
 
     <div class="int_text" align="left">
       
-        <p>This tutorial walks through the development of Apache Airflow DAG that implements a basic ETL process using Apache Drill.  We’ll install Airflow into a Python virtualenv using pip before writing and testing our new DAG.  Consult the <a href="https://airflow.apache.org/docs/apache-airflow/stable/installation.html">Airflow installation documentation</a> for more information about installing Airflow.</p>
-
-<p>I’ll be issuing commands using a shell on a Debian Linux machine in this tutorial but it should be possible with a little translation to follow along on other platforms.</p>
-
-<h2 id="prerequisites">Prerequisites</h2>
-
-<ol>
-  <li>A Python &gt;= 3.6 installation, including pip and optionally virtualenv.</li>
-  <li>A Drill installation where you have access to run queries and add new storage providers.  I’ll be running an embedded mode Drill 1.19.</li>
-</ol>
-
-<h2 id="optional-set-up-a-virtualenv">(Optional) Set up a virtualenv</h2>
-
-<p>Create and activate a new virtualenv called “airflow”.  If needed, adjust the Python interpreter path and virtualenv target path arguments for your environment.</p>
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">VIRT_ENV_HOME</span><span class="o">=</span>~/.local/lib/virtualenv
-virtualenv <span class="nt">-p</span> /usr/bin/python3 <span class="nv">$VIRT_ENV_HOME</span>/airflow
-<span class="nb">.</span> <span class="nv">$VIRT_ENV_HOME</span>/airflow/activate
-</code></pre></div></div>
-
-<h2 id="install-airflow">Install Airflow</h2>
-
-<p>If you’ve read their installation guide you’ll have seen that the Airflow project provides constraints files the pin the versions of its Python package dependencies to known-good versions.  In many cases things work fine without constraints but, for the sake of reproducibility, we’ll apply the constraints file applicable to our Python version using the script 0they provide for the purpose.</p>
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">AIRFLOW_VERSION</span><span class="o">=</span>2.1.2
-<span class="nv">PYTHON_VERSION</span><span class="o">=</span><span class="s2">"</span><span class="si">$(</span>python <span class="nt">--version</span> | <span class="nb">cut</span> <span class="nt">-d</span> <span class="s2">" "</span> <span class="nt">-f</span> 2 | <span class="nb">cut</span> <span class="nt">-d</span> <span class="s2">"."</span> <span class="nt">-f</span> 1-2<span class="si">)</span><span class="s2">"</span>
-<span class="nv">CONSTRAINT_URL</span><span class="o">=</span><span class="s2">"https://raw.githubusercontent.com/apache/airflow/constraints-</span><span class="k">${</span><span class="nv">AIRFLOW_VERSION</span><span class="k">}</span><span class="s2">/constraints-</span><span class="k">${</span><span class="nv">PYTHON_VERSION</span><span class="k">}</span><span class="s2">.txt"</span>
-pip <span class="nb">install</span> <span class="s2">"apache-0airflow==</span><span class="k">${</span><span class="nv">AIRFLOW_VERSION</span><span class="k">}</span><span class="s2">"</span> <span class="nt">--constraint</span> <span class="s2">"</span><span class="k">${</span><span class="nv">CONSTRAINT_URL</span><span class="k">}</span><span class="s2">"</span>
-pip <span class="nb">install </span>apache-airflow-providers-apache-drill
-</code></pre></div></div>
-
-<h2 id="initialise-airflow">Initialise Airflow</h2>
-
-<p>We’re just experimenting here so we’ll have Airflow set up a local SQLite database and add an admin user for ourselves.</p>
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Optional: change Airflow's data dir from the default of ~/airflow</span>
-export0 <span class="nv">AIRFLOW_HOME</span><span class="o">=</span>~/Development/airflow
-<span class="nb">mkdir</span> <span class="nt">-p</span> ~/Development/airflow/
-
-<span class="c"># Create a new SQLite database for Airflow</span>
-airflow db init
-
-<span class="c"># Add an admin user</span>
-airflow <span class="nb">users </span>create <span class="se">\</span>
-	<span class="nt">--username</span> admin <span class="se">\</span>
-	<span class="nt">--firstname</span> FIRST_NAME <span class="se">\</span>
-	<span class="nt">--lastname</span> LAST_NAME <span class="se">\</span>
-	<span class="nt">--role</span> Admin <span class="se">\</span>
-	<span class="nt">--email</span> admin@example.org <span class="se">\</span>
-	<span class="nt">--password</span> admin
-</code></pre></div></div>
-
-<h2 id="configure-a-drill-connection">Configure a Drill connection</h2>
-
-<p>At this point we should have a working Airflow installation. Fire up the web UI with <code class="language-plaintext highlighter-rouge">airflow webserver</code> and browse to http://localhost:8080.  Click on Admin -&gt; Connections.  Add a new Drill connection called <code class="language-plaintext highlighter-rouge">drill_tutorial</code>, setting configuration according to your Drill environment.  If you’re using embedded mode Drill locally like I am then you’ll want the following config.</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Setting</th>
-      <th>Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Conn Id</td>
-      <td>drill_tutorial</td>
-    </tr>
-    <tr>
-      <td>Conn Type</td>
-      <td>Drill</td>
-    </tr>
-    <tr>
-      <td>Host</td>
-      <td>localhost</td>
-    </tr>
-    <tr>
-      <td>Port</td>
-      <td>8047</td>
-    </tr>
-    <tr>
-      <td>Extra</td>
-      <td>{“dialect_driver”: “drill+sadrill”, “storage_plugin”: “dfs”}</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>Note that the sqlalchemy-drill dialect and driver information must be specified in the <code class="language-plaintext highlighter-rouge">Extra</code> field.  See <a href="https://github.com/JohnOmernik/sqlalchemy-drill">the sqlalchemy-drill documentation</a> for more information about its configuration.</p>
-
-<p>After you’ve saved the new connection you can shut the Airflow web UI down with ctrl+c.</p>
-
-<h2 id="explore-the-source-data">Explore the source data</h2>
-
-<p>If you’ve built ETLs before you know that you can’t build anything until you’ve come to grips with the source data.  Let’s obtain a sample of the first 1m rows from the source take a look.</p>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-s</span> https://data.cdc.gov/api/views/vbim-akqf/rows.csv<span class="se">\?</span>accessType<span class="se">\=</span>DOWNLOAD | pv <span class="nt">-lSs</span> 1000000 <span class="o">&gt;</span> /tmp/cdc_covid_cases.csvh
-</code></pre></div></div>
-
-<p>You can replace <code class="language-plaintext highlighter-rouge">pv -lSs 1000000</code> above with <code class="language-plaintext highlighter-rouge">head -n1000000</code> or just drop it if you don’t mind fetching the whole file.  Downloading it with a web browser will also work fine.  Note that for a default Drill installation, saving with the file extension <code class="language-plaintext highlighter-rouge">.csvh</code> does matter for what follows because it will set <code class="language-plaintext highlighter-rouge">extractHeader = true</code> when this CSV file is queried, and this file does include a header.</p>
-
-<p>It’s time to break out Drill.  Instead of dumping my entire interactive SQL session here, I’ll just list queries that I ran and the corresponding observations that I made.</p>
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">dfs</span><span class="p">.</span><span class="n">tmp</span><span class="p">.</span><span class="nv">`cdc_covid_case.csvh`</span>
-<span class="c1">-- 1. In date fields, the empty string '' can be converted to SQL NULL</span>
-<span class="c1">-- 2. Age groups can be split into two numerical fields, with the final</span>
-<span class="c1">--    group being unbounded above.</span>
-
-<span class="k">select</span> <span class="n">age_group</span><span class="p">,</span> <span class="k">count</span><span class="p">()</span> <span class="k">from</span> <span class="n">dfs</span><span class="p">.</span><span class="n">tmp</span><span class="p">.</span><span class="nv">`cdc_covid_case.csvh`</span> <span class="k">group</span> <span class="k">by</span> <span class="n">age_group</span><span class="p">;</span>
-<span class="k">select</span> <span class="n">sex</span><span class="p">,</span> <span class="k">count</span><span class="p">()</span> <span class="k">from</span> <span class="n">dfs</span><span class="p">.</span><span class="n">tmp</span><span class="p">.</span><span class="nv">`cdc_covid_case.csvh`</span> <span class="k">group</span> <span class="k">by</span> <span class="n">sex</span><span class="p">;</span>
-<span class="k">select</span> <span class="n">race_ethnicity_combined</span><span class="p">,</span> <span class="k">count</span><span class="p">()</span> <span class="k">from</span> <span class="n">dfs</span><span class="p">.</span><span class="n">tmp</span><span class="p">.</span><span class="nv">`cdc_covid_case.csvh`</span> <span class="k">group</span> <span class="k">by</span> <span class="n">race_ethnicity_combined</span><span class="p">;</span>
-<span class="c1">-- 3. The string 'Missing' can be transformed to SQL NULL</span>
-<span class="c1">-- 4. I should really uncover what the difference between 'NA' and 'Missing' is</span>
-<span class="c1">-- 	  but for this tutorial 'NA' is going to transformed to NULL too</span>
-<span class="c1">-- 5. race_ethnicity_combined could possibly be split into two fields but we'll</span>
-<span class="c1">--    leave it as is for this tutorial.</span>
-
-<span class="k">select</span> <span class="n">hosp_yn</span><span class="p">,</span> <span class="k">count</span><span class="p">()</span> <span class="k">from</span> <span class="n">dfs</span><span class="p">.</span><span class="n">tmp</span><span class="p">.</span><span class="nv">`cdc_covid_case.csvh`</span> <span class="k">group</span> <span class="k">by</span> <span class="n">hosp_yn</span><span class="p">;</span>
-<span class="c1">-- 6. In addition to 'Missing, indicator variables have three possible values</span>
-<span class="c1">--    so they cannot be transformed to nullable booleans</span>
-</code></pre></div></div>
-
-<p>So… this is what it feels like to be a data scientist 😆.  Jokes aside, we learned a lot of neccesary stuff pretty quickly there and it’s easy to see that we could have carried on for a long way, testing ranges, casts and regexps and even creating reports if we didn’t reign ourselves in.  Let’s skip forward to the ETL statement I ended up creating after exploring.</p>
-
-<h2 id="develop-a-ctas-create-table-as-select-etl">Develop a CTAS (Create Table As Select) ETL</h2>
-
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">drop</span> <span class="k">table</span> <span class="n">if</span> <span class="k">exists</span> <span class="n">dfs</span><span class="p">.</span><span class="n">tmp</span><span class="p">.</span><span class="n">cdc_covid_cases</span><span class="p">;</span>
-
-<span class="k">create</span> <span class="k">table</span> <span class="n">dfs</span><span class="p">.</span><span class="n">tmp</span><span class="p">.</span><span class="n">cdc_covid_cases</span> <span class="k">as</span>
-<span class="k">with</span> <span class="n">missing2null</span> <span class="k">as</span> <span class="p">(</span>
-<span class="k">select</span>
-	<span class="k">nullif</span><span class="p">(</span><span class="n">cdc_case_earliest_dt</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span> <span class="n">cdc_case_earliest_dt</span><span class="p">,</span>
-	<span class="k">nullif</span><span class="p">(</span><span class="n">cdc_report_dt</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span> <span class="n">cdc_report_dt</span><span class="p">,</span>
-	<span class="k">nullif</span><span class="p">(</span><span class="n">pos_spec_dt</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span> <span class="n">pos_spec_dt</span><span class="p">,</span>
-	<span class="k">nullif</span><span class="p">(</span><span class="n">onset_dt</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span> <span class="n">onset_dt</span><span class="p">,</span>
-	<span class="k">case</span> <span class="k">when</span> <span class="n">current_status</span> <span class="k">not</span> <span class="k">in</span> <span class="p">(</span><span class="s1">'Missing'</span><span class="p">,</span> <span class="s1">'NA'</span><span class="p">)</span> <span class="k">then</span> <span class="n">current_status</span> <span class="k">end</span> <span class="n">current_status</span><span class="p">,</span>
-	<span class="k">case</span> <span class="k">when</span> <span class="n">sex</span> <span class="k">not</span> <span class="k">in</span> <span class="p">(</span><span class="s1">'Missing'</span><span class="p">,</span> <span class="s1">'NA'</span><span class="p">)</span> <span class="k">then</span> <span class="n">sex</span> <span class="k">end</span> <span class="n">sex</span><span class="p">,</span>
-	<span class="k">case</span> <span class="k">when</span> <span class="n">age_group</span> <span class="k">not</span> <span class="k">in</span> <span class="p">(</span><span class="s1">'Missing'</span><span class="p">,</span> <span class="s1">'NA'</span><span class="p">)</span> <span class="k">then</span> <span class="n">age_group</span> <span class="k">end</span> <span class="n">age_group</span><span class="p">,</span>
-	<span class="k">case</span> <span class="k">when</span> <span class="n">race_ethnicity_combined</span> <span class="k">not</span> <span class="k">in</span> <span class="p">(</span><span class="s1">'Missing'</span><span class="p">,</span> <span class="s1">'NA'</span><span class="p">)</span> <span class="k">then</span> <span class="n">race_ethnicity_combined</span> <span class="k">end</span> <span class="n">race_ethnicity_combined</span><span class="p">,</span>
-	<span class="k">case</span> <span class="k">when</span> <span class="n">hosp_yn</span> <span class="k">not</span> <span class="k">in</span> <span class="p">(</span><span class="s1">'Missing'</span><span class="p">,</span> <span class="s1">'NA'</span><span class="p">)</span> <span class="k">then</span> <span class="n">hosp_yn</span> <span class="k">end</span> <span class="n">hosp_yn</span><span class="p">,</span>
-	<span class="k">case</span> <span class="k">when</span> <span class="n">icu_yn</span> <span class="k">not</span> <span class="k">in</span> <span class="p">(</span><span class="s1">'Missing'</span><span class="p">,</span> <span class="s1">'NA'</span><span class="p">)</span> <span class="k">then</span> <span class="n">icu_yn</span> <span class="k">end</span> <span class="n">icu_yn</span><span class="p">,</span>
-	<span class="k">case</span> <span class="k">when</span> <span class="n">death_yn</span> <span class="k">not</span> <span class="k">in</span> <span class="p">(</span><span class="s1">'Missing'</span><span class="p">,</span> <span class="s1">'NA'</span><span class="p">)</span> <span class="k">then</span> <span class="n">death_yn</span> <span class="k">end</span> <span class="n">death_yn</span><span class="p">,</span>
-	<span class="k">case</span> <span class="k">when</span> <span class="n">medcond_yn</span> <span class="k">not</span> <span class="k">in</span> <span class="p">(</span><span class="s1">'Missing'</span><span class="p">,</span> <span class="s1">'NA'</span><span class="p">)</span> <span class="k">then</span> <span class="n">medcond_yn</span> <span class="k">end</span> <span class="n">medcond_yn</span>
-<span class="k">from</span>
-	<span class="n">dfs</span><span class="p">.</span><span class="n">tmp</span><span class="p">.</span><span class="nv">`cdc_covid_cases.csvh`</span><span class="p">),</span>
-<span class="n">age_parse</span> <span class="k">as</span> <span class="p">(</span>
-<span class="k">select</span> 
-	<span class="o">*</span><span class="p">,</span>
-	<span class="n">regexp_replace</span><span class="p">(</span><span class="n">age_group</span><span class="p">,</span> <span class="s1">'([0-9]+)[ </span><span class="se">\-\+</span><span class="s1">]+([0-9]*) Years'</span><span class="p">,</span> <span class="s1">'$1'</span><span class="p">)</span> <span class="n">age_min_incl</span><span class="p">,</span>
-	<span class="n">regexp_replace</span><span class="p">(</span><span class="n">age_group</span><span class="p">,</span> <span class="s1">'([0-9]+)[ </span><span class="se">\-\+</span><span class="s1">]+([0-9]*) Years'</span><span class="p">,</span> <span class="s1">'$2'</span><span class="p">)</span> <span class="n">age_max_excl</span>
-<span class="k">from</span>
-<span class="n">missing2null</span><span class="p">)</span>
-<span class="k">select</span>
-	<span class="k">cast</span><span class="p">(</span><span class="n">cdc_case_earliest_dt</span> <span class="k">as</span> <span class="nb">date</span><span class="p">)</span> <span class="n">cdc_case_earliest_dt</span><span class="p">,</span>
-	<span class="k">cast</span><span class="p">(</span><span class="n">cdc_report_dt</span> <span class="k">as</span> <span class="nb">date</span><span class="p">)</span> <span class="n">cdc_report_dt</span><span class="p">,</span>
-	<span class="k">cast</span><span class="p">(</span><span class="n">pos_spec_dt</span> <span class="k">as</span> <span class="nb">date</span><span class="p">)</span> <span class="n">pos_spec_dt</span><span class="p">,</span>
-	<span class="k">cast</span><span class="p">(</span><span class="n">onset_dt</span> <span class="k">as</span> <span class="nb">date</span><span class="p">)</span> <span class="n">onset_dt</span><span class="p">,</span>
-	<span class="n">current_status</span><span class="p">,</span>
-	<span class="n">sex</span><span class="p">,</span>
-	<span class="n">age_group</span><span class="p">,</span>
-	<span class="k">cast</span><span class="p">(</span><span class="n">age_min_incl</span> <span class="k">as</span> <span class="nb">float</span><span class="p">)</span> <span class="n">age_min_incl</span><span class="p">,</span>
-	<span class="mi">1</span> <span class="o">+</span> <span class="k">cast</span><span class="p">(</span><span class="k">case</span> <span class="k">when</span> <span class="n">age_max_excl</span> <span class="o">=</span> <span class="s1">''</span> <span class="k">then</span> <span class="s1">'Infinity'</span> <span class="k">else</span> <span class="n">age_max_excl</span> <span class="k">end</span> <span class="k">as</span> <span class="nb">float</span><span class="p">)</span> <span class="n">age_max_excl</span><span class="p">,</span>
-	<span class="n">race_ethnicity_combined</span><span class="p">,</span>
-	<span class="n">hosp_yn</span><span class="p">,</span>
-	<span class="n">icu_yn</span><span class="p">,</span>
-	<span class="n">death_yn</span><span class="p">,</span>
-	<span class="n">medcond_yn</span>
-<span class="k">from</span>
-	<span class="n">age_parse</span><span class="p">;</span>
-</code></pre></div></div>
-
-<p>That’s a substantial SQL statement but it covers a fair amount of transformation work and takes us all the way to an output of one (or more) Parquet files, efficient and clean representations of our dataset that are well suited for analytical or ML work.  Consider what we have <em>not</em> done to get this far.</p>
-
-<ul>
-  <li>We have no configuration hidden in the checkboxes and wizards of an ETL package,</li>
-  <li>we have not had to add another language to the SQL we used to explore and test trasformations at the outset and</li>
-  <li>we have not worried about performance or how to parallelise our data flow because we’ve left that aspect to Drill.</li>
-</ul>
-
-<p>In addition, while I’ve yet to hear of SQL winning a language beauty contest, our ETL code feels obvious, self-contained and maintainable.  I’d have no qualms with reviewing a line-by-line diff of this code to isolate a change after a hiatus of months or years, nor any with pointing a SQL-conversant colleague at it with little or even no introduction.  The veteran coder knows that these mundane advantages can swing an extended campaign.</p>
-
-<p>To complete this step, save the CTAS script above into a new file at <code class="language-plaintext highlighter-rouge">$AIRFLOW_HOME/dags/cdc_covid_cases.drill.sql</code>.  The double file extension is just a little convention I use to indicate both the dialect and the language of my SQL scripts, and entirely optional if it’s not to your taste.</p>
-
-<h2 id="develop-an-airflow-dag">Develop an Airflow DAG</h2>
-
-<p>The definition of our DAG will reside in a single Python script.  The complete listing of that script follows immediately, with my commentary continuing as inline source code comments.  You should save this script to a new file at <code class="language-plaintext highlighter-rouge">$AIRFLOW_HOME/dags/drill_tutorial.py</code>.</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">'''
-Uses the Apache Drill provider to transform, load and report from COVID case
-data downloaded from the website of the CDC.
-
-Data source citatation.
-
-Centers for Disease Control and Prevention, COVID-19 Response. COVID-19 Case
-Surveillance Public Data Access, Summary, and Limitations.
-
-https://data.cdc.gov/Case-Surveillance/COVID-19-Case-Surveillance-Public-Use-Data/vbim-akqf
-'''</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
-
-<span class="kn">from</span> <span class="nn">airflow</span> <span class="kn">import</span> <span class="n">DAG</span>
-<span class="c1"># We'll use a PythonOperator to stage COVID-19 CSV file from the CDC web site
-</span><span class="kn">from</span> <span class="nn">airflow.operators.python</span> <span class="kn">import</span> <span class="n">PythonOperator</span>
-<span class="c1"># We'll use DrillOperators to kick off queries against the COVID-19 data
-</span><span class="kn">from</span> <span class="nn">airflow.providers.apache.drill.operators.drill</span> <span class="kn">import</span> <span class="n">DrillOperator</span>
-<span class="kn">from</span> <span class="nn">airflow.utils.dates</span> <span class="kn">import</span> <span class="n">days_ago</span>
-<span class="c1"># We can assume requests is present because sqlalchemy-drill requires it
-</span><span class="kn">import</span> <span class="nn">requests</span>
-<span class="c1"># These args will get passed on to each operator
-# You can override them on a per-task basis during operator initialization
-</span><span class="n">default_args</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">'owner'</span><span class="p">:</span> <span class="s">'Joe Public'</span><span class="p">,</span>
-    <span class="s">'depends_on_past'</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
-    <span class="s">'email'</span><span class="p">:</span> <span class="p">[</span><span class="s">'joe@public.com'</span><span class="p">],</span>
-    <span class="s">'email_on_failure'</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
-    <span class="s">'email_on_retry'</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
-    <span class="s">'retries'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="s">'retry_delay'</span><span class="p">:</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
-<span class="p">}</span>
-
-
-<span class="k">def</span> <span class="nf">stage_from_www</span><span class="p">(</span><span class="n">src_url</span><span class="p">,</span> <span class="n">tgt_path</span><span class="p">):</span>
-    <span class="s">'''
-    Uses the Requests lib to GET case surveillance data from CDC to a local
-    path.  If you're in a distributed environment you'll want to replace the
-    local filesystem with HDFS, S3, etc.  Another option is to configure
-    Drill's HTTP storage plugin to fetch the data directly from the source.
-    '''</span>
-    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span>
-        <span class="n">src_url</span><span class="p">,</span>
-        <span class="n">stream</span><span class="o">=</span><span class="bp">True</span>  <span class="c1"># don't buffer big datasets in memory
-</span>    <span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tgt_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
-
-
-<span class="k">with</span> <span class="n">DAG</span><span class="p">(</span>
-    <span class="s">'drill_tutorial'</span><span class="p">,</span>
-    <span class="n">default_args</span><span class="o">=</span><span class="n">default_args</span><span class="p">,</span>
-    <span class="n">description</span><span class="o">=</span><span class="s">'Drill tutorial that loads COVID-19 case data from the CDC.'</span><span class="p">,</span>
-    <span class="n">schedule_interval</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">weeks</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>  <span class="c1"># source is updated every two weeks
-</span>    <span class="n">start_date</span><span class="o">=</span><span class="n">days_ago</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
-<span class="p">)</span> <span class="k">as</span> <span class="n">dag</span><span class="p">:</span>
-
-    <span class="c1"># Use this module's docstring for DAG's documentation (visible in the web UI)
-</span>    <span class="n">dag</span><span class="p">.</span><span class="n">doc_md</span> <span class="o">=</span> <span class="n">__doc__</span>
-
-    <span class="c1"># First task is a PythonOperator to GET the CSV data from the CDC website
-</span>    <span class="n">stage_from_www_task</span> <span class="o">=</span> <span class="n">PythonOperator</span><span class="p">(</span>
-        <span class="n">task_id</span><span class="o">=</span><span class="s">'stage_from_www'</span><span class="p">,</span>
-        <span class="n">python_callable</span><span class="o">=</span><span class="n">stage_from_www</span><span class="p">,</span>
-        <span class="n">op_kwargs</span><span class="o">=</span> <span class="p">{</span>
-            <span class="s">'src_url'</span><span class="p">:</span> <span class="s">'https://data.cdc.gov/api/views/vbim-akqf/rows.csv?accessType=DOWNLOAD'</span><span class="p">,</span>
-            <span class="s">'tgt_path'</span><span class="p">:</span> <span class="s">'/tmp/cdc_covid_cases.csvh'</span>
-        <span class="p">}</span>
-    <span class="p">)</span>
-
-    <span class="n">stage_from_www</span><span class="p">.</span><span class="n">doc</span> <span class="o">=</span> <span class="s">'Download COVID case CSV data from the CDC using '</span> \
-        <span class="s">'an HTTP GET'</span>
-
-    <span class="c1"># Second task is a DrillOperator the executes our CTAS ETL from an external
-</span>    <span class="c1"># script.  It's also possible to specify inline SQL, and to split  this
-</span>    <span class="c1"># multi-statement SQL script across tasks e.g. if you prefer to have
-</span>    <span class="c1"># the inital DROP TABLE be a separate task.
-</span>    <span class="n">ctas_etl_task</span> <span class="o">=</span> <span class="n">DrillOperator</span><span class="p">(</span>
-        <span class="n">drill_conn_id</span><span class="o">=</span><span class="s">'drill_tutorial'</span><span class="p">,</span>
-        <span class="n">task_id</span><span class="o">=</span><span class="s">'ctas_etl'</span><span class="p">,</span>
-        <span class="n">sql</span><span class="o">=</span><span class="s">'cdc_covid_cases.drill.sql'</span>
-    <span class="p">)</span>
-
-    <span class="n">ctas_etl_task</span><span class="p">.</span><span class="n">doc</span> <span class="o">=</span> <span class="s">'Recreate dfs.tmp.cdc_covid_cases using CTAS'</span>
-
-    <span class="c1"># Third task is a DrillOperator that produces a daily case count report.
-</span>    <span class="c1"># We just write the report back out to dfs.tmp as human-readable CSV, but
-</span>    <span class="c1"># you should imagine using Airflow to route and deliver it in any number
-</span>    <span class="c1"># of ways.
-</span>    <span class="n">daily_count_report_task</span> <span class="o">=</span> <span class="n">DrillOperator</span><span class="p">(</span>
-        <span class="n">drill_conn_id</span><span class="o">=</span><span class="s">'drill_tutorial'</span><span class="p">,</span>
-        <span class="n">task_id</span><span class="o">=</span><span class="s">'drill_report'</span><span class="p">,</span>
-        <span class="n">sql</span><span class="o">=</span><span class="s">'''
-        set `store.format` = 'csv';
-
-        drop table if exists dfs.tmp.cdc_daily_counts;
-
-        create table dfs.tmp.cdc_daily_counts as
-        select
-            cdc_case_earliest_dt,
-            count(*) as case_count
-        from
-            dfs.tmp.cdc_covid_cases
-        group by
-            cdc_case_earliest_dt
-        order by
-            cdc_case_earliest_dt;
-        '''</span>
-    <span class="p">)</span>
-
-    <span class="n">daily_count_report_task</span><span class="p">.</span><span class="n">doc</span> <span class="o">=</span> <span class="s">'Report daily case counts to CSV'</span>
-
-    <span class="c1"># Specify the edges of the DAG, i.e. the task dependencies
-</span>    <span class="n">stage_from_www_task</span> <span class="o">&gt;&gt;</span> <span class="n">ctas_etl_task</span> <span class="o">&gt;&gt;</span> <span class="n">daily_count_report_task</span>
-<span class="n">age_parse</span><span class="p">;</span>
-</code></pre></div></div>
-
-<h2 id="manually-launch-the-airflow-dag">Manually launch the Airflow DAG</h2>
-
-<p>You can harmlessly test the Python syntax of a DAG script by running it through the interpreter.</p>
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 <span class="nv">$AIRFLOW_HOME</span>/dags/drill-tutorial.py
-</code></pre></div></div>
-
-<p>If all is well Python will exit without errors and you can proceed to ensure that your Drillbit is running, then launch a test run of you DAG using airflow.</p>
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>airflow dags <span class="nb">test </span>drill_tutorial <span class="si">$(</span><span class="nb">date</span> +%Y-%m-%d<span class="si">)</span>
-</code></pre></div></div>
-
-<p>After a delay while the COVID case dataset is downloaded to your machine you should start to see all of the queries executed on Drill logged to your console by sqlalchemy-drill.  The DAG execution should have produced two outputs.</p>
-
-<ol>
-  <li>A Parquet dataset at <code class="language-plaintext highlighter-rouge">$TMPDIR/cdc_covid_cases</code> at the individual case grain.</li>
-  <li>A CSV daily surveilled case count report at <code class="language-plaintext highlighter-rouge">$TMPDIR/cdc_daily_counts</code>.</li>
-</ol>
-
-<p>Try some OLAP in Drill with the first and take a look at the second in a spreadsheet or text editor.</p>
-
-<p>Congratulations, you built an ETL using Apache Airflow and Apache Drill!</p>
-
-<h2 id="next-steps">Next steps</h2>
-
-<ul>
-  <li><a href="https://airflow.apache.org/docs/apache-airflow/1.10.1/scheduler.html">Read about Airflow scheduling</a> and run the scheduler as a daemon to have your job run automatically.</li>
-  <li>Try adapting the DAG here to work with other data sources.  If you have databases, files and web services in your own environment those will be natural choices, otherwise you can look around online for more public datasets and APIs.</li>
-  <li>Instead of replacing the target dataset, try adding new partitions to an existing dataset by aiming CTAS at date-labelled subdirectories.</li>
-  <li>Keep an eye out for data crunching steps in existing workflows, including those which are not strictly ETL pipelines, where Drill could shoulder some of the load.</li>
-</ul>
-
-<p>Thanks for joining us for this tutorial and happy Drilling!</p>
-
-
+        <ul>
+        
+      </ul>
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="/zh/docs/analyzing-data-using-window-functions/">← 通过窗口函数分析数据集</a></span><span class="next-toc"><a href="/zh/docs/drill-on-yarn/">Drill-on-YARN →</a></span>
+  <span class="previous-toc"><a href="">← </a></span><span class="next-toc"><a href=""> →</a></span>
 </div>
 
     
