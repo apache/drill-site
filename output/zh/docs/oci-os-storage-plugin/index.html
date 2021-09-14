@@ -1441,22 +1441,21 @@ The ability to query this cloud storage is implemented by using Oracle HDFS libr
 <p>The <strong>Storage</strong> page in the Drill Web UI provides an OCI storage plugin that you configure to connect Drill to the OCI OS distributed file system registered in <code class="language-plaintext highlighter-rouge">core-site.xml</code>. If you did not define your OCI credentials in the <code class="language-plaintext highlighter-rouge">core-site.xml</code> file, you can define them in the storage plugin configuration. You can define the credentials directly in the OCI storage plugin configuration, or you can configure the OCI storage plugin to use an external provider.</p>
 
 <p>To configure the OCI OS storage plugin, log in to the Drill Web UI at <code class="language-plaintext highlighter-rouge">http://&lt;drill-hostname&gt;:8047</code>. The <code class="language-plaintext highlighter-rouge">drill-hostname</code> is a node on which Drill is running. Go to the <strong>Storage</strong> page and click <strong>Update</strong> next to the OCI OS storage plugin option or <strong>Create</strong> new if it doesn’t exist yet.</p>
-
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
- 	"type": "file",
-"connection": "oci://{bucket_name}@{namespace}/",
-"config": {
-	"fs.oci.client.hostname": "https://objectstorage.us-ashburn-1.oraclecloud.com",
-	"fs.oci.client.auth.tenantId": "ocid1.tenancy.oc1..exampleuniqueID",
-	"fs.oci.client.auth.userId": "ocid1.user.oc1..exampleuniqueID",
-	"fs.oci.client.auth.fingerprint": "20:3b:97:13:55:1c:5b:0d:d3:37:d8:50:4e:c5:3a:34",
-	"fs.oci.client.auth.pemfilepath": "/opt/drill/conf/oci_api_key.pem"
-    },
+  "type": "file",
+  "connection": "oci://{bucket_name}@{namespace}",
+  "config": {
+    "fs.oci.client.hostname": "https://objectstorage.us-ashburn-1.oraclecloud.com",
+    "fs.oci.client.auth.tenantId": "ocid1.tenancy.oc1..exampleuniqueID",
+    "fs.oci.client.auth.userId": "ocid1.user.oc1..exampleuniqueID",
+    "fs.oci.client.auth.fingerprint": "20:3b:97:13:55:1c:5b:0d:d3:37:d8:50:4e:c5:3a:34",
+    "fs.oci.client.auth.pemfilepath": "/opt/drill/conf/oci_api_key.pem"
+  },
   "workspaces": {
     ...
-  }  
+  }
+}  
 </code></pre></div></div>
-
 <p><strong>Note:</strong> The <code class="language-plaintext highlighter-rouge">"config"</code> block in the OCI storage plugin configuration contains properties to define your OCI credentials. Do not include the <code class="language-plaintext highlighter-rouge">"config"</code> block in your OCI OS storage plugin configuration if you defined your OCI credentials in the <code class="language-plaintext highlighter-rouge">core-site.xml</code> file.</p>
 
 <p>To configure the plugin in core-site.xml file, navigate to the $DRILL_HOME/conf or $DRILL_SITE directory, and rename the core-site-example.xml file to core-site.xml</p>
@@ -1472,7 +1471,7 @@ The ability to query this cloud storage is implemented by using Oracle HDFS libr
 <p><a href="`VaultCredentialsProvider`">VaultCredentialsProvider</a> can be configured to keep OCI OS properties as a secrets. The example of Drill OCI Storage plugin with <code class="language-plaintext highlighter-rouge">VaultCredentialsProvider</code>:</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
   "type": "file",
-  "connection": "oci://objectstorage-test-my-app-site-548c762a46e549ba@id1kowo7idm1/",
+  "connection": "oci://{bucket_name}@{namespace}",
   "workspaces": {...},
   "formats": {...},
   "credentialsProvider": {
