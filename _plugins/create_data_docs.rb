@@ -41,11 +41,11 @@ Jekyll::Hooks.register :site, :pre_render do |site|
 		
 	    docs_by_title[doc_md[:title]] = doc_md
 	    prev_doc_md = doc_md
-	# end
 
-	# docs_by_title.each_value { |doc_md|
-		# Note the (valid) assumption that parents always precede their children
-		# in site.collections['docs'] in the code that follows.
+		# Note the assumption that parents always precede their children
+		# in site.collections['docs'] in the code that follows.  For this to hold,
+		# authors must use a file number+name convention that puts parents first
+		# lexicographically.
 	    if doc_md[:parent].nil?
 		    top_level_docs << doc_md
 		else
@@ -74,11 +74,7 @@ Jekyll::Hooks.register :site, :pre_render do |site|
     	by_title: docs_by_title,
     	hierarchy: top_level_docs
     }
-    
-    # puts JSON.pretty_generate(docs_by_title)
 
-	File.open(out_path, 'a') { |f|
-		f.flock(File::LOCK_EX)
-	    f.write(JSON.pretty_generate(docs_md))
-	}
+    File.write(out_path, JSON.pretty_generate(docs_md))
+    puts 'INFO: pre-render hook has finished creating ' + out_path
 end
