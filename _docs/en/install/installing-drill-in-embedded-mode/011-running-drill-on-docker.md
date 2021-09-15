@@ -6,15 +6,15 @@ parent: "Installing Drill in Embedded Mode"
 
 **Introduced in release:** 1.14
 
-You can run Drill in a [Docker container](https://www.docker.com/what-container#/package_software).  Running Drill in a container gives a simple way to start using Drill; all you need is Docker installed on your machine. You simply run a Docker command, and your installation will download the Drill Docker image from the [apache/drill](https://hub.docker.com/r/apache/drill) repository on [Docker Hub](https://docs.docker.com/docker-hub/) and bring up a container with Apache Drill running in embedded mode.
+You can run Drill in a [Docker container](https://www.docker.com/what-container#/package_software).  Running Drill in a container gives a simple way to start using Drill; all you need is Docker installed on your machine.  You simply run a Docker command, and your installation will download the Drill Docker image from the [apache/drill](https://hub.docker.com/r/apache/drill) repository on [Docker Hub](https://docs.docker.com/docker-hub/) and bring up a container with Apache Drill running in embedded mode.
 
-Currently, you can only run Drill in embedded mode in a Docker container. Embedded mode is when a single instance of Drill runs on a node or in a container. You do not have to perform any configuration tasks to start using Drill to query local files in embedded mode.  
+Currently, you can only run Drill in embedded mode in a Docker container. Embedded mode is when a single instance of Drill runs on a node or in a container. You do not have to perform any configuration tasks to start using Drill to query local files in embedded mode.
 
 ## Prerequisites
 
-You must have Docker version 18 or later [installed on your machine](https://docs.docker.com/install/).  
+You must have Docker version 18 or later [installed on your machine](https://docs.docker.com/install/).
 
-## Running Drill in a Docker Container  
+## Running Drill in a Docker Container
 
 You can start and run a Docker container in detached mode or foreground mode. [Detached mode]({{site.baseurl}}/docs/running-drill-on-docker/#running-the-drill-docker-container-in-detached-mode) runs the container in the background. Foreground is the default mode. [Foreground mode]({{site.baseurl}}/docs/running-drill-on-docker/#running-the-drill-docker-container-in-foreground-mode) runs the Drill process in the container and attaches the console to Drill’s standard input, output, and standard error. 
 
@@ -31,6 +31,8 @@ Whether you run the Docker container in detached or foreground mode, you start D
 | `apache/drill:<version>` | The Docker Hub repository and tag. In the following   example, `apache/drill` is   the repository and `1.17.0`   is the tag:     `apache/drill:1.17.0`.     The tag correlates with the version of Drill. When a new version of Drill   is available, you can use the new version as the tag.                   |
 | `bin/bash`               | Connects to the Drill container using a bash shell.                                                                                                                                                                                                                                                             |
 |--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+If you decide to work in the filesytem of the Docker image, for example to modify a Drill configuration file, then be aware that Drill has been installed to /opt/drill.  When reading the Drill documentation in the context of the official Docker image, you should substitute the mentioned path for any mentions of the environment variable `$DRILL_HOME`.
 
 ### Running the Drill Docker Container in Foreground Mode  
 
@@ -92,7 +94,26 @@ SELECT first_name, last_name FROM cp.`employee.json` LIMIT 1;
 1 row selected (0.256 seconds)  
 ```
 
-To query files outside of the container, you can configure [Docker volumes](https://docs.docker.com/storage/volumes/#start-a-service-with-volumes).  
+To query files stored outside of the container, you can [bind mount a directory in from the host](https://docs.docker.com/storage/bind-mounts/)
+```sh
+docker run -i --name drill-1.19.0 \
+	-p 8047:8047 \
+	-t apache/drill:1.19.0
+	-v /mnt/big/data:/mnt
+	/bin/bash
+```
+or you can [create and mount a Docker volume](https://docs.docker.com/storage/volumes/).
+```sh
+docker volume create big-data-vol
+
+docker run -i --name drill-1.19.0 \
+	-p 8047:8047 \
+	-t apache/drill:1.19.0
+	-v big-data-vol:/mnt
+	/bin/bash
+```
+
+See the linked Docker documentation for more details.
 
 ## Drill Web UI  
 

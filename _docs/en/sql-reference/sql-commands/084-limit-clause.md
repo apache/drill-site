@@ -12,7 +12,7 @@ You can also configure an automatic limit on the number of rows returned from a 
 
 ## Syntax
 The LIMIT clause supports the following syntaxes:
-```sql
+```
 LIMIT { count | ALL }
 
 FETCH NEXT count { ROW | ROWS } ONLY

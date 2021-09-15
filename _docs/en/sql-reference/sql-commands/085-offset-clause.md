@@ -7,7 +7,7 @@ The OFFSET clause provides a way to skip a specified number of first rows in a r
 
 ## Syntax
 The OFFSET clause supports the following syntax:
-```sql
+```
 OFFSET start { ROW | ROWS }
 ```
 ## Parameters
