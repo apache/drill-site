@@ -1428,7 +1428,7 @@
       
         <p><strong>Introduced in release:</strong> 1.14</p>
 
-<p>You can run Drill in a <a href="https://www.docker.com/what-container#/package_software">Docker container</a>.  Running Drill in a container gives a simple way to start using Drill; all you need is Docker installed on your machine. You simply run a Docker command, and your installation will download the Drill Docker image from the <a href="https://hub.docker.com/r/apache/drill">apache/drill</a> repository on <a href="https://docs.docker.com/docker-hub/">Docker Hub</a> and bring up a container with Apache Drill running in embedded mode.</p>
+<p>You can run Drill in a <a href="https://www.docker.com/what-container#/package_software">Docker container</a>.  Running Drill in a container gives a simple way to start using Drill; all you need is Docker installed on your machine.  You simply run a Docker command, and your installation will download the Drill Docker image from the <a href="https://hub.docker.com/r/apache/drill">apache/drill</a> repository on <a href="https://docs.docker.com/docker-hub/">Docker Hub</a> and bring up a container with Apache Drill running in embedded mode.</p>
 
 <p>Currently, you can only run Drill in embedded mode in a Docker container. Embedded mode is when a single instance of Drill runs on a node or in a container. You do not have to perform any configuration tasks to start using Drill to query local files in embedded mode.</p>
 
@@ -1476,6 +1476,8 @@
     </tr>
   </tbody>
 </table>
+
+<p>If you decide to work in the filesytem of the Docker image, for example to modify a Drill configuration file, then be aware that Drill has been installed to /opt/drill.  When reading the Drill documentation in the context of the official Docker image, you should substitute the mentioned path for any mentions of the environment variable <code class="language-plaintext highlighter-rouge">$DRILL_HOME</code>.</p>
 
 <h3 id="running-the-drill-docker-container-in-foreground-mode">Running the Drill Docker Container in Foreground Mode</h3>
 
@@ -1533,7 +1535,24 @@
 1 row selected (0.256 seconds)  
 </code></pre></div></div>
 
-<p>To query files outside of the container, you can configure <a href="https://docs.docker.com/storage/volumes/#start-a-service-with-volumes">Docker volumes</a>.</p>
+<p>To query files stored outside of the container, you can <a href="https://docs.docker.com/storage/bind-mounts/">bind mount a directory in from the host</a></p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-i</span> <span class="nt">--name</span> drill-1.19.0 <span class="se">\</span>
+	<span class="nt">-p</span> 8047:8047 <span class="se">\</span>
+	<span class="nt">-t</span> apache/drill:1.19.0
+	<span class="nt">-v</span> /mnt/big/data:/mnt
+	/bin/bash
+</code></pre></div></div>
+<p>or you can <a href="https://docs.docker.com/storage/volumes/">create and mount a Docker volume</a>.</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker volume create big-data-vol
+
+docker run <span class="nt">-i</span> <span class="nt">--name</span> drill-1.19.0 <span class="se">\</span>
+	<span class="nt">-p</span> 8047:8047 <span class="se">\</span>
+	<span class="nt">-t</span> apache/drill:1.19.0
+	<span class="nt">-v</span> big-data-vol:/mnt
+	/bin/bash
+</code></pre></div></div>
+
+<p>See the linked Docker documentation for more details.</p>
 
 <h2 id="drill-web-ui">Drill Web UI</h2>
 
