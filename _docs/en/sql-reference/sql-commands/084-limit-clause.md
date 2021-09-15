@@ -3,20 +3,25 @@ title: "LIMIT Clause"
 slug: "LIMIT Clause"
 parent: "SQL Commands"
 ---
-The LIMIT clause limits the result set to the specified number of rows. You can use LIMIT with or without an ORDER BY clause.  
 
-Starting in Drill 1.16, you can configure an automatic limit on the number of rows returned from a result set. See [Setting an Auto Limit on the Number of Rows Returned for Result Sets]({{site.baseurl}}/docs/planning-and-execution-options/#setting-an-auto-limit-on-the-number-of-rows-returned-for-result-sets).
+**Introduced in release:** 1.16
 
+The LIMIT clause limits the result set to the specified number of rows. You can use LIMIT with or without ORDER BY and OFFSET clauses.
+
+You can also configure an automatic limit on the number of rows returned from a result set. See [Setting an Auto Limit on the Number of Rows Returned for Result Sets]({{site.baseurl}}/docs/planning-and-execution-options/#setting-an-auto-limit-on-the-number-of-rows-returned-for-result-sets).
 
 ## Syntax
-The LIMIT clause supports the following syntax:  
+The LIMIT clause supports the following syntaxes:
+```sql
+LIMIT { count | ALL }
 
-       LIMIT { count | ALL }  
+FETCH NEXT count { ROW | ROWS } ONLY
+```
 
 ## Parameters
 *count*  
 Specifies the maximum number of rows to return.
-If the count expression evaluates to NULL, Drill treats it as LIMIT ALL.  
+If the count expression evaluates to NULL, Drill treats it as LIMIT ALL.
 
 *ALL*  
 Specifying ALL returns all records, which is equivalent to omitting the LIMIT clause from the SELECT statement.  
@@ -25,8 +30,7 @@ Specifying ALL returns all records, which is equivalent to omitting the LIMIT cl
 
 LIMIT 0 quickly returns an empty set. Use LIMIT 0 to test the validity of the SQL syntax in a complex query or verify that the query is optimized before running the query on large data sets.  
 
-### Usage Notes  
-
+### Usage Notes
 
 - Include the LIMIT 0 clause in the outermost query. Drill does not optimize LIMIT 0 queries if you include LIMIT 0 in a subquery.  
 - When you run a query with the LIMIT 0 clause, Drill does not return any rows from the result set.  
