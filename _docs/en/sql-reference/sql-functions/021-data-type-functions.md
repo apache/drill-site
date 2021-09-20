@@ -4,7 +4,9 @@ slug: "Data Type Functions"
 parent: "SQL Functions"
 ---
 
-Starting in Drill 1.14, Drill supports the following functions that return data type information:  
+**Introduced in release:** 1.14
+
+Drill supports the following functions that return data type information:  
 
 **sqlTypeOf()**  
 Returns the data type of a column (using the SQL names) whether the column is NULL or not. You can use the SQL name in a CAST statement, for example:  

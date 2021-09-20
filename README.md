@@ -1,4 +1,4 @@
-**N.B.** As of 2021-08-27, documentation is no longer kept in drill/gh-pages.  All documentation, including both the source Markdown and the generated HTML is now kept in this repository.
+**N.B.** As of 2021-08-27, documentation is no longer kept in drill/gh-pages.  All documentation, including both the source Markdown and the generated HTML is now kept in this repository.  To contribute documentation please send a pull request containing your edits to the master branch of this repository.
 
 The Apache Drill website is built by [Jekyll](http://jekyllrb.com/) from Markdown sources in designated branches of this repository.  The build process flows from left to right in the following table.
 
