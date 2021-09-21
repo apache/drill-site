@@ -2,17 +2,32 @@
 title: "Running Drill on Docker"
 slug: "Running Drill on Docker"
 parent: "Installing Drill in Embedded Mode"
----  
+---
 
 **Introduced in release:** 1.14
 
 You can run Drill in a [Docker container](https://www.docker.com/what-container#/package_software).  Running Drill in a container gives a simple way to start using Drill; all you need is Docker installed on your machine.  You simply run a Docker command, and your installation will download the Drill Docker image from the [apache/drill](https://hub.docker.com/r/apache/drill) repository on [Docker Hub](https://docs.docker.com/docker-hub/) and bring up a container with Apache Drill running in embedded mode.
 
-Currently, you can only run Drill in embedded mode in a Docker container. Embedded mode is when a single instance of Drill runs on a node or in a container. You do not have to perform any configuration tasks to start using Drill to query local files in embedded mode.
+Currently, you can only run Drill in embedded mode in these Docker containers.  Embedded mode is when a single instance of Drill runs on a node or in a container. You do not have to perform any configuration tasks to start using Drill to query local files in embedded mode, other than making your data visible to the container (see below).
+
+## Official Drill image tags
+
+**Introduced in release:** 1.20
+
+We recommend using the containers based on the latest released version of Drill for production and the containers based on the master branch should you want to test unreleased features or bug fixes.
+
+| Image tag         | Extra tags              | Description                                                               |
+| ----------------- | ----------------------- | ------------------------------------------------------------------------- |
+| 1.20.0-openjdk-8  | latest-openjdk-8,latest | latest release running on the openjdk:8 base image                        |
+| 1.20.0-openjdk-11 | latest-openjdk-11       | latest release running on the latest supported LTS OpenJDK base image     |
+| 1.20.0-openjdk-14 | latest-openjdk-14       | latest release running on the latest supported OpenJDK base image         |
+| master-openjdk-8  | master                  | snapshot of master running on the openjdk:8 base image                    |
+| master-openjdk-11 |                         | snapshot of master running on the latest supported LTS OpenJDK base image |
+| master-openjdk-14 |                         | snapshot of master running on the latest supported OpenJDK base image     |
 
 ## Prerequisites
 
-You must have Docker version 18 or later [installed on your machine](https://docs.docker.com/install/).
+You must have Docker version 18 or later [installed on your machine](https://docs.docker.com/install/).  Users have also reported success using [Podman](https://podman.io/).
 
 ## Running Drill in a Docker Container
 
@@ -47,16 +62,16 @@ When you issue the docker run command, the Drill process starts in a container. 
        "json ain't no thang"
        apache drill>
 
-At the prompt, you can enter the following simple query to verify that Drill is running:  
+At the prompt, you can enter the following simple query to verify that Drill is running:
 ```sql
 SELECT version FROM sys.version;  
 ```
 
-### Running the Drill Docker Container in Detached Mode  
+### Running the Drill Docker Container in Detached Mode
 
-Open a terminal window (Command Prompt or PowerShell, but not PowerShell ISE) and then issue the following commands and options to connect to SQLLine (the Drill shell):  
+Open a terminal window (Command Prompt or PowerShell, but not PowerShell ISE) and then issue the following commands and options to connect to SQLLine (the Drill shell):
 
-**Note:** When you run the Drill Docker container in detached mode, you connect to SQLLine (the Drill shell) using drill-localhost.  
+**Note:** When you run the Drill Docker container in detached mode, you connect to SQLLine (the Drill shell) using drill-localhost.
 ```sh
 $ docker run -i --name drill-1.19.0 -p 8047:8047 --detach -t apache/drill:1.19.0 /bin/bash
 <displays container ID>
@@ -67,7 +82,7 @@ $ docker exec -it drill-1.19.0 bash
 $ /opt/drill/bin/drill-localhost
 ```
 
-After you issue the commands, the Drill process starts in a container. SQLLine prints a message, and the prompt appears:  
+After you issue the commands, the Drill process starts in a container. SQLLine prints a message, and the prompt appears:
 
        Apache Drill 1.19.0
        "json ain't no thang"
