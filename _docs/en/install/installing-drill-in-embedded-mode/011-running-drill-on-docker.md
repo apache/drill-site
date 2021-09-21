@@ -10,7 +10,7 @@ You can run Drill in a [Docker container](https://www.docker.com/what-container#
 
 Currently, you can only run Drill in embedded mode in these Docker containers.  Embedded mode is when a single instance of Drill runs on a node or in a container. You do not have to perform any configuration tasks to start using Drill to query local files in embedded mode, other than making your data visible to the container (see below).
 
-## Official Drill image tags
+## Expanded set of official image tags
 
 **Introduced in release:** 1.20
 
