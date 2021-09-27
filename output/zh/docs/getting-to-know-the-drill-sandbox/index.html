@@ -1426,9 +1426,9 @@
 
     <div class="int_text" align="left">
       
-        <p>This section covers key information about the Apache Drill tutorial. After <a href="/zh/docs/installing-the-apache-drill-sandbox">installing the Drill sandbox</a> and starting the sandbox, you can open another terminal window (Linux) or Command Prompt (Windows) and use the secure shell (ssh) to connect to the VM, assuming ssh is installed. Use the following login name and password: mapr/mapr.</p>
+        <p>本节涵盖了 Apache Drill 教程的关键信息。 在安装并启动 sandbox 后 <a href="/zh/docs/installing-the-apache-drill-sandbox">如何安装 Drill sandbox</a>，你可以打开另一个终端窗口 (Linux) 或者命令提示符 (Windows) 并使用 secure shell (ssh) 连接到虚拟机。并使用以下登录名和密码：mapr/mapr。</p>
 
-<p>For example:</p>
+<p>例如:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ssh mapr@localhost -p 2222
 Password:
@@ -1436,9 +1436,9 @@ Last login: Mon Sep 15 13:46:08 2014 from 10.250.0.28
 Welcome to your Mapr Demo virtual machine.
 </code></pre></div></div>
 
-<p>Using the secure shell instead of the VM interface has some advantages. You can copy/paste commands from the tutorial and avoid mouse control problems.</p>
+<p>使用 secure shell 代替 VM 接口有一些优势。你可以从教程中复制/粘贴命令并避免鼠标操作中的问题。</p>
 
-<p>Drill includes a shell for connecting to relational databases and executing SQL commands. On the sandbox, the Drill shell runs in embedded mode. After logging into the sandbox,  use the <code class="language-plaintext highlighter-rouge">SQLLine</code> command. The Drill shell appears, and you can run Drill queries.</p>
+<p>Drill shell 用于连接关系型数据库和执行 SQL 命令。在 sandbox 中，Drill shell 以嵌入模式运行。在登录 sandbox 后，使用 <code class="language-plaintext highlighter-rouge">SQLLine</code> 命令以启动 Drill shell，然后即可进行 Drill 查询了。</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[mapr@maprdemo ~]$ sqlline
 apache drill 1.1.0 
@@ -1446,16 +1446,16 @@ apache drill 1.1.0
 0: jdbc:drill:&gt;
 </code></pre></div></div>
 
-<p>In this tutorial you query a number of data sets, including Hive and HBase, and files on the file system, such as CSV, JSON, and Parquet files. To access these diverse data sources, you connect Drill to storage plugins.</p>
+<p>在本教程中，会查询多种数据集，包括 Hive 和 HBase，以及文件系统，例如 CSV、JSON 和 Parquet 文件。要访问这些不同的数据源，需要将 Drill 连接到存储插件。</p>
 
-<h2 id="storage-plugin-overview">Storage Plugin Overview</h2>
-<p>You use a <a href="/zh/docs/connect-a-data-source-introduction">storage plugin</a> to connect to a data source, such as a file or the Hive metastore. Take a look at the storage plugin definitions by opening the Storage tab in the Drill Web UI. Launch a web browser and go to: <code class="language-plaintext highlighter-rouge">http://&lt;IP address&gt;:8047/storage</code>.</p>
+<h2 id="存储插件概述">存储插件概述</h2>
+<p>你将使用 <a href="/zh/docs/connect-a-data-source-introduction">存储插件</a> 连接到数据源，例如文件或 Hive 元存储。通过打开 Drill Web UI 中的 Storage 选项卡查看存储插件定义。启动网络浏览器并转到: <code class="language-plaintext highlighter-rouge">http://&lt;IP address&gt;:8047/storage</code>。</p>
 
-<p>The control panel for managing storage plugins appears.</p>
+<p>出现用于管理存储插件的控制面板。</p>
 
 <p><img src="/images/docs/get2kno_plugin.png" alt="sandbox plugin" /></p>
 
-<p>You see the following storage plugin configurations:</p>
+<p>你会看到以下存储插件配置：</p>
 
 <ul>
   <li>cp</li>
@@ -1466,25 +1466,25 @@ apache drill 1.1.0
   <li>mongo</li>
 </ul>
 
-<p>Click Update to examine a configuration.</p>
+<p>单击更新以检查配置。</p>
 
-<p>If you’ve used an installation of Drill before using the sandbox, you might notice that a few storage plugin configurations in the sandbox differ from the same storage plugin configurations in a Drill installation. The sandbox configurations of dfs, hive, maprdb, and hbase storage plugins definitions play a role in simulating the cluster environment for running the tutorial.</p>
+<p>如果在使用 sandbox 之前安装了 Drill，你可能会注意到 sandbox 中的一些存储插件配置与直接安装的 Drill 中的存储插件配置不同。sandbox 存储插件配置了 dfs、hive、maprdb 和 hbase 来模拟教程中的集群环境。</p>
 
 <h3 id="dfs">dfs</h3>
 
-<p>The <code class="language-plaintext highlighter-rouge">dfs</code> storage plugin in the sandbox configures a connection to the MapR file system (MapR-FS).</p>
+<p>sandbox 中的 <code class="language-plaintext highlighter-rouge">dfs</code> 存储插件建立了与 MapR 文件系统 (MapR-FS) 的连接。</p>
 
-<p>The <code class="language-plaintext highlighter-rouge">dfs</code> storage plugin configuration in the sandbox also includes a set of workspaces; each one represents a
-location in MapR-FS:</p>
+<p>sandbox 中的<code class="language-plaintext highlighter-rouge">dfs</code>存储插件还包括一组工作区；每一个代表一个
+MapR-FS 中的位置：</p>
 
 <ul>
-  <li>root: access to the root file system location</li>
-  <li>clicks: access to nested JSON log data</li>
-  <li>logs: access to flat (non-nested) JSON log data in the logs directory and its subdirectories</li>
-  <li>views: a workspace for creating views</li>
+  <li>root: 访问根文件系统目录</li>
+  <li>clicks: 访问嵌套的 JSON 格式日志数据</li>
+  <li>logs: 访问日志目录及其子目录中的平面（非嵌套）JSON 格式日志数据</li>
+  <li>views: 用于创建视图的工作区</li>
 </ul>
 
-<p>The <code class="language-plaintext highlighter-rouge">dfs</code> configuration includes format definitions.</p>
+<p><code class="language-plaintext highlighter-rouge">dfs</code> 配置包括格式定义。</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
   "type": "file",
@@ -1523,13 +1523,12 @@ location in MapR-FS:</p>
 
 <h3 id="maprdb">maprdb</h3>
 
-<p>The maprdb is a configuration for MapR-DB in the sandbox. You use this format in the sandbox to query MapR-DB/HBase tables.</p>
+<p>maprdb 是 sandbox 中 MapR-DB 的一种数据格式。你可以在 sandbox 中使用这种格式来查询 MapR-DB/HBase 表。</p>
 
 <h3 id="hive">hive</h3>
 
-<p>The hive configuration for a Hive data warehouse within the sandbox.
-Drill connects to the Hive metastore by using the configured metastore thrift
-URI. Metadata for Hive tables is automatically available for users to query.</p>
+<p>sandbox 中有专门针对 Hive 数据仓库的 Hive 配置。
+Drill 通过预置的 Metastore thrift URI 连接到 Hive Metastore。用户可以直接查询 Hive 表中的元数据。</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
   "type": "hive",
@@ -1541,12 +1540,11 @@ URI. Metadata for Hive tables is automatically available for users to query.</p>
 }
 </code></pre></div></div>
 
-<p>Do not use this storage plugin configuration outside the sandbox. Use the configuration for either the <a href="/zh/docs/hive-storage-plugin/">remote or embedded metastore configuration</a>.</p>
+<p>此存储插件配置只适用于 sandbox 中使用。对于远程或者嵌入模式中的存储插件配置可以参考 <a href="/zh/docs/hive-storage-plugin/">远程或嵌入模式中的 metastore 存储插件配置</a>。</p>
 
-<h2 id="whats-next">What’s Next</h2>
+<h2 id="下一步">下一步</h2>
 
-<p>Start running queries by going to <a href="/zh/docs/lesson-1-learn-about-the-data-set">Lesson 1: Learn About the Data
-Set</a>.</p>
+<p>开始学习查询语句 <a href="/zh/docs/lesson-1-learn-about-the-data-set">第一课: 什么是 data set</a>。</p>
 
 
     
