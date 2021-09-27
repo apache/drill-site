@@ -4,34 +4,34 @@ slug: "Getting to Know the Drill Sandbox"
 parent: "搭配 MapR Sandbox 学习 Drill"
 lang: "zh"
 ---
-This section covers key information about the Apache Drill tutorial. After [installing the Drill sandbox]({{ site.baseurl }}/docs/installing-the-apache-drill-sandbox) and starting the sandbox, you can open another terminal window (Linux) or Command Prompt (Windows) and use the secure shell (ssh) to connect to the VM, assuming ssh is installed. Use the following login name and password: mapr/mapr.   
+本节涵盖了 Apache Drill 教程的关键信息。 在安装并启动 sandbox 后 [如何安装 Drill sandbox]({{ site.baseurl }}/docs/installing-the-apache-drill-sandbox)，你可以打开另一个终端窗口 (Linux) 或者命令提示符 (Windows) 并使用 secure shell (ssh) 连接到虚拟机。并使用以下登录名和密码：mapr/mapr。
 
-For example:
+例如:
 
     $ ssh mapr@localhost -p 2222
     Password:
     Last login: Mon Sep 15 13:46:08 2014 from 10.250.0.28
     Welcome to your Mapr Demo virtual machine.
 
-Using the secure shell instead of the VM interface has some advantages. You can copy/paste commands from the tutorial and avoid mouse control problems.
+使用 secure shell 代替 VM 接口有一些优势。你可以从教程中复制/粘贴命令并避免鼠标操作中的问题。
 
-Drill includes a shell for connecting to relational databases and executing SQL commands. On the sandbox, the Drill shell runs in embedded mode. After logging into the sandbox,  use the `SQLLine` command. The Drill shell appears, and you can run Drill queries.  
+Drill shell 用于连接关系型数据库和执行 SQL 命令。在 sandbox 中，Drill shell 以嵌入模式运行。在登录 sandbox 后，使用 `SQLLine` 命令以启动 Drill shell，然后即可进行 Drill 查询了。
 
     [mapr@maprdemo ~]$ sqlline
     apache drill 1.1.0 
     "Does your data know the Drill?"
     0: jdbc:drill:>
 
-In this tutorial you query a number of data sets, including Hive and HBase, and files on the file system, such as CSV, JSON, and Parquet files. To access these diverse data sources, you connect Drill to storage plugins. 
+在本教程中，会查询多种数据集，包括 Hive 和 HBase，以及文件系统，例如 CSV、JSON 和 Parquet 文件。要访问这些不同的数据源，需要将 Drill 连接到存储插件。 
 
-## Storage Plugin Overview
-You use a [storage plugin]({{ site.baseurl }}/docs/connect-a-data-source-introduction) to connect to a data source, such as a file or the Hive metastore. Take a look at the storage plugin definitions by opening the Storage tab in the Drill Web UI. Launch a web browser and go to: `http://<IP address>:8047/storage`. 
+## 存储插件概述
+你将使用 [存储插件]({{ site.baseurl }}/docs/connect-a-data-source-introduction) 连接到数据源，例如文件或 Hive 元存储。通过打开 Drill Web UI 中的 Storage 选项卡查看存储插件定义。启动网络浏览器并转到: `http://<IP address>:8047/storage`。
 
-The control panel for managing storage plugins appears.
+出现用于管理存储插件的控制面板。
 
 ![sandbox plugin]({{ site.baseurl }}/images/docs/get2kno_plugin.png)
 
-You see the following storage plugin configurations:
+你会看到以下存储插件配置：
 
 * cp
 * dfs
@@ -40,23 +40,23 @@ You see the following storage plugin configurations:
 * hbase
 * mongo
 
-Click Update to examine a configuration. 
+单击更新以检查配置。 
 
-If you've used an installation of Drill before using the sandbox, you might notice that a few storage plugin configurations in the sandbox differ from the same storage plugin configurations in a Drill installation. The sandbox configurations of dfs, hive, maprdb, and hbase storage plugins definitions play a role in simulating the cluster environment for running the tutorial. 
+如果在使用 sandbox 之前安装了 Drill，你可能会注意到 sandbox 中的一些存储插件配置与直接安装的 Drill 中的存储插件配置不同。sandbox 存储插件配置了 dfs、hive、maprdb 和 hbase 来模拟教程中的集群环境。 
 
 ### dfs
 
-The `dfs` storage plugin in the sandbox configures a connection to the MapR file system (MapR-FS). 
+sandbox 中的 `dfs` 存储插件建立了与 MapR 文件系统 (MapR-FS) 的连接。
 
-The `dfs` storage plugin configuration in the sandbox also includes a set of workspaces; each one represents a
-location in MapR-FS:
+sandbox 中的`dfs`存储插件还包括一组工作区；每一个代表一个
+MapR-FS 中的位置：
 
-  * root: access to the root file system location
-  * clicks: access to nested JSON log data
-  * logs: access to flat (non-nested) JSON log data in the logs directory and its subdirectories
-  * views: a workspace for creating views
+  * root: 访问根文件系统目录
+  * clicks: 访问嵌套的 JSON 格式日志数据
+  * logs: 访问日志目录及其子目录中的平面（非嵌套）JSON 格式日志数据
+  * views: 用于创建视图的工作区
 
-The `dfs` configuration includes format definitions.
+`dfs` 配置包括格式定义。
 
     {
       "type": "file",
@@ -94,13 +94,12 @@ The `dfs` configuration includes format definitions.
 
 ### maprdb
 
-The maprdb is a configuration for MapR-DB in the sandbox. You use this format in the sandbox to query MapR-DB/HBase tables. 
+maprdb 是 sandbox 中 MapR-DB 的一种数据格式。你可以在 sandbox 中使用这种格式来查询 MapR-DB/HBase 表。 
 
 ### hive
 
-The hive configuration for a Hive data warehouse within the sandbox.
-Drill connects to the Hive metastore by using the configured metastore thrift
-URI. Metadata for Hive tables is automatically available for users to query.
+sandbox 中有专门针对 Hive 数据仓库的 Hive 配置。
+Drill 通过预置的 Metastore thrift URI 连接到 Hive Metastore。用户可以直接查询 Hive 表中的元数据。
 
     {
       "type": "hive",
@@ -111,10 +110,9 @@ URI. Metadata for Hive tables is automatically available for users to query.
       }
     }
 
-Do not use this storage plugin configuration outside the sandbox. Use the configuration for either the [remote or embedded metastore configuration]({{ site.baseurl }}/docs/hive-storage-plugin/).
+此存储插件配置只适用于 sandbox 中使用。对于远程或者嵌入模式中的存储插件配置可以参考 [远程或嵌入模式中的 metastore 存储插件配置]({{ site.baseurl }}/docs/hive-storage-plugin/)。
 
-## What's Next
+## 下一步
 
-Start running queries by going to [Lesson 1: Learn About the Data
-Set]({{ site.baseurl }}/docs/lesson-1-learn-about-the-data-set).
+开始学习查询语句 [第一课: 什么是 data set]({{ site.baseurl }}/docs/lesson-1-learn-about-the-data-set)。
 
