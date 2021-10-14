@@ -64,8 +64,8 @@ To change the `dfs` storage plugin configuration to point to a different local o
   }
   ```
 
-To connect to a Hadoop file system, you include the IP address and port number of the
-name node.
+To connect to a Hadoop file system, you include the IP address and port number (service port) of the
+name node. If you are not sure then you can use "hdfs getconf -confKey fs.default.name" command on hdfs to get the name node details.
 
 ### Querying Donuts Example
 
