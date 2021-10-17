@@ -4,41 +4,38 @@ slug: "Lesson 1: Learn about the Data Set"
 parent: "搭配 MapR Sandbox 学习 Drill"
 lang: "zh"
 ---
-## Goal
+## 目标
 
-This lesson is simply about discovering what data is available, in what
-format, using simple SQL SELECT statements. Drill is capable of analyzing data
-without prior knowledge or definition of its schema. This means that you can
-start querying data immediately (and even as it changes), regardless of its
-format.
+本教程讨论如何使用简单的 SQL SELECT 语句，发现可用数据及其对应格式。Drill 可以在没有预先了解或定义 schema 的情况下分析数据。
+这意味着你可以立即开始查询数据（甚至在数据发生变化时），而无需知道数据格式。
 
-The data set for the tutorial consists of:
+本教程的数据集包括：
 
-  * Transactional data: stored as a Hive table
-  * Product catalog and master customer data: stored as MapR-DB tables
-  * Clickstream and logs data: stored in the MapR file system as JSON files
+  * 事务数据：存储为 Hive 表
+  * 产品目录和主客户数据：存储为 MapR-DB 表
+  * 点击流和日志数据：作为 JSON 文件存储在 MapR 文件系统中
 
-## Queries in This Lesson
+## 本教程中的查询
 
-This lesson consists of select * queries on each data source.
+本教程包括对每个数据源的 select * 查询。
 
-## Before You Begin
+## 在你开始之前
 
-### Start the Drill Shell
+### 启动 Drill Shell
 
-If the Drill shell is not already started, use a Terminal or Command Prompt to log
-into the demo VM as mapr, then enter `sqlline`, as described in ["Getting to Know the Sandbox"]({{ site.baseurl }}/docs/getting-to-know-the-drill-sandbox):
+如果 Drill shell 尚未启动，请使用终端或命令提示符登录 mapr 账户进入演示虚拟机，
+并输入 `sqlline`，请参考 ["了解 Drill Sandbox"]({{ site.baseurl }}/docs/getting-to-know-the-drill-sandbox):
 
-You can run queries to complete the tutorial. To exit from
-the Drill shell, type:
+你可以运行查询来完成本教程。要退出
+Drill shell，输入：
 
 `0: jdbc:drill:> !quit`
 
-Examples in this tutorial use the Drill shell. You can also execute queries using the Drill Web UI.
+本教程中的示例使用 Drill shell。你也可以使用 Drill Web UI 执行查询。
 
-### Enable the DECIMAL Data Type
+### 启用 DECIMAL 数据类型
 
-This tutorial uses the DECIMAL data type in some examples. The DECIMAL data type is disabled by default in this release, so enable the DECIMAL data type before proceeding:
+本教程在一些示例中使用 DECIMAL 数据类型。在此版本中默认禁用 DECIMAL 数据类型，因此在进行查询之前要启用 DECIMAL 数据类型：
 
     alter session set `planner.enable_decimal_data_type`=true;
 
@@ -49,7 +46,7 @@ This tutorial uses the DECIMAL data type in some examples. The DECIMAL data type
     |-------|--------------------------------------------|
     1 row selected 
 
-### List the available workspaces and databases:
+### 列出可用的工作区和数据库：
 
     0: jdbc:drill:> show databases;
     |---------------------|
@@ -68,19 +65,15 @@ This tutorial uses the DECIMAL data type in some examples. The DECIMAL data type
     | sys                 |
     |---------------------|
 
-This command exposes all the metadata available from the storage
-plugins configured with Drill as a set of schemas. The Hive and
-MapR-DB databases, file system, and other data are configured in the file system. As
-you run queries in the tutorial, you run the USE command to switch among these schemas. Switching schemas in this way resembles using
-different database schemas (namespaces) in a relational database system.
+此命令将 Drill 中配置的存储插件中所有可用的元数据列为一组 schema。Hive 和 MapR-DB 数据库、文件系统和其他数据都在文件系统中配置。
+在本教程中运行查询时，可以使用 USE 命令在 schema 之间切换。以这种方式切换 schema 类似于在关系型数据库中使用不同的 schema（namespaces）。
 
-## Query Hive Tables
+## 查询 Hive 表
 
-The orders table is a six-column Hive table defined in the Hive metastore.
-This is a Hive external table pointing to the data stored in flat files on the
-MapR file system. The orders table contains 122,000 rows.
+订单表是在 Hive 元存储中定义的六列 Hive 表。
+这是一个 Hive 外部表，指向存储在 MapR 文件系统上的平面文件中的数据。订单表包含 122,000 行。
 
-### Set the schema to hive:
+### 选定 Hive 的 schema
 
     0: jdbc:drill:> use hive.`default`;
     |-------|-------------------------------------------|
@@ -90,13 +83,11 @@ MapR file system. The orders table contains 122,000 rows.
     |-------|-------------------------------------------|
     1 row selected
 
-You will run the USE command throughout this tutorial. The USE command sets
-the schema for the current session.
+本教程中均使用 USE 命令设定 schema。
 
-### Describe the table:
+### 使用 Describe 命令：
 
-You can use the DESCRIBE command to show the columns and data types for a Hive
-table:
+可以使用 DESCRIBE 命令显示 Hive 表的列和数据类型：
 
     0: jdbc:drill:> describe orders;
     |-------------|------------|-------------|
@@ -110,10 +101,9 @@ table:
     | order_total | INTEGER    | YES         |
     |-------------|------------|-------------|
 
-The DESCRIBE command returns complete schema information for Hive tables based
-on the metadata available in the Hive metastore.
+DESCRIBE 命令根据 Hive 元存储中可用的元数据返回 Hive 表的完整 schema 信息。
 
-### Select 5 rows from the orders table:
+### 从订单表中选择 5 行：
 
     0: jdbc:drill:> select * from orders limit 5;
     |------------|------------|------------|------------|------------|-------------|
@@ -126,51 +116,36 @@ on the metadata available in the Hive metastore.
     | 71220      | June       | 10018      | az         | 411        | 24          |
     |------------|------------|------------|------------|------------|-------------|
 
-Because orders is a Hive table, you can query the data in the same way that
-you would query the columns in a relational database table. Note the use of
-the standard LIMIT clause, which limits the result set to the specified number
-of rows. You can use LIMIT with or without an ORDER BY clause.
+因为订单表是一个 Hive 表，所以用户可以像查询关系数据库表中的列一样查询数据。请注意标准 LIMIT 子句的使用，它将结果集限制为指定的行数。你可以选择是否使用 ORDER BY 搭配 LIMIT 子句。
 
-Drill provides seamless integration with Hive by allowing queries on Hive
-tables defined in the metastore with no extra configuration. Hive is
-not a prerequisite for Drill, but simply serves as a storage plugin or data
-source for Drill. Drill also lets users query all Hive file formats (including
-custom serdes). Additionally, any UDFs defined in Hive can be leveraged as
-part of Drill queries.
+Drill 可以对 Metastore 中定义的 Hive 表进行查询而无需额外配置，从而提供与 Hive 的无缝集成。Hive 并不是 Drill 的依赖，而只是作为 Drill 的存储插件或数据源。Drill 还允许用户查询所有 Hive 文件格式（包括自定义 serdes）。此外，在 Hive 中定义的任何 UDF 都可以用作 Drill 查询的一部分。
 
-Because Drill has its own low-latency SQL query execution engine, you can
-query Hive tables with high performance and support for interactive and ad-hoc
-data exploration.
+Drill 拥有自己的低延迟 SQL 查询执行引擎，使用户可以高性能的查询 Hive 表，并支持交互式和 ad-hoc 数据探索。
 
-## Query MapR-DB and HBase Tables
+## 查询 MapR-DB 和 HBase 表
 
-The customers and products tables are MapR-DB tables. MapR-DB is an enterprise
-in-Hadoop NoSQL database. It exposes the HBase API to support application
-development. Every MapR-DB table has a row_key, in addition to one or more
-column families. Each column family contains one or more specific columns. The
-row_key value is a primary key that uniquely identifies each row.
+客户和产品表是 MapR-DB 表。MapR-DB 是企业级 Hadoop NoSQL 数据库。
+它公开了 HBase API 以支持应用程序开发。在一个或多个列族之外，每个 MapR-DB 表都有一个 row_key。
+每个列族都包含一个或多个特定的列。row_key 是标识每一行的唯一主键。
 
-Drill directly queries MapR-DB and HBase tables. Unlike other SQL on
-Hadoop options, Drill requires no overlay schema definitions in Hive to work
-with this data. Drill removes the pain of having to manage duplicate schemas in Hive when you have a MapR-DB or HBase table with thousands of
-columns typical of a time-series database.
+Drill 直接查询 MapR-DB 和 HBase 表。与其他 Hadoop 选项中的 SQL 不同，Drill 不需要 Hive 中的 schema 定义来处理这些数据。当用户有一个典型的包含数千列的时间序列的 MapR-DB 或 HBase 表时，Drill 消除了必须在 Hive 中管理重复 schema 的痛苦。
 
-### Products Table
+### 产品表
 
-The products table has two column families.
+产品表有两个列族。
 
 <table ><colgroup><col /><col /></colgroup><tbody><tr><td ><span style="color: rgb(0,0,0);">Column Family</span></td><td ><span style="color: rgb(0,0,0);">Columns</span></td></tr><tr><td ><span style="color: rgb(0,0,0);">details</span></td><td ><span style="color: rgb(0,0,0);">name</br></span><span style="color: rgb(0,0,0);">category</span></td></tr><tr><td ><span style="color: rgb(0,0,0);">pricing</span></td><td ><span style="color: rgb(0,0,0);">price</span></td></tr></tbody></table>  
-The products table contains 965 rows.
+产品表包含 965 行。
 
-### Customers Table
+### 用户表
 
-The Customers table has three column families.
+用户表有三个列族
 
 <table ><colgroup><col /><col /></colgroup><tbody><tr><td ><span style="color: rgb(0,0,0);">Column Family</span></td><td ><span style="color: rgb(0,0,0);">Columns</span></td></tr><tr><td ><span style="color: rgb(0,0,0);">address</span></td><td ><span style="color: rgb(0,0,0);">state</span></td></tr><tr><td ><span style="color: rgb(0,0,0);">loyalty</span></td><td ><span style="color: rgb(0,0,0);">agg_rev</br></span><span style="color: rgb(0,0,0);">membership</span></td></tr><tr><td ><span style="color: rgb(0,0,0);">personal</span></td><td ><span style="color: rgb(0,0,0);">age</br></span><span style="color: rgb(0,0,0);">gender</span></td></tr></tbody></table>  
-  
-The customers table contains 993 rows.
 
-### Set the workspace to maprdb:
+用户表包含 993 行。
+
+### 将工作区设置为 maprdb：
 
     use maprdb;
     |-------|-------------------------------------|
@@ -180,7 +155,7 @@ The customers table contains 993 rows.
     |-------|-------------------------------------|
     1 row selected
 
-### Describe the tables:
+### 描述表：
 
     0: jdbc:drill:> describe customers;
     |--------------|------------------------|--------------|
@@ -203,18 +178,11 @@ The customers table contains 993 rows.
     |--------------|------------------------|--------------|
     3 rows selected 
 
-Unlike the Hive example, the DESCRIBE command does not return the full schema
-up to the column level. Wide-column NoSQL databases such as MapR-DB and HBase
-can be schema-less by design; every row has its own set of column name-value
-pairs in a given column family, and the column value can be of any data type,
-as determined by the application inserting the data.
+与 Hive 示例不同，DESCRIBE 命令不会返回完整的列级别 schema。MapR-DB 和 HBase 等 wide-column NoSQL 数据库可以通过设计实现 schema-less；在给定的列族中，每一行都有自己一组列的 name-value 对，列值可以是任何数据类型，由插入数据的应用程序决定。
 
-A “MAP” complex type in Drill represents this variable column name-value
-structure, and “ANY” represents the fact that the column value can be of any
-data type. Observe the row_key, which is also simply bytes and has the type
-ANY.
+Drill 中的 “MAP” 复杂类型表示这种可变的列 name-value 结构，“ANY” 表示列值可以是任何数据类型。row_key 是类型为 ANY 的字节。
 
-### Select 5 rows from the products table:
+### 从产品表中选择 5 行：
 
     0: jdbc:drill:> select * from products limit 5;
     |--------------|----------------------------------------------------------------------------------------------------------------|-------------------|
@@ -228,14 +196,11 @@ ANY.
     |--------------|----------------------------------------------------------------------------------------------------------------|-------------------|
     5 rows selected 
 
-Given that Drill requires no up front schema definitions indicating data
-types, the query returns the raw byte arrays for column values, just as they
-are stored in MapR-DB (or HBase). Observe that the column families (details
-and pricing) have the map data type and appear as JSON strings.
+因为 Drill 不需要预先定义 schema 来指定数据类型，查询返回的是列值的原始字节数组，就像它们存储在 MapR-DB（或 HBase）中的方式一样。列族中的详细信息和定价是 “MAP” 数据类型并显示为 JSON 字符串。
 
-In Lesson 2, you will use CAST functions to return typed data for each column.
+在第 2 课中，用户将使用 CAST 函数返回每一列的类型化数据。
 
-### Select 5 rows from the customers table:
+### 从客户表中选择 5 行：
 
 
     +0: jdbc:drill:> select * from customers limit 5;
@@ -250,40 +215,26 @@ In Lesson 2, you will use CAST functions to return typed data for each column.
     |--------------|-----------------------|-------------------------------------------------|---------------------------------------------------------------------------------------|
     5 rows selected
 
-Again, the table returns byte data that needs to be cast to readable data
-types.
+同样，该表返回需要转换为可读数据类型的字节数据。
 
-## Query the File System
+## 查询文件系统
 
-Along with querying a data source with full schemas (such as Hive) and partial
-schemas (such as MapR-DB and HBase), Drill offers the unique capability to
-perform SQL queries directly on file system. The file system could be a local
-file system, or a distributed file system such as MapR-FS, HDFS, or S3.
+除了查询具有完整 schema（例如 Hive）和 partial-schema（例如 MapR-DB 和 HBase）的数据源之外，Drill 还提供了直接在文件系统上执行 SQL 查询的独特功能。文件系统可以是本地文件系统，也可以是分布式文件系统，例如 MapR-FS、HDFS 或 S3。
 
-In the context of Drill, a file or a directory is synonymous with
-a relational database “table.” Therefore, you can perform SQL operations
-directly on files and directories without the need for up-front schema
-definitions or schema management for any model changes. The schema is
-discovered on the fly based on the query. Drill supports queries on a variety
-of file formats including text, CSV, Parquet, and JSON.
+在 Drill 中，文件或目录与关系型数据库的“表”同义。因此，用户可以直接对文件和目录执行 SQL 操作，而无需对任何数据进行预先的 schema 定义或管理。schema 是在查询中动态发现的。Drill 支持对各种文件格式的查询，包括文本、CSV、Parquet 和 JSON。
 
-In this example, the clickstream data coming from the mobile/web applications
-is in JSON format. The JSON files have the following structure:
+在此示例中，来自移动/网页应用的点击流数据采用 JSON 格式。JSON 文件具有以下结构：
 
     {"trans_id":31920,"date":"2014-04-26","time":"12:17:12","user_info":{"cust_id":22526,"device":"IOS5","state":"il"},"trans_info":{"prod_id":[174,2],"purch_flag":"false"}}
     {"trans_id":31026,"date":"2014-04-20","time":"13:50:29","user_info":{"cust_id":16368,"device":"AOS4.2","state":"nc"},"trans_info":{"prod_id":[],"purch_flag":"false"}}
     {"trans_id":33848,"date":"2014-04-10","time":"04:44:42","user_info":{"cust_id":21449,"device":"IOS6","state":"oh"},"trans_info":{"prod_id":[582],"purch_flag":"false"}}
 
 
-The clicks.json and clicks.campaign.json files contain metadata as part of the
-data itself (referred to as “self-describing” data). The data
-elements are complex, or nested. The initial queries below do not show how to
-unpack the nested data, but they show that easy access to the data requires no
-setup beyond the definition of a workspace.
+clicks.json 和 clicks.campaign.json 文件包含元数据作为数据本身的一部分（称为“自我描述”数据）。数据格式是复杂的或嵌套的。下面的初始查询没有显示如何解包嵌套数据，但它们表明不需要超出工作区的设置即可轻松访问数据。
 
-### Query nested clickstream data
+### 查询嵌套的点击流数据
 
-### Set the workspace to dfs.clicks:
+### 将工作区设置为 dfs.clicks：
 
     0: jdbc:drill:> use dfs.clicks;
     |-------|-----------------------------------------|
@@ -293,19 +244,13 @@ setup beyond the definition of a workspace.
     |-------|-----------------------------------------|
     1 row selected
 
-In this case, setting the workspace is a mechanism for making queries easier
-to write. When you specify a file system workspace, you can shorten references
-to files in your queries. Instead of having to provide the
-complete path to a file, you can provide the path relative to a directory
-location specified in the workspace. For example:
+在这种情况下，设置工作空间是一种使查询更易于编写的机制。指定文件系统工作区时，用户可以缩短查询中对文件的引用。用户不必提供文件的完整路径，提供相对于工作区中指定目录位置的路径即可。 例如：
 
 `"location": "/mapr/demo.mapr.com/data/nested"`
 
-Any file or directory that you want to query in this path can be referenced
-relative to this path. The clicks directory referred to in the following query
-is directly below the nested directory.
+用户要在此路径中查询的任何文件或目录都可以相对于此路径进行引用。以下查询中引用的 clicks 目录直接位于嵌套目录的下方。
 
-### Select 2 rows from the clicks.json file:
+### 从 clicks.json 文件中选择 2 行：
 
     0: jdbc:drill:> select * from `clicks/clicks.json` limit 2;
     |-----------|-------------|-----------|---------------------------------------------------|-------------------------------------------|
@@ -316,15 +261,11 @@ is directly below the nested directory.
     |-----------|-------------|-----------|---------------------------------------------------|-------------------------------------------|
     2 rows selected 
 
-The FROM clause reference points to a specific file. Drill expands
-the traditional concept of a “table reference” in a standard SQL FROM clause
-to refer to a file in a local or distributed file system.
+FROM 子句引用指向特定文件。Drill 扩展了标准 SQL FROM 子句中“表引用”的概念，以引用本地或分布式文件系统中的文件。
 
-The only special requirement is the use of back ticks to enclose the file
-path. This is necessary whenever the file path contains Drill reserved words
-or characters.
+唯一的特殊要求是使用反勾号将文件路径括起来。每当文件路径包含 Drill 保留字或字符时，就需要这么做。
 
-### Select 2 rows from the campaign.json file:
+### 从 Campaign.json 文件中选择 2 行：
 
     0: jdbc:drill:> select * from `clicks/clicks.campaign.json` limit 2;
     |-----------|-------------|-----------|---------------------------------------------------|---------------------|----------------------------------------|
@@ -335,29 +276,21 @@ or characters.
     |-----------|-------------|-----------|---------------------------------------------------|---------------------|----------------------------------------|
     2 rows selected 
 
-Notice that with a select * query, any complex data types such as maps and
-arrays return as JSON strings. You will see how to unpack this data using
-various SQL functions and operators in the next lesson.
+请注意，使用 select * 查询，任何复杂数据类型（例如映射和数组）都以 JSON 字符串形式返回。在下一课中，将学习如何使用各种 SQL 函数和运算符来解包这些数据。
 
-## Query Logs Data
+## 查询日志数据
 
-Unlike the previous example where we performed queries against clicks data in
-one file, logs data is stored as partitioned directories on the file system.
-The logs directory has three subdirectories:
+与前一个示例中对文件中的点击数据执行查询不同，日志数据存储为文件系统上的分区目录。日志目录有三个子目录：
 
   * 2012
   * 2013
   * 2014
 
-Each of these year directories fans out to a set of numbered month
-directories, and each month directory contains a JSON file with log records
-for that month. The total number of records in all log files is 48000.
+这些年目录中都包含多个月目录，每个月目录都包含一个带有该月日志记录的 JSON 文件。所有日志文件总共包含 48000 条记录。
 
-The files in the logs directory and its subdirectories are JSON files. There
-are many of these files, but you can use Drill to query them all as a single
-data source, or to query a subset of the files.
+日志目录及其子目录中是 JSON 文件。这些文件有很多，但用户可以使用 Drill 将它们全部作为单个数据源进行查询，或者查询文件的子集。
 
-### Set the workspace to dfs.logs:
+### 将工作区设置为 dfs.logs：
 
     0: jdbc:drill:> use dfs.logs;
     |-------|---------------------------------------|
@@ -367,7 +300,7 @@ data source, or to query a subset of the files.
     |-------|---------------------------------------|
     1 row selected
 
-### Select 2 rows from the logs directory:
+### 从日志目录中选择 2 行：
 
     0: jdbc:drill:> select * from logs limit 2;
     |-------|-------|-----------|-------------|-----------|----------|---------|--------|----------|-----------|----------|-------------|
@@ -378,16 +311,11 @@ data source, or to query a subset of the files.
     |-------|-------|-----------|-------------|-----------|----------|---------|--------|----------|-----------|----------|-------------|
     2 rows selected 
 
-Note that this is flat JSON data. The dfs.clicks workspace location property
-points to a directory that contains the logs directory, making the FROM clause
-reference for this query very simple. You do not have to refer to the complete
-directory path on the file system.
+请注意，这是平面 JSON 数据。dfs.clicks 工作区位置属性指向包含日志的目录，这使得此查询的 FROM 子句引用非常简单。用户不必参考文件系统上的完整目录路径。
 
-The column names dir0 and dir1 are special Drill variables that identify
-subdirectories below the logs directory. In Lesson 3, you will do more complex
-queries that leverage these dynamic variables.
+列名 dir0 和 dir1 是特殊的 Drill 变量，用于标识日志目录下的子目录。在第 3 课中，用户将使用这些动态变量进行更复杂的查询。
 
-### Find the total number of rows in the logs directory (all files):
+### 查找日志目录（所有文件）中的总行数：
 
     0: jdbc:drill:> select count(*) from logs;
     |---------|
@@ -397,13 +325,11 @@ queries that leverage these dynamic variables.
     |---------|
     1 row selected 
 
-This query traverses all of the files in the logs directory and its
-subdirectories to return the total number of rows in those files.
+此查询遍历日志目录及其子目录中的所有文件，以返回这些文件中的总行数。
 
-# What's Next
+# 下一步是什么
 
-Go to [Lesson 2: Run Queries with ANSI
-SQL]({{ site.baseurl }}/docs/lesson-2-run-queries-with-ansi-sql).
+前往 [第 2 课：使用 ANSI SQL 进行查询]({{ site.baseurl }}/docs/lesson-2-run-queries-with-ansi-sql).
 
 
 
