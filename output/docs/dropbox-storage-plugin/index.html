@@ -451,8 +451,8 @@
         
       
         
-          <li class="toctree-l1"><a href="javascript: void(0);">Connect a Data Source</a></li>
-          <ul style="display: none">
+          <li class="toctree-l1 current_section "><a href="javascript: void(0);">Connect a Data Source</a></li>
+          <ul class="current_section">
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/connect-a-data-source-introduction/">Connect a Data Source Introduction</a></li>
@@ -539,6 +539,10 @@
           
             
               <li class="toctree-l2"><a class="reference internal" href="/docs/cassandra-storage-plugin/">Cassandra Storage Plugin</a></li>
+            
+          
+            
+              <li class="toctree-l2 current"><a class="reference internal" href="/docs/dropbox-storage-plugin/">Dropbox Storage Plugin</a></li>
             
           
           </ul>
@@ -1400,6 +1404,8 @@
   
   
   
+    <li><a href="/docs/connect-a-data-source/">Connect a Data Source</a></li>
+  
   <li>Dropbox Storage Plugin</li>
 </nav>
 
@@ -1422,14 +1428,59 @@
 
     <div class="int_text" align="left">
       
-        <ul>
-        
-      </ul>
+        <p><strong>Introduced in release:</strong> 1.20</p>
+
+<p>This storage plugin enables Drill to query the files stored in a Dropbox account.  It’s important bear the network distance between Drill and the data in mind when you plan for the performance of queries against sources accessed over the Internet.  Staging the data locally and then querying it is usually the end game once the data is a known quantity performance has become important, but before the data is a known quantity this plugin makes it easy to explore it in Dropbox without having stage it.</p>
+
+<h2 id="creating-an-api-token">Creating an API Token</h2>
+<p>The first step to enabling Drill to query Dropbox is creating an API token.</p>
+
+<ol>
+  <li>Navigate to https://www.dropbox.com/developers/apps/create</li>
+  <li>Choose <code class="language-plaintext highlighter-rouge">Scoped Access</code> under Choose an API.</li>
+  <li>Depending on the access limitations you are looking for select either full or limited to a particular folder.</li>
+  <li>In the permissions tab, make sure all the permissions associated with reading data are enabled.</li>
+</ol>
+
+<p>Once you’ve done that, and hit submit, you’ll see a section in your newly created Dropbox App called <code class="language-plaintext highlighter-rouge">Generated Access Token</code>.  Copy the value here and that is what you will use in your Drill configuration.</p>
+
+<h2 id="configuring-drill">Configuring Drill</h2>
+<p>Once you’ve created a Dropbox access token, you are now ready to configure Drill to query Dropbox.  To create a dropbox connection, in Drill’s UI, navigate to the Storage tab, click on <code class="language-plaintext highlighter-rouge">Create New Storage Plugin</code> and add the items below.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"file"</span><span class="err">,</span><span class="w">
+  </span><span class="nl">"connection"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dropbox:///"</span><span class="err">,</span><span class="w">
+  </span><span class="nl">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"dropboxAccessToken"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;your access token here&gt;"</span><span class="w">
+  </span><span class="p">}</span><span class="err">,</span><span class="w">
+  </span><span class="nl">"workspaces"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"root"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"writable"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"defaultInputFormat"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"allowAccessOutsideWorkspace"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Paste your access token in the appropriate field and at that point you should be able to query Dropbox.  Drill treats Dropbox as any other file system, so all the instructions here (https://drill.apache.org/docs/file-system-storage-plugin/) and here (https://drill.apache.org/docs/workspaces/) about configuring a workspace, and adding format plugins are exactly the same as any other on Drill.</p>
+
+<h3 id="securing-dropbox-credentials">Securing Dropbox Credentials</h3>
+<p>As with any other storage plugin, you have a few options as to how to store the credentials. See <a href="./PluginCredentialsProvider.md">Drill Credentials Provider</a> for more 
+information about how you can store your credentials securely in Drill.</p>
+
+<h2 id="limitations">Limitations</h2>
+<ol>
+  <li>It is not possible to save files to Dropbox from Drill, thus CTAS queries will fail.</li>
+  <li>Dropbox does not expose directory metadata, so it is not possible to obtain the directory size, modification date or access dates.</li>
+  <li>Dropbox does not maintain the last access date as distinct from the modification date of files.</li>
+</ol>
+
     
       
         <div class="doc-nav">
   
-  <span class="previous-toc"><a href="">← </a></span><span class="next-toc"><a href=""> →</a></span>
+  <span class="previous-toc"><a href="/docs/cassandra-storage-plugin/">← Cassandra Storage Plugin</a></span><span class="next-toc"><a href="/docs/data-sources-and-file-formats-introduction/">Data Sources and File Formats Introduction →</a></span>
 </div>
 
     
