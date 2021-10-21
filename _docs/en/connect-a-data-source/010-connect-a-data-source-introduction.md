@@ -10,3 +10,10 @@ When you run a query, Drill gets the storage plugin configuration name in one of
 * The FROM clause of the query can identify the plugin to use.
 * The USE <plugin name> command can precede the query.
 * You can specify the storage plugin when starting Drill.
+
+As a general principle, Drill aims to make storage plugins lazy about connecting to external data sources.  This means that you should normally be able to add and enable a storage configuration based on some external data source even if that data source is not available to accept queries at the time.  Another consequence of lazy connecting is that Drill restarts, which reload all enabled storage plugins, will not kick a configuration into the disabled state if the corresponding external data source is not available at the time.
+
+A related principle is that Drill storage plugins should aim, by default, to be thrifty about how many connections they make and maintain for the following reasons.
+
+- Each Drillbit participating in a query involving an external data source must initiate its own outbound connection(s).
+- In the OLAP regime, the cost of bringing up a new connection is typically negligible compared to the total cost of an analytical query.

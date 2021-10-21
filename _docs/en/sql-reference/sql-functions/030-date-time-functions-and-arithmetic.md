@@ -8,26 +8,25 @@ In addition to the TO_DATE, TO_TIME, and TO_TIMESTAMP functions, Drill supports 
 
 This section covers the Drill [time zone limitation]({{site.baseurl}}/docs/data-type-conversion/#time-zone-limitation) and defines the following date/time functions:
 
-**Function**| **Return Type**  
----|---  
-[AGE(TIMESTAMP)]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#age)                               | INTERVALDAY or INTERVALYEAR
-[EXTRACT(field from time_expression)]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#extract)      | DOUBLE
-[CURRENT_DATE]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)      | DATE  
-[CURRENT_TIME]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)      | TIME   
-[CURRENT_TIMESTAMP]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions) | TIMESTAMP 
-[DATE_ADD]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#date_add)                                | DATE, TIMESTAMP  
-[DATE_DIFF]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#date_diff)                              | DATE, TIMESTAMP
-[DATE_PART]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#date_part)                              | DOUBLE  
-[DATE_SUB]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#date_sub)                                | DATE, TIMESTAMP     
-[LOCALTIME]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)         | TIME  
-[LOCALTIMESTAMP]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)    | TIMESTAMP  
-[NOW]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)               | TIMESTAMP  
-[TIMEOFDAY]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)         | VARCHAR  
-[UNIX_TIMESTAMP]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#unix_timestamp)                   | BIGINT 
-[NEARESTDATE]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#nearestdate)**                       | TIMESTAMP
-[TIMESTAMPADD]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#timestampadd)*                     | Inferred based on unit of time
-[TIMESTAMPDIFF]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#timestampdiff)*					   | Inferred based on unit of time												   |  
-|   
+| **Function**                                                                                                   | **Return Type**                |
+| -------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| [AGE(TIMESTAMP)]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#age)                              | INTERVALDAY or INTERVALYEAR    |
+| [EXTRACT(field from time_expression)]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#extract)     | DOUBLE                         |
+| [CURRENT_DATE]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)      | DATE                           |
+| [CURRENT_TIME]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)      | TIME                           |
+| [CURRENT_TIMESTAMP]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions) | TIMESTAMP                      |
+| [DATE_ADD]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#date_add)                               | DATE, TIMESTAMP                |
+| [DATE_DIFF]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#date_diff)                             | DATE, TIMESTAMP                |
+| [DATE_PART]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#date_part)                             | DOUBLE                         |
+| [DATE_SUB]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#date_sub)                               | DATE, TIMESTAMP                |
+| [LOCALTIME]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)         | TIME                           |
+| [LOCALTIMESTAMP]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)    | TIMESTAMP                      |
+| [NOW]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)               | TIMESTAMP                      |
+| [TIMEOFDAY]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)         | VARCHAR                        |
+| [UNIX_TIMESTAMP]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#unix_timestamp)                   | BIGINT                         |
+| [NEARESTDATE]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#nearestdate)\*\*                     | TIMESTAMP                      |
+| [TIMESTAMPADD]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#timestampadd)\*                       | Inferred based on unit of time |
+| [TIMESTAMPDIFF]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#timestampdiff)\*                     | Inferred based on unit of time |
 
 *Supported in Drill 1.15 and later.
 **Supported in Drill 1.16 and later.
@@ -84,18 +83,18 @@ For information about how to read the interval data, see the [Interval section](
 ## DATE_ADD
 Returns the sum of a date/time and a number of days/hours, or of a date/time and date/time interval.
 
-### DATE_ADD Syntax  
-- `DATE_ADD(keyword literal, integer)`  
-- `DATE_ADD(keyword literal, interval expr)`  
-- `DATE_ADD(column, integer)`  
-- `DATE_ADD(column, interval expr)`  
+### DATE_ADD Syntax
+- `DATE_ADD(keyword literal, integer)`
+- `DATE_ADD(keyword literal, interval expr)`
+- `DATE_ADD(column, integer)`
+- `DATE_ADD(column, interval expr)`
 
-*keyword* is the word date, time, or timestamp.  
-*literal* is a date, time, or timestamp literal.  For example, a date in yyyy-mm-dd format enclosed in single quotation marks.  
-*integer* is a number of days to add to the date/time.  
-*column* is date, time, or timestamp data in a data source column.  
-*interval* is the keyword interval.  
-*expr* is an interval expression, such as the name of a data source column containing interval data.  
+*keyword* is the word date, time, or timestamp.
+*literal* is a date, time, or timestamp literal.  For example, a date in yyyy-mm-dd format enclosed in single quotation marks.
+*integer* is a number of days to add to the date/time.
+*column* is date, time, or timestamp data in a data source column.
+*interval* is the keyword interval.
+*expr* is an interval expression, such as the name of a data source column containing interval data.
 
 ### DATE_ADD Examples
 
@@ -166,7 +165,7 @@ Add a 10 hour interval to the hire dates of employees listed in the `employee.js
         |------------------------|
         2 rows selected (0.135 seconds)
 
-3. Cast the hire_dates of the employees 578 and 761 to a timestamp, and add 10 hours to the hire_date timestamp. Because Drill reads data from JSON as VARCHAR, you need to cast the hire_date to the TIMESTAMP type. 
+3. Cast the hire_dates of the employees 578 and 761 to a timestamp, and add 10 hours to the hire_date timestamp. Because Drill reads data from JSON as VARCHAR, you need to cast the hire_date to the TIMESTAMP type.
 
         SELECT DATE_ADD(CAST(hire_date AS TIMESTAMP), interval '10' hour) FROM cp.`employee.json` where employee_id IN( '578','761');
         |------------------------|
@@ -197,21 +196,21 @@ Add 1 day 2 and 1/2 hours and 45.100 seconds to the time 22:55:55.
     |---------------|
     | 01:26:40.100  |
     |---------------|
-    1 row selected (0.106 seconds)  
+    1 row selected (0.106 seconds)
 
-## DATE_DIFF  
-Returns the difference of a date/time and a number of days/hours, or of a date/time and date/time interval.  
+## DATE_DIFF
+Returns the difference of a date/time and a number of days/hours, or of a date/time and date/time interval.
 
-**NOTE:** You can use the Hive `DATEDIFF()` function in Drill with string values, as shown:  
- 
+**NOTE:** You can use the Hive `DATEDIFF()` function in Drill with string values, as shown:
+
 	SELECT DATEDIFF('1996-03-01', '1997-02-10 17:32:00.0'), TIMEOFDAY() FROM (VALUES(1));
 	|---------|----------------------------------------------|
 	| EXPR$0  |                    EXPR$1                    |
 	|---------|----------------------------------------------|
 	| -346    | 2019-01-15 14:54:21.455 America/Los_Angeles  |
-	|---------|----------------------------------------------|    
+	|---------|----------------------------------------------|
 
-However, for date and timestamp values, use the `DATE_DIFF` function and convert the interval returned to a number, as shown:    
+However, for date and timestamp values, use the `DATE_DIFF` function and convert the interval returned to a number, as shown:
 
 	SELECT TO_NUMBER(DATE_DIFF(DATE '1996-03-01', TIMESTAMP '1997-02-10 17:32:00.0'), '#'), TIMEOFDAY() FROM (VALUES(1));
 	|---------|----------------------------------------------|
@@ -220,23 +219,23 @@ However, for date and timestamp values, use the `DATE_DIFF` function and convert
 	| -346.0  | 2019-01-15 14:52:15.247 America/Los_Angeles  |
 	|---------|----------------------------------------------|
 
-### DATE_DIFF Syntax  
-- `DATE_DIFF(keyword literal, integer)`  
-- `DATE_DIFF(keyword literal, interval expr)`   
-- `DATE_DIFF(column, integer)`  
-- `DATE_DIFF(column, interval expr)`  
+### DATE_DIFF Syntax
+- `DATE_DIFF(keyword literal, integer)`
+- `DATE_DIFF(keyword literal, interval expr)`
+- `DATE_DIFF(column, integer)`
+- `DATE_DIFF(column, interval expr)`
 
-*keyword* is the word date, time, or timestamp.  
-*literal* is a date, time, or timestamp literal.  For example, a date in yyyy-mm-dd format enclosed in single quotation marks.  
-*integer* is a number of days to subtract from the date/time.  
-*column* is date, time, or timestamp data in a data source column.  
-*interval* is the keyword interval.  
-*expr* is an interval expression, such as the name of a data source column containing interval data.  
+*keyword* is the word date, time, or timestamp.
+*literal* is a date, time, or timestamp literal.  For example, a date in yyyy-mm-dd format enclosed in single quotation marks.
+*integer* is a number of days to subtract from the date/time.
+*column* is date, time, or timestamp data in a data source column.
+*interval* is the keyword interval.
+*expr* is an interval expression, such as the name of a data source column containing interval data.
 
-### DATE_DIFF Examples  
-The following examples show how to use the syntax variations.  
+### DATE_DIFF Examples
+The following examples show how to use the syntax variations.
 
-**DATE_DIFF(keyword literal, integer) Syntax Example**  
+**DATE_DIFF(keyword literal, integer) Syntax Example**
 
 Subtract two days from the date May 15, 2015.
 
@@ -245,35 +244,35 @@ Subtract two days from the date May 15, 2015.
 	|   EXPR$0    |
 	|-------------|
 	| 2015-05-13  |
-	|-------------|  
+	|-------------|
 
-**DATE_DIFF(keyword literal, interval expr) Syntax Example**  
+**DATE_DIFF(keyword literal, interval expr) Syntax Example**
 
-Using the example data from the ["Casting Intervals"]({{site.baseurl}}/docs/data-type-conversion/#casting-intervals)  section, subtract intervals from the `intervals.json` file from a literal timestamp. Create an interval expression that casts the INTERVALDAY_col column, which contains P1D, P2D, and P3D, to a timestamp.  
+Using the example data from the ["Casting Intervals"]({{site.baseurl}}/docs/data-type-conversion/#casting-intervals)  section, subtract intervals from the `intervals.json` file from a literal timestamp. Create an interval expression that casts the INTERVALDAY_col column, which contains P1D, P2D, and P3D, to a timestamp.
 
-	SELECT DATE_DIFF(timestamp '2015-04-15 22:55:55', CAST(INTERVALDAY_col as interval second)) FROM dfs.`/home/bee/intervals.json`;  
+	SELECT DATE_DIFF(timestamp '2015-04-15 22:55:55', CAST(INTERVALDAY_col as interval second)) FROM dfs.`/home/bee/intervals.json`;
 	|------------------------|
 	|         EXPR$0         |
 	|------------------------|
 	| 2015-04-14 22:55:55.0  |
 	| 2015-04-13 22:55:55.0  |
 	| 2015-04-12 22:55:55.0  |
-	|------------------------|  
+	|------------------------|
 
-The query output is the difference of the timestamp and 1, 2, and 3 days corresponding to P1D, P2D, and P3D.  
+The query output is the difference of the timestamp and 1, 2, and 3 days corresponding to P1D, P2D, and P3D.
 
-**DATE_DIFF(column, integer) Syntax Example**  
+**DATE_DIFF(column, integer) Syntax Example**
 
-Subtract two days from the value in the birth_date column.  
+Subtract two days from the value in the birth_date column.
 
 	SELECT DATE_DIFF(CAST(birth_date AS date), 2) as a FROM cp.`employee.json` LIMIT 1;
 	|-------------|
 	|      a      |
 	|-------------|
 	| 1961-08-24  |
-	|-------------|  
+	|-------------|
 
-**DATE_DIFF(column, interval expr) Syntax Example**  
+**DATE_DIFF(column, interval expr) Syntax Example**
 
 Subtract a 10 hour interval from the hire dates of employees listed in the `employee.json` file, which Drill includes in the installation.
 
@@ -285,18 +284,18 @@ Cast the hire_dates of the employees 578 and 761 to a timestamp, and subtract 10
 	|------------------------|
 	| 1995-12-31 14:00:00.0  |
 	| 1997-12-31 14:00:00.0  |
-	|------------------------|  
+	|------------------------|
 
-**DATE_DIFF(keyword literal, integer) Syntax Example**  
+**DATE_DIFF(keyword literal, integer) Syntax Example**
 
-Subtract 1 year and 2 months from the timestamp 2015-04-15 22:55:55.  
+Subtract 1 year and 2 months from the timestamp 2015-04-15 22:55:55.
 
 	SELECT DATE_DIFF(timestamp '2015-04-15 22:55:55', interval '1-2' year to month) FROM (VALUES(1));
 	|------------------------|
 	|         EXPR$0         |
 	|------------------------|
 	| 2014-02-15 22:55:55.0  |
-	|------------------------|  
+	|------------------------|
 
 Subtract 1 day 2 and 1/2 hours and 45.100 seconds from the time 22:55:55.
 
@@ -305,17 +304,17 @@ Subtract 1 day 2 and 1/2 hours and 45.100 seconds from the time 22:55:55.
 	|    EXPR$0     |
 	|---------------|
 	| 20:25:09.900  |
-	|---------------|    
+	|---------------|
 
 
 ## DATE_PART
 Returns a field of a date, time, timestamp, or interval.
 
-### DATE_PART Syntax 
+### DATE_PART Syntax
 
-`date_part(keyword, expression)`  
+`date_part(keyword, expression)`
 
-*keyword* is year, month, day, hour, minute, or second enclosed in single quotation marks.  
+*keyword* is year, month, day, hour, minute, or second enclosed in single quotation marks.
 *expression* is date, time, timestamp, or interval literal enclosed in single quotation marks.
 
 ### DATE_PART Usage Notes
@@ -354,17 +353,17 @@ Returns the difference between a date/time and a number of days/hours, or betwee
 
 ### DATE_SUB Syntax
 
-`DATE_SUB(keyword literal, integer)`  
-`DATE_SUB(keyword literal, interval expr)`  
-`DATE_SUB(column, integer)`  
-`DATE_SUB(column, interval expr)`  
+`DATE_SUB(keyword literal, integer)`
+`DATE_SUB(keyword literal, interval expr)`
+`DATE_SUB(column, integer)`
+`DATE_SUB(column, interval expr)`
 
-*keyword* is the word date, time, or timestamp.  
-*literal* is a date, time, or timestamp literal. For example, a date in yyyy-mm-dd format enclosed in single quotation marks.   
-*integer* is a number of days to subtract from the date, time, or timestamp.  
-*column* is date, time, or timestamp data in the data source.  
-*interval* is the keyword interval.  
-*expr* is an interval expression, such as the name of a data source column containing interval data.  
+*keyword* is the word date, time, or timestamp.
+*literal* is a date, time, or timestamp literal. For example, a date in yyyy-mm-dd format enclosed in single quotation marks.
+*integer* is a number of days to subtract from the date, time, or timestamp.
+*column* is date, time, or timestamp data in the data source.
+*interval* is the keyword interval.
+*expr* is an interval expression, such as the name of a data source column containing interval data.
 
 ### DATE_SUB Examples
 The following examples show how to apply the syntax variations.
@@ -445,7 +444,7 @@ Subtract 1 day, 2 and 1/2 hours, and 45.100 seconds from the time 22:55:55.
 
 **`DATE_SUB(column, interval expr)` Syntax Example**
 
-The `employee.json` file, which Drill includes in the installation, lists the hire dates of employees. Cast the hire_dates of the employees 578 and 761 to a timestamp, and add 10 hours to the hire_date timestamp. Because Drill reads data from JSON as VARCHAR, you need to cast the hire_date to the TIMESTAMP type. 
+The `employee.json` file, which Drill includes in the installation, lists the hire dates of employees. Cast the hire_dates of the employees 578 and 761 to a timestamp, and add 10 hours to the hire_date timestamp. Because Drill reads data from JSON as VARCHAR, you need to cast the hire_date to the TIMESTAMP type.
 
     SELECT DATE_SUB(CAST(hire_date AS TIMESTAMP), interval '10' hour) FROM cp.`employee.json` WHERE employee_id IN( '578','761');
     |------------------------|
@@ -544,7 +543,7 @@ Returns a component of a timestamp, time, date, or interval.
 
 ### EXTRACT Syntax
 
-`EXTRACT (extract_expression)`  
+`EXTRACT (extract_expression)`
 
 *extract_expression* is:
 
@@ -611,7 +610,7 @@ Is the day returned from the NOW function the same as the day returned from the 
     |------------|
     1 row selected (0.092 seconds)
 
-Every 23 hours, a 4 hour task started. What time does the task end? 
+Every 23 hours, a 4 hour task started. What time does the task end?
 
     SELECT TIME '04:00:00' + interval '23:00:00' hour to second FROM (VALUES(1));
     |------------|
@@ -637,15 +636,15 @@ Returns UNIX Epoch time, which is the number of seconds elapsed since January 1,
 
 ### UNIX_TIMESTAMP Syntax
 
-`UNIX_TIMESTAMP()`  
-`UNIX_TIMESTAMP(string date)`  
-`UNIX_TIMESTAMP(string date, string pattern)`  
+`UNIX_TIMESTAMP()`
+`UNIX_TIMESTAMP(string date)`
+`UNIX_TIMESTAMP(string date, string pattern)`
 
 These functions perform the following operations, respectively:
 
-* Gets current Unix timestamp in seconds if given no arguments.  
-* Converts the time string in format yyyy-MM-dd HH:mm:ss to a Unix timestamp in seconds using the default timezone and locale.  
-* Converts the time string with the given pattern to a Unix time stamp in seconds.  
+* Gets current Unix timestamp in seconds if given no arguments.
+* Converts the time string in format yyyy-MM-dd HH:mm:ss to a Unix timestamp in seconds using the default timezone and locale.
+* Converts the time string with the given pattern to a Unix time stamp in seconds.
 
 ```
 SELECT UNIX_TIMESTAMP() FROM (VALUES(1));
@@ -678,23 +677,23 @@ SELECT UNIX_TIMESTAMP('2015-05-29 08:18:53.0', 'yyyy-MM-dd HH:mm:ss.SSS') FROM (
 |-------------|
 | 1432912733  |
 |-------------|
-1 row selected (0.171 seconds)  
-```    
+1 row selected (0.171 seconds)
+```
 
-## NEARESTDATE  
-Quickly and easily aggregates timestamp data by various units of time.   
+## NEARESTDATE
+Quickly and easily aggregates timestamp data by various units of time.
 
 **Note:** Drill 1.16 and later supports the NEARESTDATE function.
 
-### NEARESTDATE Syntax  
+### NEARESTDATE Syntax
 
-NEARESTDATE(*column*, '*interval*' )   
-    
+NEARESTDATE(*column*, '*interval*' )
 
-### NEARESTDATE Usage Notes 
-* Use with COUNT and GROUP BY to aggregate timestamp data. 
-* *column* is a data source column with timestamp values.  
-* *interval* is any of the following units of time: 
+
+### NEARESTDATE Usage Notes
+* Use with COUNT and GROUP BY to aggregate timestamp data.
+* *column* is a data source column with timestamp values.
+* *interval* is any of the following units of time:
 	* YEAR
 	* QUARTER
 	* MONTH
@@ -707,9 +706,9 @@ NEARESTDATE(*column*, '*interval*' )
 	* MINUTE
 	* 30SECOND
 	* 15SECOND
-	* SECOND  
+	* SECOND
 
-### NEARESTDATE Examples   
+### NEARESTDATE Examples
 
 The following example uses the NEARESTDATE function to aggregate hire dates by year:
 
@@ -723,44 +722,61 @@ The following example uses the NEARESTDATE function to aggregate hire dates by y
 	| 1995-01-01 00:00:00.0 | 12    |
 	| 1997-01-01 00:00:00.0 | 74    |
 	| 1993-01-01 00:00:00.0 | 4     |
-	|-----------------------|-------|   
+	|-----------------------|-------|
 
-The following example applies the NEARESTDATE function to a timestamp value (2019-02-01 07:22:00) and returns the timestamp value for each time unit indicated:  
+The following example applies the NEARESTDATE function to a timestamp value (2019-02-01 07:22:00) and returns the timestamp value for each time unit indicated:
 
-	SELECT nearestDate( TO_TIMESTAMP('2019-02-01 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'YEAR') AS nearest_year, nearestDate( TO_TIMESTAMP('2019-02-01 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'QUARTER') AS nearest_quarter, nearestDate( TO_TIMESTAMP('2019-02-15 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'MONTH') AS nearest_month, nearestDate( TO_TIMESTAMP('2019-02-15 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'DAY') AS nearest_day, nearestDate( TO_TIMESTAMP('2019-02-15 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'WEEK_SUNDAY') AS nearest_week_sunday, nearestDate( TO_TIMESTAMP('2019-02-15 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'WEEK_MONDAY') AS nearest_week_monday, nearestDate( TO_TIMESTAMP('2019-02-15 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'HOUR') AS nearest_hour, nearestDate( TO_TIMESTAMP('2019-02-15 07:42:00', 'yyyy-MM-dd HH:mm:ss'), 'HALF_HOUR') AS nearest_half_hour, nearestDate( TO_TIMESTAMP('2019-02-15 07:48:00', 'yyyy-MM-dd HH:mm:ss'), 'QUARTER_HOUR') AS nearest_quarter_hour, nearestDate( TO_TIMESTAMP('2019-02-15 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'MINUTE') AS nearest_minute, nearestDate( TO_TIMESTAMP('2019-02-15 07:22:22', 'yyyy-MM-dd HH:mm:ss'), 'HALF_MINUTE') AS nearest_30second, nearestDate( TO_TIMESTAMP('2019-02-15 07:22:22', 'yyyy-MM-dd HH:mm:ss'), 'QUARTER_MINUTE') AS nearest_15second, nearestDate( TO_TIMESTAMP('2019-02-15 07:22:31', 'yyyy-MM-dd HH:mm:ss'), 'SECOND') AS nearest_second FROM (VALUES(1));
+```sql
+SELECT
+  NEARESTDATE( TO_TIMESTAMP('2019-02-01 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'YEAR') AS nearest_year,
+  NEARESTDATE( TO_TIMESTAMP('2019-02-01 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'QUARTER') AS nearest_quarter,
+  NEARESTDATE( TO_TIMESTAMP('2019-02-15 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'MONTH') AS nearest_month,
+  NEARESTDATE( TO_TIMESTAMP('2019-02-15 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'DAY') AS nearest_day,
+  NEARESTDATE( TO_TIMESTAMP('2019-02-15 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'WEEK_SUNDAY') AS nearest_week_sunday,
+  NEARESTDATE( TO_TIMESTAMP('2019-02-15 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'WEEK_MONDAY') AS nearest_week_monday,
+  NEARESTDATE( TO_TIMESTAMP('2019-02-15 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'HOUR') AS nearest_hour,
+  NEARESTDATE( TO_TIMESTAMP('2019-02-15 07:42:00', 'yyyy-MM-dd HH:mm:ss'), 'HALF_HOUR') AS nearest_half_hour,
+  NEARESTDATE( TO_TIMESTAMP('2019-02-15 07:48:00', 'yyyy-MM-dd HH:mm:ss'), 'QUARTER_HOUR') AS nearest_quarter_hour,
+  NEARESTDATE( TO_TIMESTAMP('2019-02-15 07:22:00', 'yyyy-MM-dd HH:mm:ss'), 'MINUTE') AS nearest_minute,
+  NEARESTDATE( TO_TIMESTAMP('2019-02-15 07:22:22', 'yyyy-MM-dd HH:mm:ss'), 'HALF_MINUTE') AS nearest_30second,
+  NEARESTDATE( TO_TIMESTAMP('2019-02-15 07:22:22', 'yyyy-MM-dd HH:mm:ss'), 'QUARTER_MINUTE') AS nearest_15second,
+  NEARESTDATE( TO_TIMESTAMP('2019-02-15 07:22:31', 'yyyy-MM-dd HH:mm:ss'), 'SECOND') AS nearest_second;
+```
+
+
 	|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|
 	|     nearest_year      |    nearest_quarter    |     nearest_month     |      nearest_day      |  nearest_week_sunday  |  nearest_week_monday  |     nearest_hour      |   nearest_half_hour   | nearest_quarter_hour  |    nearest_minute     |   nearest_30second    |   nearest_15second    |    nearest_second     |
 	|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|
 	| 2019-01-01 00:00:00.0 | 2019-01-01 00:00:00.0 | 2019-02-01 00:00:00.0 | 2019-02-15 00:00:00.0 | 2019-02-10 00:00:00.0 | 2019-02-11 00:00:00.0 | 2019-02-15 07:00:00.0 | 2019-02-15 07:30:00.0 | 2019-02-15 07:45:00.0 | 2019-02-15 07:22:00.0 | 2019-02-15 07:22:00.0 | 2019-02-15 07:22:15.0 | 2019-02-15 07:22:31.0 |
 	|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|
-	
 
-## TIMESTAMPADD  
-Adds an interval of time, in the given time units, to a datetime expression.  
 
-**Note:** Drill 1.15 and later supports the TIMESTAMPADD function.   
+## TIMESTAMPADD
+Adds an interval of time, in the given time units, to a datetime expression.
 
-### TIMESTAMPADD Syntax  
-TIMESTAMPADD(*time\_unit, interval, datetime\_expression*)  
+**Note:** Drill 1.15 and later supports the TIMESTAMPADD function.
 
-### TIMESTAMPADD Usage Notes  
-- *datetime\_expression* is a column or literal with date, time, or timestamp values. 
+### TIMESTAMPADD Syntax
+TIMESTAMPADD(*time\_unit, interval, datetime\_expression*)
+
+### TIMESTAMPADD Usage Notes
+- *datetime\_expression* is a column or literal with date, time, or timestamp values.
 - *time\_unit* is any of the following: Nanosecond, Microsecond, Second, Minute, Hour, Day, Month, Year, Week, Quarter
-- *interval* is the amount of *time\_unit* to add. 
+- *interval* is the amount of *time\_unit* to add.
 - Drill uses the *time\_unit* to infer the return type.
-- You can include the `SQL_TSI_` prefix with the any of the supported time units, as shown: 
-  
+- You can include the `SQL_TSI_` prefix with the any of the supported time units, as shown:
+
 		SELECT TIMESTAMPADD(SQL_TSI_MINUTE,5,TIME '05:05:05');
 		|-----------|
 		|  EXPR$0   |
 		|-----------|
 		| 05:10:05  |
-		|-----------|  
+		|-----------|
 
 
-### TIMESTAMPADD Examples  
+### TIMESTAMPADD Examples
 
-Add three years to a date literal:  
+Add three years to a date literal:
 
 	SELECT TIMESTAMPADD(YEAR,3,DATE '1982-05-06');
 	|------------------------|
@@ -778,7 +794,7 @@ Add a quarter (3 months) to the date values in the first column of the dates.csv
 	| 2018-04-01 00:00:00.0  |
 	| 2017-05-02 00:00:00.0  |
 	| 2000-08-06 00:00:00.0  |
-	|------------------------|  
+	|------------------------|
 
 Dates in column[0] before applying the TIMESTAMPADD function:
 
@@ -792,33 +808,33 @@ Dates in column[0] before applying the TIMESTAMPADD function:
 	|-------------|
 
 
-## TIMESTAMPDIFF  
-Calculates an interval of time, in the given time units, by subtracting *datetime\_expression1* from *datetime\_expression2* (*datetime\_expression2* − *datetime\_expression1*).  
+## TIMESTAMPDIFF
+Calculates an interval of time, in the given time units, by subtracting *datetime\_expression1* from *datetime\_expression2* (*datetime\_expression2* − *datetime\_expression1*).
 
-**Note:** Drill 1.15 and later supports the TIMESTAMPDIFF function.       
+**Note:** Drill 1.15 and later supports the TIMESTAMPDIFF function.
 
-### TIMESTAMPDIFF Syntax  
-TIMESTAMPDIFF(*time\_unit, datetime\_expression1, datetime\_expression2*)  
+### TIMESTAMPDIFF Syntax
+TIMESTAMPDIFF(*time\_unit, datetime\_expression1, datetime\_expression2*)
 
-### TIMESTAMPDIFF Usage Notes  
-- *datetime\_expression* is a column or literal with date, time, or timestamp values. 
+### TIMESTAMPDIFF Usage Notes
+- *datetime\_expression* is a column or literal with date, time, or timestamp values.
 - *time\_unit* is any of the following: Nanosecond, Microsecond, Second, Minute, Hour, Day, Month, Year, Week, Quarter
-- You can include two date expressions, or one date expression with one datetime expression. 
+- You can include two date expressions, or one date expression with one datetime expression.
 - Drill uses the *time\_unit* to infer the return type.
-- You can include the `SQL_TSI_` prefix with the any of the supported time units, as shown: 
-  
+- You can include the `SQL_TSI_` prefix with the any of the supported time units, as shown:
+
 		SELECT TIMESTAMPDIFF(SQL_TSI_MONTH, DATE '1982-05-06', DATE '2018-12-26');
 		|---------|
 		| EXPR$0  |
 		|---------|
 		| 439     |
-		|---------|  
- 
+		|---------|
 
-### TIMESTAMPDIFF Examples   
 
-Subtracts the date literal '1982-05-06' from the date literal '2018-12-26' and returns the difference in months:  
-	
+### TIMESTAMPDIFF Examples
+
+Subtracts the date literal '1982-05-06' from the date literal '2018-12-26' and returns the difference in months:
+
 	SELECT TIMESTAMPDIFF(MONTH, DATE'1982-05-06', DATE '2018-12-26');
 	|---------|
 	| EXPR$0  |
@@ -826,7 +842,7 @@ Subtracts the date literal '1982-05-06' from the date literal '2018-12-26' and r
 	| 439     |
 	|---------|
 
-Subtracts the date literal '1970-01-15' from the dates in the first column of the dates.csv file and returns the difference in seconds:    
+Subtracts the date literal '1970-01-15' from the dates in the first column of the dates.csv file and returns the difference in seconds:
 
 	SELECT TIMESTAMPDIFF(SECOND, DATE '1970-01-15', CAST(COLUMNS[0] as date)) a FROM dfs.`/quarter/dates.csv`
 	|-------------|
@@ -837,8 +853,8 @@ Subtracts the date literal '1970-01-15' from the dates in the first column of th
 	| 956361600   |
 	|-------------|
 
-Subtracts the date in the third column from the date in the first column (columns[0]-columns[2]) of the dates.csv file and returns the difference in seconds:   
-   
+Subtracts the date in the third column from the date in the first column (columns[0]-columns[2]) of the dates.csv file and returns the difference in seconds:
+
 	SELECT TIMESTAMPDIFF(SECOND, CAST(COLUMNS[2] as date), CAST(COLUMNS[0] as date)) a from dfs.`/quarter/dates.csv`;
 	|------------|
 	|     a      |

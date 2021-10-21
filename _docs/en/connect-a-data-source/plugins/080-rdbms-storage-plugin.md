@@ -19,13 +19,9 @@ Drill is designed to work with any relational datastore that provides a JDBC dri
 
 ## Setting data source parameters in the storage plugin configuration
 
-Starting from Drill 1.18.0, new JDBC storage plugin configuration property `sourceParameters` was introduced to allow
- setting data source parameters described in [HikariCP](https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby).
- Parameters names with incorrect naming and parameter values which are of incorrect data type or illegal will fail
- storage plugin to start up.
+**Introduced in release:** 1.18
 
-See the [Example of Postgres Configuration with `sourceParameters` configuration property](#example-of-postgres-configuration-with-sourceparameters-configuration-property)
-section for the example of usage.
+A JDBC storage plugin configuration property `sourceParameters` was introduced to allow setting data source parameters described in [HikariCP](https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby).  Parameters names with incorrect naming and parameter values which are of incorrect data type or illegal will cause the storage plugin to fail to start.  See the [Example of Postgres Configuration with `sourceParameters` configuration property](#example-of-postgres-configuration-with-sourceparameters-configuration-property) section for the example of usage.  From release 1.20 onwards, the _default_  `sourceParameters` set on the JDBC storage plugin are set to make the initiation of outbound connections lazy rather than eager, where eager means at the time of storage config enablement.  Additionally, the JDBC connection pool is now allowed to shrink back down to empty if all of its connections are idle.  These new defaults are visible in the `rdbms` storage config template and may be overridden to reinstate Drill's earlier behaviour.
 
 ### Example: Working with MySQL
 
