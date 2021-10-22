@@ -10,18 +10,18 @@ As with any source, Drill supports joins within and between all systems. Drill a
 ## Using the RDBMS Storage Plugin
 
 Drill is designed to work with any relational datastore that provides a JDBC driver. Drill is actively tested with
- Postgres, MySQL, Oracle, MSSQL, Apache Derby and H2. For each system, you will follow three basic steps for setup:
+ PostgreSQL, MySQL, Oracle, MSSQL, Apache Derby and H2. For each system, you will follow three basic steps for setup:
 
   1. [Install Drill]({{ site.baseurl }}/docs/installing-drill-in-embedded-mode), if you do not already have it installed.
   2. Copy your database's JDBC driver into the `jars/3rdparty` directory. (You'll need to do this on every node.)  
   3. Restart Drill. See [Starting Drill in Distributed Mode]({{site.baseurl}}/docs/starting-drill-in-distributed-mode/).
-  4. Add a new storage configuration to Drill through the Web UI. Example configurations for [Oracle](#example-oracle-configuration), [SQL Server](#example-sql-server-configuration), [MySQL](#example-mysql-configuration) and [Postgres](#example-postgres-configuration) are provided below.
+  4. Add a new storage configuration to Drill through the Web UI. Example configurations for [Oracle](#example-oracle-configuration), [SQL Server](#example-sql-server-configuration), [MySQL](#example-mysql-configuration) and [PostgreSQL](#example-postgres-configuration) are provided below.
 
 ## Setting data source parameters in the storage plugin configuration
 
 **Introduced in release:** 1.18
 
-A JDBC storage plugin configuration property `sourceParameters` was introduced to allow setting data source parameters described in [HikariCP](https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby).  Parameters names with incorrect naming and parameter values which are of incorrect data type or illegal will cause the storage plugin to fail to start.  See the [Example of Postgres Configuration with `sourceParameters` configuration property](#example-of-postgres-configuration-with-sourceparameters-configuration-property) section for the example of usage.  From release 1.20 onwards, the _default_  `sourceParameters` set on the JDBC storage plugin are set to make the initiation of outbound connections lazy rather than eager, where eager means at the time of storage config enablement.  Additionally, the JDBC connection pool is now allowed to shrink back down to empty if all of its connections are idle.  These new defaults are visible in the `rdbms` storage config template and may be overridden to reinstate Drill's earlier behaviour.
+A JDBC storage plugin configuration property `sourceParameters` was introduced to allow setting data source parameters described in [HikariCP](https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby).  Parameters names with incorrect naming and parameter values which are of incorrect data type or illegal will cause the storage plugin to fail to start.  See the [Example of PostgreSQL Configuration with `sourceParameters` configuration property](#example-of-postgres-configuration-with-sourceparameters-configuration-property) section for the example of usage.  From release 1.20 onwards, the _default_  `sourceParameters` set on the JDBC storage plugin are set to make the initiation of outbound connections lazy rather than eager, where eager means at the time of storage config enablement.  Additionally, the JDBC connection pool is now allowed to shrink back down to empty if all of its connections are idle.  These new defaults are visible in the `rdbms` storage config template and may be overridden to reinstate Drill's earlier behaviour.
 
 ### Example: Working with MySQL
 
@@ -111,12 +111,12 @@ For MySQL, Drill has been tested with MySQL's [mysql-connector-java-5.1.37-bin.j
 }  
 ```
 
-### Example Postgres Configuration
+### Example PostgreSQL Configuration
 
-Drill is tested with the Postgres driver version [42.2.11](https://mvnrepository.com/artifact/org.postgresql/postgresql) (any recent driver should work).
+Drill is tested with the PostgreSQL driver version [42.2.11](https://mvnrepository.com/artifact/org.postgresql/postgresql) (any recent driver should work).
  Download and copy this driver jar to the `jars/3rdparty` folder on all nodes.
 
-{% include startnote.html %}You'll need to provide a database name as part of your JDBC connection string for Drill to correctly expose Postgres tables.{% include endnote.html %}
+{% include startnote.html %}You'll need to provide a database name as part of your JDBC connection string for Drill to correctly expose PostgreSQL tables.{% include endnote.html %}
 
 ```json
 {
@@ -155,7 +155,7 @@ You may need to qualify a table name with a schema name for Drill to return data
        | 2    | 1.2.3.5 |
        |------|---------|
 
-### Example of Postgres Configuration with `sourceParameters` configuration property
+### Example of PostgreSQL Configuration with `sourceParameters` configuration property
 ```json
 {
   "type": "jdbc",
@@ -165,8 +165,8 @@ You may need to qualify a table name with a schema name for Drill to return data
   "username": "user",
   "password": "password",
   "sourceParameters": {
-    "minimumIdle": 5,
-    "autoCommit": false,
+    "minimumIdle": 0,
+    "autoCommit": true,
     "connectionTestQuery": "select version() as postgresql_version",
     "dataSource.cachePrepStmts": true,
     "dataSource.prepStmtCacheSize": 250
