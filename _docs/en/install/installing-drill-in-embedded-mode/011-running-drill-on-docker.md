@@ -31,11 +31,11 @@ You must have Docker version 18 or later [installed on your machine](https://doc
 
 ## Running Drill in a Docker Container
 
-You can start and run a Docker container in detached mode or foreground mode. [Detached mode]({{site.baseurl}}/docs/running-drill-on-docker/#running-the-drill-docker-container-in-detached-mode) runs the container in the background. Foreground is the default mode. [Foreground mode]({{site.baseurl}}/docs/running-drill-on-docker/#running-the-drill-docker-container-in-foreground-mode) runs the Drill process in the container and attaches the console to Drill’s standard input, output, and standard error. 
+You can start and run a Docker container in detached mode or foreground mode. [Detached mode]({{site.baseurl}}/docs/running-drill-on-docker/#running-the-drill-docker-container-in-detached-mode) runs the container in the background. Foreground is the default mode. [Foreground mode]({{site.baseurl}}/docs/running-drill-on-docker/#running-the-drill-docker-container-in-foreground-mode) runs the Drill process in the container and attaches the console to Drill’s standard input, output, and standard error.
 
-Whether you run the Docker container in detached or foreground mode, you start Drill in a container by issuing the docker `run` command with some options, as described in the following table: 
+Whether you run the Docker container in detached or foreground mode, you start Drill in a container by issuing the docker `run` command with some options, as described in the following table:
 
- 
+
 |--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Option                   | Description                                                                                                                                                                                                                                                                                                     |
 |--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -49,14 +49,17 @@ Whether you run the Docker container in detached or foreground mode, you start D
 
 If you decide to work in the filesytem of the Docker image, for example to modify a Drill configuration file, then be aware that Drill has been installed to /opt/drill.  When reading the Drill documentation in the context of the official Docker image, you should substitute the mentioned path for any mentions of the environment variable `$DRILL_HOME`.
 
-### Running the Drill Docker Container in Foreground Mode  
+### Running the Drill Docker Container in Foreground Mode
 
-Open a terminal window (Command Prompt or PowerShell, but not PowerShell ISE) and then issue the following command and options to connect to SQLLine (the Drill shell):   
+Open a terminal window (Command Prompt or PowerShell, but not PowerShell ISE) and then issue the following command and options to connect to SQLLine (the Drill shell):
 ```sh
-docker run -i --name drill-1.19.0 -p 8047:8047 -t apache/drill:1.19.0 /bin/bash
+docker run -it --name drill \
+	-p 8047:8047 \		# web and REST
+	-p 31010:31010 \	# JDBC
+	apache/drill
 ```
 
-When you issue the docker run command, the Drill process starts in a container. SQLLine prints a message, and the prompt appears:  
+When you issue the docker run command, the Drill process starts in a container. SQLLine prints a message, and the prompt appears:
 
        Apache Drill 1.19.0
        "json ain't no thang"
@@ -64,7 +67,7 @@ When you issue the docker run command, the Drill process starts in a container. 
 
 At the prompt, you can enter the following simple query to verify that Drill is running:
 ```sql
-SELECT version FROM sys.version;  
+SELECT version FROM sys.version;
 ```
 
 ### Running the Drill Docker Container in Detached Mode
@@ -73,13 +76,19 @@ Open a terminal window (Command Prompt or PowerShell, but not PowerShell ISE) an
 
 **Note:** When you run the Drill Docker container in detached mode, you connect to SQLLine (the Drill shell) using drill-localhost.
 ```sh
-$ docker run -i --name drill-1.19.0 -p 8047:8047 --detach -t apache/drill:1.19.0 /bin/bash
+$ docker run --name drill \
+	-p 8047:8047 \		# web and REST
+	-p 31010:31010 \	# JDBC
+	--detach
+	apache/drill
+	
 <displays container ID>
 
-$ docker exec -it drill-1.19.0 bash
+$ docker exec -it drill /bin/bash
+
 <connects to container>
 
-$ /opt/drill/bin/drill-localhost
+$ $DRILL_HOME/bin/drill-embedded
 ```
 
 After you issue the commands, the Drill process starts in a container. SQLLine prints a message, and the prompt appears:
@@ -88,14 +97,14 @@ After you issue the commands, the Drill process starts in a container. SQLLine p
        "json ain't no thang"
        apache drill>
 
-At the prompt, you can enter the following simple query to verify that Drill is running:  
+At the prompt, you can enter the following simple query to verify that Drill is running:
 ```sql
-SELECT version FROM sys.version;  
+SELECT version FROM sys.version;
 ```
 
-## Querying Data  
+## Querying Data
 
-By default, you can only query files that are accessible within the container. For example, you can query the sample data packaged with Drill, as shown:  
+By default, you can only query files that are accessible within the container. For example, you can query the sample data packaged with Drill, as shown:
 
 ```sql
 SELECT first_name, last_name FROM cp.`employee.json` LIMIT 1;
@@ -106,31 +115,31 @@ SELECT first_name, last_name FROM cp.`employee.json` LIMIT 1;
 |------------|-----------|
 | Sheri      | Nowmer    |
 |------------|-----------|
-1 row selected (0.256 seconds)  
+1 row selected (0.256 seconds)
 ```
 
 To query files stored outside of the container, you can [bind mount a directory in from the host](https://docs.docker.com/storage/bind-mounts/)
 ```sh
-docker run -i --name drill-1.19.0 \
-	-p 8047:8047 \
-	-t apache/drill:1.19.0
-	-v /mnt/big/data:/mnt
-	/bin/bash
+docker run -it --name drill \
+	-p 8047:8047 \		# web and REST
+	-p 31010:31010 \	# JDBC
+	-v /mnt/big/data:/mnt \
+	apache/drill
 ```
 or you can [create and mount a Docker volume](https://docs.docker.com/storage/volumes/).
 ```sh
 docker volume create big-data-vol
 
-docker run -i --name drill-1.19.0 \
-	-p 8047:8047 \
-	-t apache/drill:1.19.0
+docker run -it --name drill \
+	-p 8047:8047 \		# web and REST
+	-p 31010:31010 \	# JDBC
 	-v big-data-vol:/mnt
-	/bin/bash
+    apache/drill
 ```
 
 See the linked Docker documentation for more details.
 
-## Drill Web UI  
+## Drill Web UI
 
-You can access the Drill web UI at `http://localhost:8047` when the Drill Docker container is running. On Windows, you may need to specify the IP address of your system instead of using "localhost".
+You can access the Drill web UI at `http://localhost:8047` when the Drill Docker container is running.  On Windows, you may need to specify the IP address of your system instead of using "localhost".
 
