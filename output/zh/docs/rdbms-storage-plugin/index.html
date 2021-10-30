@@ -1435,20 +1435,20 @@
 <h2 id="using-the-rdbms-storage-plugin">Using the RDBMS Storage Plugin</h2>
 
 <p>Drill is designed to work with any relational datastore that provides a JDBC driver. Drill is actively tested with
- Postgres, MySQL, Oracle, MSSQL, Apache Derby and H2. For each system, you will follow three basic steps for setup:</p>
+ PostgreSQL, MySQL, Oracle, MSSQL, Apache Derby and H2. For each system, you will follow three basic steps for setup:</p>
 
 <ol>
   <li><a href="/zh/docs/installing-drill-in-embedded-mode">Install Drill</a>, if you do not already have it installed.</li>
   <li>Copy your database’s JDBC driver into the <code class="language-plaintext highlighter-rouge">jars/3rdparty</code> directory. (You’ll need to do this on every node.)</li>
   <li>Restart Drill. See <a href="/zh/docs/starting-drill-in-distributed-mode/">Starting Drill in Distributed Mode</a>.</li>
-  <li>Add a new storage configuration to Drill through the Web UI. Example configurations for <a href="#example-oracle-configuration">Oracle</a>, <a href="#example-sql-server-configuration">SQL Server</a>, <a href="#example-mysql-configuration">MySQL</a> and <a href="#example-postgres-configuration">Postgres</a> are provided below.</li>
+  <li>Add a new storage configuration to Drill through the Web UI. Example configurations for <a href="#example-oracle-configuration">Oracle</a>, <a href="#example-sql-server-configuration">SQL Server</a>, <a href="#example-mysql-configuration">MySQL</a> and <a href="#example-postgres-configuration">PostgreSQL</a> are provided below.</li>
 </ol>
 
 <h2 id="setting-data-source-parameters-in-the-storage-plugin-configuration">Setting data source parameters in the storage plugin configuration</h2>
 
 <p><strong>Introduced in release:</strong> 1.18</p>
 
-<p>A JDBC storage plugin configuration property <code class="language-plaintext highlighter-rouge">sourceParameters</code> was introduced to allow setting data source parameters described in <a href="https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby">HikariCP</a>.  Parameters names with incorrect naming and parameter values which are of incorrect data type or illegal will cause the storage plugin to fail to start.  See the <a href="#example-of-postgres-configuration-with-sourceparameters-configuration-property">Example of Postgres Configuration with <code class="language-plaintext highlighter-rouge">sourceParameters</code> configuration property</a> section for the example of usage.  From release 1.20 onwards, the <em>default</em>  <code class="language-plaintext highlighter-rouge">sourceParameters</code> set on the JDBC storage plugin are set to make the initiation of outbound connections lazy rather than eager, where eager means at the time of storage config enablement.  Additionally, the JDBC connection pool is now allowed to shrink back down to empty if all of its connections are idle.  These new defaults are visible in the <code class="language-plaintext highlighter-rouge">rdbms</code> storage config template and may be overridden to reinstate Drill’s earlier behaviour.</p>
+<p>A JDBC storage plugin configuration property <code class="language-plaintext highlighter-rouge">sourceParameters</code> was introduced to allow setting data source parameters described in <a href="https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby">HikariCP</a>.  Parameters names with incorrect naming and parameter values which are of incorrect data type or illegal will cause the storage plugin to fail to start.  See the <a href="#example-of-postgres-configuration-with-sourceparameters-configuration-property">Example of PostgreSQL Configuration with <code class="language-plaintext highlighter-rouge">sourceParameters</code> configuration property</a> section for the example of usage.  From release 1.20 onwards, the <em>default</em>  <code class="language-plaintext highlighter-rouge">sourceParameters</code> set on the JDBC storage plugin are set to make the initiation of outbound connections lazy rather than eager, where eager means at the time of storage config enablement.  Additionally, the JDBC connection pool is now allowed to shrink back down to empty if all of its connections are idle.  These new defaults are visible in the <code class="language-plaintext highlighter-rouge">rdbms</code> storage config template and may be overridden to reinstate Drill’s earlier behaviour.</p>
 
 <h3 id="example-working-with-mysql">Example: Working with MySQL</h3>
 
@@ -1543,14 +1543,14 @@ Each configuration registered with Drill must have a distinct name. Names are ca
 </span><span class="p">}</span><span class="w">  
 </span></code></pre></div></div>
 
-<h3 id="example-postgres-configuration">Example Postgres Configuration</h3>
+<h3 id="example-postgresql-configuration">Example PostgreSQL Configuration</h3>
 
-<p>Drill is tested with the Postgres driver version <a href="https://mvnrepository.com/artifact/org.postgresql/postgresql">42.2.11</a> (any recent driver should work).
+<p>Drill is tested with the PostgreSQL driver version <a href="https://mvnrepository.com/artifact/org.postgresql/postgresql">42.2.11</a> (any recent driver should work).
  Download and copy this driver jar to the <code class="language-plaintext highlighter-rouge">jars/3rdparty</code> folder on all nodes.</p>
 
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
-  <p class="last">You'll need to provide a database name as part of your JDBC connection string for Drill to correctly expose Postgres tables.  </p>
+  <p class="last">You'll need to provide a database name as part of your JDBC connection string for Drill to correctly expose PostgreSQL tables.  </p>
 </div>
 
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
@@ -1590,7 +1590,7 @@ Each configuration registered with Drill must have a distinct name. Names are ca
    |------|---------|
 </code></pre></div></div>
 
-<h3 id="example-of-postgres-configuration-with-sourceparameters-configuration-property">Example of Postgres Configuration with <code class="language-plaintext highlighter-rouge">sourceParameters</code> configuration property</h3>
+<h3 id="example-of-postgresql-configuration-with-sourceparameters-configuration-property">Example of PostgreSQL Configuration with <code class="language-plaintext highlighter-rouge">sourceParameters</code> configuration property</h3>
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
   </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
@@ -1599,8 +1599,8 @@ Each configuration registered with Drill must have a distinct name. Names are ca
   </span><span class="nl">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"password"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"sourceParameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"minimumIdle"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"autoCommit"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"minimumIdle"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"autoCommit"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
     </span><span class="nl">"connectionTestQuery"</span><span class="p">:</span><span class="w"> </span><span class="s2">"select version() as postgresql_version"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"dataSource.cachePrepStmts"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
     </span><span class="nl">"dataSource.prepStmtCacheSize"</span><span class="p">:</span><span class="w"> </span><span class="mi">250</span><span class="w">

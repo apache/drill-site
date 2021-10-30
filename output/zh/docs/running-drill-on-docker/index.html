@@ -1534,7 +1534,10 @@
 <h3 id="running-the-drill-docker-container-in-foreground-mode">Running the Drill Docker Container in Foreground Mode</h3>
 
 <p>Open a terminal window (Command Prompt or PowerShell, but not PowerShell ISE) and then issue the following command and options to connect to SQLLine (the Drill shell):</p>
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-i</span> <span class="nt">--name</span> drill-1.19.0 <span class="nt">-p</span> 8047:8047 <span class="nt">-t</span> apache/drill:1.19.0 /bin/bash
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-it</span> <span class="nt">--name</span> drill <span class="se">\</span>
+	<span class="nt">-p</span> 8047:8047 <span class="se">\	</span>	<span class="c"># web and REST</span>
+	<span class="nt">-p</span> 31010:31010 <span class="se">\	</span><span class="c"># JDBC</span>
+	apache/drill
 </code></pre></div></div>
 
 <p>When you issue the docker run command, the Drill process starts in a container. SQLLine prints a message, and the prompt appears:</p>
@@ -1545,7 +1548,7 @@
 </code></pre></div></div>
 
 <p>At the prompt, you can enter the following simple query to verify that Drill is running:</p>
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="k">version</span> <span class="k">FROM</span> <span class="n">sys</span><span class="p">.</span><span class="k">version</span><span class="p">;</span>  
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="k">version</span> <span class="k">FROM</span> <span class="n">sys</span><span class="p">.</span><span class="k">version</span><span class="p">;</span>
 </code></pre></div></div>
 
 <h3 id="running-the-drill-docker-container-in-detached-mode">Running the Drill Docker Container in Detached Mode</h3>
@@ -1553,13 +1556,19 @@
 <p>Open a terminal window (Command Prompt or PowerShell, but not PowerShell ISE) and then issue the following commands and options to connect to SQLLine (the Drill shell):</p>
 
 <p><strong>Note:</strong> When you run the Drill Docker container in detached mode, you connect to SQLLine (the Drill shell) using drill-localhost.</p>
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker run <span class="nt">-i</span> <span class="nt">--name</span> drill-1.19.0 <span class="nt">-p</span> 8047:8047 <span class="nt">--detach</span> <span class="nt">-t</span> apache/drill:1.19.0 /bin/bash
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker run <span class="nt">--name</span> drill <span class="se">\</span>
+	<span class="nt">-p</span> 8047:8047 <span class="se">\	</span>	<span class="c"># web and REST</span>
+	<span class="nt">-p</span> 31010:31010 <span class="se">\	</span><span class="c"># JDBC</span>
+	<span class="nt">--detach</span>
+	apache/drill
+	
 &lt;displays container ID&gt;
 
-<span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> drill-1.19.0 bash
+<span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> drill /bin/bash
+
 &lt;connects to container&gt;
 
-<span class="nv">$ </span>/opt/drill/bin/drill-localhost
+<span class="nv">$ $DRILL_HOME</span>/bin/drill-embedded
 </code></pre></div></div>
 
 <p>After you issue the commands, the Drill process starts in a container. SQLLine prints a message, and the prompt appears:</p>
@@ -1570,7 +1579,7 @@
 </code></pre></div></div>
 
 <p>At the prompt, you can enter the following simple query to verify that Drill is running:</p>
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="k">version</span> <span class="k">FROM</span> <span class="n">sys</span><span class="p">.</span><span class="k">version</span><span class="p">;</span>  
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="k">version</span> <span class="k">FROM</span> <span class="n">sys</span><span class="p">.</span><span class="k">version</span><span class="p">;</span>
 </code></pre></div></div>
 
 <h2 id="querying-data">Querying Data</h2>
@@ -1584,31 +1593,31 @@
 |------------|-----------|
 | Sheri      | Nowmer    |
 |------------|-----------|
-1 row selected (0.256 seconds)  
+1 row selected (0.256 seconds)
 </code></pre></div></div>
 
 <p>To query files stored outside of the container, you can <a href="https://docs.docker.com/storage/bind-mounts/">bind mount a directory in from the host</a></p>
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-i</span> <span class="nt">--name</span> drill-1.19.0 <span class="se">\</span>
-	<span class="nt">-p</span> 8047:8047 <span class="se">\</span>
-	<span class="nt">-t</span> apache/drill:1.19.0
-	<span class="nt">-v</span> /mnt/big/data:/mnt
-	/bin/bash
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-it</span> <span class="nt">--name</span> drill <span class="se">\</span>
+	<span class="nt">-p</span> 8047:8047 <span class="se">\	</span>	<span class="c"># web and REST</span>
+	<span class="nt">-p</span> 31010:31010 <span class="se">\	</span><span class="c"># JDBC</span>
+	<span class="nt">-v</span> /mnt/big/data:/mnt <span class="se">\</span>
+	apache/drill
 </code></pre></div></div>
 <p>or you can <a href="https://docs.docker.com/storage/volumes/">create and mount a Docker volume</a>.</p>
 <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker volume create big-data-vol
 
-docker run <span class="nt">-i</span> <span class="nt">--name</span> drill-1.19.0 <span class="se">\</span>
-	<span class="nt">-p</span> 8047:8047 <span class="se">\</span>
-	<span class="nt">-t</span> apache/drill:1.19.0
+docker run <span class="nt">-it</span> <span class="nt">--name</span> drill <span class="se">\</span>
+	<span class="nt">-p</span> 8047:8047 <span class="se">\	</span>	<span class="c"># web and REST</span>
+	<span class="nt">-p</span> 31010:31010 <span class="se">\	</span><span class="c"># JDBC</span>
 	<span class="nt">-v</span> big-data-vol:/mnt
-	/bin/bash
+    apache/drill
 </code></pre></div></div>
 
 <p>See the linked Docker documentation for more details.</p>
 
 <h2 id="drill-web-ui">Drill Web UI</h2>
 
-<p>You can access the Drill web UI at <code class="language-plaintext highlighter-rouge">http://localhost:8047</code> when the Drill Docker container is running. On Windows, you may need to specify the IP address of your system instead of using “localhost”.</p>
+<p>You can access the Drill web UI at <code class="language-plaintext highlighter-rouge">http://localhost:8047</code> when the Drill Docker container is running.  On Windows, you may need to specify the IP address of your system instead of using “localhost”.</p>
 
 
     
