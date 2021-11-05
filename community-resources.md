@@ -9,11 +9,6 @@ permalink: /community-resources/
 * [Documentation]({{ site.baseurl }}/docs/)
 * [Slack channels for users and developers](https://apache-drill.slack.com/)
 * Twitter: [@ApacheDrill](https://twitter.com/ApacheDrill)
-* Meetups:
-    * [Bay Area](http://www.meetup.com/Bay-Area-Apache-Drill-User-Group/)
-    * [New York](http://www.meetup.com/New-York-Apache-Drill-Meetup/)
-    * [London](http://www.meetup.com/London-Apache-Drill/)
-    * [Tokyo](http://drill.connpass.com/)
 * Presentations: [SlideShare](http://www.slideshare.net/ApacheDrill/)
 
 ## Developer Resources
