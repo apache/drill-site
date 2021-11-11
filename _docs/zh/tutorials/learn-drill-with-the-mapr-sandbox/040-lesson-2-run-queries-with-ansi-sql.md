@@ -4,30 +4,23 @@ slug: "Lesson 2: Run Queries with ANSI SQL"
 parent: "搭配 MapR Sandbox 学习 Drill"
 lang: "zh"
 ---
-## Goal
+## 目标
 
-This lesson shows how to do some standard SQL analysis in Apache Drill: for
-example, summarizing data by using simple aggregate functions and connecting
-data sources by using joins. Note that Apache Drill provides ANSI SQL support,
-not a “SQL-like” interface.
+本课展示了如何在 Apache Drill 中进行一些标准的 SQL 分析：例如，使用简单的聚合函数汇总数据以及联接不同数据源。请注意，Apache Drill 提供 ANSI SQL 支持，而不是 “SQL-like” 的接口。
 
-## Queries in This Lesson
+## 本课中的查询示例
 
-Now that you know what the data sources look like in their raw form, using
-select * queries, try running some simple but more useful queries on each data
-source. These queries demonstrate how Drill supports ANSI SQL constructs and
-also how you can combine data from different data sources in a single SELECT
-statement.
+假设用户知道数据源的原始形式，使用 select * 查询，尝试对每个数据源进行一些简单却实用的查询。这些查询展示了 Drill 如何支持 ANSI SQL 结构，以及如何在单个 SELECT 语句中组合来自不同数据源的数据。
 
-  * Show an aggregate query on a single file or table. Use GROUP BY, WHERE, HAVING, and ORDER BY clauses.
-  * Perform joins between Hive, MapR-DB, and file system data sources.
-  * Use table and column aliases.
-  * Create a Drill view.
+* 对单个文件或表的聚合查询。使用 GROUP BY、WHERE、HAVING 和 ORDER BY 子句。
+* 联接 Hive、MapR-DB 和文件系统数据源。
+* 使用表和列的别名。
+* 创建 Drill 视图。
 
-## Aggregation
+## 聚合
 
 
-### Set the schema to hive:
+### 设定 hive 的 schema：
 
     0: jdbc:drill:> use hive.`default`;
     |-------|-------------------------------------------|
@@ -37,7 +30,7 @@ statement.
     |-------|-------------------------------------------|
     1 row selected 
 
-### Return sales totals by month:
+### 按月返回销售总额：
 
     0: jdbc:drill:> select `month`, sum(order_total)
     from orders group by `month` order by 2 desc;
@@ -57,14 +50,11 @@ statement.
     |------------|---------|
     10 rows selected 
 
-Drill supports SQL aggregate functions such as SUM, MAX, AVG, and MIN.
-Standard SQL clauses work in the same way in Drill queries as in relational
-database queries.
+Drill 支持 SUM、MAX、AVG、MIN 等 SQL 聚合函数。标准 SQL 子句在 Drill 查询中的工作方式与在关系型数据库查询中的工作方式相同。
 
-Note that back ticks are required for the “month” column only because “month”
-is a reserved word in SQL.
+请注意，“month” 列需要反勾号只是因为 “month” 是 SQL 中的保留字。
 
-### Return the top 20 sales totals by month and state:
+### 按月和状态返回前 20 名的销售总额：
 
     0: jdbc:drill:> select `month`, state, sum(order_total) as sales from orders group by `month`, state
     order by 3 desc limit 20;
@@ -94,14 +84,13 @@ is a reserved word in SQL.
     |-----------|--------|---------|
     20 rows selected 
 
-Note the alias for the result of the SUM function. Drill supports column
-aliases and table aliases.
+请注意 SUM 函数结果的别名。Drill 支持列别名和表别名。
 
-## HAVING Clause
+## HAVING 子句
 
-This query uses the HAVING clause to constrain an aggregate result.
+此查询使用 HAVING 子句来约束聚合结果。
 
-### Set the workspace to dfs.clicks
+### 将工作区设置为 dfs.clicks:
 
     0: jdbc:drill:> use dfs.clicks;
     |-------|-----------------------------------------|
@@ -111,7 +100,7 @@ This query uses the HAVING clause to constrain an aggregate result.
     |-------|-----------------------------------------|
     1 row selected
 
-### Return total number of clicks for devices that indicate high click-throughs:
+### 返回高点击率设备的总点击次数：
 
     0: jdbc:drill:> select t.user_info.device, count(*) from `clicks/clicks.json` t 
     group by t.user_info.device
@@ -128,15 +117,13 @@ This query uses the HAVING clause to constrain an aggregate result.
     |---------|---------|
     6 rows selected
 
-The aggregate is a count of the records for each different mobile device in
-the clickstream data. Only the activity for the devices that registered more
-than 1000 transactions qualify for the result set.
+聚合结果是点击流数据中每个移动设备的点击计数。只有点击记录超过 1000 个事务的设备才会被统计进结果集
 
-## UNION Operator
+## UNION 运算符
 
-Use the same workspace as before (dfs.clicks).
+使用和之前相同的工作区 (dfs.clicks).
 
-### Combine clicks activity from before and after the marketing campaign
+### 合并营销活动前后的点击数:
 
     0: jdbc:drill:> select t.trans_id transaction, t.user_info.cust_id customer from `clicks/clicks.campaign.json` t 
     union all 
@@ -151,12 +138,11 @@ Use the same workspace as before (dfs.clicks).
     | 37838       | 18737      |
     |-------------|------------|
 
-This UNION ALL query returns rows that exist in two files (and includes any
-duplicate rows from those files): `clicks.campaign.json` and `clicks.json`.
+此 UNION ALL 查询返回存在于两个文件中的行（并包括这两个文件中重复的行）：`clicks.campaign.json` 和 `clicks.json`。
 
-## Subqueries
+## 子查询
 
-### Set the workspace to hive:
+### 将工作区设置为 hive：
 
     0: jdbc:drill:> use hive.`default`;
     |-------|-------------------------------------------|
@@ -165,8 +151,8 @@ duplicate rows from those files): `clicks.campaign.json` and `clicks.json`.
     | true  | Default schema changed to [hive.default]  |
     |-------|-------------------------------------------|
     1 row selected
-    
-### Compare order totals across states:
+
+### 比较各州的订单总数：
 
     0: jdbc:drill:> select ny_sales.cust_id, ny_sales.total_orders, ca_sales.total_orders
     from
@@ -201,11 +187,11 @@ duplicate rows from those files): `clicks.campaign.json` and `clicks.json`.
     | 1024       | 233        | null       |
     |------------|------------|------------|
 
-This example demonstrates Drill support for subqueries. 
+这个例子展示了 Drill 对子查询的支持。
 
-## CAST Function
+## CAST 函数
 
-### Use the maprdb workspace:
+### 使用 maprdb 工作区：
 
     0: jdbc:drill:> use maprdb;
     |-------|-------------------------------------|
@@ -215,7 +201,7 @@ This example demonstrates Drill support for subqueries.
     |-------|-------------------------------------|
     1 row selected (0.088 seconds)
 
-### Return customer data with appropriate data types
+### 返回数据类型对应的客户数据：
 
     0: jdbc:drill:> select cast(row_key as int) as cust_id, cast(t.personal.name as varchar(20)) as name, 
     cast(t.personal.gender as varchar(10)) as gender, cast(t.personal.age as varchar(10)) as age,
@@ -232,17 +218,15 @@ This example demonstrates Drill support for subqueries.
     | 10010    | "Guillermo Koehler"  | "OTHER"   | "51-100"  | "mn"   | 202.00   | "silver"    |
     |----------|----------------------|-----------|-----------|--------|----------|-------------|
 
-Note the following features of this query:
+请注意此查询的以下功能：
 
-  * The CAST function is required for every column in the table. This function returns the MapR-DB/HBase binary data as readable integers and strings. Alternatively, you can use CONVERT_TO/CONVERT_FROM functions to decode the string columns. CONVERT_TO/CONVERT_FROM are more efficient than CAST in most cases. Use only CONVERT_TO to convert binary types to any type other than VARCHAR.
-  * The row_key column functions as the primary key of the table (a customer ID in this case).
-  * The table alias t is required; otherwise the column family names would be parsed as table names and the query would return an error.
+* 表中的每一列都需要 CAST 函数。此函数将 MapR-DB/HBase 二进制数据转换为可读整数和字符串返回。也可以使用 CONVERT_TO/CONVERT_FROM 函数来解码字符串列。在大多数情况下，CONVERT_TO/CONVERT_FROM 比 CAST 更高效。CONVERT_TO 可以将二进制类型转换为 VARCHAR 以外的任何类型。
+* row_key 列作为表的主键（在本例中为客户 ID）。
+* 表别名 t 是必需的；否则列族名称将被解析为表名称致使查询错误。
 
-### Remove the quotes from the strings:
+### 从字符串中删除引号：
 
-You can use the regexp_replace function to remove the quotes around the
-strings in the query results. For example, to return a state name va instead
-of “va”:
+可以使用 regexp_replace 函数删除查询结果中字符串周围的引号。例如，返回状态名称 va 而不是 “va”：
 
     0: jdbc:drill:> select cast(row_key as int), regexp_replace(cast(t.address.state as varchar(10)),'"','')
     from customers t limit 1;
@@ -253,7 +237,7 @@ of “va”:
     |------------|------------|
     1 row selected
 
-## CREATE VIEW Command
+## 创建视图命令
 
     0: jdbc:drill:> use dfs.views;
     |-------|----------------------------------------|
@@ -263,13 +247,11 @@ of “va”:
     |-------|----------------------------------------|
     1 row selected
 
-### Use a mutable workspace:
+### 使用可变工作区：
 
-A mutable (or writable) workspace is a workspace that is enabled for “write”
-operations. This attribute is part of the storage plugin configuration. You
-can create Drill views and tables in mutable workspaces.
+可变（或可写）工作区是为写操作启用的工作区。此属性是存储插件配置的一部分。可以在可变工作区中创建 Drill 视图和表格。
 
-### Create a view on a MapR-DB table
+### 在 MapR-DB 表上创建视图:
 
     0: jdbc:drill:> create or replace view custview as select cast(row_key as int) as cust_id,
     cast(t.personal.name as varchar(20)) as name, 
@@ -286,24 +268,13 @@ can create Drill views and tables in mutable workspaces.
     |-------|-------------------------------------------------------------|
     1 row selected
 
-Drill provides CREATE OR REPLACE VIEW syntax similar to relational databases
-to create views. Use the OR REPLACE option to make it easier to update the
-view later without having to remove it first. Note that the FROM clause in
-this example must refer to maprdb.customers. The MapR-DB tables are not
-directly visible to the dfs.views workspace.
+Drill 提供了类似于关系型数据库的 CREATE 和 REPLACE VIEW 语法来创建视图。使用 OR REPLACE 无需先将视图删除，且可以轻松地稍后更新。请注意，此示例中的 FROM 子句必须引用 maprdb.customers。MapR-DB 表对 dfs.views 工作区并不直接可见。
 
-Unlike a traditional database where views typically are DBA/developer-driven
-operations, file system-based views in Drill are very lightweight. A view is
-simply a special file with a specific extension (.drill). You can store views
-even in your local file system or point to a specific workspace. You can
-specify any query against any Drill data source in the body of the CREATE VIEW
-statement.
+传统数据库的视图通常是通过数据库管理员/开发人员的操作，Drill 中的视图基于文件系统且非常轻量级。视图只是具有特定扩展名 (.drill) 的特殊文件。用户甚至可以将视图存储在本地文件系统中或指向特定工作区。用户可以在 CREATE VIEW 语句中指定针对任何 Drill 数据源的任何查询。
 
-Drill provides a decentralized metadata model. Drill is able to query metadata
-defined in data sources such as Hive, HBase, and the file system. Drill also
-supports the creation of metadata in the file system.
+Drill 提供了一个去中心化的元数据模型。Drill 能够查询在 Hive、HBase 和文件系统等数据源中定义的元数据。Drill 还支持在文件系统中创建元数据。
 
-### Query data from the view:
+### 从视图中查询数据:
 
     0: jdbc:drill:> select * from custview limit 1;
     |----------|-------------------|-----------|----------|--------|----------|-------------|
@@ -313,13 +284,13 @@ supports the creation of metadata in the file system.
     |----------|-------------------|-----------|----------|--------|----------|-------------|
     1 row selected
 
-Once the users know what data is available by exploring it directly from the file system, views can be used as a way to read the data into downstream tools such as Tableau and MicroStrategy for analysis and visualization. For these tools, a view appears simply as a “table” with selectable “columns” in it.
+用户可以直接从文件系统中探索可用的数据，视图可以将数据读入下游工具进行分析和可视化，就像 Tableau 和 MicroStrategy 一样。对于这些工具，视图仅显示为“表格”，其中包含可选择的“列”。
 
-## Query Across Data Sources
+## 跨数据源查询
 
-Continue using `dfs.views` for this query.
+继续在查询中使用 `dfs.views`。
 
-### Join the customers view and the orders table:
+### 联接客户视图和订单表：
 
     0: jdbc:drill:> select membership, sum(order_total) as sales from hive.orders, custview
     where orders.cust_id=custview.cust_id
@@ -333,20 +304,13 @@ Continue using `dfs.views` for this query.
     |------------|------------|
     3 rows selected
 
-In this query, we are reading data from a MapR-DB table (represented by
-custview) and combining it with the order information in Hive. When doing
-cross data source queries such as this, you need to use fully qualified
-table/view names. For example, the orders table is prefixed by “hive,” which
-is the storage plugin name registered with Drill. We are not using any prefix
-for “custview” because we explicitly switched the dfs.views workspace where
-custview is stored.
+在这个查询中，我们从 MapR-DB 表（由 custview 表示）读取数据，并将其与 Hive 中的订单信息结合起来。 在进行这样的跨数据源查询时，您需要使用完全限定的表/视图名称。 例如，订单表以“hive”为前缀，这是在 Drill 中注册的存储插件名称。 我们没有为“custview”使用任何前缀，因为我们明确地切换了存储 custview 的 dfs.views 工作区。
 
-Note: If the results of any of your queries appear to be truncated because the
-rows are wide, set the maximum width of the display to 10000:
+注意：如果任何查询的结果由于行宽而有删节，请将显示的最大宽度设置为 10000：
 
-Do not use a semicolon for this SET command.
+不要在 SET 命令中使用分号。
 
-### Join the customers, orders, and clickstream data:
+### 联接客户、订单和点击流数据：
 
     0: jdbc:drill:> select custview.membership, sum(orders.order_total) as sales from hive.orders, custview,
     dfs.`/mapr/demo.mapr.com/data/nested/clicks/clicks.json` c 
@@ -361,25 +325,22 @@ Do not use a semicolon for this SET command.
     |------------|------------|
     3 rows selected
 
-This three-way join selects from three different data sources in one query:
+这是一个联接三个不同数据源的三向查询：
 
-  * hive.orders table
-  * custview (a view of the HBase customers table)
-  * clicks.json file
+* hive.orders 表
+* custview (HBase 客户表中的视图)
+* clicks.json 文件
 
-The join column for both sets of join conditions is the cust_id column. The
-views workspace is used for this query so that custview can be accessed. The
-hive.orders table is also visible to the query.
+不同的数据集通过 cust_id 联接。此查询使用视图工作区，以便可以访问 custview。hive.orders 表对查询也是可见的。
 
-However, note that the JSON file is not directly visible from the views
-workspace, so the query specifies the full path to the file:
+请注意 JSON 文件不能直接从视图工作区中看到，因此查询指定了文件的完整路径：
 
     dfs.`/mapr/demo.mapr.com/data/nested/clicks/clicks.json`
 
 
-## What's Next
+## 下一步
 
-Go to [Lesson 3: Run Queries on Complex Data Types]({{ site.baseurl }}/docs/lesson-3-run-queries-on-complex-data-types). 
+前往 [第 3 课: 对复杂数据类型进行查询]({{ site.baseurl }}/docs/lesson-3-run-queries-on-complex-data-types). 
 
 
 
