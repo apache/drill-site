@@ -4,38 +4,31 @@ slug: "Lesson 3: Run Queries on Complex Data Types"
 parent: "搭配 MapR Sandbox 学习 Drill"
 lang: "zh"
 ---
-## Goal
+## 目标
 
-This lesson focuses on queries that exercise functions and operators on self-
-describing data and complex data types. Drill offers intuitive SQL extensions
-to work with such data and offers high query performance with an architecture
-built from the ground up for complex data.
+本课重点介绍在 self-describing 数据和复杂数据类型上运用函数和运算符的查询。Drill 通过直观的 SQL 扩展来处理此类数据，并通过专用架构为复杂数据类型提供高查询性能。
 
-## Queries in This Lesson
+## 本课中的查询示例
 
-Now that you have run ANSI SQL queries against different tables and files with
-relational data, you can try some examples including complex types.
+之前已经对含有关系数据的表和文件运行了 ANSI SQL 查询，针对复杂数据类型再做一些示例查询：
 
-  * Access directories and subdirectories of files in a single SELECT statement.
-  * Demonstrate simple ways to access complex data in JSON files.
-  * Demonstrate the repeated_count function to aggregate values in an array.
+  * 在单个 SELECT 语句中访问文件的目录和子目录。
+  * 轻松访问 JSON 文件中复杂数据的方法。
+  * 通过 repeat_count 函数来聚合数组中的值。
 
-## Query Partitioned Directories
+## 查询分区目录
 
-You can use special variables in Drill to refer to subdirectories in your
-workspace path:
+您可以在 Drill 中使用特殊变量来引用文件路径中的子目录：
 
   * dir0
   * dir1
   * …
 
-Note that these variables are dynamically determined based on the partitioning
-of the file system. No up-front definitions are required on what partitions
-exist. Here is a visual example of how this works:
+请注意，这些变量是根据文件系统的分区动态确定的。不需要预先定义存在哪些分区。以下是其工作原理的示例：
 
 ![drill query flow]({{ site.baseurl }}/images/docs/example_query.png)
 
-### Set workspace to dfs.logs:
+### 将工作区设置为 dfs.logs：
 
     0: jdbc:drill:> use dfs.logs;
     |-------|---------------------------------------|
@@ -45,7 +38,7 @@ exist. Here is a visual example of how this works:
     |-------|---------------------------------------|
     1 row selected
 
-### Query logs data for a specific year:
+### 查询特定年份的日志数据：
 
     0: jdbc:drill:> select * from logs where dir0='2013' limit 10;
     |-------|-------|-----------|-------------|-----------|----------|---------|--------|----------|-----------|----------|-------------|
@@ -65,14 +58,11 @@ exist. Here is a visual example of how this works:
     10 rows selected
 
 
-This query constrains files inside the subdirectory named 2013. The variable
-dir0 refers to the first level down from logs, dir1 to the next level, and so
-on. So this query returned 10 of the rows for February 2013.
+此查询将文件限制在名为 2013 的子目录中。变量 dir0 指的是从日志目录向下的第一级，dir1 到下一级，依此类推。所以这个查询返回了 2013 年文件夹中的前 10 个文件。
 
-### Further constrain the results using multiple predicates in the query:
+### 在查询中使用多个条件进一步限制结果：
 
-This query returns a list of customer IDs for people who made a purchase via
-an IOS5 device in August 2013.
+此查询返回 2013 年 8 月通过 IOS5 设备有过购买记录的客户 ID 数据。
 
     0: jdbc:drill:> select dir0 as yr, dir1 as mth, cust_id from logs
     where dir0='2013' and dir1='8' and device='IOS5' and purch_flag='true'
@@ -87,7 +77,7 @@ an IOS5 device in August 2013.
 
     ...
 
-### Return monthly counts per customer for a given year:
+### 返回特定年份中每个客户每月的复购次数：
 
     0: jdbc:drill:> select cust_id, dir1 month_no, count(*) month_count from logs
     where dir0=2014 group by cust_id, dir1 order by cust_id, month_no limit 10;
@@ -107,16 +97,13 @@ an IOS5 device in August 2013.
     |----------|-----------|--------------|
     10 rows selected
 
-This query groups the aggregate function by customer ID and month for one
-year: 2014.
+此查询指定在2014年中根据客户 ID 和月份使用聚合函数进行分组。
 
-## Query Complex Data
+## 查询复杂数据
 
-Drill provides some specialized operators and functions that you can use to
-analyze nested data natively without transformation. If you are familiar with
-JavaScript notation, you will already know how some of these extensions work.
+Drill 提供了一些专门的操作符和函数，无需转换即可用来分析嵌套数据。如果用户熟悉 JSON，就可以轻松掌握这些扩展功能。
 
-### Set the workspace to dfs.clicks:
+### 将工作区设置为 dfs.clicks：
 
 
     0: jdbc:drill:> use dfs.clicks;
@@ -127,11 +114,9 @@ JavaScript notation, you will already know how some of these extensions work.
     |-------|-----------------------------------------|
     1 row selected
 
-### Explore clickstream data:
+### 探索点击流数据：
 
-Note that the user_info and trans_info columns contain nested data: arrays and
-arrays within arrays. The following queries show how to access this complex
-data.
+请注意，user_info 和 trans_info 列包含嵌套数据：数组和嵌套数组。以下查询展示了如何访问此类复杂数据。
 
     0: jdbc:drill:> select * from `clicks/clicks.json` limit 5;
     |-----------|-------------|-----------|---------------------------------------------------|---------------------------------------------------------------------------|
@@ -146,7 +131,7 @@ data.
     5 rows selected
 
 
-### Unpack the user_info column:
+### 解析 user_info 列：
 
     0: jdbc:drill:> select t.user_info.cust_id as custid, t.user_info.device as device,
     t.user_info.state as state
@@ -162,18 +147,15 @@ data.
     |---------|---------|--------|
     5 rows selected (0.171 seconds)
 
-This query uses a simple table.column.column notation to extract nested column
-data. For example:
+此查询使用简单的 table.column.column 表示法来提取嵌套列数据。例如：
 
     t.user_info.cust_id
 
-where `t` is the table alias provided in the query, `user_info` is a top-level
-column name, and `cust_id` is a nested column name.
+其中 `t` 是查询中提供的表别名，`user_info` 是顶级列名，`cust_id` 是嵌套列名。
 
-The table alias is required; otherwise column names such as `user_info` are
-parsed as table names by the SQL parser.
+表别名是必需的；否则，“user_info” 之类的列名会被 SQL 解析器解析为表名。
 
-### Unpack the trans_info column:
+### 解析 trans_info 列：
 
     0: jdbc:drill:> select t.trans_info.prod_id as prodid, t.trans_info.purch_flag as
     purchased
@@ -189,27 +171,23 @@ parsed as table names by the SQL parser.
     |-------------------------------------------|------------|
     5 rows selected
 
-Note that this result reveals that the prod_id column contains an array of IDs
-(one or more product ID values per row, separated by commas). The next step
-shows how you to access this kind of data.
+请注意，此结果表明 prod_id 列包含一组 ID（每行一个或多个产品 ID 值，以逗号分隔）。下一步将展示如何访问此类数据。
 
-## Query Arrays
+## 查询数组
 
-Now use the [n] notation, where n is the position of the value in an array,
-starting from position 0 (not 1) for the first value. You can use this
-notation to write interesting queries against nested array data.
+现在使用 [n] 表示法，其中 n 是数组中值的位置，从第一个值的位置 0（不是 1）开始。用户可以使用此表示法针对嵌套数组数据进行的查询。
 
-For example:
+比如:
 
     trans_info.prod_id[0]
 
-refers to the first value in the nested prod_id column and
+指嵌套的 prod_id 列中的第一个值和
 
     trans_info.prod_id[20]
 
-refers to the 21st value, assuming one exists.
+指到第 21 个值，假设存在第21个值。
 
-### Find the first product that is searched for in each transaction:
+### 查找每笔交易中搜索的第一个产品：
 
     0: jdbc:drill:> select t.trans_id, t.trans_info.prod_id[0] from `clicks/clicks.json` t limit 5;
     |------------|------------|
@@ -223,7 +201,7 @@ refers to the 21st value, assuming one exists.
     |------------|------------|
     5 rows selected
 
-### For which transactions did customers search on at least 21 products?
+### 哪些交易客户搜索了至少 21 种产品？
 
     0: jdbc:drill:> select t.trans_id, t.trans_info.prod_id[20]
     from `clicks/clicks.json` t
@@ -240,10 +218,9 @@ refers to the 21st value, assuming one exists.
     |------------|------------|
     5 rows selected
 
-This query returns transaction IDs and product IDs for records that contain a
-non-null product ID at the 21st position in the array.
+对于在数组的第 21 个位置包含非空产品 ID 的交易记录，此查询将返回此交易的交易 ID 和产品 ID。
 
-### Return clicks for a specific product range:
+### 返回特定产品范围的点击次数：
 
     0: jdbc:drill:> select * from (select t.trans_id, t.trans_info.prod_id[0] as prodid,
     t.trans_info.purch_flag as purchased
@@ -262,12 +239,11 @@ non-null product ID at the 21st position in the array.
     | 36595      | 718        | true       |
     ...
 
-This query assumes that there is some meaning to the array (that it is an
-ordered list of products purchased rather than a random list).
+此查询假定数组具有某种意义（即它是已购买产品的有序表而不是随机列表）。
 
-## Perform Operations on Arrays
+## 对数组执行操作
 
-### Rank successful click conversions and count product searches for each session:
+### 对会话中成功的点击转化和搜索的产品数量进行排名：
 
     0: jdbc:drill:> select t.trans_id, t.`date` as session_date, t.user_info.cust_id as
     cust_id, t.user_info.device as device, repeated_count(t.trans_info.prod_id) as
@@ -284,17 +260,13 @@ ordered list of products purchased rather than a random list).
     | 17192      | 2014-04-22   | 2501       | AOS4.2     | 26         | true       |
     ...
 
-This query uses an SQL extension, the repeated_count function, to get an
-aggregated count of the array values. The query returns the number of products
-searched for each session that converted into a purchase and ranks the counts
-in descending order. Only clicks that have resulted in a purchase are counted.
+此查询使用 SQL 扩展，通过 repeat_count 函数来获取数组值的聚合统计。该查询返回每个会话中搜索的产品数量，按降序排列。仅统计转化为购买的点击次数。
   
-## Store a Result Set in a Table for Reuse and Analysis
+## 将结果集存储在表中方便重用和分析
 
-To facilitate additional analysis on this result set, you can easily and
-quickly create a Drill table from the results of the query.
+为了便于对此结果集进行额外分析，用户可以根据查询结果快捷地创建 Drill 表。
 
-### Continue to use the dfs.clicks workspace
+### 继续使用 dfs.clicks 工作区：
 
     0: jdbc:drill:> use dfs.clicks;
     |-------|-----------------------------------------|
@@ -304,7 +276,7 @@ quickly create a Drill table from the results of the query.
     |-------|-----------------------------------------|
     1 row selected (1.61 seconds)
 
-### Return product searches for high-value customers:
+### 返回高价值客户的产品搜索：
 
     0: jdbc:drill:> select o.cust_id, o.order_total, t.trans_info.prod_id[0] as prod_id
     from 
@@ -326,10 +298,9 @@ quickly create a Drill table from the results of the query.
     |----------|--------------|----------|
     107,482 rows selected (14.863 seconds)
 
-This query returns a list of products that are being searched for by customers
-who have made transactions that are above the average in their states.
+此查询返回一个产品列表，这些产品被客户搜索的产品的交易额高于其所在州的平均水平。
 
-### Materialize the result of the previous query:
+### 保存上一个查询的结果：
 
     0: jdbc:drill:> create table product_search as select o.cust_id, o.order_total, t.trans_info.prod_id[0] as prod_id
     from
@@ -346,16 +317,11 @@ who have made transactions that are above the average in their states.
     |-----------|----------------------------|
     1 row selected (3.488 seconds)
 
-This example uses a CTAS statement to create a table based on a correlated
-subquery that you ran previously. This table contains all of the rows that the
-query returns (107,482) and stores them in the format specified by the storage
-plugin (Parquet format in this example). You can create tables that store data
-in csv, parquet, and json formats.
+此示例使用 CTAS 语句将上一个查询的结果创建为表。该表包含查询返回的所有行 (107,482)，并以存储插件指定的格式（本例中为 Parquet 格式）存储。用户可以创建以 csv、parquet 和 json 格式存储的表。
 
-### Query the new table to verify the row count:
+### 查询新表以验证行数：
 
-This example simply checks that the CTAS statement worked by verifying the
-number of rows in the table.
+此示例仅通过验证表中的行数来检查 CTAS 语句是否有效。
 
     0: jdbc:drill:> select count(*) from product_search;
     |---------|
@@ -365,7 +331,7 @@ number of rows in the table.
     |---------|
     1 row selected (0.155 seconds)
 
-### Find the storage file for the table:
+### 找到表的存储文件：
 
     [root@maprdemo product_search]# cd /mapr/demo.mapr.com/data/nested/product_search
     [root@maprdemo product_search]# ls -la
@@ -374,16 +340,15 @@ number of rows in the table.
     drwxr-xr-x. 4 root root      2 Sep 15 13:41 ..
     -rwxr-xr-x. 1 mapr mapr 460715 Sep 15 13:41 0_0_0.parquet
 
-Note that the table is stored in a file called `0_0_0.parquet`. This file is
-stored in the location defined by the dfs.clicks workspace:
+请注意，该表存储在名为 “0_0_0.parquet” 的文件中。这个文件存储在 dfs.clicks 工作区定义的位置：
 
     "location": "http://demo.mapr.com/data/nested"
 
-There is a subdirectory that has the same name as the table you created.
+有一个子目录与您创建的表同名。
 
-## What's Next
+## 下一步
 
-Complete the tutorial with the [Summary]({{ site.baseurl }}/docs/summary).
+完成教程并 [总结]({{ site.baseurl }}/docs/summary)。
 
 
 
