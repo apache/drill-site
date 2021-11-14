@@ -4,11 +4,6 @@ slug: "Summary"
 parent: "搭配 MapR Sandbox 学习 Drill"
 lang: "zh"
 ---
-This tutorial introduced Apache Drill and its ability to run ANSI SQL queries
-against various data sources, including Hive tables, MapR-DB/HBase tables, and
-file system directories. The tutorial also showed how to work with and
-manipulate complex and multi-structured data commonly found in Hadoop/NoSQL
-systems.
+本教程介绍了 Apache Drill 以及对各种数据源（包括 Hive 表、MapR-DB/HBase 表和文件系统目录）进行 ANSI SQL 查询的能力。本教程还展示了如何处理 Hadoop/NoSQL 系统中常见的复杂和多结构数据。
 
-Now that you are familiar with different ways to access the sample data with
-Drill, you can try writing your own queries against your own data sources.
+现在你已经熟悉了通过 Drill 访问示例数据的不同方式，可以尝试针对自己的数据源编写自己的查询。
