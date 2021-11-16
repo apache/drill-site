@@ -7,7 +7,7 @@ permalink: /community-resources/
 ## User Resources
 
 * [Documentation]({{ site.baseurl }}/docs/)
-* [Slack channels for users and developers](https://apache-drill.slack.com/)
+* [Slack channels for users and developers](https://join.slack.com/t/apache-drill/shared_invite/enQtNTQ4MjM1MDA3MzQ2LTJlYmUxMTRkMmUwYmQ2NTllYmFmMjU4MDk0NjYwZjBmYjg0MDZmOTE2ZDg0ZjBlYmI3Yjc4Y2I2NTQyNGVlZTc)
 * Twitter: [@ApacheDrill](https://twitter.com/ApacheDrill)
 * Presentations: [SlideShare](http://www.slideshare.net/ApacheDrill/)
 
@@ -15,7 +15,7 @@ permalink: /community-resources/
 
 * Issue tracker: [JIRA](https://issues.apache.org/jira/browse/DRILL/)
 * [Contribute to Drill]({{ site.baseurl }}/docs/contribute-to-drill/)
-* Hangout: A [bi-weekly Drill hangout](https://plus.google.com/hangouts/_/event/ci4rdiju8bv04a64efj5fedd0lc) occurs every other Tuesday at 10 am PDT. For more information and hangout notes, see [Apache Drill Hangout Notes](https://docs.google.com/document/d/1o2GvZUtJvKzN013JdM715ZBzhseT0VyZ9WgmLMeeUUk/edit?ts=5744c15c#heading=h.z8q6drmaybbj).
+* Meetups: A [monthly Zoom meeting](https://zoom.us/j/84291153325?pwd=NWZ1MS9lbkVmMHZXWmtXN2loQ0ZZZz09) (Meeting ID 84291153325, passcode 488311) occurs on the last Friday of every month at 8am PDT.  For more information and meetup notes, see [Apache Drill Meetup Notes](https://docs.google.com/document/d/1o2GvZUtJvKzN013JdM715ZBzhseT0VyZ9WgmLMeeUUk/edit?ts=5744c15c#heading=h.z8q6drmaybbj).  Download as [iCalendar]({{ site.baseurl }}/static/drill-meetup.ics).
 * Source code: [GitHub](https://github.com/apache/drill) 
 * [Drill developer wiki (formerly Paul Rogers' wiki)](https://github.com/apache/drill/wiki)
 
