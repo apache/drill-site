@@ -1478,7 +1478,7 @@
            &lt;name&gt;fs.s3a.endpoint&lt;/name&gt;
            &lt;value&gt;s3.REGION.amazonaws.com&lt;/value&gt;
        &lt;/property&gt;
-   &lt;/configuration&gt;  
+   &lt;/configuration&gt;
 </code></pre></div></div>
 
 <h3 id="configuring-drill-to-use-aws-iam-roles-for-accessing-s3">Configuring Drill to use AWS IAM Roles for Accessing S3</h3>
@@ -1490,7 +1490,7 @@
 	    &lt;name&gt;fs.s3a.aws.credentials.provider&lt;/name&gt;
 	    &lt;value&gt;com.amazonaws.auth.InstanceProfileCredentialsProvider&lt;/value&gt;
 	&lt;/property&gt;
-   &lt;/configuration&gt;    
+   &lt;/configuration&gt;
 </code></pre></div></div>
 
 <h2 id="configuring-the-s3-storage-plugin">Configuring the S3 Storage Plugin</h2>
@@ -1499,7 +1499,7 @@
 
 <p>To configure the S3 storage plugin, log in to the Drill Web UI at <code class="language-plaintext highlighter-rouge">http://&lt;drill-hostname&gt;:8047</code>. The <code class="language-plaintext highlighter-rouge">drill-hostname</code> is a node on which Drill is running. Go to the <strong>Storage</strong> page and click <strong>Update</strong> next to the S3 storage plugin option.</p>
 
-<p><strong>Note:</strong> The <code class="language-plaintext highlighter-rouge">"config"</code> block in the S3 storage plugin configuration contains properties to define your AWS credentials. Do not include the <code class="language-plaintext highlighter-rouge">"config"</code> block in your S3 storage plugin configuration if you defined your AWS credentials in the <code class="language-plaintext highlighter-rouge">core-site.xml</code> file.</p>
+<p>*Note:** The <code class="language-plaintext highlighter-rouge">"config"</code> block in the S3 storage plugin configuration contains properties to define your AWS credentials. Do not include the <code class="language-plaintext highlighter-rouge">"config"</code> block in your S3 storage plugin configuration if you defined your AWS credentials in the <code class="language-plaintext highlighter-rouge">core-site.xml</code> file.</p>
 
 <p>Configure the S3 storage plugin configuration to use an external provider for credentials or directly add the credentials in the configuration itself, as described in the following sections. Click <strong>Update</strong> to save the configuration when done.</p>
 
@@ -1512,7 +1512,7 @@
 
 <p>For subsequent connections, if you want Drill to connect using different credentials, you can include the <code class="language-plaintext highlighter-rouge">fs.s3a.impl.disable.cache</code> property in the  configuration. See <a href="/docs/s3-storage-plugin/#reconnecting-to-an-s3-bucket-using-different-credentials">Reconnecting to an S3 Bucket Using Different Credentials</a> for more information.</p>
 
-<p><strong>Configuring the S3 Plugin to use an External Provider</strong><br />
+<p><strong>Configuring the S3 Plugin to use an External Provider</strong>
 Add the bucket name and the <code class="language-plaintext highlighter-rouge">hadoop.security.credential.provider.path</code> property to the S3 storage plugin configuration. The <code class="language-plaintext highlighter-rouge">hadoop.security.credential.provider.path</code> property should point to a file that contains your encrypted passwords. Optionally, include the <code class="language-plaintext highlighter-rouge">hadoop.security.credential.clear-text-fallback</code> property for fallback and the <code class="language-plaintext highlighter-rouge">fs.s3a.impl.disable.cache</code> property to reconnect using different credentials.</p>
 
 <p>The following example shows an S3 storage plugin configuration with the S3 bucket, <code class="language-plaintext highlighter-rouge">hadoop.security.credential.provider.path</code>, and <code class="language-plaintext highlighter-rouge">fs.s3a.impl.disable.cache properties</code> set:</p>
@@ -1528,7 +1528,7 @@ Add the bucket name and the <code class="language-plaintext highlighter-rouge">h
     },
   "workspaces": {
     ...
-  }  
+  }
 </code></pre></div></div>
 
 <h3 id="adding-credentials-directly-to-the-s3-plugin">Adding Credentials Directly to the S3 Plugin</h3>
@@ -1549,7 +1549,7 @@ Add the bucket name and the <code class="language-plaintext highlighter-rouge">h
     "fs.s3a.impl.disable.cache":"true"
 },
 "workspaces": {...
-	},  
+	},
 </code></pre></div></div>
 
 <h3 id="reconnecting-to-an-s3-bucket-using-different-credentials">Reconnecting to an S3 Bucket Using Different Credentials</h3>
@@ -1579,15 +1579,27 @@ Add the bucket name and the <code class="language-plaintext highlighter-rouge">h
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   &lt;configuration&gt;
      ...
-     
+
      &lt;property&gt;
        &lt;name&gt;fs.s3a.connection.maximum&lt;/name&gt;
        &lt;value&gt;100&lt;/value&gt;
      &lt;/property&gt;
-   
+
    &lt;/configuration&gt;
 </code></pre></div></div>
 
+<h2 id="public-s3-buckets">Public S3 buckets</h2>
+<p>To query a data in a public S3 bucket, specify the anonymous AWS credentials provider as is done in the following example based on the public NYC taxi data bucket.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"file"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"connection"</span><span class="p">:</span><span class="w"> </span><span class="s2">"s3a://nyc-tlc"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"config"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"fs.s3a.aws.credentials.provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"org.apache.hadoop.fs.s3a.AnonymousAWSCredentialsProvider"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="err">...</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
 
     
       
