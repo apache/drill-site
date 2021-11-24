@@ -3,7 +3,7 @@ title: "RDBMS Storage Plugin"
 slug: "RDBMS Storage Plugin"
 parent: "Connect a Data Source"
 ---
-Apache Drill supports querying a number of RDBMS instances. This allows you to connect your traditional databases to your Drill cluster so you can have a single view of both your relational and NoSQL datasources in a single system. 
+Apache Drill supports querying a number of RDBMS instances. This allows you to connect your traditional databases to your Drill cluster so you can have a single view of both your relational and NoSQL datasources in a single system.
 
 As with any source, Drill supports joins within and between all systems. Drill additionally has powerful pushdown capabilities with RDBMS sources. This includes support to push down join, where, group by, intersect and other SQL operations into a particular RDBMS source (as appropriate).
 
@@ -13,7 +13,7 @@ Drill is designed to work with any relational datastore that provides a JDBC dri
  PostgreSQL, MySQL, Oracle, MSSQL, Apache Derby and H2. For each system, you will follow three basic steps for setup:
 
   1. [Install Drill]({{ site.baseurl }}/docs/installing-drill-in-embedded-mode), if you do not already have it installed.
-  2. Copy your database's JDBC driver into the `jars/3rdparty` directory. (You'll need to do this on every node.)  
+  2. Copy your database's JDBC driver into the `jars/3rdparty` directory. (You'll need to do this on every node.)
   3. Restart Drill. See [Starting Drill in Distributed Mode]({{site.baseurl}}/docs/starting-drill-in-distributed-mode/).
   4. Add a new storage configuration to Drill through the Web UI. Example configurations for [Oracle](#example-oracle-configuration), [SQL Server](#example-sql-server-configuration), [MySQL](#example-mysql-configuration) and [PostgreSQL](#example-postgres-configuration) are provided below.
 
@@ -25,18 +25,18 @@ A JDBC storage plugin configuration property `sourceParameters` was introduced t
 
 ### Example: Working with MySQL
 
-Drill communicates with MySQL through the JDBC driver using the configuration that you specify in the Web UI or through the [REST API]({{site.baseurl}}/docs/plugin-configuration-basics/#storage-plugin-rest-api).  
+Drill communicates with MySQL through the JDBC driver using the configuration that you specify in the Web UI or through the [REST API]({{site.baseurl}}/docs/plugin-configuration-basics/#storage-plugin-rest-api).
 
-{% include startnote.html %}Verify that MySQL is running and the MySQL driver is in place before you configure the JDBC storage plugin.{% include endnote.html %}  
+{% include startnote.html %}Verify that MySQL is running and the MySQL driver is in place before you configure the JDBC storage plugin.{% include endnote.html %}
 
 To configure the JDBC storage plugin:
 
-1. [Start the Drill shell]({{site.baseurl}}/docs/starting-drill-on-linux-and-mac-os-x/).  
-2. [Start the Web UI]({{site.baseurl}}/docs/starting-the-web-console/).  
+1. [Start the Drill shell]({{site.baseurl}}/docs/starting-drill-on-linux-and-mac-os-x/).
+2. [Start the Web UI]({{site.baseurl}}/docs/starting-the-web-console/).
 3. On the Storage tab, enter a name in **New Storage Plugin**. For example, enter `myplugin`.
-   Each configuration registered with Drill must have a distinct name. Names are case-sensitive.  
-4. Click **Create**.  
-5. In Configuration, set the required properties using JSON formatting as shown in the following example. Change the properties to match your environment.  
+   Each configuration registered with Drill must have a distinct name. Names are case-sensitive.
+4. Click **Create**.
+5. In Configuration, set the required properties using JSON formatting as shown in the following example. Change the properties to match your environment.
 ```json
 {
   "type": "jdbc",
@@ -45,10 +45,10 @@ To configure the JDBC storage plugin:
   "username": "root",
   "password": "mypassword",
   "enabled": true
-}  
+}
 ```
 
-{% include startnote.html %}The JDBC URL may differ depending on your installation and configuration. See the example configurations below for examples.{% include endnote.html %}  
+{% include startnote.html %}The JDBC URL may differ depending on your installation and configuration. See the example configurations below for examples.{% include endnote.html %}
 
 You can use the performance_schema database, which is installed with MySQL to query your MySQL performance_schema database. Include the names of the storage plugin configuration, the database, and table in dot notation the FROM clause as follows:
 
@@ -67,33 +67,17 @@ You can use the performance_schema database, which is installed with MySQL to qu
 
 ## Example Configurations
 
-  
-### Example Oracle Configuration
-
-Download and install Oracle's Thin [ojdbc7.12.1.0.2.jar](http://www.oracle.com/technetwork/database/features/jdbc/default-2280470.html) driver and copy it to all nodes in your cluster.
+### Example ClickHouse configuration
+Download and install the [official ClickHouse JDBC driver](https://github.com/ClickHouse/clickhouse-jdbc) on all of the nodes in your cluster.
 
 ```json
 {
-  "type": "jdbc",
-  "enabled": true,
-  "driver:" "oracle.jdbc.OracleDriver",
-  "url:" "jdbc:oracle:thin:user/password@1.2.3.4:1521/ORCL"
-}
-```
-
-### Example SQL Server Configuration
-
-For SQL Server, Drill has been tested with Microsoft's  [sqljdbc41.4.2.6420.100.jar](https://www.microsoft.com/en-US/download/details.aspx?id=11774) driver. Copy this jar file to all Drillbits. 
-
-{% include startnote.html %}You'll need to provide a database name as part of your JDBC connection string for Drill to correctly expose MSSQL schemas.{% include endnote.html %}
-```json
-{
-  "type": "jdbc",
-  "enabled": true,
-  "driver": "com.microsoft.sqlserver.jdbc.SQLServerDriver",
-  "url": "jdbc:sqlserver://1.2.3.4:1433;databaseName=mydatabase",
-  "username": "user",
-  "password": "password"
+	"type": "jdbc",
+	"enabled": true,
+	"driver": "ru.yandex.clickhouse.ClickHouseDriver",
+	"url": "jdbc:clickhouse://1.2.3.4:8123.default",
+	"username": "user",
+	"password": "password"
 }
 ```
 
@@ -108,10 +92,23 @@ For MySQL, Drill has been tested with MySQL's [mysql-connector-java-5.1.37-bin.j
   "url": "jdbc:mysql://1.2.3.4",
   "username": "user",
   "password": "password"
-}  
+}
 ```
 
-### Example PostgreSQL Configuration
+### Example Oracle configuration
+
+Download and install Oracle's Thin [ojdbc7.12.1.0.2.jar](http://www.oracle.com/technetwork/database/features/jdbc/default-2280470.html) driver and copy it to all nodes in your cluster.
+
+```json
+{
+  "type": "jdbc",
+  "enabled": true,
+  "driver:" "oracle.jdbc.OracleDriver",
+  "url:" "jdbc:oracle:thin:user/password@1.2.3.4:1521/ORCL"
+}
+```
+
+### Example PostgreSQL configuration
 
 Drill is tested with the PostgreSQL driver version [42.2.11](https://mvnrepository.com/artifact/org.postgresql/postgresql) (any recent driver should work).
  Download and copy this driver jar to the `jars/3rdparty` folder on all nodes.
@@ -126,19 +123,19 @@ Drill is tested with the PostgreSQL driver version [42.2.11](https://mvnreposito
   "url": "jdbc:postgresql://1.2.3.4/mydatabase",
   "username": "user",
   "password": "password"
-}  
+}
 ```
 
-You may need to qualify a table name with a schema name for Drill to return data. For example, when querying a table named ips, you must issue the query against public.ips, as shown in the following example:  
+You may need to qualify a table name with a schema name for Drill to return data. For example, when querying a table named ips, you must issue the query against public.ips, as shown in the following example:
 
-       0: jdbc:drill:zk=local> use pgdb;          
+       0: jdbc:drill:zk=local> use pgdb;
        |------|----------------------------------|
        | ok   | summary                          |
        |------|----------------------------------|
        | true | Default schema changed to [pgdb] |
        |------|----------------------------------|
-        
-       0: jdbc:drill:zk=local> show tables;          
+
+       0: jdbc:drill:zk=local> show tables;
        |--------------|--------------|
        | TABLE_SCHEMA | TABLE_NAME   |
        |--------------|--------------|
@@ -147,7 +144,7 @@ You may need to qualify a table name with a schema name for Drill to return data
        | pgdb.test    | pg_am        |
        |--------------|--------------|
 
-       0: jdbc:drill:zk=local> select * from public.ips;          
+       0: jdbc:drill:zk=local> select * from public.ips;
        |------|---------|
        | ipid | ipv4dot |
        |------|---------|
@@ -155,7 +152,7 @@ You may need to qualify a table name with a schema name for Drill to return data
        | 2    | 1.2.3.5 |
        |------|---------|
 
-### Example of PostgreSQL Configuration with `sourceParameters` configuration property
+### Example of PostgreSQL configuration with `sourceParameters` configuration property
 ```json
 {
   "type": "jdbc",
@@ -171,5 +168,22 @@ You may need to qualify a table name with a schema name for Drill to return data
     "dataSource.cachePrepStmts": true,
     "dataSource.prepStmtCacheSize": 250
   }
-}  
+}
 ```
+
+### Example SQL Server configuration
+
+For SQL Server, Drill has been tested with Microsoft's  [sqljdbc41.4.2.6420.100.jar](https://www.microsoft.com/en-US/download/details.aspx?id=11774) driver. Copy this jar file to all Drillbits.
+
+{% include startnote.html %}You'll need to provide a database name as part of your JDBC connection string for Drill to correctly expose MSSQL schemas.{% include endnote.html %}
+```json
+{
+  "type": "jdbc",
+  "enabled": true,
+  "driver": "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+  "url": "jdbc:sqlserver://1.2.3.4:1433;databaseName=mydatabase",
+  "username": "user",
+  "password": "password"
+}
+```
+
