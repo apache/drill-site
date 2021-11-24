@@ -67,7 +67,7 @@ You can use the performance_schema database, which is installed with MySQL to qu
 
 ## Example Configurations
 
-### Example ClickHouse configuration
+### ClickHouse
 Download and install the [official ClickHouse JDBC driver](https://github.com/ClickHouse/clickhouse-jdbc) on all of the nodes in your cluster.
 
 ```json
@@ -81,7 +81,7 @@ Download and install the [official ClickHouse JDBC driver](https://github.com/Cl
 }
 ```
 
-### Example MySQL Configuration
+### MySQL
 
 For MySQL, Drill has been tested with MySQL's [mysql-connector-java-5.1.37-bin.jar](http://dev.mysql.com/downloads/connector/j/) driver. Copy this to all nodes.
 ```json
@@ -95,7 +95,7 @@ For MySQL, Drill has been tested with MySQL's [mysql-connector-java-5.1.37-bin.j
 }
 ```
 
-### Example Oracle configuration
+### Oracle Database
 
 Download and install Oracle's Thin [ojdbc7.12.1.0.2.jar](http://www.oracle.com/technetwork/database/features/jdbc/default-2280470.html) driver and copy it to all nodes in your cluster.
 
@@ -108,7 +108,7 @@ Download and install Oracle's Thin [ojdbc7.12.1.0.2.jar](http://www.oracle.com/t
 }
 ```
 
-### Example PostgreSQL configuration
+### PostgreSQL
 
 Drill is tested with the PostgreSQL driver version [42.2.11](https://mvnrepository.com/artifact/org.postgresql/postgresql) (any recent driver should work).
  Download and copy this driver jar to the `jars/3rdparty` folder on all nodes.
@@ -171,7 +171,7 @@ You may need to qualify a table name with a schema name for Drill to return data
 }
 ```
 
-### Example SQL Server configuration
+### MS SQL Server
 
 For SQL Server, Drill has been tested with Microsoft's  [sqljdbc41.4.2.6420.100.jar](https://www.microsoft.com/en-US/download/details.aspx?id=11774) driver. Copy this jar file to all Drillbits.
 
