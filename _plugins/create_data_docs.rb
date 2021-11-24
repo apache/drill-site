@@ -4,7 +4,7 @@ require 'tempfile'
 # This plugin generates the JSON data files _data/docs_*.json which are used
 # in liquid tags across the site to generate the docs nav menu, forward/back
 # links and breadcrumbs.
-Jekyll::Hooks.register :site, :post_read do |site|
+Jekyll::Hooks.register :site, :pre_render do |site|
     # The Polyglot plugin launches a Jekyll build per language, optionally in
     # parallel, meaning that this hook will be called once for each language.
      
