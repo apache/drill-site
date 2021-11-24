@@ -1,18 +1,15 @@
 require 'json'
 require 'tempfile'
 
-Jekyll::Hooks.register :site, :pre_render do |site|
+# This plugin generates the JSON data files _data/docs_*.json which are used
+# in liquid tags across the site to generate the docs nav menu, forward/back
+# links and breadcrumbs.
+Jekyll::Hooks.register :site, :post_read do |site|
     # The Polyglot plugin launches a Jekyll build per language, optionally in
     # parallel, meaning that this hook will be called once for each language.
      
 	out_path = '_data/docs_' + site.active_lang + '.json'
-    
-	if File.exist?(out_path)
-		puts 'INFO: pre-render hook deletes the existing ' + out_path
-	    File.delete(out_path)
-    end
-
-    puts 'INFO: pre-render hook begins to create ' + out_path
+    puts 'INFO: data_docs plugin begins to create ' + out_path
     
 	docs_by_title = {}
 	top_level_docs = []
@@ -76,5 +73,10 @@ Jekyll::Hooks.register :site, :pre_render do |site|
     }
 
     File.write(out_path, JSON.pretty_generate(docs_md))
-    puts 'INFO: pre-render hook has finished creating ' + out_path
+    puts 'INFO: data_docs plugin has finished creating ' + out_path
+
+	# Nasty hack: ask Jekyll to read all of the data files for the site again
+	# so that it will incorporate the new data_*.json files we generated here.
+	puts 'INFO: asking Jekyll to reload site data files'
+	site.data = Jekyll::DataReader.new(site).read(site.config["data_dir"])
 end

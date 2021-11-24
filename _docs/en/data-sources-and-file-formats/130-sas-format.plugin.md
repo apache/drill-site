@@ -12,6 +12,7 @@ This format plugin enables Drill to read SAS files (sas7bdat).  The schema of th
 This function has no configuration options other than the file extension.
 
 ```json
+{
   "sas": {
   "type": "sas",
   "extensions": [
