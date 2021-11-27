@@ -36,7 +36,7 @@ See `drill-metastore-override-example.conf` for more details.
 drill.metastore: {
   implementation.class: "org.apache.drill.metastore.mongo.MongoMetastore",
   mongo: {
-    connection: "mongodb://localhost:27017/?connectTimeoutMS=60000&maxPoolSize=1000&safe=true"
+    connection: "mongodb://localhost:27017/"
   }
 }
 ```
