@@ -38,7 +38,7 @@ The pop-up serves as an indicator that a query is in progress and prevents any f
 
 ## Web UI Security
 
-If [user authentication]({{site.baseurl}}/docs/configuring-user-authentication/) is not enabled, all the Web UI controls appear to users as well as administrators:  
+If [user authentication]({{site.baseurl}}/docs/configuring-plain-security/) is not enabled, all the Web UI controls appear to users as well as administrators:  
 
 ![Web UI]({{ site.baseurl }}/images/docs/web-ui.png)  
 
@@ -46,11 +46,11 @@ If [user authentication]({{site.baseurl}}/docs/configuring-user-authentication/)
 
 **Note:** As of Drill 1.13, an administrator can configure FORM and/or SPNEGO authentication mechanisms. The Drill Web UI provides two possible log in options for a user depending on the configuration. If a user selects FORM, s/he must enter their username and password to access restricted pages in the Drill Web UI. The user is authenticated through PAM. If the user selects SPNEGO, the user is automatically logged in if they are an authenticated Kerberos user. If accessing a protected page directly, the user is redirected to the authentication log in page.
 
-If [user authentication]({{site.baseurl}}/docs/configuring-user-authentication/) is enabled, Drill prompts you for a user name/password:
+If [user authentication]({{site.baseurl}}/docs/configuring-plain-security/) is enabled, Drill prompts you for a user name/password:
 
 ![Web UI Login]({{ site.baseurl }}/images/docs/web-ui-login.png)
 
-If an [administrator]({{ site.baseurl }}/docs/configuring-user-authentication/#administrator-privileges) logs in, all the Web UI controls appear: Query, Profiles, Storage, Metrics, Threads, and Options. The Profiles page for administrators contains the profiles of all queries executed on a cluster. Only administrators can see and use the Storage tab to view, update, or add a new [storage plugin configuration]({{site.baseurl}}/docs/plugin-configuration-basics/). Only administrators can see and use the Threads tab, which provides information about threads running in Drill.
+If an [administrator]({{ site.baseurl }}/docs/configuring-plain-security/#administrator-privileges) logs in, all the Web UI controls appear: Query, Profiles, Storage, Metrics, Threads, and Options. The Profiles page for administrators contains the profiles of all queries executed on a cluster. Only administrators can see and use the Storage tab to view, update, or add a new [storage plugin configuration]({{site.baseurl}}/docs/plugin-configuration-basics/). Only administrators can see and use the Threads tab, which provides information about threads running in Drill.
 
 ![Web UI Admin View]({{ site.baseurl }}/images/docs/web-ui-admin-view.png)
 

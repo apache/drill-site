@@ -170,4 +170,4 @@ Under YARN, restart the YARN cluster:
 If you configure user authentication for Drill, then user authentication is automatically configured in the Application Master also. Only users with admin privileges can use the AM web UI.  
 
 ### Testing User Authentication on the Mac
-The [Drill Documentation]({{site.baseurl}}/docs/configuring-user-authentication/) describes how to configure user authentication using PAM, including instructions for downloading a required native library. However, if you are testing security on the Mac, the referenced library does not work on modern Macs. Instead, see the workaround in [DRILL-4756](https://issues.apache.org/jira/browse/DRILL-4756).
+The [Drill Documentation]({{site.baseurl}}/docs/configuring-plain-security/) describes how to configure user authentication using PAM, including instructions for downloading a required native library. However, if you are testing security on the Mac, the referenced library does not work on modern Macs. Instead, see the workaround in [DRILL-4756](https://issues.apache.org/jira/browse/DRILL-4756).

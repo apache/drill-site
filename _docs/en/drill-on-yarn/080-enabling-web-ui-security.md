@@ -29,4 +29,4 @@ must match that of the user that started the Drill-on-YARN application. To enabl
         }  
 
 You must have previously enabled Drill user authentication, as described in the [Drill
-Documentation]({{site.baseurl}}/docs/configuring-user-authentication/) .
+Documentation]({{site.baseurl}}/docs/configuring-plain-security/) .
