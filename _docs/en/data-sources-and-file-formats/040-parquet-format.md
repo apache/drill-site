@@ -7,7 +7,7 @@ parent: "Data Sources and File Formats"
 
 * Self-describing
 * Columnar format
-* Language-independent 
+* Language-independent
 
 Self-describing data embeds the schema or structure with the data itself. Hadoop use cases drive the growth of self-describing data formats, such as Parquet and JSON, and of NoSQL databases, such as HBase. These formats and databases are well suited for the agile and iterative development cycle of Hadoop applications and BI/analytics. Optimized for working with large files, Parquet arranges data in columns, putting related values in close proximity to each other to optimize query performance, minimize I/O, and facilitate compression. Parquet detects and encodes the same or similar data using a technique that conserves resources.
 
@@ -18,74 +18,87 @@ Apache Drill includes the following support for Parquet:
 * Generating Parquet files that have evolving or changing schemas and querying the data on the fly
 * Handling Parquet data types
 
+## Configuration Options
+
+| Option                         | Description                                                          |
+| ------------------------------ | -------------------------------------------------------------------- |
+| enableStringsSignedMinMax      | See config opt store.parquet.reader.strings_signed_min_max           |
+| blockSize                      | See config opt store.parquet.block-size                              |
+| pageSize                       | See config opt store.parquet.page-size                               |
+| useSingleFsBlock               | See config opt store.parquet.writer.use_single_fs_block              |
+| writerCompressionType          | See config opt store.parquet.compression                             |
+| writerLogicalTypeForDecimals   | See config opt store.parquet.writer.logical_type_for_decimals        |
+| writerUsePrimitivesForDecimals | See config opt store.parquet.writer.use_primitive_types_for_decimals |
+| writerFormatVersion            | See config opt store.parquet.writer.format_version                   |
+
 ## Reading Parquet Files
 When a read of Parquet data occurs, Drill loads only the necessary columns of data, which reduces I/O. Reading only a small piece of the Parquet data from a data file or table, Drill can examine and analyze all values for a column across multiple files. You can create a Drill table from one format and store the data in another format, including Parquet.
 
 ## Writing Parquet Files
 CREATE TABLE AS (CTAS) can use any data source provided by the storage plugin. To write Parquet data using the CTAS command, set the `session store.format` option as shown in [Configuring the Parquet Storage Format]({{site.baseurl}}/docs/parquet-format/#configuring-the-parquet-storage-format). Alternatively, configure the storage plugin to point to the directory containing the Parquet files.
 
-Although the data resides in a single table, Parquet output generally consists of multiple files that resemble MapReduce output having numbered file names,  such as 0_0_0.parquet in a directory.  
+Although the data resides in a single table, Parquet output generally consists of multiple files that resemble MapReduce output having numbered file names,  such as 0_0_0.parquet in a directory.
 
 ### Date Value Auto-Correction
-As of Drill 1.10, Drill writes standard Parquet date values. Drill also has an automatic correction feature that automatically detects and corrects corrupted date values that Drill wrote into Parquet files prior to Drill 1.10. 
+As of Drill 1.10, Drill writes standard Parquet date values. Drill also has an automatic correction feature that automatically detects and corrects corrupted date values that Drill wrote into Parquet files prior to Drill 1.10.
 
-By default, the automatic correction feature is turned on and works for dates up to 5,000 years into the future. In the unlikely event that Drill needs to write dates thousands of years into the future, turn the auto-correction feature off.  
+By default, the automatic correction feature is turned on and works for dates up to 5,000 years into the future. In the unlikely event that Drill needs to write dates thousands of years into the future, turn the auto-correction feature off.
 
-To disable the auto-correction feature, navigate to the storage plugin configuration and change the `autoCorrectCorruptDates` option in the Parquet configuration to “false”, as shown in the example below:  
+To disable the auto-correction feature, navigate to the storage plugin configuration and change the `autoCorrectCorruptDates` option in the Parquet configuration to “false”, as shown in the example below:
 
        "formats": {
            "parquet": {
              "type": "parquet",
              "autoCorrectCorruptDates": false
-           }  
+           }
 
-Alternatively, you can set the option to false when you issue a query, as shown in the following example:  
+Alternatively, you can set the option to false when you issue a query, as shown in the following example:
 
-       SELECT l_shipdate, l_commitdate FROM table(dfs.`/drill/testdata/parquet_date/dates_nodrillversion/drillgen2_lineitem` 
-       (type => 'parquet', autoCorrectCorruptDates => false)) LIMIT 1; 
+       SELECT l_shipdate, l_commitdate FROM table(dfs.`/drill/testdata/parquet_date/dates_nodrillversion/drillgen2_lineitem`
+       (type => 'parquet', autoCorrectCorruptDates => false)) LIMIT 1;
 
 ### Configuring the Parquet Storage Format
-To read or write Parquet data, you need to include the Parquet format in the storage plugin format definitions. The `dfs` plugin definition includes the Parquet format. 
+To read or write Parquet data, you need to include the Parquet format in the storage plugin format definitions. The `dfs` plugin definition includes the Parquet format.
 
 Use the `store.format` option to set the CTAS output format of a Parquet row group at the session or system level.
 
-Use the ALTER command to set the `store.format` option.  
+Use the ALTER command to set the `store.format` option.
 
-``ALTER SYSTEM|SESSION SET `store.format` = 'parquet';``  
-        
+``ALTER SYSTEM|SESSION SET `store.format` = 'parquet';``
+
 ### Configuring the Size of Parquet Files
-Configuring the size of Parquet files by setting the `store.parquet.block-size` can improve write performance. The block size is the size of MFS, HDFS, or the file system. 
+Configuring the size of Parquet files by setting the `store.parquet.block-size` can improve write performance. The block size is the size of MFS, HDFS, or the file system.
 
 The larger the block size, the more memory Drill needs for buffering data. Parquet files that contain a single block maximize the amount of data Drill stores contiguously on disk. Given a single row group per file, Drill stores the entire Parquet file onto the block, avoiding network I/O.
 
-To maximize performance, set the target size of a Parquet row group to the number of bytes less than or equal to the block size of MFS, HDFS, or the file system using the `store.parquet.block-size` option, as shown:  
+To maximize performance, set the target size of a Parquet row group to the number of bytes less than or equal to the block size of MFS, HDFS, or the file system using the `store.parquet.block-size` option, as shown:
 
-``ALTER SYSTEM|SESSION SET `store.parquet.block-size` = 536870912;``  
+``ALTER SYSTEM|SESSION SET `store.parquet.block-size` = 536870912;``
 
-The default block size is 536870912 bytes.  
+The default block size is 536870912 bytes.
 
-### Configuring the HDFS Block Size for Parquet Files  
-Drill 1.11 introduces the `store.parquet.writer.use_single_fs_block` option, which enables Drill to write a Parquet file as a single file system block without changing the default file system block size. Query performance improves when Drill reads Parquet files as a single block on the file system. When the `store.parquet.writer.use_single_fs_block` option is enabled, the `store.parquet.block-size` setting determines the block size of the Parquet files created. The default setting for the `store.parquet.writer.use_single_fs_block` option is 'false'. Use the SET command to enable or disable the option, as shown:  
+### Configuring the HDFS Block Size for Parquet Files
+Drill 1.11 introduces the `store.parquet.writer.use_single_fs_block` option, which enables Drill to write a Parquet file as a single file system block without changing the default file system block size. Query performance improves when Drill reads Parquet files as a single block on the file system. When the `store.parquet.writer.use_single_fs_block` option is enabled, the `store.parquet.block-size` setting determines the block size of the Parquet files created. The default setting for the `store.parquet.writer.use_single_fs_block` option is 'false'. Use the SET command to enable or disable the option, as shown:
 
-    ALTER SYSTEM|SESSION SET store.parquet.writer.use_single_fs_block = 'true|false';  
+    ALTER SYSTEM|SESSION SET store.parquet.writer.use_single_fs_block = 'true|false';
 
 ### Type Mapping
-The high correlation between Parquet and SQL data types makes reading Parquet files effortless in Drill. Writing to Parquet files takes more work than reading. Because SQL does not support all Parquet data types, to prevent Drill from inferring a type other than one you want, use the [cast function]({{ site.baseurl }}/docs/data-type-conversion/#cast) Drill offers more liberal casting capabilities than SQL for Parquet conversions if the Parquet data is of a logical type. 
+The high correlation between Parquet and SQL data types makes reading Parquet files effortless in Drill. Writing to Parquet files takes more work than reading. Because SQL does not support all Parquet data types, to prevent Drill from inferring a type other than one you want, use the [cast function]({{ site.baseurl }}/docs/data-type-conversion/#cast) Drill offers more liberal casting capabilities than SQL for Parquet conversions if the Parquet data is of a logical type.
 
 The following general process converts a file from JSON to Parquet:
 
 * Create or use an existing storage plugin that specifies the storage location of the Parquet file, mutability of the data, and supported file formats.
-* Take a look at the JSON data. 
+* Take a look at the JSON data.
 * Create a table that selects the JSON file.
 * In the CTAS command, cast JSON string data to corresponding [SQL types]({{ site.baseurl }}/docs/json-data-model/#data-type-mapping).
 
 ### Example: Read JSON, Write Parquet
-This example demonstrates a storage plugin definition, a sample row of data from a JSON file, and a Drill query that writes the JSON input to Parquet output. 
+This example demonstrates a storage plugin definition, a sample row of data from a JSON file, and a Drill query that writes the JSON input to Parquet output.
 
-### Storage Plugin Definition
+#### Storage Plugin Definition
 You can use the default dfs storage plugin installed with Drill for reading and writing Parquet files. The storage plugin needs to configure the writable option of the workspace to true, so Drill can write the Parquet output. The dfs storage plugin defines the tmp writable workspace, which you can use in the CTAS command to create a Parquet table.
 
-### Sample Row of JSON Data
+#### Sample Row of JSON Data
 A JSON file called sample.json contains data consisting of strings, typical of JSON data. The following example shows one row of the JSON file:
 
         {"trans_id":0,"date":"2013-07-26","time":"04:56:59","amount":80.5,"user_info":
@@ -98,19 +111,21 @@ A JSON file called sample.json contains data consisting of strings, typical of J
                "purch_flag":"false"
               }
         }
-              
 
-### CTAS Query      
+
+#### CTAS Query
 The following example shows a CTAS query that creates a table from JSON data shown in the last example. The command casts the date, time, and amount strings to SQL types DATE, TIME, and DOUBLE. String-to-VARCHAR casting of the other strings occurs automatically.
 
-    CREATE TABLE dfs.tmp.sampleparquet AS 
-    (SELECT trans_id, 
-    cast(`date` AS date) transdate, 
-    cast(`time` AS time) transtime, 
-    cast(amount AS double) amountm,
-    user_info, marketing_info, trans_info 
-    FROM dfs.`/Users/drilluser/sample.json`);
-        
+```sql
+CREATE TABLE dfs.tmp.sampleparquet AS
+(SELECT trans_id,
+cast(`date` AS date) transdate,
+cast(`time` AS time) transtime,
+cast(amount AS double) amountm,
+user_info, marketing_info, trans_info
+FROM dfs.`/Users/drilluser/sample.json`);
+```
+
 The CTAS query does not specify a file name extension for the output. Drill creates a parquet file by default, as indicated by the file name in the output:
 
     |------------|---------------------------|
@@ -122,7 +137,7 @@ The CTAS query does not specify a file name extension for the output. Drill crea
 
 You can query the Parquet file to verify that Drill now interprets the converted string as a date.
 
-    SELECT extract(year from transdate) AS `Year`, t.user_info.cust_id AS Customer 
+    SELECT extract(year from transdate) AS `Year`, t.user_info.cust_id AS Customer
     FROM dfs.tmp.`sampleparquet` t;
 
     |------------|------------|
@@ -153,17 +168,17 @@ The first table in this section maps SQL data types to Parquet data types, limit
 
 \* Drill 1.10 and later can implicitly interpret the Parquet INT96 type as TIMESTAMP (with standard 8 byte/millisecond precision) when the `store.parquet.reader.int96_as_timestamp` option is enabled. In earlier versions of Drill (1.2 through 1.9) or when the `store.parquet.reader.int96_as_timestamp` option is disabled, you must use the CONVERT_FROM function for Drill to correctly interpret INT96 values as TIMESTAMP values.
 
-## About INT96 Support  
-As of Drill 1.10, Drill can implicitly interpret the INT96 timestamp data type in Parquet files when the `store.parquet.reader.int96_as_timestamp` option is enabled. For earlier versions of Drill,  or when the `store.parquet.reader.int96_as_timestamp` option is disabled, you must use the CONVERT_FROM function,   
+## About INT96 Support
+As of Drill 1.10, Drill can implicitly interpret the INT96 timestamp data type in Parquet files when the `store.parquet.reader.int96_as_timestamp` option is enabled. For earlier versions of Drill,  or when the `store.parquet.reader.int96_as_timestamp` option is disabled, you must use the CONVERT_FROM function,
 
-The `store.parquet.reader.int96_as_timestamp` option is disabled by default. Use the [ALTER SYSTEM|SESSION SET]({{site.baseurl}}/docs/alter-system/) command to enable the option. Unnecessarily enabling this option can cause queries to fail because the CONVERT_FROM(col, 'TIMESTAMP_IMPALA') function does not work when `store.parquet.reader.int96_as_timestamp` is enabled.  
+The `store.parquet.reader.int96_as_timestamp` option is disabled by default. Use the [ALTER SYSTEM|SESSION SET]({{site.baseurl}}/docs/alter-system/) command to enable the option. Unnecessarily enabling this option can cause queries to fail because the CONVERT_FROM(col, 'TIMESTAMP_IMPALA') function does not work when `store.parquet.reader.int96_as_timestamp` is enabled.
 
 ### Using CONVERT_FROM to Interpret INT96
-In earlier versions of Drill (1.2 through 1.9), you must use the CONVERT_FROM function for Drill to interpret the Parquet INT96 type. For example, to decode a timestamp from Hive or Impala, which is of type INT96, use the CONVERT_FROM function and the [TIMESTAMP_IMPALA]({{site.baseurl}}/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions) type argument:  
+In earlier versions of Drill (1.2 through 1.9), you must use the CONVERT_FROM function for Drill to interpret the Parquet INT96 type. For example, to decode a timestamp from Hive or Impala, which is of type INT96, use the CONVERT_FROM function and the [TIMESTAMP_IMPALA]({{site.baseurl}}/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions) type argument:
 
-``SELECT CONVERT_FROM(timestamp_field, 'TIMESTAMP_IMPALA') as timestamp_field FROM `dfs.file_with_timestamp.parquet`;``  
+``SELECT CONVERT_FROM(timestamp_field, 'TIMESTAMP_IMPALA') as timestamp_field FROM `dfs.file_with_timestamp.parquet`;``
 
-Because INT96 is supported for reads only, you cannot use the TIMESTAMP_IMPALA as a data type argument with CONVERT_TO. You can convert a SQL TIMESTAMP to VARBINARY using the CAST function, but the resultant VARBINARY is not the same as INT96. 
+Because INT96 is supported for reads only, you cannot use the TIMESTAMP_IMPALA as a data type argument with CONVERT_TO. You can convert a SQL TIMESTAMP to VARBINARY using the CAST function, but the resultant VARBINARY is not the same as INT96.
 
 For example, create a Drill table after reading INT96 and converting some data to a timestamp.
 
@@ -173,12 +188,12 @@ For example, create a Drill table after reading INT96 and converting some data t
 t1.created_ts is an INT96 (or Hive/Impala timestamp) , t2.created_ts is a SQL timestamp. These types are not comparable. You cannot use a condition like t1.created_ts = t2.created_ts.
 
 ### Configuring the Timezone
-By default, INT96 timestamp values represent the local date and time, which is similar to Hive. To get INT96 timestamp values in UTC, configure Drill for [UTC time]({{site.baseurl}}/docs/data-type-conversion/#time-zone-limitation).  
+By default, INT96 timestamp values represent the local date and time, which is similar to Hive. To get INT96 timestamp values in UTC, configure Drill for [UTC time]({{site.baseurl}}/docs/data-type-conversion/#time-zone-limitation).
 
 
 ### SQL Types to Parquet Logical Types
 Parquet also supports logical types, fully described on the [Apache Parquet site](https://github.com/apache/parquet-format/blob/master/LogicalTypes.md). Embedded types, JSON and BSON, annotate a binary primitive type representing a JSON or BSON document. The logical types and their mapping to SQL types are:
- 
+
 | SQL Type   | Drill Description                                                              | Parquet Logical Type | Parquet Description                                                                                                                        |
 |------------|--------------------------------------------------------------------------------|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
 | DATE       | Years months and days in the form in the form YYYY-­MM-­DD                       | DATE                 | Date, not including time of day. Uses the int32 annotation. Stores the number of days from the Unix epoch, 1 January 1970.                 |
@@ -203,6 +218,6 @@ Parquet supports the following data description languages:
 
 * Apache Avro
 * Apache Thrift
-* Google Protocol Buffers 
+* Google Protocol Buffers
 
-Implement custom storage plugins to create Parquet readers/writers for formats such as Thrift. 
+Implement custom storage plugins to create Parquet readers/writers for formats such as Thrift.

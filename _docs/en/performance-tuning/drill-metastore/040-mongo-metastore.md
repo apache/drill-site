@@ -4,6 +4,8 @@ slug: "Mongo Metastore"
 parent: "Drill Metastore"
 ---
 
+**Introduced in release:** 1.20.
+
 The Mongo Metastore implementation allows you store Drill Metastore metadata in a configured
  MongoDB.
 
