@@ -1453,6 +1453,51 @@
   <li>Handling Parquet data types</li>
 </ul>
 
+<h2 id="configuration-options">Configuration Options</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>enableStringsSignedMinMax</td>
+      <td>See config opt store.parquet.reader.strings_signed_min_max</td>
+    </tr>
+    <tr>
+      <td>blockSize</td>
+      <td>See config opt store.parquet.block-size</td>
+    </tr>
+    <tr>
+      <td>pageSize</td>
+      <td>See config opt store.parquet.page-size</td>
+    </tr>
+    <tr>
+      <td>useSingleFsBlock</td>
+      <td>See config opt store.parquet.writer.use_single_fs_block</td>
+    </tr>
+    <tr>
+      <td>writerCompressionType</td>
+      <td>See config opt store.parquet.compression</td>
+    </tr>
+    <tr>
+      <td>writerLogicalTypeForDecimals</td>
+      <td>See config opt store.parquet.writer.logical_type_for_decimals</td>
+    </tr>
+    <tr>
+      <td>writerUsePrimitivesForDecimals</td>
+      <td>See config opt store.parquet.writer.use_primitive_types_for_decimals</td>
+    </tr>
+    <tr>
+      <td>writerFormatVersion</td>
+      <td>See config opt store.parquet.writer.format_version</td>
+    </tr>
+  </tbody>
+</table>
+
 <h2 id="reading-parquet-files">Reading Parquet Files</h2>
 <p>When a read of Parquet data occurs, Drill loads only the necessary columns of data, which reduces I/O. Reading only a small piece of the Parquet data from a data file or table, Drill can examine and analyze all values for a column across multiple files. You can create a Drill table from one format and store the data in another format, including Parquet.</p>
 
@@ -1472,13 +1517,13 @@
        "parquet": {
          "type": "parquet",
          "autoCorrectCorruptDates": false
-       }  
+       }
 </code></pre></div></div>
 
 <p>Alternatively, you can set the option to false when you issue a query, as shown in the following example:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT l_shipdate, l_commitdate FROM table(dfs.`/drill/testdata/parquet_date/dates_nodrillversion/drillgen2_lineitem` 
-   (type =&gt; 'parquet', autoCorrectCorruptDates =&gt; false)) LIMIT 1; 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT l_shipdate, l_commitdate FROM table(dfs.`/drill/testdata/parquet_date/dates_nodrillversion/drillgen2_lineitem`
+   (type =&gt; 'parquet', autoCorrectCorruptDates =&gt; false)) LIMIT 1;
 </code></pre></div></div>
 
 <h3 id="configuring-the-parquet-storage-format">Configuring the Parquet Storage Format</h3>
@@ -1504,7 +1549,7 @@
 <h3 id="configuring-the-hdfs-block-size-for-parquet-files">Configuring the HDFS Block Size for Parquet Files</h3>
 <p>Drill 1.11 introduces the <code class="language-plaintext highlighter-rouge">store.parquet.writer.use_single_fs_block</code> option, which enables Drill to write a Parquet file as a single file system block without changing the default file system block size. Query performance improves when Drill reads Parquet files as a single block on the file system. When the <code class="language-plaintext highlighter-rouge">store.parquet.writer.use_single_fs_block</code> option is enabled, the <code class="language-plaintext highlighter-rouge">store.parquet.block-size</code> setting determines the block size of the Parquet files created. The default setting for the <code class="language-plaintext highlighter-rouge">store.parquet.writer.use_single_fs_block</code> option is ‘false’. Use the SET command to enable or disable the option, as shown:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ALTER SYSTEM|SESSION SET store.parquet.writer.use_single_fs_block = 'true|false';  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ALTER SYSTEM|SESSION SET store.parquet.writer.use_single_fs_block = 'true|false';
 </code></pre></div></div>
 
 <h3 id="type-mapping">Type Mapping</h3>
@@ -1522,10 +1567,10 @@
 <h3 id="example-read-json-write-parquet">Example: Read JSON, Write Parquet</h3>
 <p>This example demonstrates a storage plugin definition, a sample row of data from a JSON file, and a Drill query that writes the JSON input to Parquet output.</p>
 
-<h3 id="storage-plugin-definition">Storage Plugin Definition</h3>
+<h4 id="storage-plugin-definition">Storage Plugin Definition</h4>
 <p>You can use the default dfs storage plugin installed with Drill for reading and writing Parquet files. The storage plugin needs to configure the writable option of the workspace to true, so Drill can write the Parquet output. The dfs storage plugin defines the tmp writable workspace, which you can use in the CTAS command to create a Parquet table.</p>
 
-<h3 id="sample-row-of-json-data">Sample Row of JSON Data</h3>
+<h4 id="sample-row-of-json-data">Sample Row of JSON Data</h4>
 <p>A JSON file called sample.json contains data consisting of strings, typical of JSON data. The following example shows one row of the JSON file:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    {"trans_id":0,"date":"2013-07-26","time":"04:56:59","amount":80.5,"user_info":
@@ -1540,16 +1585,16 @@
     }
 </code></pre></div></div>
 
-<h3 id="ctas-query">CTAS Query</h3>
+<h4 id="ctas-query">CTAS Query</h4>
 <p>The following example shows a CTAS query that creates a table from JSON data shown in the last example. The command casts the date, time, and amount strings to SQL types DATE, TIME, and DOUBLE. String-to-VARCHAR casting of the other strings occurs automatically.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE dfs.tmp.sampleparquet AS 
-(SELECT trans_id, 
-cast(`date` AS date) transdate, 
-cast(`time` AS time) transtime, 
-cast(amount AS double) amountm,
-user_info, marketing_info, trans_info 
-FROM dfs.`/Users/drilluser/sample.json`);
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">dfs</span><span class="p">.</span><span class="n">tmp</span><span class="p">.</span><span class="n">sampleparquet</span> <span class="k">AS</span>
+<span class="p">(</span><span class="k">SELECT</span> <span class="n">trans_id</span><span class="p">,</span>
+<span class="k">cast</span><span class="p">(</span><span class="nv">`date`</span> <span class="k">AS</span> <span class="nb">date</span><span class="p">)</span> <span class="n">transdate</span><span class="p">,</span>
+<span class="k">cast</span><span class="p">(</span><span class="nv">`time`</span> <span class="k">AS</span> <span class="nb">time</span><span class="p">)</span> <span class="n">transtime</span><span class="p">,</span>
+<span class="k">cast</span><span class="p">(</span><span class="n">amount</span> <span class="k">AS</span> <span class="nb">double</span><span class="p">)</span> <span class="n">amountm</span><span class="p">,</span>
+<span class="n">user_info</span><span class="p">,</span> <span class="n">marketing_info</span><span class="p">,</span> <span class="n">trans_info</span>
+<span class="k">FROM</span> <span class="n">dfs</span><span class="p">.</span><span class="nv">`/Users/drilluser/sample.json`</span><span class="p">);</span>
 </code></pre></div></div>
 
 <p>The CTAS query does not specify a file name extension for the output. Drill creates a parquet file by default, as indicated by the file name in the output:</p>
@@ -1564,7 +1609,7 @@ FROM dfs.`/Users/drilluser/sample.json`);
 
 <p>You can query the Parquet file to verify that Drill now interprets the converted string as a date.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT extract(year from transdate) AS `Year`, t.user_info.cust_id AS Customer 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT extract(year from transdate) AS `Year`, t.user_info.cust_id AS Customer
 FROM dfs.tmp.`sampleparquet` t;
 
 |------------|------------|
