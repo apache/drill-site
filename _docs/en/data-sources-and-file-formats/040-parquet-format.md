@@ -20,16 +20,17 @@ Apache Drill includes the following support for Parquet:
 
 ## Configuration Options
 
-| Option                         | Description                                                          |
-| ------------------------------ | -------------------------------------------------------------------- |
-| enableStringsSignedMinMax      | See config opt store.parquet.reader.strings_signed_min_max           |
-| blockSize                      | See config opt store.parquet.block-size                              |
-| pageSize                       | See config opt store.parquet.page-size                               |
-| useSingleFsBlock               | See config opt store.parquet.writer.use_single_fs_block              |
-| writerCompressionType          | See config opt store.parquet.compression                             |
-| writerLogicalTypeForDecimals   | See config opt store.parquet.writer.logical_type_for_decimals        |
-| writerUsePrimitivesForDecimals | See config opt store.parquet.writer.use_primitive_types_for_decimals |
-| writerFormatVersion            | See config opt store.parquet.writer.format_version                   |
+| Option                         | Description                                                                      |
+| ------------------------------ | -------------------------------------------------------------------------------- |
+| autoCorrectCorruptDates        | See the [Date Value Auto-Correction](#Date Value Auto-Correction) section below. |
+| enableStringsSignedMinMax      | See Drill config option store.parquet.reader.strings_signed_min_max              |
+| blockSize                      | See Drill config option store.parquet.block-size                                 |
+| pageSize                       | See Drill config option store.parquet.page-size                                  |
+| useSingleFsBlock               | See Drill config option store.parquet.writer.use_single_fs_block                 |
+| writerCompressionType          | See Drill config option store.parquet.compression                                |
+| writerLogicalTypeForDecimals   | See Drill config option store.parquet.writer.logical_type_for_decimals           |
+| writerUsePrimitivesForDecimals | See Drill config option store.parquet.writer.use_primitive_types_for_decimals    |
+| writerFormatVersion            | See Drill config option store.parquet.writer.format_version                      |
 
 ## Reading Parquet Files
 When a read of Parquet data occurs, Drill loads only the necessary columns of data, which reduces I/O. Reading only a small piece of the Parquet data from a data file or table, Drill can examine and analyze all values for a column across multiple files. You can create a Drill table from one format and store the data in another format, including Parquet.
