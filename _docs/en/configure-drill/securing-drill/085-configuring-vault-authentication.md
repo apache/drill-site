@@ -10,12 +10,12 @@ parent: "Securing Drill"
 
 | Method              | Description                                                                                                                                                                                                                                                                                         |
 | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| AppRole             | Built-in Vault method intended to authenticate apps or machines. Drill will use the provided username for the role id and the provided password for secret id.                                                                                                                                      |
+| AppRole             | A built-in Vault method intended to authenticate apps or machines. Drill will use the provided username for the role id and the provided password for secret id.                                                                                                                                      |
 | LDAP                | Vault hands off authentication to an LDAP server.                                                                                                                                                                                                                                                   |
-| Username & Password | Built-in Vault method intended to authenticate users.                                                                                                                                                                                                                                               |
-| Token               | Built-in Vault method to validate a token created by an earlier Vault authentication. Drill user the provided password as the Vault token. This is the only method for which Drill does not require its own Vault token to carry out authentication (see the security.user.auth.vault.token option) |
+| Username & Password | A built-in Vault method intended to authenticate users.                                                                                                                                                                                                                                               |
+| Token               | A built-in Vault method to validate a token created by an earlier Vault authentication. Drill uses the provided password as the Vault token. This is the only method for which Drill does not require its own Vault token to carry out authentication (see the security.user.auth.vault.token option) |
 
-To enable Drill's Vault authneticator, add the following configuration based on the example below to the `drill.exec` block in the `<DRILL_HOME>/conf/drill-override.conf` file and restart every Drillbit.
+To enable Drill's Vault authenticator, add the following configuration based on the example below to the `drill.exec` block in the `<DRILL_HOME>/conf/drill-override.conf` file and restart every Drillbit.
 
 ```hocon
 drill.exec: {
