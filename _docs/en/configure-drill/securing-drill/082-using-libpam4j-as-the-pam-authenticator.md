@@ -4,13 +4,12 @@ slug: "Using libpam4j as the PAM Authenticator"
 parent: "Securing Drill"
 ---
 
-
-The libpam4j module is packaged with Drill. The libpam4j module does not have any external dependencies.  
+The libpam4j module is packaged with Drill. The libpam4j module does not have any external dependencies.
 
 To use libpam4j as the PAM authenticator with Drill, complete the following steps:
 
-1. Add the following configuration to the `drill.exec` block in the `<DRILL_HOME>/conf/drill-override.conf` file:  
-  
+1. Add the following configuration to the `drill.exec` block in the `<DRILL_HOME>/conf/drill-override.conf` file:
+
               drill.exec: {
                cluster-id: "drillbits1",
                zk.connect: "<zk-node-hostname>:2181,<zk-node-hostname>:2181,<zk-node-hostname>:2181",
@@ -18,7 +17,7 @@ To use libpam4j as the PAM authenticator with Drill, complete the following step
                  enabled: true,
                  max_chained_user_hops: 3
                },
-               security: {          
+               security: {
                        auth.mechanisms : ["PLAIN"],
                         },
                security.user.auth: {
@@ -30,7 +29,7 @@ To use libpam4j as the PAM authenticator with Drill, complete the following step
               }
 
 2. (Optional) To add or remove different PAM profiles, add or delete the profile names in the `pam_profiles` array in the configuration.
-3. Restart the Drillbit process on each Drill node, as shown:  
+3. Restart the Drillbit process on each Drill node, as shown:
 
               <DRILLINSTALL_HOME>/bin/drillbit.sh restart
 

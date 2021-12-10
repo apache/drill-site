@@ -77,6 +77,6 @@ Jekyll::Hooks.register :site, :pre_render do |site|
 
 	# Nasty hack: ask Jekyll to read all of the data files for the site again
 	# so that it will incorporate the new data_*.json files we generated here.
-	puts 'INFO: asking Jekyll to reload site data files'
+	puts 'INFO: data_docs plugin asks Jekyll to reload site data files'
 	site.data = Jekyll::DataReader.new(site).read(site.config["data_dir"])
 end
