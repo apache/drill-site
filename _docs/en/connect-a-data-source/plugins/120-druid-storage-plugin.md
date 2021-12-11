@@ -42,9 +42,9 @@ The plugin can be registered in Apache Drill using the drill web interface by na
 
 ### Druid API
 
-Druid supports multiple native queries to address sundry use-cases. To fetch raw Druid rows, Druid's API support two forms of query, [Select](https://Druid.apache.org/docs/latest/querying/select-query.html) (no relation to SQL) and [Scan](https://Druid.apache.org/docs/latest/querying/scan-query.html). In Drill 1.18 and 1.19, this plugin used the Select query API to fetch raw rows from Druid as json. Since Drill 1.20, this plugin uses the Scan query API and can communicate with Druid Version >= 0.17.x .
+Druid supports multiple native queries to address sundry use-cases. To fetch raw Druid rows, Druid's API support two forms of query, [Select](https://druid.apache.org/docs/latest/querying/select-query.html) (no relation to SQL) and [Scan](https://druid.apache.org/docs/latest/querying/scan-query.html). In Drill 1.18 and 1.19, this plugin used the Select query API to fetch raw rows from Druid as json. Since Drill 1.20, this plugin uses the Scan query API and can communicate with Druid Version >= 0.17.x .
 
 ### Filter Push-Down
 
-Filters are pushed down to native Druid filter structure, converting SQL where clauses to the respective Druid [Filters](https://Druid.apache.org/docs/latest/querying/filters.html).
+Filters are pushed down to native Druid filter structure, converting SQL where clauses to the respective Druid [Filters](https://druid.apache.org/docs/latest/querying/filters.html).
 
