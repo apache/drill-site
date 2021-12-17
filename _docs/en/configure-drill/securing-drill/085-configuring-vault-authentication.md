@@ -15,7 +15,7 @@ parent: "Securing Drill"
 | Username & Password | A built-in Vault method intended to authenticate users.                                                                                                                                                                                                                                               |
 | Token               | A built-in Vault method to validate a token created by an earlier Vault authentication. Drill uses the provided password as the Vault token. This is the only method for which Drill does not require its own Vault token to carry out authentication (see the security.user.auth.vault.token option) |
 
-To enable Drill's Vault authenticator, add the following configuration based on the example below to the `drill.exec` block in the `<DRILL_HOME>/conf/drill-override.conf` file and restart every Drillbit.
+Note that in the current implementation, Drill does not preserve the access token returned by Vault after a successful authentication.  It merely uses the success or failure status returned by Vault to decide whether user gets logged in.  To enable Drill's Vault authenticator, add the following configuration based on the example below to the `drill.exec` block in the `<DRILL_HOME>/conf/drill-override.conf` file and restart every Drillbit.
 
 ```hocon
 drill.exec: {
@@ -33,7 +33,6 @@ drill.exec: {
          packages += "org.apache.drill.exec.rpc.user.security",
          impl: "vault",
          vault.address: "http://localhost:8200",
-         vault.token: "drill_vault_token_123",
          vault.method: "USER_PASS" # supported values: APP_ROLE, LDAP, USER_PASS, VAULT_TOKEN
   }
 }
