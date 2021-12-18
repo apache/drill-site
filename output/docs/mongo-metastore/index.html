@@ -1447,7 +1447,7 @@
 <h2 id="configuration">Configuration</h2>
 
 <p>Currently, the Mongo Metastore is not the default implementation.
-To enable the Mongo Metastore create the <code class="language-plaintext highlighter-rouge">drill-metastore-override.conf</code> file 
+To enable the Mongo Metastore, create the <code class="language-plaintext highlighter-rouge">drill-metastore-override.conf</code> file 
 in your config directory and specify the Mongo Metastore class:</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">drill.metastore</span><span class="pi">:</span> <span class="pi">{</span>
@@ -1461,6 +1461,10 @@ in your config directory and specify the Mongo Metastore class:</p>
 
 <p><code class="language-plaintext highlighter-rouge">drill.metastore.mongo.connection</code> - connection url to your MongoDB. Required.</p>
 
+<p><code class="language-plaintext highlighter-rouge">drill.metastore.mongo.database</code> - database used. Optional, default is “meta”.</p>
+
+<p><code class="language-plaintext highlighter-rouge">drill.metastore.mongo.table_collection</code> - collection used to store metadata for tables. Optional, default is “tables”.</p>
+
 <h3 id="custom-configuration">Custom configuration</h3>
 
 <p><code class="language-plaintext highlighter-rouge">drill-metastore-override.conf</code> is used to customize connection details to the Drill Metastore database.
@@ -1471,12 +1475,16 @@ See <code class="language-plaintext highlighter-rouge">drill-metastore-override-
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">drill.metastore</span><span class="pi">:</span> <span class="pi">{</span>
   <span class="nv">implementation.class</span><span class="pi">:</span> <span class="s2">"</span><span class="s">org.apache.drill.metastore.mongo.MongoMetastore"</span><span class="pi">,</span>
   <span class="nv">mongo</span><span class="pi">:</span> <span class="pi">{</span>
-    <span class="nv">connection</span><span class="pi">:</span> <span class="s2">"</span><span class="s">mongodb://localhost:27017/"</span>
+    <span class="nv">connection</span><span class="pi">:</span> <span class="s2">"</span><span class="s">mongodb://localhost:27017/"</span><span class="pi">,</span>
+    <span class="nv">database</span><span class="pi">:</span> <span class="s2">"</span><span class="s">meta"</span><span class="pi">,</span>
+    <span class="nv">table_collection</span><span class="pi">:</span> <span class="s2">"</span><span class="s">tables"</span>
   <span class="pi">}</span>
 <span class="pi">}</span>
 </code></pre></div></div>
 
-<p>Note: username and password can also be included in the connection url.</p>
+<p><strong>Note: If your MongoDB enabled access control, make sure the user can read and write the collection used.
+If you are using a sharded MongoDB cluster, make sure the database used is enabled sharding, 
+and the collection used is only sharded by <code class="language-plaintext highlighter-rouge">_id</code> in hash mode.</strong></p>
 
 <h2 id="tables-structure">Tables structure</h2>
 
@@ -1486,9 +1494,9 @@ In Drill <code class="language-plaintext highlighter-rouge">tables</code> compon
 The <code class="language-plaintext highlighter-rouge">TableMetadataUnit</code> class holds fields for all five metadata types within the <code class="language-plaintext highlighter-rouge">tables</code> component. 
 Any fields not applicable to a particular metadata type are simply ignored and remain unset.</p>
 
-<p>In the Mongo implementation of the Drill Metastore, all metadata of the tables component stored in
- one collection named <code class="language-plaintext highlighter-rouge">tables</code> in the <code class="language-plaintext highlighter-rouge">meta</code> database. The database and collection will be auto
-  created when first write data into it.</p>
+<p>In the Mongo implementation of the Drill Metastore, all metadata of the tables component stored in one collection. 
+The database and collection will be auto created when write data firstly into it if not exist, 
+but you need to configure the database and collection before used as the note specified above if you are using a sharded cluster.</p>
 
     
       
