@@ -1462,6 +1462,23 @@
   <li>Cancel running queries that were launched by any user in the cluster.</li>
 </ul>
 
+<h3 id="initial-admin-identity">Initial Admin Identity</h3>
+
+<p>To configure an initial Admin User and Group add an <code class="language-plaintext highlighter-rouge">security.admin</code> configuration entry like below into your <code class="language-plaintext highlighter-rouge">drill-override.conf</code> .</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>drill.exec: {
+    ...
+},
+security.admin: {
+    users: "drill",
+    user_groups: "hadoop"
+}
+</code></pre></div></div>
+
+<p>Set the value of this options to a comma-separated list of user or group names who you want to give administrator privileges, such as changing system options.</p>
+
+<p>The groups in <code class="language-plaintext highlighter-rouge">security.admin.user_groups</code> refer to groups in the configured Hadoop group mapping service which defaults to looking up local operating system groups. See <a href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/GroupsMapping.html">Hadoop Groups Mapping</a> for more information.</p>
+
 <p>See <a href="/zh/docs/configuring-web-console-and-rest-api-security/">Configuring Web UI and REST API Security</a> for more information.</p>
 
 
