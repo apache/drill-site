@@ -53,6 +53,7 @@ If you have any of the following problems, try the suggested solution:
 * [Queries Running Out of Memory]({{site.baseurl}}/docs/troubleshooting/#queries-running-out-of-memory)
 * [Unclear Error Message]({{site.baseurl}}/docs/troubleshooting/#unclear-error-message)
 * [Error Starting Drill in Embedded Mode]({{site.baseurl}}/docs/troubleshooting/#error-starting-drill-in-embedded-mode)
+* [CLOSE_WAIT connections to HDFS Datanode]({{site.baseurl}}/docs/troubleshooting/#close_wait-connections-to-hdfs-datanode)
 
 ### Memory Issues
 Symptom: Memory problems occur when you run certain queries, such as those with sort operators.
@@ -276,3 +277,15 @@ Symptom:
 `java.net.BindException: Address already in use`  
 
 Solution:  You can only run one Drillbit per node in embedded or distributed mode using default settings. You need to either change ports used by Drillbit or stop one Drillbit before starting another.
+
+### CLOSE_WAIT connections to HDFS Datanode
+
+Currently Hadoop does not support IPv6 client connections (See [HADOOP-11890](https://issues.apache.org/jira/browse/HADOOP-11890)).
+
+If you run Drill within an IPv6 environment and see a lot of IPv6 connections from Drillbit to HDFS Datanode in `CLOSE_WAIT` state, you can fix this by preferring IPv4 over IPv6 via `drill-env.sh` 
+
+```
+export DRILLBIT_JAVA_OPTS="$DRILLBIT_JAVA_OPTS -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv6Addresses=false"
+```
+
+This tells the Drillbit to use IPv4 connections to all Datasources, not only to HDFS.
