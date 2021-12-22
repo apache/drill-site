@@ -1486,6 +1486,7 @@
   <li><a href="/docs/troubleshooting/#queries-running-out-of-memory">Queries Running Out of Memory</a></li>
   <li><a href="/docs/troubleshooting/#unclear-error-message">Unclear Error Message</a></li>
   <li><a href="/docs/troubleshooting/#error-starting-drill-in-embedded-mode">Error Starting Drill in Embedded Mode</a></li>
+  <li><a href="/docs/troubleshooting/#close_wait-connections-to-hdfs-datanode">CLOSE_WAIT connections to HDFS Datanode</a></li>
 </ul>
 
 <h3 id="memory-issues">Memory Issues</h3>
@@ -1719,6 +1720,17 @@ Symptom: “IllegalStateException: No active Drillbit endpoint found from ZooKee
 <p><code class="language-plaintext highlighter-rouge">java.net.BindException: Address already in use</code></p>
 
 <p>Solution:  You can only run one Drillbit per node in embedded or distributed mode using default settings. You need to either change ports used by Drillbit or stop one Drillbit before starting another.</p>
+
+<h3 id="close_wait-connections-to-hdfs-datanode">CLOSE_WAIT connections to HDFS Datanode</h3>
+
+<p>Currently Hadoop does not support IPv6 client connections (See <a href="https://issues.apache.org/jira/browse/HADOOP-11890">HADOOP-11890</a>).</p>
+
+<p>If you run Drill within an IPv6 environment and see a lot of IPv6 connections from Drillbit to HDFS Datanode in <code class="language-plaintext highlighter-rouge">CLOSE_WAIT</code> state, you can fix this by preferring IPv4 over IPv6 via <code class="language-plaintext highlighter-rouge">drill-env.sh</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export DRILLBIT_JAVA_OPTS="$DRILLBIT_JAVA_OPTS -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv6Addresses=false"
+</code></pre></div></div>
+
+<p>This tells the Drillbit to use IPv4 connections to all Datasources, not only to HDFS.</p>
 
     
       
