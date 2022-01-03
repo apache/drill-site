@@ -1470,7 +1470,7 @@
   </tbody>
 </table>
 
-<p>To enable Drill’s Vault authenticator, add the following configuration based on the example below to the <code class="language-plaintext highlighter-rouge">drill.exec</code> block in the <code class="language-plaintext highlighter-rouge">&lt;DRILL_HOME&gt;/conf/drill-override.conf</code> file and restart every Drillbit.</p>
+<p>Note that in the current implementation, Drill does not preserve the access token returned by Vault after a successful authentication.  It merely uses the success or failure status returned by Vault to decide whether user gets logged in.  To enable Drill’s Vault authenticator, add the following configuration based on the example below to the <code class="language-plaintext highlighter-rouge">drill.exec</code> block in the <code class="language-plaintext highlighter-rouge">&lt;DRILL_HOME&gt;/conf/drill-override.conf</code> file and restart every Drillbit.</p>
 
 <div class="language-hocon highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">drill.exec</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
  </span><span class="nl">cluster-id</span><span class="p">:</span><span class="w"> </span><span class="s2">"drillbits1"</span><span class="p">,</span><span class="w">
@@ -1487,7 +1487,6 @@
          </span><span class="l">packages</span><span class="w"> </span><span class="err">+</span><span class="p">=</span><span class="w"> </span><span class="s2">"org.apache.drill.exec.rpc.user.security"</span><span class="p">,</span><span class="w">
          </span><span class="nl">impl</span><span class="p">:</span><span class="w"> </span><span class="s2">"vault"</span><span class="p">,</span><span class="w">
          </span><span class="nl">vault.address</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://localhost:8200"</span><span class="p">,</span><span class="w">
-         </span><span class="nl">vault.token</span><span class="p">:</span><span class="w"> </span><span class="s2">"drill_vault_token_123"</span><span class="p">,</span><span class="w">
          </span><span class="nl">vault.method</span><span class="p">:</span><span class="w"> </span><span class="s2">"USER_PASS"</span><span class="w"> </span><span class="c1"># supported values: APP_ROLE, LDAP, USER_PASS, VAULT_TOKEN</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
