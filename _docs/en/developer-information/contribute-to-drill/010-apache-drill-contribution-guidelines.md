@@ -65,21 +65,21 @@ To build Drill with Maven, run the following command:
     mvn clean install
 
 
-## Step 3: Get your code reviewed and committed to the project.  
+## Step 3: Get your code reviewed and committed to the project.
 
-This section describes the GitHub pull request-based review process for Apache Drill.   
+This section describes the GitHub pull request-based review process for Apache Drill.
 
 {% include startnote.html %}JIRA remains the primary site for discussions on issues. We are not using the GitHub issue tracker.{% include endnote.html %}
 
-The following steps outline the code review and commit process required to contribute new code to the Apache Drill project:  
+The following steps outline the code review and commit process required to contribute new code to the Apache Drill project:
 
 1. The contributor writes the code that addresses a specific JIRA report as a contribution to the Apache Drill project.
-2. The contributor organizes (squashes) their code into commits that segregate out refactoring/reorg, as necessary, to enable efficient review. The following list identifies how to combine code into commits:  
+2. The contributor organizes (squashes) their code into commits that segregate out refactoring/reorg, as necessary, to enable efficient review. The following list identifies how to combine code into commits:
        * Combine WIP and other small commits together.
        * Address multiple JIRAs, for smaller bug fixes or enhancements, with a single commit.
        * Use separate commits to allow efficient review, separating out formatting changes or simple refactoring from core changes or additions.
-       * Rebase this chain of commits on top of the current master.  
-{% include startnote.html %}The discussion that is automatically copied over from GitHub adds the review process into the Apache infrastructure. The final commit ends up in the Apache Git repo, which is the critical part. As such, there is no requirement to have your intermediate work placed anywhere outside of the GitHub pull request.{% include endnote.html %}  
+       * Rebase this chain of commits on top of the current master.
+{% include startnote.html %}The discussion that is automatically copied over from GitHub adds the review process into the Apache infrastructure. The final commit ends up in the Apache Git repo, which is the critical part. As such, there is no requirement to have your intermediate work placed anywhere outside of the GitHub pull request.{% include endnote.html %}
 3. The contributor opens a pull request against the GitHub mirror, based on the branch that contains their work, which has been squashed together as described in step 2.
        * Open the pull request against this repo: https://github.com/apache/drill/
        * Mention the JIRA number in the heading of the pull request, like “DRILL-3000” to automatically link to JIRA.
@@ -88,17 +88,17 @@ The following steps outline the code review and commit process required to contr
 4. The contributor asks a committer who has experience with the affected component for review.
 This information can be found in the [component owners](https://issues.apache.org/jira/browse/DRILL/?selectedTab=com.atlassian.jira.jira-projects-plugin:components-panel) section of JIRA, or by running `git blame` on the primary files changed in the pull request. For pull requests that affect multiple areas, send a message to the dev list to find a reviewer.
 5. The contributor sets the Reviewer field to the assigned reviewer and marks the status as REVIEWABLE.
-6. The reviewer reviews the pull request in GitHub and adds comments or a +1 to the general discussion if the pull request is ready to commit.  
+6. The reviewer reviews the pull request in GitHub and adds comments or a +1 to the general discussion if the pull request is ready to commit.
        * If there are issues to address, the reviewer changes the JIRA status to "In Progress."
        * If the reviewer gives a +1, the reviewer adds a "ready-to-commit" label to the Labels field in the Jira. The contributor should continue to step 9 in this process.
 7. The contributor addresses review comments. This can be done with new commits on the branch or with work made on the branch locally, squashed into the commit(s) posted in the original pull request and force pushed to the branch the pull request is based on.
 8. Return to step 5.
 9. A Drill committer completes the following steps to commit the patch:
        * If the master branch has moved forward since the review, rebase the branch from the pull request on the latest master and re-run tests.
-       * If all tests pass, the committer amends the last commit message in the series to include "this closes #1234", where 1234 is the pull request number, not the JIRA number. This can be done with interactive rebase. When on the branch issue:  
+       * If all tests pass, the committer amends the last commit message in the series to include "this closes #1234", where 1234 is the pull request number, not the JIRA number. This can be done with interactive rebase. When on the branch issue:
 
-              git rebase -i HEAD^  
-       * Change where it says “pick” on the line with the last commit, replacing it with “r” or “reword”. It replays the commit giving you the opportunity the change the commit message.  
+              git rebase -i HEAD^
+       * Change where it says “pick” on the line with the last commit, replacing it with “r” or “reword”. It replays the commit giving you the opportunity the change the commit message.
        * The committer pushes the commit(s) to the Apache repo (the GitHub repo is just a read-only mirror).
        * The committer resolves the JIRA with a message like `"Fixed in <Git commit SHA>"`.
 
@@ -113,9 +113,9 @@ All Pull requests at Github are automatically tested:
 ### Where is a good place to start contributing?
 
 After getting the source code, building and running a few simple queries, one
-of the simplest places to start is to implement a DrillFunc. DrillFuncs are the way that Drill expresses all scalar functions (UDF or system).  
+of the simplest places to start is to implement a DrillFunc. DrillFuncs are the way that Drill expresses all scalar functions (UDF or system).
 
-First you can put together a JIRA for one of the DrillFuncs that we don't yet have, but should (referencing the capabilities of something like Postgres  
+First you can put together a JIRA for one of the DrillFuncs that we don't yet have, but should (referencing the capabilities of something like Postgres
 or SQL Server). Then try to implement one.
 
 See this example DrillFunc:
@@ -148,11 +148,11 @@ Documentation contributions are most welcome and there are many opportunities fo
 1. features which have been implemented but not completely documented and
 2. HOWTOs for using Drill with other popular software.
 
-Documentation committed into the `gh-pages` branch does not have any effect on the Drill code base and so does not require a JIRA ticket or a corresponding PR from a repo fork.  It does still require a Drill committer to check it and push it into the Drill code repo.  This means 
+Documentation committed to the apache/drill-site repository doesn't have any effect on the Drill code base and so does not require a JIRA ticket.  It does still require a Drill committer to check it and push it into the Drill code repo.  This means
 
-1. Drill committers can add documentation with little bureaocratic overhead.
+1. Drill committers can add documentation with little bureaucratic overhead.
 2. Anyone can send documentation to a Drill committer (find us on Slack or the mailing lists) as
-   markdown or plain text and the committer can incorporate it with little bureaocratic overhead.
+   markdown or plain text and the committer can incorporate it with little bureaucratic overhead.
 
 ### See Also
 
