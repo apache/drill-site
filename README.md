@@ -15,7 +15,7 @@ The Apache Drill website is built by [Jekyll](http://jekyllrb.com/) from Markdow
 
 When new commits are pushed to any of the listed source Markdown branches, a Jekyll website build will be kicked off.  You can monitor the build, which normally runs in about 3 minutes, and view its logs at https://ci2.apache.org/.  Once the build completes, the resulting website will automatically be committed to the corresponding HTML branch in the table above.  The commit to the HTML branch will result in a deployment to the corresponding publish URL.  While it is possible to push commits directly to the HTML branches to effect website updates, it's almost certain that you never want to do this and should be working in one of the Markdown branches.
 
-At the time of writing, the staging website has no designated reponsibility and you may freely use it to test things out without worrying about what you clobber there.  Note that this means that others can freely clobber your staging deployments too.
+At the time of writing, the staging website has no designated responsibility and you may freely use it to test things out without worrying about what you clobber there.  Note that this means that others can freely clobber your staging deployments too.
 
 ## Building locally
 
