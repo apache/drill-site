@@ -526,12 +526,21 @@ Return the string part at _start_ or from _start_ to _end_ after splitting the i
     SPLIT_PART(string, delimiter, start[, end])
 
 ### SPLIT_PART Usage Notes
-The _delimiter_ string may be multiple characters long. The _start_ must be a positive integer.
-The _end_ must be greater than or equal to _start_ if provided.
+The _delimiter_ string may be multiple characters long. The _start_ can be a positive integer, or a negative integer.
+The _end_ must have the same sign as and be greater than or equal to _start_ if provided.
+The _start_ and _end_ count from beginning if are positive, from end if are negative.
 
 ### SPLIT_PART Examples
 
     SELECT split_part('The | quick | brown | fox | jumps', ' | ', 4);
+
+    |--------|
+    | EXPR$0 |
+    |--------|
+    | fox    |
+    |--------|
+    
+    SELECT split_part('The | quick | brown | fox | jumps', ' | ', -2);
 
     |--------|
     | EXPR$0 |
@@ -554,7 +563,23 @@ The _end_ must be greater than or equal to _start_ if provided.
     |--------------|
     | fox | jumps  |
     |--------------|
+    
+    SELECT split_part('The | quick | brown | fox | jumps', ' | ', -2, -1);
 
+    |--------------|
+    |    EXPR$0    |
+    |--------------|
+    | fox | jumps  |
+    |--------------|
+    
+    SELECT split_part('The | quick | brown | fox | jumps', ' | ', -10, -4);
+
+    |--------------|
+    |    EXPR$0    |
+    |--------------|
+    | The | quick  |
+    |--------------|
+    
 ## STRPOS
 Returns the location of the first occurrence of a substring of the input
 string, or 0 if the substring does not occur.
