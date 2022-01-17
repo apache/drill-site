@@ -38,7 +38,7 @@ Set the value of this options to a comma-separated list of user or group names w
 
 The groups in `security.admin.user_groups` refer to groups in the configured Hadoop group mapping service which defaults to looking up local operating system groups. See [Hadoop Groups Mapping](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/GroupsMapping.html) for more information.
 
-See [Configuring Web UI and REST API Security]({{site.baseurl}}/docs/configuring-web-console-and-rest-api-security/) for more information.
+See [Configuring Web UI and REST API Security]({{site.baseurl}}/docs/configuring-web-ui-and-rest-api-security/) for more information.
 
 
 

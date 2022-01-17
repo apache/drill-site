@@ -17,7 +17,7 @@ Graceful Shutdown is enabled by default. You can gracefully shut down a Drillbit
 
 You can only use the Graceful Shutdown option in the Drill Web UI to shut down the Drillbit from which you accessed the Drill Web UI. For example, if you accessed the Drill Web UI at `http://drillbit1:8047`, you can only use the Graceful Shutdown option to shut down drillbit1. When you initiate graceful shutdown from the Drill Web UI, the console posts an alert stating that a graceful shutdown was triggered. You can see the progress of the shut down as the Drillbit completes queries and transitions through the quiescent state. 
 
-**Note:** If security ([https]({{site.baseurl}}/docs/configuring-web-console-and-rest-api-security/)) is enabled, only and administrator can perform a graceful shutdown.  
+**Note:** If security ([https]({{site.baseurl}}/docs/configuring-web-ui-and-rest-api-security/)) is enabled, only and administrator can perform a graceful shutdown.  
 
 **How A Drillbit Shuts Down Gracefully**  
 

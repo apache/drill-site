@@ -5,7 +5,7 @@ parent: "Connect a Data Source"
 ---
 You connect Drill to data sources, such as a file system, Hive, or HBase through storage plugins. You can see the default enabled and disabled storage plugins on the Storage page in the Drill Web UI. You can easily enable and disable storage plugins, reconfigure storage plugins, and create new storage plugin configurations, as described in [Configuring Storage Plugins](https://drill.apache.org/docs/configuring-storage-plugins/).
 
- If [HTTPS support]({{site.baseurl}}/docs/configuring-web-console-and-rest-api-security/#https-support) is not enabled (the default), go to `http://<IP address>:8047/storage` to view and configure a storage plugin. IP address is the host name or IP address of one of the installed Drillbits in a distributed system or `localhost` in an embedded system. If HTTPS support is enabled and you are [authorized]({{site.baseurl}}/docs/configuring-web-console-and-rest-api-security/) to view and configure a storage plugin, go to `https://<IP address>:8047/storage`. 
+ If [HTTPS support]({{site.baseurl}}/docs/configuring-web-ui-and-rest-api-security/#https-support) is not enabled (the default), go to `http://<IP address>:8047/storage` to view and configure a storage plugin. IP address is the host name or IP address of one of the installed Drillbits in a distributed system or `localhost` in an embedded system. If HTTPS support is enabled and you are [authorized]({{site.baseurl}}/docs/configuring-web-ui-and-rest-api-security/) to view and configure a storage plugin, go to `https://<IP address>:8047/storage`. 
 
 The Drill installation registers the following storage plugin configurations, with the cp and dfs storage plugins enabled by default; you must enable the other storage plugins:
 
@@ -34,7 +34,7 @@ In the [Drill sandbox]({{site.baseurl}}/docs/about-the-mapr-sandbox/), the `dfs`
 
 To register a new storage plugin configuration, enter a storage name, click **CREATE**, provide a configuration in JSON format, and click **UPDATE**. 
 
-In Drill 1.2 and later, updating a storage plugin configuration and other storage plugin tasks require [authorization]({{site.baseurl}}/docs/configuring-web-console-and-rest-api-security/) if security is enabled.
+In Drill 1.2 and later, updating a storage plugin configuration and other storage plugin tasks require [authorization]({{site.baseurl}}/docs/configuring-web-ui-and-rest-api-security/) if security is enabled.
 
 ## Storage Plugin Configuration Persistence
 

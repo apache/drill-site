@@ -19,7 +19,7 @@ To access the Drill Web UI, enter `http(s)://<drill-hostname-or-ip-address>:8047
 The following list describes the URLs for various Drill configurations: 
 
 * `http://<drill-hostname-or-ip-address>:8047`  
-  Use this URL when [HTTPS support]({{site.baseurl}}/docs/configuring-web-console-and-rest-api-security/#https-support) is disabled (the default).
+  Use this URL when [HTTPS support]({{site.baseurl}}/docs/configuring-web-ui-and-rest-api-security/#https-support) is disabled (the default).
 * `https://<drill-hostname-or-ip-address>:8047`  
   Use this URL when HTTPS support is enabled.  
 * `http://localhost:8047`   

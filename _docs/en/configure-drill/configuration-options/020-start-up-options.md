@@ -63,7 +63,7 @@ Sets batch sizing (number of rows per batch) for the Parquet reader. The default
 
 **Introduced in release:** 1.2.
 
-Enables or disables [HTTPS support]({{site.baseurl}}/docs/configuring-web-console-and-rest-api-security/#https-support). Settings are TRUE and FALSE, respectively. The default is FALSE.  
+Enables or disables [HTTPS support]({{site.baseurl}}/docs/configuring-web-ui-and-rest-api-security/#https-support). Settings are TRUE and FALSE, respectively. The default is FALSE.  
   
 * **drill.exec.sys.store.provider.class**  
   Defines the persistent storage (PStore) provider. The [PStore]({{site.baseurl}}/docs/persistent-configuration-storage) holds configuration and profile data.  
