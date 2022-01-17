@@ -6,12 +6,12 @@ parent: "Data Sources and File Formats"
 
 **Introduced in release:** 1.19
 
-This plugin enables Drill to read XML files without defining any kind of schema. 
+This plugin enables Drill to read XML files without defining any kind of schema.
 
 ## Configuration
 Aside from the file extension, there is one configuration option:
 
-* `dataLevel`: XML data often contains a considerable amount of nesting which is not necesarily useful for data analysis. This parameter allows you to set the nesting level 
+* `dataLevel`: XML data often contains a considerable amount of nesting which is not necesarily useful for data analysis. This parameter allows you to set the nesting level
   where the data actually starts.  The levels start at `1`.
 
 The default configuration is shown below:
@@ -74,7 +74,7 @@ attribute with the field name and then the attribute name.  Every XML file will 
 If you queried this data in Drill you'd get the table below:
 
 ```sql
-SELECT * 
+SELECT *
 FROM <path>.`attributes.xml`
 ```
 
@@ -91,7 +91,7 @@ apache drill> select * from dfs.test.`attributes.xml`;
 
 ## Limitations:  Malformed XML
 Drill can read properly formatted XML.  If the XML is not properly formatted, Drill will throw errors. Some issues include illegal characters in field names, or attribute names.
-Future functionality will include some degree of data cleaning and fault tolerance. 
+Future functionality will include some degree of data cleaning and fault tolerance.
 
 ## Limitations: Schema Ambiguity
 XML is a challenging format to process as the structure does not give any hints about the schema.  For example, a JSON file might have the following record:
@@ -138,12 +138,12 @@ This is no problem to parse this data. But consider what would happen if we enco
 ```
 
 In this example, there is no way for Drill to know whether `listField` is a `list` or a `map`
-because it only has one entry. 
+because it only has one entry.
 
 ## Future Functionality
 
-* **Build schema from XSD file or link**:  One of the major challenges of this reader is having to infer the schema of the data. XML files do provide a schema although this is not required.  In the future, if there is interest, we can extend this reader to use an XSD file to build the schema which will be used to parse the actual XML file. 
-  
+* **Build schema from XSD file or link**:  One of the major challenges of this reader is having to infer the schema of the data. XML files do provide a schema although this is not required.  In the future, if there is interest, we can extend this reader to use an XSD file to build the schema which will be used to parse the actual XML file.
+
 * **Infer Date Fields**: It may be possible to add the ability to infer data fields.
 
-* **List Support**:  Future functionality may include the ability to infer lists from data structures.  
+* **List Support**:  Future functionality may include the ability to infer lists from data structures.

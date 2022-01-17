@@ -10,7 +10,7 @@ position in an array. Arrays use a 0-based index, so `topping[3]` points to
 the _fourth_ element in the array under `topping`, not the third.
 
     0: jdbc:drill:zk=local> select topping[3] as top from dfs.`/Users/brumsby/drill/donuts.json`;
-  
+
     |------------|
     |    top     |
     |------------|
@@ -33,9 +33,9 @@ For example, assume that a segment of the JSON file looks like this:
     group:
     [
       [1,2,3],
-  
+
       [4,5,6],
-  
+
       [7,8,9]
     ]
     ...

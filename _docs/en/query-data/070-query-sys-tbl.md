@@ -2,13 +2,13 @@
 title: "Querying System Tables"
 slug: "Querying System Tables"
 parent: "Query Data"
----  
+---
 
-Drill has a sys database that contains system tables. You can query the system tables for information about Drill, such as available configuration options and the Drill version running on the system. Starting in Drill 1.15, you can query the functions table to expose built-in SQL functions and user-defined functions. 
+Drill has a sys database that contains system tables. You can query the system tables for information about Drill, such as available configuration options and the Drill version running on the system. Starting in Drill 1.15, you can query the functions table to expose built-in SQL functions and user-defined functions.
 
 ## Viewing Drill Databases
 
-When you run the `SHOW DATABASES` command, Drill returns the list of available databases that you can query. In the following example, you can see that Drill returns the sys database:  
+When you run the `SHOW DATABASES` command, Drill returns the list of available databases that you can query. In the following example, you can see that Drill returns the sys database:
 
     SHOW DATABASES;
     |--------------------|
@@ -25,13 +25,13 @@ When you run the `SHOW DATABASES` command, Drill returns the list of available d
     | cp.default         |
     | hbase              |
     | INFORMATION_SCHEMA |
-    |--------------------|  
+    |--------------------|
 
 
-## Switching to the sys Database 
+## Switching to the sys Database
 
-The USE command changes the schema context to the specified schema. When you switch to the sys schema, as shown, Drill issues all subsequent queries against that schema only:  
- 
+The USE command changes the schema context to the specified schema. When you switch to the sys schema, as shown, Drill issues all subsequent queries against that schema only:
+
 
    	USE sys;
     |-------|----------------------------------|
@@ -79,22 +79,22 @@ The following sections show examples of queries against the system tables availa
     | qa-node114.qa.lab | 31010      | 31011        | 31012      | false   |
     | qa-node116.qa.lab | 31010      | 31011        | 31012      | false   |
     |-------------------|------------|--------------|------------|---------|
-    
 
-  * **hostname**   
+
+  * **hostname**
 The name of the node running the Drillbit service.
-  * **user_port**  
+  * **user_port**
 The user port address, used between nodes in a cluster for connecting to
-external clients and for the Drill Web UI.  
-  * **control_port**  
+external clients and for the Drill Web UI.
+  * **control_port**
 The control port address, used between nodes for multi-node installation of
 Apache Drill.
-  * **data_port**  
+  * **data_port**
 The data port address, used between nodes for multi-node installation of
 Apache Drill.
-  * **current**  
+  * **current**
 True means the Drillbit is connected to the session or client running the
-query. This Drillbit is the Foreman for the current session.  
+query. This Drillbit is the Foreman for the current session.
 
 ### Querying the version Table
 
@@ -105,17 +105,17 @@ query. This Drillbit is the Foreman for the current session.
     | d8b19759657698581cc0d01d7038797952888123  | DRILL-3100: TestImpersonationDisabledWithMiniDFS fails on Windows  | 15.05.2015 @ 05:18:03 UTC  | Unknown      | 15.05.2015 @ 06:52:32 UTC  |
     |-------------------------------------------|--------------------------------------------------------------------|----------------------------|--------------|----------------------------|
 
-  * **commit_id**  
+  * **commit_id**
 The github id of the release you are running. For example, `https://github.com
 /apache/drill/commit/e3ab2c1760ad34bda80141e2c3108f7eda7c9104`
-  * **commit_message**  
+  * **commit_message**
 The message explaining the change.
-  * **commit_time**  
+  * **commit_time**
 The date and time of the change.
-  * **build_email**  
+  * **build_email**
 The email address of the person who made the change, which is unknown in this
 example.
-  * **build_time**  
+  * **build_time**
 The time that the release was built.
 
 
@@ -138,21 +138,21 @@ The time that the release was built.
     |--------------------------------------|----------|-------|---------|------------|-------------------------|-----------|------------|
     10 rows selected (0.192 seconds)
 
-  * **name**    
+  * **name**
 The name of the boot option.
-  * **kind**    
+  * **kind**
 The data type of the option value.
-  * **type**    
+  * **type**
 This is always boot.
-  * **status**  
+  * **status**
 This is always boot.
-  * **num_val**  
+  * **num_val**
 The default value, which is of the long or int data type; otherwise, null.
-  * **string_val**  
+  * **string_val**
 The default value, which is a string; otherwise, null.
-  * **bool_val**  
+  * **bool_val**
 The default value, which is true or false; otherwise, null.
-  * **float_val**  
+  * **float_val**
 The default value, which is of the double, float, or long double data type;
 otherwise, null.
 
@@ -168,14 +168,14 @@ otherwise, null.
     |--------------------|------------|----------------|---------------|
     3 rows selected (0.618 seconds)
 
-  * **hostname**   
+  * **hostname**
 The name of the node running the Drillbit service.
-  * **user_port**  
+  * **user_port**
 The user port address, used between nodes in a cluster for connecting to
-external clients and for the Drill Web UI. 
-  * **total_threads**  
+external clients and for the Drill Web UI.
+  * **total_threads**
 The peak thread count on the node.
-  * **busy_threads**  
+  * **busy_threads**
 The current number of live threads (daemon and non-daemon) on the node.
 
 ### Querying the memory Table
@@ -187,67 +187,67 @@ The current number of live threads (daemon and non-daemon) on the node.
     | qa-node115.qa.lab  | 31010      | 443549712     | 4294967296  | 11798941        | 167772974           | 8589934592  |
     | qa-node114.qa.lab  | 31010      | 149948432     | 4294967296  | 7750365         | 134218542           | 8589934592  |
     | qa-node116.qa.lab  | 31010      | 358612992     | 4294967296  | 7750365         | 83886894            | 8589934592  |
-    |--------------------|------------|---------------|-------------|-----------------|---------------------|-------------|  
-  
+    |--------------------|------------|---------------|-------------|-----------------|---------------------|-------------|
 
-  * **hostname**   
+
+  * **hostname**
 The name of the node running the Drillbit service.
-  * **user_port**  
+  * **user_port**
 The user port address, used between nodes in a cluster for connecting to
 external clients and for the Drill Web UI.
-  * **heap_current**  
+  * **heap_current**
 The amount of memory being used on the heap, in bytes.
-  * **heap_max**  
+  * **heap_max**
 The maximum amount of memory available on the heap, in bytes.
-  * **direct_current**  
-The current direct memory being used by the allocator, in bytes.  
-  * **direct_max**  
-The maximum direct memory available to the allocator, in bytes.  
-  * (Deprecated) **jvm\_direct\_current**  
-The current JVM direct memory allocation, in bytes.  
+  * **direct_current**
+The current direct memory being used by the allocator, in bytes.
+  * **direct_max**
+The maximum direct memory available to the allocator, in bytes.
+  * (Deprecated) **jvm\_direct\_current**
+The current JVM direct memory allocation, in bytes.
 
-### Querying the connections Table  
+### Querying the connections Table
 
 	SELECT * FROM connections limit 3;
 	|------------|--------------|------------|--------------------------|------------------------|----------|------------------|--------------|-----------|---------------------------------------|
 	|    user    |    client    |  drillbit  |       established        |        duration        | queries  | isAuthenticated  | isEncrypted  | usingSSL  |                session                |
 	|------------|--------------|------------|--------------------------|------------------------|----------|------------------|--------------|-----------|---------------------------------------|
 	| anonymous  | 10.10.10.10  | test.lab  | 2018-12-07 15:40:50.857  | 1 hr 32 min 7.670 sec  | 20       | false            | false        | false     | 484c7c8c-2ecd-4f1e-b42d-e3c8750b4ce5  |
-	|------------|--------------|------------|--------------------------|------------------------|----------|------------------|--------------|-----------|---------------------------------------|  
+	|------------|--------------|------------|--------------------------|------------------------|----------|------------------|--------------|-----------|---------------------------------------|
 
-The connections table provides the following information about the connection to the Drillbits, including:  
+The connections table provides the following information about the connection to the Drillbits, including:
 
 
 - name of the user connecting to the Drillbit from the client
 - ip address of the client
 - name of the Drillbit to which the client has connected
 - time at which the connection was established
-- duration of the connection 
+- duration of the connection
 - number of queries run during the connection
 - security for the connection
-- session ID   
+- session ID
 
-### Querying the profiles_json Table 
+### Querying the profiles_json Table
 
 		SELECT * FROM profiles_json LIMIT 1;
 		|---------------------------------------|----------------------------------------------------------------------------------|
 		|                queryId                |                                       json                                       |
 		|---------------------------------------|----------------------------------------------------------------------------------|
 		| 23f4e2a7-5d60-a766-0b03-d7a03e99033e  | {"id":{"part1":2590944894098909030,"part2":793715042592293694},"type":1,"start":1544232280280,"end":1544232280309,"query":"SELECT * FROM profiles_json LIMIT 0","plan":"00-00    Screen : rowType = RecordType(VARCHAR(65536) queryId, VARCHAR(65536) json): rowcount = 1.0, cumulative cost = {1.1 rows, 2.1 cpu, 1.0 io, 0.0 network, 0.0 memory}, id = 2115\n00-01      Project(queryId=[$0], json=[$1]) : rowType = RecordType(VARCHAR(65536) queryId, VARCHAR(65536) json): rowcount = 1.0, cumulative cost = {1.0 rows, 2.0 cpu, 1.0 io, 0.0 network, 0.0 memory}, id = 2114\n00-02        DirectScan(groupscan=[RelDataTypeReader{columnNames=[queryId, json], columnTypes=[VARCHAR-REQUIRED, VARCHAR-OPTIONAL]}]) : rowType = RecordType(VARCHAR(65536) queryId, VARCHAR(65536) json): rowcount = 1.0, cumulative cost = {0.0 rows, 0.0 cpu, 1.0 io, 0.0 network, 0.0 memory}, id = 2113\n","foreman":{"address":"doc23.lab","userPort":31010,"controlPort":31011,"dataPort":31012,"version":"1.15.0-SNAPSHOT","state":0},"state":2,"totalFragments":1,"finishedFragments":0,"fragmentProfile":[{"majorFragmentId":0,"minorFragmentProfile":[{"state":3,"minorFragmentId":0,"operatorProfile":[{"inputProfile":[{"records":0,"batches":1,"schemas":1}],"operatorId":2,"operatorType":26,"setupNanos":0,"processNanos":780670,"peakLocalMemoryAllocated":102400,"waitNanos":0},{"inputProfile":[{"records":0,"batches":1,"schemas":1}],"operatorId":1,"operatorType":10,"setupNanos":1600465,"processNanos":207117,"peakLocalMemoryAllocated":102400,"waitNanos":0},{"inputProfile":[{"records":0,"batches":1,"schemas":1}],"operatorId":0,"operatorType":13,"setupNanos":0,"processNanos":229998,"peakLocalMemoryAllocated":0,"metric":[{"metricId":0,"longValue":0}],"waitNanos":1246096}],"startTime":1544232280300,"endTime":1544232280307,"memoryUsed":0,"maxMemoryUsed":3000000,"endpoint":{"address":"doc23.lab","userPort":31010,"controlPort":31011,"dataPort":31012,"version":"1.15.0-SNAPSHOT","state":0},"lastUpdate":1544232280307,"lastProgress":1544232280307}]}],"user":"anonymous","optionsJson":"[ {\n  \"kind\" : \"BOOLEAN\",\n  \"accessibleScopes\" : \"ALL\",\n  \"name\" : \"exec.query.return_result_set_for_ddl\",\n  \"bool_val\" : true,\n  \"scope\" : \"QUERY\"\n} ]","planEnd":1544232280300,"queueWaitEnd":1544232280300,"totalCost":2.0,"queueName":"Unknown","queryId":"23f4e2a7-5d60-a766-0b03-d7a03e99033e"} |
-		|---------------------------------------|----------------------------------------------------------------------------------|  
+		|---------------------------------------|----------------------------------------------------------------------------------|
 
-The profiles_json table provides the query profile in JSON format for all queries, by queryID.  
+The profiles_json table provides the query profile in JSON format for all queries, by queryID.
 
-### Querying the options Table  
+### Querying the options Table
 
-The options table contains system, session, and boot configuration options available in Drill. Starting in Drill 1.15, a new options table lists option descriptions. You can query the latest and previous options table, as shown in the examples below.  
+The options table contains system, session, and boot configuration options available in Drill. Starting in Drill 1.15, a new options table lists option descriptions. You can query the latest and previous options table, as shown in the examples below.
 
 **Note:** Option names are case-sensitive.
 
 The following query selects all of the options related to memory from the new options table:
-    
-  
- 	SELECT * FROM options WHERE name LIKE '%memory%'; 
+
+
+ 	SELECT * FROM options WHERE name LIKE '%memory%';
 	|----------------------------------------------------------------|---------|-------------------|-------------|----------|--------------|----------------------------------------------------------------------------------|
 	|                              name                              |  kind   | accessibleScopes  |     val     |  status  | optionScope  |                                   description                                    |
 	|----------------------------------------------------------------|---------|-------------------|-------------|----------|--------------|----------------------------------------------------------------------------------|
@@ -265,10 +265,10 @@ The following query selects all of the options related to memory from the new op
 	| planner.memory.non_blocking_operators_memory                   | BIGINT  | ALL               | 64          | DEFAULT  | BOOT         | Extra query memory per node for non-blocking operators. This option is currently used only for memory estim... |
 	| planner.memory.percent_per_query                               | FLOAT   | ALL               | 0.05        | DEFAULT  | BOOT         | Sets the memory as a percentage of the total direct memory.                      |
 	| planner.memory_limit                                           | BIGINT  | ALL               | 268435456   | DEFAULT  | BOOT         | Defines the maximum amount of direct memory allocated to a query for planning. When multiple queries run co... |
-	|----------------------------------------------------------------|---------|-------------------|-------------|----------|--------------|----------------------------------------------------------------------------------|  
+	|----------------------------------------------------------------|---------|-------------------|-------------|----------|--------------|----------------------------------------------------------------------------------|
 
 	
-The following query selects three of the options related to memory from the pre-1.15 options table:  
+The following query selects three of the options related to memory from the pre-1.15 options table:
 
 **Note:** Notice that the table contains _val columns, which have been removed from the latest options table (introduced in Drill 1.15).
 
@@ -282,7 +282,7 @@ The following query selects three of the options related to memory from the pre-
 	|----------------------------------------------------------------|----------|-------------------|--------------|----------|-----------|-------------|-----------|------------|
 
 
-### Querying the functions Table 
+### Querying the functions Table
 
 The functions table is available starting in Drill 1.15. The functions table exposes the available SQL functions in Drill and also detects UDFs that have been dynamically loaded into Drill. You can query the functions table to see the following information about built-in and user-defined functions in Drill:
 
@@ -293,7 +293,7 @@ The functions table is available starting in Drill 1.15. The functions table exp
 	|-------|------------|-------------|---------|-----------|
 
 
-The following query shows the count of built-in functions and UDFs:  
+The following query shows the count of built-in functions and UDFs:
 **Note:** In this example, UDFs were dynamically loaded into Drill, as indicated by the JAR files.
 
 	SELECT source, COUNT(*) AS functionCount FROM sys.functions GROUP BY source;
@@ -303,9 +303,9 @@ The following query shows the count of built-in functions and UDFs:
 	| built-in                                | 2704           |
 	| simple-drill-function-1.0-SNAPSHOT.jar  | 12             |
 	| drill-url-tools-1.0.jar                 | 1              |
-	|-----------------------------------------|----------------|   
+	|-----------------------------------------|----------------|
 
-You can search the functions table to see if Drill supports specific functions. For example, the following query shows all the functions with names that include sql:   
+You can search the functions table to see if Drill supports specific functions. For example, the following query shows all the functions with names that include sql:
 
 	SELECT * FROM functions WHERE name LIKE '%sql%';
 	|-------------------|------------------------------------|-------------|-----------|-----------|

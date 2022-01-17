@@ -6,21 +6,21 @@ parent: "Connect a Data Source"
 
 **Introduced in release:** 1.20
 
-Similar to S3 Storage Plugin Drill can be configured to query Oracle Cloud Infrastructure (OCI) Object Storage (OS). 
+Similar to S3 Storage Plugin Drill can be configured to query Oracle Cloud Infrastructure (OCI) Object Storage (OS).
 The ability to query this cloud storage is implemented by using Oracle HDFS library.
 
-To connect Drill to OCI OS:  
+To connect Drill to OCI OS:
 
-- Provide your OCI credentials.   
-- Configure the OCI OS storage plugin with an OS bucket name.  
+- Provide your OCI credentials.
+- Configure the OCI OS storage plugin with an OS bucket name.
 
-For additional information, refer to the [HDFS Connector for Object Storage](https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/hdfsconnector.htm) documentation.   
+For additional information, refer to the [HDFS Connector for Object Storage](https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/hdfsconnector.htm) documentation.
 
 ## Configuring the OCI OS Storage Plugin
 
 The **Storage** page in the Drill Web UI provides an OCI storage plugin that you configure to connect Drill to the OCI OS distributed file system registered in `core-site.xml`. If you did not define your OCI credentials in the `core-site.xml` file, you can define them in the storage plugin configuration. You can define the credentials directly in the OCI storage plugin configuration, or you can configure the OCI storage plugin to use an external provider.
 
-To configure the OCI OS storage plugin, log in to the Drill Web UI at `http://<drill-hostname>:8047`. The `drill-hostname` is a node on which Drill is running. Go to the **Storage** page and click **Update** next to the OCI OS storage plugin option or **Create** new if it doesn't exist yet. 
+To configure the OCI OS storage plugin, log in to the Drill Web UI at `http://<drill-hostname>:8047`. The `drill-hostname` is a node on which Drill is running. Go to the **Storage** page and click **Update** next to the OCI OS storage plugin option or **Create** new if it doesn't exist yet.
 ```
 {
   "type": "file",
@@ -35,7 +35,7 @@ To configure the OCI OS storage plugin, log in to the Drill Web UI at `http://<d
   "workspaces": {
     ...
   }
-}  
+}
 ```
 **Note:** The `"config"` block in the OCI storage plugin configuration contains properties to define your OCI credentials. Do not include the `"config"` block in your OCI OS storage plugin configuration if you defined your OCI credentials in the `core-site.xml` file.
 
@@ -49,7 +49,7 @@ You can use different [Plugin credentials provider](https://github.com/apache/dr
 
 ### Providing OCI OS Credentials
 
-[VaultCredentialsProvider](`VaultCredentialsProvider`) can be configured to keep OCI OS properties as a secrets. The example of Drill OCI Storage plugin with `VaultCredentialsProvider`:   
+[VaultCredentialsProvider](`VaultCredentialsProvider`) can be configured to keep OCI OS properties as a secrets. The example of Drill OCI Storage plugin with `VaultCredentialsProvider`:
 ```
 {
   "type": "file",

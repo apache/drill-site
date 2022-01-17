@@ -9,7 +9,7 @@ You can use various configuration options to control the behavior of the Drill O
 
 ## Configuration Options
 
-The following table provides a list of the configuration options and a brief description. Subsequent sections describe options in more detail:  
+The following table provides a list of the configuration options and a brief description. Subsequent sections describe options in more detail:
 
 | ﻿Property | Default Values | Brief Description |
 |-------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -50,7 +50,7 @@ connection type based on your environment and Drillbit configuration as describe
 | Drillbit is registered with the ZooKeeper in a production environment. | ZooKeeper Quorum                       |
 
 ## Host Name and Port Number
-When using ZooKeeper to connect to Drill, do not use the IP address in the connection string. Make sure the client system can resolve the actual hostname(s) by pinging the hostnames first. 
+When using ZooKeeper to connect to Drill, do not use the IP address in the connection string. Make sure the client system can resolve the actual hostname(s) by pinging the hostnames first.
 
 ## ZKClusterID and ZKQuorum
 The default cluster ID is drillbits1. Check the `drill-override.conf` in the Drill installation `/conf` directory. Use the cluster-id and zk.connect values for ZKClusterID and ZKQuorum.
@@ -80,7 +80,7 @@ The driver supports the following schema types:
 
 * HBase
 * Distributed File System (DFS), supporting the following file formats:
-  * Parquet  
+  * Parquet
   * JSON
   * CSV
   * TSV
@@ -119,11 +119,11 @@ The following table lists and describes the advanced properties that you can set
 ### Connection String Examples
 
 If you want to connect to a Drill data source from an application that does
-not require a DSN, you can use an ODBC connection string. The following is an example connection string for the Direct connection type:  
+not require a DSN, you can use an ODBC connection string. The following is an example connection string for the Direct connection type:
 
     DRIVER=MapR Drill ODBC Driver;AdvancedProperties={HandshakeTimeout=0;QueryTimeout=0;TimestampTZDisplayTimezone=utc;ExcludedSchemas=sys,INFORMATION_SCHEMA;};Catalog=DRILL;Schema=hivestg;ConnectionType=Direct;Host=192.168.202.147;Port=31010
 
-The following is an example connection string for the Zookeeper connection type:  
+The following is an example connection string for the Zookeeper connection type:
 
     DRIVER=MapR Drill ODBC Driver;AdvancedProperties={HandshakeTimeout=0;QueryTimeout=0;TimestampTZDisplayTimezone=utc;ExcludedSchemas=sys, INFORMATION_SCHEMA;};Catalog=DRILL;Schema=;ConnectionType=ZooKeeper;ZKQuorum=192.168.39.43:5181;ZKClusterID=drillbits1
 

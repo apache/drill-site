@@ -4,7 +4,7 @@ slug: "Drill Default Input Format"
 parent: "Storage Plugin Configuration"
 ---
 You can define a default input format to tell Drill what file type exists in a
-workspace within a file system. 
+workspace within a file system.
 
 Normally, Drill determines the file type based on file
 extensions and *magic numbers* when searching a workspace. Magic numbers are file signatures that Drill uses to identify Parquet files. If Drill cannot identify the file type based on file extensions or magic

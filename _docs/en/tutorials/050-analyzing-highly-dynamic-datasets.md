@@ -4,7 +4,7 @@ slug: "Analyzing Highly Dynamic Datasets"
 parent: "Tutorials"
 ---
 
-Today’s data is dynamic and application-driven. The growth of a new era of business applications driven by industry trends such as web, social, mobile, and Internet of Things are generating datasets with new data types and new data models. These applications are iterative, and the associated data models typically are semi-structured, schema-less and constantly evolving. Semi-structured data models can be complex/nested, schema-less, and capable of having varying fields in every single row and of constantly evolving as fields get added and removed frequently to meet business requirements. 
+Today’s data is dynamic and application-driven. The growth of a new era of business applications driven by industry trends such as web, social, mobile, and Internet of Things are generating datasets with new data types and new data models. These applications are iterative, and the associated data models typically are semi-structured, schema-less and constantly evolving. Semi-structured data models can be complex/nested, schema-less, and capable of having varying fields in every single row and of constantly evolving as fields get added and removed frequently to meet business requirements.
 
 This tutorial shows you how to natively query dynamic datasets, such as JSON, and derive insights from any type of data in minutes. The dataset used in the example is from the Yelp check-ins dataset, which has the following structure:
 
@@ -24,7 +24,7 @@ This tutorial shows you how to natively query dynamic datasets, such as JSON, an
 
 It is worth repeating the comment at the bottom of this snippet:
 
-       If there was no checkin for a hour-day block it will not be in the dataset. 
+       If there was no checkin for a hour-day block it will not be in the dataset.
 
 The element names that you see in the `checkin_info` are unknown upfront and can vary for every row. The data, although simple, is highly dynamic data. To analyze the data there is no need to first represent this dataset in a flattened relational structure, as you would using any other SQL on Hadoop technology.
 
@@ -125,8 +125,8 @@ On the output of flattened data, you use standard SQL functionality such as filt
     |------------------------|
     | 8575                   |
     |------------------------|
-  
-**Get the number of check-ins per day of the week**  
+
+**Get the number of check-ins per day of the week**
 
     0: jdbc:drill:zk=local> SELECT `right`(checkintbl.checkins.key,1) WeekDay,sum(checkintbl.checkins.`value`) TotalCheckins from (
     . . . . . . . . . . . >  select flatten(kvgen(checkin_info)) checkins FROM dfs.`/users/nrentachintala/Downloads/yelp/yelp_academic_dataset_checkin.json`  ) checkintbl GROUP BY `right`(checkintbl.checkins.key,1) ORDER BY TotalCheckins;

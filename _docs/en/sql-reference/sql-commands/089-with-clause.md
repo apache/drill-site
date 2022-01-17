@@ -16,21 +16,21 @@ The WITH clause supports the following syntax:
 
 where with_subquery is:
 
-    with_subquery_table_name [ ( column_name [, ...] ) ] AS ( query ) 
+    with_subquery_table_name [ ( column_name [, ...] ) ] AS ( query )
 
 ## Parameters
 
-*with_subquery_table_name*  
+*with_subquery_table_name*
 A unique name for a temporary table that defines the results of a WITH clause
 subquery. You cannot use duplicate names within a single WITH clause. You must
 give each subquery a table name that can be referenced in the FROM clause.
 
-*column_name*  
+*column_name*
 An optional list of output column names for the WITH clause subquery,
 separated by commas. The number of column names specified must be equal to or
 less than the number of columns defined by the subquery.
 
-*query*  
+*query*
 Any SELECT query that Drill supports. See
 [SELECT]({{ site.baseurl }}/docs/select/).
 
@@ -44,7 +44,7 @@ reuse the results for query optimization.
 
 You can use a WITH clause in the following SQL statements:
 
-  * SELECT (including subqueries within SELECT statements)  
+  * SELECT (including subqueries within SELECT statements)
   * CREATE TABLE AS
   * CREATE VIEW
   * EXPLAIN
@@ -73,10 +73,10 @@ rows from the `emp_data` temporary table (created from the WITH subquery) and
 orders the results by the hire date. The `emp_data` table only exists for the
 duration of the query.
 
-**Note:** The `employee.json` file is included with the Drill installation. It is located in the `cp.default` workspace which is configured by default. 
+**Note:** The `employee.json` file is included with the Drill installation. It is located in the `cp.default` workspace which is configured by default.
 
-       0: jdbc:drill:zk=local> WITH emp_data AS (SELECT * FROM cp.`employee.json`) 
-       SELECT full_name, position_title, salary, hire_date 
+       0: jdbc:drill:zk=local> WITH emp_data AS (SELECT * FROM cp.`employee.json`)
+       SELECT full_name, position_title, salary, hire_date
        FROM emp_data ORDER BY hire_date LIMIT 10;
     |------------------|-------------------------|------------|-----------------------|
     | full_name        | position_title          |   salary   | hire_date             |

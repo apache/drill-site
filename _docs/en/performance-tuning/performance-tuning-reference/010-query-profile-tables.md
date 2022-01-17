@@ -2,17 +2,17 @@
 title: "Query Profile Column Descriptions"
 slug: "Query Profile Column Descriptions"
 parent: "Performance Tuning Reference"
---- 
+---
 
-The following tables provide descriptions listed in each of the tables for a query profile.  
+The following tables provide descriptions listed in each of the tables for a query profile.
 
 
-## Fragment Overview  Table  
+## Fragment Overview  Table
 
 Shows aggregate metrics for each major fragment that executed the query.
 
-The following table lists descriptions for each column in the Fragment Overview  
-table:  
+The following table lists descriptions for each column in the Fragment Overview
+table:
 
 | Column Name               | Description                                                                                                                                                                 |
 |---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -29,11 +29,11 @@ table:
 | Last Progress             | The last time one of the minor fragments made progress, such as a change in fragment state or read data from disk. Time is shown in 24-hour notation.                       |
 | Max Peak Memory           | The maximum of the peak direct memory allocated to any minor fragment.                                                                                                      |
 
-## Major Fragment Block  
+## Major Fragment Block
 
-Shows metrics for the minor fragments that were parallelized for each major fragment.  
+Shows metrics for the minor fragments that were parallelized for each major fragment.
 
-The following table lists descriptions for each column in a major fragment block:  
+The following table lists descriptions for each column in a major fragment block:
 
 | Column Name       | Description                                                                                                                                                                                                        |
 |-------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -50,10 +50,10 @@ The following table lists descriptions for each column in a major fragment block
 | State             | The status of the minor fragment; either finished, running, cancelled, or failed.                                                                                                                                  |
 
 
-## Operator Overview  Table  
+## Operator Overview  Table
 
 Shows aggregate metrics for each operator within a major fragment that performed relational operations during query execution.
- 
+
 The following table lists descriptions for each column in the Operator Overview table:
 
 | Column Name                                          | Description                                                                                                                                                                                                                   |
@@ -64,13 +64,13 @@ The following table lists descriptions for each column in the Operator Overview 
 | Min Process Time, Avg Process Time, Max Process Time | The minimum, average, and maximum  amount of time spent by the operator to perform the operation.                                                                                                                             |
 | Wait (min, avg, max)                                 | These fields represent the minimum, average,  and maximum cumulative times spent by operators waiting for external resources.                                                                                                 |
 | Avg Peak Memory                                      | Represents the average of the peak direct memory allocated across minor fragments. Relates to the memory needed by operators to perform their operations, such as hash join or sort.                                          |
-| Max Peak Memory                                      | Represents the maximum of the peak direct memory allocated across minor fragments. Relates to the memory needed by operators to perform their operations, such as  hash join or sort.                                         |  
+| Max Peak Memory                                      | Represents the maximum of the peak direct memory allocated across minor fragments. Relates to the memory needed by operators to perform their operations, such as  hash join or sort.                                         |
 
-## Operator Block  
+## Operator Block
 
-Shows time and memory metrics for each operator type within a major fragment.  
+Shows time and memory metrics for each operator type within a major fragment.
 
-The following table provides descriptions for each column presented in the operator block:  
+The following table provides descriptions for each column presented in the operator block:
 
 | Column Name    | Description                                                                                                                                                                                              |
 |----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -80,6 +80,6 @@ The following table provides descriptions for each column presented in the opera
 | Wait Time      | The cumulative amount of time spent by an operator waiting for external resources. such as waiting to send records, waiting to receive records, waiting to write to disk, and waiting to read from disk. |
 | Max Batches    | The maximum number of record batches consumed from a single input stream.                                                                                                                                |
 | Max Records    | The maximum number of records consumed from a single input stream.                                                                                                                                       |
-| Peak Memory    | Represents the peak direct memory allocated. Relates to the memory needed by the operators to perform their operations, such as  hash join and sort.                                                     |  
+| Peak Memory    | Represents the peak direct memory allocated. Relates to the memory needed by the operators to perform their operations, such as  hash join and sort.                                                     |
 
 

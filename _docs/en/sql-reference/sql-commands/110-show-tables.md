@@ -29,15 +29,15 @@ returns the tables and views within that schema.
 
 ## Limitations
 
-  * You can create and query tables within the file system, however Drill does not return these tables when you issue the SHOW TABLES command. You can issue the [SHOW FILES ]({{ site.baseurl }}/docs/show-files-command)command to see a list of all files, tables, and views, including those created in Drill. 
+  * You can create and query tables within the file system, however Drill does not return these tables when you issue the SHOW TABLES command. You can issue the [SHOW FILES ]({{ site.baseurl }}/docs/show-files-command)command to see a list of all files, tables, and views, including those created in Drill.
 
-  * You cannot create Hive or HBase tables in Drill. 
+  * You cannot create Hive or HBase tables in Drill.
 
 ## Examples
 
 The following examples demonstrate the steps that you can follow when you want
-to issue the SHOW TABLES command on the file system, Hive, and HBase.  
-  
+to issue the SHOW TABLES command on the file system, Hive, and HBase.
+
 Complete the following steps to see views that exist in a file system and
 tables that exist in Hive and HBase data sources:
 
@@ -65,7 +65,7 @@ tables that exist in Hive and HBase data sources:
         |--------------------|
         15 rows selected (0.072 seconds)
 
-  2. Issue the USE command to switch to a particular schema. When you use a particular schema, Drill searches or queries within that schema only. 
+  2. Issue the USE command to switch to a particular schema. When you use a particular schema, Drill searches or queries within that schema only.
 
         0: jdbc:drill:zk=drilldemo:5181> use dfs.myviews;
         |------|-----------------------------------------|
@@ -101,7 +101,7 @@ tables that exist in Hive and HBase data sources:
         | true | Default schema changed to 'hive' |
         |------|----------------------------------|
         1 row selected (0.043 seconds)
-         
+
         0: jdbc:drill:zk=drilldemo:5181> show tables;
         |--------------|------------|
         | TABLE_SCHEMA | TABLE_NAME |
@@ -120,8 +120,8 @@ tables that exist in Hive and HBase data sources:
         | true | Default schema changed to 'hbase' |
         |------|-----------------------------------|
         1 row selected (0.043 seconds)
-         
-         
+
+
         0: jdbc:drill:zk=drilldemo:5181> show tables;
         |--------------|------------|
         | TABLE_SCHEMA | TABLE_NAME |
@@ -130,4 +130,4 @@ tables that exist in Hive and HBase data sources:
         |--------------|------------|
         1 row selected (0.412 seconds)
 
-  
+

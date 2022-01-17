@@ -2,15 +2,15 @@
 title: "Designing Indexes for Your Queries"
 slug: "Designing Indexes for Your Queries"
 parent: "Querying Indexes"
----   
+---
 
-Design indexes that support your queries for maximum performance benefits. Use common query patterns that involve filters and ordering to define indexes. Weigh the benefits of indexes against their update and storage costs and take into consideration any index limitations.  
+Design indexes that support your queries for maximum performance benefits. Use common query patterns that involve filters and ordering to define indexes. Weigh the benefits of indexes against their update and storage costs and take into consideration any index limitations.
 
-## Identify Query Patterns  
-Query patterns, such as queries with filter conditions and ORDER BY clauses, indicate where indexes can improve performance. If a query does not contain selective filters, the overhead of using an index may cost more than a full table scan. You should also define your indexes such that a single index benefits either multiple queries or individual queries that you run most often.  
+## Identify Query Patterns
+Query patterns, such as queries with filter conditions and ORDER BY clauses, indicate where indexes can improve performance. If a query does not contain selective filters, the overhead of using an index may cost more than a full table scan. You should also define your indexes such that a single index benefits either multiple queries or individual queries that you run most often.
 
-### Determine Potential Indexes Based on Query Patterns  
-The following table describes the types and characteristics of indexes you might want to create based on some example query patterns:  
+### Determine Potential Indexes Based on Query Patterns
+The following table describes the types and characteristics of indexes you might want to create based on some example query patterns:
 
 | **Identified Query Pattern**                                                                    | **Potential Indexes to Create**                                                                                                                                                                                                                     |
 |---------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -23,26 +23,26 @@ The following table describes the types and characteristics of indexes you might
 | Filters on individual   elements of an array, which can appear in any position in the array | Define an index using a container column path:   for example, arraycolumn[].                                                                                                                                                                    |
 | Issues Drill SQL queries with   filter conditions that contain CAST expressions             | Specify the CAST function when defining the   index key.                                                                                                                                                                                        |
 | Sorts on columns                                                                            | Define the sequence and order direction of the   index keys to match the sequence and order direction of the columns your   query sorts. If the sort order of the index keys matches the insertion order   of documents, define hashed indexes. |
-| Sorts on one set of columns   and filters on another set using equality conditions          | Define a composite index so that columns using   equality conditions are the prefixes in the index keys, followed by the sort   columns.                                                                                                        |   
+| Sorts on one set of columns   and filters on another set using equality conditions          | Define a composite index so that columns using   equality conditions are the prefixes in the index keys, followed by the sort   columns.                                                                                                        |
 
-## Evaluate Trade-Offs and Limitations  
+## Evaluate Trade-Offs and Limitations
 
 When designing indexes for optimization, consider the following trade-offs and limitations:
 
 ### Synchronizing Indexes
-When you design your indexes, remember that the data source must synchronize each index when you insert and update columns in the table. This impacts the throughput performance of inserts and updates because the data source must perform additional writes. The impact increases with each additional index.  
+When you design your indexes, remember that the data source must synchronize each index when you insert and update columns in the table. This impacts the throughput performance of inserts and updates because the data source must perform additional writes. The impact increases with each additional index.
 
 ### Index Storage Requirements
-Consider the storage costs when creating indexes and deciding on the columns to add to the index. Indexes increase your storage requirements. The storage size depends on the number of indexed and included columns in the index and the size of values stored in those columns. As the size of the index increases, the cost of reading the index also increases.  
+Consider the storage costs when creating indexes and deciding on the columns to add to the index. Indexes increase your storage requirements. The storage size depends on the number of indexed and included columns in the index and the size of values stored in those columns. As the size of the index increases, the cost of reading the index also increases.
 
 ### Index Restrictions
-When designing your indexes, make sure the indexes support the functionality you need. 
+When designing your indexes, make sure the indexes support the functionality you need.
 
-**Examples**  
+**Examples**
 
-The following examples illustrate the concepts behind index design, though they do not account for sizing, storage, and updates. Always weigh the benefits of indexes against these other requirements.  
+The following examples illustrate the concepts behind index design, though they do not account for sizing, storage, and updates. Always weigh the benefits of indexes against these other requirements.
 
-Suppose you have the following customer data in JSON format:  
+Suppose you have the following customer data in JSON format:
 
 	{
 	   "_id": "10000",
@@ -66,9 +66,9 @@ Suppose you have the following customer data in JSON format:
 	   ],
 	   "Hobbies": ["Baseball", "Cooking", "Reading"],
 	   "DateOfBirth": "10/1/1985"
-	}   
+	}
 
-The following table contains columns in the document that are candidates for indexing based on the sample queries:  
+The following table contains columns in the document that are candidates for indexing based on the sample queries:
 
 |    Query # | Query                                                                                                                     | Candidate   columns for Indexing                           |
 |------------|---------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------|
@@ -78,9 +78,9 @@ The following table contains columns in the document that are candidates for ind
 | 4          | Find the ids and emails of customers who live in   a specific zip code.                                                   | Address.Zip                                                |
 | 5          | Find customers who live in a   specific set of states and have an account balance less than a specific   value.           | Address.State     AccountBalance                           |
 | 6          | Find male customers with the   last name starting with the letter "S".                                                    | Gender     FullName.LastName                               |
-| 7          | Find all customers who have a   mobile phone number with a prefix of "650".                                               | Phones[].Type     Phones[].Number                          |     
+| 7          | Find all customers who have a   mobile phone number with a prefix of "650".                                               | Phones[].Type     Phones[].Number                          |
 
-The following table contains indexes you might create to optimize the queries listed in the previous table and the reasons for doing so:  
+The following table contains indexes you might create to optimize the queries listed in the previous table and the reasons for doing so:
 
 |    Index                                                                                           | Rationale                                                                                                                                                                                                                                                                |
 |----------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

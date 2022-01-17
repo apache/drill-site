@@ -9,9 +9,9 @@ To start the Drill shell in embedded mode, use the `drill-embedded` command. Int
 
 2. Issue the following command to start the Drill shell:
 
-    `bin/drill-embedded`  
+    `bin/drill-embedded`
 
-   The `0: jdbc:drill:zk=local>`  prompt appears. 
+   The `0: jdbc:drill:zk=local>`  prompt appears.
 
    At this point, you can [run queries]({{site.baseurl}}/docs/query-data).
 
@@ -27,7 +27,7 @@ In embedded mode, the Drill prompt appears as follows:
 
 `0: jdbc:drill:zk=local>`
 
-* 0 is the number of connections to Drill, which can be only one in embedded node. 
+* 0 is the number of connections to Drill, which can be only one in embedded node.
 * jdbc is the connection type.
 * zk=local zk=local means the local node substitutes for the ZooKeeper node.
 

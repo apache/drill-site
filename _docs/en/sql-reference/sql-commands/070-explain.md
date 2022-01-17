@@ -38,7 +38,7 @@ where `query` is any valid SELECT statement supported by Drill.
 **INCLUDING ALL ATTRIBUTES**
 
 This option returns costing information. You can use this option for both
-physical and logical plans.  
+physical and logical plans.
 
 **WITH IMPLEMENTATION | WITHOUT IMPLEMENTATION**
 

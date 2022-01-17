@@ -23,7 +23,7 @@ It takes just a few minutes to get started with Drill. Untar the Drill software 
 
 
 ## 2. Schema-free JSON model
-Drill is the world's first and only distributed SQL engine that doesn't require schemas. It shares the same schema-free JSON model as MongoDB and Elasticsearch. No need to define and maintain schemas or transform data (ETL). Drill automatically understands the structure of the data. 
+Drill is the world's first and only distributed SQL engine that doesn't require schemas. It shares the same schema-free JSON model as MongoDB and Elasticsearch. No need to define and maintain schemas or transform data (ETL). Drill automatically understands the structure of the data.
 
 ## 3. Query complex, semi-structured data in-situ
 Using Drill's schema-free JSON model, you can query complex, semi-structured data in situ. No need to flatten or transform the data prior to or during query execution. Drill also provides intuitive extensions to SQL to work with nested data. Here's a simple query on a JSON file demonstrating how to access nested elements and arrays:
@@ -47,7 +47,7 @@ Drill supports the standard SQL:2003 syntax. No need to learn a new "SQL-like" l
     WHERE o.o_orderdate >= DATE '1996-10-01'
           AND o.o_orderdate < DATE '1996-10-01' + INTERVAL '3' month
           AND EXISTS(
-                     SELECT * FROM lineitem l 
+                     SELECT * FROM lineitem l
                      WHERE l.l_orderkey = o.o_orderkey
                      AND l.l_commitdate < l.l_receiptdate
                      )
@@ -55,13 +55,13 @@ Drill supports the standard SQL:2003 syntax. No need to learn a new "SQL-like" l
           ORDER BY o.o_orderpriority;
 
 ## 5. Leverage standard BI tools
-Drill works with standard BI tools. You can use your existing tools, such as Tableau, MicroStrategy, QlikView and Excel. 
+Drill works with standard BI tools. You can use your existing tools, such as Tableau, MicroStrategy, QlikView and Excel.
 
 ## 6. Interactive queries on Hive tables
 Apache Drill lets you leverage your investments in Hive. You can run interactive queries with Drill on your Hive tables and access all Hive input/output formats (including custom SerDes). You can join tables associated with different Hive metastores, and you can join a Hive table with an HBase table or a directory of log files. Here's a simple query in Drill on a Hive table:
 
     SELECT `month`, state, sum(order_total) AS sales
-    FROM hive.orders 
+    FROM hive.orders
     GROUP BY `month`, state
     ORDER BY 3 DESC LIMIT 5;
 
@@ -70,13 +70,13 @@ Apache Drill lets you leverage your investments in Hive. You can run interactive
 Drill is extensible. You can connect Drill out-of-the-box to file systems (local or distributed, such as S3 and HDFS), HBase and Hive. You can implement a storage plugin to make Drill work with any other data source. Drill can combine data from multiple data sources on the fly in a single query, with no centralized metadata definitions. Here's a query that combines data from a Hive table, an HBase table (view) and a JSON file:
 
     SELECT custview.membership, sum(orders.order_total) AS sales
-    FROM hive.orders, custview, dfs.`clicks/clicks.json` c 
-    WHERE orders.cust_id = custview.cust_id AND orders.cust_id = c.user_info.cust_id 
+    FROM hive.orders, custview, dfs.`clicks/clicks.json` c
+    WHERE orders.cust_id = custview.cust_id AND orders.cust_id = c.user_info.cust_id
     GROUP BY custview.membership
     ORDER BY 2;
 
 ## 8. User-Defined Functions (UDFs) for Drill and Hive
-Drill exposes a simple, high-performance Java API to build [custom user-defined functions]({{ site.baseurl }}/docs/develop-custom-functions/) (UDFs) for adding your own business logic to Drill.  Drill also supports Hive UDFs. If you have already built UDFs in Hive, you can reuse them with Drill with no modifications. 
+Drill exposes a simple, high-performance Java API to build [custom user-defined functions]({{ site.baseurl }}/docs/develop-custom-functions/) (UDFs) for adding your own business logic to Drill.  Drill also supports Hive UDFs. If you have already built UDFs in Hive, you can reuse them with Drill with no modifications.
 
 
 ## 9. High performance

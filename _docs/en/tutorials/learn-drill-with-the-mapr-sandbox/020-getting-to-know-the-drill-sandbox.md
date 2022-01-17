@@ -3,7 +3,7 @@ title: "Getting to Know the Drill Sandbox"
 slug: "Getting to Know the Drill Sandbox"
 parent: "Learn Drill with the MapR Sandbox"
 ---
-This section covers key information about the Apache Drill tutorial. After [installing the Drill sandbox]({{ site.baseurl }}/docs/installing-the-apache-drill-sandbox) and starting the sandbox, you can open another terminal window (Linux) or Command Prompt (Windows) and use the secure shell (ssh) to connect to the VM, assuming ssh is installed. Use the following login name and password: mapr/mapr.   
+This section covers key information about the Apache Drill tutorial. After [installing the Drill sandbox]({{ site.baseurl }}/docs/installing-the-apache-drill-sandbox) and starting the sandbox, you can open another terminal window (Linux) or Command Prompt (Windows) and use the secure shell (ssh) to connect to the VM, assuming ssh is installed. Use the following login name and password: mapr/mapr.
 
 For example:
 
@@ -14,17 +14,17 @@ For example:
 
 Using the secure shell instead of the VM interface has some advantages. You can copy/paste commands from the tutorial and avoid mouse control problems.
 
-Drill includes a shell for connecting to relational databases and executing SQL commands. On the sandbox, the Drill shell runs in embedded mode. After logging into the sandbox,  use the `SQLLine` command. The Drill shell appears, and you can run Drill queries.  
+Drill includes a shell for connecting to relational databases and executing SQL commands. On the sandbox, the Drill shell runs in embedded mode. After logging into the sandbox,  use the `SQLLine` command. The Drill shell appears, and you can run Drill queries.
 
     [mapr@maprdemo ~]$ sqlline
-    apache drill 1.1.0 
+    apache drill 1.1.0
     "Does your data know the Drill?"
     0: jdbc:drill:>
 
-In this tutorial you query a number of data sets, including Hive and HBase, and files on the file system, such as CSV, JSON, and Parquet files. To access these diverse data sources, you connect Drill to storage plugins. 
+In this tutorial you query a number of data sets, including Hive and HBase, and files on the file system, such as CSV, JSON, and Parquet files. To access these diverse data sources, you connect Drill to storage plugins.
 
 ## Storage Plugin Overview
-You use a [storage plugin]({{ site.baseurl }}/docs/connect-a-data-source-introduction) to connect to a data source, such as a file or the Hive metastore. Take a look at the storage plugin definitions by opening the Storage tab in the Drill Web UI. Launch a web browser and go to: `http://<IP address>:8047/storage`. 
+You use a [storage plugin]({{ site.baseurl }}/docs/connect-a-data-source-introduction) to connect to a data source, such as a file or the Hive metastore. Take a look at the storage plugin definitions by opening the Storage tab in the Drill Web UI. Launch a web browser and go to: `http://<IP address>:8047/storage`.
 
 The control panel for managing storage plugins appears.
 
@@ -39,13 +39,13 @@ You see the following storage plugin configurations:
 * hbase
 * mongo
 
-Click Update to examine a configuration. 
+Click Update to examine a configuration.
 
-If you've used an installation of Drill before using the sandbox, you might notice that a few storage plugin configurations in the sandbox differ from the same storage plugin configurations in a Drill installation. The sandbox configurations of dfs, hive, maprdb, and hbase storage plugins definitions play a role in simulating the cluster environment for running the tutorial. 
+If you've used an installation of Drill before using the sandbox, you might notice that a few storage plugin configurations in the sandbox differ from the same storage plugin configurations in a Drill installation. The sandbox configurations of dfs, hive, maprdb, and hbase storage plugins definitions play a role in simulating the cluster environment for running the tutorial.
 
 ### dfs
 
-The `dfs` storage plugin in the sandbox configures a connection to the MapR file system (MapR-FS). 
+The `dfs` storage plugin in the sandbox configures a connection to the MapR file system (MapR-FS).
 
 The `dfs` storage plugin configuration in the sandbox also includes a set of workspaces; each one represents a
 location in MapR-FS:
@@ -93,7 +93,7 @@ The `dfs` configuration includes format definitions.
 
 ### maprdb
 
-The maprdb is a configuration for MapR-DB in the sandbox. You use this format in the sandbox to query MapR-DB/HBase tables. 
+The maprdb is a configuration for MapR-DB in the sandbox. You use this format in the sandbox to query MapR-DB/HBase tables.
 
 ### hive
 

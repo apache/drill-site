@@ -8,13 +8,13 @@ parent: "Data Sources and File Formats"
 
 This plugin enables Drill to read Microsoft Excel files.  This format is best used with Excel files that do not have extensive formatting, however it will work with formatted files, by allowing you to define a region within the file which contains the data to be read by Drill.
 
-The plugin will automatically evaluate cells which contain formulae. 
+The plugin will automatically evaluate cells which contain formulae.
 
 <!-- TODO: are all versions of Excel files supported? -->
 
 ## Configuring the Excel Format Plugin
 
-This plugin has several configuration variables which must be set in order to read Excel files effectively. Since Excel files often contain other elements besides data, you can use the configuration variables to define a region within your spreadsheet in which Drill should extract data. This is potentially useful if your spreadsheet contains a lot of formatting or other complications. 
+This plugin has several configuration variables which must be set in order to read Excel files effectively. Since Excel files often contain other elements besides data, you can use the configuration variables to define a region within your spreadsheet in which Drill should extract data. This is potentially useful if your spreadsheet contains a lot of formatting or other complications.
 
 ### Configuration Options
 
@@ -42,25 +42,25 @@ Additional configuration options are tabled below.
 You can specify the configuration at runtime via the `table()` function or in the storage plugin configuration. For instance, if you just want to query an Excel file, you could
  execute the query as follows:
 
-    SELECT <fields> 
+    SELECT <fields>
     FROM dfs.`somefile.xlsx`
 
 To query a different sheet other than the default, use the `table()` function as shown below:
 
-    SELECT <fields> 
+    SELECT <fields>
     FROM table( dfs.`test_data.xlsx` (type => 'excel', sheetName => 'secondSheet'))
 
 To join data together from different sheets in one file, use the query below:
 
-    SELECT <fields> 
+    SELECT <fields>
     FROM table( dfs.`test_data.xlsx` (type => 'excel', sheetName => 'secondSheet')) AS t1
-    INNER JOIN table( dfs.`test_data.xlsx` (type => 'excel', sheetName => 'thirdSheet')) AS t2 
+    INNER JOIN table( dfs.`test_data.xlsx` (type => 'excel', sheetName => 'thirdSheet')) AS t2
     ON t1.id = t2.id
 
 
 ### Implicit Columns
 
-Drill includes several columns of file metadata in the query results. These fields are **not** included in star queries and thus must be explicitly listed in a query. 
+Drill includes several columns of file metadata in the query results. These fields are **not** included in star queries and thus must be explicitly listed in a query.
 
 <!-- TODO: convert to a table including data types and descriptions -->
 
@@ -84,8 +84,8 @@ The fields are:
 
 ### Known Limitations
 
-At present, Drill requires that all columns be of the same data type. If they are not, Drill will throw an exception upon trying to read a column of mixed data type. If you are trying to query data with heterogenoeus columns, it will be necessary to set `allTextMode` to true. 
+At present, Drill requires that all columns be of the same data type. If they are not, Drill will throw an exception upon trying to read a column of mixed data type. If you are trying to query data with heterogenoeus columns, it will be necessary to set `allTextMode` to true.
 
-An additional limitation is that Drill infers the column data type from the first row of data. If a column is null in the first row, Drill will default to a datatype of VARCHAR. However if in fact the column is NUMERIC this will cause errors. 
- 
+An additional limitation is that Drill infers the column data type from the first row of data. If a column is null in the first row, Drill will default to a datatype of VARCHAR. However if in fact the column is NUMERIC this will cause errors.
+
  Drill ignores blank rows.

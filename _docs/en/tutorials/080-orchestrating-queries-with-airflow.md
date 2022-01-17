@@ -66,7 +66,7 @@ At this point we should have a working Airflow installation. Fire up the web UI 
 | Port      | 8047                                                         |
 | Extra     | {"dialect_driver": "drill+sadrill", "storage_plugin": "dfs"} |
 
-Note that the sqlalchemy-drill dialect and driver information must be specified in the `Extra` field.  See [the sqlalchemy-drill documentation](https://github.com/JohnOmernik/sqlalchemy-drill) for more information about its configuration. 
+Note that the sqlalchemy-drill dialect and driver information must be specified in the `Extra` field.  See [the sqlalchemy-drill documentation](https://github.com/JohnOmernik/sqlalchemy-drill) for more information about its configuration.
 
 After you've saved the new connection you can shut the Airflow web UI down with ctrl+c.
 
@@ -126,7 +126,7 @@ select
 from
 	dfs.tmp.`cdc_covid_cases.csvh`),
 age_parse as (
-select 
+select
 	*,
 	regexp_replace(age_group, '([0-9]+)[ \-\+]+([0-9]*) Years', '$1') age_min_incl,
 	regexp_replace(age_group, '([0-9]+)[ \-\+]+([0-9]*) Years', '$2') age_max_excl

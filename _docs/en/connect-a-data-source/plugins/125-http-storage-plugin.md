@@ -265,7 +265,7 @@ indicate a bad request or other error.
 The REST plugin accepts three different types of input: `json`, `csv` and `xml`.  The default is
 `json`.  If you are using `XML` as a data type, there is an additional configuration option called
 `xmlDataLevel` which reduces the level of unneeded nesting found in XML files.  You can find more
-information in the documentation for Drill's XML format plugin. 
+information in the documentation for Drill's XML format plugin.
 
 #### Authorization
 

@@ -9,7 +9,7 @@ The RDBMS Metastore implementation allows you store Drill Metastore metadata in 
 ## Configuration
 
 Currently, the RDBMS Metastore is not the default implementation.
-To enable the RDBMS Metastore create the `drill-metastore-override.conf` file 
+To enable the RDBMS Metastore create the `drill-metastore-override.conf` file
 in your config directory and specify the RDBMS Metastore class:
 
 ```yaml
@@ -22,31 +22,31 @@ drill.metastore: {
 
 Use the connection properties to specify how Drill should connect to your Metastore database.
 
-`drill.metastore.rdbms.data_source.driver` - driver class name. Required. 
-Note: the driver class must be included into the Drill classpath. 
+`drill.metastore.rdbms.data_source.driver` - driver class name. Required.
+Note: the driver class must be included into the Drill classpath.
 The easiest way to do that is to put the driver jar file into the `$DRILL_HOME/jars/3rdparty` folder.
 Or, to make upgrades easier, in your `$DRILL_SITE/jars` folder.  Drill includes the driver for SQLite.
 
 `drill.metastore.rdbms.data_source.url` - connection url. Required.
 
 `drill.metastore.rdbms.data_source.username` - database user on whose behalf the connection is
-being made. Optional, if database does not require user to connect. 
+being made. Optional, if database does not require user to connect.
 
-`drill.metastore.rdbms.data_source.password` - database user's password. 
+`drill.metastore.rdbms.data_source.password` - database user's password.
 Optional, if database does not require user's password to connect.
 
 `drill.metastore.rdbms.data_source.properties` - specifies properties which will be used
 during data source creation. See list of available [Hikari properties](https://github.com/brettwooldridge/HikariCP)
 for more details.
 
-### Default configuration 
+### Default configuration
 
 Out of the box, the Drill RDBMS Metastore is configured to use the embedded file system based SQLite database.
 It will be created locally in user's home directory under `${drill.exec.zk.root}"/metastore` location.
 
-Default setup can be used only in Drill embedded mode. SQLite is an embedded database; is not distributed. 
-SQLite is good for trying out the feature, for testing, for a running Drill in embedded mode, 
-and perhaps for a single-node Drill "cluster". If should not be used in a multi-node cluster. 
+Default setup can be used only in Drill embedded mode. SQLite is an embedded database; is not distributed.
+SQLite is good for trying out the feature, for testing, for a running Drill in embedded mode,
+and perhaps for a single-node Drill "cluster". If should not be used in a multi-node cluster.
 Each Drillbit will have its own version of the truth and behavior will be undefined and incorrect.
 
 ### Custom configuration
@@ -100,10 +100,10 @@ for older versions use the <code>com.mysql.jdbc.Driver</code>.
 The Drill Metastore stores several types of metadata, called components. Currently, only the `tables` component is implemented.
 The `tables` component provides metadata about Drill tables, including their segments, files, row groups and partitions.
 In Drill `tables` component unit is represented by `TableMetadataUnit` class which is applicable to any metadata type.
-The `TableMetadataUnit` class holds fields for all five metadata types within the `tables` component. 
+The `TableMetadataUnit` class holds fields for all five metadata types within the `tables` component.
 Any fields not applicable to a particular metadata type are simply ignored and remain unset.
 
-In the RDBMS implementation of the Drill Metastore, the tables component includes five tables, one for each metadata type. 
+In the RDBMS implementation of the Drill Metastore, the tables component includes five tables, one for each metadata type.
 The five tables are: `TABLES`, `SEGMENTS`, `FILES`, `ROW_GROUPS`, and `PARTITIONS`.
 See `src/main/resources/db/changelog/changes/initial_ddls.yaml` for the schema and indexes of each table.
 
@@ -127,7 +127,7 @@ Liquibase converts the yaml specification into the DDL / DML commands suitable r
 See list of supported databases: https://www.liquibase.org/databases.html.
 
 The Drill Metastore tables are created in the database schema indicated in the connection URL.
-This will be the default schema unless you specify a different schema. Drill will not create the schema, however. 
+This will be the default schema unless you specify a different schema. Drill will not create the schema, however.
 Best practice is to create a schema within your database for the Drill metastore before initializing the Metastore.
 
 Example:

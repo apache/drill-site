@@ -12,7 +12,7 @@ This storage plugin enables Drill to query the files stored in a Dropbox account
 The first step to enabling Drill to query Dropbox is creating an API token.
 
 1. Navigate to https://www.dropbox.com/developers/apps/create
-2. Choose `Scoped Access` under Choose an API. 
+2. Choose `Scoped Access` under Choose an API.
 3. Depending on the access limitations you are looking for select either full or limited to a particular folder.
 4. In the permissions tab, make sure all the permissions associated with reading data are enabled.
 
@@ -41,10 +41,10 @@ Once you've created a Dropbox access token, you are now ready to configure Drill
 Paste your access token in the appropriate field and at that point you should be able to query Dropbox.  Drill treats Dropbox as any other file system, so all the instructions here (https://drill.apache.org/docs/file-system-storage-plugin/) and here (https://drill.apache.org/docs/workspaces/) about configuring a workspace, and adding format plugins are exactly the same as any other on Drill.
 
 ### Securing Dropbox Credentials
-As with any other storage plugin, you have a few options as to how to store the credentials. See [Drill Credentials Provider](./PluginCredentialsProvider.md) for more 
-information about how you can store your credentials securely in Drill. 
+As with any other storage plugin, you have a few options as to how to store the credentials. See [Drill Credentials Provider](./PluginCredentialsProvider.md) for more
+information about how you can store your credentials securely in Drill.
 
 ## Limitations
 1. It is not possible to save files to Dropbox from Drill, thus CTAS queries will fail.
-2. Dropbox does not expose directory metadata, so it is not possible to obtain the directory size, modification date or access dates. 
-3. Dropbox does not maintain the last access date as distinct from the modification date of files. 
+2. Dropbox does not expose directory metadata, so it is not possible to obtain the directory size, modification date or access dates.
+3. Dropbox does not maintain the last access date as distinct from the modification date of files.

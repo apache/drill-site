@@ -120,7 +120,7 @@ SELECT `&`(`integer`, 15) as last_nibble FROM dfs.`Users/drill/input2.json`
 
 ### ABS Example
 
-Get the absolute value of the integer key in `input2.json`. 
+Get the absolute value of the integer key in `input2.json`.
 
 ```sql
 SELECT ABS(`integer`) FROM dfs.`/Users/drill/input2.json`;

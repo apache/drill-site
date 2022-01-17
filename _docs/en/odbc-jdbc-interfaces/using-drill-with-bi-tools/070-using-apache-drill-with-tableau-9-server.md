@@ -4,22 +4,22 @@ slug: "Using Apache Drill with Tableau 9 Server"
 parent: "Using Drill with BI Tools"
 ---
 
-This document describes how to connect Tableau 9 Server to Apache Drill and explore multiple data formats instantly on Hadoop, as well as share all the Tableau visualizations in a collaborative environment. Use the combined power of these tools to get direct access to semi-structured data, without having to rely on IT teams for schema creation and data manipulation. 
+This document describes how to connect Tableau 9 Server to Apache Drill and explore multiple data formats instantly on Hadoop, as well as share all the Tableau visualizations in a collaborative environment. Use the combined power of these tools to get direct access to semi-structured data, without having to rely on IT teams for schema creation and data manipulation.
 
-To use Apache Drill with Tableau 9 Server, complete the following steps: 
+To use Apache Drill with Tableau 9 Server, complete the following steps:
 
 1.	Install the Drill ODBC driver from MapR on the Tableau Server system and configure ODBC data sources.
 2.	Install the Tableau Data-connection Customization (TDC) file.
 3.	Publish Tableau visualizations and data sources from Tableau Desktop to Tableau Server for collaboration.
 
 
-## Step 1: Install and Configure the MapR Drill ODBC Driver 
+## Step 1: Install and Configure the MapR Drill ODBC Driver
 
 Drill uses standard ODBC connectivity to provide easy data-exploration capabilities on complex, schema-less data sets. The latest release of Apache Drill. For Tableau 9.0 Server, Drill Version 0.9 or higher is recommended.
 
 Complete the following steps to install and configure the driver:
 
-1. Download the 64-bit MapR Drill ODBC Driver for Windows from the following location:<br> [http://package.mapr.com/tools/MapR-ODBC/MapR_Drill/](http://package.mapr.com/tools/MapR-ODBC/MapR_Drill/)     
+1. Download the 64-bit MapR Drill ODBC Driver for Windows from the following location:<br> [http://package.mapr.com/tools/MapR-ODBC/MapR_Drill/](http://package.mapr.com/tools/MapR-ODBC/MapR_Drill/)
 **Note:** Tableau 9.0 Server works with the 64-bit ODBC driver.
 2. [Install the 64-bit ODBC driver on Windows]({{site.baseurl}}/docs/installing-the-driver-on-windows/).
 3. [Configure the driver]({{site.baseurl}}/docs/configuring-odbc-on-windows/).
@@ -80,5 +80,5 @@ If all you want to do is publish data sources to Tableau Server, follow these st
 5.	In the **Authentication** drop-down list, select **Embedded Password**. Select permissions as needed, then click **Publish**. The data source will now be published on the Tableau Server and is available for building visualizations. ![drill query flow]({{ site.baseurl }}/images/docs/tableau-server-publish-datasource3.png)
 
 
-In this quick tutorial, you saw how you can configure Tableau Server 9.0 to work with Tableau Desktop and Apache Drill. 
+In this quick tutorial, you saw how you can configure Tableau Server 9.0 to work with Tableau Desktop and Apache Drill.
 

@@ -2,43 +2,43 @@
 title: "Monitoring Metrics"
 slug: "Monitoring Metrics"
 parent: "Performance Tuning"
---- 
+---
 
-The Metrics page in the Drill Web UI (`http(s)://<drillbit-ip-address>:8047/metrics`) lists JVM, operating system, and certain Drill-specific metrics. You can use these metrics to debug the state of the cluster. The Drill-specific metrics are prepended with `drill`, for example `drill.fragments.running`. 
+The Metrics page in the Drill Web UI (`http(s)://<drillbit-ip-address>:8047/metrics`) lists JVM, operating system, and certain Drill-specific metrics. You can use these metrics to debug the state of the cluster. The Drill-specific metrics are prepended with `drill`, for example `drill.fragments.running`.
 
-Drill uses JMX ([Java Management Extensions](https://docs.oracle.com/javase/tutorial/jmx/)) to expose metrics at runtime. JMX provides the architecture to dynamically manage and monitor applications. JMX collects Drill system-level metrics that you can see in the Metrics tab in the Drill Web UI or a remote JMX monitoring tool, such as JConsole or the VisualVM + MBeans plugin.   
+Drill uses JMX ([Java Management Extensions](https://docs.oracle.com/javase/tutorial/jmx/)) to expose metrics at runtime. JMX provides the architecture to dynamically manage and monitor applications. JMX collects Drill system-level metrics that you can see in the Metrics tab in the Drill Web UI or a remote JMX monitoring tool, such as JConsole or the VisualVM + MBeans plugin.
 
-Metrics collected by JMX are divided into the following categories on the Metrics page in the Drill Web UI:  
+Metrics collected by JMX are divided into the following categories on the Metrics page in the Drill Web UI:
 
-* **Gauges**  
-A gauge is an instantaneous measure of a value. See [Gauges]({{site.baseurl}}/docs/monitoring-metrics/#gauges).   
-* **Counters**  
-A counter is a snapshot of the count of metrics at a particular point in time. (A gauge for an [AtomicLong](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/atomic/AtomicLong.html) instance.) See [Counters]({{site.baseurl}}/docs/monitoring-metrics/#counters).  
-* **Histograms**    
-A histogram measures the statistical distribution of values in a stream of data. See [Histograms]({{site.baseurl}}/docs/monitoring-metrics/#histograms).  
-* **Meters**  
-A meter measures the rate of events over time, for example requests per second. Drill currently does not use meters to report system-level metrics.  
-* **Timers**  
+* **Gauges**
+A gauge is an instantaneous measure of a value. See [Gauges]({{site.baseurl}}/docs/monitoring-metrics/#gauges).
+* **Counters**
+A counter is a snapshot of the count of metrics at a particular point in time. (A gauge for an [AtomicLong](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/atomic/AtomicLong.html) instance.) See [Counters]({{site.baseurl}}/docs/monitoring-metrics/#counters).
+* **Histograms**
+A histogram measures the statistical distribution of values in a stream of data. See [Histograms]({{site.baseurl}}/docs/monitoring-metrics/#histograms).
+* **Meters**
+A meter measures the rate of events over time, for example requests per second. Drill currently does not use meters to report system-level metrics.
+* **Timers**
 A timer measures the rate that a particular piece of code is called and the distribution of its duration. See [Timers]({{site.baseurl}}/docs/monitoring-metrics/#timers).
 
-## Remote Monitoring  
-You can enable the remote JMX Java feature to monitor a specific JVM from a remote location. You can enable remote JMX with or without authentication. See the [Java documentation](http://docs.oracle.com/javase/7/docs/technotes/guides/management/agent.html). 
+## Remote Monitoring
+You can enable the remote JMX Java feature to monitor a specific JVM from a remote location. You can enable remote JMX with or without authentication. See the [Java documentation](http://docs.oracle.com/javase/7/docs/technotes/guides/management/agent.html).
 
 In `$DRILL_HOME/conf/drill-env.sh`, use the `DRILLBIT_JAVA_OPTS` variable to pass the relevant parameters. For example, to add remote monitoring on port 8048 without authentication:
 
-       export DRILLBIT_JAVA_OPTS=”$DRILLBIT_JAVA_OPTS -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.port=8048”  
+       export DRILLBIT_JAVA_OPTS=”$DRILLBIT_JAVA_OPTS -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.port=8048”
 
-## Disabling Drill Metrics  
-JMX metric collection is enabled, by default. You can disable the metrics option if needed. 
+## Disabling Drill Metrics
+JMX metric collection is enabled, by default. You can disable the metrics option if needed.
 
 In `$DRILL_HOME/conf/drill-env.sh`, set the `drill.metrics.jmx.enabled` option to false through the `DRILLBIT_JAVA_OPTS` variable. Add the variable in `drill-env.sh` if it does not exist:
 
-       export DRILLBIT_JAVA_OPTS="$DRILLBIT_JAVA_OPTS -Ddrill.metrics.jmx.enabled=false"   
+       export DRILLBIT_JAVA_OPTS="$DRILLBIT_JAVA_OPTS -Ddrill.metrics.jmx.enabled=false"
 
 
-## Gauges 
+## Gauges
 
-The following table lists the Drill-specific metrics in the Gauges section of the Metrics page: 
+The following table lists the Drill-specific metrics in the Gauges section of the Metrics page:
 
 | Metric                               | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 |--------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -66,9 +66,9 @@ The following table lists the Drill-specific metrics in the Gauges section of th
 | load.avg                             | Returns the   "recent cpu usage" for the Drillbit process. This value is a double   in the [0.0,1.0] interval. A value of 0.0 means that none of the CPUs were   running threads from the Drillbit process during the recent period of time   observed, while a value of 1.0 means that all CPUs were actively running   threads from the Drillbit process 100% of the time during the recent period   being observed. Threads from the Drillbit process includes the application   threads as well as the JVM internal threads. All values betweens 0.0 and 1.0   are possible depending of the activities going on in the Drillbit process and   the whole system. If the recent CPU usage is not available, the method   returns a negative value. See [getProcesCpuLoad()](https://docs.oracle.com/javase/7/docs/jre/api/management/extension/com/sun/management/OperatingSystemMXBean.html#getProcessCpuLoad()). |
 | uptime                               | Total uptime of   Drillbit JVM in miliseconds. See [getUptime()](https://docs.oracle.com/javase/7/docs/api/java/lang/management/RuntimeMXBean.html#getUptime()).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 
-## Counters  
+## Counters
 
-The following table lists the Drill-specific metrics in the Counters section of the Metrics page:   
+The following table lists the Drill-specific metrics in the Counters section of the Metrics page:
 
 | Metric                                    | Description                                                                                                                                                               |
 |-------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -84,26 +84,26 @@ The following table lists the Drill-specific metrics in the Counters section of 
 | drill.queries.failed                      | The   number of failed queries for which this Drillbit was the Foreman.                                                                                                   |
 | drill.queries.planning                    | The   number of queries that are in the planning stage for which the Drillbit is   the Foreman.                                                                           |
 | drill.queries.running                     | The number of queries running for which this   Drillbit is the Foreman.                                                                                                   |
-| drill.queries.succeeded                   | The   number of successful queries for which this Drillbit was the Foreman.                                                                                               |   
+| drill.queries.succeeded                   | The   number of successful queries for which this Drillbit was the Foreman.                                                                                               |
 
 
 ## Histograms
 
-The following table lists the Drill-specific metrics in the Histograms section of the Metrics page:  
+The following table lists the Drill-specific metrics in the Histograms section of the Metrics page:
 
 | Reporting Class                      | Description                                                                                                                                                                                                                                                                                                                                                       |
 |-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | drill.allocator.huge.hist   | Displays the distribution of allocation of huge buffers up to the current   time. Like count, it specifies number of huge buffer allocations completed so   far. Max/Min specifies maximum/minimum size in bytes of the huge buffer   allocated. Mean and other percentiles show the distribution of the huge   buffer allocation size in bytes.                  |
 | drill.allocator.normal.hist | Displays the distribution of allocation of the normal size buffers up to   the current time. Like count, it specifies the number of normal buffer   allocations completed so far. Max/Min specifies maximum/minimum size in bytes   of the normal buffer allocated. Mean and other percentiles show the   distribution of normal buffer allocation size in bytes. |
 
-## Meters  
+## Meters
 
-Not available. 
+Not available.
 
 
 
-## Timers  
-  
+## Timers
+
 | Reporting Class                                                         | Description                                                                                                                                                                                                                |
 |---------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | org.apache.drill.exec.cache.VectorAccessibleSerializable.writerTime       | Measures the distribution of the   time taken to serialize a record batch to the output stream. Mainly used to   measure the time taken to spill a record batch.                                                           |

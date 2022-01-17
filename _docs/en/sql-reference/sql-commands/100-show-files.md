@@ -4,7 +4,7 @@ slug: "SHOW FILES"
 parent: "SQL Commands"
 ---
 The SHOW FILES command provides a quick report of the file systems that are
-visible to Drill for query purposes. This command is unique to Apache Drill. Starting in Drill 1.15, the INFORMATION_SCHEMA includes a FILES table that you can query. See [Querying the INFORMATION_SCHEMA]({{site.baseurl}}/docs/querying-the-information-schema/). 
+visible to Drill for query purposes. This command is unique to Apache Drill. Starting in Drill 1.15, the INFORMATION_SCHEMA includes a FILES table that you can query. See [Querying the INFORMATION_SCHEMA]({{site.baseurl}}/docs/querying-the-information-schema/).
 
 ## Syntax
 
@@ -28,14 +28,14 @@ The following example returns information about directories and files in the
 local (`dfs`) file system.
 
 	0: jdbc:drill:> use dfs;
-	 
+	
 	|------|---------------------------------|
 	| ok   | summary                         |
 	|------|---------------------------------|
 	| true | Default schema changed to 'dfs' |
 	|------|---------------------------------|
 	1 row selected (0.318 seconds)
-	 
+	
 	0: jdbc:drill:> show files;
 	|------------|-------------|--------|--------|-------|-------|-------------|-----------------------|-------------------------|
 	| name       | isDirectory | isFile | length | owner | group | permissions | accessTime            | modificationTime        |
@@ -54,7 +54,7 @@ The following example shows the files in a specific directory in the `dfs`
 file system:
 
 	0: jdbc:drill:> show files in dfs.CSV;
-	 
+	
 	|--------------------|-------------|--------|--------|-------|-------|-------------|-----------------------|-------------------------|
 	| name               | isDirectory | isFile | length | owner | group | permissions | accessTime            | modificationTime        |
 	|--------------------|-------------|--------|--------|-------|-------|-------------|-----------------------|-------------------------|

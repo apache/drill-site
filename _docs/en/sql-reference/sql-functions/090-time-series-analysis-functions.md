@@ -43,7 +43,7 @@ There are two versions of the function, one which accepts a date and interval, a
 
 ### Time Bucket Functions
 
-These functions are useful for doing time series analysis by grouping the data into arbitrary intervals.  Examples in addition to those in this section may be found [here](https://blog.timescale.com/blog/simplified-time-series-analytics-using-the-time_bucket-function/). 
+These functions are useful for doing time series analysis by grouping the data into arbitrary intervals.  Examples in addition to those in this section may be found [here](https://blog.timescale.com/blog/simplified-time-series-analytics-using-the-time_bucket-function/).
 
 There are two versions of the function:
 * `time_bucket(<timestamp>, <interval>)`
@@ -68,10 +68,10 @@ Drill UDF for parsing User Agent Strings.  This function is based on Niels Basje
 
 ### Usage
 
-The function `parse_user_agent()` takes a user agent string as an argument and returns a map of the available fields. Note that not every field will be present in every user agent string. 
+The function `parse_user_agent()` takes a user agent string as an argument and returns a map of the available fields. Note that not every field will be present in every user agent string.
 
 ```sql
-SELECT parse_user_agent( columns[0] ) as ua 
+SELECT parse_user_agent( columns[0] ) as ua
 FROM dfs.`/tmp/data/drill-httpd/ua.csv`;
 ```
 
@@ -121,5 +121,5 @@ The function can also be called with an optional field as an argument. I.e.
 SELECT parse_user_agent( `user_agent`, 'AgentName` ) as AgentName ...
 ```
 
-which will just return the requested field. If the user agent string is empty, all fields will have the value of `Hacker`.  
+which will just return the requested field. If the user agent string is empty, all fields will have the value of `Hacker`.
 

@@ -27,18 +27,18 @@ There are five fields which you can to configure in order for Drill to read web 
   "type" : "httpd",
   "logFormat" : "%h %l %u %t \"%r\" %s %b \"%{Referer}i\" \"%{User-agent}i\"",
   "timestampFormat" : "dd/MMM/yyyy:HH:mm:ss ZZ",
-  "maxErrors": 0, 
+  "maxErrors": 0,
   "flattenWildcards": false
 }
 ```
 
 ## Data Model
-The fields which Drill will return from HTTPD access logs should be fairly self explanatory and should all be mapped to correct data types.  For instance, `TIMESTAMP` fields are all Drill `TIMESTAMPS` and so forth. 
- 
+The fields which Drill will return from HTTPD access logs should be fairly self explanatory and should all be mapped to correct data types.  For instance, `TIMESTAMP` fields are all Drill `TIMESTAMPS` and so forth.
+
 ### Nested Columns
 The HTTPD parser can produce a few columns of nested data. For instance, the various `query_string` columns are parsed into Drill maps so that if you want to look for a specific
- field, you can do so. 
- 
+ field, you can do so.
+
  Drill allows you to directly access maps in with the format of:
  ```
 <table>.<map>.<field>
@@ -50,24 +50,24 @@ FROM dfs.test.`logfile.httpd` AS mylogs
 
 ```
 In this example, we assign an alias of `mylogs` to the table, the column name is `request_firstline_uri_query_$` and then the individual field within that mapping is `username
-`.  This particular example enables you to analyze items in query strings.  
+`.  This particular example enables you to analyze items in query strings.
 
 ### Flattening Maps
-In the event that you have a map field that you would like broken into columns rather than getting the nested fields, you can set the `flattenWildcards` option to `true` and 
-Drill will create columns for these fields.  For example if you have a URI Query option called `username`.  If you selected the `flattedWildcards` option, Drill will create a 
-field called `request_firstline_uri_query_username`.  
+In the event that you have a map field that you would like broken into columns rather than getting the nested fields, you can set the `flattenWildcards` option to `true` and
+Drill will create columns for these fields.  For example if you have a URI Query option called `username`.  If you selected the `flattedWildcards` option, Drill will create a
+field called `request_firstline_uri_query_username`.
 
-** Note that underscores in the field name are replaced with double underscores ** 
- 
+** Note that underscores in the field name are replaced with double underscores **
+
  ## Useful Functions
  If you are using Drill to analyze web access logs, there are a few other useful functions which you should know about:
- 
+
  * `parse_url(<url>)`: This function accepts a URL as an argument and returns a map of the URL's protocol, authority, host, and path.
  * `parse_query(<query_string>)`: This function accepts a query string and returns a key/value pairing of the variables submitted in the request.
  * `parse_user_agent(<user agent>)`, `parse_user_agent( <useragent field>, <desired field> )`: The function parse_user_agent() takes a user agent string as an argument and
-  returns a map of the available fields. Note that not every field will be present in every user agent string. 
+  returns a map of the available fields. Note that not every field will be present in every user agent string.
   [Complete Docs Here](https://github.com/apache/drill/tree/master/contrib/udfs#user-agent-functions)
- 
+
 
 ## Implicit Columns
 Data queried by this plugin will return two implicit columns:
@@ -84,7 +84,7 @@ WHERE _matched = false
 ```
 
 ## Additional Functionality
-In addition to reading raw log files, the following functions are also useful when analyzing log files:  
+In addition to reading raw log files, the following functions are also useful when analyzing log files:
 
 * `parse_url(<url>)`:  This function accepts a URL as an argument and returns a map of the URL's protocol, authority, host, and path.
 * `parse_query( <query_string> )`:  This function accepts a query string and returns a key/value pairing of the variables submitted in the request.

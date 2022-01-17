@@ -8,7 +8,7 @@ If a query is failing, you can use jstack to print the Java thread stack traces 
 
        "2ae226e1-f4c5-6253-e9ff-22ac1204935f:frag:3:2" daemon prio=10 tid=0x00007fa81167b800 nid=0x1431 waiting on condition [0x00007fa7aa3b3000]
 
-When you use jstack, grep for frag to see the fragments executing the query. To see the stack trace for a Drillbit process, you must have the Drillbit process ID. You can run jps to get the ID. 
+When you use jstack, grep for frag to see the fragments executing the query. To see the stack trace for a Drillbit process, you must have the Drillbit process ID. You can run jps to get the ID.
 
 ## Use jstack to Review Stack Traces
 The following example shows you how to run jps to get the Drillbit process ID and grep for frag in the stack trace:
@@ -25,7 +25,7 @@ In this example, the Drillbit process ID is 1975. Alternatively, you can grep fo
        [root@drillats2 ~]# ps -el|grep java
 
 Once you have the Drillbit process ID, you can use jstack to view the stack trace of threads.
-       
+
        [root@drillats2 ~]# jstack 1975 | grep frag:
        "2ae22585-bb7b-b482-0542-4ebd5225a249:frag:0:0" daemon prio=10 tid=0x00007fa782796800 nid=0x37a2 runnable [0x00007fa7866e4000]
        "2ae225ab-c37a-31dc-227e-5f165e057f5f:frag:0:0" daemon prio=10 tid=0x00007fa7a004f000 nid=0x2946 runnable [0x00007fa7868e6000]
@@ -39,4 +39,4 @@ Once you have the Drillbit process ID, you can use jstack to view the stack trac
        "2ae226e1-f4c5-6253-e9ff-22ac1204935f:frag:3:2" daemon prio=10 tid=0x00007fa81167b800 nid=0x1431 waiting on condition [0x00007fa7aa3b3000]
        "2ae226e1-f4c5-6253-e9ff-22ac1204935f:frag:2:2" daemon prio=10 tid=0x0000000004582000 nid=0x1430 waiting on condition [0x00007fa7a7bae000]
        …
-       
+

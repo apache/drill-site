@@ -56,17 +56,17 @@ The following example shows the program created for the `myaddints` function:
     import org.apache.drill.exec.expr.holders.Float8Holder;
     import org.apache.drill.exec.expr.holders.IntHolder;
     import org.apache.drill.exec.expr.holders.VarCharHolder;
-     
+
     public class MyUdfs {
-       
+
       @FunctionTemplate(name = "myaddints", scope = FunctionScope.SIMPLE, nulls = NullHandling.NULL_IF_NULL)
       public static class Add1 implements DrillSimpleFunc{
-             
+
         @Param BigIntHolder input1;
         @Param BigIntHolder input2;
         @Output BigIntHolder out;
         public void setup(){}
-             
+
         public void eval(){
           out.value = input1.value + input2.value;
         }
@@ -79,7 +79,7 @@ When you develop an aggregate function, you implement the `DrillAggFunc` interfa
     @FunctionTemplate(name = "mysecondmin", scope = FunctionTemplate.FunctionScope.POINT_AGGREGATE)
     public static class MySecondMin implements DrillAggFunc {
 
-The aggregate function interface includes holders where you indicate the data types that your function can process. This interface includes the @Param and @Output holders previously described and also includes the @Workspace holder. 
+The aggregate function interface includes holders where you indicate the data types that your function can process. This interface includes the @Param and @Output holders previously described and also includes the @Workspace holder.
 
 ### @Workspace holder
 
@@ -91,7 +91,7 @@ This holder indicates the data type used to store intermediate data during proce
 The aggregate function interface also includes the following methods that Drill calls when processing a query with the function.
 
 * setup
-  Performs the initialization and processing that Drill only performs once.  
+  Performs the initialization and processing that Drill only performs once.
 * add
   Processes each and every record. It applies the function to each value in a column that Drill processes.
 * output
@@ -118,9 +118,9 @@ The following example shows the program created for the `mysecondmin` function. 
     import org.apache.drill.exec.expr.holders.Float8Holder;
     import org.apache.drill.exec.expr.holders.IntHolder;
     import org.apache.drill.exec.expr.holders.VarCharHolder;
-     
+
     public class MyUdfs {
-       
+
       @FunctionTemplate(name = "mysecondmin", scope = FunctionTemplate.FunctionScope.POINT_AGGREGATE)
       public static class MySecondMin implements DrillAggFunc {
         @Param BigIntHolder in;
@@ -128,20 +128,20 @@ The following example shows the program created for the `mysecondmin` function. 
         @Workspace BigIntHolder secondMin;
         @Output BigIntHolder out;
         public void setup() {
-          min = new BigIntHolder(); 
-          secondMin = new BigIntHolder(); 
+          min = new BigIntHolder();
+          secondMin = new BigIntHolder();
           min.value = 999999999;
           secondMin.value = 999999999;
         }
-         
+
         @Override
         public void add() {
-             
+
             if (in.value < min.value) {
               secondMin.value = min.value;
               min.value = in.value;
             }
-             
+
         }
         @Override
         public void output() {
@@ -152,5 +152,5 @@ The following example shows the program created for the `mysecondmin` function. 
           min.value = 999999999;
           secondMin.value = 999999999;
         }
-        
+
        }

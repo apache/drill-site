@@ -11,12 +11,12 @@ Logback.xml contains two appenders, STDOUT and FILE, that determine where Drill 
 ## Enable Debug Logging
 You can enable DEBUG on some loggers for additional information. Each of the classes listed below have a logger that you can add to logback.xml:
 
-* Task execution (similar to MR task submit output)  
-  * org.apache.drill.exec.rpc.control.WorkEventBus  
-  * org.apache.drill.exec.work.fragment.FragmentExecutor  
-  * org.apache.drill.exec.work.foreman.QueryManager  
-* Cluster cohesion and coordination  
-  * org.apache.drill.exec.coord.zk.ZkClusterCoordinator  
+* Task execution (similar to MR task submit output)
+  * org.apache.drill.exec.rpc.control.WorkEventBus
+  * org.apache.drill.exec.work.fragment.FragmentExecutor
+  * org.apache.drill.exec.work.foreman.QueryManager
+* Cluster cohesion and coordination
+  * org.apache.drill.exec.coord.zk.ZkClusterCoordinator
 * Query text and plans
   * org.apache.drill.exec.planner.sql.handlers.DefaultSqlHandler
 
@@ -34,12 +34,12 @@ You can use Lilith and the socket appender for local debugging. Lillith connects
 To enable log messages to output to Lilith, uncomment the following two sections in logback.xml and change LILITH_HOSTNAME to that of the machine running the Lilith application:
 
        <appender name="SOCKET" class="de.huxhorn.lilith.logback.appender.ClassicMultiplexSocketAppender"> <Compressing>true</Compressing> <ReconnectionDelay>10000</ReconnectionDelay> <IncludeCallerData>true</IncludeCallerData> <RemoteHosts>${LILITH_HOSTNAME:-localhost}</RemoteHosts> </appender>
-       
+
        <logger name="org.apache.drill" additivity="false">
            <level value="debug" />
            <appender-ref ref="SOCKET" />
        </logger>
- 
+
 ## Add the Hostname
 Logback includes a layout called PatternLayout that takes a logging event and returns a string. You can modify PatternLayout's conversion pattern to include the hostname in the log message. Add the hostname to the conversion pattern in logback.xml to identify which machine is sending log messages.
 

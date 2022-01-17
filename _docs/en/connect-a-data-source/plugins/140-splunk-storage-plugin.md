@@ -152,7 +152,7 @@ parsed into a Drill Map by using the `convert_fromJSON()` function. The query
 below demonstrates how to convert a JSON column into a Drill `MAP`.
 
 ```sql
-SELECT convert_fromJSON(_raw) 
+SELECT convert_fromJSON(_raw)
 FROM splunk.spl
 WHERE spl = '| makeresults
 | eval _raw="{\"pc\":{\"label\":\"PC\",\"count\":24,\"peak24\":12},\"ps3\":

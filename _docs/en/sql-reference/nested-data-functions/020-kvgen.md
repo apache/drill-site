@@ -77,7 +77,7 @@ keys or constrain the keys in some way. For example, you can use the
 [FLATTEN]({{ site.baseurl }}/docs/flatten) function to break the
 array down into multiple distinct rows and further query those rows.
 
-For example, assume that a JSON file named `simplemaps.json` contains this data:  
+For example, assume that a JSON file named `simplemaps.json` contains this data:
 
 	{"rec1":{"a": "valA", "b": "valB"}}
 	{"rec1":{"c": "valC", "d": "valD"}}
@@ -139,7 +139,7 @@ look like this one:
 	        }
 	    ]
     }
- 
+
 	{
 	    "rownum": 3,
 	    "bigintegercol": {
@@ -173,7 +173,7 @@ look like this one:
 A SELECT * query against this specific record returns the following row:
 
     0: jdbc:drill:zk=local> select * from dfs.`kvgendata.json` where rownum=1;
- 
+
 	|--------|---------------------------------|---------------------------------------------------------|-------------------------------------------------------|-------------------------|---------------------------------------------|
 	| rownum | bigintegercol                   | varcharcol                                              | boolcol                                               | float8col               | complex                                     |
 	|--------|---------------------------------|---------------------------------------------------------|-------------------------------------------------------|-------------------------|---------------------------------------------|

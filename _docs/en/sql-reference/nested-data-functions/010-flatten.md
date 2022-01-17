@@ -16,7 +16,7 @@ FLATTEN separates the elements in a repeated field into individual records.
 The FLATTEN function is useful for flexible exploration of repeated data.
 
 To maintain the association between each flattened value and the other fields in
-the record, the FLATTEN function copies all of the other columns into each new record. 
+the record, the FLATTEN function copies all of the other columns into each new record.
 
 A very simple example would turn this data (one record):
 
@@ -50,8 +50,8 @@ The query is restricted to distinct rows where the name is `z``pizza`. The
 query returns only one row that meets those criteria; however, note that this
 row contains an array of four categories:
 
-    0: jdbc:drill:zk=local> select distinct name, hours, categories 
-    from dfs.yelp.`yelp_academic_dataset_business.json` 
+    0: jdbc:drill:zk=local> select distinct name, hours, categories
+    from dfs.yelp.`yelp_academic_dataset_business.json`
     where name ='zpizza';
     |------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
     |    name    |   hours                                                                                                                                                                                                                                                                                                         | categories                                    |
@@ -61,8 +61,8 @@ row contains an array of four categories:
 The FLATTEN function can operate on this single row and return multiple rows,
 one for each category:
 
-    0: jdbc:drill:zk=local> select distinct name, flatten(categories) as categories 
-    from dfs.yelp.`yelp_academic_dataset_business.json` 
+    0: jdbc:drill:zk=local> select distinct name, flatten(categories) as categories
+    from dfs.yelp.`yelp_academic_dataset_business.json`
     where name ='zpizza' order by 2;
     |------------|-------------|
     |    name    | categories  |
@@ -82,12 +82,12 @@ constraints or aggregate functions to the results in the outer query.
 The following query uses the same data file as the previous query to flatten
 the categories array, then run a COUNT function on the flattened result:
 
-    select celltbl.catl, count(celltbl.catl) catcount 
-    from (select flatten(categories) catl 
-    from dfs.yelp.`yelp_academic_dataset_business.json`) celltbl 
-    group by celltbl.catl 
+    select celltbl.catl, count(celltbl.catl) catcount
+    from (select flatten(categories) catl
+    from dfs.yelp.`yelp_academic_dataset_business.json`) celltbl
+    group by celltbl.catl
     order by count(celltbl.catl) desc limit 5;
- 
+
     |---------------|------------|
     |    catl       |  catcount  |
     |---------------|------------|

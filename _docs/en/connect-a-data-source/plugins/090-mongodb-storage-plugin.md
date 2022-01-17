@@ -6,7 +6,7 @@ parent: "Connect a Data Source"
 ## Overview
 
 Drill supports MongoDB 3.0, providing a mongodb storage plugin to connect to MongoDB using MongoDB's latest Java driver. You can run queries
-to read, but not write, Mongo data using Drill. Attempting to write data back to Mongo results in an error. You do not need any upfront schema definitions. 
+to read, but not write, Mongo data using Drill. Attempting to write data back to Mongo results in an error. You do not need any upfront schema definitions.
 
 {% include startnote.html %}In the following examples, you use a local instance of Drill for simplicity. {% include endnote.html %}
 
@@ -14,18 +14,18 @@ You can also run Drill and MongoDB together in distributed mode.
 
 ### Before You Begin
 
-To query MongoDB with Drill, you install Drill and MongoDB, and then you import zip code aggregation data into MongoDB. 
+To query MongoDB with Drill, you install Drill and MongoDB, and then you import zip code aggregation data into MongoDB.
 
   1. [Install Drill]({{ site.baseurl }}/docs/installing-drill-in-embedded-mode), if you do not already have it installed.
   2. [Install MongoDB](http://docs.mongodb.org/manual/installation), if you do not already have it installed.
-  3. [Import the MongoDB zip code sample data set](http://docs.mongodb.org/manual/tutorial/aggregation-zip-code-data-set).   * Copy the `zips.json` content into a file and save it.  
+  3. [Import the MongoDB zip code sample data set](http://docs.mongodb.org/manual/tutorial/aggregation-zip-code-data-set).   * Copy the `zips.json` content into a file and save it.
      * Create `/data/db` if it doesn't already exist.
-     * Make sure you have permissions to access the directories. 
-     * Use Mongo Import to import `zips.json`. 
+     * Make sure you have permissions to access the directories.
+     * Use Mongo Import to import `zips.json`.
 
 ## Configuring MongoDB
 
-Drill must be running in order to access the Web UI to configure a storage plugin configuration. Start Drill and view and enable the MongoDB storage plugin configuration as described in the following procedure: 
+Drill must be running in order to access the Web UI to configure a storage plugin configuration. Start Drill and view and enable the MongoDB storage plugin configuration as described in the following procedure:
 
   1. [Start the Drill shell]({{site.baseurl}}/docs/starting-drill-on-linux-and-mac-os-x/).
 
@@ -43,7 +43,7 @@ Drill must be running in order to access the Web UI to configure a storage plugi
 
 {% include startnote.html %}27017 is the default port for `mongodb` instances.{% include endnote.html %}
 {% include startnote.html %}In some cases you will need an authentication to perform certain `mongodb` queries. You can add login and password directly to connection URL: 'mongodb://root:password@localhost:27017/'.{% include endnote.html %}
-{% include startnote.html %}See more info [Connection String URI Format]({{site.baseurl}}https://docs.mongodb.com/v3.0/reference/connection-string/){% include endnote.html %} 
+{% include startnote.html %}See more info [Connection String URI Format]({{site.baseurl}}https://docs.mongodb.com/v3.0/reference/connection-string/){% include endnote.html %}
 
   6. Click **Enable** to enable the storage plugin.
 
@@ -52,10 +52,10 @@ Drill must be running in order to access the Web UI to configure a storage plugi
 In the [Drill shell]({{site.baseurl}}/docs/starting-drill-on-linux-and-mac-os-x/), set up Drill to use the zips collection you imported into MongoDB.
 
 1. Get a list of schemas from all
-Drill data sources, including MongoDB. 
+Drill data sources, including MongoDB.
 
         SHOW DATABASES;
-   
+
         |---------------------|
         |     SCHEMA_NAME     |
         |---------------------|
@@ -69,7 +69,7 @@ Drill data sources, including MongoDB.
         | sys                 |
         |---------------------|
         8 rows selected (1.385 seconds)
-    
+
 2. Change the schema to mongo.text.
 
         USE mongo.test;
@@ -130,7 +130,7 @@ Drill data sources, including MongoDB.
 **Example 2: Aggregation**
 
 ```
-SELECT city, avg(pop) FROM zips GROUP BY city LIMIT 10; 
+SELECT city, avg(pop) FROM zips GROUP BY city LIMIT 10;
 
 |---------------|---------------------|
 |     city      |       EXPR$1        |
@@ -166,7 +166,7 @@ SELECT city, avg(pop) FROM zips GROUP BY city LIMIT 10;
     | [-72.607962,42.162046] |
     | [-72.576142,42.176443] |
     |------------------------|
-        
+
     0: jdbc:drill:zk=local> SELECT loc[0] FROM zips LIMIT 10;
     |------------|
     |   EXPR$0   |

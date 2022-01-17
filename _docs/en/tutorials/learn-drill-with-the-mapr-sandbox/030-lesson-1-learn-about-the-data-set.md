@@ -46,7 +46,7 @@ This tutorial uses the DECIMAL data type in some examples. The DECIMAL data type
     |-------|--------------------------------------------|
     | true  | planner.enable_decimal_data_type updated.  |
     |-------|--------------------------------------------|
-    1 row selected 
+    1 row selected
 
 ### List the available workspaces and databases:
 
@@ -158,15 +158,15 @@ columns typical of a time-series database.
 
 The products table has two column families.
 
-<table ><colgroup><col /><col /></colgroup><tbody><tr><td ><span style="color: rgb(0,0,0);">Column Family</span></td><td ><span style="color: rgb(0,0,0);">Columns</span></td></tr><tr><td ><span style="color: rgb(0,0,0);">details</span></td><td ><span style="color: rgb(0,0,0);">name</br></span><span style="color: rgb(0,0,0);">category</span></td></tr><tr><td ><span style="color: rgb(0,0,0);">pricing</span></td><td ><span style="color: rgb(0,0,0);">price</span></td></tr></tbody></table>  
+<table ><colgroup><col /><col /></colgroup><tbody><tr><td ><span style="color: rgb(0,0,0);">Column Family</span></td><td ><span style="color: rgb(0,0,0);">Columns</span></td></tr><tr><td ><span style="color: rgb(0,0,0);">details</span></td><td ><span style="color: rgb(0,0,0);">name</br></span><span style="color: rgb(0,0,0);">category</span></td></tr><tr><td ><span style="color: rgb(0,0,0);">pricing</span></td><td ><span style="color: rgb(0,0,0);">price</span></td></tr></tbody></table>
 The products table contains 965 rows.
 
 ### Customers Table
 
 The Customers table has three column families.
 
-<table ><colgroup><col /><col /></colgroup><tbody><tr><td ><span style="color: rgb(0,0,0);">Column Family</span></td><td ><span style="color: rgb(0,0,0);">Columns</span></td></tr><tr><td ><span style="color: rgb(0,0,0);">address</span></td><td ><span style="color: rgb(0,0,0);">state</span></td></tr><tr><td ><span style="color: rgb(0,0,0);">loyalty</span></td><td ><span style="color: rgb(0,0,0);">agg_rev</br></span><span style="color: rgb(0,0,0);">membership</span></td></tr><tr><td ><span style="color: rgb(0,0,0);">personal</span></td><td ><span style="color: rgb(0,0,0);">age</br></span><span style="color: rgb(0,0,0);">gender</span></td></tr></tbody></table>  
-  
+<table ><colgroup><col /><col /></colgroup><tbody><tr><td ><span style="color: rgb(0,0,0);">Column Family</span></td><td ><span style="color: rgb(0,0,0);">Columns</span></td></tr><tr><td ><span style="color: rgb(0,0,0);">address</span></td><td ><span style="color: rgb(0,0,0);">state</span></td></tr><tr><td ><span style="color: rgb(0,0,0);">loyalty</span></td><td ><span style="color: rgb(0,0,0);">agg_rev</br></span><span style="color: rgb(0,0,0);">membership</span></td></tr><tr><td ><span style="color: rgb(0,0,0);">personal</span></td><td ><span style="color: rgb(0,0,0);">age</br></span><span style="color: rgb(0,0,0);">gender</span></td></tr></tbody></table>
+
 The customers table contains 993 rows.
 
 ### Set the workspace to maprdb:
@@ -190,8 +190,8 @@ The customers table contains 993 rows.
     | loyalty      | (VARCHAR(1), ANY) MAP  | NO           |
     | personal     | (VARCHAR(1), ANY) MAP  | NO           |
     |--------------|------------------------|--------------|
-    4 rows selected 
- 
+    4 rows selected
+
     0: jdbc:drill:> describe products;
     |--------------|------------------------|--------------|
     | COLUMN_NAME  |       DATA_TYPE        | IS_NULLABLE  |
@@ -200,7 +200,7 @@ The customers table contains 993 rows.
     | details      | (VARCHAR(1), ANY) MAP  | NO           |
     | pricing      | (VARCHAR(1), ANY) MAP  | NO           |
     |--------------|------------------------|--------------|
-    3 rows selected 
+    3 rows selected
 
 Unlike the Hive example, the DESCRIBE command does not return the full schema
 up to the column level. Wide-column NoSQL databases such as MapR-DB and HBase
@@ -225,7 +225,7 @@ ANY.
     | [B@65e93096  | {"category":"TGFiZWxz","name":"QXZlcnkgNDk4"}                                                                  | {"price":"Mw=="}  |
     | [B@3074fc1f  | {"category":"TGFiZWxz","name":"QXZlcnkgNDk="}                                                                  | {"price":"Mw=="}  |
     |--------------|----------------------------------------------------------------------------------------------------------------|-------------------|
-    5 rows selected 
+    5 rows selected
 
 Given that Drill requires no up front schema definitions indicating data
 types, the query returns the raw byte arrays for column values, just as they
@@ -313,7 +313,7 @@ is directly below the nested directory.
     | 31920     | 2014-04-26  | 12:17:12  | {"cust_id":22526,"device":"IOS5","state":"il"}    | {"prod_id":[174,2],"purch_flag":"false"}  |
     | 31026     | 2014-04-20  | 13:50:29  | {"cust_id":16368,"device":"AOS4.2","state":"nc"}  | {"prod_id":[],"purch_flag":"false"}       |
     |-----------|-------------|-----------|---------------------------------------------------|-------------------------------------------|
-    2 rows selected 
+    2 rows selected
 
 The FROM clause reference points to a specific file. Drill expands
 the traditional concept of a “table reference” in a standard SQL FROM clause
@@ -332,7 +332,7 @@ or characters.
     | 35232     | 2014-05-10  | 00:13:03  | {"cust_id":18520,"device":"AOS4.3","state":"tx"}  | {"camp_id":"null"}  | {"prod_id":[7,7],"purch_flag":"true"}  |
     | 31995     | 2014-05-22  | 16:06:38  | {"cust_id":17182,"device":"IOS6","state":"fl"}    | {"camp_id":"null"}  | {"prod_id":[],"purch_flag":"false"}    |
     |-----------|-------------|-----------|---------------------------------------------------|---------------------|----------------------------------------|
-    2 rows selected 
+    2 rows selected
 
 Notice that with a select * query, any complex data types such as maps and
 arrays return as JSON strings. You will see how to unpack this data using
@@ -375,7 +375,7 @@ data source, or to query a subset of the files.
     | 2012  | 8     | 109       | 08/07/2012  | 20:33:13  | 144618   | IOS5    | ga     | 4        | hey       | 6        | false       |
     | 2012  | 8     | 119       | 08/19/2012  | 03:37:50  | 17       | IOS5    | tx     | 16       | and       | 50       | false       |
     |-------|-------|-----------|-------------|-----------|----------|---------|--------|----------|-----------|----------|-------------|
-    2 rows selected 
+    2 rows selected
 
 Note that this is flat JSON data. The dfs.clicks workspace location property
 points to a directory that contains the logs directory, making the FROM clause
@@ -394,7 +394,7 @@ queries that leverage these dynamic variables.
     |---------|
     | 48000   |
     |---------|
-    1 row selected 
+    1 row selected
 
 This query traverses all of the files in the logs directory and its
 subdirectories to return the total number of rows in those files.

@@ -7,7 +7,7 @@ Apache Drill queries do not require prior knowledge of the actual data you are
 trying to access, regardless of its source system or its schema and data
 types. The sweet spot for Apache Drill is a SQL query workload against
 *complex data*: data made up of various types of records and fields, rather
-than data in a recognizable relational form (discrete rows and columns). 
+than data in a recognizable relational form (discrete rows and columns).
 
 Drill is capable of discovering the form of the data when you submit the query.
 Nested data formats such as JSON (JavaScript Object Notation) files and

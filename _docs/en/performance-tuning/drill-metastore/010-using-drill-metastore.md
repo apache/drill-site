@@ -55,7 +55,7 @@ Once you enable the Metastore, the next step is to populate it with data. Metast
  only add data to the Metastore when doing so improves query performance. In general, large tables benefit from
  statistics more than small tables do.
 
-Unlike Hive, Drill does not require you to declare a schema. Instead, Drill infers the schema by scanning your table 
+Unlike Hive, Drill does not require you to declare a schema. Instead, Drill infers the schema by scanning your table
  in the same way as it is done during regular select and computes some metadata like `MIN` / `MAX` column values and
  `NULLS_COUNT` designated as "metadata" to be able to produce more optimizations like filter push-down, etc. If
  `planner.statistics.use` option is enabled, this command will also calculate and store table statistics into Drill
@@ -126,7 +126,7 @@ The Drill Metastore holds both schema and statistics information for a table. Th
  schema for well-defined tables (such as many Parquet tables). Some tables are too complex or variable for Drill's
  schema inference to work well. For example, JSON tables often omit fields or have long runs of nulls so that Drill
  cannot determine column types. In these cases, you can specify the correct schema based on your knowledge of the
- table's structure. You specify a schema in the `ANALYZE` command using the 
+ table's structure. You specify a schema in the `ANALYZE` command using the
  [Schema provisioning]({{site.baseurl}}/docs/plugin-configuration-basics/#specifying-the-schema-as-table-function-parameter) syntax.
 
 Please refer to [Provisioning schema for Drill Metastore](#provisioning-schema-for-drill-metastore) for examples of usage.
@@ -179,7 +179,7 @@ Drill will reload statistics and replan the query. This option specifies the max
 Allows using [file metadata cache]({{site.baseurl}}/docs/refresh-table-metadata) for the case when required metadata is absent in the Metastore.
 Default is `true`.
 - **metastore.metadata.use_schema**
-The `ANALYZE TABLE` command infers table schema as it gathers statistics. This option tells Drill to use that schema information while planning the query. 
+The `ANALYZE TABLE` command infers table schema as it gathers statistics. This option tells Drill to use that schema information while planning the query.
 Disable this option if Drill has inferred the schema incorrectly, or schema will be provided separately (see [CREATE OR REPLACE SCHEMA]({{site.baseurl}}/docs/create-or-replace-schema)).
 Default is `true`.
 - **metastore.metadata.use_statistics**

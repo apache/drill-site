@@ -9,8 +9,8 @@ To manage a cluster in which multiple users share a Drillbit, you configure Dril
 
 Set [options in sys.options]({{site.baseurl}}/docs/configuration-options-introduction/) to enable and manage query queuing, which is turned off by default. There are two types of queues: large and small. You configure a maximum number of queries that each queue allows by configuring the following options in the `sys.options` table:
 
-* exec.queue.large  
-* exec.queue.small  
+* exec.queue.large
+* exec.queue.small
 * exec.queue.threshold
 
 The exec.queue.threshold sets the cost threshold for determining whether query is large or small based on complexity. Complex queries have higher thresholds. The default, 30,000,000, represents the estimated rows that a query will process. To serialize incoming queries, set the small queue at 0 and the threshold at 0.
@@ -25,9 +25,9 @@ By default, Drill parallelizes operations when number of records manipulated wit
 
 To configure parallelization, configure the following options in the `sys.options` table:
 
-* `planner.width.max_per_node`  
+* `planner.width.max_per_node`
   The maximum degree of distribution of a query across cores and cluster nodes.
-* `planner.width.max_per_query`  
+* `planner.width.max_per_query`
   Same as max per node but applies to the query as executed by the entire cluster.
 
 ### planner.width.max_per_node
@@ -59,7 +59,7 @@ A parallelizer in the Foreman transforms the physical plan into multiple phases.
 
 ## Data Isolation
 
-Tenants can share data on a cluster using Drill views and [impersonation]({{site.baseurl}}/docs/configuring-user-impersonation). 
+Tenants can share data on a cluster using Drill views and [impersonation]({{site.baseurl}}/docs/configuring-user-impersonation).
 
 
 

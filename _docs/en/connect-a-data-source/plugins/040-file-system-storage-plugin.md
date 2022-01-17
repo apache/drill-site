@@ -6,15 +6,15 @@ parent: "Connect a Data Source"
 You can register a storage plugin configuration that connects Drill to a local file system or to a distributed file system registered in the Hadoop `core-site.xml`, such as S3
 or HDFS. By
 default, Apache Drill includes a storage plugin configuration named `dfs` that points to the local file
-system on your machine by default. 
+system on your machine by default.
 
 ## Connecting Drill to a File System
 
-In a Drill cluster, you typically do not query the local file system, but instead place files on the distributed file system. Currently, you need to use a distributed file system when connecting multiple Drillbits to get complete, consistent query results, simulate a distributed file system by copying files to each node, or use an NFS volume, such as Amazon Elastic File System. 
+In a Drill cluster, you typically do not query the local file system, but instead place files on the distributed file system. Currently, you need to use a distributed file system when connecting multiple Drillbits to get complete, consistent query results, simulate a distributed file system by copying files to each node, or use an NFS volume, such as Amazon Elastic File System.
 
 You configure the connection property of the storage plugin workspace to connect Drill to a distributed file system. For example, the following connection property connects Drill to an HDFS cluster from a client:
 
-`"connection": "hdfs://<IP Address>:<Port>/"`   
+`"connection": "hdfs://<IP Address>:<Port>/"`
 
 To query a file on HDFS from a node on the cluster, you can simply change the connection from `file:///` to `hdfs://` in the `dfs` storage plugin.
 
@@ -82,7 +82,7 @@ workspace named `json_files`. The configuration points Drill to the
           "location" : "/users/max/drill/json/",
           "writable" : false,
           "defaultInputFormat" : json
-       } 
+       }
     },
 
 The `connection` parameter in this configuration is "`file:///`", connecting Drill to the local file system.

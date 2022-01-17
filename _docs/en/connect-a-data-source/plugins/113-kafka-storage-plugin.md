@@ -4,35 +4,35 @@ slug: "Kafka Storage Plugin"
 parent: "Connect a Data Source"
 ---
 
-As of Drill 1.12, Drill provides a storage plugin for Kafka. The Kafka storage plugin enables you to run SQL queries on Apache Kafka and perform interactive analysis on the data. When you install Drill, a preconfigured Kafka storage plugin is available on the Storage page in the Drill Web UI. Once you enable and configure the storage plugin, you can query Kafka from Drill. 
+As of Drill 1.12, Drill provides a storage plugin for Kafka. The Kafka storage plugin enables you to run SQL queries on Apache Kafka and perform interactive analysis on the data. When you install Drill, a preconfigured Kafka storage plugin is available on the Storage page in the Drill Web UI. Once you enable and configure the storage plugin, you can query Kafka from Drill.
 
-The following sections provide information about the Kafka storage plugin, how to enable and configure the Kafka storage plugin in Drill, options that you can set at the system or session level, and example queries on a Kafka data source. You can refer to the [README](https://github.com/apache/drill/tree/master/contrib/storage-kafka#drill-kafka-plugin) and [Apache Kafka](https://kafka.apache.org/) for additional information.  
+The following sections provide information about the Kafka storage plugin, how to enable and configure the Kafka storage plugin in Drill, options that you can set at the system or session level, and example queries on a Kafka data source. You can refer to the [README](https://github.com/apache/drill/tree/master/contrib/storage-kafka#drill-kafka-plugin) and [Apache Kafka](https://kafka.apache.org/) for additional information.
 
 ## Kafka Support
 
-Currently, the Kafka storage plugin supports: 
+Currently, the Kafka storage plugin supports:
 
 - Kafka-0.10 and above
 - Reading Kafka messages of type JSON only
-- The following message reader to read the Kafka messages:  
+- The following message reader to read the Kafka messages:
 
 | **MessageReader**     | **Description**           | **Key DeSerializer**                                            | **Value DeSerializer**                                             |
 |-------------------|-----------------------|-------------------------------------------------------------|----------------------------------------------------------------|
-| JsonMessageReader | To read Json messages | org.apache.kafka.common.serialization.ByteArrayDeserializer | org.apache.kafka.common.serialization.ByteArrayDeserializer    | 
+| JsonMessageReader | To read Json messages | org.apache.kafka.common.serialization.ByteArrayDeserializer | org.apache.kafka.common.serialization.ByteArrayDeserializer    |
 
-## About the Kafka Storage Plugin  
+## About the Kafka Storage Plugin
 
-In Drill, each Kafka topic is mapped to an SQL table. When run a query on a table, the query scans all the messages from the earliest offset to the latest offset of that topic at that point in time. The Kafka storage plugin automatically discovers all the topics (tables), so you can perform analysis without executing DDL statements.  
+In Drill, each Kafka topic is mapped to an SQL table. When run a query on a table, the query scans all the messages from the earliest offset to the latest offset of that topic at that point in time. The Kafka storage plugin automatically discovers all the topics (tables), so you can perform analysis without executing DDL statements.
 
-The Kafka storage plugin also fetches the following metadata for each message:  
+The Kafka storage plugin also fetches the following metadata for each message:
 
 - kafkaTopic
 - kafkaPartitionId
 - kafkaMsgOffset
 - kafkaMsgTimestamp
-- kafkaMsgKey, unless it is not null  
+- kafkaMsgKey, unless it is not null
 
-The following examples show Kafka topics and message offsets:  
+The following examples show Kafka topics and message offsets:
 
        $bin/kafka-topics --list --zookeeper localhost:2181
        clicks
@@ -54,47 +54,47 @@ The following examples show Kafka topics and message offsets:
        clickstream-json-demo:2:2765245
        clickstream-json-demo:1:2765245
        clickstream-json-demo:3:2765245
-       clickstream-json-demo:0:2765245  
+       clickstream-json-demo:0:2765245
 
-## Filter Pushdown Support  
+## Filter Pushdown Support
 
-Pushing down filters to the Kafka data source reduces the number of messages that Drill scans and significantly decrease query time. Prior to Drill 1.14, Drill scanned all of the data in a topic before applying filters. Starting in Drill 1.14, Drill transforms the filter conditions on metadata fields to limit the range of offsets scanned from the topic. 
+Pushing down filters to the Kafka data source reduces the number of messages that Drill scans and significantly decrease query time. Prior to Drill 1.14, Drill scanned all of the data in a topic before applying filters. Starting in Drill 1.14, Drill transforms the filter conditions on metadata fields to limit the range of offsets scanned from the topic.
 
-The Drill kafka storage plugin supports filter pushdown for query conditions on the following Kafka metadata fields in messages:  
+The Drill kafka storage plugin supports filter pushdown for query conditions on the following Kafka metadata fields in messages:
 
-- **kafkaPartitionId**  
+- **kafkaPartitionId**
 Conditions on the kafkaPartitionId metadata field limit the number of partitions that Drill scans, which is useful for data exploration.
-Drill can push down filters when a query contains the following conditions on the kafkaPartitionId metadata field:  
+Drill can push down filters when a query contains the following conditions on the kafkaPartitionId metadata field:
 =, >, >=, <, <=
-  
-- **kafkaMsgOffset**  
-Drill can push down filters when a query contains the  following conditions on the kafkaMsgOffset metadata field:    
-=, >, >=, <, <=  
-  
-- **kafkaMsgTimestamp**  
-The kafkaMsgTimestamp field maps to the timestamp stored for each Kafka message. Drill can push down filters when a query contains the  following conditions on the kafkaMsgTimestamp metadata field:  
-=, >, >=  
-   
-Kafka exposes the following [Consumer API](https://kafka.apache.org/11/javadoc/org/apache/kafka/clients/consumer/MockConsumer.html) to obtain the earliest offset for a given timestamp value:  
 
-       public java.util.Map<TopicPartition,OffsetAndTimestamp> offsetsForTimes(java.util.Map<TopicPartition,java.lang.Long> timestampsToSearch)  
-  
+- **kafkaMsgOffset**
+Drill can push down filters when a query contains the  following conditions on the kafkaMsgOffset metadata field:
+=, >, >=, <, <=
 
-This API is used to determine the startOffset for each partition in a topic. Note that the timestamps may not appear in increasing order when reading from a Kafka topic if you have defined the timestamp for a message. However, the API returns the first offset (from the beginning of a topic partition) where the timestamp is greater or equal to the timestamp requested. Therefore, Drill does not support pushdown on < or <= because an earlier timestamp may exist beyond endOffsetcomputed.     
+- **kafkaMsgTimestamp**
+The kafkaMsgTimestamp field maps to the timestamp stored for each Kafka message. Drill can push down filters when a query contains the  following conditions on the kafkaMsgTimestamp metadata field:
+=, >, >=
 
-## Enabling and Configuring the Kafka Storage Plugin  
+Kafka exposes the following [Consumer API](https://kafka.apache.org/11/javadoc/org/apache/kafka/clients/consumer/MockConsumer.html) to obtain the earliest offset for a given timestamp value:
 
-Enable the Kafka storage plugin on the Storage page of the Drill Web UI and then edit the configuration as needed. 
+       public java.util.Map<TopicPartition,OffsetAndTimestamp> offsetsForTimes(java.util.Map<TopicPartition,java.lang.Long> timestampsToSearch)
 
-The Kafka storage plugin configuration contains the `kafkaConsumerProps` property which  supports typical Kafka consumer properties, as described in [Kafka Consumer Configs](https://kafka.apache.org/documentation/#consumerconfigs).  
 
-To enable the Kafka storage plugin, enter the following URL in the address bar of your browser to access the Storage page in the Drill Web UI:  
+This API is used to determine the startOffset for each partition in a topic. Note that the timestamps may not appear in increasing order when reading from a Kafka topic if you have defined the timestamp for a message. However, the API returns the first offset (from the beginning of a topic partition) where the timestamp is greater or equal to the timestamp requested. Therefore, Drill does not support pushdown on < or <= because an earlier timestamp may exist beyond endOffsetcomputed.
 
-       http://<drill-node-ip-address>:8047/storage/  
+## Enabling and Configuring the Kafka Storage Plugin
 
-In the Disabled Storage Plugins section, click **Enable** next to Kafka. Kafka moves to the Enabled Storage Plugins section. Click **Update** to see the default configuration. Modify the configuration, as needed, click **Update** again to save the changes. Click **Back** to return to the Storage page.  
+Enable the Kafka storage plugin on the Storage page of the Drill Web UI and then edit the configuration as needed.
 
-The following configuration is an example Kafka storage plugin configuration:  
+The Kafka storage plugin configuration contains the `kafkaConsumerProps` property which  supports typical Kafka consumer properties, as described in [Kafka Consumer Configs](https://kafka.apache.org/documentation/#consumerconfigs).
+
+To enable the Kafka storage plugin, enter the following URL in the address bar of your browser to access the Storage page in the Drill Web UI:
+
+       http://<drill-node-ip-address>:8047/storage/
+
+In the Disabled Storage Plugins section, click **Enable** next to Kafka. Kafka moves to the Enabled Storage Plugins section. Click **Update** to see the default configuration. Modify the configuration, as needed, click **Update** again to save the changes. Click **Back** to return to the Storage page.
+
+The following configuration is an example Kafka storage plugin configuration:
 
        {
          "type": "kafka",
@@ -108,11 +108,11 @@ The following configuration is an example Kafka storage plugin configuration:
            "session.timeout.ms": "30000"
          },
          "enabled": true
-       }  
+       }
 
-## System|Session Options  
+## System|Session Options
 
-You can modify the following options in Drill at the system or session level using the [ALTER SYSTEM]({{site.baseurl}}/docs/alter-system/)|[SESSION SET]({{site.baseurl}}/docs/set/) commands:  
+You can modify the following options in Drill at the system or session level using the [ALTER SYSTEM]({{site.baseurl}}/docs/alter-system/)|[SESSION SET]({{site.baseurl}}/docs/set/) commands:
 
 | Option                             | Description                                                                                                                                                                                                                                                                                                                               | Example                                                                                                             |
 |------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
@@ -120,18 +120,18 @@ You can modify the following options in Drill at the system or session level usi
 | store.kafka.poll.timeout           | Polling timeout used by Kafka client while   fetching messages from Kafka cluster. Default value is 200 milliseconds.                                                                                                                                                                                                                     | ALTER SESSION SET `store.kafka.poll.timeout` =   200;                                                               |
 | exec.enable_union_type             | Enable support for JSON union type. Default is   false.                                                                                                                                                                                                                                                                                   | ALTER SESSION SET `exec.enable_union_type` =   true;                                                                |
 | store.kafka.all_text_mode          | Reads all data from JSON files as VARCHAR.   Default is false.                                                                                                                                                                                                                                                                            | ALTER SESSION SET `store.kafka.all_text_mode` =   true;                                                             |
-| store.kafka.read_numbers_as_double | Reads numbers from JSON files with or without a   decimal point as DOUBLE. Default is false.                                                                                                                                                                                                                                              | ALTER SESSION SET   `store.kafka.read_numbers_as_double` = true;                                                    |  
+| store.kafka.read_numbers_as_double | Reads numbers from JSON files with or without a   decimal point as DOUBLE. Default is false.                                                                                                                                                                                                                                              | ALTER SESSION SET   `store.kafka.read_numbers_as_double` = true;                                                    |
 
-See [Drill JSON Model](https://drill.apache.org/docs/json-data-model/) and [Drill system options configuration](https://drill.apache.org/docs/configuration-options-introduction/)s for more information.  
+See [Drill JSON Model](https://drill.apache.org/docs/json-data-model/) and [Drill system options configuration](https://drill.apache.org/docs/configuration-options-introduction/)s for more information.
 
-## Examples of Drill Queries on Kafka  
+## Examples of Drill Queries on Kafka
 
 The following examples show queries on Kafka and the use of the ALTER SESSION SET command to change Kafka related options at the session level:
 
        $ bin/sqlline -u jdbc:drill:zk=localhost:2181
        Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=512M; support was removed in 8.0
        apache drill 1.12.0-SNAPSHOT
-       "json ain't no thang"  
+       "json ain't no thang"
 
 
        0: jdbc:drill:zk=localhost:2181> use kafka;
@@ -140,7 +140,7 @@ The following examples show queries on Kafka and the use of the ALTER SESSION SE
        |-------|------------------------------------|
        | true  | Default schema changed to [kafka]  |
        |-------|------------------------------------|
-       1 row selected (0.564 seconds)  
+       1 row selected (0.564 seconds)
 
        0: jdbc:drill:zk=localhost:2181> show tables;
        |---------------|------------------------------|
@@ -239,6 +239,6 @@ The following examples show queries on Kafka and the use of the ALTER SESSION SE
 
 
 
- 
+
 
 

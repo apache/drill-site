@@ -4,7 +4,7 @@ slug: "Error Messages"
 parent: "Log and Debug"
 ---
 
-Drill produces several types of error messages. You can ignore issues that contain any of the following syntax:  
+Drill produces several types of error messages. You can ignore issues that contain any of the following syntax:
 
    * InterruptedException
    * ChannelClosedException

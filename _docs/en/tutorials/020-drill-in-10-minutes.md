@@ -23,11 +23,11 @@ After installing Drill, you start the Drill shell. The [Drill shell]({{site.base
 Your machine must meet the following prerequisites to run Drill in embedded mode:
 
 * Linux, Mac OS X, and Windows: Oracle JDK [version 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
-* Windows only:  
-  * A JAVA_HOME environment variable set up that points to the JDK installation  
-  * A PATH environment variable that includes a pointer to the bin directory of the JDK installation 
-  * A third-party utility for unzipping a .tar.gz file 
-  
+* Windows only:
+  * A JAVA_HOME environment variable set up that points to the JDK installation
+  * A PATH environment variable that includes a pointer to the bin directory of the JDK installation
+  * A third-party utility for unzipping a .tar.gz file
+
 ### Java Installation Prerequisite Check
 
 Run the following command in a terminal (Linux and Mac OS X) or Command Prompt (Windows) to verify that Java 8 is the version in effect:
@@ -42,15 +42,15 @@ The output looks something like this:
 
 ## Installing Drill on Linux or Mac OS X
 
-Complete the following steps to install Drill:  
+Complete the following steps to install Drill:
 
-1. In a terminal window, change to the directory where you want to install Drill.  
-2. Download the latest version of Apache Drill [here](http://apache.mirrors.hoobly.com/drill/drill-1.19.0/apache-drill-1.19.0.tar.gz) or from the [Apache Drill mirror site](http://www.apache.org/dyn/closer.cgi/drill/drill-1.19.0/apache-drill-1.19.0.tar.gz) with the command appropriate for your system:  
-       * `wget http://apache.mirrors.hoobly.com/drill/drill-1.19.0/apache-drill-1.19.0.tar.gz`  
-       * `curl -o apache-drill-1.19.0.tar.gz http://apache.mirrors.hoobly.com/drill/drill-1.19.0/apache-drill-1.19.0.tar.gz`   
-3. Copy the downloaded file to the directory where you want to install Drill.  
-4. Extract the contents of the Drill .tar.gz file. Use `sudo` if necessary:  
-`tar -xvzf <.tar.gz file name>`  
+1. In a terminal window, change to the directory where you want to install Drill.
+2. Download the latest version of Apache Drill [here](http://apache.mirrors.hoobly.com/drill/drill-1.19.0/apache-drill-1.19.0.tar.gz) or from the [Apache Drill mirror site](http://www.apache.org/dyn/closer.cgi/drill/drill-1.19.0/apache-drill-1.19.0.tar.gz) with the command appropriate for your system:
+       * `wget http://apache.mirrors.hoobly.com/drill/drill-1.19.0/apache-drill-1.19.0.tar.gz`
+       * `curl -o apache-drill-1.19.0.tar.gz http://apache.mirrors.hoobly.com/drill/drill-1.19.0/apache-drill-1.19.0.tar.gz`
+3. Copy the downloaded file to the directory where you want to install Drill.
+4. Extract the contents of the Drill .tar.gz file. Use `sudo` if necessary:
+`tar -xvzf <.tar.gz file name>`
 
 The extraction process creates an installation directory containing the Drill software.
 
@@ -59,21 +59,21 @@ You can start Drill.
 ### Starting Drill on Linux and Mac OS X
 Start Drill in embedded mode using the `drill-embedded` command:
 
-1. Navigate to the Drill installation directory. For example:  
+1. Navigate to the Drill installation directory. For example:
 
-    `cd apache-drill-<version>`  
+    `cd apache-drill-<version>`
 
 2. Issue the following command to launch Drill in embedded mode:
 
-    `bin/drill-embedded`  
+    `bin/drill-embedded`
 
-   The message of the day followed by the [`0: jdbc:drill:zk=local>`  prompt]({{site.baseurl}}/docs/starting-drill-on-linux-and-mac-os-x/#about-the-drill-prompt) appears.  
+   The message of the day followed by the [`0: jdbc:drill:zk=local>`  prompt]({{site.baseurl}}/docs/starting-drill-on-linux-and-mac-os-x/#about-the-drill-prompt) appears.
 
    At this point, you can [submit queries]({{site.baseurl}}/docs/drill-in-10-minutes/#query-sample-data) to Drill.
 
-## Installing and Starting Drill on Windows  
+## Installing and Starting Drill on Windows
 
-See [Installing Drill on Windows]({{site.baseurl}}/docs/installing-drill-on-windows/). 
+See [Installing Drill on Windows]({{site.baseurl}}/docs/installing-drill-on-windows/).
 
 
 ## Stopping Drill
@@ -95,7 +95,7 @@ Use SQL to query the sample `JSON` and `Parquet` files in the `sample-data` dire
 
 A sample JSON file, [`employee.json`]({{site.baseurl}}/docs/querying-json-files/), contains fictitious employee data. To view the data in the `employee.json` file, submit the following SQL query
 to Drill, using the [cp (classpath) storage plugin]({{site.baseurl}}/docs/storage-plugin-registration/) configuration to point to the file.
-    
+
 	SELECT * FROM cp.`employee.json` LIMIT 3;
 	
 	    |--------------|------------------|-------------|------------|--------------|---------------------|-----------|----------------|-------------|------------------------|----------|----------------|------------------|-----------------|---------|--------------------|
@@ -105,7 +105,7 @@ to Drill, using the [cp (classpath) storage plugin]({{site.baseurl}}/docs/storag
 	    | 2            | Derrick Whelply  | Derrick     | Whelply    | 2            | VP Country Manager  | 0         | 1              | 1915-07-03  | 1994-12-01 00:00:00.0  | 40000.0  | 1              | Graduate Degree  | M               | M       | Senior Management  |
 	    | 4            | Michael Spence   | Michael     | Spence     | 2            | VP Country Manager  | 0         | 1              | 1969-06-20  | 1998-01-01 00:00:00.0  | 40000.0  | 1              | Graduate Degree  | S               | M       | Senior Management  |
 	    |--------------|------------------|-------------|------------|--------------|---------------------|-----------|----------------|-------------|------------------------|----------|----------------|------------------|-----------------|---------|--------------------|
-	   
+	
 
 ### Querying Parquet Files
 
@@ -133,7 +133,7 @@ To view the data in the `region.parquet` file, use the actual path to your Drill
     | 3            | EUROPE       | ly final courts cajo  |
     | 4            | MIDDLE EAST  | uickly special accou  |
     |--------------|--------------|-----------------------|
-    
+
 #### Nation File
 
 The path to the parquet file varies between operating
@@ -171,7 +171,7 @@ systems. Use the actual path to your Drill installation to construct this query:
     | 23          | UNITED KINGDOM | 3           | eans boost carefully |
     | 24          | UNITED STATES  | 1           | y final packages. sl |
     |-------------|----------------|-------------|----------------------|
-   
+
 
 ## Summary
 

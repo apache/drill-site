@@ -3,7 +3,7 @@ title: "REPEATED_CONTAINS"
 slug: "REPEATED_CONTAINS"
 parent: "Nested Data Functions"
 ---
-REPEATED CONTAINS searches for a keyword in an array. 
+REPEATED CONTAINS searches for a keyword in an array.
 
 ## Syntax
 

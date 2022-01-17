@@ -8,7 +8,7 @@ The Drill installation includes a `sample-data` directory with Parquet files
 that you can query. Use SQL to query the `region.parquet` and
 `nation.parquet` files in the `sample-data` directory.
 
-{% include startnote.html %}The Drill installation location may differ from the examples used here.{% include endnote.html %} 
+{% include startnote.html %}The Drill installation location may differ from the examples used here.{% include endnote.html %}
 
 The examples assume that Drill was [installed in embedded mode]({{ site.baseurl }}/docs/installing-drill-in-embedded-mode). If you installed Drill in distributed mode, or your `sample-data` directory differs from the location used in the examples. Change the `sample-data` directory to the correct location before you run the queries.
 

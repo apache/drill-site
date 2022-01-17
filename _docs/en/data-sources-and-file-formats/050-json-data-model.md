@@ -26,16 +26,16 @@ JSON data consists of the following types:
 * Object: unordered key/value collection enclosed in curly braces
 * String: Unicode enclosed in double quotation marks
 * Value: a string, number, true, false, null
-* Whitespace: used between tokens 
-* Number: double-precision floating point number, including exponential numbers, NaN, and Infinity. Octal and hexadecimal are not supported.  
+* Whitespace: used between tokens
+* Number: double-precision floating point number, including exponential numbers, NaN, and Infinity. Octal and hexadecimal are not supported.
 
-Drill 1.13 and later supports NaN (Not-a-Number) and Infinity (both POSITIVE and NEGATIVE) as numeric values. This support introduces the following session options, which are set to true by default:  
+Drill 1.13 and later supports NaN (Not-a-Number) and Infinity (both POSITIVE and NEGATIVE) as numeric values. This support introduces the following session options, which are set to true by default:
 
        store.json.writer.allow_nan_inf
-       store.json.reader.allow_nan_inf  
+       store.json.reader.allow_nan_inf
 
 Drill writes NaN and Infinity values as literals to a JSON file when `store.json.writer.allow_nan_inf` is set to true. When set to false, Drill writes NaN and Infinity values as string values to a JSON file. If a query selects NaN or Infinity values in a JSON file, and `store.json.reader.allow_nan_inf` is set to false, Drill returns an error message. You can use the [SET]({{site.baseurl}}/docs/set/) command to change the option settings.
-  
+
 
 The following table shows SQL-JSON data type mapping:
 
@@ -48,9 +48,9 @@ The following table shows SQL-JSON data type mapping:
 
 By default, Drill does not support JSON lists of different types. For example, JSON does not enforce types or distinguish between integers and floating point values. When reading numerical values from a JSON file, Drill distinguishes integers from floating point numbers by the presence or lack of a decimal point. If some numbers in a JSON map or array appear with and without a decimal point, such as 0 and 0.0, Drill throws a schema change error. You use the following options to read JSON lists of different types:
 
-* `store.json.read_numbers_as_double`  
+* `store.json.read_numbers_as_double`
   Reads numbers from JSON files with or without a decimal point as DOUBLE. You need to cast numbers from DOUBLE to other numerical types only if you cannot use the numbers as DOUBLE.
-* `store.json.all_text_mode`  
+* `store.json.all_text_mode`
   Reads all data from JSON files as VARCHAR. You need to cast numbers from VARCHAR to numerical data types, such as DOUBLE or INTEGER.
 
 The default setting of `store.json.all_text_mode` and `store.json.read_numbers_as_double` options is false. Using either option prevents schema errors, but using `store.json.read_numbers_as_double` has an advantage over `store.json.all_text_mode`. Using `store.json.read_numbers_as_double` typically involves less explicit casting than using `store.json.all_text_mode` because you can often use the numerical data as is-\-DOUBLE.
@@ -73,9 +73,9 @@ Drill uses these types internally for reading complex and nested data structures
 The Union type allows storing different types in the same field. This new feature is still considered experimental, and must be explicitly enabled by setting the `exec.enabel_union_type` option to true.
 
     ALTER SESSION SET `exec.enable_union_type` = true;
-    
+
  With this feature enabled, JSON data with changing types, which previously could not be queried by drill, are now queryable.
- 
+
 A field with a Union type can be used inside of functions. Drill will automatically handle evaluation of the function appropriately for each type. If the data requires special handling for the different types, you can do this with case statement, leveraging the new `type` functions:
 
 ```
@@ -431,7 +431,7 @@ Workaround: To query n-level nested data, use the table alias to remove ambiguit
         },
         "marketing_info":
           {"promo_id":4,
-           "keywords":  
+           "keywords":
             ["stay","to","think","watch","glasses",
              "joining","might","pay","in","your","buy"]
           },
@@ -447,14 +447,14 @@ FROM dfs.`/Users/mypath/example.json` t;``
 ### Commas between records
 Continuing the example ["Accessing a Map Field in an Array"]({{site.baseurl}}/docs/json-data-model/#example-access-a-map-field-in-an-array), Drill cannot find data in multiple records separated by commas.
 
-Workaround: Delete commas between records. 
+Workaround: Delete commas between records.
 
 After deleting the commas, the following query works:
 
-    SELECT 
+    SELECT
       lots.geometry.coordinates[0][0][0] longitude,
       lots.geometry.coordinates[0][0][1] latitude,
-      lots.geometry.coordinates[0][0][2] altitude 
+      lots.geometry.coordinates[0][0][2] altitude
     FROM dfs.`/Users/drilluser/citylots.json` lots LIMIT 1;
 
     |-----------------------|---------------------|-----------|
@@ -472,14 +472,14 @@ Workaround: None, per se, but if you avoid querying the multi-polygon lines (120
 
     WITH tbl AS (
     SELECT
-      CAST(lots.geometry.coordinates[0][0][0] AS FLOAT) longitude, 
-      CAST(lots.geometry.coordinates[0][0][1] AS FLOAT) latitude, 
-      CAST(lots.geometry.coordinates[0][0][2] AS FLOAT) altitude 
-    FROM dfs./Users/drilluser/uniform.json` lots) 
-    SELECT 
-      AVG(longitude), 
-      AVG(latitude), 
-      MAX(altitude) 
+      CAST(lots.geometry.coordinates[0][0][0] AS FLOAT) longitude,
+      CAST(lots.geometry.coordinates[0][0][1] AS FLOAT) latitude,
+      CAST(lots.geometry.coordinates[0][0][2] AS FLOAT) altitude
+    FROM dfs./Users/drilluser/uniform.json` lots)
+    SELECT
+      AVG(longitude),
+      AVG(latitude),
+      MAX(altitude)
     FROM tbl;
 
     |---------------------|--------------------|---------|
@@ -488,7 +488,7 @@ Workaround: None, per se, but if you avoid querying the multi-polygon lines (120
     | -122.4379846573301  | 37.75844260679518  | 0.0     |
     |---------------------|--------------------|---------|
     1 row selected (6.64 seconds)
-    
+
 Another option is to use the experimental union type.
 
 ### Varying types

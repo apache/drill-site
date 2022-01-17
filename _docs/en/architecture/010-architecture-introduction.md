@@ -38,7 +38,7 @@ You can access Drill through the following interfaces:
 
   * [Drill shell]({{ site.baseurl }}/docs/configuring-the-drill-shell/)
   * [Drill Web UI]({{ site.baseurl }}/docs/monitoring-and-canceling-queries-in-the-drill-web-console)
-  * [ODBC/JDBC]({{ site.baseurl }}/docs/interfaces-introduction/#using-odbc-to-access-apache-drill-from-bi-tools) 
+  * [ODBC/JDBC]({{ site.baseurl }}/docs/interfaces-introduction/#using-odbc-to-access-apache-drill-from-bi-tools)
   * C++ API
 
 ### **_Dynamic schema discovery_**
@@ -79,6 +79,6 @@ standard INFORMATION_SCHEMA database.
 Drill provides an extensible architecture at all layers, including the storage
 plugin, query, query optimization/execution, and client API layers. You can
 customize any layer for the specific needs of an organization or you can
-extend the layer to a broader array of use cases. Drill uses 
+extend the layer to a broader array of use cases. Drill uses
 classpath scanning to find and load plugins, and to add additional storage plugins,
 functions, and operators with minimal configuration.

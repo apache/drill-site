@@ -4,14 +4,14 @@ slug: "Reserved Keywords"
 parent: "SQL Reference"
 ---
 When you use a reserved keyword in a Drill query, enclose the word in
-backticks. For example, if you issue the following query to Drill,  
+backticks. For example, if you issue the following query to Drill,
 you must include backticks around the word TABLES because TABLES is a reserved
 keyword:
 
 ``SELECT * FROM INFORMATION_SCHEMA.`TABLES`;``
 
 The following tables provide the Drill reserved keywords that require back
-ticks:  
+ticks:
 
 | A                     | B               | C                                | D             | E             | F           | G        | H         | I            | J    | K    | L              | M                   |
 |-----------------------|-----------------|----------------------------------|---------------|---------------|-------------|----------|-----------|--------------|------|------|----------------|---------------------|
@@ -81,7 +81,7 @@ ticks:
 |                       |                 | CURRENT_TRANSFORM_GROUP_FOR_TYPE |               |               |             |          |           |              |      |      |                |                     |
 |                       |                 | CURRENT_USER                     |               |               |             |          |           |              |      |      |                |                     |
 |                       |                 |  CURSOR                          |               |               |             |          |           |              |      |      |                |                     |
-|                       |                 | CYCLE                            |               |               |             |          |           |              |      |      |                |                     |  
+|                       |                 | CYCLE                            |               |               |             |          |           |              |      |      |                |                     |
 
 | N         | O                 | P               | Q   | R              | S                                           | T               | U       | V            | W            | X   | Y        | Z   |
 |-----------|-------------------|-----------------|-----|----------------|---------------------------------------------|-----------------|---------|--------------|--------------|-----|----------|-----|

@@ -4,7 +4,7 @@ slug: "Cryptography Functions"
 parent: "SQL Functions"
 ---
 
-Starting in version 1.11, Drill supports cryptography-related functions. The library of cryptography-related functions generally mirrors the crypto functions in MySQL, including: 
+Starting in version 1.11, Drill supports cryptography-related functions. The library of cryptography-related functions generally mirrors the crypto functions in MySQL, including:
 
 * **`aes_encrypt()`/ `aes_decrypt()`**: implement encryption and decryption of data using the official AES (Advanced Encryption Standard) algorithm, previously known as “Rijndael.”
  `AES_ENCRYPT()` encrypts the string `str` using the key string `key_str` and returns a binary string containing the encrypted output. `AES_DECRYPT()` decrypts the encrypted string `crypt_str` using the key string `key_str` and returns the original cleartext string. If either function argument is NULL, the function returns NULL.
@@ -18,7 +18,7 @@ Starting in version 1.11, Drill supports cryptography-related functions. The lib
 		|---------------------------|
 		
 		SELECT aes_encrypt( 'encrypted_text', 'my_secret_key' ) AS encrypted,
-		aes_decrypt(aes_encrypt( 'encrypted_text', 'my_secret_key' ),'my_secret_key') AS decrypted 
+		aes_decrypt(aes_encrypt( 'encrypted_text', 'my_secret_key' ),'my_secret_key') AS decrypted
 		FROM (VALUES(1));
 		|---------------------------|-----------------|
 		|         encrypted         |    decrypted    |
@@ -47,7 +47,7 @@ Starting in version 1.11, Drill supports cryptography-related functions. The lib
 		| ae2b1fca515949e5d54fb22b8ed95575  |
 		|-----------------------------------|
 
-* **`sha(<text>`) / `sha1(<text>)`**: Calculates an SHA-1 160-bit checksum for the string, as described in RFC 3174 (Secure Hash Algorithm). (https://en.wikipedia.org/wiki/SHA-1) The value is returned as a string of 40 hexadecimal digits, or NULL if the argument was NULL. Note that `sha()` and `sha1()` are aliases for the same function. 
+* **`sha(<text>`) / `sha1(<text>)`**: Calculates an SHA-1 160-bit checksum for the string, as described in RFC 3174 (Secure Hash Algorithm). (https://en.wikipedia.org/wiki/SHA-1) The value is returned as a string of 40 hexadecimal digits, or NULL if the argument was NULL. Note that `sha()` and `sha1()` are aliases for the same function.
 
 		select sha1( 'testing' ) from (VALUES(1));
 		|-------------------------------------------|
@@ -56,7 +56,7 @@ Starting in version 1.11, Drill supports cryptography-related functions. The lib
 		| dc724af18fbdd4e59189f5fe768a5f8311527050  |
 		|-------------------------------------------|
 
-* **`sha2(<text>`) / `sha256(<text>)`**: Calculates an SHA-2 256-bit checksum for the string. (https://en.wikipedia.org/wiki/SHA-2)  The value is returned as a string of hexadecimal digits, or NULL if the argument was NULL. Note that `sha2()` and `sha256()` are aliases for the same function. 
+* **`sha2(<text>`) / `sha256(<text>)`**: Calculates an SHA-2 256-bit checksum for the string. (https://en.wikipedia.org/wiki/SHA-2)  The value is returned as a string of hexadecimal digits, or NULL if the argument was NULL. Note that `sha2()` and `sha256()` are aliases for the same function.
 
 		select sha2( 'testing' ) from (VALUES(1));
 		|-------------------------------------------------------------------|

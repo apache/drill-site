@@ -12,14 +12,14 @@ As of Drill 1.10, you can use the CREATE TEMPORARY TABLE AS (CTTAS) command to s
     CREATE TEMPORARY TABLE name [ (column list) ][ PARTITION BY (column list) ] AS query
 
 ## Parameters ##
-*name* - A directory name that is unique.  
-  
+*name* - A directory name that is unique.
+
 *column list* - An optional list of column names or aliases in the new table. If specified, the number of columns for the temporary table must be the same as the number of columns in the SELECT statement of the query. When columns are not specified for the temporary table, the column names in the temporary table are set based on the source table column name or alias. If a column name has an alias, the alias is used.
 
 [PARTITION BY]({{site.baseurl}}/docs/partition-by-clause) - An optional parameter that can only be used to create temporary tables with the Parquet data format. When used, it must specify the column or list of columns to be partitioned.
 
 *query* - A SELECT statement that needs to include aliases for ambiguous column names, such as COLUMNS[0]. Using SELECT * is [not recommended]({{site.baseurl}}/docs/text-files-csv-tsv-psv/#tips-for-performant-querying) when selecting CSV, TSV, and PSV data.
-  
+
 ## Usage Notes
 
 ### Workspace for Temporary Tables
@@ -54,7 +54,7 @@ The default storage format for temporary tables is parquet. However, you can cre
 
 * csv, tsv, psv
 * parquet
-* json 
+* json
 
 To change the storage format, set the `store.format` option before you create the temporary table. For example, you can use the ALTER SESSION SET command to set the store.format option to JSON:
 
@@ -64,7 +64,7 @@ To change the storage format, set the `store.format` option before you create th
 
 In general, the user that creates a temporary table can run queries against the table, as long as the session in which the table was created is active. Although temporary tables are actually directories, you query the temporary table directory as you would query a table.
 
-When you create a temporary table, Drill creates a temporary location named after the session ID to store temporary tables associated with the session. Drill writes temporary table files with masked filenames, such as 0_0_0.parquet, to temporary table directories within the session’s temporary location. Internally, Drill masks each temporary table directory name. Therefore, when you submit a query with the temporary table name, Drill resolves the temporary table name to the internal, masked directory name. 
+When you create a temporary table, Drill creates a temporary location named after the session ID to store temporary tables associated with the session. Drill writes temporary table files with masked filenames, such as 0_0_0.parquet, to temporary table directories within the session’s temporary location. Internally, Drill masks each temporary table directory name. Therefore, when you submit a query with the temporary table name, Drill resolves the temporary table name to the internal, masked directory name.
 
 Drill creates the session and temporary table directories and files with the following permissions:
 
@@ -87,8 +87,8 @@ For example, when you issue a SELECT statement on a table name that is common am
 
        USE dfs.json;
 
-       SELECT * FROM donuts; //returns table from dfs.tmp  
-         
+       SELECT * FROM donuts; //returns table from dfs.tmp
+
        SELECT* FROM dfs.json.donuts; //returns table from dfs.json
 
 ### Drop a Temporary Table
@@ -99,8 +99,8 @@ When you drop a temporary table, it is not required to specify the workspace. An
 
 In the following example, cust_promotions is the name of a persistent table under dfs.json and it is also the name of a temporary table.
 
-	USE dfs.json; 
-	DROP TABLE cust_promotions; 
+	USE dfs.json;
+	DROP TABLE cust_promotions;
 	|-------|-----------------------------------------------------|
 	|  ok   |                     summary                         |
 	|-------|-----------------------------------------------------|
@@ -114,8 +114,8 @@ Even though the workspace was set to dfs.json, the temporary table from dfs.tmp 
 In the following example, the user has .csv file with the following data:
 
 	"1","Bob","200","false"
-	"2","Kate","150","true" 
-	"3","Tim","20","false" 
+	"2","Kate","150","true"
+	"3","Tim","20","false"
 	"4","Roger","500","true"
 
 The first column is the customer id, the second column is the customer name, the third column is the sale amount, and the fourth column indicates if the customer got a discount:

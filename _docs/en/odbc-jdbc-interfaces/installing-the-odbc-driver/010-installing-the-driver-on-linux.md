@@ -23,38 +23,38 @@ Verify that your system meets the system requirements before you start.
   * One of the following distributions (32- and 64-bit editions are supported):
     * Red Hat® Enterprise Linux® (RHEL) 5, 6, or 7
     * CentOS 5, 6, or 7
-    * SUSE Linux Enterprise Server (SLES) 11 or 12     
+    * SUSE Linux Enterprise Server (SLES) 11 or 12
  * 90 MB of available disk space.
- * An installed ODBC driver manager such as, iODBC 3.52.7 (or above) or unixODBC 2.2.14 (or above). On Linux, iODBC 3.52.7 is available as a tarball. After unpacking the tarball, see the README for instructions about building the driver manager.  
- * The client must be able to resolve the actual host name of the Drill node or nodes from the IP address. Verify that a DNS entry was created on the client machine for the Drill node or nodes. If not, create an entry in `/etc/hosts` for each node in the following format:  
+ * An installed ODBC driver manager such as, iODBC 3.52.7 (or above) or unixODBC 2.2.14 (or above). On Linux, iODBC 3.52.7 is available as a tarball. After unpacking the tarball, see the README for instructions about building the driver manager.
+ * The client must be able to resolve the actual host name of the Drill node or nodes from the IP address. Verify that a DNS entry was created on the client machine for the Drill node or nodes. If not, create an entry in `/etc/hosts` for each node in the following format:
 
-    	<drill-machine-IP> <drill-machine-hostname>  
+    	<drill-machine-IP> <drill-machine-hostname>
     	
-	Example: 
+	Example:
 
 		127.0.0.1 localhost
 
-To install the driver, you need Administrator privileges on the computer. 
+To install the driver, you need Administrator privileges on the computer.
 
 ## Step 1: Download the Drill ODBC Driver
-Download the latest driver from the [download site](http://package.mapr.com/tools/MapR-ODBC/MapR_Drill/). 
+Download the latest driver from the [download site](http://package.mapr.com/tools/MapR-ODBC/MapR_Drill/).
 
 ## Step 2: Install the Drill ODBC Driver
 
 To install the driver, complete the following steps:
 
   1. Login as the root user.
-  
+
   2. Navigate to the directory that contains the driver RPM packages to install.
-  
-  3. Enter the following command (where `<RPMFileName>` is the file name of the RPM package containing the version of the driver that you want to install):  
-  
-     * RedHat/CentOS  
-     
+
+  3. Enter the following command (where `<RPMFileName>` is the file name of the RPM package containing the version of the driver that you want to install):
+
+     * RedHat/CentOS
+
 		 `yum localinstall --nogpgcheck <RPMFileName>`
 
-     * SUSE  
-     
+     * SUSE
+
       	`zypper install RPMFileName`
 
 
@@ -64,13 +64,13 @@ dependencies automatically. In this case, manually install the packages.
 The following table provides a list of the Drill ODBC Driver file
 locations and descriptions:
 
-File| Description  
----|---  
-`/opt/mapr/drill/ErrorMessages `| Error messages files directory.  
-`/opt/mapr/drill/Setup`| Sample configuration files directory.  
-`/opt/mapr/drill/lib/32 `| 32-bit shared libraries directory (will be created if you install the 32-bit driver).  
-`/opt/mapr/drill/lib/64`| 64-bit shared libraries directory (will be created if you install the 64-bit driver)..  
-  
+File| Description
+---|---
+`/opt/mapr/drill/ErrorMessages `| Error messages files directory.
+`/opt/mapr/drill/Setup`| Sample configuration files directory.
+`/opt/mapr/drill/lib/32 `| 32-bit shared libraries directory (will be created if you install the 32-bit driver).
+`/opt/mapr/drill/lib/64`| 64-bit shared libraries directory (will be created if you install the 64-bit driver)..
+
 ## Step 3: Check the Drill ODBC Driver Version
 
 To check the version of the driver you installed, use the following case-sensitive command on the terminal command line:

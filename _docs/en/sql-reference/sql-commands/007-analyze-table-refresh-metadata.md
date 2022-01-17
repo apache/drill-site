@@ -65,7 +65,7 @@ Possible values:
  specific partition) + file, segment and table metadata. Partition term is used here to abstract part of the data
  where some column(s) have the same values (corresponds to existing Drill partitions for Parquet table). Is not
  implemented in Drill 1.17;
-- `FILE` - metadata will be collected for every file within the table (MIN / MAX column values within a specific file) + 
+- `FILE` - metadata will be collected for every file within the table (MIN / MAX column values within a specific file) +
  partition, segment metadata and table metadata;
 - `ROW_GROUP` - metadata will be collected for every row group within the table (MIN / MAX column values within a
  specific row group) + file, partition, segment metadata and table metadata. Supported for Parquet tables only;
@@ -86,9 +86,9 @@ The name of the column(s) for which Drill will compute statistics.
 *SAMPLE*
 Optional. Indicates that compute statistics should run on a subset of the data.
 
-*number PERCENT*  
+*number PERCENT*
 An integer that specifies the percentage of data on which to compute statistics. For example, if a table has 100 rows,
- `SAMPLE 50 PERCENT` indicates that statistics should be computed on 50 rows. The optimizer selects the rows at random. 
+ `SAMPLE 50 PERCENT` indicates that statistics should be computed on 50 rows. The optimizer selects the rows at random.
 
 ## Related Commands
 
