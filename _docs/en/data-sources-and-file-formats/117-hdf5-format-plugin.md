@@ -58,7 +58,7 @@ apache drill> select flatten(int_data) as int_data from dfs.test.`dset.h5`;
     | [19,20,21,22,23,24] |
     |---------------------|
 
-Once the data is in this form, you can access it similarly to how you might access nested data in JSON or other files. 
+Once the data is in this form, you can access it similarly to how you might access nested data in JSON or other files.
 
     apache drill> SELECT int_data[0] as col_0,
     . .semicolon> int_data[1] as col_1,
@@ -76,19 +76,19 @@ Once the data is in this form, you can access it similarly to how you might acce
     |-------|-------|-------|
 
 However, a better way to query the actual data in an HDF5 file is to use the `defaultPath` field in your query. If the `defaultPath` field is defined in the query, or via the plugin configuration, Drill will only return the data, rather than the file metadata.
- 
-{% include startnote.html %} Once you have determined which data set you are querying, it is advisable to use this method to query HDF5 data. {% include endnote.html %}
- 
-{% include startnote.html %} Datasets larger than 16MB will be truncated in the metadata view. {% include endnote.html %}
- 
-You can set the `defaultPath` variable in either the plugin configuration, or at query time using the `table()` function as shown in the example below:
- 
 
-    SELECT * 
+{% include startnote.html %} Once you have determined which data set you are querying, it is advisable to use this method to query HDF5 data. {% include endnote.html %}
+
+{% include startnote.html %} Datasets larger than 16MB will be truncated in the metadata view. {% include endnote.html %}
+
+You can set the `defaultPath` variable in either the plugin configuration, or at query time using the `table()` function as shown in the example below:
+
+
+    SELECT *
     FROM table(dfs.test.`dset.h5` (type => 'hdf5', defaultPath => '/dset'))
 
  This query will return the result below:
- 
+
 
     apache drill> SELECT * FROM table(dfs.test.`dset.h5` (type => 'hdf5', defaultPath => '/dset'));
     |-----------|-----------|-----------|-----------|-----------|-----------|
@@ -145,6 +145,6 @@ There are several limitations of the HDF5 format plugin in Drill.
  dimensions.
  * HDF5 has a `COMPOUND` data type. At present, Drill supports reading `COMPOUND` data types that contain multiple datasets. At present Drill does not support `COMPOUND` fields
   with multidimesnional columns. Drill will ignore multidimensional columns within `COMPOUND` fields.
- 
+
 [^1]: https://en.wikipedia.org/wiki/Hierarchical_Data_Format
 [^2]: https://www.hdfgroup.org

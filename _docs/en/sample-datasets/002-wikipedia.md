@@ -39,7 +39,7 @@ The entities used in the query use cases.
 
 	select rev.::parent.title, rev.::parent.id, sum(rev.text.bytes)
 	from mediawiki.page.revision as rev
-	where rev.timestamp.between(?, ?) 
+	where rev.timestamp.between(?, ?)
 	group by rev.::parent;
 
 _Explanation_: This is my attempt in mixing records and structures. The `from`
@@ -69,7 +69,7 @@ _Discussion_:
 
 	select rev.::parent.title, rev.::parent.id, sum(rev.text.bytes), rev.timestamp.monthYear()
 	from mediawiki.page.revision as rev
-	where rev.timestamp.between(?, ?) 
+	where rev.timestamp.between(?, ?)
 	group by rev.::parent, rev.timestamp.monthYear()
 	order by rev.::parent.id, rev.timestamp.monthYear();
 

@@ -18,10 +18,10 @@ You create the JAR for a UDF to use in Drill in a conventional manner with a few
                 "  ABC"
                 )
 
-2. Create a custom Hive UDF using either of these APIs:  
+2. Create a custom Hive UDF using either of these APIs:
    * Simple API: org.apache.hadoop.hive.ql.exec.UDF
    * Complex API: org.apache.hadoop.hive.ql.udf.generic.GenericUDF
-3. Create an empty `drill-module.conf` in the resources directory in the Java project.  
+3. Create an empty `drill-module.conf` in the resources directory in the Java project.
 
         # ls -altr src/main/resources/drill-module.conf
         -rw-r--r-- 1 root root 0 Aug 12 23:16 src/main/resources/drill-module.conf
@@ -39,18 +39,18 @@ The `drill-module.conf` file defines [startup options]({{ site.baseurl }}/docs/s
 
 ## Setting Up a UDF
 After you export the custom UDF as a JAR, perform the UDF setup tasks so Drill can access the UDF. The JAR needs to be available at query execution time as a session resource, so Drill queries can refer to the UDF by its name.
- 
+
 To set up the UDF:
 
-1. Enable the default [Hive storage plugin configuration]({{ site.baseurl }}/docs/hive-storage-plugin/) that connects Drill to a Hive data source.  
-2. Add the JAR for the UDF in the `/jars/3rdparty` directory of the Drill installation on all nodes running a Drillbit.  
-    `clush -a cp /xxx/target/MyUDF-1.0.0.jar /xxx/drill-1.1.0/jars/3rdparty/`  
-3. On each Drill node in the cluster, restart the Drillbit.  
+1. Enable the default [Hive storage plugin configuration]({{ site.baseurl }}/docs/hive-storage-plugin/) that connects Drill to a Hive data source.
+2. Add the JAR for the UDF in the `/jars/3rdparty` directory of the Drill installation on all nodes running a Drillbit.
+    `clush -a cp /xxx/target/MyUDF-1.0.0.jar /xxx/drill-1.1.0/jars/3rdparty/`
+3. On each Drill node in the cluster, restart the Drillbit.
    `<drill installation directory>/bin/drillbit.sh restart`
- 
+
 ## Using a UDF
-Use a Hive UDF just as you would use a Drill custom function. For example, to query using a Hive UDF named MY_UPPER, the SELECT statement looks something like this:  
-     
+Use a Hive UDF just as you would use a Drill custom function. For example, to query using a Hive UDF named MY_UPPER, the SELECT statement looks something like this:
+
     SELECT MY_UPPER('abc') from (VALUES(1));
     |---------|
     | EXPR$0  |

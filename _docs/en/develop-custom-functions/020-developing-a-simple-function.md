@@ -16,7 +16,7 @@ Complete the following steps to develop a simple function using Drill’s simple
 function interface:
 
   1. Create a Maven project and add the following dependency:
-  
+
 		<dependency>
 		<groupId>org.apache.drill.exec</groupId>
 		<artifactId>drill-java-exec</artifactId>
@@ -48,7 +48,7 @@ function interface:
 		  out.value = in1.value + in2.value;
 		}
 
-  5. Use the maven-source-plugin to compile the sources and classes JAR files. Verify that an empty `drill-module.conf` is included in the resources folder.   
+  5. Use the maven-source-plugin to compile the sources and classes JAR files. Verify that an empty `drill-module.conf` is included in the resources folder.
 Drill searches this module during classpath scanning. If the file is not
 included in the resources folder, you can add it to the JAR file or add it to
 `etc/drill/conf`.

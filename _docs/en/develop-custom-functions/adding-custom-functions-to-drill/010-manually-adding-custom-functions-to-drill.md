@@ -9,13 +9,13 @@ Administrators can manually add custom functions to Drill. After the custom func
 To add a custom function to Drill, complete the following steps:
 
 1.	Add the sources and classes JAR file for the custom function to the Drill classpath on all drillbits by copying the files to `<drill installation directory>/jars/3rdparty`.
-2.	Include a `drill-module.conf` file in the class JAR file, at its root. 
+2.	Include a `drill-module.conf` file in the class JAR file, at its root.
 3.	Add the following code to `drill-module.conf` (src/main/resources/drill-module.conf), and replace `com.yourgroupidentifier.udf` with the package name(s) of your UDF(s), as shown below:
 
              drill.classpath.scanning.packages += "com.yourgroupidentifier.udf"
 **Note:** Separate package names with a comma.
-4.	Verify that `DRILL_HOME/conf/drill-override.conf` does not contain any information regarding UDF packages. 
-5.	Issue the following command to restart Drill:  
+4.	Verify that `DRILL_HOME/conf/drill-override.conf` does not contain any information regarding UDF packages.
+5.	Issue the following command to restart Drill:
 
               <drill_installation_directory>/bin/drillbit.sh restart
 

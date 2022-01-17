@@ -23,9 +23,9 @@ The following syntax shows how to construct a SELECT statement that using the MA
        SELECT * FROM <plugin>.<workspace>.`<filename>`
        WHERE dir<n> = MAXDIR('<plugin>.<workspace>'[, '<filename>']);
 
-Enclose query directory function arguments in single-quotation marks, not back ticks. The first argument to the function is the plugin and workspace names in dot notation. The second argument is the directory name. The directory name is an optional argument. The dir variable, dir0, dir1, and so on, refers to subdirectories in your workspace path, as explained in ["Querying Directories"]({{site.baseurl}}/docs/querying-directories). 
+Enclose query directory function arguments in single-quotation marks, not back ticks. The first argument to the function is the plugin and workspace names in dot notation. The second argument is the directory name. The directory name is an optional argument. The dir variable, dir0, dir1, and so on, refers to subdirectories in your workspace path, as explained in ["Querying Directories"]({{site.baseurl}}/docs/querying-directories).
 
-## Query Directory Function Example 
+## Query Directory Function Example
 
 This example creates a top-level directory called `querylogs` in the `/tmp` directory. Using the `/tmp` directory is convenient for example purposes because `/tmp` is predefined as a workspace in the default `dfs` storage plugin. In the `querylogs` directory, you create three subdirectories:
 

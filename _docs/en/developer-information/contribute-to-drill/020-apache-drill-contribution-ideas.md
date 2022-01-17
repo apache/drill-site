@@ -4,13 +4,13 @@ slug: "Apache Drill Contribution Ideas"
 parent: "Contribute to Drill"
 ---
   * Fixing JIRAs
-  * SQL functions 
+  * SQL functions
   * Support for new file format readers/writers
   * Support for new data sources
   * New query language parsers
   * Application interfaces
     * BI Tool testing
-  * General CLI improvements 
+  * General CLI improvements
   * Eco system integrations
     * Spark
     * Hue
@@ -36,7 +36,7 @@ put together a JIRA for one of the DrillFunc's we don't yet have but should
 (referencing the capabilities of something like Postgres or SQL Server or your
 own use case). Then try to implement one.
 
-One example DrillFunc:  
+One example DrillFunc:
 [ComparisonFunctions.java](https://github.com/apache/drill/blob/3f93454f014196a4da198ce012b605b70081fde0/exec/java-exec/src/main/codegen/templates/ComparisonFunctions.java)
 ** **
 
@@ -57,9 +57,9 @@ implementing custom storage plugins. Example formats are.
 
 ## Support for new data sources
 
-Writing a new file-based storage plugin, such as a JSON or text-based storage plugin, simply involves implementing a couple of interfaces. The JSON storage plugin is a good example. 
+Writing a new file-based storage plugin, such as a JSON or text-based storage plugin, simply involves implementing a couple of interfaces. The JSON storage plugin is a good example.
 
-You can refer to the github commits to the mongo db and hbase storage plugin for implementation details: 
+You can refer to the github commits to the mongo db and hbase storage plugin for implementation details:
 
 * [mongodb_storage_plugin](https://github.com/apache/drill/commit/2ca9c907bff639e08a561eac32e0acab3a0b3304)
 * [hbase_storage_plugin](https://github.com/apache/drill/commit/3651182141b963e24ee48db0530ec3d3b8b6841a)
@@ -68,11 +68,11 @@ Focus on implementing/extending this list of classes and the corresponding imple
 
 Initially, concentrate on basics:
 
-* AbstractGroupScan (MongoGroupScan, HbaseGroupScan)  
-* SubScan (MongoSubScan, HbaseSubScan)  
-* RecordReader (MongoRecordReader, HbaseRecordReader)  
-* BatchCreator (MongoScanBatchCreator, HbaseScanBatchCreator)  
-* AbstractStoragePlugin (MongoStoragePlugin, HbaseStoragePlugin)  
+* AbstractGroupScan (MongoGroupScan, HbaseGroupScan)
+* SubScan (MongoSubScan, HbaseSubScan)
+* RecordReader (MongoRecordReader, HbaseRecordReader)
+* BatchCreator (MongoScanBatchCreator, HbaseScanBatchCreator)
+* AbstractStoragePlugin (MongoStoragePlugin, HbaseStoragePlugin)
 * StoragePluginConfig (MongoStoragePluginConfig, HbaseStoragePluginConfig)
 
 Implement custom storage plugins for the following non-Hadoop data sources:

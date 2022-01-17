@@ -4,15 +4,15 @@ slug: "LTSV Format Plugin"
 parent: "Data Sources and File Formats"
 ---
 
-Starting in Drill 1.16, Drill provides a LTSV (Labeled Tab-separated Values) format plugin, which enables Drill to query files with the .LTSV file extension. LTSV is a text file format. Each line in a LTSV file has the following structure:  
+Starting in Drill 1.16, Drill provides a LTSV (Labeled Tab-separated Values) format plugin, which enables Drill to query files with the .LTSV file extension. LTSV is a text file format. Each line in a LTSV file has the following structure:
 
 	time:<value> TAB host:<value> TAB forwardedfor:<value> TAB req:<value> TAB status:<value> TAB size:<value> TAB referer:<value> TAB ua:<value> TAB reqtime:<value> TAB apptime:<value> TAB vhost:<value> NEWLINE
 
-For more information about the LTSV file format, see [LTSV (Labeled Tab-separated Values)](http://ltsv.org/).  
+For more information about the LTSV file format, see [LTSV (Labeled Tab-separated Values)](http://ltsv.org/).
 
-## Configuring the LTSV Format Plugin  
+## Configuring the LTSV Format Plugin
 
-Add the LTSV format to the dfs storage plugin configuration, as shown:  
+Add the LTSV format to the dfs storage plugin configuration, as shown:
 
 	"formats": {
 	    "ltsv": {
@@ -24,7 +24,7 @@ Add the LTSV format to the dfs storage plugin configuration, as shown:
 	    ...
 	  }
 
-## Example: Querying a LTSV File  
+## Example: Querying a LTSV File
 
 Each line in a LTSV file has the following structure:
 

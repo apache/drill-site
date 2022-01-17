@@ -22,32 +22,32 @@ Drill generates a self-signed certificate that works with SSL for HTTPS access t
 
 As cluster administrator, you can set the following SSL configuration parameters in the `conf/drill-override.conf` file, as described in the [Java product documentation](https://docs.oracle.com/javase/7/docs/technotes/guides/security/jsse/JSSERefGuide.html#Customization):
 
-* javax.net.ssl.keyStore  
-  Path to the application's certificate and private key in the Java keystore file.  
-* javax.net.ssl.keyStorePassword  
-  Password for accessing the private key from the keystore file.  
-* javax.net.ssl.trustStore  
-  Path to the trusted CA certificates in a keystore file.  
-* javax.net.ssl.trustStorePassword  
-  Password for accessing the trusted keystore file.   
+* javax.net.ssl.keyStore
+  Path to the application's certificate and private key in the Java keystore file.
+* javax.net.ssl.keyStorePassword
+  Password for accessing the private key from the keystore file.
+* javax.net.ssl.trustStore
+  Path to the trusted CA certificates in a keystore file.
+* javax.net.ssl.trustStorePassword
+  Password for accessing the trusted keystore file.
 
-See [SSL Certificates in a Drill Cluster]({{site.baseurl}}/docs/configuring-ssl-tls-for-encryption/#ssl-certificates-in-a-drill-cluster) for more information. 
- 
+See [SSL Certificates in a Drill Cluster]({{site.baseurl}}/docs/configuring-ssl-tls-for-encryption/#ssl-certificates-in-a-drill-cluster) for more information.
+
 ## Prerequisites for Web UI and REST API Security
 
-You need to perform the following configuration tasks using Web UI and REST API security.  
+You need to perform the following configuration tasks using Web UI and REST API security.
 
-* Configure [user security]({{site.baseurl}}/docs/configuring-user-security/)  
-* Set up Web UI administrators  
+* Configure [user security]({{site.baseurl}}/docs/configuring-user-security/)
+* Set up Web UI administrators
   Optionally, you can set up Web UI administrator-user groups to facilitate management of multiple Web UI administrators.
 
 ## Setting up Web UI Administrators and Administrator-User Groups
 
 Configure the following system options using the [ALTER SYSTEM]({{site.baseurl}}/docs/alter-system/) command:
 
-* security.admin.users  
-  Set the value of this option to a comma-separated list of user names who you want to give administrator privileges, such as changing system options.  
-* security.admin.user_groups  
+* security.admin.users
+  Set the value of this option to a comma-separated list of user names who you want to give administrator privileges, such as changing system options.
+* security.admin.user_groups
   Set the value of this option to a comma-separated list of administrator groups.
 
 Any user who is a member of any group listed in security.admin.user.groups is a Drill cluster administrator. Any user for whom you have configured Drill user authentication, but not set up as a Drill cluster administrator, has only user privileges to access the Web UI and REST API client applications.
@@ -56,9 +56,9 @@ Any user who is a member of any group listed in security.admin.user.groups is a 
 
 The following table and subsections describe the privilege levels for accessing the REST API methods and corresponding Web UI functions:
 
-* Administrator (ADMIN)  
-* User (USER)  
-* Administrator and User (ALL) 
+* Administrator (ADMIN)
+* User (USER)
+* Administrator and User (ALL)
 
 |--------------------------|------------------------------|--------------|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------|
 | Resource Method          | Path                         | Request Type | Output Type      | Functionality                                                                                                                                                                                                                                               | Privilege Level                           |
@@ -92,25 +92,25 @@ The following table and subsections describe the privilege levels for accessing 
 
 ### GET /profiles.json
 
-* ADMIN - gets all profiles on the system.  
+* ADMIN - gets all profiles on the system.
 * USER - only the profiles of the queries the user has launched.
 
 ### GET /profiles
 
-* ADMIN - gets all profiles on the system.  
+* ADMIN - gets all profiles on the system.
 * USER - only the profiles of the queries the user has launched.
 
 ### GET /profiles/{queryid}.json
 
-* ADMIN - return the profile.  
+* ADMIN - return the profile.
 * USER - if the query is launched the by the requesting user return it. Otherwise, return an error saying no such profile exists.
 
 ### GET /profiles/{queryid}
 
-* ADMIN - return the profile.   
+* ADMIN - return the profile.
 * USER - if the query is launched the by the requesting user return it. Otherwise, return an error saying no such profile exists
 
 ### GET /profiles/cancel/{queryid}
 
-* ADMIN - can cancel the query.  
-* USER - cancel the query only if the query is launched by the user requesting the cancellation. 
+* ADMIN - can cancel the query.
+* USER - cancel the query only if the query is launched by the user requesting the cancellation.

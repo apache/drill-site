@@ -3,12 +3,12 @@ title: "Start-Up Options"
 slug: "Start-Up Options"
 parent: "Configuration Options"
 ---
-The start-up options for Drill reside in a [HOCON](https://github.com/typesafehub/config/blob/master/HOCON.md) configuration file format, which is a hybrid between a properties file and a JSON file. Drill start-up options consist of a group of files with a nested relationship. At the bottom of the file hierarchy are the default files that Drill provides, starting with `drill-default.conf`. 
+The start-up options for Drill reside in a [HOCON](https://github.com/typesafehub/config/blob/master/HOCON.md) configuration file format, which is a hybrid between a properties file and a JSON file. Drill start-up options consist of a group of files with a nested relationship. At the bottom of the file hierarchy are the default files that Drill provides, starting with `drill-default.conf`.
 
-The `drill-default.conf` file is overridden by one or more `drill-module.conf` files that Drill’s internal modules provide. The `drill-module.conf` files are overridden by the `drill-override.conf` file that you define.    
+The `drill-default.conf` file is overridden by one or more `drill-module.conf` files that Drill’s internal modules provide. The `drill-module.conf` files are overridden by the `drill-override.conf` file that you define.
 
-You can provide overrides on each drillbit using system properties of the form `-Dname=value` passed on the command line: 
- 
+You can provide overrides on each drillbit using system properties of the form `-Dname=value` passed on the command line:
+
     ./drillbit.sh start -Dname=value
 
 
@@ -46,11 +46,11 @@ You can configure start-up options for each Drillbit in `<drill_home>/conf/drill
 
 The summary of start-up options, also known as boot options, lists default values. The following descriptions provide more detail on key options that are frequently reconfigured:
 
-* **store.parquet.complex.batch.num_records**  
+* **store.parquet.complex.batch.num_records**
 
 **Introduced in release:** 1.15.
 
-Sets batch sizing (number of rows per batch) for the Parquet reader. The default value is 4,000 rows. If rows are large and queries return out-of-memory errors, reduce the value. You can set this option at the system level in `<drill_home>/conf/drill-override.conf` or at the session level using the SET command, as shown:  
+Sets batch sizing (number of rows per batch) for the Parquet reader. The default value is 4,000 rows. If rows are large and queries return out-of-memory errors, reduce the value. You can set this option at the system level in `<drill_home>/conf/drill-override.conf` or at the session level using the SET command, as shown:
 
 		SET `store.parquet.complex.batch.num_records`=2000;
 		|-------|---------------------------------------------------|
@@ -63,47 +63,47 @@ Sets batch sizing (number of rows per batch) for the Parquet reader. The default
 
 **Introduced in release:** 1.2.
 
-Enables or disables [HTTPS support]({{site.baseurl}}/docs/configuring-web-ui-and-rest-api-security/#https-support). Settings are TRUE and FALSE, respectively. The default is FALSE.  
-  
-* **drill.exec.sys.store.provider.class**  
-  Defines the persistent storage (PStore) provider. The [PStore]({{site.baseurl}}/docs/persistent-configuration-storage) holds configuration and profile data.  
- 
-* **drill.exec.buffer.size**  
-  Defines the amount of memory available, in terms of record batches, to hold data on the downstream side of an operation. Drill pushes data downstream as quickly as possible to make data immediately available. This requires Drill to use memory to hold the data pending operations. When data on a downstream operation is required, that data is immediately available so Drill does not have to go over the network to process it. Providing more memory to this option increases the speed at which Drill completes a query.  
-  
+Enables or disables [HTTPS support]({{site.baseurl}}/docs/configuring-web-ui-and-rest-api-security/#https-support). Settings are TRUE and FALSE, respectively. The default is FALSE.
+
+* **drill.exec.sys.store.provider.class**
+  Defines the persistent storage (PStore) provider. The [PStore]({{site.baseurl}}/docs/persistent-configuration-storage) holds configuration and profile data.
+
+* **drill.exec.buffer.size**
+  Defines the amount of memory available, in terms of record batches, to hold data on the downstream side of an operation. Drill pushes data downstream as quickly as possible to make data immediately available. This requires Drill to use memory to hold the data pending operations. When data on a downstream operation is required, that data is immediately available so Drill does not have to go over the network to process it. Providing more memory to this option increases the speed at which Drill completes a query.
+
 * **drill.exec.spill.fs**
 
 **Introduced in release:** 1.11.
 
-The default file system on the local machine into which the Sort, Hash Aggregate, and Hash Join operators spill data. This is the recommended option to use for spilling. You can configure this option so that data spills into a distributed file system, such as hdfs. For example, "hdfs:///". The default setting is "file:///". See [Sort-Based and Hash-Based Memory Constrained Operators]({{site.baseurl}}/docs/sort-based-and-hash-based-memory-constrained-operators/) for more information.   
-  
-* **drill.exec.spill.directories**  
+The default file system on the local machine into which the Sort, Hash Aggregate, and Hash Join operators spill data. This is the recommended option to use for spilling. You can configure this option so that data spills into a distributed file system, such as hdfs. For example, "hdfs:///". The default setting is "file:///". See [Sort-Based and Hash-Based Memory Constrained Operators]({{site.baseurl}}/docs/sort-based-and-hash-based-memory-constrained-operators/) for more information.
+
+* **drill.exec.spill.directories**
 
 **Introduced in release:** 1.11.
 
-The list of directories into which the Sort, Hash Aggregate, and Hash Join operators spill data. The list must be an array with directories separated by a comma, for example ["/fs1/drill/spill" , "/fs2/drill/spill" , "/fs3/drill/spill"]. This is the recommended option for spilling to multiple directories. The default setting is ["/tmp/drill/spill"]. See [Sort-Based and Hash-Based Memory Constrained Operators]({{site.baseurl}}/docs/sort-based-and-hash-based-memory-constrained-operators/) for more information.  
+The list of directories into which the Sort, Hash Aggregate, and Hash Join operators spill data. The list must be an array with directories separated by a comma, for example ["/fs1/drill/spill" , "/fs2/drill/spill" , "/fs3/drill/spill"]. This is the recommended option for spilling to multiple directories. The default setting is ["/tmp/drill/spill"]. See [Sort-Based and Hash-Based Memory Constrained Operators]({{site.baseurl}}/docs/sort-based-and-hash-based-memory-constrained-operators/) for more information.
 
-* **drill.exec.zk.connect**  
-  Provides Drill with the ZooKeeper quorum to use to connect to data sources. Change this setting to point to the ZooKeeper quorum that you want Drill to use. You must configure this option on each Drillbit node.  
+* **drill.exec.zk.connect**
+  Provides Drill with the ZooKeeper quorum to use to connect to data sources. Change this setting to point to the ZooKeeper quorum that you want Drill to use. You must configure this option on each Drillbit node.
 
-* **drill.exec.profiles.store.inmemory**  
-
-**Introduced in release:** 1.11.
-
-When set to TRUE, enables Drill to store query profiles in memory instead of writing the query profiles to disk. When set to FALSE, Drill writes the profile for each query to disk, which is either the local file system or a distributed file system, such as HDFS. For sub-second queries, writing the query profile to disk is expensive due to the interactions with the file system. Enable this option if you want Drill to store the profiles of sub-second queries in memory instead of writing them to disk. When you enable this option, Drill stores the profiles in memory for as long as the drillbit runs. When the drillbit restarts, the profiles no longer exist. You can set the maximum number of most recent profiles to retain in memory through the `drill.exec.profiles.store.capacity` option. Settings are TRUE and FALSE. Default is FALSE. See [Persistent Configuration Storage]({{site.baseurl}}/docs/persistent-configuration-storage/) for more information.  
- 
-* **drill.exec.profiles.store.capacity**  
+* **drill.exec.profiles.store.inmemory**
 
 **Introduced in release:** 1.11.
 
-Sets the maximum number of most recent profiles to retain in memory when the `drill.exec.profiles.store.inmemory` option is enabled. Default is 1000.  
-  
-* **drill.exec.storage.action\_on\_plugins\_override\_file**  
+When set to TRUE, enables Drill to store query profiles in memory instead of writing the query profiles to disk. When set to FALSE, Drill writes the profile for each query to disk, which is either the local file system or a distributed file system, such as HDFS. For sub-second queries, writing the query profile to disk is expensive due to the interactions with the file system. Enable this option if you want Drill to store the profiles of sub-second queries in memory instead of writing them to disk. When you enable this option, Drill stores the profiles in memory for as long as the drillbit runs. When the drillbit restarts, the profiles no longer exist. You can set the maximum number of most recent profiles to retain in memory through the `drill.exec.profiles.store.capacity` option. Settings are TRUE and FALSE. Default is FALSE. See [Persistent Configuration Storage]({{site.baseurl}}/docs/persistent-configuration-storage/) for more information.
+
+* **drill.exec.profiles.store.capacity**
+
+**Introduced in release:** 1.11.
+
+Sets the maximum number of most recent profiles to retain in memory when the `drill.exec.profiles.store.inmemory` option is enabled. Default is 1000.
+
+* **drill.exec.storage.action\_on\_plugins\_override\_file**
 
 **Introduced in release:** 1.14.
 
-Determines what happens to the [`storage-plugins-override.conf`]({{site.baseurl}}/docs/configuring-storage-plugins/#configuring-storage-plugins-with-the-storage-plugins-override.conf-file) file after Drill successfully updates storage plugin configurations. If you do not want Drill to apply the configurations after restarting, set the option to `"rename"` or `"remove"`.  This option accepts the following values:  
+Determines what happens to the [`storage-plugins-override.conf`]({{site.baseurl}}/docs/configuring-storage-plugins/#configuring-storage-plugins-with-the-storage-plugins-override.conf-file) file after Drill successfully updates storage plugin configurations. If you do not want Drill to apply the configurations after restarting, set the option to `"rename"` or `"remove"`.  This option accepts the following values:
 
-       - `"none"` - (Default) The file remains in the directory after Drill uses the file.  
-       - `"rename"` - The `storage-plugins-override.conf` file name is changed to `storage-plugins-override-[current_timestamp].conf` after Drill uses the file.  
+       - `"none"` - (Default) The file remains in the directory after Drill uses the file.
+       - `"rename"` - The `storage-plugins-override.conf` file name is changed to `storage-plugins-override-[current_timestamp].conf` after Drill uses the file.
        - `"remove"` - The file is removed after Drill uses the file for the first time.

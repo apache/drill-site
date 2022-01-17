@@ -4,11 +4,11 @@ slug: "Hive-to-Drill Data Type Mapping"
 parent: "Data Sources and File Formats"
 ---
 Using Drill you can read tables created in Hive that use data types compatible with Drill. Drill currently does not support writing Hive tables. The map of SQL types and Hive types shows that several Hive types need to be cast to the supported SQL type in a Drill query:
- 
-* TINYINT and SMALLINT  
-   Cast these types to INTEGER.  
-* BINARY  
-  Cast the Hive BINARY type to VARCHAR.  
+
+* TINYINT and SMALLINT
+   Cast these types to INTEGER.
+* BINARY
+  Cast the Hive BINARY type to VARCHAR.
 
 {% include startnote.html %}In the 1.7 release, Drill automatically converts the Hive CHAR data type to VARCHAR. You no longer need to cast the Hive CHAR data type to VARCHAR when querying Hive tables.{% include endnote.html %}
 
@@ -45,39 +45,39 @@ Drill does not support the following Hive types:
 * TIMESTAMP (Unix Epoch format)
 * UNION
 
-Currently, the Apache Hive version used by Drill does not support the Hive timestamp in Unix Epoch format. The workaround is to use the JDBC format for the timestamp, which Hive accepts and Drill uses. The type mapping example shows how to use the workaround as follows. 
+Currently, the Apache Hive version used by Drill does not support the Hive timestamp in Unix Epoch format. The workaround is to use the JDBC format for the timestamp, which Hive accepts and Drill uses. The type mapping example shows how to use the workaround as follows.
 
-* The timestamp value appears in the example CSV file in JDBC format: 2015-03-25 01:23:15.  
-* Workaround: The Hive table defines column i in the CREATE EXTERNAL TABLE command as a timestamp column.  
+* The timestamp value appears in the example CSV file in JDBC format: 2015-03-25 01:23:15.
+* Workaround: The Hive table defines column i in the CREATE EXTERNAL TABLE command as a timestamp column.
 * The Drill extract function verifies that Drill interprets the timestamp correctly.
 
 ## Type Mapping Example
 This example demonstrates the mapping of Hive data types to Drill data types. Using a CSV that has the following contents, you create a Hive table having values of different supported types:
 
-     8223372036854775807,true,3.5,-1231.4,3.14,42,"SomeText",2015-03-25,2015-03-25 01:23:15 
+     8223372036854775807,true,3.5,-1231.4,3.14,42,"SomeText",2015-03-25,2015-03-25 01:23:15
 
 ### Example Assumptions
 The example makes the following assumptions:
 
-* The CSV resides in the following location in the Drill sandbox: `/mapr/demo.mapr.com/data/`  
-* You [enabled the DECIMAL data type]({{site.baseurl}}/docs/supported-data-types/#enabling-the-decimal-type) in Drill.  
+* The CSV resides in the following location in the Drill sandbox: `/mapr/demo.mapr.com/data/`
+* You [enabled the DECIMAL data type]({{site.baseurl}}/docs/supported-data-types/#enabling-the-decimal-type) in Drill.
 
 ### Define an External Table in Hive
 
 In Hive, you define an external table using the following query:
 
-    hive> CREATE EXTERNAL TABLE types_demo ( 
-          a bigint, 
-          b boolean, 
-          c DECIMAL(3, 2), 
-          d double, 
-          e float, 
-          f INT, 
-          g VARCHAR(64), 
+    hive> CREATE EXTERNAL TABLE types_demo (
+          a bigint,
+          b boolean,
+          c DECIMAL(3, 2),
+          d double,
+          e float,
+          f INT,
+          g VARCHAR(64),
           h date,
           i timestamp
-          ) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' 
-          LINES TERMINATED BY '\n' 
+          ) ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+          LINES TERMINATED BY '\n'
           STORED AS TEXTFILE LOCATION '/mapr/demo.mapr.com/data/mytypes.csv';
 
 \* In this release, Drill disables the DECIMAL data type, including casting to DECIMAL and reading DECIMAL types from Parquet and Hive. To enable the DECIMAL type, set the `planner.enable_decimal_data_type` option to `true`.
@@ -89,7 +89,7 @@ You check that Hive mapped the data from the CSV to the typed values as as expec
     8223372036854775807	true	3.5	-1231.4	3.14	42	"SomeText"	2015-03-25   2015-03-25 01:23:15
     Time taken: 0.524 seconds, Fetched: 1 row(s)
 
-### Connect Drill to Hive and Query the Data  
+### Connect Drill to Hive and Query the Data
 
 {% include startnote.html %}Drill 1.8 implements the IF EXISTS parameter for the DROP TABLE and DROP VIEW commands, making IF a reserved word in Drill. As a result, you must include backticks around the Hive \``IF`` conditional function when you use it in a query on Hive tables. Alternatively, you can use the CASE statement instead of the IF function.{% include endnote.html %}
 

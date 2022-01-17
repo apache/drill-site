@@ -12,7 +12,7 @@ The Mongo Metastore implementation allows you store Drill Metastore metadata in 
 ## Configuration
 
 Currently, the Mongo Metastore is not the default implementation.
-To enable the Mongo Metastore, create the `drill-metastore-override.conf` file 
+To enable the Mongo Metastore, create the `drill-metastore-override.conf` file
 in your config directory and specify the Mongo Metastore class:
 
 ```yaml
@@ -25,9 +25,9 @@ drill.metastore: {
 
 Use the connection properties to specify how Drill should connect to your Metastore database.
 
-`drill.metastore.mongo.connection` - connection url to your MongoDB. Required. 
+`drill.metastore.mongo.connection` - connection url to your MongoDB. Required.
 
-`drill.metastore.mongo.database` - database used. Optional, default is "meta". 
+`drill.metastore.mongo.database` - database used. Optional, default is "meta".
 
 `drill.metastore.mongo.table_collection` - collection used to store metadata for tables. Optional, default is "tables".
 
@@ -50,7 +50,7 @@ drill.metastore: {
 ```
 
 **Note: If your MongoDB enabled access control, make sure the user can read and write the collection used.
-If you are using a sharded MongoDB cluster, make sure the database used is enabled sharding, 
+If you are using a sharded MongoDB cluster, make sure the database used is enabled sharding,
 and the collection used is only sharded by `_id` in hash mode.**
 
 ## Tables structure
@@ -58,9 +58,9 @@ and the collection used is only sharded by `_id` in hash mode.**
 The Drill Metastore stores several types of metadata, called components. Currently, only the `tables` component is implemented.
 The `tables` component provides metadata about Drill tables, including their segments, files, row groups and partitions.
 In Drill `tables` component unit is represented by `TableMetadataUnit` class which is applicable to any metadata type.
-The `TableMetadataUnit` class holds fields for all five metadata types within the `tables` component. 
+The `TableMetadataUnit` class holds fields for all five metadata types within the `tables` component.
 Any fields not applicable to a particular metadata type are simply ignored and remain unset.
 
-In the Mongo implementation of the Drill Metastore, all metadata of the tables component stored in one collection. 
-The database and collection will be auto created when write data firstly into it if not exist, 
+In the Mongo implementation of the Drill Metastore, all metadata of the tables component stored in one collection.
+The database and collection will be auto created when write data firstly into it if not exist,
 but you need to configure the database and collection before used as the note specified above if you are using a sharded cluster.

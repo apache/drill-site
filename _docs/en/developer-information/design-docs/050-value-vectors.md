@@ -97,7 +97,7 @@ buffer. The following illustrates a NullableValueVector of INT4 values 2, 3
 and 6:
 
 ![drill query flow]({{ site.baseurl }}/images/docs/value2.png)
-  
+
 ### Repeated Values
 
 A repeated ValueVector is used for elements which can contain multiple values
@@ -125,7 +125,7 @@ an entry is deduced by subtracting the offset of the following field. Because
 of this, the offset table will always contain one more entry than total
 elements, with the last entry pointing to the end of the buffer.
 
-![drill query flow]({{ site.baseurl }}/images/docs/value4.png)  
+![drill query flow]({{ site.baseurl }}/images/docs/value4.png)
 
 Repeated Map Vectors
 

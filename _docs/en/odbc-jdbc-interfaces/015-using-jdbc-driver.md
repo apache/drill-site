@@ -15,36 +15,36 @@ Most client tools provide a UI where you can enter all of the required connectio
 
 ## Prerequisites
 
-  * JRE 8 or JDK 8  
-  * [A Drill installation]({{site.baseurl}}/docs/install-drill/)  
-  * Capability to resolve the actual host name of the Drill node(s) with the IP(s), as described in step 4 of [Install the Drill JDBC Driver with JReport]({{site.baseurl}}/docs/configuring-jreport-with-drill/#step-1:-install-the-drill-jdbc-driver-with-jreport). 
+  * JRE 8 or JDK 8
+  * [A Drill installation]({{site.baseurl}}/docs/install-drill/)
+  * Capability to resolve the actual host name of the Drill node(s) with the IP(s), as described in step 4 of [Install the Drill JDBC Driver with JReport]({{site.baseurl}}/docs/configuring-jreport-with-drill/#step-1:-install-the-drill-jdbc-driver-with-jreport).
 
 ## Getting the Drill JDBC Driver
 
 The Drill JDBC Driver `JAR` file must exist on a client machine so you can configure the driver for the application or third-party tool that you intend to use. Obtain the driver in one of the following ways:
 
-* Copy the `drill-jdbc-all` JAR file from the following Drill installation directory on a node where Drill is installed to a directory on your client machine:  
-   `<drill_installation_directory>/jars/jdbc-driver/drill-jdbc-all-<version>.jar`  
+* Copy the `drill-jdbc-all` JAR file from the following Drill installation directory on a node where Drill is installed to a directory on your client machine:
+   `<drill_installation_directory>/jars/jdbc-driver/drill-jdbc-all-<version>.jar`
 
    Or
 
-* Download a [TAR file for the latest Drill release](https://apache.osuosl.org/drill/) to a location on your client machine, and extract the file. On Windows, you may need to use a decompression utility, such as [7-zip](http://www.7-zip.org/). The driver is extracted to the following directory:  
+* Download a [TAR file for the latest Drill release](https://apache.osuosl.org/drill/) to a location on your client machine, and extract the file. On Windows, you may need to use a decompression utility, such as [7-zip](http://www.7-zip.org/). The driver is extracted to the following directory:
    `<drill-installation_directory>/jars/jdbc-driver/drill-jdbc-all-<version>.jar`
 
-## Using the JDBC URL for a Random Drillbit Connection 
+## Using the JDBC URL for a Random Drillbit Connection
 
 The format of the JDBC URL differs slightly, depending on the way you want to connect to the Drillbit: random, local, or direct. This section covers using the URL for a random or local connection. Using a URL to [directly connect to a Drillbit]({{site.baseurl}}/docs/using-the-jdbc-driver/#using-the-jdbc-url-format-for-a-direct-drillbit-connection) is covered later. If you want ZooKeeper to randomly choose a Drillbit in the cluster, or if you want to connect to the local Drillbit, the format of the driver URL is:
 
-`jdbc:drill:zk=<zk name>[:<port>][,<zk name2>[:<port>]... `  
+`jdbc:drill:zk=<zk name>[:<port>][,<zk name2>[:<port>]... `
   `<directory>/<cluster ID>;[schema=<storage plugin>]`
 
 where
 
-* `jdbc` is the connection type. Required.  
-* `schema` is the name of a [storage plugin]({{site.baseurl}}/docs/storage-plugin-registration) configuration to use as the default for queries. For example,`schema=hive`. Optional.  
-* `zk name` specifies one or more ZooKeeper host names, or IP addresses. Use `local` instead of a host name or IP address to connect to the local Drillbit. Required. 
-* `port` is the ZooKeeper port number. Port 2181 is the default. On a MapR cluster, the default is 5181. Optional. 
-* `directory` is the Drill directory in ZooKeeper, which by default is `/drill`. Optional. 
+* `jdbc` is the connection type. Required.
+* `schema` is the name of a [storage plugin]({{site.baseurl}}/docs/storage-plugin-registration) configuration to use as the default for queries. For example,`schema=hive`. Optional.
+* `zk name` specifies one or more ZooKeeper host names, or IP addresses. Use `local` instead of a host name or IP address to connect to the local Drillbit. Required.
+* `port` is the ZooKeeper port number. Port 2181 is the default. On a MapR cluster, the default is 5181. Optional.
+* `directory` is the Drill directory in ZooKeeper, which by default is `/drill`. Optional.
 * `cluster ID` is `drillbits1` by default. If the default has changed, [determine the cluster ID]({{site.baseurl}}/docs/using-the-jdbc-driver/#determining-the-cluster-id) and use it. Optional.
 
 ### Determining the Cluster ID
@@ -80,41 +80,41 @@ drill.exec: {
 
 If you want to connect directly to a Drillbit instead of using ZooKeeper to choose the Drillbit, replace `zk=<zk name>` with `drillbit=<node name>` as shown in the following URL:
 
-`jdbc:drill:drillbit=<node name>[:<port>][,<node name2>[:<port>]... `  
+`jdbc:drill:drillbit=<node name>[:<port>][,<node name2>[:<port>]... `
   `<directory>/<cluster ID>[schema=<storage plugin>]`
 
 where
 
-`drillbit=<node name>` specifies one or more host names or IP addresses of cluster nodes running Drill.  
+`drillbit=<node name>` specifies one or more host names or IP addresses of cluster nodes running Drill.
 
-###`tries` Parameter 
+###`tries` Parameter
 
-As of Drill 1.10, you can include the optional `tries=<value>` parameter in the connection string, as shown in the following URL:  
+As of Drill 1.10, you can include the optional `tries=<value>` parameter in the connection string, as shown in the following URL:
 
 
     jdbc:drill:drillbit=<node name>[:<port>][,<node name2>[:<port>]...
-    <directory>/<cluster ID>;[schema=<storage plugin>];tries=5  
+    <directory>/<cluster ID>;[schema=<storage plugin>];tries=5
 
-The “tries” option represents the maximum number of unique drillbits to which the client can try to establish a successful connection. The default value is 5. This option improves the fault tolerance in the Drill client when first trying to connect with a drillbit, which will then act as the Foreman (the node that drives the query).  
- 
-The order in which the client tries to connect to the drillbits may not occur in the order listed in the connection string. If the first try results in an authentication failure, the client does not attempt any additional tries. If the number of unique drillbits listed in the `drillbit` parameter is less than the “tries” value, the client tries to connect to each drillbit one time.   
+The “tries” option represents the maximum number of unique drillbits to which the client can try to establish a successful connection. The default value is 5. This option improves the fault tolerance in the Drill client when first trying to connect with a drillbit, which will then act as the Foreman (the node that drives the query).
 
-For example, if there are three unique drillbits listed in the connection string, and the “tries” value is set to 5, the client can try to connect to each drillbit once, until a successful connection is made, as shown in the image below: 
+The order in which the client tries to connect to the drillbits may not occur in the order listed in the connection string. If the first try results in an authentication failure, the client does not attempt any additional tries. If the number of unique drillbits listed in the `drillbit` parameter is less than the “tries” value, the client tries to connect to each drillbit one time.
 
-![](http://i.imgur.com/MJ9qChJ.png)  
+For example, if there are three unique drillbits listed in the connection string, and the “tries” value is set to 5, the client can try to connect to each drillbit once, until a successful connection is made, as shown in the image below:
 
-If the client cannot successfully connect to any of the drillbits, Drill returns a failure message. 
+![](http://i.imgur.com/MJ9qChJ.png)
+
+If the client cannot successfully connect to any of the drillbits, Drill returns a failure message.
 
 For definitions of other URL components, see [Using the JDBC URL for a Random Drillbit Connection]({{site.baseurl}}/docs/using-the-jdbc-driver/#using-the-jdbc-url-for-a-random-drillbit-connection).
 
 ## Using the Drill Driver Class Name
 
-The class name for the JDBC driver is [org.apache.drill.jdbc.Driver]({{site.baseurl}}/apidocs/org/apache/drill/jdbc/Driver.html). For details, see the Apache Drill JDBC Driver [Javadoc]({{site.baseurl}}/apidocs/org/apache/drill/jdbc/package-summary.html).  
+The class name for the JDBC driver is [org.apache.drill.jdbc.Driver]({{site.baseurl}}/apidocs/org/apache/drill/jdbc/Driver.html). For details, see the Apache Drill JDBC Driver [Javadoc]({{site.baseurl}}/apidocs/org/apache/drill/jdbc/package-summary.html).
 
-Starting in Drill 1.16, the DrillStatement interface supports the setMaxRows method. The setMaxRows method sets a limit on the number of rows returned for a result set. The limit set is applied automatically at runtime. By default, there is no limit on the number of rows returned. See [Setting an Auto Limit on the Number of Rows Returned for Result Sets](https://drill.apache.org/docs/planning-and-execution-options/#setting-an-auto-limit-on-the-number-of-rows-returned-for-result-sets).  
- 
+Starting in Drill 1.16, the DrillStatement interface supports the setMaxRows method. The setMaxRows method sets a limit on the number of rows returned for a result set. The limit set is applied automatically at runtime. By default, there is no limit on the number of rows returned. See [Setting an Auto Limit on the Number of Rows Returned for Result Sets](https://drill.apache.org/docs/planning-and-execution-options/#setting-an-auto-limit-on-the-number-of-rows-returned-for-result-sets).
+
 Starting in 1.13, the DrillStatement interface supports the setQueryTimeout method. The setQueryTimeout method limits the amount of time that the JDBC driver allows a query to run before canceling the query. The setQueryTimeout method sets the number of seconds that the JDBC driver waits for a Statement object to execute before canceling it. By default, there is no limit on the amount of time allowed for a running statement to complete. When you configure a limit, an SQLTimeoutException is thrown if a statement exceeds the limit. A JDBC driver must apply this limit to the execute, executeQuery, and executeUpdate methods.
-  
+
 
 
 

@@ -17,27 +17,27 @@ accurate metadata. This can be done using Drill or whatever tool originally prod
 
 `[ PARTITION BY ( column_name[, . . .] ) ]`
 
-The PARTITION BY clause partitions the data by the first column_name, and then subpartitions the data by the next column_name, if there is one, and so on. 
+The PARTITION BY clause partitions the data by the first column_name, and then subpartitions the data by the next column_name, if there is one, and so on.
 
 Only the Parquet storage format is supported for partitioning. Before using CTAS, [set the `store.format` option]({{site.baseurl}}/docs/create-table-as-ctas/#setting-the-storage-format) for the table to Parquet.
 
-When the base table in the SELECT statement is schema-less, include columns in the PARTITION BY clause in the table's column list, or use a select all (SELECT *) statement:  
+When the base table in the SELECT statement is schema-less, include columns in the PARTITION BY clause in the table's column list, or use a select all (SELECT *) statement:
 
     CREATE TABLE dest_name [ (column, . . .) ]
-    [ PARTITION BY (column, . . .) ] 
+    [ PARTITION BY (column, . . .) ]
     AS SELECT column_list FROM <source_name>;
 
-When columns in the source table have ambiguous names, such as COLUMNS[0], define one or more column aliases in the SELECT statement. Use the alias name or names in the CREATE TABLE list. List aliases in the same order as the corresponding columns in the SELECT statement. Matching order is important because Drill performs an overwrite operation.  
+When columns in the source table have ambiguous names, such as COLUMNS[0], define one or more column aliases in the SELECT statement. Use the alias name or names in the CREATE TABLE list. List aliases in the same order as the corresponding columns in the SELECT statement. Matching order is important because Drill performs an overwrite operation.
 
-    CREATE TABLE dest_name (alias1, alias2, . . .) 
-    [ PARTITION BY (alias1, . . . ) ] 
+    CREATE TABLE dest_name (alias1, alias2, . . .)
+    [ PARTITION BY (alias1, . . . ) ]
     AS SELECT column1 alias1, column2 alias2, . . .;
 
 For example:
 
     CREATE TABLE by_yr (yr, ngram, occurrances) PARTITION BY (yr) AS SELECT columns[1] yr, columns[0] ngram, columns[2] occurrances FROM `googlebooks-eng-all-5gram-20120701-zo.tsv`;
 
-When the partition column is resolved to * column (due to a SELECT * query) in a schema-less query, the * column cannot be a result of join operation. 
+When the partition column is resolved to * column (due to a SELECT * query) in a schema-less query, the * column cannot be a result of join operation.
 
 The output of CTAS using a PARTITION BY clause creates separate files. Each file contains one partition value, and Drill can create multiple files for the same partition value.
 
@@ -62,35 +62,35 @@ For example, lines 1722089 and 1722090 in the file contain this data:
 |-----------------------------------|------|-------------|--------------|
 | Zoological Journal of the Linnean | 2007 | 284         | 101          |
 | Zoological Journal of the Linnean | 2008 | 257         | 87           |
-  
+
 In 2007, "Zoological Journal of the Linnean" occurred 284 times overall in 101
 distinct books of the Google sample.
 
 ### Creating a Partitioned Table of Ngram Data
 
-For this example, you can use Drill in distributed mode to write 1.7M lines of data to a distributed file system, such as HDFS. Alternatively, you can use Drill in embedded mode and write fewer lines of data to a local file system. 
+For this example, you can use Drill in distributed mode to write 1.7M lines of data to a distributed file system, such as HDFS. Alternatively, you can use Drill in embedded mode and write fewer lines of data to a local file system.
 
-1. Download the compressed Google Ngram data from this location:  
-    
-        wget http://storage.googleapis.com/books/ngrams/books/googlebooks-eng-all-5gram-20120701-zo.gz  
-2. Unzip the file. On Linux for example use the `gzip -d` command:  
-   `gzip -d googlebooks-eng-all-5gram-20120701-zo.gz`  
+1. Download the compressed Google Ngram data from this location:
+
+        wget http://storage.googleapis.com/books/ngrams/books/googlebooks-eng-all-5gram-20120701-zo.gz
+2. Unzip the file. On Linux for example use the `gzip -d` command:
+   `gzip -d googlebooks-eng-all-5gram-20120701-zo.gz`
    A file named `googlebooks-eng-all-5gram-20120701-zo` appears.
 3. Embedded mode: Move the unzipped file name to `/tmp` and add a `.tsv` extension. The Drill `dfs` storage plugin definition includes a TSV format that requires
-a file to have this extension.  
-   `mv googlebooks-eng-all-5gram-20120701-zo /tmp/googlebooks-eng-all-5gram-20120701-zo.tsv`  
+a file to have this extension.
+   `mv googlebooks-eng-all-5gram-20120701-zo /tmp/googlebooks-eng-all-5gram-20120701-zo.tsv`
    Distributed mode: Move the unzipped file to HDFS and add a `.tsv` extension.
    `hadoop fs -put googlebooks-eng-all-5gram-20120701-zo /tmp/googlebooks-eng-all-5gram-20120701-zo.tsv`
-4. Start the Drill shell, and use the default `dfs.tmp` workspace, which is predefined as writable.  
-   Distributed mode: This example assumes that the default `dfs` either works with your distributed file system out-of-the-box, or that you have adapted the storage plugin to your environment.  
-   `USE dfs.tmp`;  
+4. Start the Drill shell, and use the default `dfs.tmp` workspace, which is predefined as writable.
+   Distributed mode: This example assumes that the default `dfs` either works with your distributed file system out-of-the-box, or that you have adapted the storage plugin to your environment.
+   `USE dfs.tmp`;
 5. Set the `store.format` property to the default parquet if you changed the default.
-   ``ALTER SESSION SET `store.format` = 'parquet';``  
-6. Partition Google Ngram data by year in a directory named `by_yr`.  
-   Embedded mode:  
+   ``ALTER SESSION SET `store.format` = 'parquet';``
+6. Partition Google Ngram data by year in a directory named `by_yr`.
+   Embedded mode:
 
         CREATE TABLE by_yr (yr, ngram, occurrances) PARTITION BY (yr) AS SELECT columns[1] yr, columns[0] ngram, columns[2] occurrances FROM `googlebooks-eng-all-5gram-20120701-zo.tsv` LIMIT 100;
-    Output is:  
+    Output is:
 
         |-----------|----------------------------|
         | Fragment  | Number of records written  |
@@ -98,7 +98,7 @@ a file to have this extension.
         | 0_0       | 100                        |
         |-----------|----------------------------|
         1 row selected (5.775 seconds)
-    Distributed mode:  
+    Distributed mode:
 
         CREATE TABLE by_yr (yr, ngram, occurrances) PARTITION BY (yr) AS SELECT columns[1] yr, columns[0] ngram, columns[2] occurrances FROM `googlebooks-eng-all-5gram-20120701-zo.tsv`;
     Output is:
@@ -116,9 +116,9 @@ a file to have this extension.
 		0_0_10.parquet	0_0_29.parquet	0_0_47.parquet	0_0_65.parquet
 		0_0_11.parquet	0_0_3.parquet	0_0_48.parquet	0_0_66.parquet
 		0_0_12.parquet	0_0_30.parquet	0_0_49.parquet	0_0_67.parquet
-        . . .  
-7. Query the `by_yr` directory to check to see how the data appears.  
-   `SELECT * FROM by_yr LIMIT 100;`  
+        . . .
+7. Query the `by_yr` directory to check to see how the data appears.
+   `SELECT * FROM by_yr LIMIT 100;`
    The output looks something like this:
 
         |------|--------------------------------------------|-------------|
@@ -131,7 +131,7 @@ a file to have this extension.
         | 1966 | zone by virtue of the                      | 1           |
         |------|--------------------------------------------|-------------|
         100 rows selected (2.184 seconds)
-   Files are partitioned by year. The output is not expected to be in perfect sorted order because Drill reads files sequentially. 
+   Files are partitioned by year. The output is not expected to be in perfect sorted order because Drill reads files sequentially.
 8. Distributed mode: Query the data to find all ngrams in 1993.
 
         SELECT * FROM by_yr WHERE yr=1993;
@@ -162,17 +162,17 @@ a file to have this extension.
         |------------------------------------------------------------------------------|
         31,100 rows selected (8.389 seconds)
 
-    The larger the data set you query, the greater the performance benefit from partition pruning. 
+    The larger the data set you query, the greater the performance benefit from partition pruning.
 
 ## Other Examples
 
     USE cp;
-	CREATE TABLE mytable1 PARTITION BY (r_regionkey) AS 
+	CREATE TABLE mytable1 PARTITION BY (r_regionkey) AS
 	  SELECT r_regionkey, r_name FROM cp.`tpch/region.parquet`;
-	CREATE TABLE mytable2 PARTITION BY (r_regionkey) AS 
+	CREATE TABLE mytable2 PARTITION BY (r_regionkey) AS
 	  SELECT * FROM cp.`tpch/region.parquet`;
 	CREATE TABLE mytable3 PARTITION BY (r_regionkey) AS
-	  SELECT r.r_regionkey, r.r_name, n.n_nationkey, n.n_name 
+	  SELECT r.r_regionkey, r.r_name, n.n_nationkey, n.n_name
 	  FROM cp.`tpch/nation.parquet` n, cp.`tpch/region.parquet` r
 	  WHERE n.n_regionkey = r.r_regionkey;
 

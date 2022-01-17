@@ -11,7 +11,7 @@ settings.
 
 The ALTER SYSTEM command supports the following syntax:
 
-    ALTER SYSTEM SET `option_name` = value;  
+    ALTER SYSTEM SET `option_name` = value;
     ALTER SYSTEM RESET `option_name`;
     ALTER SYSTEM RESET ALL;
 
@@ -32,9 +32,9 @@ Use the ALTER SYSTEM SET command to permanently set Drill query planning and
 execution options per cluster. Options set at the system level affect the
 entire system and persist between restarts.
 
-Using ALTER SYSTEM RESET changes the value of an option back to the default system setting. 
+Using ALTER SYSTEM RESET changes the value of an option back to the default system setting.
 
-Using ALTER SYSTEM RESET ALL changes the value of every option back to the default system setting.  
+Using ALTER SYSTEM RESET ALL changes the value of every option back to the default system setting.
 
 You can run the following query to see a complete list of planning and
 execution options that are currently set at the system or session level:
@@ -84,13 +84,13 @@ Note that the option type is case-sensitive.
     | planner.enable_streamagg       | SYSTEM | true     |
     | planner.enable_hashjoin        | SYSTEM | true     |
     |--------------------------------|--------|----------|
-    9 rows selected (0.159 seconds)  
+    9 rows selected (0.159 seconds)
 
-Issuing the ALTER SYSTEM RESET command resets the option back to the default system value (false):  
+Issuing the ALTER SYSTEM RESET command resets the option back to the default system value (false):
 
-    0: jdbc:drill:zk=local> ALTER SYSTEM RESET `planner.add_producer_consumer`;  
+    0: jdbc:drill:zk=local> ALTER SYSTEM RESET `planner.add_producer_consumer`;
 
-Issuing the ALTER SYSTEM RESET ALL command resets all options back to their default system values:  
+Issuing the ALTER SYSTEM RESET ALL command resets all options back to their default system values:
 
     0: jdbc:drill:zk=local> ALTER SYSTEM RESET ALL;
 

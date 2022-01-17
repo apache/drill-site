@@ -14,7 +14,7 @@ The Druid storage plugin allows you to perform SQL queries against [Apache Druid
 
 ## Configuration
 
-The plugin can be registered in Apache Drill using the drill web interface by navigating to the ```storage``` page.  
+The plugin can be registered in Apache Drill using the drill web interface by navigating to the ```storage``` page.
 
 ### Configuration Options
 

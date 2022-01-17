@@ -4,7 +4,7 @@ slug: "Ports Used by Drill"
 parent: "Configure Drill"
 ---
 
-The table below lists the default ports that Drill uses and provides descriptions for each, as well as the corresponding configuration options. You can modify the configuration options in `<drill_home>/conf/drill-override.conf` to change the ports that Drill uses. See [Start-Up Options]({{site.baseurl}}/docs/start-up-options/) for more information. 
+The table below lists the default ports that Drill uses and provides descriptions for each, as well as the corresponding configuration options. You can modify the configuration options in `<drill_home>/conf/drill-override.conf` to change the ports that Drill uses. See [Start-Up Options]({{site.baseurl}}/docs/start-up-options/) for more information.
 
 
 | Default Port | Type | Configuration Option               | Description                                                                                                                                                                         |
@@ -15,4 +15,4 @@ The table below lists the default ports that Drill uses and provides description
 | 31012        | TCP  | drill.exec.rpc.bit.server.port + 1 | Data port address. Used between nodes in a Drill cluster. Needed for multi-node installation of Apache Drill.                                                                       |
 
 
-<!---46655 UDP Used for JGroups and Infinispan. Needed for multi-node installation of Apache Drill.--->                                                                                                
+<!---46655 UDP Used for JGroups and Infinispan. Needed for multi-node installation of Apache Drill.--->

@@ -8,17 +8,17 @@ The WHERE clause selects rows based on a boolean expression. Only rows for which
 ## Syntax
 The WHERE clause supports the following syntax:
 
-       WHERE boolean_expression  
+       WHERE boolean_expression
 
-## Expression  
-A boolean expression can include one or more of the following operators:  
+## Expression
+A boolean expression can include one or more of the following operators:
 
   * AND
   * OR
   * NOT
   * IS NULL
   * IS NOT NULL
-  * LIKE 
+  * LIKE
   * BETWEEN
   * IN
   * EXISTS
@@ -27,7 +27,7 @@ A boolean expression can include one or more of the following operators:
 
 
 ## Examples
-The following query compares order totals where the states are California and New York:  
+The following query compares order totals where the states are California and New York:
 
        0: jdbc:drill:> SELECT o1.cust_id, sum(o1.order_total) AS ny_sales,
        (SELECT SUM(o2.order_total) FROM hive.orders o2
@@ -57,7 +57,7 @@ The following query compares order totals where the states are California and Ne
        | 1022       | 124        | null       |
        | 1023       | 166        | 149        |
        | 1024       | 233        | null       |
-       |------------|------------|------------|  
+       |------------|------------|------------|
 
 The following query uses a workspace named `dfw.views` and joins a view named “custview” with a hive table named “orders” to determine sales for each membership type:
 

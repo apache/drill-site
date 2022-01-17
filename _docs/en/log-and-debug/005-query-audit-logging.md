@@ -3,7 +3,7 @@ title: "Query Audit Logging"
 slug: "Query Audit Logging"
 parent: "Log and Debug"
 ---
-The query log provides audit log functionality for the queries executed by various drillbits in the cluster. The log records important information about queries executed on the Drillbit where Drill runs. The log includes the following information:  
+The query log provides audit log functionality for the queries executed by various drillbits in the cluster. The log records important information about queries executed on the Drillbit where Drill runs. The log includes the following information:
 
 * query text
 * start/end time
@@ -11,11 +11,11 @@ The query log provides audit log functionality for the queries executed by vario
 * schema
 * query id
 * name of the user that launched the query
-* client IP address from which the query was launched 
+* client IP address from which the query was launched
 
 You can query the following log files to get audit logging information:
 
-* `sqlline_queries.json` (embedded mode) 
+* `sqlline_queries.json` (embedded mode)
 * `drillbit_queries.json` (distributed mode)
 
 ## Checking the Most Recent Queries

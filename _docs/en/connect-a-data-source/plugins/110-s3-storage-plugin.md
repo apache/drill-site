@@ -155,7 +155,7 @@ Fortunately, as a part of S3a implementation in Hadoop 2.7.1, HttpClient's requi
 
 ## Public S3 buckets
 To query a data in a public S3 bucket, specify the anonymous AWS credentials provider as is done in the following example based on the public NYC taxi data bucket.
- 
+
 ```json
 {
   "type": "file",

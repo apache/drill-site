@@ -41,7 +41,7 @@ input values. This function is NOT specified in the SQL standard.
 ### ANY_VALUE Syntax
 
 ```
-ANY_VALUE([ ALL | DISTINCT ] value)  
+ANY_VALUE([ ALL | DISTINCT ] value)
 ```
 
 ### ANY_VALUE Examples
@@ -244,7 +244,7 @@ Returns the number of rows that match the given criteria.
 ### COUNT Syntax
 
 ```
-SELECT COUNT([ALL | DISTINCT] expression) FROM . . . 
+SELECT COUNT([ALL | DISTINCT] expression) FROM . . .
 SELECT COUNT(*) FROM . . .
 ```
 
@@ -301,7 +301,7 @@ expressions, respectively.
 ### MIN and MAX Syntax
 
 ```
-MIN(expression)  
+MIN(expression)
 MAX(expression)
 ```
 

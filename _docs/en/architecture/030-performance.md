@@ -19,7 +19,7 @@ or improve performance.
 Drill optimizes for both columnar storage and execution by using an in-memory
 data model that is hierarchical and columnar. When working with data stored in
 columnar formats such as Parquet, Drill avoids disk access for columns that
-are not involved in a query. Drill's execution layer also 
+are not involved in a query. Drill's execution layer also
 performs SQL processing directly on columnar data without row
 materialization. The combination of optimizations for columnar storage and
 direct columnar execution significantly lowers memory footprints and provides
@@ -38,7 +38,7 @@ traditional database engines, primarily due to code complexity.
 **_Runtime compilation_**
 
 Runtime compilation enables faster execution than interpreted execution. Drill
-generates highly efficient custom code for every single query. 
+generates highly efficient custom code for every single query.
 The following image shows the Drill compilation/code generation
 process:
 
@@ -47,7 +47,7 @@ process:
 **_Optimistic and pipelined query execution_**
 
 Using an optimistic execution model to process queries, Drill assumes
-that failures are infrequent within the short span of a query. Drill 
+that failures are infrequent within the short span of a query. Drill
 does not spend time creating boundaries or checkpoints to minimize recovery
 time. In the instance of a single query failure, the query is rerun. Drill execution uses a pipeline
 model where all tasks are scheduled at once. The query execution happens in-

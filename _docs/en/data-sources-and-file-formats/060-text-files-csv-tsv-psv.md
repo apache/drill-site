@@ -6,9 +6,9 @@ parent: "Data Sources and File Formats"
 
 Best practices for reading text files are:
 
-* Select data from particular columns  
+* Select data from particular columns
 * Cast data
-* Use a distributed file system  
+* Use a distributed file system
 
 ## Select Data from Particular Columns
 
@@ -18,7 +18,7 @@ Converting text files to another format, such as Parquet, using the CTAS command
     COLUMNS[1] AS username, CAST(COLUMNS[2] AS TIMESTAMP) AS registration_date
     FROM `users.csv1`;
 
-You need to select particular columns instead of using SELECT * for performance reasons. Drill reads CSV, TSV, and PSV files into a list of VARCHARS, rather than individual columns. 
+You need to select particular columns instead of using SELECT * for performance reasons. Drill reads CSV, TSV, and PSV files into a list of VARCHARS, rather than individual columns.
 
 If your text files have headers, you can enable extractHeader and select particular columns by name. For example:
 
@@ -28,12 +28,12 @@ If your text files have headers, you can enable extractHeader and select particu
 
 ## Cast Data
 
-You can also improve performance by casting the VARCHAR data in a text file to INT, FLOAT, DATETIME, and so on when you read the data from a text file. Drill performs better reading fixed-width than reading VARCHAR data. 
+You can also improve performance by casting the VARCHAR data in a text file to INT, FLOAT, DATETIME, and so on when you read the data from a text file. Drill performs better reading fixed-width than reading VARCHAR data.
 
 Text files that include empty strings might produce unacceptable results. Common ways to deal with empty strings are:
 
-* Set the drill.exec.functions.cast_empty_string_to_null SESSION/SYSTEM option to true.  
-* Use a case statement to cast empty strings to values you want. For example, create a Parquet table named test from a CSV file named test.csv, and cast empty strings in the CSV to null in any column the empty string appears:  
+* Set the drill.exec.functions.cast_empty_string_to_null SESSION/SYSTEM option to true.
+* Use a case statement to cast empty strings to values you want. For example, create a Parquet table named test from a CSV file named test.csv, and cast empty strings in the CSV to null in any column the empty string appears:
 
           CREATE TABLE test AS SELECT
             case when COLUMNS[0] = '' then CAST(NULL AS INTEGER) else CAST(COLUMNS[0] AS INTEGER) end AS c1,
@@ -41,26 +41,26 @@ Text files that include empty strings might produce unacceptable results. Common
             case when COLUMNS[2] = '' then CAST(NULL AS DOUBLE) else CAST(COLUMNS[2] AS DOUBLE) end AS c3,
             case when COLUMNS[3] = '' then CAST(NULL AS DATE) else CAST(COLUMNS[3] AS DATE) end AS c4,
             case when COLUMNS[4] = '' then CAST(NULL AS VARCHAR(20)) else CAST(COLUMNS[4] AS VARCHAR(20)) end AS c5
-          FROM `test.csv`; 
+          FROM `test.csv`;
 
 
 ## Use a Distributed File System
 Using a distributed file system, such as HDFS, instead of a local file system to query files improves performance because Drill attempts to split files on block boundaries.
 
-**Configuring Drill to Read Text Files** 
+**Configuring Drill to Read Text Files**
 
-In the storage plugin configuration, you [set the attributes]({{site.baseurl}}/docs/plugin-configuration-basics/#list-of-attributes-and-definitions) that affect how Drill reads CSV, TSV, PSV (comma-, tab-, pipe-separated) files:  
+In the storage plugin configuration, you [set the attributes]({{site.baseurl}}/docs/plugin-configuration-basics/#list-of-attributes-and-definitions) that affect how Drill reads CSV, TSV, PSV (comma-, tab-, pipe-separated) files:
 
-* comment  
-* escape  
-* delimiter  
-* quote  
+* comment
+* escape
+* delimiter
+* quote
 * skipFirstLine
 * extractHeader
 
-Set the `sys.options` property setting `exec.storage.enable_new_text_reader` to true (the default) before attempting to use these attributes. 
+Set the `sys.options` property setting `exec.storage.enable_new_text_reader` to true (the default) before attempting to use these attributes.
 
-**Using Quotation Marks** 
+**Using Quotation Marks**
 
 CSV files typically enclose text fields in double quotation marks, and Drill treats the double quotation mark in CSV files as a special character accordingly. By default, Drill treats double quotation marks as a special character in TSV files also. If you want Drill *not* to treat double quotation marks as a special character, configure the storage plugin to set the `quote` attribute to the unicode null `"\u0000"`. For example:
 
@@ -70,7 +70,7 @@ CSV files typically enclose text fields in double quotation marks, and Drill tre
        "extensions": [
          "tsv"
        ],
-       "quote": "\u0000",    <-- set this to null 
+       "quote": "\u0000",    <-- set this to null
        "delimiter": "\t"
      },
      . . .
@@ -91,7 +91,7 @@ The examples in this section show the results of querying CSV files that use and
       "skipFirstLine": true,
       "delimiter": ","
     },
-    
+
 ![CSV with header]({{ site.baseurl }}/images/docs/csv_with_header.png)
 
     0: jdbc:drill:zk=local> SELECT * FROM dfs.`/tmp/csv_with_header.csv2`;
@@ -107,7 +107,7 @@ The examples in this section show the results of querying CSV files that use and
     | ["hello","1","2","3"]  |
     |------------------------|
     7 rows selected (0.112 seconds)
-    
+
 **Using a Header in a File**
 
     "csv": {
@@ -119,7 +119,7 @@ The examples in this section show the results of querying CSV files that use and
       "extractHeader": true,
       "delimiter": ","
     },
-    
+
 ![CSV with header]({{ site.baseurl }}/images/docs/csv_with_header.png)
 
     0: jdbc:drill:zk=local> SELECT * FROM dfs.`/tmp/csv_with_header.csv2`;
@@ -147,7 +147,7 @@ The examples in this section show the results of querying CSV files that use and
       "extractHeader": false,
       "delimiter": ","
     },
-    
+
 ![CSV no header]({{ site.baseurl }}/images/docs/csv_no_header.png)
 
     0: jdbc:drill:zk=local> SELECT * FROM dfs.`/tmp/csv_no_header.csv`;
@@ -235,7 +235,7 @@ Storage Plugin B
       "delimiter": ","
     },
 
-**Creating One Storage Plugin Configuration to Handle Multiple Formats**  
+**Creating One Storage Plugin Configuration to Handle Multiple Formats**
 
 You can use a different extension for files with and without a header, and use a storage plugin that looks something like the following example. This method requires renaming some files to use the csv2 extension.
 
@@ -267,7 +267,7 @@ This example uses the [Passenger Dataset](http://media.flysfo.com/media/sfo/medi
 
 1. Execute a basic query:
 
-        SELECT * 
+        SELECT *
         FROM dfs.`/opendata/Passenger/SFO_Passenger_Data/MonthlyPassengerData_200507_to_201503.csv`
         LIMIT 5;
 
@@ -275,11 +275,11 @@ This example uses the [Passenger Dataset](http://media.flysfo.com/media/sfo/medi
         ...
         ...
 
-   By default Drill processes each line as an array of columns, all values being a simple string. To do some operations with these values (projection or conditional query) you must convert the strings to proper types. 
+   By default Drill processes each line as an array of columns, all values being a simple string. To do some operations with these values (projection or conditional query) you must convert the strings to proper types.
 
-2. Use the column index, and cast the value to the proper type. 
+2. Use the column index, and cast the value to the proper type.
 
-        SELECT 
+        SELECT
         columns[0] as `DATE`,
         columns[1] as `AIRLINE`,
         CAST(columns[11] AS DOUBLE) as `PASSENGER_COUNT`

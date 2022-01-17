@@ -16,7 +16,7 @@ For more details about supported versions please refer to [Supported versions](h
 This storage plugin supports the following optimizations:
 
 - Project pushdown
-- Filter pushdown (only expressions supported by Calcite adapter for ElasticSearch. Filter with unsupported expressions 
+- Filter pushdown (only expressions supported by Calcite adapter for ElasticSearch. Filter with unsupported expressions
   wouldn't be pushed to ElasticSearch but will be produced by Drill)
 - Limit pushdown
 - Aggregation pushdown

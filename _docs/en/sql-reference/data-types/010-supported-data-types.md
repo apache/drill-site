@@ -3,7 +3,7 @@ title: "Supported Data Types"
 slug: "Supported Data Types"
 parent: "Data Types"
 ---
-Drill reads from and writes to data sources having a wide variety of types. 
+Drill reads from and writes to data sources having a wide variety of types.
 
 | SQL Data Type                                      | Description                                                                                                          | Example                                                                        |
 |----------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|
@@ -22,56 +22,56 @@ Drill reads from and writes to data sources having a wide variety of types.
 | CHARACTER VARYING, CHARACTER, CHAR,**** or VARCHAR | UTF8-encoded variable-length string. The default limit is 1 character. The maximum character limit is 2,147,483,647. | CHAR(30) casts data to a 30-character string maximum.                          |
 
 
-\* Starting in Drill 1.14, the DECIMAL data type is enabled by default.  
-\*\* Internally, INTERVAL is represented as INTERVALDAY or INTERVALYEAR.  
-\*\*\* SMALLINT is not currently supported.  
-\*\*\*\* The CHAR data type is internally represented as VARCHAR by Drill.    
+\* Starting in Drill 1.14, the DECIMAL data type is enabled by default.
+\*\* Internally, INTERVAL is represented as INTERVALDAY or INTERVALYEAR.
+\*\*\* SMALLINT is not currently supported.
+\*\*\*\* The CHAR data type is internally represented as VARCHAR by Drill.
 
-## DECIMAL Data Type  
+## DECIMAL Data Type
 
-Starting in Drill 1.14, DECIMAL data type support is enabled by default. Drill uses the vardecimal data type to store decimal and numeric data types in a compressed format that optimizes storage space. The vardecimal data type stores decimal and numeric values as variable length columns that can represent any decimal precision.  
+Starting in Drill 1.14, DECIMAL data type support is enabled by default. Drill uses the vardecimal data type to store decimal and numeric data types in a compressed format that optimizes storage space. The vardecimal data type stores decimal and numeric values as variable length columns that can represent any decimal precision.
 
-In Drill, the SQL DECIMAL and NUMERIC data types map to the [java.math.BigDecimal](https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html) Java data type.   
+In Drill, the SQL DECIMAL and NUMERIC data types map to the [java.math.BigDecimal](https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html) Java data type.
 
-### Syntax  
-  
-The DECIMAL data type accepts numeric values, for which you can define a precision and a scale, as shown:  
+### Syntax
 
-       column_name DECIMAL[(precision[,scale])]  
-  
-Precision is an integer that indicates how many digits the number will contain. Scale is an integer that indicates the number of digits to the right of the decimal point. For example, the number 2325.67 has a precision of 6 and scale of 2. In a query, DECIMAL (6,2). 
- 
-Scale cannot be greater than the precision. If you do not indicate a precision or scale, the default precision is 38 and scale is 0.  
+The DECIMAL data type accepts numeric values, for which you can define a precision and a scale, as shown:
 
-### Decimal Data Type Storage Format Support 
+       column_name DECIMAL[(precision[,scale])]
 
-Drill can read decimal data types from and write decimal data types to the following storage format: 
+Precision is an integer that indicates how many digits the number will contain. Scale is an integer that indicates the number of digits to the right of the decimal point. For example, the number 2325.67 has a precision of 6 and scale of 2. In a query, DECIMAL (6,2).
+
+Scale cannot be greater than the precision. If you do not indicate a precision or scale, the default precision is 38 and scale is 0.
+
+### Decimal Data Type Storage Format Support
+
+Drill can read decimal data types from and write decimal data types to the following storage format:
 
 - parquet
 
-Drill can read decimal data types from the following storage formats, but cannot write decimal data types to them:  
+Drill can read decimal data types from the following storage formats, but cannot write decimal data types to them:
 
-- hive  
-- jdbc  
+- hive
+- jdbc
 - avro
 
 
-### Decimal Type Options 
+### Decimal Type Options
 
-You can use the [SET command]({{site.baseurl}}/docs/set/) with the `planner.enable_decimal_data_type` option to turn DECIMAL data type support off and on. If you disable the `planner.enable_decimal_data_type` option (by setting it to false), Drill treats decimal literals as DOUBLE.  
+You can use the [SET command]({{site.baseurl}}/docs/set/) with the `planner.enable_decimal_data_type` option to turn DECIMAL data type support off and on. If you disable the `planner.enable_decimal_data_type` option (by setting it to false), Drill treats decimal literals as DOUBLE.
 
-Drill 1.14 introduces the following additional decimal-related options for the Parquet storage format that you can modify using the [SET command]({{site.baseurl}}/docs/set/):  
+Drill 1.14 introduces the following additional decimal-related options for the Parquet storage format that you can modify using the [SET command]({{site.baseurl}}/docs/set/):
 
-- `store.parquet.writer.use_primitive_types_for_decimals (boolean)`  
-Allows Drill to use INT32 and INT64 logical types when storing decimal values in Parquet if the precision of the value allows it. Default is true. Set to false to prevent Drill from using INT32 and INT64 logical types, as shown:   
+- `store.parquet.writer.use_primitive_types_for_decimals (boolean)`
+Allows Drill to use INT32 and INT64 logical types when storing decimal values in Parquet if the precision of the value allows it. Default is true. Set to false to prevent Drill from using INT32 and INT64 logical types, as shown:
 
-        SET `store.parquet.writer.use_primitive_types_for_decimals` = false;   
+        SET `store.parquet.writer.use_primitive_types_for_decimals` = false;
 
 
-- `store.parquet.writer.logical_type_for_decimals` 
-Indicates the logical type that Drill should use to store decimals. The default is fixed_len_byte_array. Alternatively, you can set this option to binary, as shown:  
+- `store.parquet.writer.logical_type_for_decimals`
+Indicates the logical type that Drill should use to store decimals. The default is fixed_len_byte_array. Alternatively, you can set this option to binary, as shown:
 
-        SET `store.parquet.writer.logical_type_for_decimals` = 'binary';  
+        SET `store.parquet.writer.logical_type_for_decimals` = 'binary';
 
 
 ## Composite Types
@@ -83,9 +83,9 @@ Drill supports the following composite types:
 
 A map is a set of name/value pairs. A value in a map can be a scalar type, such as string or int, or a complex type, such as an array or another map. An array is a repeated list of values. A value in an array can be a scalar type, such as string or int, or an array can be a complex type, such as a map or another array.
 
-Drill uses map and array data types internally for reading complex and nested data structures from data sources. In this release of Drill, you cannot reference a composite type by name in a query, but Drill supports array values coming from data sources. For example, you can use the index syntax to query data and get the value of an array element:  
+Drill uses map and array data types internally for reading complex and nested data structures from data sources. In this release of Drill, you cannot reference a composite type by name in a query, but Drill supports array values coming from data sources. For example, you can use the index syntax to query data and get the value of an array element:
 
-`a[1]`  
+`a[1]`
 
 You can refer to the value for a key in a map using dot notation:
 
@@ -108,24 +108,24 @@ changes in the data processing, Drill regenerates the code as necessary.
 In Drill, you cast or convert data to the required type for moving data from one data source to another.
 You do not assign a data type to every column name in a CREATE TABLE statement to define the table as you do in database software. Instead, you use the CREATE TABLE AS (CTAS) statement with one or more of the following functions to define the table:
 
-* [CAST]({{ site.baseurl }}/docs/data-type-conversion/#cast)    
-* [CONVERT TO/FROM]({{ site.baseurl }}/docs/data-type-conversion/#convert_to-and-convert_from)   
-  Use the [CONVERT TO AND CONVERT FROM data types]({{ site.baseurl }}/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions)  
-* Other [data conversion functions]({{ site.baseurl }}/docs/data-type-conversion/#other-data-type-conversions)   
+* [CAST]({{ site.baseurl }}/docs/data-type-conversion/#cast)
+* [CONVERT TO/FROM]({{ site.baseurl }}/docs/data-type-conversion/#convert_to-and-convert_from)
+  Use the [CONVERT TO AND CONVERT FROM data types]({{ site.baseurl }}/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions)
+* Other [data conversion functions]({{ site.baseurl }}/docs/data-type-conversion/#other-data-type-conversions)
 
 In some cases, Drill converts schema-less data to correctly-typed data implicitly. In this case, you do not need to cast the data. The file format of the data and the nature of your query determines the requirement for casting or converting. Differences in casting depend on the data source. The following list describes how Drill treats data types from various data sources:
 
-* HBase  
+* HBase
   Does not implicitly cast input to SQL types. Convert data to appropriate types as as described in the section ["Querying HBase"]({{ site.baseurl}}/docs/querying-hbase/). Use [CONVERT_TO or CONVERT_FROM data types]({{ site.baseurl }}/docs//data-type-conversion/#convert_to-and-convert_from).
-* Hive  
+* Hive
   Implicitly casts Hive types to SQL types as shown in the Hive [type mapping example]({{ site.baseurl }}/docs/hive-to-drill-data-type-mapping/#type-mapping-example)
-* JSON  
-  Implicitly casts JSON data to its [corresponding SQL types]({{ site.baseurl }}/docs/json-data-model/#data-type-mapping) or to VARCHAR if Drill is in all text mode. 
-* MapR-DB  
+* JSON
+  Implicitly casts JSON data to its [corresponding SQL types]({{ site.baseurl }}/docs/json-data-model/#data-type-mapping) or to VARCHAR if Drill is in all text mode.
+* MapR-DB
   Implicitly casts MapR-DB data to SQL types when you use [the maprdb format]({{ site.baseurl }}/docs/mapr-db-format) for reading MapR-DB data. The dfs storage plugin defines the format when you install Drill from the mapr-drill package on a MapR node.
-* Parquet  
-  Implicitly casts Parquet data to the SQL types shown in [SQL Data Types to Parquet]({{ site.baseurl }}/docs/parquet-format/#sql-data-types-to-parquet). 
-* Text: CSV, TSV, and other text  
+* Parquet
+  Implicitly casts Parquet data to the SQL types shown in [SQL Data Types to Parquet]({{ site.baseurl }}/docs/parquet-format/#sql-data-types-to-parquet).
+* Text: CSV, TSV, and other text
   Implicitly casts all textual data to VARCHAR.
 
 ## Implicit Casting Precedence of Data Types
@@ -158,17 +158,17 @@ As shown in the table, Drill can cast a NULL value, which has the lowest precede
 
 In a textual file, such as CSV, Drill interprets every field as a VARCHAR, as previously mentioned. To handle textual data, you can use the following functions to cast and convert compatible data types:
 
-* [CAST]({{ site.baseurl }}/docs/data-type-conversion/#cast)  
+* [CAST]({{ site.baseurl }}/docs/data-type-conversion/#cast)
   Casts data from one data type to another.
 * [CONVERT_TO and CONVERT_FROM]({{ site.baseurl }})/docs/data-type-conversion/#convert_to-and-convert_from)
-  Convert data, including binary data, from one data type to another using ["CONVERT_TO and CONVERT_FROM data types"]({{ site.baseurl }}/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions)  
-* [TO_CHAR]({{ site.baseurl }}/docs/data-type-conversion/#to_char)  
+  Convert data, including binary data, from one data type to another using ["CONVERT_TO and CONVERT_FROM data types"]({{ site.baseurl }}/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions)
+* [TO_CHAR]({{ site.baseurl }}/docs/data-type-conversion/#to_char)
   Converts a TIMESTAMP, INTERVALDAY/INTERVALYEAR, INTEGER, DOUBLE, or DECIMAL to a string.
-* [TO_DATE]({{ site.baseurl }}/docs/data-type-conversion/#to_date)  
+* [TO_DATE]({{ site.baseurl }}/docs/data-type-conversion/#to_date)
   Converts a string to DATE.
-* [TO_NUMBER]({{ site.baseurl }}/docs/data-type-conversion/#to_number)  
+* [TO_NUMBER]({{ site.baseurl }}/docs/data-type-conversion/#to_number)
   Converts a string to a DECIMAL.
-* [TO_TIMESTAMP]({{ site.baseurl }}/docs/data-type-conversion/#to_timestamp)  
+* [TO_TIMESTAMP]({{ site.baseurl }}/docs/data-type-conversion/#to_timestamp)
   Converts a string to TIMESTAMP.
 
 If the SELECT statement includes a WHERE clause that compares a column of an unknown data type, cast both the value of the column and the comparison value in the WHERE clause.
@@ -194,9 +194,9 @@ The following tables show data types that Drill can cast to/from other data type
 | VARBINARY**   | yes      | yes | yes    | yes     | yes   | no   | yes         | yes     | no        |
 
 
-\* Not supported in this release.   
-\*\* Used to cast binary UTF-8 data coming to/from sources such as HBase.   
-\*\*\* You cannot convert a character string having a decimal point to an INT or BIGINT.   
+\* Not supported in this release.
+\*\* Used to cast binary UTF-8 data coming to/from sources such as HBase.
+\*\*\* You cannot convert a character string having a decimal point to an INT or BIGINT.
 
 {% include startnote.html %}The CAST function does not support all representations of FIXEDBINARY and VARBINARY. Only the UTF-8 format is supported. {% include endnote.html %}
 
@@ -217,7 +217,7 @@ If your FIXEDBINARY or VARBINARY data is in a format other than UTF-8, or big-en
 | INTERVALYEAR | Yes  | No   | Yes       | No           | Yes         |
 | INTERVALDAY  | Yes  | No   | Yes       | Yes          | No          |
 
-\* Used to cast binary UTF-8 data coming to/from sources such as HBase. The CAST function does not support all representations of FIXEDBINARY and VARBINARY. Only the UTF-8 format is supported. 
+\* Used to cast binary UTF-8 data coming to/from sources such as HBase. The CAST function does not support all representations of FIXEDBINARY and VARBINARY. Only the UTF-8 format is supported.
 
 ## Data Types for CONVERT_TO and CONVERT_FROM Functions
 
@@ -257,7 +257,7 @@ and CONVERT_FROM functions:
 
 \* In Drill 1.2 and later, use the TIMESTAMP_IMPALA type with the CONVERT_FROM function to decode a timestamp from Hive or Impala, as shown in the section, ["About INT96 Support"]({{site.baseurl}}/docs/parquet-format/#about-int96-support).
 
-This table includes types such as INT, for converting little endian-encoded data and types such as INT_BE for converting big endian-encoded data to Drill internal types. You need to convert binary representations, such as data in HBase, to a Drill internal format as you query the data. If you are unsure that the size of the source and destination INT or BIGINT you are converting is the same, use CAST to convert these data types to/from binary.  
+This table includes types such as INT, for converting little endian-encoded data and types such as INT_BE for converting big endian-encoded data to Drill internal types. You need to convert binary representations, such as data in HBase, to a Drill internal format as you query the data. If you are unsure that the size of the source and destination INT or BIGINT you are converting is the same, use CAST to convert these data types to/from binary.
 
 \*\_HADOOPV in the data type name denotes the variable length integer as defined by Hadoop libraries. Use a \*\_HADOOPV type if user data is encoded in this format by a Hadoop tool outside MapR.
 

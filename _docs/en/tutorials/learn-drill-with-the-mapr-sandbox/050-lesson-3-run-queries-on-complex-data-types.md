@@ -287,7 +287,7 @@ This query uses an SQL extension, the repeated_count function, to get an
 aggregated count of the array values. The query returns the number of products
 searched for each session that converted into a purchase and ranks the counts
 in descending order. Only clicks that have resulted in a purchase are counted.
-  
+
 ## Store a Result Set in a Table for Reuse and Analysis
 
 To facilitate additional analysis on this result set, you can easily and
@@ -306,7 +306,7 @@ quickly create a Drill table from the results of the query.
 ### Return product searches for high-value customers:
 
     0: jdbc:drill:> select o.cust_id, o.order_total, t.trans_info.prod_id[0] as prod_id
-    from 
+    from
     hive.orders as o
     join `clicks/clicks.json` t
     on o.cust_id=t.user_info.cust_id

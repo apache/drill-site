@@ -10,12 +10,12 @@ Drill provides a functions for calculating a variety well known string distance 
 
        SELECT street_address
        FROM address-data
-       WHERE cosine_distance( `street_address`, “1234 North Quail Ln” ) <  0.5; 
+       WHERE cosine_distance( `street_address`, “1234 North Quail Ln” ) <  0.5;
 
-The search would return addresses from rows with street addresses similar to 1234 North Quail Ln, such as:   
+The search would return addresses from rows with street addresses similar to 1234 North Quail Ln, such as:
 
        1234 N. Quail Lane
-       1234 N Quaile Lan  
+       1234 N Quaile Lan
 
 Drill supports the following string distance functions.
 
@@ -32,7 +32,7 @@ Drill supports the following string distance functions.
 
 [^1]: Calculates the score from a matching algorithm similar to the searching algorithms implemented in editors such as Sublime Text, TextMate, Atom, and others.  One point is given for every matched character.  Subsequent matches yield two bonus points.
 
-[^2]: Generally this algorithm is fairly inefficient, as for length m, n of the input CharSequence's left and right respectively, the runtime of the algorithm is O(m*n).  
+[^2]: Generally this algorithm is fairly inefficient, as for length m, n of the input CharSequence's left and right respectively, the runtime of the algorithm is O(m*n).
 
 
 

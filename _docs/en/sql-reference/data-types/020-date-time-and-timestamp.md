@@ -6,11 +6,11 @@ parent: "Data Types"
 Using familiar date and time formats, listed in the [SQL data types table]({{ site.baseurl }}/docs/supported-data-types), you can construct query date and time data. You need to cast textual data to date and time data types. The format of date, time, and timestamp text in a textual data source needs to match the SQL query format for successful casting. Drill supports date, time, timestamp, and interval literals shown in the following example:
 
 ```sql
-SELECT DATE '2008-2-23', 
-       TIME '12:23:34', 
-       TIMESTAMP '2008-2-23 12:23:34.456', 
-       INTERVAL '1' YEAR, INTERVAL '2' DAY, 
-       DATE_ADD(DATE '2008-2-23', INTERVAL '1 10:20:30' DAY TO SECOND), 
+SELECT DATE '2008-2-23',
+       TIME '12:23:34',
+       TIMESTAMP '2008-2-23 12:23:34.456',
+       INTERVAL '1' YEAR, INTERVAL '2' DAY,
+       DATE_ADD(DATE '2008-2-23', INTERVAL '1 10:20:30' DAY TO SECOND),
        DATE_ADD(DATE '2010-2-23', 1)
 FROM (VALUES (1));
 ```
@@ -137,7 +137,7 @@ DATE, TIME, and TIMESTAMP literals. Drill stores values in Coordinated Universal
 
 Drill does not support TIMESTAMP with time zone; however, if your data includes the time zone, use the [TO_TIMESTAMP function]({{ site.baseurl }}/docs/data-type-conversion/#other-data-type-conversions) and [Joda format specifiers]({{site.baseurl}}/docs/data-type-conversion/#format-specifiers-for-date/time-conversions) as shown the examples in section, ["Time Zone Limitation"]({{site.baseurl}}/docs/data-type-conversion/#time-zone-limitation).
 
-Next, use the following literals in a SELECT statement. 
+Next, use the following literals in a SELECT statement.
 
 * `date`
 * `time`

@@ -4,7 +4,7 @@ slug: "REST API Introduction"
 parent: "REST API"
 ---
 
-The Drill REST API provides programmatic access to Drill through the [Web UI]({{site.baseurl}}/docs/starting-the-web-ui/). Using HTTP requests, you can run queries, perform storage plugin tasks, such as creating a storage plugin, obtain profiles of queries, and get current memory metrics. 
+The Drill REST API provides programmatic access to Drill through the [Web UI]({{site.baseurl}}/docs/starting-the-web-ui/). Using HTTP requests, you can run queries, perform storage plugin tasks, such as creating a storage plugin, obtain profiles of queries, and get current memory metrics.
 
 AN HTTP request uses the familiar Web UI URI:
 
@@ -24,34 +24,34 @@ Submit a query and return results.
 
 [**Profiles**]({{site.baseurl}}/docs/rest-api-introduction/#profiles)
 
-* Get the profiles of running and completed queries.  
-* Get the profile of the query that has the given queryid.  
-* Cancel the query that has the given queryid.  
+* Get the profiles of running and completed queries.
+* Get the profile of the query that has the given queryid.
+* Cancel the query that has the given queryid.
 
 [**Storage**]({{site.baseurl}}/docs/rest-api-introduction/#storage)
 
-* Get the list of storage plugin names and configurations.  
-* Get the definition of the named storage plugin.  
-* Enable or disable the named storage plugin.  
-* Create or update a storage plugin configuration.  
-* Delete a storage plugin configuration.  
-* Get Drillbit information, such as ports numbers.  
-* Get the current memory metrics.  
+* Get the list of storage plugin names and configurations.
+* Get the definition of the named storage plugin.
+* Enable or disable the named storage plugin.
+* Create or update a storage plugin configuration.
+* Delete a storage plugin configuration.
+* Get Drillbit information, such as ports numbers.
+* Get the current memory metrics.
 
 [**Threads**]({{site.baseurl}}/docs/rest-api-introduction/#threads)
 
-Get the status of threads.  
+Get the status of threads.
 
 [**Options**]({{site.baseurl}}/docs/rest-api-introduction/#options)
 
-List information about system/session options.  
+List information about system/session options.
 
 <!-- * Change the value or type of the named option.   -->
 
 
 ## Query
 
-Using the query method, you can programmatically run queries. 
+Using the query method, you can programmatically run queries.
 
 ----------
 
@@ -61,8 +61,8 @@ Submit a query and return results.
 
 **Parameters**
 
-* `queryType`--SQL, PHYSICAL, or LOGICAL are valid types. Use only "SQL". Other types are for internal use only.  
-* `query`--A SQL query that runs in Drill.  
+* `queryType`--SQL, PHYSICAL, or LOGICAL are valid types. Use only "SQL". Other types are for internal use only.
+* `query`--A SQL query that runs in Drill.
 * `autoLimit`--Limits the number of rows returned from the result set. (Drill 1.16+)
 * `defaultSchema`--Sets the default schema for the query.  Equavalent to executing a `USE <schema>` prior to the query. (Drill 1.18+)
 
@@ -179,13 +179,13 @@ The above call will result in the response shown below.  Note that the response 
 
 ## Profiles
 
-These methods get query profiles. 
+These methods get query profiles.
 
 ----------
 
 ### GET /profiles.json
 
-Get the profiles of running and completed queries. 
+Get the profiles of running and completed queries.
 
 **Example**
 
@@ -203,7 +203,7 @@ Get the profiles of running and completed queries.
             "query" : "select * from dfs.`/Users/joe-user/apache-drill-1.4.0/sample-data/donuts.json` where name= 'Cake'",
             "state" : "COMPLETED",
             "user" : "anonymous"
-          }, 
+          },
           . . .
 
 ----------
@@ -214,7 +214,7 @@ Get the profile of the query that has the given queryid.
 
 **Parameter**
 
-queryid--The UUID of the query in [standard UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) format that Drill assigns to each query. 
+queryid--The UUID of the query in [standard UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) format that Drill assigns to each query.
 
 **Example**
 
@@ -222,7 +222,7 @@ queryid--The UUID of the query in [standard UUID](https://en.wikipedia.org/wiki/
 
 **Response Body**
 
-        {"id":{"part1":3004720672638717061,"part2":3553677414795345685},"type":1,"start":1447892599827,"end":1447892599950,"query":"select * from dfs.`/Users/joe-user/drill/apache-drill-1.4.0/sample-data/donuts.json` where name= 'Cake'","plan":"00-00    Screen : rowType = RecordType(ANY *): 
+        {"id":{"part1":3004720672638717061,"part2":3553677414795345685},"type":1,"start":1447892599827,"end":1447892599950,"query":"select * from dfs.`/Users/joe-user/drill/apache-drill-1.4.0/sample-data/donuts.json` where name= 'Cake'","plan":"00-00    Screen : rowType = RecordType(ANY *):
         . . ."lastUpdate":1447892599950,"lastProgress":1447892599950}]}],"user":"anonymous"}
 
 ----------
@@ -233,7 +233,7 @@ Cancel the query that has the given queryid.
 
 **Parameter**
 
-queryid--The UUID of the query in [standard UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) format that Drill assigns to each query. 
+queryid--The UUID of the query in [standard UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) format that Drill assigns to each query.
 
 **Example**
 
@@ -350,7 +350,7 @@ name--The name of the storage plugin configuration to create or update.
           "enabled" : <true or false>,
             "connection" : "<type of distributed file system and address/path>",
             "workspaces" : <null or unique workspace name>,
-            "formats" : <file format definitions> 
+            "formats" : <file format definitions>
         }
      }
 
@@ -426,7 +426,7 @@ Get Drillbit information, such as port numbers.
 
 ### GET /status
 
-Get the status of Drill. 
+Get the status of Drill.
 
 **Example**
 
@@ -511,7 +511,7 @@ List the name, default, and data type of the system and session options.
           "value" : 1.0,
           "type" : "SYSTEM",
           "kind" : "DOUBLE"
-        }, 
+        },
 
         . . .
 
@@ -535,7 +535,7 @@ List the name, default, and data type of the system and session options.
 
 ### POST /option/{optionName}
 
-Change the value or type of the named option. 
+Change the value or type of the named option.
 
 **Parameter**
 

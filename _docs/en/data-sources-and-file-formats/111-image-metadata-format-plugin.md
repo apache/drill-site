@@ -11,7 +11,7 @@ Drill can query the metadata in various image formats. The metadata format plugi
 The metadata format plugin supports the following file formats:
 
 JPEG, TIFF, PSD, PNG, BMP, GIF, ICO, PCX, WAV, AVI, WebP, MOV, MP4, EPS
-Camera Raw: ARW (Sony), CRW/CR2 (Canon), NEF (Nikon), ORF (Olympus), RAF (FujiFilm), RW2 (Panasonic), RWL (Leica), SRW (Samsung), X3F (Foveon)  
+Camera Raw: ARW (Sony), CRW/CR2 (Canon), NEF (Nikon), ORF (Olympus), RAF (FujiFilm), RW2 (Panasonic), RWL (Leica), SRW (Samsung), X3F (Foveon)
 
 The metadata format plugin enables Drill to read the following metadata:
 
@@ -19,7 +19,7 @@ Exif, IPTC, XMP, JFIF / JFXX, ICC Profiles, Photoshop fields, PNG properties, BM
 
 Since each type of metadata has a different set of fields, the plugin returns a set of commonly-used fields, such as the image width, height, and bits per pixels for ease of use.
 
-To configure Drill to read image metadata, you must modify the extensions section in the dfs storage plugin configuration, as shown:  
+To configure Drill to read image metadata, you must modify the extensions section in the dfs storage plugin configuration, as shown:
 
 ```json
 "formats": {
@@ -34,24 +34,24 @@ To configure Drill to read image metadata, you must modify the extensions sectio
    "fileSystemMetadata": true,
    "descriptive": true,
    "timeZone": null
- }  
-}  
+ }
+}
 ```
 
-**Note:** The result does not include file names, but you can use [implicit columns]({{site.baseurl}}/docs/querying-a-file-system-introduction/#implicit-columns) to get file names, full paths, fully qualified names, and file suffixes.  
+**Note:** The result does not include file names, but you can use [implicit columns]({{site.baseurl}}/docs/querying-a-file-system-introduction/#implicit-columns) to get file names, full paths, fully qualified names, and file suffixes.
 
 
 ## Attributes
 
-The following table lists configuration attributes:  
+The following table lists configuration attributes:
 
 Attribute|Default Value|Description
 ---------|-------------|-----------
-fileSystemMetadata|true|Set to true to extract filesystem metadata including the file size and the last modified timestamp, false otherwise. 
+fileSystemMetadata|true|Set to true to extract filesystem metadata including the file size and the last modified timestamp, false otherwise.
 descriptive|true|Set to true to extract metadata in a human-readable string format. Set false to extract metadata in a machine-readable typed format.
-timeZone|null|Specify the time zone to interpret the timestamp with no time zone information. If the timestamp includes the time zone information, this value is ignored. If null is set, the local time zone is used.  
+timeZone|null|Specify the time zone to interpret the timestamp with no time zone information. If the timestamp includes the time zone information, this value is ignored. If null is set, the local time zone is used.
 
-## Examples  
+## Examples
 
 To follow along with the examples, start by downloading the following image to your `\tmp` directory.
 
@@ -69,7 +69,7 @@ select FileName, * from dfs.tmp.`7671b34d6e8a4d050f75278f10f1a08.jpg`;
         | 7671b34d6e8a4d050f75278f10f1a08.jpg | 45877 bytes | Tue Mar 17 21:37:09 +02:00 2020 | JPEG   | 604        | 453         | 24           | Unknown (0) | 0        | 0         | RGB       | false    | 00:00:00 | Unknown    | 0         | Unknown    | 0               | 0               | {"CompressionType":"Baseline","DataPrecision":"8 bits","ImageHeight":"453 pixels","ImageWidth":"604 pixels","NumberOfComponents":"3","Component1":"Y component: Quantization table 0, Sampling factors 2 horiz/2 vert","Component2":"Cb component: Quantization table 1, Sampling factors 1 horiz/1 vert","Component3":"Cr component: Quantization table 1, Sampling factors 1 horiz/1 vert"} | {"JPEGComment":"CREATOR: gd-jpeg v1.0 (using IJG JPEG v62), quality = 90\n"} | {"Version":"1.1","ResolutionUnits":"none","XResolution":"1 dot","YResolution":"1 dot","ThumbnailWidthPixels":"0","ThumbnailHeightPixels":"0"} | {"ResolutionUnit":"(No unit)","YCbCrPositioning":"Center of pixel array"} | {"GPSLatitudeRef":"N","GPSLatitude":"50° 27' 48.8\"","GPSLongitudeRef":"E","GPSLongitude":"30° 30' 31.21\""} | {"NumberOfTables":"4 Huffman tables"} | {"DetectedFileTypeName":"JPEG","DetectedFileTypeLongName":"Joint Photographic Experts Group","DetectedMIMEType":"image/jpeg","ExpectedFileNameExtension":"jpg"} |
         |-------------------------------------|-------------|---------------------------------|--------|------------|-------------|--------------|-------------|----------|-----------|-----------|----------|----------|------------|-----------|------------|-----------------|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|---------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-A Drill query on a JPEG file with the property descriptive: false    
+A Drill query on a JPEG file with the property descriptive: false
 ```sql
 select FileName, * from dfs.tmp.`7671b34d6e8a4d050f75278f10f1a08.jpg`;
 ```
@@ -90,7 +90,7 @@ select t.GPS.GPSLatitude as lat, t.GPS.GPSLongitude as lon from dfs.tmp.`7671b34
         |-------------------|--------------------|
 
 Download all `png` images from [Logos]({{ site.baseurl }}/images/logos/) page and place them to `/tmp/logos`
- directory to examine the following example. 
+ directory to examine the following example.
 
 An example query to retrieve the images that are less than 640 x 480 pixels.
 ```sql

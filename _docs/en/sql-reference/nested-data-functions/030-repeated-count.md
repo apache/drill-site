@@ -3,7 +3,7 @@ title: "REPEATED_COUNT"
 slug: "REPEATED_COUNT"
 parent: "Nested Data Functions"
 ---
-This function counts the values in an array. 
+This function counts the values in an array.
 
 ## Syntax
 
@@ -16,17 +16,17 @@ This function counts the values in an array.
 The COUNT function requires a single argument, which must be an array. Note that
 this function is not a standard SQL aggregate function and does not require
 the count to be grouped by other columns in the select list (such as `name` in
-this example). 
+this example).
 
 ## Example
 The following example returns the
 counts for the `categories` array in the `yelp_academic_dataset_business.json`
 file. The counts are restricted to rows that contain the string `pizza`.
 
-	SELECT name, REPEATED_COUNT(categories) 
-	FROM   dfs.yelp.`yelp_academic_dataset_business.json` 
+	SELECT name, REPEATED_COUNT(categories)
+	FROM   dfs.yelp.`yelp_academic_dataset_business.json`
 	WHERE  name LIKE '%pizza%';
-	 
+	
 	|---------------|------------|
 	|    name       |   EXPR$1   |
 	|---------------|------------|
@@ -38,7 +38,7 @@ file. The counts are restricted to rows that contain the string `pizza`.
 	| S2pizzabar    | 4          |
 	| Dominos pizza | 5          |
 	|---------------|------------|
-	 
+	
 	7 rows selected (2.03 seconds)
 
 For another example of this function, see the following lesson in the Apache

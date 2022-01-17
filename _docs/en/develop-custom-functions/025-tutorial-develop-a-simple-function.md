@@ -21,14 +21,14 @@ The MASK function transforms the value of a column on each row. The function mas
 
 `MASK( 'PASSWORD' , '#' , 4 ) => ####WORD`
 
-The MASK function replaces a given number of characters from the beginning of a string with another character. In this example, MASK replaces four characters with the # character. 
+The MASK function replaces a given number of characters from the beginning of a string with another character. In this example, MASK replaces four characters with the # character.
 
-You can get the complete project for creating and building this function from the [drill-simple-mask-function Github repository](https://github.com/tgrall/drill-simple-mask-function). 
+You can get the complete project for creating and building this function from the [drill-simple-mask-function Github repository](https://github.com/tgrall/drill-simple-mask-function).
 
 ## Prerequisites
 
-* [Oracle Java SE Development (JDK) Kit 7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html) or later  
-* [Apache Drill 1.1](http://getdrill.org/drill/download/apache-drill-1.1.0.tar.gz) or later  
+* [Oracle Java SE Development (JDK) Kit 7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html) or later
+* [Apache Drill 1.1](http://getdrill.org/drill/download/apache-drill-1.1.0.tar.gz) or later
 * [Maven 3.0](https://maven.apache.org/download.cgi) or later
 
 ----------
@@ -50,9 +50,9 @@ First, add the following Drill dependency to your maven project:
 
 To start implementing the DrillSimpleFunc interface, add the following annotations to the @FunctionTemplate declaration:
 
-* Name of the custom function 
+* Name of the custom function
   `name="mask"`
-* Scope of the custom function, in this case, Simple 
+* Scope of the custom function, in this case, Simple
   `scope= FunctionTemplate.FunctionScope.SIMPLE`
 * What to do when the value is NULL, in this case Reverse will just returns NULL
   `nulls = FunctionTemplate.NullHandling.NULL_IF_NULL`
@@ -85,13 +85,13 @@ public class SimpleMaskFunc implements DrillSimpleFunc{
 
 ## Step 3: Declare input parameters
 
-The function will be generated dynamically, as you can see in the [DrillSimpleFuncHolder](https://github.com/apache/drill/blob/master/exec/java-exec/src/main/java/org/apache/drill/exec/expr/fn/DrillSimpleFuncHolder.java/#L42), and the input parameters and output holders are defined using holders by annotations. Define the parameters using the @Param annotation. 
+The function will be generated dynamically, as you can see in the [DrillSimpleFuncHolder](https://github.com/apache/drill/blob/master/exec/java-exec/src/main/java/org/apache/drill/exec/expr/fn/DrillSimpleFuncHolder.java/#L42), and the input parameters and output holders are defined using holders by annotations. Define the parameters using the @Param annotation.
 
-* A nullable string  
-* The mask char or string  
-* The number of characters to replace starting from the first  
+* A nullable string
+* The mask char or string
+* The number of characters to replace starting from the first
 
-Use a holder classes to provide a buffer to manage larger objects in an efficient way: VarCharHolder or NullableVarCharHolder. 
+Use a holder classes to provide a buffer to manage larger objects in an efficient way: VarCharHolder or NullableVarCharHolder.
 
 ```java
 . . .
@@ -107,7 +107,7 @@ public class SimpleMaskFunc implements DrillSimpleFunc {
     IntHolder toReplace;
 . . .
 }
-``` 
+```
 
 {% include startnote.html %}Drill doesn’t actually use the Java heap for data being processed in a query but instead keeps this data off the heap and manages the life-cycle for us without using the Java garbage collector.{% include endnote.html %}
 
@@ -116,7 +116,7 @@ public class SimpleMaskFunc implements DrillSimpleFunc {
 
 ## Step 4: Declare the return value type
 
-Also, using the @Output annotation, define the returned value as VarCharHolder type. Because you are manipulating a VarChar, you also have to inject a buffer that Drill uses for the output. 
+Also, using the @Output annotation, define the returned value as VarCharHolder type. Because you are manipulating a VarChar, you also have to inject a buffer that Drill uses for the output.
 
 ```java
 
@@ -135,7 +135,7 @@ public class SimpleMaskFunc implements DrillSimpleFunc {
 
 ## Step 5: Implement the eval() method
 
-The MASK function does not require any setup, so you do not need to define the setup() method. Define only the eval() method. 
+The MASK function does not require any setup, so you do not need to define the setup() method. Define only the eval() method.
 
 ```java
 public void eval() {
@@ -171,14 +171,14 @@ Even to a seasoned Java developer, the eval() method might look a bit strange be
 ## Basic Coding Rules
 To leverage Java’s just-in-time (JIT) compiler for maximum speed, you need to adhere to some basic rules.
 
-* Do not use imports. Instead, use the fully qualified class name as required by the Google Guava API packaged in Apache Drill and as shown in ["Step 3: Declare input parameters"]({{site.baseurl}}/docs/tutorial-develop-a-simple-function/#step-3:-declare-input-parameters).  
-* Manipulate the ValueHolders classes, for example VarCharHolder and IntHolder, as structs by calling helper methods, such as getStringFromVarCharHolder and toStringFromUTF8 as shown in ["Step 5: Implement the eval() function"]({{site.baseurl}}/docs/tutorial-develop-a-simple-function/#step-5:-implement-the-eval()-method).  
+* Do not use imports. Instead, use the fully qualified class name as required by the Google Guava API packaged in Apache Drill and as shown in ["Step 3: Declare input parameters"]({{site.baseurl}}/docs/tutorial-develop-a-simple-function/#step-3:-declare-input-parameters).
+* Manipulate the ValueHolders classes, for example VarCharHolder and IntHolder, as structs by calling helper methods, such as getStringFromVarCharHolder and toStringFromUTF8 as shown in ["Step 5: Implement the eval() function"]({{site.baseurl}}/docs/tutorial-develop-a-simple-function/#step-5:-implement-the-eval()-method).
 * Do not call methods such as toString because this causes serious problems.
 
 
 ## Complete Code Listing
 
-The Github drill-simple-mask-function project includes the [complete listing](https://github.com/tgrall/drill-simple-mask-function/blob/master/src/main/java/org/apache/drill/contrib/function/SimpleMaskFunc.java) of the code for the MASK function. 
+The Github drill-simple-mask-function project includes the [complete listing](https://github.com/tgrall/drill-simple-mask-function/blob/master/src/main/java/org/apache/drill/contrib/function/SimpleMaskFunc.java) of the code for the MASK function.
 
 ## Prepare the Package
 
@@ -215,19 +215,19 @@ Build the function using mvn package:
 
 Maven generates two JAR files:
 
-* The default jar with the classes and resources (drill-simple-mask-1.0.jar)  
+* The default jar with the classes and resources (drill-simple-mask-1.0.jar)
 * A second jar with the sources (drill-simple-mask-1.0-sources.jar)
 
 Add the JAR files to Drill, by copying them to the following location:
 
-`<Drill installation directory>/jars/3rdparty`  
+`<Drill installation directory>/jars/3rdparty`
 
 **Note 1:** This tutorial shows the manual method for adding JAR files to Drill, however as of Drill 1.9, the Dynamic UDF feature provides a new method for users.
 
 **Note 2:** When your drill instance is attached to a docker and runs within a container, you need to copy the two maven generated JAR files using docker's cp command.
 
             The syntax for the same is: docker cp SRC_PATH CONTAINER:<Drill installation directory>/jars/3rdparty
-            
+
             Example: docker cp C:Users\apacheUser\xyz.jar cfd0a7cf635b:/opt/drill/jars/3rdparty
 
 ## Test the New Function

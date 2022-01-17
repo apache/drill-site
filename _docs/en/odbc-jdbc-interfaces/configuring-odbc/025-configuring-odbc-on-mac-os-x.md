@@ -37,9 +37,9 @@ Depending on the driver manager you use, the user DSN in one of these files will
 
 ----------
 
-## Step 2: Set Environment Variables 
+## Step 2: Set Environment Variables
 
-The driver installer installs the `.mapr.drillodbc.ini` file to your home directory and adds an entry to the `$HOME/.odbc.ini` file. 
+The driver installer installs the `.mapr.drillodbc.ini` file to your home directory and adds an entry to the `$HOME/.odbc.ini` file.
 
 If you installed the iODBC driver manager using the DMG, the dynamic linker (DYLD) libraries are installed in `/usr/local/iODBC/lib`. The `launchd.conf` file contains contents such as the following:
 
@@ -52,7 +52,7 @@ Restart the Mac OS X or run `launchctl load /etc/launchd.conf`.
 
 ## Step 3: Define the ODBC Data Sources in .odbc.ini
 
-Define the ODBC data sources in the `~/.odbc.ini` configuration file for your environment. 
+Define the ODBC data sources in the `~/.odbc.ini` configuration file for your environment.
 
 You set the following properties for using Drill in embedded mode:
 
@@ -73,7 +73,7 @@ You set the following properties for using Drill in distributed mode:
 ### Authentication Properties
 If the Drillbit requires authentication, uncomment the AuthenticationType, add an AuthenticationType, and configure properties. If the Drillbit does not require authentication (or to configure no password protection), you can use the No Authentication option. You do not need to configure additional settings.
 
-* **Kerberos** 
+* **Kerberos**
 	*  See the <a href="http://web.mit.edu/kerberos/" title="MIT Kerberos">MIT Kerberos</a> documentation for installing and configuring a Kerberos environment, which is beyond the scope of the information provided here.
 	* To specify the Kerberos mechanism:
 		* Set the AuthenticationType to Kerberos.
@@ -81,47 +81,47 @@ If the Drillbit requires authentication, uncomment the AuthenticationType, add a
 		* Set the KrbServiceName property to the Kerberos service principal name of the Drill server.
 
 * **Plain (or Basic Authentication)**
-	* Configure the UID to an appropriate name for accessing the Drill server. 
-	* Set the PWD property to the password corresponding to the UID. 
+	* Configure the UID to an appropriate name for accessing the Drill server.
+	* Set the PWD property to the password corresponding to the UID.
 
 To configure no password protection, select No Authentication.
 
 ### Direct and ZooKeeper Quorum Properties
-To use Drill in distributed mode, set ConnectionType to Zookeeper, get the ZKQuorum and ZKClusterID values from the `drill-override.conf` file, and define the ZKQuorum and ZKClusterID properties. Format ZKQuorum as a comma separated list of ZooKeeper nodes in the following format:  
-`<host name/ip address> : <port number>, <host name/ip address> : <port number>, . . .` 
+To use Drill in distributed mode, set ConnectionType to Zookeeper, get the ZKQuorum and ZKClusterID values from the `drill-override.conf` file, and define the ZKQuorum and ZKClusterID properties. Format ZKQuorum as a comma separated list of ZooKeeper nodes in the following format:
+`<host name/ip address> : <port number>, <host name/ip address> : <port number>, . . .`
 
 For example:
 
-* `ZKQuorum=centos23:5181,centos28:5181,centos29:5181`  
+* `ZKQuorum=centos23:5181,centos28:5181,centos29:5181`
 * `ZKClusterID=docs41cluster-drillbits`
 
 To use Drill in local mode, do not define the ZKQuorum and ZKClusterID properties. Start Drill using the drill-localhost command, set ConnectionType to Direct, and define HOST and PORT properties. For example:
 
-* `HOST=<IP address of drillbit>:5181`  
+* `HOST=<IP address of drillbit>:5181`
 * `PORT=31010`
 
 [Driver Configuration Options]({{ site.baseurl }}/docs/odbc-configuration-reference/#configuration-options) describes configuration options available for controlling the
 behavior of DSNs using the Drill ODBC Driver.
 
 ### Sample Configuration File
-The following sample shows a possible configuration for using Drill in embedded mode. 
+The following sample shows a possible configuration for using Drill in embedded mode.
 
 {% include startnote.html %}The password should be provided in the connection string or ODBC application at connection time, not in the INI file.{% include endnote.html %}
- 
-          
+
+
     [ODBC]
     # Specify any global ODBC configuration here such as ODBC tracing.
-  
+
     [ODBC Data Sources]
     MapR Drill=MapR Drill ODBC Driver
-  
+
     [MapR Drill]
     # Description: DSN Description.
     # This key is not necessary and only describes the data source.
     Description=MapR Drill ODBC Driver
     # Driver: The location where the ODBC driver is installed.
     Driver=/Library/mapr/drill/lib/libdrillodbc_sbu.dylib
-  
+
     # The DriverUnicodeEncoding setting is only used for SimbaDM
     # When set to 1, SimbaDM runs in UTF-16 mode.
     # When set to 2, SimbaDM runs in UTF-8 mode.
@@ -139,14 +139,14 @@ The following sample shows a possible configuration for using Drill in embedded 
     ZKClusterID=[Cluster ID]
     AuthenticationType=Plain
     UID=[USERNAME]
-    PWD=[PASSWORD] 
+    PWD=[PASSWORD]
     DelegationUID=
     KrbServiceHost=
     KrbServiceName=
     AdvancedProperties=CastAnyToVarchar=true;HandshakeTimeout=30;QueryTimeout=180;TimestampTZDisplayTimezone=utc;
 	ExcludedSchemas=sys,INFORMATION_SCHEMA;NumberOfPrefetchBuffers=5;
     Catalog=DRILL
-    Schema=  
+    Schema=
 
     # The DriverUnicodeEncoding setting is only used for MapRDM
 
@@ -161,7 +161,7 @@ file. This configures the driver to work with your ODBC driver manager. The foll
 
     [Driver]
     ## - Note that this default DriverManagerEncoding of UTF-32 is for iODBC.
-    DisableAsync=0    
+    DisableAsync=0
     ErrorMessagesPath=/Library/mapr/drill/ErrorMessages
 
     LogLevel=0
@@ -172,10 +172,10 @@ file. This configures the driver to work with your ODBC driver manager. The foll
 
 To configure the Drill ODBC Driver in the `.mapr.drillodbc.ini` configuration file, complete the following steps:
 
-  1. Open the `.mapr.drillodbc.ini` configuration file in a text editor. 
- 
-  2. Edit the DisableAsync setting if you want to enable a synchronous ODBC connection for performance reasons. Change the default 0 to 1 to disable the asynchronous and enable the synchronous connection. A change in state occurs during driver initialization and is propagated to all driver DSNs.  
-  
+  1. Open the `.mapr.drillodbc.ini` configuration file in a text editor.
+
+  2. Edit the DisableAsync setting if you want to enable a synchronous ODBC connection for performance reasons. Change the default 0 to 1 to disable the asynchronous and enable the synchronous connection. A change in state occurs during driver initialization and is propagated to all driver DSNs.
+
 	**Note**: As of version 1.3.8 of the driver, the DriverManagerEncoding setting is automatically detected and set if necessary. The value depends on the driver manager used; it's typically UTF-16 or UTF-32. iODBC uses UTF-32 and unixODBC uses UTF-16.
 
   3. Save the `.mapr.drillodbc.ini` configuration file.

@@ -50,11 +50,11 @@ Where `<location>` is the path name of a subdirectory, such as `/users/max/drill
 To query the data source when you have not set the default schema name to the storage plugin configuration, include the plugin name. This syntax assumes you did not issue a USE statement to connect to a storage plugin that defines the
 location of the data:
 
-``<plugin>.<workspace name>.`<location>```  
+``<plugin>.<workspace name>.`<location>```
 
 ## Overriding `dfs.default`
 
-You may want to override the hidden default workspace in scenarios where users do not have permissions to access the root directory. 
+You may want to override the hidden default workspace in scenarios where users do not have permissions to access the root directory.
 Add the following workspace entry to the `dfs` storage plugin configuration to override the default workspace:
 
     "default": {

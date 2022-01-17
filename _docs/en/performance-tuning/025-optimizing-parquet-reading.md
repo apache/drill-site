@@ -4,17 +4,17 @@ slug: "Optimizing Parquet Metadata Reading"
 parent: "Performance Tuning"
 ---
 
-Parquet metadata caching is a feature that enables Drill to read a single metadata cache file instead of retrieving metadata from multiple Parquet files during the query-planning phase. 
-Parquet metadata caching is available for Parquet data in Drill 1.2 and later. To enable Parquet metadata caching, issue the [REFRESH TABLE METADATA]({{site.baseurl}}/docs/refresh-table-metadata/) <path to table> command. When you run this command Drill generates a metadata cache file.  
+Parquet metadata caching is a feature that enables Drill to read a single metadata cache file instead of retrieving metadata from multiple Parquet files during the query-planning phase.
+Parquet metadata caching is available for Parquet data in Drill 1.2 and later. To enable Parquet metadata caching, issue the [REFRESH TABLE METADATA]({{site.baseurl}}/docs/refresh-table-metadata/) <path to table> command. When you run this command Drill generates a metadata cache file.
 
-{% include startnote.html %}Parquet metadata caching does not benefit queries on Hive tables, HBase tables, or text files.{% include endnote.html %}  
+{% include startnote.html %}Parquet metadata caching does not benefit queries on Hive tables, HBase tables, or text files.{% include endnote.html %}
 
-Drill stores the metadata cache file in the specified directory and subdirectories. When you run a query on this directory or subdirectories, Drill reads the metadata cache file instead of retrieving metadata from multiple Parquet files during the query-planning phase.     
+Drill stores the metadata cache file in the specified directory and subdirectories. When you run a query on this directory or subdirectories, Drill reads the metadata cache file instead of retrieving metadata from multiple Parquet files during the query-planning phase.
 
-In Drill 1.11 and later, Drill stores the paths to the Parquet files as relative paths instead of absolute paths. You can move partitioned Parquet directories from one location in the distributed files system to another without issuing the REFRESH TABLE METADATA command to rebuild the Parquet metadata files; the metadata remains valid in the new location.   
+In Drill 1.11 and later, Drill stores the paths to the Parquet files as relative paths instead of absolute paths. You can move partitioned Parquet directories from one location in the distributed files system to another without issuing the REFRESH TABLE METADATA command to rebuild the Parquet metadata files; the metadata remains valid in the new location.
 
-{% include startnote.html %}Reverting back to a previous version of Drill from 1.11 is not recommended because Drill will incorrectly interpret the Parquet metadata files created by Drill 1.11. Should this occur, remove the Parquet metadata files and run the refresh table metadata command to rebuild the files in the older format.{% include endnote.html %} 
- 
+{% include startnote.html %}Reverting back to a previous version of Drill from 1.11 is not recommended because Drill will incorrectly interpret the Parquet metadata files created by Drill 1.11. Should this occur, remove the Parquet metadata files and run the refresh table metadata command to rebuild the files in the older format.{% include endnote.html %}
+
 
 ## When to Use Parquet Metadata Caching
 
@@ -40,18 +40,18 @@ The elapsed time of the first query that triggers regeneration of metadata can b
        |-------|----------------------------------------------|
        | true  | Successfully updated metadata for table t1.  |
        |-------|----------------------------------------------|
-       1 row selected (0.445 seconds)  
-  
+       1 row selected (0.445 seconds)
+
 
 
 ## How Drill Generates and Uses Parquet Metadata
 
 After running the REFRESH TABLE METADATA command, Drill traverses directories in the case of nested directories to find the Parquet files. From the footers of the files, Drill gathers metadata, such as row counts and node affinity based on HDFS block locations. For each directory level, Drill saves a summary of the information from the footers in a single Parquet metadata cache file. The summary at each level covers that particular level and all child levels; consequently, after generating metadata, you can query nested directories from any level. In order to leverage the metadata cache file for a table t, the file must exist at the root directory of that table. For example, you can query a subdirectory of Parquet files because Drill stores a Parquet metadata cache file at each level.
 
-At planning time, Drill reads only the metadata file. Parquet metadata caching has no effect on execution time. At execution time, Drill reads the actual files.  
+At planning time, Drill reads only the metadata file. Parquet metadata caching has no effect on execution time. At execution time, Drill reads the actual files.
 
 <!--
 ## Security Limitations
-TBD  
+TBD
 
 -->

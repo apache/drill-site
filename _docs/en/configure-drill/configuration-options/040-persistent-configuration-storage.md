@@ -13,12 +13,12 @@ modes:
 |-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Embedded    | Drill stores persistent data in the local file system. You cannot modify the PStore location for Drill in embedded mode.                                                             |
 | Distributed | Drill stores persistent data in ZooKeeper, by default. You can modify where ZooKeeper offloads data, or you can change the persistent storage mode to HBase, for example.            |
-  
+
 {% include startnote.html %}Switching between storage modes does not migrate configuration data.{% include endnote.html %}
 
 ## Configuring ZooKeeper PStore
 
-Drill uses ZooKeeper to store persistent configuration data. The ZooKeeper PStore provider stores all of the persistent configuration data in ZooKeeper except for query profile data. By default, Drill stores query profile data to the Drill log directory on Drill nodes. 
+Drill uses ZooKeeper to store persistent configuration data. The ZooKeeper PStore provider stores all of the persistent configuration data in ZooKeeper except for query profile data. By default, Drill stores query profile data to the Drill log directory on Drill nodes.
 
 If you are running multiple drillbits, it is likely that the log folder is not shared between them. In this case each drillbit will only have access to profiles for the queries where it was the foreman. To make query profiles visible globally, configure drill to use a shared location for query profiles by setting the `drill.exec.sys.store.provider.zk.blobroot` in `drill-override.conf`.
 
@@ -55,8 +55,8 @@ override.conf.`
 	      "hbase.zookeeper.property.clientPort": "2181"
 	      }
 	    }
-	  },  
+	  },
 
 ## Storing Query Profiles in Memory
 
-As of Drill 1.11, Drill can store query profiles in memory instead of writing them to disk. For sub-second queries, writing the query profile to disk is expensive due to the interactions with the file system. You can enable the `drill.exec.profiles.store.inmemory` option in the drill-override.conf file if you want Drill to store the profiles for sub-second queries in memory instead of writing the profiles to disk. When you enable this option, Drill stores the profiles in memory for as long as the drillbit runs. When the drillbit restarts, the profiles no longer exist. You can set the maximum number of most recent profiles to retain in memory through the `drill.exec.profiles.store.capacity` option. See [Start-Up Options]({{site.baseurl}}/docs/start-up-options/) for more information. You must [restart the drillbit]({{site.baseurl}}/docs/starting-drill-in-distributed-mode/) after you enable the `drill.exec.profiles.store.inmemory` option. 
+As of Drill 1.11, Drill can store query profiles in memory instead of writing them to disk. For sub-second queries, writing the query profile to disk is expensive due to the interactions with the file system. You can enable the `drill.exec.profiles.store.inmemory` option in the drill-override.conf file if you want Drill to store the profiles for sub-second queries in memory instead of writing the profiles to disk. When you enable this option, Drill stores the profiles in memory for as long as the drillbit runs. When the drillbit restarts, the profiles no longer exist. You can set the maximum number of most recent profiles to retain in memory through the `drill.exec.profiles.store.capacity` option. See [Start-Up Options]({{site.baseurl}}/docs/start-up-options/) for more information. You must [restart the drillbit]({{site.baseurl}}/docs/starting-drill-in-distributed-mode/) after you enable the `drill.exec.profiles.store.inmemory` option.

@@ -52,7 +52,7 @@ Returns in binary format a substring of the input string.
 * AS length(string-expression). For example, length(my_string) includes the number of characters in my_string minus the number of the start position.
 
 ### BYTE_SUBSTR Usage Notes
-Combine the use of BYTE_SUBSTR and CONVERT_FROM to separate parts of a HBase composite key for example. 
+Combine the use of BYTE_SUBSTR and CONVERT_FROM to separate parts of a HBase composite key for example.
 
 ### BYTE_SUBSTR Examples
 
@@ -74,7 +74,7 @@ A composite HBase row key consists of strings followed by a reverse timestamp (l
     |---------------------|
     1 rows selected (0.271 seconds)
 
-## CHAR_LENGTH 
+## CHAR_LENGTH
 Returns the number of characters in the input string.
 
 ### CHAR_LENGTH Syntax
@@ -250,7 +250,7 @@ Converts the characters in the input string to lowercase.
 
 ## LPAD
 Pads the string to the length specified by prepending the fill or a space. Truncates the string if it is longer than the specified length.
-. 
+.
 
 ### LPAD Syntax
 
@@ -268,7 +268,7 @@ Pads the string to the length specified by prepending the fill or a space. Trunc
     1 row selected (0.132 seconds)
 
 ## LTRIM
-Removes any characters from the beginning of string1 that match the characters in string2. 
+Removes any characters from the beginning of string1 that match the characters in string2.
 
 ### LTRIM Syntax
 
@@ -313,21 +313,21 @@ Returns the location of the first occurrence of a substring of the input string,
     1 row selected (0.12 seconds)
 
 
-## REGEXP_MATCHES  
+## REGEXP_MATCHES
 
-Matches a regexp pattern to a target string. Returns a boolean value: true if the value matches the regexp, false if the value does not match the regexp.  
+Matches a regexp pattern to a target string. Returns a boolean value: true if the value matches the regexp, false if the value does not match the regexp.
 
-### REGEXP_MATCHES Syntax 
+### REGEXP_MATCHES Syntax
 
 REGEXP_MATCHES(string_expression, pattern)
 
-*string_expression* is the string to be matched.  
+*string_expression* is the string to be matched.
 
-*pattern* is the regular expression.  
+*pattern* is the regular expression.
 
 ### REGEXP_MATCHES Examples
 
-Shows several POSIX metacharacters that return true for the given string expressions:   
+Shows several POSIX metacharacters that return true for the given string expressions:
 
 	select regexp_matches('abc', 'abc|def') as a, regexp_matches('cat', '[hc]at$') as b,  regexp_matches('cat', '.at') as c, regexp_matches('cat', '[hc]at') as d, regexp_matches('cat', '[^b]at') as e, regexp_matches('cat', '^[hc]at') as f, regexp_matches('[a]', '\[.\]') as g, regexp_matches('sat', 's.*') as h, regexp_matches('sat','[^hc]at') as i, regexp_matches('hat', '[hc]?at') as j, regexp_matches('cchchat', '[hc]*at') as k, regexp_matches('chat', '[hc]+at') as l;
 	
@@ -335,7 +335,7 @@ Shows several POSIX metacharacters that return true for the given string express
 	|  a   |  b   |  c   |  d   |  e   |  f   |  g   |  h   |  i   |  j   |  k   |  l   |
 	|------|------|------|------|------|------|------|------|------|------|------|------|
 	| true | true | true | true | true | true | true | true | true | true | true | true |
-	|------|------|------|------|------|------|------|------|------|------|------|------|  
+	|------|------|------|------|------|------|------|------|------|------|------|------|
 
 Shows case-sensitivity:
 
@@ -475,7 +475,7 @@ Pads the string to the length specified. Appends the text you specify after the 
     1 row selected (0.107 seconds)
 
 ## RTRIM
-Removes any characters from the end of string1 that match the characters in string2.  
+Removes any characters from the end of string1 that match the characters in string2.
 
 ### RTRIM Syntax
 
@@ -538,7 +538,7 @@ The _end_ must be greater than or equal to _start_ if provided.
     |--------|
     | fox    |
     |--------|
-    
+
     SELECT split_part('The | quick | brown | fox | jumps', ' | ', 4, 5);
 
     |--------------|
@@ -546,7 +546,7 @@ The _end_ must be greater than or equal to _start_ if provided.
     |--------------|
     | fox | jumps  |
     |--------------|
-    
+
     SELECT split_part('The | quick | brown | fox | jumps', ' | ', 4, 10);
 
     |--------------|
@@ -554,7 +554,7 @@ The _end_ must be greater than or equal to _start_ if provided.
     |--------------|
     | fox | jumps  |
     |--------------|
-    
+
 ## STRPOS
 Returns the location of the first occurrence of a substring of the input
 string, or 0 if the substring does not occur.
@@ -627,7 +627,7 @@ Returns
 Transcodes the input string from the specified input encoding to UTF-8.
 
 ### TOASCII Syntax
- 
+
     TOASCII (string, encoding)
 
 ### TOASCII Usage Notes
@@ -642,7 +642,7 @@ Transcodes the input string from the specified input encoding to UTF-8.
 -->
 
 ## TRIM
-Removes any characters from the beginning, end, or both sides of string2 that match the characters in string1.  
+Removes any characters from the beginning, end, or both sides of string2 that match the characters in string1.
 
 ### TRIM Syntax
 

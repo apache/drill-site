@@ -108,7 +108,7 @@ Returns the substring of the input string which starts (resp. ends) at the begin
 
 1. If `expr` is null then null is returned.
 2. If `length` = 0 then the empty string is returned.
-3. If `length` is greater than the length of `expr` then `expr` is returned.  
+3. If `length` is greater than the length of `expr` then `expr` is returned.
 
 ### LEFT and RIGHT Examples
 
@@ -190,7 +190,7 @@ The characters in `search_chars` and `replacement_chars` are not delimited and a
 
 ### TRANSLATE Examples
 
-    SELECT TRANSLATE('[The|quick|brown|fox|jumps|...]', '[]|', '"" ') 
+    SELECT TRANSLATE('[The|quick|brown|fox|jumps|...]', '[]|', '"" ')
 
     |--------------------------------|
     | EXPR$0                         |

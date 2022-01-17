@@ -24,7 +24,7 @@ architectural analysis and performance optimization.
 
 ## Known Issues
 
-SQL Parsing  
+SQL Parsing
 Because Apache Drill is built to support late-bound changing schemas while SQL
 is statically typed, there are couple of special requirements that are
 required writing SQL queries. These are limited to the current release and
@@ -34,7 +34,7 @@ will be correct in a future milestone release.
   * Drill Alpha doesn't support implicit or explicit casts outside those required above.
   * Drill Alpha does not include, there are currently a couple of differences for how to write a query in order to query against UDFs
   * Drill currently supports simple and aggregate functions using scalar, repeated and
-  * Nested data support incomplete. Drill Alpha supports nested data structures as well repeated fields. 
+  * Nested data support incomplete. Drill Alpha supports nested data structures as well repeated fields.
 
 
 

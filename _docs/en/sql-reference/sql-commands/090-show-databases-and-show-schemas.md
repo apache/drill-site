@@ -42,8 +42,8 @@ The following example uses the SHOW DATABASES and SHOW SCHEMAS commands to gener
 	| INFORMATION_SCHEMA |
 	|--------------------|
 	9 rows selected (0.07 seconds)
-	 
-	 
+	
+	
 	0: jdbc:drill:zk=local> show schemas;
 	|--------------------|
 	| SCHEMA_NAME        |

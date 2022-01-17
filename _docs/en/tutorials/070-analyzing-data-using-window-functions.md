@@ -12,15 +12,15 @@ This tutorial briefly introduces the analytics in Drill 1.2, namely ANSI SQL-com
 
 Window functions are highly versatile. You can reduce the joins, subqueries, and explicit cursors that you need to write. Window functions solve a variety of use cases with minimal coding effort.
 
-This tutorial builds on previous tutorials, [Analyzing the Yelp Academic Dataset]({{site.baseurl}}/docs/analyzing-the-yelp-academic-dataset/) and [Analyzing Highly Dynamic Datasets]({{site.baseurl}}/docs/analyzing-highly-dynamic-datasets/), and uses the same Yelp dataset. 
+This tutorial builds on previous tutorials, [Analyzing the Yelp Academic Dataset]({{site.baseurl}}/docs/analyzing-the-yelp-academic-dataset/) and [Analyzing Highly Dynamic Datasets]({{site.baseurl}}/docs/analyzing-highly-dynamic-datasets/), and uses the same Yelp dataset.
 
 ----------
 
 ## Getting Started
 
-1. To get started, download the [Yelp](http://www.yelp.com/dataset_challenge) (business reviews) now. 
+1. To get started, download the [Yelp](http://www.yelp.com/dataset_challenge) (business reviews) now.
 
-2. [Install and start Drill]({{site.baseurl}}/docs/analyzing-the-yelp-academic-dataset/#installing-and-starting-drill). 
+2. [Install and start Drill]({{site.baseurl}}/docs/analyzing-the-yelp-academic-dataset/#installing-and-starting-drill).
 
 3. List the available schemas in Drill.
 
@@ -69,8 +69,8 @@ This tutorial builds on previous tutorials, [Analyzing the Yelp Academic Dataset
 1. Get the top Yelp businesses based on the number reviews in each city and the row number of the business.
 
         SELECT name, city, review_count, row_number()
-        OVER (PARTITION BY city ORDER BY review_count DESC) AS rownum 
-        FROM `business.json` LIMIT 15;  
+        OVER (PARTITION BY city ORDER BY review_count DESC) AS rownum
+        FROM `business.json` LIMIT 15;
 
         |----------------------------------------|------------|---------------|---------|
         |                  name                  |    city    | review_count  | rownum  |
@@ -215,9 +215,9 @@ This tutorial builds on previous tutorials, [Analyzing the Yelp Academic Dataset
 3. Compare the number of reviews with the number of reviews for the previous and following businesses.
 
         SELECT city, review_count, name,
-        LAG(review_count, 1) OVER(PARTITION BY city ORDER BY review_count DESC) 
+        LAG(review_count, 1) OVER(PARTITION BY city ORDER BY review_count DESC)
         AS preceding_count,
-        LEAD(review_count, 1) OVER(PARTITION BY city ORDER BY review_count DESC) 
+        LEAD(review_count, 1) OVER(PARTITION BY city ORDER BY review_count DESC)
         AS following_count
         FROM `business.json` limit 15;
 

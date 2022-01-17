@@ -3,11 +3,11 @@ title: "Querying JSON Files"
 slug: "Querying JSON Files"
 parent: "Querying a File System"
 ---
-To query complex JSON files, you need to understand the ["JSON Data Model"]({{site.baseurl}}/docs/json-data-model/). This section provides a trivial example of querying a sample file that Drill installs. 
+To query complex JSON files, you need to understand the ["JSON Data Model"]({{site.baseurl}}/docs/json-data-model/). This section provides a trivial example of querying a sample file that Drill installs.
 
 ## About the employee.json File
 The sample file, `employee.json`, is packaged in the Foodmart data JAR in Drill's
-classpath:  
+classpath:
 
 `./jars/3rdparty/foodmart-data-json.0.4.jar`
 

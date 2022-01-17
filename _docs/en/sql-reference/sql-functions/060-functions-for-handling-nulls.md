@@ -10,7 +10,7 @@ Drill supports the following functions for handling nulls:
 * NULLIF
 
 ## COALESCE
-Returns the first non-null expression in the list. 
+Returns the first non-null expression in the list.
 
 ### COALESCE Syntax
 
@@ -22,7 +22,7 @@ Returns the first non-null expression in the list.
 If all expressions evaluate to null, then the COALESCE function returns null. Expressions have to be of the same type.
 
 ## NULLIF
-Returns the first expression if the two expressions are not equal, or 
+Returns the first expression if the two expressions are not equal, or
 returns a null value of the type of the first expression if the two expressions are equal.
 
 ### NULLIF Syntax

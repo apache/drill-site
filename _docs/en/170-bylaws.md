@@ -125,7 +125,7 @@ items for approval and these should be clearly separated. Voting is carried
 out by replying to the vote mail. Voting may take four flavors.
 
  <table ><tbody><tr><td valign="top" >Vote</td><td valign="top" > </td></tr><tr><td valign="top" >+1</td><td valign="top" >'Yes,' 'Agree,' or 'the action should be performed.' In general, this vote also indicates a willingness on the behalf of the voter in 'making it happen'.</td></tr><tr><td valign="top" >+0</td><td valign="top" >This vote indicates a willingness for the action under consideration to go ahead. The voter, however will not be able to help.</td></tr><tr><td valign="top" >-0</td><td valign="top" >This vote indicates that the voter does not, in general, agree with the proposed action but is not concerned enough to prevent the action going ahead.</td></tr><tr><td valign="top" >-1</td><td valign="top" >This is a negative vote. On issues where consensus is required, this vote counts as a <strong>veto</strong>. All vetoes must contain an explanation of why the veto is appropriate. Vetoes with no explanation are void. It may also be appropriate for a -1 vote to include an alternative course of action.</td></tr></tbody></table>
-  
+
 All participants in the Drill project are encouraged to show their agreement
 with or against a particular action by voting. For technical decisions, only
 the votes of active committers are binding. Non binding votes are still useful
@@ -144,8 +144,8 @@ the code is committed.
 These are the types of approvals that can be sought. Different actions require
 different types of approvals.
 
-<table ><tbody><tr><td valign="top" >Approval Type</td><td valign="top" > </td></tr><tr><td valign="top" >Consensus</td><td valign="top" >For this to pass, all voters with binding votes must vote and there can be no binding vetoes (-1). Consensus votes are rarely required due to the impracticality of getting all eligible voters to cast a vote.</td></tr><tr><td valign="top" >Lazy Consensus</td><td valign="top" >Lazy consensus requires 3 binding +1 votes and no binding vetoes.</td></tr><tr><td valign="top" >Lazy Majority</td><td valign="top" >A lazy majority vote requires 3 binding +1 votes and more binding +1 votes that -1 votes.</td></tr><tr><td valign="top" >Lazy Approval</td><td valign="top" >An action with lazy approval is implicitly allowed unless a -1 vote is received, at which time, depending on the type of action, either lazy majority or lazy consensus approval must be obtained.</td></tr></tbody></table>  
-  
+<table ><tbody><tr><td valign="top" >Approval Type</td><td valign="top" > </td></tr><tr><td valign="top" >Consensus</td><td valign="top" >For this to pass, all voters with binding votes must vote and there can be no binding vetoes (-1). Consensus votes are rarely required due to the impracticality of getting all eligible voters to cast a vote.</td></tr><tr><td valign="top" >Lazy Consensus</td><td valign="top" >Lazy consensus requires 3 binding +1 votes and no binding vetoes.</td></tr><tr><td valign="top" >Lazy Majority</td><td valign="top" >A lazy majority vote requires 3 binding +1 votes and more binding +1 votes that -1 votes.</td></tr><tr><td valign="top" >Lazy Approval</td><td valign="top" >An action with lazy approval is implicitly allowed unless a -1 vote is received, at which time, depending on the type of action, either lazy majority or lazy consensus approval must be obtained.</td></tr></tbody></table>
+
 ### Vetoes
 
 A valid, binding veto cannot be overruled. If a veto is cast, it must be

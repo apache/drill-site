@@ -29,31 +29,31 @@ For example, to restart a Drillbit on a tarball installation, navigate to the Dr
 
 Using the Drill shell, you can interactively query data in connected data sources using SQL commands. To start the Drill shell, run one of the following scripts, which are located in the bin directory of the Drill installation:
 
-* `drill-conf`  
-  Opens the Drill shell using the connection string to ZooKeeper nodes specified in `drill-override.conf` in `<installation directory>/conf`.  
-* `drill-localhost`  
-  Opens the Drill shell using a connection to the ZooKeeper running on the local host.  
+* `drill-conf`
+  Opens the Drill shell using the connection string to ZooKeeper nodes specified in `drill-override.conf` in `<installation directory>/conf`.
+* `drill-localhost`
+  Opens the Drill shell using a connection to the ZooKeeper running on the local host.
 
 **Note:** As of Drill 1.12, users must enter a username to issue queries through curl commands if user impersonation is enabled and authentication is disabled. See [REST API]({{site.baseurl}}/docs/submitting-queries-from-the-rest-api-when-impersonation-is-enabled-and-authentication-is-disabled/) for more information.
 
 The [Drill prompt]({{site.baseurl}}/docs/starting-drill-on-linux-and-mac-os-x/#about-the-drill-prompt) appears when you start the Drill shell.
 
 Issue the following query to check the Drillbits running in the cluster:
-`0: jdbc:drill:zk=<zk1host>:<port> SELECT * FROM sys.drillbits;`  
+`0: jdbc:drill:zk=<zk1host>:<port> SELECT * FROM sys.drillbits;`
 Drill lists information about the Drillbits that are running, such as the host name and data port number.
 
 ## Using an Ad-Hoc Connection to Drill
-To use a custom connection to Drill, but not alter the connection string in `drill-conf` that you normally use, start the Drill shell on an ad-hoc basis using `sqlline`. For example, to start the Drill shell using a particular storage plugin as a schema, use the following command syntax: 
+To use a custom connection to Drill, but not alter the connection string in `drill-conf` that you normally use, start the Drill shell on an ad-hoc basis using `sqlline`. For example, to start the Drill shell using a particular storage plugin as a schema, use the following command syntax:
 
 `sqlline -u jdbc:drill:[schema=<storage plugin>;]zk=<zk name>[:<port>][,<zk name2>[:<port>]... ]`
 
 ### sqlline Arguments and Connection Parameters
 
-* `-u` is the option that precedes a connection string. Required.  
-* `jdbc` is the connection type. Required.  
-* `schema` is the name of a [storage plugin]({{site.baseurl}}/docs/storage-plugin-registration) configuration to use as the default for queries. Optional.  
-* `zk name` specifies one or more ZooKeeper host names or IP addresses.  
-* `port` is the ZooKeeper port number. Optional. Port 2181 is the default for the open source version of Apache Drill.  
+* `-u` is the option that precedes a connection string. Required.
+* `jdbc` is the connection type. Required.
+* `schema` is the name of a [storage plugin]({{site.baseurl}}/docs/storage-plugin-registration) configuration to use as the default for queries. Optional.
+* `zk name` specifies one or more ZooKeeper host names or IP addresses.
+* `port` is the ZooKeeper port number. Optional. Port 2181 is the default for the open source version of Apache Drill.
 
 For example, start the Drill shell with the default schema being the `dfs` storage plugin:
 
@@ -69,12 +69,12 @@ The following command starts the Drill shell in a cluster configured to run ZooK
 
 If you want to connect directly to a Drillbit instead of using ZooKeeper to choose the Drillbit, replace `zk=<zk name>` with `drillbit=<node>` as shown in the following URL.
 
-`jdbc:drill:[schema=<storage plugin>;]drillbit=<node name>[:<port>][,<node name2>[:<port>]... `  
+`jdbc:drill:[schema=<storage plugin>;]drillbit=<node name>[:<port>][,<node name2>[:<port>]... `
   `]<directory>/<cluster ID>`
 
 where
 
-`drillbit=<node name>` specifies one or more host names or IP addresses of cluster nodes running Drill. 
+`drillbit=<node name>` specifies one or more host names or IP addresses of cluster nodes running Drill.
 
 ## Exiting the Drill Shell
 

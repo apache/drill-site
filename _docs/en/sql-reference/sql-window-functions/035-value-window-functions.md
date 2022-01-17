@@ -5,54 +5,54 @@ parent: "SQL Window Functions"
 ---
 Window functions operate on a set of rows and return a single value for each row from the underlying query. The OVER() clause differentiates window functions from other analytical and reporting functions. See [SQL Window Functions Introduction]({{ site.baseurl }}/docs/sql-window-functions-introduction/).
 
-The following table lists the value window functions with supported data types and descriptions:  
+The following table lists the value window functions with supported data types and descriptions:
 
 | Window Function | Argument Type                  | Return Type                  | Description                                                                                                                        |
 |-----------------|--------------------------------|------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
 | LAG()           | Any supported Drill data types | Same as the expression  type | The LAG() window function returns the value for the row before the current row in a partition. If no row exists, null is returned. |
 | LEAD()          | Any supported Drill data types | Same as the expression type  | The LEAD() window function returns the value for the row after the current row in a partition. If no row exists, null is returned. |
 | FIRST_VALUE     | Any supported Drill data types | Same as the expression type  | The FIRST_VALUE window function returns the value of the specified expression with respect to the first row in the window frame.   |
-| LAST_VALUE      | Any supported Drill data types | Same as the expression type  | The LAST_VALUE window function returns the value of the specified expression with respect to the last row in the window frame.     |  
+| LAST_VALUE      | Any supported Drill data types | Same as the expression type  | The LAST_VALUE window function returns the value of the specified expression with respect to the last row in the window frame.     |
 
-## Syntax  
+## Syntax
 
-### LAG | LEAD  
+### LAG | LEAD
 
        LAG | LEAD
        ( expression )
-       OVER ( [ PARTITION BY expr_list ] [ ORDER BY order_list ] )  
+       OVER ( [ PARTITION BY expr_list ] [ ORDER BY order_list ] )
 
-### FIRST\_VALUE | LAST_VALUE  
+### FIRST\_VALUE | LAST_VALUE
 
        FIRST_VALUE | LAST_VALUE
        ( expression ) OVER
-       ( [ PARTITION BY expr_list ] [ ORDER BY order_list ][ frame_clause ] )  
+       ( [ PARTITION BY expr_list ] [ ORDER BY order_list ][ frame_clause ] )
 
-## Arguments  
+## Arguments
 
-*expression*  
-The target column or expression that the function operates on.  
+*expression*
+The target column or expression that the function operates on.
 
-OVER  
-Specifies the window partitioning and ordering. The OVER clause cannot contain a window frame specification.  
+OVER
+Specifies the window partitioning and ordering. The OVER clause cannot contain a window frame specification.
 
-PARTITION BY  *expr_list*  
-Defines the window for the window function in terms of one or more expressions.  
+PARTITION BY  *expr_list*
+Defines the window for the window function in terms of one or more expressions.
 
-ORDER BY *order_list*  
-Sorts the rows within each partition. If PARTITION BY is not specified, ORDER BY uses the entire table.  
+ORDER BY *order_list*
+Sorts the rows within each partition. If PARTITION BY is not specified, ORDER BY uses the entire table.
 
-*frame_clause*  
-The frame clause refines the set of rows in a function's window, including or excluding sets of rows within the ordered result. The frame clause consists of the ROWS or RANGE keyword and associated specifiers.  
+*frame_clause*
+The frame clause refines the set of rows in a function's window, including or excluding sets of rows within the ordered result. The frame clause consists of the ROWS or RANGE keyword and associated specifiers.
 
 ## Examples
-The following examples show queries that use each of the value window functions in Drill.  
+The following examples show queries that use each of the value window functions in Drill.
 
 ### LAG()
-The following example uses the LAG window function to show the quantity of records sold to the Tower Records customer with customer ID 8  and the dates that customer 8 purchased records. To compare each sale with the previous sale for customer 8, the query returns the previous quantity sold for each sale. Since there is no purchase before 1976-01-25, the first previous quantity sold value is null. Note that the term "date" in the query is enclosed in back ticks because it is a reserved keyword in Drill.  
+The following example uses the LAG window function to show the quantity of records sold to the Tower Records customer with customer ID 8  and the dates that customer 8 purchased records. To compare each sale with the previous sale for customer 8, the query returns the previous quantity sold for each sale. Since there is no purchase before 1976-01-25, the first previous quantity sold value is null. Note that the term "date" in the query is enclosed in back ticks because it is a reserved keyword in Drill.
 
-       select cust_id, `date`, qty_sold, lag(qty_sold,1) over (order by cust_id, `date`) as prev_qtysold from sales where cust_id = 8 order by cust_id, `date`;  
-       
+       select cust_id, `date`, qty_sold, lag(qty_sold,1) over (order by cust_id, `date`) as prev_qtysold from sales where cust_id = 8 order by cust_id, `date`;
+
        |----------|-------------|-----------|---------------|
        | cust_id  |    date     | qty_sold  | prev_qtysold  |
        |----------|-------------|-----------|---------------|
@@ -63,9 +63,9 @@ The following example uses the LAG window function to show the quantity of recor
        | 8        | 1984-02-10  | 9         | 1             |
        |----------|-------------|-----------|---------------|
        5 rows selected (0.331 seconds)
- 
-### LEAD()  
-The following example uses the LEAD window function to provide the commission for concert tickets with show ID 172 and the next commission for subsequent ticket sales. Since there is no commission after 40.00, the last next_comm value is null. Note that the term "date" in the query is enclosed in back ticks because it is a reserved keyword in Drill.  
+
+### LEAD()
+The following example uses the LEAD window function to provide the commission for concert tickets with show ID 172 and the next commission for subsequent ticket sales. Since there is no commission after 40.00, the last next_comm value is null. Note that the term "date" in the query is enclosed in back ticks because it is a reserved keyword in Drill.
 
        select show_id, `date`, commission, lead(commission,1) over (order by `date`) as next_comm from commission where show_id = 172;
        |----------|-------------|-------------|------------|
@@ -85,8 +85,8 @@ The following example uses the LEAD window function to provide the commission fo
        | 172      | 1979-01-02  | 40.00       | null       |
        |----------|-------------|-------------|------------|
        12 rows selected (0.241 seconds)
-      
-### FIRST_VALUE() 
+
+### FIRST_VALUE()
 The following example uses the FIRST_VALUE window function to identify the employee with the lowest sales for each dealer in Q1:
 
        select emp_name, dealer_id, sales, first_value(sales) over (partition by dealer_id order by sales) as dealer_low from q1_sales;

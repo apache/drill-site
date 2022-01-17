@@ -11,7 +11,7 @@ Drill extends the SELECT statement for reading complex, multi-structured data. T
 
 ## Extensions for Hive- and HBase-related Data Sources
 
-Drill supports Hive and HBase as a plug-and-play data source. Drill can read tables created in Hive that use [data types compatible]({{ site.baseurl }}/docs/hive-to-drill-data-type-mapping) with Drill.  You can query Hive tables without modifications. You can query self-describing data without requiring metadata definitions in the Hive metastore. Primitives, such as JOIN, support columnar operation. 
+Drill supports Hive and HBase as a plug-and-play data source. Drill can read tables created in Hive that use [data types compatible]({{ site.baseurl }}/docs/hive-to-drill-data-type-mapping) with Drill.  You can query Hive tables without modifications. You can query self-describing data without requiring metadata definitions in the Hive metastore. Primitives, such as JOIN, support columnar operation.
 
 ## Extensions for JSON-related Data Sources
 For reading JSON numbers as DOUBLE or reading all JSON data as VARCHAR, use a [store.json option]({{site.baseurl}}/docs/handling-different-data-types/#reading-numbers-of-different-types-from-json). Drill extends SQL to provide access to repeating values in arrays and arrays within arrays (array indexes). You can use these extensions to reach into deeply nested data. Drill extensions use standard JavaScript notation for referencing data elements in a hierarchy, as shown in ["Analyzing JSON."]({{ site.baseurl }}/docs/json-data-model/#analyzing-json)

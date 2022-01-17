@@ -58,9 +58,9 @@ The following types of join syntax are supported:
 
 
 
-- You must specify a join condition when more than one table is listed in the FROM clause.  
-- Non-equi joins are supported if the join is an inner join with an equality condition on the same two tables as part of a conjunction:  
-  
+- You must specify a join condition when more than one table is listed in the FROM clause.
+- Non-equi joins are supported if the join is an inner join with an equality condition on the same two tables as part of a conjunction:
+
 		table1.col1 = table2.col1 AND table1.c2 < table2.c2
 
 	Drill does not support non-equi joins as outer joins.

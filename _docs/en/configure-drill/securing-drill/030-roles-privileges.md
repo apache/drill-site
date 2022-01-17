@@ -3,21 +3,21 @@ title: "Roles and Privileges"
 slug: "Roles and Privileges"
 parent: "Securing Drill"
 ---
-Drill has two roles that perform different functions: 
+Drill has two roles that perform different functions:
 
 * User (USER) role
-* Administrator (ADMIN) role 
+* Administrator (ADMIN) role
 
 ## User Role
 
-Users can execute queries on data that he/she has access to. Each storage plugin manages the read/write permissions. Users can create views on top of data to provide granular access to that data.  
+Users can execute queries on data that he/she has access to. Each storage plugin manages the read/write permissions. Users can create views on top of data to provide granular access to that data.
 
 ## Administrator Role
 
 When authentication is enabled, only Drill users who are assigned Drill cluster administrator privileges can perform the following tasks:
 
 - Change system-level options by issuing the ALTER SYSTEM command.
-- Update a storage plugin configuration through the REST API or Web UI. 
+- Update a storage plugin configuration through the REST API or Web UI.
 - Users and administrators have different navigation bars in the Web UI. Various tabs are shown based on privilege. For example,  only administrators can see the Storage tab and create/read/update/delete storage plugin configuration.
 - View profiles of all queries that all users have run or are currently running in a cluster.
 - Cancel running queries that were launched by any user in the cluster.

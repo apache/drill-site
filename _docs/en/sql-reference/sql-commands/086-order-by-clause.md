@@ -14,37 +14,37 @@ The ORDER BY clause supports the following syntax:
        [ ASC | DESC ]
        [ NULLS FIRST | NULLS LAST ]
 
-  
 
-## Parameters  
-*expression*  
 
-Defines the sort order of the query result set, typically by specifying one or more columns in the select list.  
+## Parameters
+*expression*
 
-You can also specify:  
+Defines the sort order of the query result set, typically by specifying one or more columns in the select list.
 
-   * Columns that are not in the select list 
+You can also specify:
+
+   * Columns that are not in the select list
    * Expressions formed from one or more columns that exist in the tables referenced by the query
    * Ordinal numbers that represent the position of select list entries (or the position of columns in the table if no select list exists)
    * Aliases that define select list entries
-   
+
 When the ORDER BY clause contains multiple expressions, the result set is sorted according to the first expression, then the second expression is applied to rows that have matching values from the first expression, and so on.
 
-ASC  
+ASC
 Specifies that the results should be returned in ascending order. If the order is not specified, ASC is the default.
 
-DESC  
-Specifies that the results should be returned in descending order. 
+DESC
+Specifies that the results should be returned in descending order.
 
-NULLS FIRST  
-Specifies that NULL values should be returned before non-NULL values.  
+NULLS FIRST
+Specifies that NULL values should be returned before non-NULL values.
 
-NULLS LAST  
+NULLS LAST
 Specifies that NULL values should be returned after non-NULL values.
 
 ## Usage Notes
-   * NULL values are considered "higher" than all other values. With default ascending sort order, NULL values sort at the end.  
-   * When a query does not contain an ORDER BY clause, the system returns result sets with no predictable ordering of the rows. The same query executed twice might return the result set in a different order.  
+   * NULL values are considered "higher" than all other values. With default ascending sort order, NULL values sort at the end.
+   * When a query does not contain an ORDER BY clause, the system returns result sets with no predictable ordering of the rows. The same query executed twice might return the result set in a different order.
    * In any parallel system, when ORDER BY does not produce a unique ordering, the order of the rows is non-deterministic. That is, if the ORDER BY expression produces duplicate values, the return order of those rows may vary from other systems or from one run the system to the next.
 
 ## Examples

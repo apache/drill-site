@@ -8,9 +8,9 @@ Drill supports the following functions for casting and converting data types:
 * [CAST]({{ site.baseurl }}/docs/data-type-conversion/#cast)
 * [CONVERT_TO and CONVERT_FROM]({{ site.baseurl }}/docs/data-type-conversion/#convert_to-and-convert_from)
 * [STRING_BINARY]({{ site.baseurl }}/docs/data-type-conversion/#string_binary-function) and [BINARY_STRING]({{ site.baseurl }}/docs/data-type-conversion/#binary_string-function)
-* [Other Data Type Conversions]({{ site.baseurl }}/docs/data-type-conversion/#other-data-type-conversions)  
+* [Other Data Type Conversions]({{ site.baseurl }}/docs/data-type-conversion/#other-data-type-conversions)
 
-Starting in Drill 1.15, all cast and data type conversion functions return null for an empty string ('') when the `drill.exec.functions.cast_empty_string_to_null` option is enabled, for example:    
+Starting in Drill 1.15, all cast and data type conversion functions return null for an empty string ('') when the `drill.exec.functions.cast_empty_string_to_null` option is enabled, for example:
 
 	SELECT CAST('' AS DATE), TO_TIMESTAMP('', 'yyyy-MM-dd HH:mm:ss') FROM (VALUES(2));
 	|---------|---------|
@@ -52,10 +52,10 @@ See the following tables for information about the data types to use for casting
 
 The following examples show how to cast a string to a number, a number to a string, and one type of number to another.
 
-### Casting a Character String to a Number  
+### Casting a Character String to a Number
 You can cast strings or numeric values to decimals, even if they contain decimal points. In cases where a value has a scale and precision greater than the scale and precision specified in the query, the value is rounded to fit the specified scale and precision.
 
-You cannot cast a character string that includes a decimal point to an INT or BIGINT. For example, if you have "1200.50" in a JSON file, attempting to select and cast the string to an INT fails. As a workaround, cast to a FLOAT or DOUBLE type, and then cast to an INT, assuming you want to lose digits to the right of the decimal point.  
+You cannot cast a character string that includes a decimal point to an INT or BIGINT. For example, if you have "1200.50" in a JSON file, attempting to select and cast the string to an INT fails. As a workaround, cast to a FLOAT or DOUBLE type, and then cast to an INT, assuming you want to lose digits to the right of the decimal point.
 
 
 The following example shows how to cast a character to a DECIMAL having two decimal places.
@@ -95,7 +95,7 @@ Cast an integer to a decimal.
     |     EXPR$0      |
     |-----------------|
     | -2.147483648E9  |
-    |-----------------|  
+    |-----------------|
 
 
 
@@ -128,10 +128,10 @@ Create a table in Parquet from the interval data in the `intervals.json` file.
 
 2. Use a CTAS statement to cast text from a JSON file to year and day intervals and to write the data to a Parquet table:
 
-        CREATE TABLE dfs.tmp.parquet_intervals AS 
-        (SELECT CAST( INTERVALYEAR_col as INTERVAL YEAR) INTERVALYEAR_col, 
+        CREATE TABLE dfs.tmp.parquet_intervals AS
+        (SELECT CAST( INTERVALYEAR_col as INTERVAL YEAR) INTERVALYEAR_col,
                 CAST( INTERVALDAY_col as INTERVAL DAY) INTERVALDAY_col,
-                CAST( INTERVAL_col as INTERVAL SECOND) INTERVAL_col 
+                CAST( INTERVAL_col as INTERVAL SECOND) INTERVAL_col
         FROM dfs.`/Users/drill/intervals.json`);
 
 3. Take a look at what Drill wrote to the Parquet file:
@@ -146,13 +146,13 @@ Create a table in Parquet from the interval data in the `intervals.json` file.
         |-------------------|------------------|---------------|
         3 rows selected (0.082 seconds)
 
-Because you cast the INTERVAL_col to INTERVAL SECOND, Drill returns the interval data representing the year, month, day, hour, minute, and second. 
+Because you cast the INTERVAL_col to INTERVAL SECOND, Drill returns the interval data representing the year, month, day, hour, minute, and second.
 
 ## CONVERT_TO and CONVERT_FROM
 
 The CONVERT_TO and CONVERT_FROM functions convert binary data to/from Drill internal types based on the little or big endian encoding of the data.
 
-### CONVERT_TO and CONVERT_FROM Syntax  
+### CONVERT_TO and CONVERT_FROM Syntax
 
     CONVERT_TO (column, type)
 
@@ -160,41 +160,41 @@ The CONVERT_TO and CONVERT_FROM functions convert binary data to/from Drill inte
 
 *column* is the name of a column Drill reads.
 
-*type* is one of the encoding types listed in the [CONVERT_TO/FROM data types]({{ site.baseurl }}/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions) table. 
+*type* is one of the encoding types listed in the [CONVERT_TO/FROM data types]({{ site.baseurl }}/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions) table.
 
 
-### CONVERT_TO and CONVERT_FROM Usage Notes  
+### CONVERT_TO and CONVERT_FROM Usage Notes
 
 
-- CONVERT_FROM and CONVERT_TO methods transform a known binary representation/encoding to a Drill internal format. Use CONVERT_TO and CONVERT_FROM instead of the CAST function for converting binary data types. CONVERT_TO/FROM functions work for data in a binary representation and are more efficient to use than CAST. 
+- CONVERT_FROM and CONVERT_TO methods transform a known binary representation/encoding to a Drill internal format. Use CONVERT_TO and CONVERT_FROM instead of the CAST function for converting binary data types. CONVERT_TO/FROM functions work for data in a binary representation and are more efficient to use than CAST.
 
 
-- Drill can optimize scans on HBase tables when you use the \*\_BE encoded types shown in section  ["Data Types for CONVERT_TO and CONVERT_FROM Functions"]({{ site.baseurl }}/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions) on big endian-encoded data. You need to use the HBase storage plugin and query data as described in ["Querying Hbase"]({{ site.baseurl }}/docs/querying-hbase). To write Parquet binary data, convert SQL data *to* binary data and store the data in a Parquet table while creating a table as a selection (CTAS).  
+- Drill can optimize scans on HBase tables when you use the \*\_BE encoded types shown in section  ["Data Types for CONVERT_TO and CONVERT_FROM Functions"]({{ site.baseurl }}/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions) on big endian-encoded data. You need to use the HBase storage plugin and query data as described in ["Querying Hbase"]({{ site.baseurl }}/docs/querying-hbase). To write Parquet binary data, convert SQL data *to* binary data and store the data in a Parquet table while creating a table as a selection (CTAS).
 
 
-- CONVERT_TO also converts an SQL data type to complex types, including HBase byte arrays, JSON and Parquet arrays, and maps. CONVERT_FROM converts from complex types, including HBase arrays, JSON and Parquet arrays and maps to an SQL data type. 
+- CONVERT_TO also converts an SQL data type to complex types, including HBase byte arrays, JSON and Parquet arrays, and maps. CONVERT_FROM converts from complex types, including HBase arrays, JSON and Parquet arrays and maps to an SQL data type.
 
 
-- You can use [STRING_BINARY]({{ site.baseurl }}/docs/data-type-conversion/#string_binary-function) and [BINARY_STRING]({{ site.baseurl }}/docs/data-type-conversion/#binary_string-function) custom Drill functions with CONVERT_TO and CONVERT_FROM to get meaningful results.  
+- You can use [STRING_BINARY]({{ site.baseurl }}/docs/data-type-conversion/#string_binary-function) and [BINARY_STRING]({{ site.baseurl }}/docs/data-type-conversion/#binary_string-function) custom Drill functions with CONVERT_TO and CONVERT_FROM to get meaningful results.
 
 
 
-- Drill 1.13 and later supports [NaN and Infinity values as numeric data types]({{site.baseurl}}/docs/json-data-model/). 
-You can use the convert_to and convert_from functions in queries on JSON data with NaN and Infinity values, as shown in the following query examples:  
- 
-            select convert_fromJSON('{"num": 55, "nan": NaN, "inf": -Infinity}'); 
-            select convert_fromJSON(jsonColumn) from mysql.someTable;  
+- Drill 1.13 and later supports [NaN and Infinity values as numeric data types]({{site.baseurl}}/docs/json-data-model/).
+You can use the convert_to and convert_from functions in queries on JSON data with NaN and Infinity values, as shown in the following query examples:
+
+            select convert_fromJSON('{"num": 55, "nan": NaN, "inf": -Infinity}');
+            select convert_fromJSON(jsonColumn) from mysql.someTable;
             select string_binary(convert_toJSON(convert_fromJSON(jsonColumn) from mysql.someTable;
 
 
 ### Conversion of Data Types Examples
 
-This example shows how to use the CONVERT_FROM function to convert HBase data to a SQL type. The example summarizes and continues the ["Query HBase"]({{ site.baseurl }}/docs/querying-hbase) example. The ["Query HBase"]({{ site.baseurl }}/docs/querying-hbase) example stores the following data in the students table on the Drill Sandbox:  
+This example shows how to use the CONVERT_FROM function to convert HBase data to a SQL type. The example summarizes and continues the ["Query HBase"]({{ site.baseurl }}/docs/querying-hbase) example. The ["Query HBase"]({{ site.baseurl }}/docs/querying-hbase) example stores the following data in the students table on the Drill Sandbox:
 
     USE maprdb;
 
     SELECT * FROM students;
-        
+
     |-------------|---------------------|---------------------------------------------------------------------------|
     |   row_key   |  account            |                               address                                     |
     |-------------|---------------------|---------------------------------------------------------------------------|
@@ -207,10 +207,10 @@ This example shows how to use the CONVERT_FROM function to convert HBase data to
 
 You use the CONVERT_FROM function to decode the binary data, selecting a data type to use from the [list of supported types]({{ site.baseurl }}/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions). JSON supports strings. To convert bytes to strings, use the UTF8 type:
 
-    SELECT CONVERT_FROM(row_key, 'UTF8') AS studentid, 
-           CONVERT_FROM(students.account.name, 'UTF8') AS name, 
-           CONVERT_FROM(students.address.state, 'UTF8') AS state, 
-           CONVERT_FROM(students.address.street, 'UTF8') AS street, 
+    SELECT CONVERT_FROM(row_key, 'UTF8') AS studentid,
+           CONVERT_FROM(students.account.name, 'UTF8') AS name,
+           CONVERT_FROM(students.address.state, 'UTF8') AS state,
+           CONVERT_FROM(students.address.street, 'UTF8') AS street,
            CONVERT_FROM(students.address.zipcode, 'UTF8') AS zipcode FROM students;
 
     |------------|------------|------------|------------------|------------|
@@ -243,7 +243,7 @@ This example uses a list of BIGINT data as input and returns a repeated list of 
     |------------|
     1 row selected (0.054 seconds)
 
-This example uses a map as input to return a repeated list vector (JSON).  
+This example uses a map as input to return a repeated list vector (JSON).
 
 	SELECT CONVERT_FROM('[{a : 100, b: 200}, {a:300, b: 400}]' ,'JSON') AS MYCOL1  FROM (VALUES(1));
 	|----------------------------------------|
@@ -270,7 +270,7 @@ This example assumes you are working in the Drill Sandbox. You modify the `dfs` 
               "writable": true,
               "defaultInputFormat": null
             },
-         
+
             . . .
 
             "tmp": {
@@ -280,7 +280,7 @@ This example assumes you are working in the Drill Sandbox. You modify the `dfs` 
             }
 
             . . .
-         
+
           "formats": {
             . . .
             "maprdb": {
@@ -299,12 +299,12 @@ First, you set the storage format to JSON. Next, you use the CREATE TABLE AS (CT
 
 2. Use CONVERT_FROM queries to convert the binary data in the HBase students table to JSON, and store the JSON data in a file. You select a data type to use from the supported. JSON supports strings. To convert binary to strings, use the UTF8 type.
 
-        CREATE TABLE tmp.`to_json` AS SELECT 
-            CONVERT_FROM(row_key, 'UTF8') AS `studentid`, 
-            CONVERT_FROM(students.account.name, 'UTF8') AS name, 
-            CONVERT_FROM(students.address.state, 'UTF8') AS state, 
-            CONVERT_FROM(students.address.street, 'UTF8') AS street, 
-            CONVERT_FROM(students.address.zipcode, 'UTF8') AS zipcode 
+        CREATE TABLE tmp.`to_json` AS SELECT
+            CONVERT_FROM(row_key, 'UTF8') AS `studentid`,
+            CONVERT_FROM(students.account.name, 'UTF8') AS name,
+            CONVERT_FROM(students.address.state, 'UTF8') AS state,
+            CONVERT_FROM(students.address.street, 'UTF8') AS street,
+            CONVERT_FROM(students.address.zipcode, 'UTF8') AS zipcode
         FROM root.`students`;
 
         |------------|---------------------------|
@@ -313,7 +313,7 @@ First, you set the storage format to JSON. Next, you use the CREATE TABLE AS (CT
         | 0_0        | 4                         |
         |------------|---------------------------|
         1 row selected (0.41 seconds)
-4. Navigate to the output. 
+4. Navigate to the output.
 
         cd /mapr/demo.mapr.com/tmp/to_json
         ls
@@ -361,12 +361,12 @@ First, you set the storage format to JSON. Next, you use the CREATE TABLE AS (CT
 
 7. Use CONVERT_TO to convert the JSON data to a binary format in the Parquet file.
 
-        CREATE TABLE tmp.`json2parquet` AS SELECT 
-            CONVERT_TO(studentid, 'UTF8') AS id, 
-            CONVERT_TO(name, 'UTF8') AS name, 
-            CONVERT_TO(state, 'UTF8') AS state, 
-            CONVERT_TO(street, 'UTF8') AS street, 
-            CONVERT_TO(zipcode, 'UTF8') AS zip 
+        CREATE TABLE tmp.`json2parquet` AS SELECT
+            CONVERT_TO(studentid, 'UTF8') AS id,
+            CONVERT_TO(name, 'UTF8') AS name,
+            CONVERT_TO(state, 'UTF8') AS state,
+            CONVERT_TO(street, 'UTF8') AS street,
+            CONVERT_TO(zipcode, 'UTF8') AS zip
         FROM tmp.`to_json`;
 
         |------------|---------------------------|
@@ -390,11 +390,11 @@ First, you set the storage format to JSON. Next, you use the CREATE TABLE AS (CT
 
 9. Use CONVERT_FROM to read the Parquet data:
 
-        SELECT CONVERT_FROM(id, 'UTF8') AS id, 
-               CONVERT_FROM(name, 'UTF8') AS name, 
-               CONVERT_FROM(state, 'UTF8') AS state, 
-               CONVERT_FROM(street, 'UTF8') AS address, 
-               CONVERT_FROM(zip, 'UTF8') AS zip 
+        SELECT CONVERT_FROM(id, 'UTF8') AS id,
+               CONVERT_FROM(name, 'UTF8') AS name,
+               CONVERT_FROM(state, 'UTF8') AS state,
+               CONVERT_FROM(street, 'UTF8') AS address,
+               CONVERT_FROM(zip, 'UTF8') AS zip
         FROM tmp.`json2parquet2`;
 
         |------------|------------|------------|------------------|------------|
@@ -461,7 +461,7 @@ FROM (VALUES (1));
 
 ## BINARY_STRING function
 
-Converts a string that is the hexadecimal encoding of a sequence of bytes into a VARBINARY value. 
+Converts a string that is the hexadecimal encoding of a sequence of bytes into a VARBINARY value.
 
 ### BINARY_STRING Syntax
 
@@ -469,7 +469,7 @@ Converts a string that is the hexadecimal encoding of a sequence of bytes into a
 
 *expression* is a hexadecimal string, such as `"\xca\xfe\xba\xbe"`.
 
-This function returns a byte array, such as {(byte)0xca, (byte)0xfe, (byte)0xba, (byte)0xbe}. 
+This function returns a byte array, such as {(byte)0xca, (byte)0xfe, (byte)0xba, (byte)0xbe}.
 
 ### BINARY_STRING Example
 
@@ -485,7 +485,7 @@ This function returns a hexadecimal-encoded string, such as `"\xca\xfe\xba\xbe"`
 
 ### BINARY_STRING Examples
 
-Decode the hexadecimal string 000000C8 expressed in four octets `\x00\x00\x00\xC8` into an integer equivalent using big endian encoding. 
+Decode the hexadecimal string 000000C8 expressed in four octets `\x00\x00\x00\xC8` into an integer equivalent using big endian encoding.
 
 ```
 SELECT CONVERT_FROM(BINARY_STRING('\x00\x00\x00\xC8'), 'INT_BE') AS cnvrt
@@ -580,7 +580,7 @@ Use the following Java format specifiers for converting numbers:
 | %          | Prefix or suffix    | Multiply by 100 and show as percentage                                                                                                                                                               |
 | \u2030     | Prefix or suffix    | Multiply by 1000 and show as per mille value                                                                                                                                                         |
 | _ (\u00A4) | Prefix or suffix    | Currency sign, replaced by currency symbol. If doubled, replaced by international currency symbol. If present in a pattern, the monetary decimal separator is used instead of the decimal separator. |
-| '          | Prefix or suffix    | Used to quote special characters in a prefix or suffix, for example, "'#'#"" formats 123 to ""#123"". To create a single quote itself, use two in a row: "# o''clock".                               |  
+| '          | Prefix or suffix    | Used to quote special characters in a prefix or suffix, for example, "'#'#"" formats 123 to ""#123"". To create a single quote itself, use two in a row: "# o''clock".                               |
 
 ### Format Specifiers for Date/Time Conversions
 
@@ -609,13 +609,13 @@ Use the following Joda format specifiers for date/time conversions:
 | S      | fraction of second                               | number       | 978                                |
 | z      | time zone                                        | text         | Pacific Standard Time; PST         |
 | Z      | time zone offset/id                              | zone         | -0800; -08:00; America/Los_Angeles |
-| '      | single quotation mark, escape for text delimiter | literal      |                                    |  
+| '      | single quotation mark, escape for text delimiter | literal      |                                    |
 
 {% include startnote.html %}The Joda format specifiers are case-sensitive.{% include endnote.html %}
 
 For more information about specifying a format, refer to one of the following format specifier documents:
 
-* [Java DecimalFormat class](http://docs.oracle.com/javase/7/docs/api/java/text/DecimalFormat.html) format specifiers 
+* [Java DecimalFormat class](http://docs.oracle.com/javase/7/docs/api/java/text/DecimalFormat.html) format specifiers
 * [Joda DateTimeFormat class](http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html) format specifiers
 
 ## TO_CHAR
@@ -626,9 +626,9 @@ TO_CHAR converts a number, date, time, or timestamp expression to a character st
 
     TO_CHAR (expression, 'format')
 
-*expression* is a INTEGER, FLOAT, DOUBLE, DATE, TIME, or TIMESTAMP expression. 
+*expression* is a INTEGER, FLOAT, DOUBLE, DATE, TIME, or TIMESTAMP expression.
 
-*'format'* is a format specifier enclosed in single quotation marks that sets a pattern for the output formatting. 
+*'format'* is a format specifier enclosed in single quotation marks that sets a pattern for the output formatting.
 
 ### TO_CHAR Usage Notes
 
@@ -694,12 +694,12 @@ Converts a character string or a UNIX epoch timestamp to a date.
 
     TO_DATE (expression [, 'format'])
 
-*expression* is a character string enclosed in single quotation marks or a Unix epoch timestamp in milliseconds, not enclosed in single quotation marks. 
+*expression* is a character string enclosed in single quotation marks or a Unix epoch timestamp in milliseconds, not enclosed in single quotation marks.
 
-*'format'* is a character string that specifies the format of *expression*. Only use this option when the *expression* is a character string, not a UNIX epoch timestamp. 
+*'format'* is a character string that specifies the format of *expression*. Only use this option when the *expression* is a character string, not a UNIX epoch timestamp.
 
 ### TO_DATE Usage Notes
-Specify a format using patterns defined in [Joda DateTimeFormat class](http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html). The TO_TIMESTAMP function takes a Unix epoch timestamp. The TO_DATE function takes a UNIX epoch timestamp in milliseconds. The [UNIX_TIMESTAMP]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#unix_timestamp) function converts a time string to a UNIX timestamp in seconds. 
+Specify a format using patterns defined in [Joda DateTimeFormat class](http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html). The TO_TIMESTAMP function takes a Unix epoch timestamp. The TO_DATE function takes a UNIX epoch timestamp in milliseconds. The [UNIX_TIMESTAMP]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#unix_timestamp) function converts a time string to a UNIX timestamp in seconds.
 
 To compare dates in the WHERE clause, use TO_DATE on the value in the date column and in the comparison value. For example:
 
@@ -721,7 +721,7 @@ For example:
     5 rows selected (0.134 seconds)
 
     SELECT TO_DATE(`date`, 'yyyy-MM-dd') FROM `sample.json` WHERE TO_DATE(`date`, 'yyyy-MM-dd') < TO_DATE('2013-07-20', 'yyyy-MM-dd');
-    
+
     |------------|
     |   EXPR$0   |
     |------------|
@@ -732,7 +732,7 @@ For example:
     3 rows selected (0.177 seconds)
 
 ### TO_DATE Examples
-The first example converts a character string to a date. The second example extracts the year to verify that Drill recognizes the date as a date type. 
+The first example converts a character string to a date. The second example extracts the year to verify that Drill recognizes the date as a date type.
 
     SELECT TO_DATE('2015-FEB-23', 'yyyy-MMM-dd') FROM (VALUES(1));
     |------------|
@@ -769,28 +769,28 @@ TO_NUMBER converts a character string to a formatted number using a format speci
 
     TO_NUMBER ('string', 'format')
 
-*'string'* is a character string enclosed in single quotation marks. 
+*'string'* is a character string enclosed in single quotation marks.
 
 *'format'* is one or more [Java DecimalFormat class](http://docs.oracle.com/javase/7/docs/api/java/text/DecimalFormat.html) specifiers enclosed in single quotation marks that set a pattern for the output formatting.
 
 
 ### TO_NUMBER Usage Notes
-The data type of the output of TO_NUMBER is a numeric. You can use the following [Java DecimalFormat class](http://docs.oracle.com/javase/7/docs/api/java/text/DecimalFormat.html) specifiers to set the output formatting. 
+The data type of the output of TO_NUMBER is a numeric. You can use the following [Java DecimalFormat class](http://docs.oracle.com/javase/7/docs/api/java/text/DecimalFormat.html) specifiers to set the output formatting.
 
-* #  
-  Digit placeholder. 
+* #
+  Digit placeholder.
 
-* 0  
+* 0
   Digit placeholder. If a value has a digit in the position where the zero '0' appears in the format string, that digit appears in the output; otherwise, a '0' appears in that position in the output.
 
-* .  
+* .
   Decimal point. Make the first '.' character in the format string the location of the decimal separator in the value; ignore any additional '.' characters.
 
-* ,  
-  Comma grouping separator. 
+* ,
+  Comma grouping separator.
 
 * E
-  Exponent. Separates mantissa and exponent in scientific notation. 
+  Exponent. Separates mantissa and exponent in scientific notation.
 
 ### TO_NUMBER Examples
 
@@ -824,9 +824,9 @@ Converts a character string to a time.
 
     TO_TIME (expression [, 'format'])
 
-*expression* is a character string enclosed in single quotation marks or milliseconds, not enclosed in single quotation marks. 
+*expression* is a character string enclosed in single quotation marks or milliseconds, not enclosed in single quotation marks.
 
-*'format'* is a format specifier enclosed in single quotation marks that sets a pattern for the output formatting. Use this option only when the expression is a character string, not milliseconds. 
+*'format'* is a format specifier enclosed in single quotation marks that sets a pattern for the output formatting. Use this option only when the expression is a character string, not milliseconds.
 
 ## TO_TIME Usage Notes
 Specify a format using patterns defined in [Joda DateTimeFormat class](http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html).
@@ -857,16 +857,16 @@ Convert 828550000 milliseconds (23 hours 55 seconds) to the time.
 
     TO_TIMESTAMP (expression [, 'format'])
 
-*expression* is a character string enclosed in single quotation marks or a UNIX epoch timestamp, not enclosed in single quotation marks. 
+*expression* is a character string enclosed in single quotation marks or a UNIX epoch timestamp, not enclosed in single quotation marks.
 
-*'format'* is a character string that specifies the format of *expression*. Only use this option when the *expression* is a character string, not a UNIX epoch timestamp. 
+*'format'* is a character string that specifies the format of *expression*. Only use this option when the *expression* is a character string, not a UNIX epoch timestamp.
 
 ### TO_TIMESTAMP Usage Notes
 Specify a format using patterns defined in [Joda DateTimeFormat class](http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html). The TO_TIMESTAMP function takes a Unix epoch timestamp. The TO_DATE function takes a UNIX epoch timestamp in milliseconds.
 
 ### TO_TIMESTAMP Examples
 
-Convert a date to a timestamp. 
+Convert a date to a timestamp.
 
     SELECT TO_TIMESTAMP('2008-2-23 12:00:00', 'yyyy-MM-dd HH:mm:ss') FROM (VALUES(1));
     |------------------------|
@@ -888,8 +888,8 @@ Convert Unix Epoch time to a timestamp.
 
 Convert a UTC date to a timestamp offset from the UTC time zone code.
 
-    SELECT TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z') AS Original, 
-           TO_CHAR(TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z'), 'z') AS New_TZ 
+    SELECT TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z') AS Original,
+           TO_CHAR(TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z'), 'z') AS New_TZ
     FROM (VALUES(1));
 
     |------------------------|---------|
@@ -897,16 +897,16 @@ Convert a UTC date to a timestamp offset from the UTC time zone code.
     |------------------------|---------|
     | 2015-03-30 20:49:00.0  | UTC     |
     |------------------------|---------|
-    1 row selected (0.148 seconds)  
+    1 row selected (0.148 seconds)
 
-## Enabling Time Zone Offset   
+## Enabling Time Zone Offset
 
 Starting in Drill 1.16, the `store.hive.maprdb_json.read_timestamp_with_timezone_offset` option enables Drill to read timestamp values with a timezone offset when using the hive plugin with the Drill native MaprDB JSON reader enabled through the  `store.hive.maprdb_json.optimize_scan_with_native_reader option`. The `store.hive.maprdb_json.read_timestamp_with_timezone_offset` option is disabled (set to 'false') by default. You can enable this option from the Options page in the Drill Web UI or from the command line using the SET or ALTER SYSTEM commands.
 
-**Important**  
-Internally, Drill stores timestamp values in UTC format, for example 2018-01-01T20:12:12.123Z. When you enable the timezone offset option, select on a table returns different timestamp values. If you filter on timestamp values when this option is enabled, you must include the new timestamp value in the filter condition. 
+**Important**
+Internally, Drill stores timestamp values in UTC format, for example 2018-01-01T20:12:12.123Z. When you enable the timezone offset option, select on a table returns different timestamp values. If you filter on timestamp values when this option is enabled, you must include the new timestamp value in the filter condition.
 
-For example, look at the timestamp values when the `store.hive.maprdb_json.read_timestamp_with_timezone_offset` option is disabled (set to 'false'):   
+For example, look at the timestamp values when the `store.hive.maprdb_json.read_timestamp_with_timezone_offset` option is disabled (set to 'false'):
 
 
 	select * from dfs.`/tmp/timestamp`;
@@ -915,9 +915,9 @@ For example, look at the timestamp values when the `store.hive.maprdb_json.read_
 	-------------------------------------------------------
 	1	2018-01-01 12:12:12.123	2018-01-01 20:12:12.123
 	2	9999-12-31 23:59:59.999	10000-01-01 07:59:59.999
-	-------------------------------------------------------  
+	-------------------------------------------------------
 
-When the option is enabled (set to 'true'), you can see the difference in the timestamp values returned:  
+When the option is enabled (set to 'true'), you can see the difference in the timestamp values returned:
 
 	select * from dfs.`/tmp/timestamp`;
 	------------------------------------------------------
@@ -925,24 +925,24 @@ When the option is enabled (set to 'true'), you can see the difference in the ti
 	------------------------------------------------------
 	1	2018-01-01 12:12:12.123	2018-01-01 12:12:12.123
 	2	9999-12-31 23:59:59.999	9999-12-31 23:59:59.999
-	------------------------------------------------------  
+	------------------------------------------------------
 
-When the option is enabled, queries that filter on timestamp values must include the new timestamp value in the filter condition, as shown:  
+When the option is enabled, queries that filter on timestamp values must include the new timestamp value in the filter condition, as shown:
 
 	select * from dfs.`/tmp/timestamp` where datetimestamp=timestamp '2018-01-01 12:12:12.123';
 	------------------------------------------------------
 	_id	datestring	datetimestamp
 	------------------------------------------------------
 	1	2018-01-01 12:12:12.123	2018-01-01 12:12:12.123
-	------------------------------------------------------  
+	------------------------------------------------------
 
 Notice that the WHERE clause uses the `2018-01-01 12:12:12.123` format versus the `2018-01-01 20:12:12.123` format.
 
-## Time Zone Limitation  
+## Time Zone Limitation
 
-Drill does not support conversion of a date, time, or timestamp from one time zone to another. Queries of data associated with a time zone can return inconsistent results or an error. For more information, see the ["Understanding Drill's Timestamp and Timezone"](http://www.openkb.info/2015/05/understanding-drills-timestamp-and.html#.VUzhotpVhHw) blog. The Drill time zone is based on the operating system time zone unless you override it. To work around the limitation, configure Drill to use [UTC](http://www.timeanddate.com/time/aboututc.html)-based time, convert your data to UTC timestamps, and perform date/time operation in UTC.  
+Drill does not support conversion of a date, time, or timestamp from one time zone to another. Queries of data associated with a time zone can return inconsistent results or an error. For more information, see the ["Understanding Drill's Timestamp and Timezone"](http://www.openkb.info/2015/05/understanding-drills-timestamp-and.html#.VUzhotpVhHw) blog. The Drill time zone is based on the operating system time zone unless you override it. To work around the limitation, configure Drill to use [UTC](http://www.timeanddate.com/time/aboututc.html)-based time, convert your data to UTC timestamps, and perform date/time operation in UTC.
 
-1. Take a look at the Drill time zone configuration by running the TIMEOFDAY function or by querying the system.options table. This TIMEOFDAY function returns the local date and time with time zone information. 
+1. Take a look at the Drill time zone configuration by running the TIMEOFDAY function or by querying the system.options table. This TIMEOFDAY function returns the local date and time with time zone information.
 
         SELECT TIMEOFDAY() FROM (VALUES(1));
 
@@ -972,8 +972,8 @@ Drill does not support conversion of a date, time, or timestamp from one time zo
 
 You can use the ‘z’ option to identify the time zone in TO_TIMESTAMP to make sure the timestamp has the timezone in it. Also, use the ‘z’ option to identify the time zone in a timestamp using the TO_CHAR function. For example:
 
-    SELECT TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z') AS Original, 
-           TO_CHAR(TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z'), 'z') AS TimeZone 
+    SELECT TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z') AS Original,
+           TO_CHAR(TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z'), 'z') AS TimeZone
            FROM (VALUES(1));
 
     |------------------------|-----------|
@@ -981,14 +981,14 @@ You can use the ‘z’ option to identify the time zone in TO_TIMESTAMP to make
     |------------------------|-----------|
     | 2015-03-30 20:49:00.0  | UTC       |
     |------------------------|-----------|
-    1 row selected (0.097 seconds)  
+    1 row selected (0.097 seconds)
 
 
 
 <!-- DRILL-448 Support timestamp with time zone -->
 
 
-<!-- Apache Drill    
+<!-- Apache Drill
 Apache DrillDRILL-1141
 ISNUMERIC should be implemented as a SQL function
 SELECT count(columns[0]) as number FROM dfs.`bla` WHERE ISNUMERIC(columns[0])=1

@@ -6,18 +6,18 @@ parent: "SQL Commands"
 The GROUP BY clause identifies the grouping columns for the query. You typically use a GROUP BY clause in conjunction with an aggregate expression. Grouping columns must be declared when the query computes aggregates with standard functions such as SUM, AVG, and COUNT. Starting in 1.15, Drill supports aliases in the GROUP BY clause.
 
 ## Syntax
-The GROUP BY clause supports the following syntax:  
+The GROUP BY clause supports the following syntax:
 
 
     GROUP BY expression [, ...]
-  
 
-## Parameters  
-*column_name*  
+
+## Parameters
+*column_name*
 
 Must be a column from the current scope of the query. For example, if a GROUP BY clause is in a subquery, it cannot refer to columns in the outer query.
 
-*expression*  
+*expression*
 
 The list of columns or expressions must match the list of non-aggregate expressions in the select list of the query.
 
@@ -27,7 +27,7 @@ The list of columns or expressions must match the list of non-aggregate expressi
 
 
 ## Examples
-The following query returns sales totals grouped by month:  
+The following query returns sales totals grouped by month:
 
        0: jdbc:drill:> select `month`, sum(order_total)
        from orders group by `month` order by 2 desc;
@@ -46,7 +46,7 @@ The following query returns sales totals grouped by month:
        | January   | 346536 |
        |-----------|--------|
 
-The following query extracts the year from the date\_hired column and groups the years in an aliased column, yrs\_hired:  
+The following query extracts the year from the date\_hired column and groups the years in an aliased column, yrs\_hired:
 
 	USE cp;
 	|-------|---------------------------------|

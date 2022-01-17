@@ -3,7 +3,7 @@ title: "Secure Communication Paths"
 slug: "Secure Communication Paths"
 parent: "Securing Drill"
 ---
-As illustrated in the following figure, Drill features five secure communication paths. Drill 1.11 introduces encryption between a Drill client and Drillbit. 
+As illustrated in the following figure, Drill features five secure communication paths. Drill 1.11 introduces encryption between a Drill client and Drillbit.
 
 
 1. [Web Client to Drillbit]({{site.baseurl}}/docs/secure-communication-paths/#web-client-to-drillbit)
@@ -54,7 +54,7 @@ Java (native or JDBC) and C++ (native or ODBC) clients submit queries to Drill. 
 | Authorization       | A user can execute queries on data that he/she has access to. Each storage plugin manages the read/write permissions. Users can create views on top of data to provide granular access to that data. The user sets read permissions to appropriate users and/or groups.  System-level options can only be changed by administrators (USER role). By default, only the process user is an administrator. This is available if authentication is enabled. | [Configuring User Impersonation]({{site.baseurl}}/docs/configuring-user-impersonation)                                                                                                  |
 |---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 
-## Drill Client and Drillbit to ZooKeeper 
+## Drill Client and Drillbit to ZooKeeper
 
 Drill clients and drillbits communicate with ZooKeeper to obtain the list of active drillbits. Drillbits store system-level options and running query profiles.
 

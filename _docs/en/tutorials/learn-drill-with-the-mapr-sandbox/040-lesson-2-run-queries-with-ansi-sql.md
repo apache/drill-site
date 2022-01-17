@@ -34,7 +34,7 @@ statement.
     |-------|-------------------------------------------|
     | true  | Default schema changed to [hive.default]  |
     |-------|-------------------------------------------|
-    1 row selected 
+    1 row selected
 
 ### Return sales totals by month:
 
@@ -54,7 +54,7 @@ statement.
     | September  | 373100  |
     | January    | 346536  |
     |------------|---------|
-    10 rows selected 
+    10 rows selected
 
 Drill supports SQL aggregate functions such as SUM, MAX, AVG, and MIN.
 Standard SQL clauses work in the same way in Drill queries as in relational
@@ -91,7 +91,7 @@ is a reserved word in SQL.
     | March     | fl     | 54867   |
     | March     | ny     | 52101   |
     |-----------|--------|---------|
-    20 rows selected 
+    20 rows selected
 
 Note the alias for the result of the SUM function. Drill supports column
 aliases and table aliases.
@@ -112,7 +112,7 @@ This query uses the HAVING clause to constrain an aggregate result.
 
 ### Return total number of clicks for devices that indicate high click-throughs:
 
-    0: jdbc:drill:> select t.user_info.device, count(*) from `clicks/clicks.json` t 
+    0: jdbc:drill:> select t.user_info.device, count(*) from `clicks/clicks.json` t
     group by t.user_info.device
     having count(*) > 1000;
     |---------|---------|
@@ -137,8 +137,8 @@ Use the same workspace as before (dfs.clicks).
 
 ### Combine clicks activity from before and after the marketing campaign
 
-    0: jdbc:drill:> select t.trans_id transaction, t.user_info.cust_id customer from `clicks/clicks.campaign.json` t 
-    union all 
+    0: jdbc:drill:> select t.trans_id transaction, t.user_info.cust_id customer from `clicks/clicks.campaign.json` t
+    union all
     select u.trans_id, u.user_info.cust_id  from `clicks/clicks.json` u limit 5;
     |-------------|------------|
     | transaction |  customer  |
@@ -164,7 +164,7 @@ duplicate rows from those files): `clicks.campaign.json` and `clicks.json`.
     | true  | Default schema changed to [hive.default]  |
     |-------|-------------------------------------------|
     1 row selected
-    
+
 ### Compare order totals across states:
 
     0: jdbc:drill:> select ny_sales.cust_id, ny_sales.total_orders, ca_sales.total_orders
@@ -200,7 +200,7 @@ duplicate rows from those files): `clicks.campaign.json` and `clicks.json`.
     | 1024       | 233        | null       |
     |------------|------------|------------|
 
-This example demonstrates Drill support for subqueries. 
+This example demonstrates Drill support for subqueries.
 
 ## CAST Function
 
@@ -216,9 +216,9 @@ This example demonstrates Drill support for subqueries.
 
 ### Return customer data with appropriate data types
 
-    0: jdbc:drill:> select cast(row_key as int) as cust_id, cast(t.personal.name as varchar(20)) as name, 
+    0: jdbc:drill:> select cast(row_key as int) as cust_id, cast(t.personal.name as varchar(20)) as name,
     cast(t.personal.gender as varchar(10)) as gender, cast(t.personal.age as varchar(10)) as age,
-    cast(t.address.state as varchar(4)) as state, cast(t.loyalty.agg_rev as dec(7,2)) as agg_rev, 
+    cast(t.address.state as varchar(4)) as state, cast(t.loyalty.agg_rev as dec(7,2)) as agg_rev,
     cast(t.loyalty.membership as varchar(20)) as membership
     from customers t limit 5;
     |----------|----------------------|-----------|-----------|--------|----------|-------------|
@@ -271,9 +271,9 @@ can create Drill views and tables in mutable workspaces.
 ### Create a view on a MapR-DB table
 
     0: jdbc:drill:> create or replace view custview as select cast(row_key as int) as cust_id,
-    cast(t.personal.name as varchar(20)) as name, 
-    cast(t.personal.gender as varchar(10)) as gender, 
-    cast(t.personal.age as varchar(10)) as age, 
+    cast(t.personal.name as varchar(20)) as name,
+    cast(t.personal.gender as varchar(10)) as gender,
+    cast(t.personal.age as varchar(10)) as age,
     cast(t.address.state as varchar(4)) as state,
     cast(t.loyalty.agg_rev as dec(7,2)) as agg_rev,
     cast(t.loyalty.membership as varchar(20)) as membership
@@ -348,8 +348,8 @@ Do not use a semicolon for this SET command.
 ### Join the customers, orders, and clickstream data:
 
     0: jdbc:drill:> select custview.membership, sum(orders.order_total) as sales from hive.orders, custview,
-    dfs.`/mapr/demo.mapr.com/data/nested/clicks/clicks.json` c 
-    where orders.cust_id=custview.cust_id and orders.cust_id=c.user_info.cust_id 
+    dfs.`/mapr/demo.mapr.com/data/nested/clicks/clicks.json` c
+    where orders.cust_id=custview.cust_id and orders.cust_id=c.user_info.cust_id
     group by custview.membership order by 2;
     |------------|------------|
     | membership |   sales    |
@@ -378,7 +378,7 @@ workspace, so the query specifies the full path to the file:
 
 ## What's Next
 
-Go to [Lesson 3: Run Queries on Complex Data Types]({{ site.baseurl }}/docs/lesson-3-run-queries-on-complex-data-types). 
+Go to [Lesson 3: Run Queries on Complex Data Types]({{ site.baseurl }}/docs/lesson-3-run-queries-on-complex-data-types).
 
 
 

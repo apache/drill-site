@@ -10,27 +10,27 @@ The DROP VIEW command removes a view that was created in a workspace using the C
 
 The DROP VIEW command supports the following syntax:
 
-    DROP VIEW [IF EXISTS] [workspace.]view_name;  
+    DROP VIEW [IF EXISTS] [workspace.]view_name;
 
-## Parameters  
+## Parameters
 
-IF EXISTS  
-Drill does not throw an error if the view does not exist. Instead, Drill returns "`View [view_name] not found in schema [workspace].`"  
+IF EXISTS
+Drill does not throw an error if the view does not exist. Instead, Drill returns "`View [view_name] not found in schema [workspace].`"
 
-*workspace*  
+*workspace*
 The location of the view in subdirectories of a local or distributed file system.
 
-*name*  
-A unique directory or file name, optionally prefaced by a storage plugin name, such as `dfs`, and a workspace, such as `tmp` using dot notation. 
+*name*
+A unique directory or file name, optionally prefaced by a storage plugin name, such as `dfs`, and a workspace, such as `tmp` using dot notation.
 
-## Usage Notes  
+## Usage Notes
 
-- By default, Drill returns a result set when you issue DDL statements, such as DROP VIEW. If the client tool from which you connect to Drill (via JDBC) does not expect a result set when you issue DDL statements, set the `exec.query.return_result_set_for_ddl` option to false, as shown, to prevent the client from canceling queries:  
+- By default, Drill returns a result set when you issue DDL statements, such as DROP VIEW. If the client tool from which you connect to Drill (via JDBC) does not expect a result set when you issue DDL statements, set the `exec.query.return_result_set_for_ddl` option to false, as shown, to prevent the client from canceling queries:
 
-		SET `exec.query.return_result_set_for_ddl` = false  
-		//This option is available in Drill 1.15 and later.   
+		SET `exec.query.return_result_set_for_ddl` = false
+		//This option is available in Drill 1.15 and later.
 
-	When set to false, Drill returns the affected rows count, and the result set is null.  
+	When set to false, Drill returns the affected rows count, and the result set is null.
 
 
 
@@ -38,9 +38,9 @@ A unique directory or file name, optionally prefaced by a storage plugin name, s
 
 ## Example
 
-This example shows you some steps to follow when you want to drop a view in Drill using the DROP VIEW command. A workspace named “donuts” was created for the steps in this example.  
+This example shows you some steps to follow when you want to drop a view in Drill using the DROP VIEW command. A workspace named “donuts” was created for the steps in this example.
 
-Complete the following steps to drop a view in Drill:  
+Complete the following steps to drop a view in Drill:
 
 Use the writable workspace from which the view was created.
 
@@ -50,7 +50,7 @@ Use the writable workspace from which the view was created.
     |------|----------------------------------------|
     | true | Default schema changed to 'dfs.donuts' |
     |------|----------------------------------------|
- 
+
 Use the DROP VIEW command to remove a view created in the current workspace.
 
     0: jdbc:drill:zk=local> drop view mydonuts;
@@ -69,7 +69,7 @@ Use the DROP VIEW command to remove a view created in another workspace.
     | true | View 'yourdonuts' deleted successfully from 'dfs.tmp' schema |
     |------|--------------------------------------------------------------|
 
-Use the DROP VIEW command with or without the IF EXISTS parameter to remove a view created in the current workspace.  
+Use the DROP VIEW command with or without the IF EXISTS parameter to remove a view created in the current workspace.
 
     0: jdbc:drill:zk=local> drop view if exists mydonuts;
     |------------|--------------------------------------------------------------|

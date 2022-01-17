@@ -15,7 +15,7 @@ You can use the following logical operators in your Drill queries:
   * IN
   * LIKE
   * NOT
-  * OR 
+  * OR
 
 ## Comparison Operators
 
@@ -29,9 +29,9 @@ You can use the following comparison operators in your Drill queries:
   * <>
   * IS NULL
   * IS NOT NULL
-  * IS FALSE 
+  * IS FALSE
   * IS NOT FALSE
-  * IS TRUE 
+  * IS TRUE
   * IS NOT TRUE
 
 ## Pattern Matching Operators
@@ -70,7 +70,7 @@ The concatenate operator is an alternative to the [concat function]({{ site.base
 
 The concat function treats NULL as an empty string. The concatenate operator (||) returns NULL if any input is NULL.
 
-## Operator Precedence 
+## Operator Precedence
 
 The following table shows the precedence of operators in decreasing order:
 
