@@ -1465,7 +1465,7 @@ Click <strong>Update</strong> if you edit the configuration and then click <stro
 <h2 id="querying-opentsdb">Querying OpenTSDB</h2>
 <p>When querying OpenTSDB, you must include the required request parameters in the FROM clause of queries, using commas to separate the parameters, as shown in the following example:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT * FROM openTSDB.`(metric=warp.speed.test, start=47y-ago, aggregator=sum)`;  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT * FROM openTSDB.`(metric=warp.speed.test, start=47y-ago, aggregator=sum)`;
 </code></pre></div></div>
 
 <p>In addition to the required request parameters, you can also include some optional request parameters in queries.</p>
@@ -1542,20 +1542,20 @@ Click <strong>Update</strong> if you edit the configuration and then click <stro
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   USE openTSDB;
    //Switches Drill to the OpenTSDB schema so that Drill only queries OpenTSDB.
 
-   SHOW tables; 
-   //Prints the available metrics. The max number of the printed results is an Integer.MAX value.  
+   SHOW tables;
+   //Prints the available metrics. The max number of the printed results is an Integer.MAX value.
 
    SELECT * FROM openTSDB.`(metric=warp.speed.test, start=47y-ago, aggregator=sum)`;
-   //Returns aggregated elements from the warp.speed.test table from 47y-ago.  
+   //Returns aggregated elements from the warp.speed.test table from 47y-ago.
 
    SELECT * FROM openTSDB.`(metric=warp.speed.test, aggregator=avg, start=47y-ago)`;
-   //Returns aggregated elements from the warp.speed.test table.  
+   //Returns aggregated elements from the warp.speed.test table.
 
    SELECT `timestamp`, sum(`aggregated value`) FROM openTSDB.`(metric=warp.speed.test, aggregator=avg, start=47y-ago)` GROUP BY `timestamp`;
-   //Returns aggregated and grouped value by standard Drill functions from the warp.speed.test table with the custom aggregator.  
+   //Returns aggregated and grouped value by standard Drill functions from the warp.speed.test table with the custom aggregator.
 
    SELECT * FROM openTSDB.`(metric=warp.speed.test, aggregator=avg, start=47y-ago, downsample=5m-avg)`;
-   //Returns aggregated data limited by the downsample.  
+   //Returns aggregated data limited by the downsample.
 
    SELECT * FROM openTSDB.`(metric=warp.speed.test, aggregator=avg, start=47y-ago, end=1407165403000)`;
    //Returns aggregated data limited by the end time.

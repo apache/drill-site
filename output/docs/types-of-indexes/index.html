@@ -1464,7 +1464,7 @@
 
 <p>The following query references the L_LINESTATUS, L_QUANTITY, L_LINENUMBER, and L_ORDERKEY columns in the lineitem table:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT L_LINESTATUS, L_QUANTITY FROM lineitem WHERE L_LINENUMBER = 1 AND L_ORDERKEY BETWEEN 40 AND 75;  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT L_LINESTATUS, L_QUANTITY FROM lineitem WHERE L_LINENUMBER = 1 AND L_ORDERKEY BETWEEN 40 AND 75;
 </code></pre></div></div>
 
 <p>Because the l_comp_1 index includes all columns referenced in the query, the query planner in Drill creates a covering index plan.</p>
@@ -1475,7 +1475,7 @@
 
 00-00    Screen
 00-01      Project(L_LINESTATUS=[$0], L_QUANTITY=[$1])
-00-02        Scan(table=[[si, tpch_sf1_maprdb_range, lineitem]], groupscan=[JsonTableGroupScan [ScanSpec=JsonScanSpec [tableName=maprfs:///drill/testdata/tpch/sf1/maprdb/json/range/lineitem, condition=(((L_LINENUMBER = {"$numberLong":1}) and (L_ORDERKEY &gt;= {"$numberLong":40})) and (L_ORDERKEY &lt;= {"$numberLong":75})), indexName=l_comp_1], columns=[`L_LINESTATUS`, `L_QUANTITY`]]])  
+00-02        Scan(table=[[si, tpch_sf1_maprdb_range, lineitem]], groupscan=[JsonTableGroupScan [ScanSpec=JsonScanSpec [tableName=maprfs:///drill/testdata/tpch/sf1/maprdb/json/range/lineitem, condition=(((L_LINENUMBER = {"$numberLong":1}) and (L_ORDERKEY &gt;= {"$numberLong":40})) and (L_ORDERKEY &lt;= {"$numberLong":75})), indexName=l_comp_1], columns=[`L_LINESTATUS`, `L_QUANTITY`]]])
 </code></pre></div></div>
 
 <p>Reading the query plan, you can see that the plan includes an index scan, as indicated by <code class="language-plaintext highlighter-rouge">groupscan=[JsonTableGroupScan</code> and <code class="language-plaintext highlighter-rouge">indexName=l_comp_1</code>. Drill and the data source can process this query using only the index.</p>
@@ -1495,7 +1495,7 @@
 
 <p>The following query references the L_RETURNFLAG, L_LINESTATUS, L_QUANTITY L_LINENUMBER, and L_ORDERKEY columns in the lineitem table:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT L_RETURNFLAG, L_LINESTATUS, L_QUANTITY FROM lineitem WHERE L_LINENUMBER = 1 AND L_ORDERKEY BETWEEN 40 AND 75;  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT L_RETURNFLAG, L_LINESTATUS, L_QUANTITY FROM lineitem WHERE L_LINENUMBER = 1 AND L_ORDERKEY BETWEEN 40 AND 75;
 </code></pre></div></div>
 
 <p>Because the l_comp_1 index does not include the L_RETURNFLAG column, the query planner in Drill creates a non-covering index plan that uses the index, but also includes a join on the primary table.</p>
@@ -1531,7 +1531,7 @@
 00-00    Screen
 00-01      Project(L_LINESTATUS=[$0], L_QUANTITY=[$1])
 00-02        Project(L_LINESTATUS=[$2], L_QUANTITY=[$3], L_LINENUMBER=[$0])
-00-03          Scan(table=[[si, tpch_sf1_maprdb_range, lineitem]], groupscan=[JsonTableGroupScan [ScanSpec=JsonScanSpec [tableName=maprfs:///drill/testdata/tpch/sf1/maprdb/json/range/lineitem, condition=(((L_LINENUMBER = {"$numberLong":1}) and (L_ORDERKEY &gt;= {"$numberLong":40})) and (L_ORDERKEY &lt;= {"$numberLong":75})), indexName=l_comp_1], columns=[`L_LINENUMBER`, `L_ORDERKEY`, `L_LINESTATUS`, `L_QUANTITY`]]])  
+00-03          Scan(table=[[si, tpch_sf1_maprdb_range, lineitem]], groupscan=[JsonTableGroupScan [ScanSpec=JsonScanSpec [tableName=maprfs:///drill/testdata/tpch/sf1/maprdb/json/range/lineitem, condition=(((L_LINENUMBER = {"$numberLong":1}) and (L_ORDERKEY &gt;= {"$numberLong":40})) and (L_ORDERKEY &lt;= {"$numberLong":75})), indexName=l_comp_1], columns=[`L_LINENUMBER`, `L_ORDERKEY`, `L_LINESTATUS`, `L_QUANTITY`]]])
 </code></pre></div></div>
 
 <p>Reading the query plan, you can see that Drill uses the non-hashed index plan, as indicated by <code class="language-plaintext highlighter-rouge">indexName=l_comp_1</code>. To process the query, the data source uses the index and Drill does not have to perform sort and merge operations on the data, as indicated by the absence of the Sort and SingleMergeExchange operations in the query plan. The data source sorted the data in the index when the index was created.</p>
@@ -1554,7 +1554,7 @@
 01-01          SelectionVectorRemover
 01-02            Sort(sort0=[$2], dir0=[ASC])
 01-03              Project(L_LINESTATUS=[$2], L_QUANTITY=[$3], L_LINENUMBER=[$0])
-01-04                Scan(table=[[si, tpch_sf1_maprdb_hash, lineitem]], groupscan=[JsonTableGroupScan [ScanSpec=JsonScanSpec [tableName=maprfs:///drill/testdata/tpch/sf1/maprdb/json/hash/lineitem, condition=(((L_LINENUMBER = {"$numberLong":1}) and (L_ORDERKEY &gt;= {"$numberLong":40})) and (L_ORDERKEY &lt;= {"$numberLong":75})), indexName=l_hash_comp_1], columns=[`L_LINENUMBER`, `L_ORDERKEY`, `L_LINESTATUS`, `L_QUANTITY`]]])  
+01-04                Scan(table=[[si, tpch_sf1_maprdb_hash, lineitem]], groupscan=[JsonTableGroupScan [ScanSpec=JsonScanSpec [tableName=maprfs:///drill/testdata/tpch/sf1/maprdb/json/hash/lineitem, condition=(((L_LINENUMBER = {"$numberLong":1}) and (L_ORDERKEY &gt;= {"$numberLong":40})) and (L_ORDERKEY &lt;= {"$numberLong":75})), indexName=l_hash_comp_1], columns=[`L_LINENUMBER`, `L_ORDERKEY`, `L_LINESTATUS`, `L_QUANTITY`]]])
 </code></pre></div></div>
 
 <p>Reading the query plan, you can see that Drill uses the hashed index in the plan, as indicated by <code class="language-plaintext highlighter-rouge">indexName=l_hash_comp_1</code>. To process the query, the data source can use the index, but Drill must sort and merge the data, as indicated by the <code class="language-plaintext highlighter-rouge">Sort</code> and <code class="language-plaintext highlighter-rouge">SingleMergeExchange</code> operations in the query plan.
@@ -1569,7 +1569,6 @@ Using the hashed index plan for this ORDER BY query requires additional processi
   <p class="first admonition-title">Note</p>
   <p class="last">MapR Database supports functional indexes. The query planner in Drill can use the functional index to optimize queries with CAST functions.  </p>
 </div>
-
 
     
       

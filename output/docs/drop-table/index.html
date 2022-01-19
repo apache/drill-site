@@ -1444,25 +1444,25 @@
 <h2 id="syntax">Syntax</h2>
 <p>The DROP TABLE command supports the following syntax:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DROP TABLE [IF EXISTS] [workspace.]name;  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DROP TABLE [IF EXISTS] [workspace.]name;
 </code></pre></div></div>
 
 <h2 id="parameters">Parameters</h2>
 
-<p>IF EXISTS<br />
+<p>IF EXISTS
 Drill does not throw an error if the table does not exist. Instead, Drill returns “<code class="language-plaintext highlighter-rouge">Table [name] not found.</code>”</p>
 
-<p><em>workspace</em><br />
+<p><em>workspace</em>
 The location of the table in subdirectories of a local or distributed file system.</p>
 
-<p><em>name</em><br />
+<p><em>name</em>
 A unique directory or file name, optionally prefaced by a storage plugin name, such as <code class="language-plaintext highlighter-rouge">dfs</code>, and a workspace, such as <code class="language-plaintext highlighter-rouge">tmp</code> using dot notation.</p>
 
 <h2 id="usage-notes">Usage Notes</h2>
 <p>By default, Drill returns a result set when you issue DDL statements, such as DROP TABLE. If the client tool from which you connect to Drill (via JDBC) does not expect a result set when you issue DDL statements, set the <code class="language-plaintext highlighter-rouge">exec.query.return_result_set_for_ddl</code> option to false, as shown, to prevent the client from canceling queries:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SET `exec.query.return_result_set_for_ddl` = false  
-//This option is available in Drill 1.15 and later.   
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SET `exec.query.return_result_set_for_ddl` = false
+//This option is available in Drill 1.15 and later.
 </code></pre></div></div>
 
 <p>When set to false, Drill returns the affected rows count, and the result set is null.</p>
@@ -1537,14 +1537,14 @@ A unique directory or file name, optionally prefaced by a storage plugin name, s
    | true  | Default schema changed to [dfs.donuts]  |
    |-------|-----------------------------------------|
    1 row selected (0.096 seconds)
-    
+
    0: jdbc:drill:zk=local&gt; drop table donuts_json;
    |-------|------------------------------|
    |  ok   |           summary            |
    |-------|------------------------------|
    | true  | Table [donuts_json] dropped  |
    |-------|------------------------------|
-   1 row selected (0.094 seconds) 
+   1 row selected (0.094 seconds)
 </code></pre></div></div>
 
 <p>Alternatively, instead of issuing the USE command to change the schema, you can include the schema name when you drop the table.</p>
@@ -1582,7 +1582,7 @@ A unique directory or file name, optionally prefaced by a storage plugin name, s
      "type" : "donut",
      "name" : "Cake",
      "ppu" : 0.55
-   }   Issuing the USE command changes the schema to `dfs.tmp`.  
+   } Issuing the USE command changes the schema to `dfs.tmp`.
 
    0: jdbc:drill:zk=local&gt; use dfs.tmp;
    |------|-------------------------------------|
@@ -1590,7 +1590,7 @@ A unique directory or file name, optionally prefaced by a storage plugin name, s
    |------|-------------------------------------|
    | true | Default schema changed to [dfs.tmp] |
    |------|-------------------------------------|
-   1 row selected (0.085 seconds)  
+   1 row selected (0.085 seconds)
 </code></pre></div></div>
 
 <p>Running the <code class="language-plaintext highlighter-rouge">DROP TABLE</code> command removes the table from the <code class="language-plaintext highlighter-rouge">dfs.tmp</code> schema.</p>
@@ -1601,7 +1601,7 @@ A unique directory or file name, optionally prefaced by a storage plugin name, s
    |-------|------------------------------|
    | true  | Table [donuts_json] dropped  |
    |-------|------------------------------|
-   1 row selected (0.107 seconds)  
+   1 row selected (0.107 seconds)
 </code></pre></div></div>
 
 <h3 id="example-3-dropping-a-table-created-as-a-directory">Example 3: Dropping a table created as a directory</h3>
@@ -1678,11 +1678,11 @@ A unique directory or file name, optionally prefaced by a storage plugin name, s
    | true  | Default schema changed to [dfs.tmp]  |
    |-------|--------------------------------------|
    1 row selected (0.289 seconds)
-   
+
    0: jdbc:drill:zk=local&gt; drop table name_key;
 
    Error: VALIDATION ERROR: Table [name_key] not found
-   [Error Id: fc6bfe17-d009-421c-8063-d759d7ea2f4e on 10.250.56.218:31010] (state=,code=0)  
+   [Error Id: fc6bfe17-d009-421c-8063-d759d7ea2f4e on 10.250.56.218:31010] (state=,code=0)
 </code></pre></div></div>
 
 <h3 id="example-5-dropping-a-table-that-does-not-exist-using-the-if-exists-parameter">Example 5: Dropping a table that does not exist using the IF EXISTS parameter</h3>
@@ -1694,7 +1694,7 @@ A unique directory or file name, optionally prefaced by a storage plugin name, s
    |-------|--------------------------------------|
    | true  | Default schema changed to 'dfs.tmp'  |
    |-------|--------------------------------------|
-   1 row selected (0.289 seconds)  
+   1 row selected (0.289 seconds)
 
    0: jdbc:drill:zk=local&gt; drop table if exists name_key;
    |-------|-----------------------------|
@@ -1702,7 +1702,7 @@ A unique directory or file name, optionally prefaced by a storage plugin name, s
    |-------|-----------------------------|
    | true  | Table 'name_key' not found  |
    |-------|-----------------------------|
-   1 row selected (0.083 seconds)  
+   1 row selected (0.083 seconds)
 </code></pre></div></div>
 
 <h3 id="example-6-dropping-a-table-that-exists-using-the-if-exists-parameter">Example 6: Dropping a table that exists using the IF EXISTS parameter</h3>
@@ -1716,13 +1716,13 @@ A unique directory or file name, optionally prefaced by a storage plugin name, s
    | true  | Default schema changed to 'dfs.tmp'  |
    |-------|--------------------------------------|
    1 row selected (0.289 seconds)
-   
+
    0: jdbc:drill:zk=local&gt; drop table if exists name_key;
    |-------|---------------------------|
    |  ok   |        summary            |
    |-------|---------------------------|
    | true  | Table 'name_key' dropped  |
-   |-------|---------------------------|  
+   |-------|---------------------------|
 </code></pre></div></div>
 
 <h3 id="example-7-dropping-a-table-without-permissions">Example 7: Dropping a table without permissions</h3>
@@ -1731,7 +1731,7 @@ A unique directory or file name, optionally prefaced by a storage plugin name, s
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; drop table name_key;
 
    Error: PERMISSION ERROR: Unauthorized to drop table
-   [Error Id: 36f6b51a-786d-4950-a4a7-44250f153c55 on 10.10.30.167:31010] (state=,code=0)  
+   [Error Id: 36f6b51a-786d-4950-a4a7-44250f153c55 on 10.10.30.167:31010] (state=,code=0)
 </code></pre></div></div>
 
 <h3 id="example-8-dropping-and-querying-a-table-concurrently">Example 8: Dropping and querying a table concurrently</h3>
@@ -1774,7 +1774,7 @@ A unique directory or file name, optionally prefaced by a storage plugin name, s
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:zk=local&gt; drop table dfs.sales.sales_dir;
 
-   Error: VALIDATION ERROR: Table contains different file formats. 
+   Error: VALIDATION ERROR: Table contains different file formats.
    Drop Table is only supported for directories that contain homogeneous file formats consumable by Drill
    [Error Id: 062f68c9-f2cd-4033-9b3d-182146a96904 on 10.250.56.218:31010] (state=,code=0)
 </code></pre></div></div>

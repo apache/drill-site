@@ -1463,14 +1463,14 @@ accurate metadata. This can be done using Drill or whatever tool originally prod
 <p>When the base table in the SELECT statement is schema-less, include columns in the PARTITION BY clause in the table’s column list, or use a select all (SELECT *) statement:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE dest_name [ (column, . . .) ]
-[ PARTITION BY (column, . . .) ] 
+[ PARTITION BY (column, . . .) ]
 AS SELECT column_list FROM &lt;source_name&gt;;
 </code></pre></div></div>
 
 <p>When columns in the source table have ambiguous names, such as COLUMNS[0], define one or more column aliases in the SELECT statement. Use the alias name or names in the CREATE TABLE list. List aliases in the same order as the corresponding columns in the SELECT statement. Matching order is important because Drill performs an overwrite operation.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE dest_name (alias1, alias2, . . .) 
-[ PARTITION BY (alias1, . . . ) ] 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE dest_name (alias1, alias2, . . .)
+[ PARTITION BY (alias1, . . . ) ]
 AS SELECT column1 alias1, column2 alias2, . . .;
 </code></pre></div></div>
 
@@ -1536,34 +1536,34 @@ distinct books of the Google sample.</p>
   <li>
     <p>Download the compressed Google Ngram data from this location:</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> wget http://storage.googleapis.com/books/ngrams/books/googlebooks-eng-all-5gram-20120701-zo.gz  
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> wget http://storage.googleapis.com/books/ngrams/books/googlebooks-eng-all-5gram-20120701-zo.gz
 </code></pre></div>    </div>
   </li>
-  <li>Unzip the file. On Linux for example use the <code class="language-plaintext highlighter-rouge">gzip -d</code> command:<br />
-<code class="language-plaintext highlighter-rouge">gzip -d googlebooks-eng-all-5gram-20120701-zo.gz</code><br />
+  <li>Unzip the file. On Linux for example use the <code class="language-plaintext highlighter-rouge">gzip -d</code> command:
+<code class="language-plaintext highlighter-rouge">gzip -d googlebooks-eng-all-5gram-20120701-zo.gz</code>
 A file named <code class="language-plaintext highlighter-rouge">googlebooks-eng-all-5gram-20120701-zo</code> appears.</li>
   <li>Embedded mode: Move the unzipped file name to <code class="language-plaintext highlighter-rouge">/tmp</code> and add a <code class="language-plaintext highlighter-rouge">.tsv</code> extension. The Drill <code class="language-plaintext highlighter-rouge">dfs</code> storage plugin definition includes a TSV format that requires
-a file to have this extension.<br />
-<code class="language-plaintext highlighter-rouge">mv googlebooks-eng-all-5gram-20120701-zo /tmp/googlebooks-eng-all-5gram-20120701-zo.tsv</code><br />
+a file to have this extension.
+<code class="language-plaintext highlighter-rouge">mv googlebooks-eng-all-5gram-20120701-zo /tmp/googlebooks-eng-all-5gram-20120701-zo.tsv</code>
 Distributed mode: Move the unzipped file to HDFS and add a <code class="language-plaintext highlighter-rouge">.tsv</code> extension.
 <code class="language-plaintext highlighter-rouge">hadoop fs -put googlebooks-eng-all-5gram-20120701-zo /tmp/googlebooks-eng-all-5gram-20120701-zo.tsv</code></li>
-  <li>Start the Drill shell, and use the default <code class="language-plaintext highlighter-rouge">dfs.tmp</code> workspace, which is predefined as writable.<br />
-Distributed mode: This example assumes that the default <code class="language-plaintext highlighter-rouge">dfs</code> either works with your distributed file system out-of-the-box, or that you have adapted the storage plugin to your environment.<br />
+  <li>Start the Drill shell, and use the default <code class="language-plaintext highlighter-rouge">dfs.tmp</code> workspace, which is predefined as writable.
+Distributed mode: This example assumes that the default <code class="language-plaintext highlighter-rouge">dfs</code> either works with your distributed file system out-of-the-box, or that you have adapted the storage plugin to your environment.
 <code class="language-plaintext highlighter-rouge">USE dfs.tmp</code>;</li>
   <li>Set the <code class="language-plaintext highlighter-rouge">store.format</code> property to the default parquet if you changed the default.
 <code class="language-plaintext highlighter-rouge">ALTER SESSION SET `store.format` = 'parquet';</code></li>
   <li>
-    <p>Partition Google Ngram data by year in a directory named <code class="language-plaintext highlighter-rouge">by_yr</code>.<br />
+    <p>Partition Google Ngram data by year in a directory named <code class="language-plaintext highlighter-rouge">by_yr</code>.
 Embedded mode:</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> CREATE TABLE by_yr (yr, ngram, occurrances) PARTITION BY (yr) AS SELECT columns[1] yr, columns[0] ngram, columns[2] occurrances FROM `googlebooks-eng-all-5gram-20120701-zo.tsv` LIMIT 100;  Output is:  
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> CREATE TABLE by_yr (yr, ngram, occurrances) PARTITION BY (yr) AS SELECT columns[1] yr, columns[0] ngram, columns[2] occurrances FROM `googlebooks-eng-all-5gram-20120701-zo.tsv` LIMIT 100;  Output is:
 
  |-----------|----------------------------|
  | Fragment  | Number of records written  |
  |-----------|----------------------------|
  | 0_0       | 100                        |
  |-----------|----------------------------|
- 1 row selected (5.775 seconds)  Distributed mode:  
+ 1 row selected (5.775 seconds)  Distributed mode:
 
  CREATE TABLE by_yr (yr, ngram, occurrances) PARTITION BY (yr) AS SELECT columns[1] yr, columns[0] ngram, columns[2] occurrances FROM `googlebooks-eng-all-5gram-20120701-zo.tsv`;  Output is:
 
@@ -1581,12 +1581,12 @@ Embedded mode:</p>
  0_0_10.parquet	0_0_29.parquet	0_0_47.parquet	0_0_65.parquet
  0_0_11.parquet	0_0_3.parquet	0_0_48.parquet	0_0_66.parquet
  0_0_12.parquet	0_0_30.parquet	0_0_49.parquet	0_0_67.parquet
- . . .  
+ . . .
 </code></pre></div>    </div>
   </li>
   <li>
-    <p>Query the <code class="language-plaintext highlighter-rouge">by_yr</code> directory to check to see how the data appears.<br />
-<code class="language-plaintext highlighter-rouge">SELECT * FROM by_yr LIMIT 100;</code><br />
+    <p>Query the <code class="language-plaintext highlighter-rouge">by_yr</code> directory to check to see how the data appears.
+<code class="language-plaintext highlighter-rouge">SELECT * FROM by_yr LIMIT 100;</code>
 The output looks something like this:</p>
 
     <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> |------|--------------------------------------------|-------------|
@@ -1598,7 +1598,7 @@ The output looks something like this:</p>
  | 1737 | Zobah , David slew of                      | 1           |
  | 1966 | zone by virtue of the                      | 1           |
  |------|--------------------------------------------|-------------|
- 100 rows selected (2.184 seconds) Files are partitioned by year. The output is not expected to be in perfect sorted order because Drill reads files sequentially. 
+ 100 rows selected (2.184 seconds) Files are partitioned by year. The output is not expected to be in perfect sorted order because Drill reads files sequentially.
 </code></pre></div>    </div>
   </li>
   <li>
@@ -1643,12 +1643,12 @@ The output looks something like this:</p>
 <h2 id="other-examples">Other Examples</h2>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>USE cp;
-CREATE TABLE mytable1 PARTITION BY (r_regionkey) AS 
+CREATE TABLE mytable1 PARTITION BY (r_regionkey) AS
   SELECT r_regionkey, r_name FROM cp.`tpch/region.parquet`;
-CREATE TABLE mytable2 PARTITION BY (r_regionkey) AS 
+CREATE TABLE mytable2 PARTITION BY (r_regionkey) AS
   SELECT * FROM cp.`tpch/region.parquet`;
 CREATE TABLE mytable3 PARTITION BY (r_regionkey) AS
-  SELECT r.r_regionkey, r.r_name, n.n_nationkey, n.n_name 
+  SELECT r.r_regionkey, r.r_name, n.n_nationkey, n.n_name
   FROM cp.`tpch/nation.parquet` n, cp.`tpch/region.parquet` r
   WHERE n.n_regionkey = r.r_regionkey;
 </code></pre></div></div>

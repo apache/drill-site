@@ -1443,17 +1443,17 @@
 
 <h2 id="syntax">Syntax</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE name [ (column list) ] AS query;  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE name [ (column list) ] AS query;
 </code></pre></div></div>
 
 <h2 id="parameters">Parameters</h2>
-<p><em>name</em><br />
+<p><em>name</em>
 A unique directory name, optionally prefaced by a storage plugin name, such as dfs, and a workspace, such as tmp using <a href="/zh/docs/workspaces">dot notation</a>.</p>
 
-<p><em>column list</em><br />
+<p><em>column list</em>
 An optional list of column names or aliases in the new table.</p>
 
-<p><em>query</em><br />
+<p><em>query</em>
 A SELECT statement that needs to include aliases for ambiguous column names, such as COLUMNS[0]. Using SELECT * is <a href="/zh/docs/text-files-csv-tsv-psv/#tips-for-performant-querying">not recommended</a> when selecting CSV, TSV, and PSV data.</p>
 
 <h2 id="usage-notes">Usage Notes</h2>
@@ -1462,8 +1462,8 @@ A SELECT statement that needs to include aliases for ambiguous column names, suc
   <li>
     <p>By default, Drill returns a result set when you issue DDL statements, such as CTAS. If the client tool from which you connect to Drill (via JDBC) does not expect a result set when you issue DDL statements, set the <code class="language-plaintext highlighter-rouge">exec.query.return_result_set_for_ddl</code> option to false, as shown, to prevent the client from canceling queries:</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SET `exec.query.return_result_set_for_ddl` = false  
-  //This option is available in Drill 1.15 and later.   
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SET `exec.query.return_result_set_for_ddl` = false
+  //This option is available in Drill 1.15 and later.
 </code></pre></div>    </div>
 
     <p>When set to false, Drill returns the affected rows count, and the result set is null.</p>
@@ -1477,7 +1477,7 @@ A SELECT statement that needs to include aliases for ambiguous column names, suc
     <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> - The following command writes Parquet data from `nation.parquet`, installed with Drill, to the `/tmp/name_key` directory.
 
         USE dfs;
-        CREATE TABLE tmp.`name_key` (N_NAME, N_NATIONKEY) AS SELECT N_NATIONKEY, N_NAME FROM dfs.`/Users/drilluser/apache-drill-1.0/sample-data/nation.parquet`;  
+        CREATE TABLE tmp.`name_key` (N_NAME, N_NATIONKEY) AS SELECT N_NATIONKEY, N_NAME FROM dfs.`/Users/drilluser/apache-drill-1.0/sample-data/nation.parquet`;
 
 
  - To query the data, use this command:
@@ -1489,15 +1489,15 @@ A SELECT statement that needs to include aliases for ambiguous column names, suc
  - This example writes a JSON table to the `/tmp/by_yr` directory that contains [Google Ngram data](/docs/partition-by-clause/#partioning-example).
 
         Use dfs.tmp;
-        CREATE TABLE by_yr (yr, ngram, occurrances) AS SELECT COLUMNS[0] ngram, COLUMNS[1] yr, COLUMNS[2] occurrances FROM `googlebooks-eng-all-5gram-20120701-zo.tsv` WHERE (columns[1] = '1993');  
+        CREATE TABLE by_yr (yr, ngram, occurrances) AS SELECT COLUMNS[0] ngram, COLUMNS[1] yr, COLUMNS[2] occurrances FROM `googlebooks-eng-all-5gram-20120701-zo.tsv` WHERE (columns[1] = '1993');
 </code></pre></div>    </div>
   </li>
   <li>
     <p>Drill 1.11 introduces the <code class="language-plaintext highlighter-rouge">exec.persistent_table.umask</code> option, which enables you to set permissions on tables and directories that result from running the CTAS command. By default, the option is set to 002, which sets the default directory permissions to 775 and default file permissions to 664. Use the <a href="/zh/docs/set/">SET</a> command to change the setting for this option at the system or session level, as shown:</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ALTER SYSTEM|SESSION SET `exec.persistent_table.umask` = '000';  
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ALTER SYSTEM|SESSION SET `exec.persistent_table.umask` = '000';
 
- - Setting the option to '000' sets the folder permissions to 777 and the file permissions to 666. This setting gives full access to folders and files when you create a table.   
+ - Setting the option to '000' sets the folder permissions to 777 and the file permissions to 666. This setting gives full access to folders and files when you create a table.
 </code></pre></div>    </div>
   </li>
 </ul>

@@ -1743,37 +1743,42 @@ set the <code class="language-plaintext highlighter-rouge">requireTail</code> pr
 <span class="k">FROM</span> <span class="n">http</span><span class="p">.</span><span class="n">sunrise</span><span class="p">.</span><span class="nv">`/json?lat=36.7201600&amp;lng=-4.4203400&amp;date=today`</span>
 </code></pre></div></div>
 
+<p><strong>Paging through pntroduced in release:</strong> 1.20.</p>
+
 <p>Or, as explained above, you can have the URL act like a table and pass parameters
-using a <code class="language-plaintext highlighter-rouge">WHERE</code> clause “filter” conditions.</p>
+using a <code class="language-plaintext highlighter-rouge">WHERE</code> clause “filter” conPaging through pitions.</p>
 
+<p>#
+<strong>Introduced in release:</strong> 1.20.</p>
 <h2 id="proxy-setup">Proxy Setup</h2>
-
-<p>Some users access HTTP services from behind a proxy firewall. Drill provides three ways specify proxy
-configuration.</p>
-
+<p>##
+Some users access HTTP services from behind a proxy firewall. Drill provides three ways specify proxy
+cnfiguration.</p>
 <h3 id="proxy-environment-variables">Proxy Environment Variables</h3>
 
 <p>Drill recognizes the usual Linux proxy environment variables:</p>
 
+<p>*# <code class="language-plaintext highlighter-rouge">http_proxy</code>, <code class="language-plaintext highlighter-rouge">HTTP_PROXY</code></p>
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">http_proxy</code>, <code class="language-plaintext highlighter-rouge">HTTP_PROXY</code></li>
   <li><code class="language-plaintext highlighter-rouge">https_proxy</code>, <code class="language-plaintext highlighter-rouge">HTTP_PROXY</code></li>
-  <li><code class="language-plaintext highlighter-rouge">all_proxy</code>, <code class="language-plaintext highlighter-rouge">ALL_PROXY</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Paging through pll_proxy</code>, <code class="language-plaintext highlighter-rouge">ALL_PROXY</code>
+#
+<strong>Introduced in release:</strong> 1.20.</li>
 </ul>
 
-<p>This technique works well if your system is already configured to handle proxies.</p>
-
+<p>#This technique works well if your system is already configured to handle proxies.
+#</p>
 <h3 id="boot-configuration">Boot Configuration</h3>
-
 <p>You can also specify proxy configuration in the <code class="language-plaintext highlighter-rouge">drill-override.conf</code> file.
-See <code class="language-plaintext highlighter-rouge">drill-override-example.conf</code> for a template. Use the boot configuration
+#See <code class="language-plaintext highlighter-rouge">drill-override-example.conf</code> for a template. Use the boot configuration
 is an attribute of your network environment. Doing so will ensure every
 Drillbit and every HTTP/HTTPS request uses the same proxy configuration.</p>
 
 <p>First, you can use the same form of URL you would use with the environment
 variables:</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">drill.exec.net_proxy.http_url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">http://foo.com/1234"</span>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="s">d#rill.exec.net_proxy.http_url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">http://foo.com/1234"</span>
 </code></pre></div></div>
 
 <p>There is one setting for HTTP, another for HTTPS.</p>
@@ -1812,6 +1817,47 @@ applies only to some external services, or if each service has a different proxy
 
 <p>The valid proxy types are <code class="language-plaintext highlighter-rouge">direct</code>, <code class="language-plaintext highlighter-rouge">http</code> or <code class="language-plaintext highlighter-rouge">socks</code>. Blank is the same
 as <code class="language-plaintext highlighter-rouge">direct</code>.</p>
+
+<h2 id="paging-through-paginating-apis">Paging through paginating APIs</h2>
+
+<p><strong>Introduced in release:</strong> 1.20.</p>
+
+<p>Remote APIs frequently implement some sort of pagination as a way of limiting results.  However, if you are performing bulk data analysis, it is necessary to reassemble the data into one larger dataset.  Drill’s auto-pagination features allow this to happen in the background, so that the user will get clean data back.  To use a paginator, you simply have to configure the paginator in the connection for the particular API.</p>
+
+<h3 id="words-of-caution">Words of Caution</h3>
+<p>While extremely powerful, the auto-pagination feature has the potential to run afoul of APIs rate limits and even potentially DDOS an API.</p>
+
+<h3 id="offset-pagination">Offset Pagination</h3>
+<p>Offset Pagination uses commands similar to SQL which has a <code class="language-plaintext highlighter-rouge">LIMIT</code> and an <code class="language-plaintext highlighter-rouge">OFFSET</code>.  With an offset paginator, let’s say you want 200 records and the  page size is 50 records, the offset paginator will break up your query into 4 requests as shown below:</p>
+
+<ul>
+  <li>myapi.com?limit=50&amp;offset=0</li>
+  <li>myapi.com?limit=50?offset=50</li>
+  <li>myapi.com?limit=50&amp;offset=100</li>
+  <li>myapi.com?limit=50&amp;offset=150</li>
+</ul>
+
+<p>To configure an offset paginator, simply add the following to the configuration for your connection.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"paginator"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="nl">"limitParam"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;limit&gt;"</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"offsetParam"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;offset&gt;"</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"pageSize"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+   </span><span class="nl">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OFFSET"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="page-pagination">Page Pagination</h3>
+<p>Page pagination is very similar to offset pagination except instead of using an <code class="language-plaintext highlighter-rouge">OFFSET</code> it uses a page number.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w"> </span><span class="nl">"paginator"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"pageParam"</span><span class="p">:</span><span class="w"> </span><span class="s2">"page"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"pageSizeParam"</span><span class="p">:</span><span class="w"> </span><span class="s2">"per_page"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"pageSize"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PAGE"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<p>In either case, the <code class="language-plaintext highlighter-rouge">pageSize</code> parameter should be set to the maximum page size allowable by the API.  This will minimize the number of requests Drill is making.</p>
 
 <h2 id="examples">Examples</h2>
 

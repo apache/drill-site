@@ -1448,7 +1448,7 @@
 <p><code class="language-plaintext highlighter-rouge">SELECT hostname FROM sys.drillbits WHERE `current` = true;</code></p>
 
 <h3 id="identify-the-drill-version">Identify the Drill Version</h3>
-<p>Issue the following query to identify the version of Drill running in your cluster:<br />
+<p>Issue the following query to identify the version of Drill running in your cluster:
 <code class="language-plaintext highlighter-rouge">SELECT version FROM sys.version;</code></p>
 
 <h3 id="enable-verbose-errors">Enable Verbose Errors</h3>
@@ -1492,18 +1492,18 @@
 <h3 id="memory-issues">Memory Issues</h3>
 <p>Symptom: Memory problems occur when you run certain queries, such as those with sort operators.</p>
 
-<p>Solution: Increase the value of the <a href="/docs/configuration-options-introduction/#system-options"><code class="language-plaintext highlighter-rouge">planner.memory.max_query_memory_per_node</code></a> option, which sets the maximum amount of direct memory allocated to the sort operator in each query on a node. If a query plan contains multiple sort operators, they all share this memory. 
+<p>Solution: Increase the value of the <a href="/docs/configuration-options-introduction/#system-options"><code class="language-plaintext highlighter-rouge">planner.memory.max_query_memory_per_node</code></a> option, which sets the maximum amount of direct memory allocated to the sort operator in each query on a node. If a query plan contains multiple sort operators, they all share this memory.
 If you continue to encounter memory issues after increasing the  <code class="language-plaintext highlighter-rouge">planner.memory.max_query_memory_per_node</code> value, you can also reduce the value of the <code class="language-plaintext highlighter-rouge">planner.width.max_per_node</code> option to reduce the level of parallelism per node. However, this may increase the amount of time required for a query to complete.
 See <a href="/docs/configuring-drill-memory/">Configuring Drill Memory</a>.</p>
 
 <h3 id="query-parsing-errors">Query Parsing Errors</h3>
 <p>Symptom:</p>
 
-<p><code class="language-plaintext highlighter-rouge">PARSE ERROR: At line x, column x: ...</code><br />
+<p><code class="language-plaintext highlighter-rouge">PARSE ERROR: At line x, column x: ...</code>
 Solution: Verify that you are using valid syntax. See <a href="/docs/sql-reference-introduction/">SQL Reference</a>.</p>
 
 <h3 id="query-parsing-errors-caused-by-reserved-words">Query Parsing Errors Caused by Reserved Words</h3>
-<p>Using a common word, such as count, which is a reserved word, as an identifier causes an error.<br />
+<p>Using a common word, such as count, which is a reserved word, as an identifier causes an error.
 Symptom:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT COUNT FROM dfs.tmp.`test2.json`;
@@ -1521,7 +1521,7 @@ Symptom:</p>
 <p>Symptom that results from querying a file:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT * FROM dfs.drill.test2.json;
-   Query failed: PARSE ERROR: From line 1, column 15 to line 1, column 17: Table 'dfs.drill.test2.json' not found  
+   Query failed: PARSE ERROR: From line 1, column 15 to line 1, column 17: Table 'dfs.drill.test2.json' not found
 </code></pre></div></div>
 
 <p>Solutions:</p>
@@ -1529,7 +1529,7 @@ Symptom:</p>
 <ul>
   <li>Run SHOW FILES to list the files in the dfs.drill workspace.</li>
   <li>Check the permission of the files with those for the the Drill user.</li>
-  <li>Enclose file and path name in back ticks:<br />
+  <li>Enclose file and path name in back ticks:
 <code class="language-plaintext highlighter-rouge">SELECT * FROM dfs.drill.`test2.json`;</code></li>
   <li>Drill may not be able to determine the type of file you are trying to read. Try using Drill <a href="/docs/plugin-configuration-basics/#storage-plugin-attributes">Default Input Format</a>.</li>
   <li>Verify that your storage plugin is correctly configured.</li>
@@ -1547,8 +1547,8 @@ Symptom:</p>
 <h3 id="access-nested-fields-without-table-namealias"><a id="access-nested-fields-without-table-name-alias">Access Nested Fields without Table Name/Alias</a></h3>
 <p>Symptom:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT x.y …  
-   PARSE ERROR: At line 1, column 8: Table 'x' not found   Solution: Add table name or alias to the field reference:  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT x.y …
+   PARSE ERROR: At line 1, column 8: Table 'x' not found Solution: Add table name or alias to the field reference:
 </code></pre></div></div>
 
 <p><code class="language-plaintext highlighter-rouge">SELECT t.x.y FROM t</code></p>
@@ -1565,16 +1565,16 @@ Symptom:</p>
 <p>Symptom: Example</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT TRUNC(c3) FROM t3;
-   
+
    0: jdbc:drill:schema=dfs&gt; select trunc(c3) from t3;
    Query failed: SYSTEM ERROR: Failure while trying to materialize incoming schema.  Errors:
-    
+
    Error in expression at index -1.  Error: Missing function implementation: [trunc(DATE-OPTIONAL)].  Full expression: --UNKNOWN EXPRESSION--..
-   
+
    Fragment 0:0
-   
+
    [6e465594-4d83-4042-b88d-50e7eb207484 on atsqa4-133.qa.lab:31010]
-   Error: exception while executing query: Failure while executing query. (state=,code=0)  
+   Error: exception while executing query: Failure while executing query. (state=,code=0)
 </code></pre></div></div>
 
 <p>Solution: Ensure that the function is invoked with the correct data type parameters. In this example, c3 is an unsupported date type.</p>
@@ -1595,10 +1595,10 @@ Symptom:</p>
 
 <p>Symptom:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   DATA_READ ERROR: Error parsing JSON - You tried to write a XXXX type when you are using a ValueWriter of type XXXX.       
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   DATA_READ ERROR: Error parsing JSON - You tried to write a XXXX type when you are using a ValueWriter of type XXXX.
    File  /src/data/schema.json
    Record  2
-   Fragment 0:0  
+   Fragment 0:0
 </code></pre></div></div>
 
 <p>Solution: Drill does not fully support schema changes. Either ensure that your schemas are the same or only select columns that share schema.</p>
@@ -1617,7 +1617,7 @@ Symptom:</p>
 
 <p>Symptom: ODBC errors.</p>
 
-<p>Solution: Make sure that the ODBC driver version is compatible with the server version. <a href="/docs/installing-the-odbc-driver">Driver installation instructions</a> include how to check the driver version. 
+<p>Solution: Make sure that the ODBC driver version is compatible with the server version. <a href="/docs/installing-the-odbc-driver">Driver installation instructions</a> include how to check the driver version.
 Turn on ODBC driver debug logging to better understand failure.</p>
 
 <h3 id="jdbcodbc-connection-issues-with-zookeeper"><a id="jdbc-odbc-connection-issues-with-zookeeper">JDBC/ODBC Connection Issues with ZooKeeper</a></h3>

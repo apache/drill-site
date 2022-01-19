@@ -1447,38 +1447,38 @@
   <li>
     <p>Build the following Java file into a JAR file:</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    MyCustomDrillUserAuthenticatorImpl.java 
-       
-    package myorg.dept.drill.security;     
-       
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    MyCustomDrillUserAuthenticatorImpl.java
+
+    package myorg.dept.drill.security;
+
     import org.apache.drill.common.config.DrillConfig;
     import org.apache.drill.exec.exception.DrillbitStartupException;
     import org.apache.drill.exec.rpc.user.security.UserAuthenticator;
     import org.apache.drill.exec.rpc.user.security.UserAuthenticationException;
     import org.apache.drill.exec.rpc.user.security.UserAuthenticatorTemplate;
-       
+
     import java.io.IOException;
-       
+
     /*
     * Implement {@link org.apache.drill.exec.rpc.user.security.UserAuthenticator} for illustrating how to develop a custom authenticator and use it in Drill
     */
     @UserAuthenticatorTemplate(type = "myCustomAuthenticatorType")
     public class MyCustomDrillUserAuthenticatorImpl implements UserAuthenticator {
-       
+
      public static final String TEST_USER_1 = "testUser1";
      public static final String TEST_USER_2 = "testUser2";
      public static final String TEST_USER_1_PASSWORD = "testUser1Password";
      public static final String TEST_USER_2_PASSWORD = "testUser2Password";
-       
+
     /**
     * Setup for authenticating user credentials.
     */
      @Override
      public void setup(DrillConfig drillConfig) throws DrillbitStartupException {
-       // If the authenticator has any setup such as making sure authenticator provider servers are up and running or 
+       // If the authenticator has any setup such as making sure authenticator provider servers are up and running or
        // needed libraries are available, it should be added here.
      }
-       
+
     /**
     * Authenticate the given &lt;i&gt;user&lt;/i&gt; and &lt;i&gt;password&lt;/i&gt; combination.
     *
@@ -1488,13 +1488,13 @@
     */
      @Override
      public void authenticate(String userName, String password) throws UserAuthenticationException {
-       
+
        if (!(TEST_USER_1.equals(userName) &amp;&amp; TEST_USER_1_PASSWORD.equals(password)) &amp;&amp;
        !(TEST_USER_2.equals(userName) &amp;&amp; TEST_USER_2_PASSWORD.equals(password))) {
      throw new UserAuthenticationException("custom failure message if the admin wants to show it to user");
        }
      }
-       
+
     /**
     * Close the authenticator. Used to release resources. Ex. LDAP authenticator opens connections to LDAP server,
     * such connections resources are released in a safe manner as part of close.
@@ -1505,7 +1505,7 @@
      public void close() throws IOException {
        // Any clean up such as releasing files/network resources should be done here
      }
-    }  
+    }
 </code></pre></div>    </div>
   </li>
   <li>
@@ -1515,10 +1515,10 @@
          classpath.scanning {
            packages += "myorg.dept.drill.security"
          }
-       }   This enables the custom classpath scanner to locate the new class. 
+       } This enables the custom classpath scanner to locate the new class.
 </code></pre></div>    </div>
   </li>
-  <li>Add the JAR file that you built to the following directory on each Drill node:<br />
+  <li>Add the JAR file that you built to the following directory on each Drill node:
 ` <DRILLINSTALL_HOME>/jars`</DRILLINSTALL_HOME></li>
   <li>
     <p>Add the following configuration to the <code class="language-plaintext highlighter-rouge">drill.exec</code> block in the <code class="language-plaintext highlighter-rouge">drill-override.conf</code> file located in <code class="language-plaintext highlighter-rouge">&lt;DRILLINSTALL_HOME&gt;/conf/</code>:</p>
@@ -1529,7 +1529,7 @@
          	packages += "myorg.dept.drill.security",
          	impl: "myCustomAuthenticatorType"
         }
-       }  
+       }
 </code></pre></div>    </div>
   </li>
   <li>

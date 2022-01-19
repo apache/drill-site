@@ -1454,7 +1454,7 @@
 <p>The configuration file contains the following default properties and directories required to use the Dynamic UDF feature:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   drill.exec.udf: {
-             	retry-attempts: 5,  
+             	retry-attempts: 5,
    directory: {
       	   	base: ${drill.exec.zk.root}"/udf",
              	local: ${drill.exec.udf.directory.base}"/local",
@@ -1462,7 +1462,7 @@
              	registry: ${drill.exec.udf.directory.base}"/registry",
              	tmp: ${drill.exec.udf.directory.base}"/tmp"
              	}
-   }  
+   }
 </code></pre></div></div>
 
 <p>The following table describes the configuration properties and UDF directories, where <code class="language-plaintext highlighter-rouge">drill.exec.udf.directory.base</code> is the relative directory used to generate all of the UDF directories (local and remote):</p>
@@ -1540,7 +1540,7 @@ the Dynamic UDF feature. See <a href="/zh/docs/dynamic-udfs/#enabling-and-disabl
 <h3 id="users">Users</h3>
 <p>Create a UDF using Drill’s <a href="/zh/docs/developing-a-simple-function/">simple</a> or <a href="/zh/docs/developing-an-aggregate-function/">aggregate</a> function interface. Add a <code class="language-plaintext highlighter-rouge">drill-module.conf</code> file to the root of the class JAR file. The <code class="language-plaintext highlighter-rouge">drill-module.conf</code> file should contain the packages to scan for the functions <code class="language-plaintext highlighter-rouge">drill.classpath.scanning.packages+= "com.mydomain.drill.fn"</code>, as shown in the following example:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   drill.classpath.scanning.package+= "com.mydomain.drill.fn"  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   drill.classpath.scanning.package+= "com.mydomain.drill.fn"
 </code></pre></div></div>
 
 <p>Replace <code class="language-plaintext highlighter-rouge">com.mydomain.drill.fn</code> with the package name(s) of your UDF(s). If there are multiple packages, separate package names with a comma.</p>
@@ -1555,7 +1555,7 @@ the Dynamic UDF feature. See <a href="/zh/docs/dynamic-udfs/#enabling-and-disabl
 <h2 id="registering-a-udf">Registering a UDF</h2>
 <p>Copy the UDF source and binary JAR files to the DFS staging directory and then issue the CREATE FUNCTION USING JAR command to register the UDF, as follows:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   CREATE FUNCTION USING JAR ‘&lt;jar_name&gt;.jar’  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   CREATE FUNCTION USING JAR ‘&lt;jar_name&gt;.jar’
 </code></pre></div></div>
 
 <p>If you do not know the location of the staging directory or you need access to the directory, contact your administrator.</p>
@@ -1574,7 +1574,7 @@ the Dynamic UDF feature. See <a href="/zh/docs/dynamic-udfs/#enabling-and-disabl
 <h2 id="unregistering-a-udf">Unregistering a UDF</h2>
 <p>Issue the DROP FUNCTION USING JAR command to unregister a UDF, as follows:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   DROP FUNCTION USING JAR ‘&lt;jar_name&gt;.jar’  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   DROP FUNCTION USING JAR ‘&lt;jar_name&gt;.jar’
 </code></pre></div></div>
 
 <p>When you issue the command, Drill unregisters UDFs based on the JAR file name and removes the JAR files from the UDF directory. Drill deletes all UDFs associated with the JAR file from the UDF registry (<a href="/zh/docs/persistent-configuration-storage/">persistent store</a>, signaling drillbits to start the local unregistering process.</p>

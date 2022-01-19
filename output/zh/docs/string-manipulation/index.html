@@ -1868,7 +1868,7 @@ SELECT LTRIM('A powerful tool Apache Drill', 'Apache ') FROM (VALUES(1));
 |  a   |  b   |  c   |  d   |  e   |  f   |  g   |  h   |  i   |  j   |  k   |  l   |
 |------|------|------|------|------|------|------|------|------|------|------|------|
 | true | true | true | true | true | true | true | true | true | true | true | true |
-|------|------|------|------|------|------|------|------|------|------|------|------|  
+|------|------|------|------|------|------|------|------|------|------|------|------|
 </code></pre></div></div>
 
 <p>Shows case-sensitivity:</p>
@@ -2073,12 +2073,21 @@ SELECT RTRIM('1.0 Apache Tomcat 1.0', 'Drill 1.0') from (VALUES(1));
 </code></pre></div></div>
 
 <h3 id="split_part-usage-notes">SPLIT_PART Usage Notes</h3>
-<p>The <em>delimiter</em> string may be multiple characters long. The <em>start</em> must be a positive integer.
-The <em>end</em> must be greater than or equal to <em>start</em> if provided.</p>
+<p>The <em>delimiter</em> string may be multiple characters long. The <em>start</em> can be a positive integer, or a negative integer.
+The <em>end</em> must have the same sign as and be greater than or equal to <em>start</em> if provided.
+The <em>start</em> and <em>end</em> count from beginning if are positive, from end if are negative.</p>
 
 <h3 id="split_part-examples">SPLIT_PART Examples</h3>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT split_part('The | quick | brown | fox | jumps', ' | ', 4);
+
+|--------|
+| EXPR$0 |
+|--------|
+| fox    |
+|--------|
+
+SELECT split_part('The | quick | brown | fox | jumps', ' | ', -2);
 
 |--------|
 | EXPR$0 |
@@ -2100,6 +2109,22 @@ SELECT split_part('The | quick | brown | fox | jumps', ' | ', 4, 10);
 |    EXPR$0    |
 |--------------|
 | fox | jumps  |
+|--------------|
+
+SELECT split_part('The | quick | brown | fox | jumps', ' | ', -2, -1);
+
+|--------------|
+|    EXPR$0    |
+|--------------|
+| fox | jumps  |
+|--------------|
+
+SELECT split_part('The | quick | brown | fox | jumps', ' | ', -10, -4);
+
+|--------------|
+|    EXPR$0    |
+|--------------|
+| The | quick  |
 |--------------|
 </code></pre></div></div>
 
@@ -2181,7 +2206,7 @@ SELECT SUBSTR('On 1970-01-01 the quick brown fox jumped...', '[\d-]+')
 Transcodes the input string from the specified input encoding to UTF-8.
 
 ### TOASCII Syntax
- 
+
     TOASCII (string, encoding)
 
 ### TOASCII Usage Notes

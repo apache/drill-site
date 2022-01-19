@@ -1460,7 +1460,7 @@
 
 <p>The following image shows the physical plan that Drill used to execute this simple equality query:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT L_SHIPDate FROM lineitem WHERE L_QUANTITY = 5; 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT L_SHIPDate FROM lineitem WHERE L_QUANTITY = 5;
 </code></pre></div></div>
 
 <p><img src="https://i.imgur.com/DkZPAYJ.png" alt="" /></p>
@@ -1480,7 +1480,7 @@
 00-03          Limit(fetch=[10])
 00-04            Limit(fetch=[10])
 00-05              Project(L_SHIPDate=[$1])
-00-06                Scan(groupscan=[JsonTableGroupScan [ScanSpec=JsonScanSpec [tableName=hdfs:///drill/testdata/tpch/sf1/data/json/lineitem, condition=(L_QUANTITY = {"$numberLong":5}), indexName=l_single_c_5], columns=[`L_QUANTITY`, `L_SHIPDate`]]])  
+00-06                Scan(groupscan=[JsonTableGroupScan [ScanSpec=JsonScanSpec [tableName=hdfs:///drill/testdata/tpch/sf1/data/json/lineitem, condition=(L_QUANTITY = {"$numberLong":5}), indexName=l_single_c_5], columns=[`L_QUANTITY`, `L_SHIPDate`]]])
 </code></pre></div></div>
 
 <p>In the plan, you can see that Drill plans to use the index, <code class="language-plaintext highlighter-rouge">l_single_c_5</code>, instead of performing a full table scan. The query is completely covered by the index because the index contains all columns referenced in the query and the query filters on the indexed column.</p>
@@ -1502,12 +1502,12 @@
 00-03          Limit(fetch=[10])
 00-04            Limit(fetch=[10])
 00-05              Project(L_SHIPDate=[$1])
-00-06                Scan(groupscan=[JsonTableGroupScan [ScanSpec=JsonScanSpec [tableName=hdfs:///drill/testdata/tpch/sf1/data/json/lineitem, condition=(L_QUANTITY = {"$numberLong":5}), indexName=l_single_c_5], columns=[`L_QUANTITY`, `L_SHIPDate`]]])  
+00-06                Scan(groupscan=[JsonTableGroupScan [ScanSpec=JsonScanSpec [tableName=hdfs:///drill/testdata/tpch/sf1/data/json/lineitem, condition=(L_QUANTITY = {"$numberLong":5}), indexName=l_single_c_5], columns=[`L_QUANTITY`, `L_SHIPDate`]]])
 </code></pre></div></div>
 
 <p>Turning the option off, as shown:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ALTER SESSION SET planner.enable_index_planning = false   
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ALTER SESSION SET planner.enable_index_planning = false
 </code></pre></div></div>
 
 <p>And running the EXPLAIN PLAN FOR command again shows the plan with a full table scan:</p>
@@ -1525,7 +1525,7 @@
 01-02                Limit(fetch=[10])
 01-03                  Project(L_SHIPDate=[$1])
 01-04                    Scan(groupscan=[JsonTableGroupScan [ScanSpec=JsonScanSpec [tableName=hdfs:///drill/testdata/tpch/sf1/data/json/lineitem, condition=(L_QUANTITY = {"$numberLong":5})], columns=[`L_QUANTITY`, `L_SHIPDate`]]])
- |  
+ |
 </code></pre></div></div>
 
 <p><strong>Note:</strong> To see the cost of each plan, go to the Drill Web UI and view the query profile for each EXPLAIN PLAN FOR command that you issue through the command line.</p>

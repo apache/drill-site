@@ -1444,7 +1444,7 @@
 <h2 id="configuration">Configuration</h2>
 
 <p>Currently, the RDBMS Metastore is not the default implementation.
-To enable the RDBMS Metastore create the <code class="language-plaintext highlighter-rouge">drill-metastore-override.conf</code> file 
+To enable the RDBMS Metastore create the <code class="language-plaintext highlighter-rouge">drill-metastore-override.conf</code> file
 in your config directory and specify the RDBMS Metastore class:</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">drill.metastore</span><span class="pi">:</span> <span class="pi">{</span>
@@ -1456,8 +1456,8 @@ in your config directory and specify the RDBMS Metastore class:</p>
 
 <p>Use the connection properties to specify how Drill should connect to your Metastore database.</p>
 
-<p><code class="language-plaintext highlighter-rouge">drill.metastore.rdbms.data_source.driver</code> - driver class name. Required. 
-Note: the driver class must be included into the Drill classpath. 
+<p><code class="language-plaintext highlighter-rouge">drill.metastore.rdbms.data_source.driver</code> - driver class name. Required.
+Note: the driver class must be included into the Drill classpath.
 The easiest way to do that is to put the driver jar file into the <code class="language-plaintext highlighter-rouge">$DRILL_HOME/jars/3rdparty</code> folder.
 Or, to make upgrades easier, in your <code class="language-plaintext highlighter-rouge">$DRILL_SITE/jars</code> folder.  Drill includes the driver for SQLite.</p>
 
@@ -1466,7 +1466,7 @@ Or, to make upgrades easier, in your <code class="language-plaintext highlighter
 <p><code class="language-plaintext highlighter-rouge">drill.metastore.rdbms.data_source.username</code> - database user on whose behalf the connection is
 being made. Optional, if database does not require user to connect.</p>
 
-<p><code class="language-plaintext highlighter-rouge">drill.metastore.rdbms.data_source.password</code> - database user’s password. 
+<p><code class="language-plaintext highlighter-rouge">drill.metastore.rdbms.data_source.password</code> - database user’s password.
 Optional, if database does not require user’s password to connect.</p>
 
 <p><code class="language-plaintext highlighter-rouge">drill.metastore.rdbms.data_source.properties</code> - specifies properties which will be used
@@ -1478,9 +1478,9 @@ for more details.</p>
 <p>Out of the box, the Drill RDBMS Metastore is configured to use the embedded file system based SQLite database.
 It will be created locally in user’s home directory under <code class="language-plaintext highlighter-rouge">${drill.exec.zk.root}"/metastore</code> location.</p>
 
-<p>Default setup can be used only in Drill embedded mode. SQLite is an embedded database; is not distributed. 
-SQLite is good for trying out the feature, for testing, for a running Drill in embedded mode, 
-and perhaps for a single-node Drill “cluster”. If should not be used in a multi-node cluster. 
+<p>Default setup can be used only in Drill embedded mode. SQLite is an embedded database; is not distributed.
+SQLite is good for trying out the feature, for testing, for a running Drill in embedded mode,
+and perhaps for a single-node Drill “cluster”. If should not be used in a multi-node cluster.
 Each Drillbit will have its own version of the truth and behavior will be undefined and incorrect.</p>
 
 <h3 id="custom-configuration">Custom configuration</h3>
@@ -1535,10 +1535,10 @@ for older versions use the <code>com.mysql.jdbc.Driver</code>.
 <p>The Drill Metastore stores several types of metadata, called components. Currently, only the <code class="language-plaintext highlighter-rouge">tables</code> component is implemented.
 The <code class="language-plaintext highlighter-rouge">tables</code> component provides metadata about Drill tables, including their segments, files, row groups and partitions.
 In Drill <code class="language-plaintext highlighter-rouge">tables</code> component unit is represented by <code class="language-plaintext highlighter-rouge">TableMetadataUnit</code> class which is applicable to any metadata type.
-The <code class="language-plaintext highlighter-rouge">TableMetadataUnit</code> class holds fields for all five metadata types within the <code class="language-plaintext highlighter-rouge">tables</code> component. 
+The <code class="language-plaintext highlighter-rouge">TableMetadataUnit</code> class holds fields for all five metadata types within the <code class="language-plaintext highlighter-rouge">tables</code> component.
 Any fields not applicable to a particular metadata type are simply ignored and remain unset.</p>
 
-<p>In the RDBMS implementation of the Drill Metastore, the tables component includes five tables, one for each metadata type. 
+<p>In the RDBMS implementation of the Drill Metastore, the tables component includes five tables, one for each metadata type.
 The five tables are: <code class="language-plaintext highlighter-rouge">TABLES</code>, <code class="language-plaintext highlighter-rouge">SEGMENTS</code>, <code class="language-plaintext highlighter-rouge">FILES</code>, <code class="language-plaintext highlighter-rouge">ROW_GROUPS</code>, and <code class="language-plaintext highlighter-rouge">PARTITIONS</code>.
 See <code class="language-plaintext highlighter-rouge">src/main/resources/db/changelog/changes/initial_ddls.yaml</code> for the schema and indexes of each table.</p>
 
@@ -1564,7 +1564,7 @@ Liquibase converts the yaml specification into the DDL / DML commands suitable r
 See list of supported databases: https://www.liquibase.org/databases.html.</p>
 
 <p>The Drill Metastore tables are created in the database schema indicated in the connection URL.
-This will be the default schema unless you specify a different schema. Drill will not create the schema, however. 
+This will be the default schema unless you specify a different schema. Drill will not create the schema, however.
 Best practice is to create a schema within your database for the Drill metastore before initializing the Metastore.</p>
 
 <p>Example:</p>

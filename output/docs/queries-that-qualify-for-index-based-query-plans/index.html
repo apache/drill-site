@@ -1452,7 +1452,7 @@
   <li>Projection queries (including DISTINCT)</li>
 </ul>
 
-<p>Drill can use indexes for queries that GROUP BY or ORDER BY the leading columns in an index. When a query contains GROUP BY and ORDER BY operations on the leading indexed column, Drill uses the sort order of the index to create index-based query plans with streaming aggregates and merge joins to improve query performance. Drill does not use indexes for queries that GROUP BY or ORDER BY the trailing or included columns in an index. 
+<p>Drill can use indexes for queries that GROUP BY or ORDER BY the leading columns in an index. When a query contains GROUP BY and ORDER BY operations on the leading indexed column, Drill uses the sort order of the index to create index-based query plans with streaming aggregates and merge joins to improve query performance. Drill does not use indexes for queries that GROUP BY or ORDER BY the trailing or included columns in an index.
 If a query contains conditions on multiple columns (multi-index query), Drill can scan multiple indexes and use the index intersection to optimize the query.</p>
 
 <div class="admonition note">
@@ -1468,19 +1468,19 @@ If a query contains conditions on multiple columns (multi-index query), Drill ca
   <li>
     <p>ORDER BY queries, as shown in the following example where L_LINENUMBER is an indexed column in the index selected for the query plan:</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SELECT L_LINENUMBER FROM lineitem ORDER BY L_LINENUMBER;  
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SELECT L_LINENUMBER FROM lineitem ORDER BY L_LINENUMBER;
 </code></pre></div>    </div>
   </li>
   <li>
     <p>GROUP BY queries, as shown in the following example where L_COMMITDate is an indexed column in the index selected for the query plan:</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SELECT L_COMMITDate FROM lineitem GROUP BY L_COMMITDate;  
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SELECT L_COMMITDate FROM lineitem GROUP BY L_COMMITDate;
 </code></pre></div>    </div>
   </li>
   <li>
     <p>JOIN queries, as shown in the following example where L_ORDERKEY and O_ORDERKEY are indexed columns and L_LINESTATUS is an included column in the index selected for the query plan:</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SELECT L.L_LINESTATUS FROM lineitem L, orders O WHERE  L.L_ORDERKEY=O.O_ORDERKEY;  
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SELECT L.L_LINESTATUS FROM lineitem L, orders O WHERE  L.L_ORDERKEY=O.O_ORDERKEY;
 </code></pre></div>    </div>
 
     <p><strong>Note:</strong> If the planner picks two indexes, one for lineitem and one for orders, a sort merge join is used instead of a hash join.</p>
@@ -1489,7 +1489,7 @@ If a query contains conditions on multiple columns (multi-index query), Drill ca
     <p>Queries with DISTINCT projections, as shown in the following examples where L_LINENUMBER is an indexed column in the index selected for the query plan:</p>
 
     <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SELECT DISTINCT L_LINENUMBER FROM lineitem;
-  SELECT COUNT(DISTINCT L_LINENUMBER) FROM lineitem;  
+  SELECT COUNT(DISTINCT L_LINENUMBER) FROM lineitem;
 </code></pre></div>    </div>
   </li>
 </ul>

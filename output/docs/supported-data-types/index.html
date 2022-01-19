@@ -1518,9 +1518,9 @@
   </tbody>
 </table>
 
-<p>* Starting in Drill 1.14, the DECIMAL data type is enabled by default.<br />
-** Internally, INTERVAL is represented as INTERVALDAY or INTERVALYEAR.<br />
-*** SMALLINT is not currently supported.<br />
+<p>* Starting in Drill 1.14, the DECIMAL data type is enabled by default.
+** Internally, INTERVAL is represented as INTERVALDAY or INTERVALYEAR.
+*** SMALLINT is not currently supported.
 **** The CHAR data type is internally represented as VARCHAR by Drill.</p>
 
 <h2 id="decimal-data-type">DECIMAL Data Type</h2>
@@ -1533,7 +1533,7 @@
 
 <p>The DECIMAL data type accepts numeric values, for which you can define a precision and a scale, as shown:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   column_name DECIMAL[(precision[,scale])]  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   column_name DECIMAL[(precision[,scale])]
 </code></pre></div></div>
 
 <p>Precision is an integer that indicates how many digits the number will contain. Scale is an integer that indicates the number of digits to the right of the decimal point. For example, the number 2325.67 has a precision of 6 and scale of 2. In a query, DECIMAL (6,2).</p>
@@ -1564,17 +1564,17 @@
 
 <ul>
   <li>
-    <p><code class="language-plaintext highlighter-rouge">store.parquet.writer.use_primitive_types_for_decimals (boolean)</code><br />
+    <p><code class="language-plaintext highlighter-rouge">store.parquet.writer.use_primitive_types_for_decimals (boolean)</code>
 Allows Drill to use INT32 and INT64 logical types when storing decimal values in Parquet if the precision of the value allows it. Default is true. Set to false to prevent Drill from using INT32 and INT64 logical types, as shown:</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SET `store.parquet.writer.use_primitive_types_for_decimals` = false;   
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SET `store.parquet.writer.use_primitive_types_for_decimals` = false;
 </code></pre></div>    </div>
   </li>
   <li>
-    <p><code class="language-plaintext highlighter-rouge">store.parquet.writer.logical_type_for_decimals</code> 
+    <p><code class="language-plaintext highlighter-rouge">store.parquet.writer.logical_type_for_decimals</code>
 Indicates the logical type that Drill should use to store decimals. The default is fixed_len_byte_array. Alternatively, you can set this option to binary, as shown:</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SET `store.parquet.writer.logical_type_for_decimals` = 'binary';  
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SET `store.parquet.writer.logical_type_for_decimals` = 'binary';
 </code></pre></div>    </div>
   </li>
 </ul>
@@ -1619,7 +1619,7 @@ You do not assign a data type to every column name in a CREATE TABLE statement t
 
 <ul>
   <li><a href="/docs/data-type-conversion/#cast">CAST</a></li>
-  <li><a href="/docs/data-type-conversion/#convert_to-and-convert_from">CONVERT TO/FROM</a> <br />
+  <li><a href="/docs/data-type-conversion/#convert_to-and-convert_from">CONVERT TO/FROM</a>
 Use the <a href="/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">CONVERT TO AND CONVERT FROM data types</a></li>
   <li>Other <a href="/docs/data-type-conversion/#other-data-type-conversions">data conversion functions</a></li>
 </ul>
@@ -1627,17 +1627,17 @@ Use the <a href="/docs/supported-data-types/#data-types-for-convert_to-and-conve
 <p>In some cases, Drill converts schema-less data to correctly-typed data implicitly. In this case, you do not need to cast the data. The file format of the data and the nature of your query determines the requirement for casting or converting. Differences in casting depend on the data source. The following list describes how Drill treats data types from various data sources:</p>
 
 <ul>
-  <li>HBase<br />
+  <li>HBase
 Does not implicitly cast input to SQL types. Convert data to appropriate types as as described in the section <a href="/docs/querying-hbase/">“Querying HBase”</a>. Use <a href="/docs//data-type-conversion/#convert_to-and-convert_from">CONVERT_TO or CONVERT_FROM data types</a>.</li>
-  <li>Hive<br />
+  <li>Hive
 Implicitly casts Hive types to SQL types as shown in the Hive <a href="/docs/hive-to-drill-data-type-mapping/#type-mapping-example">type mapping example</a></li>
-  <li>JSON<br />
+  <li>JSON
 Implicitly casts JSON data to its <a href="/docs/json-data-model/#data-type-mapping">corresponding SQL types</a> or to VARCHAR if Drill is in all text mode.</li>
-  <li>MapR-DB<br />
+  <li>MapR-DB
 Implicitly casts MapR-DB data to SQL types when you use <a href="/docs/mapr-db-format">the maprdb format</a> for reading MapR-DB data. The dfs storage plugin defines the format when you install Drill from the mapr-drill package on a MapR node.</li>
-  <li>Parquet<br />
+  <li>Parquet
 Implicitly casts Parquet data to the SQL types shown in <a href="/docs/parquet-format/#sql-data-types-to-parquet">SQL Data Types to Parquet</a>.</li>
-  <li>Text: CSV, TSV, and other text<br />
+  <li>Text: CSV, TSV, and other text
 Implicitly casts all textual data to VARCHAR.</li>
 </ul>
 
@@ -1738,17 +1738,17 @@ Implicitly casts all textual data to VARCHAR.</li>
 <p>In a textual file, such as CSV, Drill interprets every field as a VARCHAR, as previously mentioned. To handle textual data, you can use the following functions to cast and convert compatible data types:</p>
 
 <ul>
-  <li><a href="/docs/data-type-conversion/#cast">CAST</a><br />
+  <li><a href="/docs/data-type-conversion/#cast">CAST</a>
 Casts data from one data type to another.</li>
   <li><a href="">CONVERT_TO and CONVERT_FROM</a>/docs/data-type-conversion/#convert_to-and-convert_from)
 Convert data, including binary data, from one data type to another using <a href="/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">“CONVERT_TO and CONVERT_FROM data types”</a></li>
-  <li><a href="/docs/data-type-conversion/#to_char">TO_CHAR</a><br />
+  <li><a href="/docs/data-type-conversion/#to_char">TO_CHAR</a>
 Converts a TIMESTAMP, INTERVALDAY/INTERVALYEAR, INTEGER, DOUBLE, or DECIMAL to a string.</li>
-  <li><a href="/docs/data-type-conversion/#to_date">TO_DATE</a><br />
+  <li><a href="/docs/data-type-conversion/#to_date">TO_DATE</a>
 Converts a string to DATE.</li>
-  <li><a href="/docs/data-type-conversion/#to_number">TO_NUMBER</a><br />
+  <li><a href="/docs/data-type-conversion/#to_number">TO_NUMBER</a>
 Converts a string to a DECIMAL.</li>
-  <li><a href="/docs/data-type-conversion/#to_timestamp">TO_TIMESTAMP</a><br />
+  <li><a href="/docs/data-type-conversion/#to_timestamp">TO_TIMESTAMP</a>
 Converts a string to TIMESTAMP.</li>
 </ul>
 
@@ -1911,8 +1911,8 @@ Converts a string to TIMESTAMP.</li>
   </tbody>
 </table>
 
-<p>* Not supported in this release. <br />
-** Used to cast binary UTF-8 data coming to/from sources such as HBase. <br />
+<p>* Not supported in this release.
+** Used to cast binary UTF-8 data coming to/from sources such as HBase.
 *** You cannot convert a character string having a decimal point to an INT or BIGINT.</p>
 
 <div class="admonition note">

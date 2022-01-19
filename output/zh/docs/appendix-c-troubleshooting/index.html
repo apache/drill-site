@@ -1444,7 +1444,7 @@ process. Below are a number of items to check if things go wrong.</p>
 <h2 id="client-start">Client Start</h2>
 <p>The Drill-on-YARN client prints all messages to the console. Some common errors are:</p>
 
-<p><strong>Missing HADOOP_HOME</strong>  <br />
+<p><strong>Missing HADOOP_HOME</strong>
 Drill-on-YARN requires access to your Hadoop configuration as described above. The client will
 display an error and fail if it is unable to load the DFS or YARN configuration, typically because
 HADOOP_HOME is not set.</p>
@@ -1455,9 +1455,9 @@ Drill-on-YARN uploads your Drill archive to DFS. The client will fail if the arc
 <p><strong>DFS Configuration or Connection Problems</strong></p>
 
 <p>The Drill-on-YARN client uploads the Drill archive and your site directory to your DFS. Possible
-problems here include:<br />
-● Missing DFS configuration in the Hadoop configuration folder<br />
-● Incorrect DFS configuration (wrong host or port)<br />
+problems here include:
+● Missing DFS configuration in the Hadoop configuration folder
+● Incorrect DFS configuration (wrong host or port)
 ● Missing permissions to write to the folder identified by the drill.yarn.dfs.app-dir configuration property (“/user/drill” by default.)</p>
 
 <p><strong>Wrong Version of the Drill Archive</strong></p>
@@ -1465,18 +1465,18 @@ problems here include:<br />
 <p>Drill-on-YARN uploads a new copy of your site archive each time you start your Drill cluster.
 However, the Drill software archive is large, so Drill-on-YARN uploads the archive only when it
 changes. Drill detects changes by comparing the size of the DFS copy with your local copy.
-Most of the time this works fine. However, if you suspect that Drill has not uploaded the most 
+Most of the time this works fine. However, if you suspect that Drill has not uploaded the most
 recent copy, you can force the client to perform an upload by either manually deleting the Drill
 archive from DFS, or using the f option:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_HOME/bin/drill-on-yarn.sh --site $DRILL_SITE start -f  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_HOME/bin/drill-on-yarn.sh --site $DRILL_SITE start -f
 </code></pre></div></div>
 
 <p><strong>Site Directory Problems</strong></p>
 
 <p>Drill creates a tar archive of your site directory using the following command:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   tar -C $DRILL_SITE -czf /some/tmp/dir/temp-name.tar.gz  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   tar -C $DRILL_SITE -czf /some/tmp/dir/temp-name.tar.gz
 </code></pre></div></div>
 
 <p>For some temporary directory selected by Java. This command can fail if your version of tar
@@ -1513,21 +1513,21 @@ protect against this fault:</p>
 <p>The Drill-on-YARN client look for an existing appid file and refuses to start a new AM when the
 file is present. (Use the f file if the file is not valid.) The AM registers with ZK and will automatically shut down if another AM is already registered.</p>
 
-<p><strong>Drillbit Failure</strong><br />
-● Finding launch, container, log directories<br />
+<p><strong>Drillbit Failure</strong>
+● Finding launch, container, log directories
 ● Double drillbit with same ports</p>
 
-<p>Diagnostics<br />
-● Client<br />
-● Client provides AM web UI<br />
-● Finding launch, container, log directories<br />
+<p>Diagnostics
+● Client
+● Client provides AM web UI
+● Finding launch, container, log directories
 ● Client status</p>
 
-<p>Fixing Problems<br />
-● Change config files<br />
-● If Drill archive changes, force new upload<br />
-● Missing app ID file (use a option)<br />
-● Stop existing app (f to force stop)<br />
+<p>Fixing Problems
+● Change config files
+● If Drill archive changes, force new upload
+● Missing app ID file (use a option)
+● Stop existing app (f to force stop)
 ● Restart DoY (reuploads config)</p>
 
     

@@ -1469,16 +1469,16 @@
   <li>
     <p>Define inbound impersonation policies. For example, the following ALTER SYSTEM statement authorizes:
     * <code class="language-plaintext highlighter-rouge">puser1</code> to impersonate any user (use * as a wildcard character)
-    * <code class="language-plaintext highlighter-rouge">puser2</code> to impersonate <code class="language-plaintext highlighter-rouge">euser1</code> and all users in <code class="language-plaintext highlighter-rouge">egroup2</code> 
+    * <code class="language-plaintext highlighter-rouge">puser2</code> to impersonate <code class="language-plaintext highlighter-rouge">euser1</code> and all users in <code class="language-plaintext highlighter-rouge">egroup2</code>
     * all users in <code class="language-plaintext highlighter-rouge">pgroup3</code> to impersonate all users in <code class="language-plaintext highlighter-rouge">egroup3</code></p>
 
     <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>       ALTER SYSTEM SET `exec.impersonation.inbound_policies`=‘[
        { proxy_principals : { users: [“puser1”] },
          target_principals: { users: [“*”] } },
-       { proxy_principals : { users: [“puser2”] }, 
+       { proxy_principals : { users: [“puser2”] },
          target_principals: { users: [“euser1”], groups :  [“egroup2”] } },
        { proxy_principals : { groups: [“pgroup3”] },
-         target_principals: { groups: [“egroup3”] } } ]’;   Policy format:
+         target_principals: { groups: [“egroup3”] } } ]’; Policy format:
 
        { proxy_principals : { users : [“...”, “...”], groups : [“...”, “...”] },
        target_principals: { users : [“...”, “...”], groups : [“...”, “...”] } }
@@ -1487,7 +1487,7 @@
   <li>
     <p>Ensure that the proxy user (application) passes the username of the impersonation target user to Drill when creating a connection through the <code class="language-plaintext highlighter-rouge">impersonation_target</code> connection property. For example, through sqlline:</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> bin/sqlline –u “jdbc:drill:schema=dfs;zk=myclusterzk;impersonation_target=euser1” -n puser1 -p ppass1  
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> bin/sqlline –u “jdbc:drill:schema=dfs;zk=myclusterzk;impersonation_target=euser1” -n puser1 -p ppass1
 </code></pre></div>    </div>
   </li>
 </ol>

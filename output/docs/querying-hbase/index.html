@@ -1440,13 +1440,13 @@
         <p>This section covers the following topics:</p>
 
 <ul>
-  <li><a href="/docs/querying-hbase/#tutorial-querying-hbase-data">Tutorial–Querying HBase Data</a><br />
+  <li><a href="/docs/querying-hbase/#tutorial-querying-hbase-data">Tutorial–Querying HBase Data</a>
 A simple tutorial that shows how to use Drill to query HBase data.</li>
-  <li><a href="/docs/querying-hbase/#working-with-hbase-byte-arrays">Working with HBase Byte Arrays</a><br />
+  <li><a href="/docs/querying-hbase/#working-with-hbase-byte-arrays">Working with HBase Byte Arrays</a>
 How to work with HBase byte arrays for serious applications</li>
-  <li><a href="/docs/querying-hbase/#querying-big-endian-encoded-data">Querying Big Endian-Encoded Data</a><br />
+  <li><a href="/docs/querying-hbase/#querying-big-endian-encoded-data">Querying Big Endian-Encoded Data</a>
 How to use optimization features in Drill 1.2 and later</li>
-  <li><a href="/docs/querying-hbase/#leveraging-hbase-ordered-byte-encoding">Leveraging HBase Ordered Byte Encoding</a><br />
+  <li><a href="/docs/querying-hbase/#leveraging-hbase-ordered-byte-encoding">Leveraging HBase Ordered Byte Encoding</a>
 How to use Drill 1.2 to leverage new features introduced by <a href="https://issues.apache.org/jira/browse/HBASE-8201">HBASE-8201 Jira</a></li>
 </ul>
 
@@ -1563,10 +1563,10 @@ steps:</p>
 <p><a href="/docs/installing-drill-in-embedded-mode/">Start Drill</a> and complete the following steps to query the HBase tables you created.</p>
 
 <ol>
-  <li>Use the HBase storage plugin configuration.<br />
+  <li>Use the HBase storage plugin configuration.
  <code class="language-plaintext highlighter-rouge">USE hbase;</code></li>
   <li>
-    <p>Issue the following query to see the data in the students table:<br />
+    <p>Issue the following query to see the data in the students table:
  <code class="language-plaintext highlighter-rouge">SELECT * FROM students;</code></p>
 
     <p>The query returns results that are not useable. In the next step, you convert the data from byte arrays to UTF8 types that are meaningful.</p>
@@ -1585,11 +1585,11 @@ steps:</p>
   <li>
     <p>Issue the following query, that includes the CONVERT_FROM function, to convert the <code class="language-plaintext highlighter-rouge">students</code> table to typed data:</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SELECT CONVERT_FROM(row_key, 'UTF8') AS studentid, 
-         CONVERT_FROM(students.account.name, 'UTF8') AS name, 
-         CONVERT_FROM(students.address.state, 'UTF8') AS state, 
-         CONVERT_FROM(students.address.street, 'UTF8') AS street, 
-         CONVERT_FROM(students.address.zipcode, 'UTF8') AS zipcode 
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  SELECT CONVERT_FROM(row_key, 'UTF8') AS studentid,
+         CONVERT_FROM(students.account.name, 'UTF8') AS name,
+         CONVERT_FROM(students.address.state, 'UTF8') AS state,
+         CONVERT_FROM(students.address.street, 'UTF8') AS street,
+         CONVERT_FROM(students.address.zipcode, 'UTF8') AS zipcode
   FROM students;
 </code></pre></div>    </div>
 
@@ -1618,11 +1618,11 @@ steps:</p>
   <li>
     <p>Query the clicks table to see which students visited google.com:</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT CONVERT_FROM(row_key, 'UTF8') AS clickid, 
-        CONVERT_FROM(clicks.clickinfo.studentid, 'UTF8') AS studentid, 
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT CONVERT_FROM(row_key, 'UTF8') AS clickid,
+        CONVERT_FROM(clicks.clickinfo.studentid, 'UTF8') AS studentid,
         CONVERT_FROM(clicks.clickinfo.`time`, 'UTF8') AS `time`,
-        CONVERT_FROM(clicks.clickinfo.url, 'UTF8') AS url 
- FROM clicks WHERE clicks.clickinfo.url LIKE '%google%'; 
+        CONVERT_FROM(clicks.clickinfo.url, 'UTF8') AS url
+ FROM clicks WHERE clicks.clickinfo.url LIKE '%google%';
 
  |------------|------------|--------------------------|-----------------------|
  |  clickid   | studentid  |           time           |         url           |
@@ -1637,9 +1637,9 @@ steps:</p>
   <li>
     <p>Query the clicks table to get the studentid of the student having 100 items. Use CONVERT_FROM to convert the textual studentid and itemtype data, but use CAST to convert the integer quantity.</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT CONVERT_FROM(tbl.clickinfo.studentid, 'UTF8') AS studentid, 
-        CONVERT_FROM(tbl.iteminfo.itemtype, 'UTF8'), 
-        CAST(tbl.iteminfo.quantity AS INT) AS items 
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT CONVERT_FROM(tbl.clickinfo.studentid, 'UTF8') AS studentid,
+        CONVERT_FROM(tbl.iteminfo.itemtype, 'UTF8'),
+        CAST(tbl.iteminfo.quantity AS INT) AS items
  FROM clicks tbl WHERE tbl.iteminfo.quantity=100;
 
  |------------|------------|------------|
@@ -1734,7 +1734,7 @@ steps:</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT
   CONVERT_FROM(BYTE_SUBSTR(row_key, 1, 8), 'DATE_EPOCH_BE') d,
   CONVERT_FROM(BYTE_SUBSTR(row_key, 9, 8), 'BIGINT_BE') id,
-  CONVERT_FROM(tableName.f.c, 'UTF8') 
+  CONVERT_FROM(tableName.f.c, 'UTF8')
 FROM hbase.`TestTableCompositeDate` tableName
 WHERE
   CONVERT_FROM(BYTE_SUBSTR(row_key, 1, 8), 'DATE_EPOCH_BE') &lt; DATE '2015-06-18' AND
@@ -1753,7 +1753,7 @@ WHERE
   </li>
   <li>Determine the encoding of the HBase data you want to query. Ask the person in charge of creating the data.</li>
   <li>
-    <p>Based on the encoding type of the data, use the <a href="/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">“CONVERT_TO and CONVERT_FROM data types”</a> to convert HBase binary representations to an SQL type as you query the data.<br />
+    <p>Based on the encoding type of the data, use the <a href="/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">“CONVERT_TO and CONVERT_FROM data types”</a> to convert HBase binary representations to an SQL type as you query the data.
  For example, use CONVERT_FROM in your Drill query to convert a big endian-encoded row key to an SQL BIGINT type:</p>
 
     <p><code class="language-plaintext highlighter-rouge">SELECT CONVERT_FROM(BYTE_SUBSTR(row_key, 1, 8),'BIGINT_BE’) FROM my_hbase_table;</code></p>

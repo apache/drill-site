@@ -1676,19 +1676,19 @@
 
 <p><strong>No SSL/TLS</strong></p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ./sqlline -u "jdbc:drill:schema=dfs.work;drillbit=localhost:31010;enableTLS=false"  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ./sqlline -u "jdbc:drill:schema=dfs.work;drillbit=localhost:31010;enableTLS=false"
 </code></pre></div></div>
 
 <p><strong>SSL/TLS Enabled - No truststore</strong></p>
 
 <p>The default JSSE truststore will be tried with default password; the provided password will be ignored. If the default truststore password has been changed, this gives an error. To use the default truststore with a different password, pass the path to the default truststore with the password.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ./sqlline -u "jdbc:drill:schema=dfs.work;drillbit=localhost:31010;enableTLS=true;trustStorePassword=drill123"   
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ./sqlline -u "jdbc:drill:schema=dfs.work;drillbit=localhost:31010;enableTLS=true;trustStorePassword=drill123"
 </code></pre></div></div>
 
 <p><strong>SSL/TLS enabled - With truststore</strong></p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ./sqlline -u "jdbc:drill:schema=dfs.work;drillbit=localhost:31010;enableTLS=true;trustStorePath=~/ssl/truststore.ks;trustStorePassword=drill123"  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ./sqlline -u "jdbc:drill:schema=dfs.work;drillbit=localhost:31010;enableTLS=true;trustStorePath=~/ssl/truststore.ks;trustStorePassword=drill123"
 </code></pre></div></div>
 
 <h2 id="odbc-connection-parameters">ODBC Connection Parameters</h2>
@@ -1789,7 +1789,7 @@
 <p>a-If the client is not configured to use TLS and the server is, the error message will be similar to the following:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   Error: Failure in connecting to Drill: org.apache.drill.exec.rpc.RpcException: HANDSHAKE_COMMUNICATION : Channel closed /10.10.10.11:49907 &lt;--&gt; hostname/10.10.10.11:31010. (state=,code=0)
-   java.sql.SQLNonTransientConnectionException: Failure in connecting to Drill: org.apache.drill.exec.rpc.RpcException: HANDSHAKE_COMMUNICATION : Channel closed /10.10.10.11:49907 &lt;--&gt;hostname/10.10.10.11:31010.  
+   java.sql.SQLNonTransientConnectionException: Failure in connecting to Drill: org.apache.drill.exec.rpc.RpcException: HANDSHAKE_COMMUNICATION : Channel closed /10.10.10.11:49907 &lt;--&gt;hostname/10.10.10.11:31010.
 </code></pre></div></div>
 
 <p>b-If the server is not configured to use TLS and the client tries to connect using TLS, the error message will be similar to the following:</p>
@@ -1799,7 +1799,7 @@
 
 <p>2-The server presents a certificate to the client containing a hostname that is not valid. When the client connects to a server, the hostname the client used to connect to the server must match the name of the host the certificate was assigned to. Certificates can contain wildcards for the hostname, so if you’re connecting to a Drill cluster via ZooKeeper, it would be best to have a certificate that contains wildcards that cover all the hosts on which Drill might be running. It is also important to ensure that the DNS and the hostnames of the machines in the cluster are set up consistently so that the Drillbits are registered with ZooKeeper using the same name as the name assigned in the certificate. The error message in this case is the same as the previous case:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   Error: Failure in connecting to Drill: org.apache.drill.exec.rpc.NonTransientRpcException: Connecting to the server timed out. This is sometimes due to a mismatch in the SSL configuration between client and server. [ Exception: Timeout waiting for task.] (state=,code=0)  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   Error: Failure in connecting to Drill: org.apache.drill.exec.rpc.NonTransientRpcException: Connecting to the server timed out. This is sometimes due to a mismatch in the SSL configuration between client and server. [ Exception: Timeout waiting for task.] (state=,code=0)
 </code></pre></div></div>
 
 <p>Hostname verification can be turned off if there is no way to change the host configuration or the certificate. This is generally not recommended.</p>

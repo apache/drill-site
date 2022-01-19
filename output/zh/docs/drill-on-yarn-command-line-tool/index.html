@@ -1448,7 +1448,7 @@
 
 <p>Start your drill cluster with the start command:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_HOME/bin/drill-on-yarn.sh start  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_HOME/bin/drill-on-yarn.sh start
 </code></pre></div></div>
 
 <p>The command shows the startup status followed by a summary of the application:</p>
@@ -1470,7 +1470,7 @@ Drill-on-YARN’s web UI url. Use this URL to visit the web UI described below. 
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ls $MASTER_DIR
    …
-   drillbits1.appid  
+   drillbits1.appid
 </code></pre></div></div>
 
 <p>The file name is the same as your Drill cluster ID. The file contains the id if the Drill-on-YARN application for use by the other commands described below. You can run only one Drill AM at a time. If you attempt to start as second one from the same client machine on which you started the first, the client command will complain that the appid file already exists. If you attempt to start the cluster from a different node, then the second AM will detect the conflict and will shut down again.</p>
@@ -1497,7 +1497,7 @@ Drill-on-YARN’s web UI url. Use this URL to visit the web UI described below. 
    AM State: LIVE
    Target Drillbit Count: 1
    Live Drillbit Count: 1
-   For more information, visit: http://10.250.50.31:8048/  
+   For more information, visit: http://10.250.50.31:8048/
 </code></pre></div></div>
 
 <p>The first two several lines give you information about YARN’s state: the application ID, the
@@ -1507,7 +1507,7 @@ The next few lines are specific to Drill: the name of the application (which you
 <h2 id="stop-the-drill-cluster">Stop the Drill Cluster</h2>
 <p>You can stop the Drill cluster from the command line:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_HOME/bin/drill-on-yarn.sh stop  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_HOME/bin/drill-on-yarn.sh stop
 </code></pre></div></div>
 
 <p>Note that this command is “forceful”, it kills any in-flight queries. The output tracks the shutdown and displays the final YARN application status:</p>
@@ -1515,24 +1515,24 @@ The next few lines are specific to Drill: the name of the application (which you
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   Stopping Application ID: application_1462842354064_0001
    Stopping...
    Stopped.
-   Final status: SUCCEEDED  
+   Final status: SUCCEEDED
 </code></pre></div></div>
 
 <h2 id="resize-the-drill-cluster">Resize the Drill Cluster</h2>
 <p>You can add or remove nodes to your Drill cluster while the cluster runs using the re-size
 command. You can specify the change either by giving the number of nodes you want to run:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_HOME/bin/drill-on-yarn.sh resize 10  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_HOME/bin/drill-on-yarn.sh resize 10
 </code></pre></div></div>
 
 <p>Or by specifying the change in node count: + for increase, for decrease. To add two nodes:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_HOME/bin/drill-on-yarn.sh resize +2  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_HOME/bin/drill-on-yarn.sh resize +2
 </code></pre></div></div>
 
 <p>To remove three nodes:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_HOME/bin/drill-on-yarn.sh resize 3  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_HOME/bin/drill-on-yarn.sh resize 3
 </code></pre></div></div>
 
 <p>Drill will add nodes only if additional nodes are available from YARN. If you request to stop more nodes than are running, Drill stops all the running nodes. Note that in the current version of Drill, stopping nodes is a forceful operation: any in-flight queries will fail.</p>
@@ -1541,7 +1541,7 @@ command. You can specify the change either by giving the number of nodes you wan
 
 <p>If you run Drill-on-YARN for a temporary cluster, Drill will leave the Drill software archive in your designated DFS directory. You can remove those files with the following:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_HOME/bin/drill-on-yarn.sh clean  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_HOME/bin/drill-on-yarn.sh clean
 </code></pre></div></div>
 
 <p>Specifically, the first start uploads your Drill archive to DFS. Stop leaves the archive in DFS. Subsequent start commands reuse the cached archive if it is the same size as the version on the local disk. Clean removes the cached file, forcing Drill to upload a fresh copy if you again restart the Drill cluster.</p>

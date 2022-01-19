@@ -1451,16 +1451,16 @@
 </code></pre></div></div>
 
 <h2 id="parameters">Parameters</h2>
-<p><em>COLUMNS</em><br />
+<p><em>COLUMNS</em>
 Optional. Introduced in Drill 1.16. Use to indicate the columns on which the command should refresh metadata. When omitted, metadata is collected for all the columns.</p>
 
-<p><em>column</em><br />
+<p><em>column</em>
 Required when using the COLUMNS clause. The columns for which metadata will be stored.</p>
 
-<p><em>NONE</em><br />
+<p><em>NONE</em>
 Optional. Introduced in Drill 1.16. When used, the REFRESH command does not refresh any metadata; however, a summary file is generated and contains a summary section (ColumnTypeInfo) that lists all the columns with their data types.</p>
 
-<p><em>table_path</em><br />
+<p><em>table_path</em>
 Required. The name of the table or directory for which Drill will refresh metadata.</p>
 
 <h2 id="related-command">Related Command</h2>
@@ -1508,9 +1508,9 @@ Required. The name of the table or directory for which Drill will refresh metada
 <p>You can set the following options related to the REFRESH TABLE METADATA command at the system or session level with the SET (session level) or ALTER SYSTEM SET (system level) statements, or through the Drill Web UI at <code class="language-plaintext highlighter-rouge">http://&lt;drill-hostname-or-ip&gt;:8047/options</code>:</p>
 
 <ul>
-  <li><strong>planner.store.parquet.rowgroup.filter.pushdown.enabled</strong>  <br />
+  <li><strong>planner.store.parquet.rowgroup.filter.pushdown.enabled</strong>
 Enables filter pushdown optimization for Parquet files. Drill reads the file metadata, stored in the footer, to eliminate row groups based on the filter condition. Default is true. (Drill 1.9+)</li>
-  <li><strong>planner.store.parquet.rowgroup.filter.pushdown.threshold</strong><br />
+  <li><strong>planner.store.parquet.rowgroup.filter.pushdown.threshold</strong>
 Sets the number of row groups that a table can have. You can increase the threshold if the filter can prune many row groups. However, if this setting is too high, the filter evaluation overhead increases. Base this setting on the data set. Reduce this setting if the planning time is significant or you do not see any benefit at runtime. Default is 10000.  (Drill 1.9+)</li>
 </ul>
 
@@ -1550,7 +1550,7 @@ nation.parquet
 |  ok   |                 summary        	      |
 |-------|------------------------------------------|
 | true  | Default schema changed to [dfs.samples]  |
-|-------|------------------------------------------|  
+|-------|------------------------------------------|
 </code></pre></div></div>
 
 <h3 id="running-refresh-table-metadata-on-a-directory">Running REFRESH TABLE METADATA on a Directory</h3>
@@ -1578,7 +1578,7 @@ drwxrwxrwt. 51 root root 8192 Apr 29 11:44 ..
 -rw-r--r--   1 root root   12 Apr 29 11:46 ..drill.parquet_metadata_directories.crc
 -rw-r--r--   1 root root 1334 Apr 29 11:46 .drill.parquet_summary_metadata.v4
 -rw-r--r--   1 root root   20 Apr 29 11:46 ..drill.parquet_summary_metadata.v4.crc
-drwxr-xr-x   3 root root  212 Apr 29 11:30 parquet  
+drwxr-xr-x   3 root root  212 Apr 29 11:30 parquet
 
 [root@doc23 parquet1]# cd parquet
 [root@doc23 parquet]# ls -la
@@ -1600,7 +1600,7 @@ drwxr-xr-x 3 root root  212 Apr 29 11:30 ..
 -rw-r--r-- 1 root root   16 Apr 29 11:46 ..drill.parquet_file_metadata.v4.crc
 -rw-r--r-- 1 root root 1308 Apr 29 11:46 .drill.parquet_summary_metadata.v4
 -rw-r--r-- 1 root root   20 Apr 29 11:46 ..drill.parquet_summary_metadata.v4.crc
--rwxr-xr-x 1 root root 1210 Apr 29 11:23 nation.parquet  
+-rwxr-xr-x 1 root root 1210 Apr 29 11:23 nation.parquet
 </code></pre></div></div>
 
 <p>Looking at the <code class="language-plaintext highlighter-rouge">.drill.parquet_file_metadata.v4</code> file in the <code class="language-plaintext highlighter-rouge">/tmp/parquet1</code> directory, you can see that the file contains the paths to the Parquet files in the subdirectories, as well as metadata for those files:</p>
@@ -1712,7 +1712,7 @@ drwxr-xr-x 3 root root  212 Apr 29 11:30 ..
   "drillVersion" : "1.16.0-SNAPSHOT",
   "totalRowCount" : 50,
   "allColumnsInteresting" : true,
-  "metadata_version" : "4"  
+  "metadata_version" : "4"
 </code></pre></div></div>
 
 <h3 id="verifying-that-the-planner-is-using-the-metadata-cache-or-summary-files">Verifying that the Planner is Using the Metadata Cache or Summary Files</h3>
@@ -1725,8 +1725,8 @@ drwxr-xr-x 3 root root  212 Apr 29 11:30 ..
 |----------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
 | 00-00    Screen
 00-01      Project(**=[$0])
-00-02        Scan(table=[[dfs, samples, parquet1]], groupscan=[ParquetGroupScan [entries=[ReadEntryWithPath [path=/tmp/parquet1]], selectionRoot=/tmp/parquet1, numFiles=1, numRowGroups=2, usedMetadataFile=true, cacheFileRoot=/tmp/parquet1, columns=[`**`]]])  
- |   
+00-02        Scan(table=[[dfs, samples, parquet1]], groupscan=[ParquetGroupScan [entries=[ReadEntryWithPath [path=/tmp/parquet1]], selectionRoot=/tmp/parquet1, numFiles=1, numRowGroups=2, usedMetadataFile=true, cacheFileRoot=/tmp/parquet1, columns=[`**`]]])
+ |
 </code></pre></div></div>
 
 <p>When you run the EXPLAIN command with a COUNT() query, as shown, you can see that the query planner uses the summary cache file and avoids reading the larger metadata cache file. The query plan includes the <code class="language-plaintext highlighter-rouge">usedMetadataSummaryFile</code> flag.</p>
@@ -1738,7 +1738,7 @@ drwxr-xr-x 3 root root  212 Apr 29 11:30 ..
 | 00-00    Screen
 00-01      Project(EXPR$0=[$0])
 00-02        DirectScan(groupscan=[files = [file:/tmp/parquet1/.drill.parquet_summary_metadata.v4], numFiles = 1, usedMetadataSummaryFile = true, DynamicPojoRecordReader{records = [[50]]}])
- | 
+ |
 </code></pre></div></div>
 
 

@@ -1454,27 +1454,27 @@
 
 <h2 id="syntax">Syntax</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...FROM tableReference  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...FROM tableReference
 
 tableReference:
-          
+
           with_subquery_table_name [ [ AS ] alias [ ( column_alias [, ...] ) ] ]
              | table_name [ [ AS ] alias [ ( column_alias [, ...] ) ] ]
              | ( subquery ) [ AS ] alias [ ( column_alias [, ...] ) ]
              | &lt;join_clause&gt;
              | [ LATERAL ] [&lt;lateral_join_type&gt;] &lt;lateral_subquery&gt; [ON TRUE]
-          
+
           join_clause:
              	tableReference &lt;join_type&gt; tableReference [ON &lt;join_condition&gt;]
-          
+
           lateral_subquery:
                 &lt;unnest_table_expr&gt;
              | ( SELECT_clause FROM &lt;unnest_table_expr&gt; [,...] )
-          
+
           lateral_join_type:
           [INNER] JOIN
           LEFT [OUTER] JOIN
-          
+
           unnest_table_expr:
            UNNEST '(' expression ')'  [AS] &lt;alias_table_name&gt;(&lt;alias_column_name&gt;)
 </code></pre></div></div>
@@ -1485,32 +1485,32 @@ tableReference:
 
 <ul>
   <li>
-    <p><em>join_clause</em><br />
+    <p><em>join_clause</em>
    Identifies the tables with the data you want to join, the type of join to be performed on the tables, and the conditions on which to join the tables. Starting in Drill 1.14, Drill supports lateral joins.</p>
   </li>
   <li>
-    <p><em>LATERAL</em><br />
+    <p><em>LATERAL</em>
    Keyword that represents a lateral join. A lateral join is essentially a foreach loop in SQL. A lateral join combines the results of the outer query with the results of a lateral subquery. When you use the UNNEST relational operator, Drill infers the LATERAL keyword.</p>
   </li>
   <li>
-    <p><em>lateral_sub_query</em><br />
+    <p><em>lateral_sub_query</em>
    A lateral subquery is like correlated subqueries except that you use a lateral subquery in the FROM clause instead of the WHERE clause. Also, lateral subqueries can return any number of rows; correlated subqueries return exactly one row.</p>
   </li>
   <li>
-    <p><em>unnest_table_expr</em><br />
+    <p><em>unnest_table_expr</em>
    References the table produced by the UNNEST relational operator. UNNEST converts a collection to a relation. You must use the UNNEST relational operator with LATERAL subqueries when a field contains repeated types, like an array of maps. You must also indicate an alias for the table produced by UNNEST.</p>
   </li>
   <li>
-    <p><em>lateral_join_type</em><br />
+    <p><em>lateral_join_type</em>
    The type of join used with the lateral subquery. Lateral subqueries support [INNER] JOIN and LEFT [OUTER] JOIN, for example:</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ...FROM table1 LEFT OUTER JOIN LATERAL (select a from t2) ON TRUE;  
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ...FROM table1 LEFT OUTER JOIN LATERAL (select a from t2) ON TRUE;
 </code></pre></div>    </div>
 
     <p>If you do not indicate the join type, Drill infers an INNER JOIN.</p>
   </li>
   <li>
-    <p><em>ON TRUE</em><br />
+    <p><em>ON TRUE</em>
    The join condition when the results of a lateral subquery are joined with fields in rows of the table referenced. This condition is implicit. You do not have to include the condition in the query.</p>
   </li>
 </ul>
@@ -1526,7 +1526,7 @@ tableReference:
   <li>
     <p>You can use lateral subqueries with the LEFT OUTER and INNER join types, for example:</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ...FROM table1 LEFT OUTER JOIN LATERAL (select a from t2) ON true;  
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  ...FROM table1 LEFT OUTER JOIN LATERAL (select a from t2) ON true;
 </code></pre></div>    </div>
   </li>
   <li>
@@ -1538,12 +1538,12 @@ tableReference:
   <li>
     <p>Lateral subqueries support the following operators:</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> - Limit  
- - Filter  
- - Project  
- - TopN  
- - Sort  
- - HashAgg  
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> - Limit
+ - Filter
+ - Project
+ - TopN
+ - Sort
+ - HashAgg
 </code></pre></div>    </div>
   </li>
 </ul>
@@ -1559,11 +1559,11 @@ tableReference:
   <li>Unnests data in small chunks, which typically provides a performance advantage when applying filters or running subqueries.</li>
   <li>Unnest operators on each row of the source table; data can be partitioned without having to use a window function.</li>
   <li>For queries with nested laterals, you must provide a name (alias) for the table that UNNEST generates.</li>
-  <li>UNNEST and LATERAL work similarly to FLATTEN, but differ from FLATTEN in the follow ways:<br />
-     - UNNEST is a SQL standard, whereas FLATTEN is not.<br />
-     - FLATTEN is only allowed in the SELECT list of query, not in the FROM clause.<br />
-     - FLATTEN does not work with schema changes, but UNNEST can if the queries do not have hash aggregates. FLATTEN requires all data in a column to be of the same type. For example, if a column contains integers in some rows and float in others, UNNEST can process the query, whereas FLATTEN cannot.  <br />
-     - LATERAL and UNNEST cover a wider set of use cases than FLATTEN. For example, when you use LATERAL and UNNEST, Drill can perform a LEFT OUTER JOIN on data. If you used FLATTEN, Drill must scan the source table twice to perform an OUTER JOIN after flattening the data. Also, with LATERAL and UNNEST, you can apply a filter, aggregate, or limit on each row. With FLATTEN, the filter or aggregate is applied after flattening, however you cannot apply the limit on each row.<br />
+  <li>UNNEST and LATERAL work similarly to FLATTEN, but differ from FLATTEN in the follow ways:
+     - UNNEST is a SQL standard, whereas FLATTEN is not.
+     - FLATTEN is only allowed in the SELECT list of query, not in the FROM clause.
+     - FLATTEN does not work with schema changes, but UNNEST can if the queries do not have hash aggregates. FLATTEN requires all data in a column to be of the same type. For example, if a column contains integers in some rows and float in others, UNNEST can process the query, whereas FLATTEN cannot.
+     - LATERAL and UNNEST cover a wider set of use cases than FLATTEN. For example, when you use LATERAL and UNNEST, Drill can perform a LEFT OUTER JOIN on data. If you used FLATTEN, Drill must scan the source table twice to perform an OUTER JOIN after flattening the data. Also, with LATERAL and UNNEST, you can apply a filter, aggregate, or limit on each row. With FLATTEN, the filter or aggregate is applied after flattening, however you cannot apply the limit on each row.
      - FLATTEN unnests data into a table and processes the entire table; filters and subqueries are applied on the entire table at the same time.</li>
 </ul>
 
@@ -1702,7 +1702,7 @@ tableReference:
    FROM  customer t1
    LEFT
    OUTER JOIN
-   
+
       (SELECT f.cust_id,
    AVG(f.order_amount) as avg_orders
          FROM (SELECT
@@ -1712,9 +1712,9 @@ tableReference:
    and date ‘11302017’
           GROUP BY
    f.cust_id
-   
+
       ) t2  on t1.cust_id =
-   t2.cust_id  
+   t2.cust_id
 </code></pre></div></div>
 
 <p>However, this query is complex and inefficient. Writing the query with a lateral subquery resolves the inefficiencies:</p>
@@ -1722,7 +1722,7 @@ tableReference:
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT cust_name, avg_orders
    FROM customer c
    LATERAL (SELECT AVG(order_amount) as avg_orders FROM UNNEST(c.orders)o
-   WHERE o.order_date BETWEEN date ‘11012017’ and date ‘11302017’);  
+   WHERE o.order_date BETWEEN date ‘11012017’ and date ‘11302017’);
 </code></pre></div></div>
 
 <p>Note that the FROM clause in the subquery references the ‘orders’ array from the table alias ‘c’ which is the outer table.  The reference to an outer table within the subquery makes this look like a correlated subquery.  However, there is an important difference in that a correlated subquery is used in the WHERE clause whereas what we really want is the set of rows from the un-nested array exposed as a ‘sub-table’ such that relevant filtering, aggregation, and so on can be performed.</p>
@@ -1735,26 +1735,26 @@ tableReference:
 
 <p>Drill infers a LATERAL join when you use the UNNEST relational operator. In the following query, UNNEST produces a table with one column that contains an unnested customer.c_orders column. In this query, the table produced by unnest is aliased as _orders and the column is aliased as c_order.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT
      customer.c_name, customer.c_address, _orders.c_order.o_orderkey, _orders.c_order.o_totalprice
-   FROM 
-     dfs.`/Users/user1/work/data/complex/cust_order` customer, 
+   FROM
+     dfs.`/Users/user1/work/data/complex/cust_order` customer,
    UNNEST(customer.c_orders) _orders(c_order)
-   ;  
+   ;
 </code></pre></div></div>
 
 <p><strong>Example 2: One level lateral with an alias and explicit LATERAL</strong></p>
 
 <p>The following query contains the LATERAL keyword with a subquery that selects all the columns (SELECT *) from the table produced by the UNNEST relational operator. The table produced by UNNEST is aliased as _orders(c_order). The subquery result is a table aliased as t_orders. Drill performs the lateral join on the table that results from the subquery (t_orders). The query produces the same query plan as the previous example (Example 1) where LATERAL was inferred.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT
      customer.c_name, customer.c_address, t_orders.c_order.o_orderkey, t_orders.c_order.o_totalprice
-   FROM 
-     dfs.`/Users/user1/work/data/complex/cust_order` customer, 
+   FROM
+     dfs.`/Users/user1/work/data/complex/cust_order` customer,
    LATERAL (
    SELECT * from UNNEST(customer.c_orders) _orders(c_order)
    ) t_orders
-   ;  
+   ;
 </code></pre></div></div>
 
 <p><strong>Example 3: Multi-level lateral with alias</strong></p>
@@ -1767,21 +1767,21 @@ tableReference:
 
 <p>Note that the SELECT in the outer query can now refer to the tables t_orders and t_items.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    1: SELECT 
-    2:   customer.c_name, customer.c_address, t_orders.orderkey, t_orders.orderamt, t_items.item.l_partkey, t_items.item.l_linenumber 
-    3: FROM 
-    4:   dfs.`/Users/pchandra/work/data/complex/cust_order` customer, 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    1: SELECT
+    2:   customer.c_name, customer.c_address, t_orders.orderkey, t_orders.orderamt, t_items.item.l_partkey, t_items.item.l_linenumber
+    3: FROM
+    4:   dfs.`/Users/pchandra/work/data/complex/cust_order` customer,
     5: LATERAL
-    6:    ( 
+    6:    (
     7:      select _orders.c_order.o_orderkey orderkey, _orders.c_order.o_totalprice orderamt, _orders.c_order.o_lineitems as lineitems
-    8:      FROM UNNEST(customer.c_orders) _orders(c_order)  
+    8:      FROM UNNEST(customer.c_orders) _orders(c_order)
     9:    ) t_orders,
    10:    LATERAL
    11:    (
-   12:      SELECT * 
-   13:      FROM UNNEST(t_orders.lineitems) AS _items(item) 
+   12:      SELECT *
+   13:      FROM UNNEST(t_orders.lineitems) AS _items(item)
    14:    ) t_items
-   15: ;  
+   15: ;
 </code></pre></div></div>
 
 <p><strong>Example 4: One level lateral with aggregation</strong></p>
@@ -1789,14 +1789,14 @@ tableReference:
 <p>For every customer, the following query returns the number of orders for each priority level.
 The subquery that corresponds to the lateral, aggregates the order count, grouped by the priority, in the table _orders(c_order) produced by UNNEST.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT
      customer.c_name, customer.c_address, t_orders.o_orderCount, t_orders.o_orderpriority
-   FROM 
-     dfs.`/Users/user1/work/data/complex/cust_order` customer, 
+   FROM
+     dfs.`/Users/user1/work/data/complex/cust_order` customer,
      lateral (
       select count(_orders.c_order.o_orderkey) as o_orderCount, _orders.c_order.o_orderpriority as o_orderpriority from UNNEST(customer.c_orders) _orders(c_order) group by _orders.c_order.o_orderpriority
      ) t_orders
-   ;  
+   ;
 </code></pre></div></div>
 
 <h3 id="flatten-vs-lateral-and-unnest-queries">FLATTEN vs LATERAL and UNNEST Queries</h3>
@@ -1809,31 +1809,31 @@ The subquery that corresponds to the lateral, aggregates the order count, groupe
 
 <p><em>FLATTEN</em></p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT l.c_custkey, l.c_name, r.orderkey, 
-   SUM(r.totalprice) sum_order 
-   FROM customer l 
-   INNER JOIN (SELECT g.custkey custkey, g.name, g.orderkey, g.totalprice totalprice 
-   FROM (SELECT row_number() OVER(PARTITION BY c_custkey) 
-   AS rn, f.c_custkey custkey, f.c_name name, f.o.o_orderkey orderkey, f.o.o_totalprice totalprice 
-   FROM (SELECT c_custkey, c_name, 
-   FLATTEN(c_orders) 
-   AS o 
-   FROM customer) f) g) r 
-   ON (l.c_custkey = r.custkey) 
-   GROUP BY l.c_custkey, l.c_name, r.orderkey 
-   ORDER BY sum_order 
-   LIMIT 50;  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT l.c_custkey, l.c_name, r.orderkey,
+   SUM(r.totalprice) sum_order
+   FROM customer l
+   INNER JOIN (SELECT g.custkey custkey, g.name, g.orderkey, g.totalprice totalprice
+   FROM (SELECT row_number() OVER(PARTITION BY c_custkey)
+   AS rn, f.c_custkey custkey, f.c_name name, f.o.o_orderkey orderkey, f.o.o_totalprice totalprice
+   FROM (SELECT c_custkey, c_name,
+   FLATTEN(c_orders)
+   AS o
+   FROM customer) f) g) r
+   ON (l.c_custkey = r.custkey)
+   GROUP BY l.c_custkey, l.c_name, r.orderkey
+   ORDER BY sum_order
+   LIMIT 50;
 </code></pre></div></div>
 
 <p><em>LATERAL and UNNEST</em></p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT customer.c_custkey, customer.c_name, orders.o_orderkey, sum(orders.o_totalprice) total_spending from customer, 
-   LATERAL (SELECT t.o.o_orderkey o_orderkey, t.o.o_totalprice o_totalprice 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT customer.c_custkey, customer.c_name, orders.o_orderkey, sum(orders.o_totalprice) total_spending from customer,
+   LATERAL (SELECT t.o.o_orderkey o_orderkey, t.o.o_totalprice o_totalprice
    FROM
-   UNNEST(customer.c_orders) t(o)) orders 
-   GROUP BY customer.c_custkey, customer.c_name, orders.o_orderkey 
+   UNNEST(customer.c_orders) t(o)) orders
+   GROUP BY customer.c_custkey, customer.c_name, orders.o_orderkey
    ORDER BY total_spending
-   LIMIT 50;  
+   LIMIT 50;
 </code></pre></div></div>
 
 <p><strong>Example 2</strong></p>
@@ -1842,32 +1842,32 @@ The subquery that corresponds to the lateral, aggregates the order count, groupe
 
 <p><em>FLATTEN</em></p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT l.c_custkey, l.c_name, r.orderkey, r.totalprice 
-   FROM customer l 
-   LEFT OUTER JOIN (SELECT g.custkey custkey, g.name, g.orderkey, g.totalprice totalprice 
-   FROM (SELECT row_number() OVER(PARTITION BY c_custkey) 
-   AS rn, f.c_custkey custkey, f.c_name name, f.o.o_orderkey orderkey, f.o.o_totalprice totalprice 
-   FROM (SELECT c_custkey, c_name, 
-   FLATTEN(c_orders) 
-   AS o 
-   FROM customer) f 
-   WHERE f.o.o_totalprice &gt; 1000) g 
-   WHERE rn &lt; 2001) r 
-   ON (l.c_custkey = r.custkey) 
-   ORDER BY l.c_custkey, r.totalprice 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT l.c_custkey, l.c_name, r.orderkey, r.totalprice
+   FROM customer l
+   LEFT OUTER JOIN (SELECT g.custkey custkey, g.name, g.orderkey, g.totalprice totalprice
+   FROM (SELECT row_number() OVER(PARTITION BY c_custkey)
+   AS rn, f.c_custkey custkey, f.c_name name, f.o.o_orderkey orderkey, f.o.o_totalprice totalprice
+   FROM (SELECT c_custkey, c_name,
+   FLATTEN(c_orders)
+   AS o
+   FROM customer) f
+   WHERE f.o.o_totalprice &gt; 1000) g
+   WHERE rn &lt; 2001) r
+   ON (l.c_custkey = r.custkey)
+   ORDER BY l.c_custkey, r.totalprice
    LIMIT 50;
 </code></pre></div></div>
 
 <p><em>LATERAL and UNNEST</em></p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT customer.c_custkey, customer.c_name, orders.o_orderkey, orders.o_totalprice 
-   FROM customer 
-   LEFT JOIN LATERAL (SELECT t.o.o_orderkey o_orderkey, t.o.o_totalprice o_totalprice 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT customer.c_custkey, customer.c_name, orders.o_orderkey, orders.o_totalprice
+   FROM customer
+   LEFT JOIN LATERAL (SELECT t.o.o_orderkey o_orderkey, t.o.o_totalprice o_totalprice
    FROM
-   UNNEST(customer.c_orders) t(o) 
+   UNNEST(customer.c_orders) t(o)
    WHERE t.o.o_totalprice &gt; 1000 LIMIT 2000) orders ON TRUE
    ORDER BY c_custkey, orders.o_totalprice
-   LIMIT 50;  
+   LIMIT 50;
 </code></pre></div></div>
 
 

@@ -1537,7 +1537,7 @@ SELECT CAST(456 as CHAR(3)) FROM (VALUES(1));
 |     EXPR$0      |
 |-----------------|
 | -2.147483648E9  |
-|-----------------|  
+|-----------------|
 </code></pre></div></div>
 
 <h3 id="casting-intervals">Casting Intervals</h3>
@@ -1575,10 +1575,10 @@ CAST (column_name AS INTERVAL SECOND)
   <li>
     <p>Use a CTAS statement to cast text from a JSON file to year and day intervals and to write the data to a Parquet table:</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> CREATE TABLE dfs.tmp.parquet_intervals AS 
- (SELECT CAST( INTERVALYEAR_col as INTERVAL YEAR) INTERVALYEAR_col, 
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> CREATE TABLE dfs.tmp.parquet_intervals AS
+ (SELECT CAST( INTERVALYEAR_col as INTERVAL YEAR) INTERVALYEAR_col,
          CAST( INTERVALDAY_col as INTERVAL DAY) INTERVALDAY_col,
-         CAST( INTERVAL_col as INTERVAL SECOND) INTERVAL_col 
+         CAST( INTERVAL_col as INTERVAL SECOND) INTERVAL_col
  FROM dfs.`/Users/drill/intervals.json`);
 </code></pre></div>    </div>
   </li>
@@ -1631,11 +1631,11 @@ CONVERT_FROM(column, type)
     <p>You can use <a href="/docs/data-type-conversion/#string_binary-function">STRING_BINARY</a> and <a href="/docs/data-type-conversion/#binary_string-function">BINARY_STRING</a> custom Drill functions with CONVERT_TO and CONVERT_FROM to get meaningful results.</p>
   </li>
   <li>
-    <p>Drill 1.13 and later supports <a href="/docs/json-data-model/">NaN and Infinity values as numeric data types</a>. 
+    <p>Drill 1.13 and later supports <a href="/docs/json-data-model/">NaN and Infinity values as numeric data types</a>.
 You can use the convert_to and convert_from functions in queries on JSON data with NaN and Infinity values, as shown in the following query examples:</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      select convert_fromJSON('{"num": 55, "nan": NaN, "inf": -Infinity}'); 
-      select convert_fromJSON(jsonColumn) from mysql.someTable;  
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      select convert_fromJSON('{"num": 55, "nan": NaN, "inf": -Infinity}');
+      select convert_fromJSON(jsonColumn) from mysql.someTable;
       select string_binary(convert_toJSON(convert_fromJSON(jsonColumn) from mysql.someTable;
 </code></pre></div>    </div>
   </li>
@@ -1648,7 +1648,7 @@ You can use the convert_to and convert_from functions in queries on JSON data wi
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>USE maprdb;
 
 SELECT * FROM students;
-    
+
 |-------------|---------------------|---------------------------------------------------------------------------|
 |   row_key   |  account            |                               address                                     |
 |-------------|---------------------|---------------------------------------------------------------------------|
@@ -1662,10 +1662,10 @@ SELECT * FROM students;
 
 <p>You use the CONVERT_FROM function to decode the binary data, selecting a data type to use from the <a href="/docs/supported-data-types/#data-types-for-convert_to-and-convert_from-functions">list of supported types</a>. JSON supports strings. To convert bytes to strings, use the UTF8 type:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CONVERT_FROM(row_key, 'UTF8') AS studentid, 
-       CONVERT_FROM(students.account.name, 'UTF8') AS name, 
-       CONVERT_FROM(students.address.state, 'UTF8') AS state, 
-       CONVERT_FROM(students.address.street, 'UTF8') AS street, 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CONVERT_FROM(row_key, 'UTF8') AS studentid,
+       CONVERT_FROM(students.account.name, 'UTF8') AS name,
+       CONVERT_FROM(students.address.state, 'UTF8') AS state,
+       CONVERT_FROM(students.address.street, 'UTF8') AS street,
        CONVERT_FROM(students.address.zipcode, 'UTF8') AS zipcode FROM students;
 
 |------------|------------|------------|------------------|------------|
@@ -1732,7 +1732,7 @@ SELECT * FROM students;
        "writable": true,
        "defaultInputFormat": null
      },
-     
+
      . . .
 
      "tmp": {
@@ -1742,7 +1742,7 @@ SELECT * FROM students;
      }
 
      . . .
-     
+
    "formats": {
      . . .
      "maprdb": {
@@ -1768,12 +1768,12 @@ SELECT * FROM students;
   <li>
     <p>Use CONVERT_FROM queries to convert the binary data in the HBase students table to JSON, and store the JSON data in a file. You select a data type to use from the supported. JSON supports strings. To convert binary to strings, use the UTF8 type.</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> CREATE TABLE tmp.`to_json` AS SELECT 
-     CONVERT_FROM(row_key, 'UTF8') AS `studentid`, 
-     CONVERT_FROM(students.account.name, 'UTF8') AS name, 
-     CONVERT_FROM(students.address.state, 'UTF8') AS state, 
-     CONVERT_FROM(students.address.street, 'UTF8') AS street, 
-     CONVERT_FROM(students.address.zipcode, 'UTF8') AS zipcode 
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> CREATE TABLE tmp.`to_json` AS SELECT
+     CONVERT_FROM(row_key, 'UTF8') AS `studentid`,
+     CONVERT_FROM(students.account.name, 'UTF8') AS name,
+     CONVERT_FROM(students.address.state, 'UTF8') AS state,
+     CONVERT_FROM(students.address.street, 'UTF8') AS street,
+     CONVERT_FROM(students.address.zipcode, 'UTF8') AS zipcode
  FROM root.`students`;
 
  |------------|---------------------------|
@@ -1838,12 +1838,12 @@ SELECT * FROM students;
   <li>
     <p>Use CONVERT_TO to convert the JSON data to a binary format in the Parquet file.</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> CREATE TABLE tmp.`json2parquet` AS SELECT 
-     CONVERT_TO(studentid, 'UTF8') AS id, 
-     CONVERT_TO(name, 'UTF8') AS name, 
-     CONVERT_TO(state, 'UTF8') AS state, 
-     CONVERT_TO(street, 'UTF8') AS street, 
-     CONVERT_TO(zipcode, 'UTF8') AS zip 
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> CREATE TABLE tmp.`json2parquet` AS SELECT
+     CONVERT_TO(studentid, 'UTF8') AS id,
+     CONVERT_TO(name, 'UTF8') AS name,
+     CONVERT_TO(state, 'UTF8') AS state,
+     CONVERT_TO(street, 'UTF8') AS street,
+     CONVERT_TO(zipcode, 'UTF8') AS zip
  FROM tmp.`to_json`;
 
  |------------|---------------------------|
@@ -1872,11 +1872,11 @@ SELECT * FROM students;
   <li>
     <p>Use CONVERT_FROM to read the Parquet data:</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT CONVERT_FROM(id, 'UTF8') AS id, 
-        CONVERT_FROM(name, 'UTF8') AS name, 
-        CONVERT_FROM(state, 'UTF8') AS state, 
-        CONVERT_FROM(street, 'UTF8') AS address, 
-        CONVERT_FROM(zip, 'UTF8') AS zip 
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT CONVERT_FROM(id, 'UTF8') AS id,
+        CONVERT_FROM(name, 'UTF8') AS name,
+        CONVERT_FROM(state, 'UTF8') AS state,
+        CONVERT_FROM(street, 'UTF8') AS address,
+        CONVERT_FROM(zip, 'UTF8') AS zip
  FROM tmp.`json2parquet2`;
 
  |------------|------------|------------|------------------|------------|
@@ -2476,19 +2476,19 @@ SELECT EXTRACT(year from mydate) `extracted year` FROM (SELECT TO_DATE('2015-FEB
 
 <ul>
   <li>
-    <p>#<br />
+    <p>#
 Digit placeholder.</p>
   </li>
   <li>
-    <p>0<br />
+    <p>0
 Digit placeholder. If a value has a digit in the position where the zero ‘0’ appears in the format string, that digit appears in the output; otherwise, a ‘0’ appears in that position in the output.</p>
   </li>
   <li>
-    <p>.<br />
+    <p>.
 Decimal point. Make the first ‘.’ character in the format string the location of the decimal separator in the value; ignore any additional ‘.’ characters.</p>
   </li>
   <li>
-    <p>,<br />
+    <p>,
 Comma grouping separator.</p>
   </li>
   <li>
@@ -2600,8 +2600,8 @@ SELECT TO_NUMBER('12345', '##0.##E0') FROM (VALUES(1));
 
 <p>Convert a UTC date to a timestamp offset from the UTC time zone code.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z') AS Original, 
-       TO_CHAR(TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z'), 'z') AS New_TZ 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z') AS Original,
+       TO_CHAR(TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z'), 'z') AS New_TZ
 FROM (VALUES(1));
 
 |------------------------|---------|
@@ -2609,14 +2609,14 @@ FROM (VALUES(1));
 |------------------------|---------|
 | 2015-03-30 20:49:00.0  | UTC     |
 |------------------------|---------|
-1 row selected (0.148 seconds)  
+1 row selected (0.148 seconds)
 </code></pre></div></div>
 
 <h2 id="enabling-time-zone-offset">Enabling Time Zone Offset</h2>
 
 <p>Starting in Drill 1.16, the <code class="language-plaintext highlighter-rouge">store.hive.maprdb_json.read_timestamp_with_timezone_offset</code> option enables Drill to read timestamp values with a timezone offset when using the hive plugin with the Drill native MaprDB JSON reader enabled through the  <code class="language-plaintext highlighter-rouge">store.hive.maprdb_json.optimize_scan_with_native_reader option</code>. The <code class="language-plaintext highlighter-rouge">store.hive.maprdb_json.read_timestamp_with_timezone_offset</code> option is disabled (set to ‘false’) by default. You can enable this option from the Options page in the Drill Web UI or from the command line using the SET or ALTER SYSTEM commands.</p>
 
-<p><strong>Important</strong><br />
+<p><strong>Important</strong>
 Internally, Drill stores timestamp values in UTC format, for example 2018-01-01T20:12:12.123Z. When you enable the timezone offset option, select on a table returns different timestamp values. If you filter on timestamp values when this option is enabled, you must include the new timestamp value in the filter condition.</p>
 
 <p>For example, look at the timestamp values when the <code class="language-plaintext highlighter-rouge">store.hive.maprdb_json.read_timestamp_with_timezone_offset</code> option is disabled (set to ‘false’):</p>
@@ -2627,7 +2627,7 @@ _id	datestring	datetimestamp
 -------------------------------------------------------
 1	2018-01-01 12:12:12.123	2018-01-01 20:12:12.123
 2	9999-12-31 23:59:59.999	10000-01-01 07:59:59.999
--------------------------------------------------------  
+-------------------------------------------------------
 </code></pre></div></div>
 
 <p>When the option is enabled (set to ‘true’), you can see the difference in the timestamp values returned:</p>
@@ -2638,7 +2638,7 @@ _id	datestring	datetimestamp
 ------------------------------------------------------
 1	2018-01-01 12:12:12.123	2018-01-01 12:12:12.123
 2	9999-12-31 23:59:59.999	9999-12-31 23:59:59.999
-------------------------------------------------------  
+------------------------------------------------------
 </code></pre></div></div>
 
 <p>When the option is enabled, queries that filter on timestamp values must include the new timestamp value in the filter condition, as shown:</p>
@@ -2648,7 +2648,7 @@ _id	datestring	datetimestamp
 _id	datestring	datetimestamp
 ------------------------------------------------------
 1	2018-01-01 12:12:12.123	2018-01-01 12:12:12.123
-------------------------------------------------------  
+------------------------------------------------------
 </code></pre></div></div>
 
 <p>Notice that the WHERE clause uses the <code class="language-plaintext highlighter-rouge">2018-01-01 12:12:12.123</code> format versus the <code class="language-plaintext highlighter-rouge">2018-01-01 20:12:12.123</code> format.</p>
@@ -2697,8 +2697,8 @@ _id	datestring	datetimestamp
 
 <p>You can use the ‘z’ option to identify the time zone in TO_TIMESTAMP to make sure the timestamp has the timezone in it. Also, use the ‘z’ option to identify the time zone in a timestamp using the TO_CHAR function. For example:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z') AS Original, 
-       TO_CHAR(TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z'), 'z') AS TimeZone 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z') AS Original,
+       TO_CHAR(TO_TIMESTAMP('2015-03-30 20:49:59.0 UTC', 'YYYY-MM-dd HH:mm:ss.s z'), 'z') AS TimeZone
        FROM (VALUES(1));
 
 |------------------------|-----------|
@@ -2706,12 +2706,12 @@ _id	datestring	datetimestamp
 |------------------------|-----------|
 | 2015-03-30 20:49:00.0  | UTC       |
 |------------------------|-----------|
-1 row selected (0.097 seconds)  
+1 row selected (0.097 seconds)
 </code></pre></div></div>
 
 <!-- DRILL-448 Support timestamp with time zone -->
 
-<!-- Apache Drill    
+<!-- Apache Drill
 Apache DrillDRILL-1141
 ISNUMERIC should be implemented as a SQL function
 SELECT count(columns[0]) as number FROM dfs.`bla` WHERE ISNUMERIC(columns[0])=1

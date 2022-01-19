@@ -1477,7 +1477,7 @@
 
 <p>Table values referenced in a query are case-sensitive, for example:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT * FROM t WHERE col1='a';  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT * FROM t WHERE col1='a';
 </code></pre></div></div>
 
 <p>If values in col1 of table t are stored in uppercase, this query would not return any results because the query requested lowercase ‘a’.</p>
@@ -1514,7 +1514,7 @@
     <p>Keywords, for example SELECT and select are equivalent, as shown in the following queries:</p>
 
     <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>       SELECT * FROM dfs.`/Users/drilluser/ticket_sales.json`;
-       select * from DFS.`/Users/drilluser/ticket_sales.json`;  
+       select * from DFS.`/Users/drilluser/ticket_sales.json`;
 </code></pre></div>    </div>
   </li>
 </ul>
@@ -1524,7 +1524,7 @@
 <p>The case of the name used in a query and the name in the storage plugin definition do not have to match. For example, defining a storage plugin named <code class="language-plaintext highlighter-rouge">dfs</code> and then referring to the plugin as <code class="language-plaintext highlighter-rouge">DFS</code> or <code class="language-plaintext highlighter-rouge">dfs</code> in a query are both acceptable to Drill. For example, Drill can process both of the following queries:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT * FROM dfs.`/Users/drilluser/ticket_sales.json`;
-   SELECT * FROM DFS.`/Users/drilluser/ticket_sales.json`;  
+   SELECT * FROM DFS.`/Users/drilluser/ticket_sales.json`;
 </code></pre></div></div>
 
 <p><strong>Note:</strong> Drill stores storage plugin and workspace names in lowercase, by default. If you upgrade to Drill 1.15, you can query storage plugin or schema names previously stored in uppercase using uppercase or lowercase text. If duplicate names exist, for example you have two storage plugins named DFS, one in uppercase and one in lowercase, Drill logs a warning and keeps only one storage plugin. Drill keeps the first storage plugin defined in the workspace configuration.</p>
@@ -1568,13 +1568,13 @@
 
 <p>For example, enclose the SQL keywords date and time in identifier quotes when referring to column names, but not when referring to data types:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE dfs.tmp.sampleparquet AS 
-(SELECT trans_id, 
-cast(`date` AS date) transdate, 
-cast(`time` AS time) transtime, 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE dfs.tmp.sampleparquet AS
+(SELECT trans_id,
+cast(`date` AS date) transdate,
+cast(`time` AS time) transtime,
 cast(amount AS double) amountm,
-user_info, marketing_info, trans_info 
-FROM dfs.`/Users/drilluser/sample.json`);    
+user_info, marketing_info, trans_info
+FROM dfs.`/Users/drilluser/sample.json`);
 </code></pre></div></div>
 
 <p>Table and column names are case-insensitive. Use identifier quotes to enclose names that contain special characters. Special characters are those other than the 52 Latin alphabet characters. For example, space and @ are special characters.</p>
@@ -1591,15 +1591,15 @@ FROM dfs.`/Users/drilluser/sample.json`);
 | 2013       | 666             |
 | 2013       | 999             |
 |------------|-----------------|
-5 rows selected (0.051 seconds)  
+5 rows selected (0.051 seconds)
 </code></pre></div></div>
 
 <h3 id="identifier-quotes">Identifier Quotes</h3>
 <p>Prior to Drill 1.11, the SQL parser in Drill only supported backticks as identifier quotes. As of Drill 1.11, the SQL parser can also use double quotes and square brackets. The default setting for identifier quotes is backticks. You can configure the type of identifier quotes used with the  <code class="language-plaintext highlighter-rouge">planner.parser.quoting_identifiers</code> configuration option, at the system or session level, as shown:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ALTER SYSTEM|SESSION SET planner.parser.quoting_identifiers = '"';  
-   ALTER SYSTEM|SESSION SET planner.parser.quoting_identifiers = '[';  
-   ALTER SYSTEM|SESSION SET planner.parser.quoting_identifiers = '`';  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ALTER SYSTEM|SESSION SET planner.parser.quoting_identifiers = '"';
+   ALTER SYSTEM|SESSION SET planner.parser.quoting_identifiers = '[';
+   ALTER SYSTEM|SESSION SET planner.parser.quoting_identifiers = '`';
 </code></pre></div></div>
 
 <p>The following table lists the supported identifier quotes with their corresponding Unicode character:</p>
@@ -1629,7 +1629,7 @@ FROM dfs.`/Users/drilluser/sample.json`);
 
 <p>Alternatively, you can set the type of identifier using the <code class="language-plaintext highlighter-rouge">quoting_identifiers</code> property in the jdbc connection URL, as shown:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   jdbc:drill:zk=local;quoting_identifiers=[  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   jdbc:drill:zk=local;quoting_identifiers=[
 </code></pre></div></div>
 
 <p><strong>Note:</strong> The identifier quotes used in queries must match the <code class="language-plaintext highlighter-rouge">planner.parser.quoting_identifiers</code> setting. If you use another type of identifier quotes, Drill returns an error.</p>
@@ -1643,7 +1643,7 @@ FROM dfs.`/Users/drilluser/sample.json`);
    |-------------|--------------|
    | 1           | Sheri Nowmer |
    |-------------|--------------|
-   1 row selected (0.148 seconds)  
+   1 row selected (0.148 seconds)
 
    0: jdbc:drill:zk=local&gt; select "employee_id", "full_name" from cp."employee.json" limit 1;
    |-------------|--------------|
@@ -1651,7 +1651,7 @@ FROM dfs.`/Users/drilluser/sample.json`);
    |-------------|--------------|
    | 1           | Sheri Nowmer |
    |-------------|--------------|
-   1 row selected (0.129 seconds)  
+   1 row selected (0.129 seconds)
 
    0: jdbc:drill:zk=local&gt; select [employee_id], [full_name] from cp.[employee.json] limit 1;
    |-------------|--------------|
@@ -1659,14 +1659,14 @@ FROM dfs.`/Users/drilluser/sample.json`);
    |-------------|--------------|
    | 1           | Sheri Nowmer |
    |-------------|--------------|
-   1 row selected (0.14 seconds)  
+   1 row selected (0.14 seconds)
 </code></pre></div></div>
 
 <h3 id="dots-in-column-names">Dots in Column Names</h3>
 <p>As of Drill 1.12, Drill supports dots in column names if the data source itself allows dots in column names, such as JSON and Parquet , as shown in the following example:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT * FROM `test.json`;
-   
+
    |-------------------------------------------------|-------------------------------------------------|
    | 0.0.1                                           | 0.1.2                                           |
    |-------------------------------------------------|-------------------------------------------------|
@@ -1676,7 +1676,7 @@ FROM dfs.`/Users/drilluser/sample.json`);
 
 <p>When referencing column names with dots in queries, you must escape the dots with <a href="/docs/lexical-structure/#identifier-quotes">identifier quotes</a>, as shown in the following query:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT t.`0.1.2`.version FROM dfs.tmp.`test.json` t WHERE t.`0.1.2`.date_created='2014-05-21'  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT t.`0.1.2`.version FROM dfs.tmp.`test.json` t WHERE t.`0.1.2`.date_created='2014-05-21'
 </code></pre></div></div>
 
 <p>Drill also supports associative array indexing, for example <code class="language-plaintext highlighter-rouge">SELECT a, b.c, b['d.e']...</code>.</p>
@@ -1740,7 +1740,7 @@ FROM dfs.`/Users/drilluser/sample.json`);
 
 <p>To refer to the string Martha’s Vineyard in a query, use single quotation marks to enclose the string and escape the apostophe using a single quotation mark:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM dfs.`/Users/drilluser/vitalstat.json` t 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM dfs.`/Users/drilluser/vitalstat.json` t
 WHERE t.source = 'Martha''s Vineyard';
 </code></pre></div></div>
 

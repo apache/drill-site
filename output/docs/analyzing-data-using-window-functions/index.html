@@ -1517,8 +1517,8 @@
     <p>Get the top Yelp businesses based on the number reviews in each city and the row number of the business.</p>
 
     <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT name, city, review_count, row_number()
- OVER (PARTITION BY city ORDER BY review_count DESC) AS rownum 
- FROM `business.json` LIMIT 15;  
+ OVER (PARTITION BY city ORDER BY review_count DESC) AS rownum
+ FROM `business.json` LIMIT 15;
 
  |----------------------------------------|------------|---------------|---------|
  |                  name                  |    city    | review_count  | rownum  |
@@ -1674,9 +1674,9 @@
     <p>Compare the number of reviews with the number of reviews for the previous and following businesses.</p>
 
     <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> SELECT city, review_count, name,
- LAG(review_count, 1) OVER(PARTITION BY city ORDER BY review_count DESC) 
+ LAG(review_count, 1) OVER(PARTITION BY city ORDER BY review_count DESC)
  AS preceding_count,
- LEAD(review_count, 1) OVER(PARTITION BY city ORDER BY review_count DESC) 
+ LEAD(review_count, 1) OVER(PARTITION BY city ORDER BY review_count DESC)
  AS following_count
  FROM `business.json` limit 15;
 

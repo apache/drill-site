@@ -1486,31 +1486,31 @@
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   LAG | LEAD
    ( expression )
-   OVER ( [ PARTITION BY expr_list ] [ ORDER BY order_list ] )  
+   OVER ( [ PARTITION BY expr_list ] [ ORDER BY order_list ] )
 </code></pre></div></div>
 
 <h3 id="first_value--last_value">FIRST_VALUE | LAST_VALUE</h3>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   FIRST_VALUE | LAST_VALUE
    ( expression ) OVER
-   ( [ PARTITION BY expr_list ] [ ORDER BY order_list ][ frame_clause ] )  
+   ( [ PARTITION BY expr_list ] [ ORDER BY order_list ][ frame_clause ] )
 </code></pre></div></div>
 
 <h2 id="arguments">Arguments</h2>
 
-<p><em>expression</em><br />
+<p><em>expression</em>
 The target column or expression that the function operates on.</p>
 
-<p>OVER<br />
+<p>OVER
 Specifies the window partitioning and ordering. The OVER clause cannot contain a window frame specification.</p>
 
-<p>PARTITION BY  <em>expr_list</em><br />
+<p>PARTITION BY  <em>expr_list</em>
 Defines the window for the window function in terms of one or more expressions.</p>
 
-<p>ORDER BY <em>order_list</em><br />
+<p>ORDER BY <em>order_list</em>
 Sorts the rows within each partition. If PARTITION BY is not specified, ORDER BY uses the entire table.</p>
 
-<p><em>frame_clause</em><br />
+<p><em>frame_clause</em>
 The frame clause refines the set of rows in a function’s window, including or excluding sets of rows within the ordered result. The frame clause consists of the ROWS or RANGE keyword and associated specifiers.</p>
 
 <h2 id="examples">Examples</h2>
@@ -1519,8 +1519,8 @@ The frame clause refines the set of rows in a function’s window, including or 
 <h3 id="lag">LAG()</h3>
 <p>The following example uses the LAG window function to show the quantity of records sold to the Tower Records customer with customer ID 8  and the dates that customer 8 purchased records. To compare each sale with the previous sale for customer 8, the query returns the previous quantity sold for each sale. Since there is no purchase before 1976-01-25, the first previous quantity sold value is null. Note that the term “date” in the query is enclosed in back ticks because it is a reserved keyword in Drill.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   select cust_id, `date`, qty_sold, lag(qty_sold,1) over (order by cust_id, `date`) as prev_qtysold from sales where cust_id = 8 order by cust_id, `date`;  
-   
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   select cust_id, `date`, qty_sold, lag(qty_sold,1) over (order by cust_id, `date`) as prev_qtysold from sales where cust_id = 8 order by cust_id, `date`;
+
    |----------|-------------|-----------|---------------|
    | cust_id  |    date     | qty_sold  | prev_qtysold  |
    |----------|-------------|-----------|---------------|

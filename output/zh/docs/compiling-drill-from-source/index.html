@@ -1464,7 +1464,7 @@ patch review tool.</p>
 <p>Run the following commands to verify that the correct versions of Maven and JDK are installed:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java -version
-mvn -version  
+mvn -version
 </code></pre></div></div>
 
 <h2 id="1-clone-the-repository">1. Clone the Repository</h2>
@@ -1476,17 +1476,24 @@ mvn -version
 
 <p>Change to the drill directory:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd drill  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd drill
 </code></pre></div></div>
 
 <p>Build Apache Drill:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn clean install -DskipTests  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn clean install -DskipTests
 </code></pre></div></div>
 
-<p>If you want to deploy Apache Drill on the MapR platform, include the <code class="language-plaintext highlighter-rouge">-Pmapr</code> option to build Drill under the MapR profile:</p>
+<p>If you want to deploy Apache Drill on the MapR platform, include the <code class="language-plaintext highlighter-rouge">-Pmapr</code> option to build Drill under the MapR profile.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn clean install -DskipTests -Pmapr  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn clean install -DskipTests -Pmapr
+</code></pre></div></div>
+
+<p><strong>Introduced in release: 1.20</strong></p>
+
+<p>Drill updated its Hadoop client libraries to Hadoop 3 in release 1.17 leaving Hadoop 2 users unable to upgrade beyond Drill 1.16.  As of Drill 1.20 it once again becomes possible to build Drill for deployment in an Hadoop 2 environment, by including the <code class="language-plaintext highlighter-rouge">-Phadoop-2</code> option to select the Hadoop 2 profile.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mvn clean install -DskipTests -Phadoop-2
 </code></pre></div></div>
 
 <p>A tarball is built and appears in the distribution/target directory. Move the tarball to another directory for unpacking. Unpack the tarball and then connect to Drill and query sample data, or connect Drill to your data sources.</p>

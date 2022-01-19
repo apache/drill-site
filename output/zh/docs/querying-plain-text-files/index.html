@@ -1478,7 +1478,7 @@ found” error if references to files in queries do not match these conditions.<
 records:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ more plays.csv
- 
+
 1599,As You Like It
 1601,Twelfth Night
 1594,Comedy of Errors
@@ -1492,7 +1492,7 @@ records:</p>
 each row.</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select * from dfs.`/Users/brumsby/drill/plays.csv`;
- 
+
 |-----------------------------------|
 |              columns              |
 |-----------------------------------|
@@ -1514,7 +1514,7 @@ rows in a more readable, column by column, format. (This syntax uses a zero-
 based index, so the first column is column <code class="language-plaintext highlighter-rouge">0</code>.)</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select columns[0], columns[1] from dfs.`/Users/brumsby/drill/plays.csv`;
- 
+
 |------------|------------------------|
 |   EXPR$0   |         EXPR$1         |
 |------------|------------------------|
@@ -1532,9 +1532,9 @@ based index, so the first column is column <code class="language-plaintext highl
 <p>You can use aliases to return meaningful column names. Note that <code class="language-plaintext highlighter-rouge">YEAR</code> is a
 reserved word, so the <code class="language-plaintext highlighter-rouge">Year</code> alias must be enclosed by back ticks.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select columns[0] as `Year`, columns[1] as Play 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select columns[0] as `Year`, columns[1] as Play
 from dfs.`/Users/brumsby/drill/plays.csv`;
- 
+
 |------------|------------------------|
 |    Year    |    Play                |
 |------------|------------------------|
@@ -1553,9 +1553,9 @@ from dfs.`/Users/brumsby/drill/plays.csv`;
 original <code class="language-plaintext highlighter-rouge">columns[n]</code> syntax, as shown in the WHERE clause for the following
 example:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select columns[0] as `Year`, columns[1] as Play 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select columns[0] as `Year`, columns[1] as Play
 from dfs.`/Users/brumsby/drill/plays.csv` where columns[0]&gt;1599;
- 
+
 |------------|---------------|
 |    Year    |      Play     |
 |------------|---------------|
@@ -1602,11 +1602,11 @@ path and name of the file in back ticks.</p>
     <p>http://storage.googleapis.com/books/ngrams/books/googlebooks-eng-all-5gram-20120701-zo.gz</p>
   </li>
   <li>
-    <p>Unzip the file.<br />
+    <p>Unzip the file.
 A file named googlebooks-eng-all-5gram-20120701-zo appears.</p>
   </li>
   <li>
-    <p>Change the file name to add a <code class="language-plaintext highlighter-rouge">.tsv</code> extension.<br />
+    <p>Change the file name to add a <code class="language-plaintext highlighter-rouge">.tsv</code> extension.
 The Drill <code class="language-plaintext highlighter-rouge">dfs</code> storage plugin definition includes a TSV format that requires
 a file to have this extension. Later, you learn how to skip this step and query the GZ file directly.</p>
   </li>
@@ -1682,12 +1682,12 @@ times a year in the books that Google scans.</p>
   <li>
     <p>Query the renamed GZ file directly to get data about “Zoological Journal of the Linnean” that appears more than 250 times a year in the books that Google scans. In the FROM clause, instead of using the full path to the file as you did in the last exercise, connect to the data using the storage plugin workspace name ngram.</p>
 
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT COLUMNS[0], 
-       COLUMNS[1], 
-       COLUMNS[2] 
-FROM dfs.`/Users/drilluser/Downloads/googlebooks-eng-all-5gram-20120701-zo.tsv.gz` 
-WHERE ((columns[0] = 'Zoological Journal of the Linnean') 
-AND (columns[2] &gt; 250)) 
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT COLUMNS[0],
+       COLUMNS[1],
+       COLUMNS[2]
+FROM dfs.`/Users/drilluser/Downloads/googlebooks-eng-all-5gram-20120701-zo.tsv.gz`
+WHERE ((columns[0] = 'Zoological Journal of the Linnean')
+AND (columns[2] &gt; 250))
 LIMIT 10;
 </code></pre></div>    </div>
 

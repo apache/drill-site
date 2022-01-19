@@ -1480,7 +1480,7 @@ FROM orders o
 WHERE o.o_orderdate &gt;= DATE '1996-10-01'
       AND o.o_orderdate &lt; DATE '1996-10-01' + INTERVAL '3' month
       AND EXISTS(
-                 SELECT * FROM lineitem l 
+                 SELECT * FROM lineitem l
                  WHERE l.l_orderkey = o.o_orderkey
                  AND l.l_commitdate &lt; l.l_receiptdate
                  )
@@ -1495,7 +1495,7 @@ WHERE o.o_orderdate &gt;= DATE '1996-10-01'
 <p>Apache Drill lets you leverage your investments in Hive. You can run interactive queries with Drill on your Hive tables and access all Hive input/output formats (including custom SerDes). You can join tables associated with different Hive metastores, and you can join a Hive table with an HBase table or a directory of log files. Here’s a simple query in Drill on a Hive table:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT `month`, state, sum(order_total) AS sales
-FROM hive.orders 
+FROM hive.orders
 GROUP BY `month`, state
 ORDER BY 3 DESC LIMIT 5;
 </code></pre></div></div>
@@ -1504,8 +1504,8 @@ ORDER BY 3 DESC LIMIT 5;
 <p>Drill is extensible. You can connect Drill out-of-the-box to file systems (local or distributed, such as S3 and HDFS), HBase and Hive. You can implement a storage plugin to make Drill work with any other data source. Drill can combine data from multiple data sources on the fly in a single query, with no centralized metadata definitions. Here’s a query that combines data from a Hive table, an HBase table (view) and a JSON file:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT custview.membership, sum(orders.order_total) AS sales
-FROM hive.orders, custview, dfs.`clicks/clicks.json` c 
-WHERE orders.cust_id = custview.cust_id AND orders.cust_id = c.user_info.cust_id 
+FROM hive.orders, custview, dfs.`clicks/clicks.json` c
+WHERE orders.cust_id = custview.cust_id AND orders.cust_id = c.user_info.cust_id
 GROUP BY custview.membership
 ORDER BY 2;
 </code></pre></div></div>

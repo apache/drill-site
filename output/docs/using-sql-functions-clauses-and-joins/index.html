@@ -1445,13 +1445,13 @@ this kind of simple query:</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select id, type from dfs.`/Users/brumsby/drill/donuts.json`
 where id&gt;0
 order by id limit 1;
-  
+
 |------------|------------|
 |     id     |    type    |
 |------------|------------|
 | 0001       | donut      |
 |------------|------------|
-  
+
 1 row selected (0.318 seconds)
 </code></pre></div></div>
 
@@ -1462,13 +1462,13 @@ syntax:</p>
 join
 dfs.`/Users/brumsby/drill/moredonuts.json` as tbl2
 on tbl1.id=tbl2.id;
-  
+
 |------------|------------|
 |     id     |    type    |
 |------------|------------|
 | 0001       | donut      |
 |------------|------------|
-  
+
 1 row selected (0.395 seconds)
 </code></pre></div></div>
 
@@ -1477,23 +1477,23 @@ on tbl1.id=tbl2.id;
 <p>Standard aggregate functions work against JSON data. For example:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select type, avg(ppu) as ppu_sum from dfs.`/Users/brumsby/drill/donuts.json` group by type;
-  
+
 |------------|------------|
 |    type    |  ppu_sum   |
 |------------|------------|
 | donut      | 0.55       |
 |------------|------------|
-  
+
 1 row selected (0.216 seconds)
-  
+
 0: jdbc:drill:zk=local&gt; select type, sum(sales) as sum_by_type from dfs.`/Users/brumsby/drill/moredonuts.json` group by type;
-  
+
 |------------|-------------|
 |    type    | sum_by_type |
 |------------|-------------|
 | donut      | 1194        |
 |------------|-------------|
-  
+
 1 row selected (0.389 seconds)
 </code></pre></div></div>
 

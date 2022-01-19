@@ -1489,8 +1489,8 @@ The query is restricted to distinct rows where the name is <code class="language
 query returns only one row that meets those criteria; however, note that this
 row contains an array of four categories:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select distinct name, hours, categories 
-from dfs.yelp.`yelp_academic_dataset_business.json` 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select distinct name, hours, categories
+from dfs.yelp.`yelp_academic_dataset_business.json`
 where name ='zpizza';
 |------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
 |    name    |   hours                                                                                                                                                                                                                                                                                                         | categories                                    |
@@ -1501,8 +1501,8 @@ where name ='zpizza';
 <p>The FLATTEN function can operate on this single row and return multiple rows,
 one for each category:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select distinct name, flatten(categories) as categories 
-from dfs.yelp.`yelp_academic_dataset_business.json` 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select distinct name, flatten(categories) as categories
+from dfs.yelp.`yelp_academic_dataset_business.json`
 where name ='zpizza' order by 2;
 |------------|-------------|
 |    name    | categories  |
@@ -1523,12 +1523,12 @@ constraints or aggregate functions to the results in the outer query.</p>
 <p>The following query uses the same data file as the previous query to flatten
 the categories array, then run a COUNT function on the flattened result:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select celltbl.catl, count(celltbl.catl) catcount 
-from (select flatten(categories) catl 
-from dfs.yelp.`yelp_academic_dataset_business.json`) celltbl 
-group by celltbl.catl 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select celltbl.catl, count(celltbl.catl) catcount
+from (select flatten(categories) catl
+from dfs.yelp.`yelp_academic_dataset_business.json`) celltbl
+group by celltbl.catl
 order by count(celltbl.catl) desc limit 5;
- 
+
 |---------------|------------|
 |    catl       |  catcount  |
 |---------------|------------|

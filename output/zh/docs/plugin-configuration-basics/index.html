@@ -1446,7 +1446,7 @@
 <p>The following sections describe the attributes that you can use in your storage plugin configurations and provide information related to the use of attributes.</p>
 
 <h2 id="storage-plugin-attributes">Storage Plugin Attributes</h2>
-<p>The following graphic shows key attributes of a typical <code class="language-plaintext highlighter-rouge">dfs</code>-based storage plugin configuration:<br />
+<p>The following graphic shows key attributes of a typical <code class="language-plaintext highlighter-rouge">dfs</code>-based storage plugin configuration:
 <img src="/images/docs/connect-plugin.png" alt="dfs plugin" /></p>
 
 <h2 id="list-of-attributes-and-definitions">List of Attributes and Definitions</h2>
@@ -1578,7 +1578,7 @@
 
 <p>The <code class="language-plaintext highlighter-rouge">table function name</code> is the table name, the type parameter is the format name, and the other parameters are the fields that the format plugin configuration accepts, as defined in the table above (except for <code class="language-plaintext highlighter-rouge">extensions</code> which do not apply in this context).</p>
 
-<p>For example, to read a CSV file and parse the header:<br />
+<p>For example, to read a CSV file and parse the header:
 <code class="language-plaintext highlighter-rouge">select a, b from table(dfs.`path/to/data.csv`(type =&gt; 'text',
 fieldDelimiter =&gt; ',', extractHeader =&gt; true))</code></p>
 
@@ -1597,7 +1597,7 @@ SCHEMA =&gt; 'inline=(column_name data_type [nullability] [format] [default] [pr
 <p>You can specify the schema inline within the query. For example:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select * from table(dfs.tmp.`text_table`(
-schema =&gt; 'inline=(col1 date properties {`drill.format` = `yyyy-MM-dd`}) 
+schema =&gt; 'inline=(col1 date properties {`drill.format` = `yyyy-MM-dd`})
 properties {`drill.strict` = `false`}'))
 </code></pre></div></div>
 
@@ -1609,7 +1609,7 @@ properties {`drill.strict` = `false`}'))
 <p>The following example demonstrates applying provided schema alongside with format plugin table function parameters.
 Suppose that you have a CSV file with headers and with a custom extension: <code class="language-plaintext highlighter-rouge">csvh-test</code>. You can combine the schema with format plugin properties:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select * from table(dfs.tmp.`cars.csvh-test`(type =&gt; 'text', 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select * from table(dfs.tmp.`cars.csvh-test`(type =&gt; 'text',
 fieldDelimiter =&gt; ',', extractHeader =&gt; true,
 schema =&gt; 'inline=(col1 date)'))
 </code></pre></div></div>
@@ -1622,9 +1622,9 @@ schema =&gt; 'inline=(col1 date)'))
 
 <p>Starting in Drill 1.15, storage plugin names and workspaces (schemas) are case-insensitive. For example, the following query uses a storage plugin named <code class="language-plaintext highlighter-rouge">dfs</code> and a workspace named <code class="language-plaintext highlighter-rouge">clicks</code>. You can reference <code class="language-plaintext highlighter-rouge">dfs.clicks</code> in an SQL statement in uppercase or lowercase, as shown:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   USE dfs.clicks;  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   USE dfs.clicks;
    USE DFS.CLICKs;
-   USE dfs.CLICKS; 
+   USE dfs.CLICKS;
 </code></pre></div></div>
 
 <p>Refer to <a href="/zh/docs/lexical-structure/#case-sensitivity">Case-Sensitivity</a> for more information about case-sensitivity in Drill.</p>

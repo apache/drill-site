@@ -1465,57 +1465,57 @@
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE [OR REPLACE] SCHEMA
 [LOAD 'file:///path/to/file']
 [(column_name data_type [nullability] [format] [default] [properties {prop='val', ...})]]
-[FOR TABLE `table_name` | PATH 'file:///schema_file_path/schema_file_name'] 
-[PROPERTIES ('key1'='value1', 'key2'='value2', ...)]   
+[FOR TABLE `table_name` | PATH 'file:///schema_file_path/schema_file_name']
+[PROPERTIES ('key1'='value1', 'key2'='value2', ...)]
 </code></pre></div></div>
 
 <h2 id="parameters">Parameters</h2>
 
-<p><em>OR REPLACE</em><br />
+<p><em>OR REPLACE</em>
 Existing schema is dropped and replaced with the new schema. Prevents malicious deletion of any file. Only supported when using FOR TABLE. Not supported when using PATH. Instead, you must manually delete any schema file created in a custom PATH location.</p>
 
-<p><em>LOAD</em><br />
+<p><em>LOAD</em>
 Loads raw schema (list of column names with their attributes) from a file. You must indicate the path to the file after the LOAD keyword. Note that columns should be listed or provided when using the LOAD clause; at least one option is required for the successful schema creation.</p>
 
-<p><em>column_name</em><br />
+<p><em>column_name</em>
 Name of the column for which schema is created. Case-insensitive. The name must match the name in the data file or data source. You cannot rename columns using the schema mechanism.</p>
 
-<p><em>data_type</em><br />
+<p><em>data_type</em>
 Data type defined for the column. See Supported Data Types.</p>
 
-<p><em>format</em><br />
+<p><em>format</em>
 Sets the format for date and time data types when converting from string. See <a href="/zh/docs/create-or-replace-schema/#format-for-date-time-conversion">Format for Date, Time Conversion</a>.</p>
 
-<p><em>default</em>  <br />
+<p><em>default</em>
 Used for non-nullable columns. The default value is returned by queries when the column is missing from a data file. The default value is a string enclosed in single quotes, like ‘10’. If you provide a format, the value must be valid for that format.</p>
 
-<p><em>properties</em><br />
+<p><em>properties</em>
 Keyword to include optional properties. See Related Options below.</p>
 
-<p><em>property</em>    <br />
+<p><em>property</em>
 Name of the property applied to the column or table.</p>
 
-<p><em>value</em>    <br />
+<p><em>value</em>
 Value set for the indicated property.</p>
 
-<p><em>table_name</em><br />
+<p><em>table_name</em>
 Name of the table associated with the schema being created or replaced. Enclose the table name in backticks if there are spaces after the FOR TABLE keywords. If the table does not exist, the command fails and schema is not created. If you indicate the table name without schema, the table is assumed to be in the current workspace, and you must specify the PATH property. If you indicate FOR TABLE and PATH, or you do not indicate either, the CREATE SCHEMA command fails. In this case, the table schema is created in the table’s root directory with the default name <code class="language-plaintext highlighter-rouge">.drill.table_schema</code>. Table cannot be a temporary table.</p>
 
-<p><em>PATH</em><br />
+<p><em>PATH</em>
 Path to the schema file. You must indicate the path to the file after the PATH keyword.</p>
 
-<p><em>properties</em><br />
+<p><em>properties</em>
 List of properties as key-value pairs in  parenthesis.</p>
 
 <h2 id="related-options">Related Options</h2>
 
 <p>In Drill 1.16, you must enable the following options for Drill to use the schema created during query execution:</p>
 
-<p><strong>exec.storage.enable_v3_text_reader</strong><br />
-Enables the preview “version 3” of the text (CSV) file reader. The V3 text reader is the only reader in Drill 1.16 that supports file schemas.<br />
+<p><strong>exec.storage.enable_v3_text_reader</strong>
+Enables the preview “version 3” of the text (CSV) file reader. The V3 text reader is the only reader in Drill 1.16 that supports file schemas.
 In Drill 1.17, this option is enabled by default.</p>
 
-<p><strong>store.table.use_schema_file</strong><br />
+<p><strong>store.table.use_schema_file</strong>
 Enables the use of the schema file mechanism.</p>
 
 <p>You can enable these options, as shown:</p>
@@ -1532,7 +1532,7 @@ set `store.table.use_schema_file` = true;
 |  ok  |               summary                |
 |------|--------------------------------------|
 | true | store.table.use_schema_file updated. |
-|------|--------------------------------------| 
+|------|--------------------------------------|
 </code></pre></div></div>
 
 <h2 id="related-properties">Related Properties</h2>
@@ -1555,16 +1555,16 @@ set `store.table.use_schema_file` = true;
 
 <p>The following sections describe the properties that aid in data clean up and transformation:</p>
 
-<p><strong>drill.strict</strong><br />
+<p><strong>drill.strict</strong>
 Table property that determines the set of columns returned for a wildcard (*) query. With <code class="language-plaintext highlighter-rouge">drill.strict=false</code> (the default), a wildcard includes all columns in the table, whether or not they are listed in the schema. With <code class="language-plaintext highlighter-rouge">drill.strict=true</code>, a wildcard includes only the columns defined in the schema, and in the order defined by the schema. See <a href="/zh/docs/create-or-replace-schema/#schema-mode-column-order">Schema Mode (Column Order)</a>.</p>
 
-<p><strong>drill.format</strong><br />
+<p><strong>drill.format</strong>
 Same as the format parameter. (The format parameter is stored as a property in the schema file.) See the format parameter for the supported formats. Also, see <a href="/zh/docs/create-or-replace-schema/#format-for-date-time-conversion">Format for Date, Time Conversion</a>.</p>
 
-<p><strong>drill.default</strong><br />
+<p><strong>drill.default</strong>
 Same as the default parameter. (The default parameter is stored as a property in the schema file.) See <a href="/zh/docs/create-or-replace-schema/#column-modes-nullable-and-non-nullable-columns">Column Modes (Nullable and Non-Nullable Columns</a>).</p>
 
-<p><strong>drill.blank-as</strong><br />
+<p><strong>drill.blank-as</strong>
 A property that sets how Drill handles blank column values. Accepts the following values:</p>
 <ul>
   <li><strong>null</strong>: If the column is nullable, treat the blank as null. If non-nullable, leave the blank unchanged.</li>
@@ -1625,15 +1625,15 @@ A property that sets how Drill handles blank column values. Accepts the followin
   },
   "version" : 1
 } |
-|----------------------------------------------------------------------------------|  
+|----------------------------------------------------------------------------------|
 </code></pre></div></div>
 
 <h2 id="related-commands">Related Commands</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DROP SCHEMA [IF EXISTS] FOR TABLE `table_name` See [Dropping Schema for a Table](/docs/create-or-replace-schema/#dropping-schema-for-a-table). 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DROP SCHEMA [IF EXISTS] FOR TABLE `table_name` See [Dropping Schema for a Table](/docs/create-or-replace-schema/#dropping-schema-for-a-table).
 
 
-DESCRIBE SCHEMA FOR TABLE `table_name` See [Describing Schema for a Table](/docs/create-or-replace-schema/#describing-schema-for-a-table).   
+DESCRIBE SCHEMA FOR TABLE `table_name` See [Describing Schema for a Table](/docs/create-or-replace-schema/#describing-schema-for-a-table).
 </code></pre></div></div>
 
 <h2 id="supported-data-types">Supported Data Types</h2>
@@ -1682,7 +1682,7 @@ DESCRIBE SCHEMA FOR TABLE `table_name` See [Describing Schema for a Table](/docs
 <h3 id="schema-mode-column-order">Schema Mode (Column Order)</h3>
 <p>The schema mode determines the set of columns returned for wildcard (*) queries and the  ordering of those columns. The mode is set through the <code class="language-plaintext highlighter-rouge">drill.strict</code> property. You can set this property to true (strict) or false (not strict). If you do not indicate the mode, the default is false (not strict).</p>
 
-<p><strong>Not Strict (Default)</strong><br />
+<p><strong>Not Strict (Default)</strong>
 Columns defined in the schema are projected in the defined order. Columns not defined in the schema are appended to the defined columns, as shown:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create or replace schema (id int, start_date date format 'yyyy-MM-dd') for table dfs.tmp.`text_table` properties ('drill.strict' = 'false');
@@ -1691,7 +1691,7 @@ Columns defined in the schema are projected in the defined order. Columns not de
 |------|-----------------------------------------|
 | true | Created schema for [dfs.tmp.text_table] |
 |------|-----------------------------------------|
- 
+
 select * from dfs.tmp.`text_table`;
 |------|------------|---------|
 | id   | start_date | name    |
@@ -1706,7 +1706,7 @@ select * from dfs.tmp.`text_table`;
 
 <p>Note that the “name” column, which was not included in the schema was appended to the end of the table.</p>
 
-<p><strong>Strict</strong><br />
+<p><strong>Strict</strong>
 Setting the <code class="language-plaintext highlighter-rouge">drill.strict</code> property  to “true” changes the schema mode to strict, which means that the reader ignores any columns NOT included in the schema. The query only returns the columns defined in the schema, as shown:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create or replace schema (id int, start_date date format 'yyyy-MM-dd') for table dfs.tmp.`text_table` properties ('drill.strict' = 'true');
@@ -1715,7 +1715,7 @@ Setting the <code class="language-plaintext highlighter-rouge">drill.strict</cod
 |------|-----------------------------------------|
 | true | Created schema for [dfs.tmp.text_table] |
 |------|-----------------------------------------|
- 
+
 select * from dfs.tmp.`text_table`;
 |------|------------|
 |  id  | start_date |
@@ -1725,7 +1725,7 @@ select * from dfs.tmp.`text_table`;
 | 3    | 2016-01-01 |
 | 4    | null       |
 | null | null       |
-|------|------------|  
+|------|------------|
 </code></pre></div></div>
 
 <p>Note that the “name” column, which was not included in the schema was ignored and not returned in the result set.</p>
@@ -1747,7 +1747,7 @@ select * from dfs.tmp.`text_table`;
 
 <p>You can see the “comment” column returned in the result set.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select * from dfs.tmp.`text_table`;  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select * from dfs.tmp.`text_table`;
 |------|------------|---------|---------|
 | id   | start_date | comment | name    |
 |------|------------|---------|---------|
@@ -1770,7 +1770,7 @@ select * from dfs.tmp.`text_table`;
 |------|-----------------------------------------|
 | true | Created schema for [dfs.tmp.text_table] |
 |------|-----------------------------------------|
- 
+
 select * from dfs.tmp.`text_table`;
 |------|------------|
 | id   | start_date |
@@ -1793,7 +1793,7 @@ dfs.tmp.`text_table` properties ('drill.strict' = 'true');
 |------|-----------------------------------------|
 | true | Created schema for [dfs.tmp.text_table] |
 |------|-----------------------------------------|
- 
+
 select * from dfs.tmp.`text_table`;
 |----|------------|
 | id | start_date |
@@ -1817,7 +1817,7 @@ int not null default '-1', start_date date not null format 'yyyy-MM-dd' default
 |------|-----------------------------------------|
 | true | Created schema for [dfs.tmp.text_table] |
 |------|-----------------------------------------|
- 
+
 select * from dfs.tmp.`text_table`;
 |----|------------|
 | id | start_date |
@@ -1827,7 +1827,7 @@ select * from dfs.tmp.`text_table`;
 | 3  | 2016-01-01 |
 | 4  | 2017-01-01 |
 | -1 | 2017-01-01 |
-|----|------------|  
+|----|------------|
 </code></pre></div></div>
 
 <h2 id="handling-policy-for-blank-column-values">Handling Policy for Blank Column Values</h2>
@@ -1854,7 +1854,7 @@ dfs.tmp.`text_blank`;
 |------|-----------------------------------------|
 | true | Created schema for [dfs.tmp.text_blank] |
 |------|-----------------------------------------|
- 
+
 select * from dfs.tmp.`text_blank`;
 |----|--------|------------|
 | id | amount | start_date |
@@ -1877,7 +1877,7 @@ select * from dfs.tmp.`text_blank`;
 |------|-----------------------------------------|
 | true | Created schema for [dfs.tmp.text_blank] |
 |------|-----------------------------------------|
- 
+
 select * from dfs.tmp.`text_blank`;
 |----|--------|------------|
 | id | amount | start_date |
@@ -2055,13 +2055,13 @@ id,amount,start_date
 |  ok  |                 summary                 |
 |------|-----------------------------------------|
 | true | Created schema for [dfs.tmp.text_table] |
-|------|-----------------------------------------|  
+|------|-----------------------------------------|
 </code></pre></div></div>
 
 <p>After you define a schema, you can see the schema file (stored in JSON format) in the root table directory:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> [root@doc23 text_table]# ls -a
-.  ..  1.csvh  2.csvh  .drill.schema  ..drill.schema.crc  
+.  ..  1.csvh  2.csvh  .drill.schema  ..drill.schema.crc
 
 [root@doc23 text_table]# cat .drill.schema
 {
@@ -2089,7 +2089,7 @@ id,amount,start_date
 | 3    | Pebbles | 2016-01-01 |
 | 4    | Barney  |            |
 | null | Dino    |            |
-|------|---------|------------|  
+|------|---------|------------|
 </code></pre></div></div>
 
 <p>After defining the schema on the id column, you can see that the <code class="language-plaintext highlighter-rouge">id</code> column type and mode is defined as a nullable integer, while other columns types were inferred as non-nullable VarChar:</p>
@@ -2107,7 +2107,7 @@ id,amount,start_date
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>explain plan for select * from dfs.tmp.`text_table`;
 | 00-00    Screen
 00-01      Project(**=[$0])
-00-02        Scan(table=[[dfs, tmp, text_table]], groupscan=[EasyGroupScan [selectionRoot=file:/tmp/text_table, numFiles=2, columns=[`**`], files=[file:/tmp/text_table/1.csvh, file:/tmp/text_table/2.csvh], schema=[TupleSchema [PrimitiveColumnMetadata [`id` (INT(0, 0):OPTIONAL)]]]]])  
+00-02        Scan(table=[[dfs, tmp, text_table]], groupscan=[EasyGroupScan [selectionRoot=file:/tmp/text_table, numFiles=2, columns=[`**`], files=[file:/tmp/text_table/1.csvh, file:/tmp/text_table/2.csvh], schema=[TupleSchema [PrimitiveColumnMetadata [`id` (INT(0, 0):OPTIONAL)]]]]])
 </code></pre></div></div>
 
 <h3 id="describing-schema-for-a-table">Describing Schema for a Table</h3>
@@ -2225,19 +2225,19 @@ Incorrect syntax
 Required syntax properties are missing or incorrectly specified. Check CREATE SCHEMA syntax to ensure that all required properties where specified.
 </code></pre></div></div>
 
-<p><strong>Missing backticks</strong><br />
+<p><strong>Missing backticks</strong>
 Unable to parse CREATE SCHEMA command due to unknown properties and keywords. If the specified table name or column name contains spaces, enclose the name in backticks.</p>
 
-<p><strong>Incorrect data type</strong><br />
+<p><strong>Incorrect data type</strong>
 Parsing has failed on unknown/unsupported data type. Check which data types are supported by Drill. Check syntax for complex data types.</p>
 
-<p><strong>Missing table name</strong><br />
+<p><strong>Missing table name</strong>
 Table name indicated after <code class="language-plaintext highlighter-rouge">FOR TABLE</code> keywords are not present. Check if the table exists in the specified schema or in the current schema (if the schema was not specified). If you do not want to bind schema to the specific table, use the PATH property.</p>
 
-<p><strong>Existing schema file</strong><br />
+<p><strong>Existing schema file</strong>
 A schema file already exists for the table. Use the DROP SCHEMA command to remove stale or mistakenly created schema file. Alternatively, you can use the CREATE OR REPLACE SCHEMA command.</p>
 
-<p><strong>Lack of permissions</strong><br />
+<p><strong>Lack of permissions</strong>
 Unable to create schema file in the directory. Verify that you have write permission on the table’s root directory or the directory specified. If not, indicate the directory on which you write permissions in the command syntax.</p>
 
 

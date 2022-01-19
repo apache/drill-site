@@ -1452,7 +1452,7 @@
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   Memory unit = small_queue + (large queue * memory_ratio)
    Total memory available = total_direct_mem * (1 - memory_reserve_ratio)
    SQueue memory allocation = total_mem_available/memory_unit
-   LQueue memory allocation = SQueue_memory_allocation * memory_ratio  
+   LQueue memory allocation = SQueue_memory_allocation * memory_ratio
 </code></pre></div></div>
 
 <h3 id="enable-throttling">Enable Throttling</h3>
@@ -1513,12 +1513,12 @@
 <p>The default setting is 10, however if by experimentation you find that another number would be better, change the ratio to meet the needs of your queries.</p>
 
 <h3 id="configuring-the-memory-reserve-ratio">Configuring the Memory Reserve Ratio</h3>
-<p>Only the Sort and Hash Aggregate operators observer a memory limit and <a href="/docs/sort-based-and-hash-based-memory-constrained-operators/#spill-to-disk">spill to disk</a>. Other operators are not managed and the amount of memory needed for these other operators varies based on your specific queries. To account for these operators, you can set a memory reserve. 
+<p>Only the Sort and Hash Aggregate operators observer a memory limit and <a href="/docs/sort-based-and-hash-based-memory-constrained-operators/#spill-to-disk">spill to disk</a>. Other operators are not managed and the amount of memory needed for these other operators varies based on your specific queries. To account for these operators, you can set a memory reserve.
 The default reserve is 20% (0.2), but join-heavy workloads may need a larger value such as 50% or more.</p>
 
 <p>You can change the memory reserve ration using the exec.queue.memory_reserve_ratio option, as shown:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ALTER SYSTEM SET `exec.queue.memory_reserve_ratio` = 0.5  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   ALTER SYSTEM SET `exec.queue.memory_reserve_ratio` = 0.5
 </code></pre></div></div>
 
 <h2 id="tuning">Tuning</h2>

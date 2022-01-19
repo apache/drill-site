@@ -1439,19 +1439,19 @@
       
         <p>Prior to Drill 1.13, Drill supported Hive 1.0. Drill 1.13 and later includes version 2.3.2 of the Hive client, which adds support for queries on transactional (ACID) and non-transactional Hive bucketed ORC tables. The updated Hive libraries are backward compatible with earlier versions of the Hive server and metastore.</p>
 
-<p>To access Hive tables using custom SerDes or InputFormat/OutputFormat, all nodes running Drillbits must have the SerDes or InputFormat/OutputFormat <code class="language-plaintext highlighter-rouge">JAR</code> files in the 
+<p>To access Hive tables using custom SerDes or InputFormat/OutputFormat, all nodes running Drillbits must have the SerDes or InputFormat/OutputFormat <code class="language-plaintext highlighter-rouge">JAR</code> files in the
 <code class="language-plaintext highlighter-rouge">&lt;drill_installation_directory&gt;/jars/3rdparty</code> folder.</p>
 
 <h2 id="setting-hive-properties">Setting Hive Properties</h2>
 
 <p>Prior to Drill 1.14, you could only set <a href="https://cwiki.apache.org/confluence/display/Hive/Configuration+Properties">Hive configuration properties</a> at the system level in <code class="language-plaintext highlighter-rouge">hive-site.xml</code> or in the hive storage plugin configuration in the Drill Web UI. Starting in Drill 1.14, Drill supports the <code class="language-plaintext highlighter-rouge">store.hive.conf.properties</code> option, which enables you to specify Hive properties at the session level using the <a href="/zh/docs/set/">SET command</a>, as shown:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   alter session set `store.hive.conf.properties` = 'hive.mapred.supports.subdirectories=true\nmapred.input.dir.recursive=true';  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   alter session set `store.hive.conf.properties` = 'hive.mapred.supports.subdirectories=true\nmapred.input.dir.recursive=true';
 </code></pre></div></div>
 
 <p><strong>Note:</strong> The <code class="language-plaintext highlighter-rouge">hive.mapred.supports.subdirectories</code> and <code class="language-plaintext highlighter-rouge">mapred.input.dir.recursive</code> properties enable Drill to query Hive external tables that have nested folders with data. For example, given the following directory structure:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   /data/my_tbl/sub_dir/data.txt  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   /data/my_tbl/sub_dir/data.txt
 </code></pre></div></div>
 
 <p>You could query the Hive external table named <code class="language-plaintext highlighter-rouge">my_tbl</code>, and Drill would return results that included the data from the <code class="language-plaintext highlighter-rouge">data.txt</code> file.</p>
@@ -1480,7 +1480,7 @@
         "fs.default.name": "file:///",
         "hive.metastore.sasl.enabled": "false"
       }
-    }  
+    }
 </code></pre></div></div>
 
 <p>Update this storage plugin configuration for Hive in your environment.</p>
@@ -1512,7 +1512,7 @@ in a Hive storage plugin configuration to configure a connection to Drill. At th
 <p>To connect Drill to a remote Hive metastore:</p>
 
 <ol>
-  <li>Issue the following command to start the Hive metastore service on the system specified in the <code class="language-plaintext highlighter-rouge">hive.metastore.uris</code>:<br />
+  <li>Issue the following command to start the Hive metastore service on the system specified in the <code class="language-plaintext highlighter-rouge">hive.metastore.uris</code>:
 <code class="language-plaintext highlighter-rouge">hive --service metastore</code></li>
   <li>In the <a href="/zh/docs/plugin-configuration-basics/#using-the-drill-web-console">Drill Web UI</a>, select the <strong>Storage</strong> tab.</li>
   <li>In the list of disabled storage plugins in the Drill Web UI, click <strong>Update</strong> next to <code class="language-plaintext highlighter-rouge">hive</code>.</li>
@@ -1550,7 +1550,7 @@ in a Hive storage plugin configuration to configure a connection to Drill. At th
    .
    .
      "hbase.zookeeper.quorum": "zkhost1,zkhost2,zkhost3",
-     "hbase.zookeeper.property.clientPort:" "2181" 
+     "hbase.zookeeper.property.clientPort:" "2181"
    }
  }
 </code></pre></div>    </div>

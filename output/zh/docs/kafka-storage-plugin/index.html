@@ -1506,7 +1506,7 @@
    clickstream-json-demo:2:2765245
    clickstream-json-demo:1:2765245
    clickstream-json-demo:3:2765245
-   clickstream-json-demo:0:2765245  
+   clickstream-json-demo:0:2765245
 </code></pre></div></div>
 
 <h2 id="filter-pushdown-support">Filter Pushdown Support</h2>
@@ -1517,26 +1517,26 @@
 
 <ul>
   <li>
-    <p><strong>kafkaPartitionId</strong><br />
+    <p><strong>kafkaPartitionId</strong>
 Conditions on the kafkaPartitionId metadata field limit the number of partitions that Drill scans, which is useful for data exploration.
-Drill can push down filters when a query contains the following conditions on the kafkaPartitionId metadata field:<br />
+Drill can push down filters when a query contains the following conditions on the kafkaPartitionId metadata field:
 =, &gt;, &gt;=, &lt;, &lt;=</p>
   </li>
   <li>
-    <p><strong>kafkaMsgOffset</strong><br />
-Drill can push down filters when a query contains the  following conditions on the kafkaMsgOffset metadata field:  <br />
+    <p><strong>kafkaMsgOffset</strong>
+Drill can push down filters when a query contains the  following conditions on the kafkaMsgOffset metadata field:
 =, &gt;, &gt;=, &lt;, &lt;=</p>
   </li>
   <li>
-    <p><strong>kafkaMsgTimestamp</strong><br />
-The kafkaMsgTimestamp field maps to the timestamp stored for each Kafka message. Drill can push down filters when a query contains the  following conditions on the kafkaMsgTimestamp metadata field:<br />
+    <p><strong>kafkaMsgTimestamp</strong>
+The kafkaMsgTimestamp field maps to the timestamp stored for each Kafka message. Drill can push down filters when a query contains the  following conditions on the kafkaMsgTimestamp metadata field:
 =, &gt;, &gt;=</p>
   </li>
 </ul>
 
 <p>Kafka exposes the following <a href="https://kafka.apache.org/11/javadoc/org/apache/kafka/clients/consumer/MockConsumer.html">Consumer API</a> to obtain the earliest offset for a given timestamp value:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   public java.util.Map&lt;TopicPartition,OffsetAndTimestamp&gt; offsetsForTimes(java.util.Map&lt;TopicPartition,java.lang.Long&gt; timestampsToSearch)  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   public java.util.Map&lt;TopicPartition,OffsetAndTimestamp&gt; offsetsForTimes(java.util.Map&lt;TopicPartition,java.lang.Long&gt; timestampsToSearch)
 </code></pre></div></div>
 
 <p>This API is used to determine the startOffset for each partition in a topic. Note that the timestamps may not appear in increasing order when reading from a Kafka topic if you have defined the timestamp for a message. However, the API returns the first offset (from the beginning of a topic partition) where the timestamp is greater or equal to the timestamp requested. Therefore, Drill does not support pushdown on &lt; or &lt;= because an earlier timestamp may exist beyond endOffsetcomputed.</p>
@@ -1549,7 +1549,7 @@ The kafkaMsgTimestamp field maps to the timestamp stored for each Kafka message.
 
 <p>To enable the Kafka storage plugin, enter the following URL in the address bar of your browser to access the Storage page in the Drill Web UI:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   http://&lt;drill-node-ip-address&gt;:8047/storage/  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   http://&lt;drill-node-ip-address&gt;:8047/storage/
 </code></pre></div></div>
 
 <p>In the Disabled Storage Plugins section, click <strong>Enable</strong> next to Kafka. Kafka moves to the Enabled Storage Plugins section. Click <strong>Update</strong> to see the default configuration. Modify the configuration, as needed, click <strong>Update</strong> again to save the changes. Click <strong>Back</strong> to return to the Storage page.</p>
@@ -1568,7 +1568,7 @@ The kafkaMsgTimestamp field maps to the timestamp stored for each Kafka message.
        "session.timeout.ms": "30000"
      },
      "enabled": true
-   }  
+   }
 </code></pre></div></div>
 
 <h2 id="systemsession-options">System|Session Options</h2>
@@ -1628,7 +1628,7 @@ The kafkaMsgTimestamp field maps to the timestamp stored for each Kafka message.
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $ bin/sqlline -u jdbc:drill:zk=localhost:2181
    Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=512M; support was removed in 8.0
    apache drill 1.12.0-SNAPSHOT
-   "json ain't no thang"  
+   "json ain't no thang"
 
 
    0: jdbc:drill:zk=localhost:2181&gt; use kafka;
@@ -1637,7 +1637,7 @@ The kafkaMsgTimestamp field maps to the timestamp stored for each Kafka message.
    |-------|------------------------------------|
    | true  | Default schema changed to [kafka]  |
    |-------|------------------------------------|
-   1 row selected (0.564 seconds)  
+   1 row selected (0.564 seconds)
 
    0: jdbc:drill:zk=localhost:2181&gt; show tables;
    |---------------|------------------------------|

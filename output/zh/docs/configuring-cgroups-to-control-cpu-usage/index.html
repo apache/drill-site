@@ -1447,7 +1447,7 @@
 
 <p>Install the <code class="language-plaintext highlighter-rouge">libcgroup</code> package using the <code class="language-plaintext highlighter-rouge">yum install</code> command, as shown:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   yum install libcgroup  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   yum install libcgroup
 </code></pre></div></div>
 
 <h2 id="enable-drill-to-directly-manage-cpu-resources">Enable Drill to Directly Manage CPU Resources</h2>
@@ -1480,29 +1480,29 @@
 </table>
 
 <hr />
-<p><strong>NOTE</strong><br />
+<p><strong>NOTE</strong>
 If you have Drill 1.13 running on the node, or you have Drill 1.14 running on the node and you do not want to enable Drill to directly manage the CPU resources through <code class="language-plaintext highlighter-rouge">drill-env.sh</code>, you must manually update the <code class="language-plaintext highlighter-rouge">/cgroup/cpu/drillcpu/cgroup.procs</code> file with the PID (Drill process ID), as shown, each time a Drillbit restarts to enforce the CPU limit for the Drillbit service:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo 25809 &gt; /cgroup/cpu/drillcpu/cgroup.procs       ********  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo 25809 &gt; /cgroup/cpu/drillcpu/cgroup.procs ********
 </code></pre></div></div>
 
 <h2 id="set-the-cpu-limit-for-the-drillbit-service">Set the CPU Limit for the Drillbit Service</h2>
 
 <p>You can set the CPU limit as a soft or hard limit, or both. You set the limits with parameters in the <code class="language-plaintext highlighter-rouge">/etc/cgconfig.conf</code> file. The hard limit takes precedence over the soft limit. When Drill hits the hard limit, in-progress queries may not complete. Review the following sections that describe the soft and hard limit parameters and then configure CPU limits.</p>
 
-<p><strong>Soft Limit Parameter</strong><br />
+<p><strong>Soft Limit Parameter</strong>
 You set the soft limit with the <code class="language-plaintext highlighter-rouge">cpu.shares</code> parameter. This parameter takes an integer value, which specifies a relative share of CPU time available to the tasks in a cgroup. For example, if there are two tasks and cpu.shares is set to 100, each task receives half of the CPU time. The value must be 2 or greater.When you set a soft limit, Drill can exceed the CPU allocated if extra CPU is available for use on the system. Drill can continue to use CPU until there is contention with other processes over the CPU or Drill hits the hard limit.</p>
 
-<p><strong>Hard Limit Parameters</strong><br />
+<p><strong>Hard Limit Parameters</strong>
 You set the hard limit on the amount of CPU time that the Drill process can use through the <code class="language-plaintext highlighter-rouge">cpu.cfs_period_us</code> and <code class="language-plaintext highlighter-rouge">cpu.cfs_quota_us</code> parameters.</p>
 
 <ul>
   <li>
-    <p><strong><code class="language-plaintext highlighter-rouge">cpu.cfs_period_us</code></strong> <br />
+    <p><strong><code class="language-plaintext highlighter-rouge">cpu.cfs_period_us</code></strong>
 Specifies a period in microseconds (represented by <code class="language-plaintext highlighter-rouge">us</code> for µs) to indicate how often a cgroup’s access to CPU resources should be reallocated. For example, if you want tasks in a cgroup to have access to a single CPU for 0.2 seconds in a 1 second window, set <code class="language-plaintext highlighter-rouge">cpu.cfs_quota_us</code> to 200000 and <code class="language-plaintext highlighter-rouge">cpu.cfs_period_us</code> to 1000000. The upper limit of the <code class="language-plaintext highlighter-rouge">cpu.cfs_quota_us</code> parameter is 1 second and the lower limit is 1000 microseconds.</p>
   </li>
   <li>
-    <p><strong><code class="language-plaintext highlighter-rouge">cpu.cfs_quota_us</code></strong><br />
+    <p><strong><code class="language-plaintext highlighter-rouge">cpu.cfs_quota_us</code></strong>
 Specifies the total amount of runtime in microseconds (represented by <code class="language-plaintext highlighter-rouge">us</code> for µs), for which all tasks in the Drill cgroup can run during one period (as defined by <code class="language-plaintext highlighter-rouge">cpu.cfs_period_us</code>). When tasks in the Drill cgroup use up all the time specified by the quota, the tasks are throttled for the remainder of the time specified by the period and they cannot run until the next period. For example, if tasks in the Drill cgroup can access a single CPU for 0.2 seconds out of every 1 second, set <code class="language-plaintext highlighter-rouge">cpu.cfs_quota_us</code> to 200000 and <code class="language-plaintext highlighter-rouge">cpu.cfs_period_us</code> to 1000000. Setting the <code class="language-plaintext highlighter-rouge">cpu.cfs_quota_us</code> value to -1 indicates that the group does not have any restrictions on CPU. This is the default value for every cgroup, except for the root cgroup.</p>
   </li>
 </ul>
@@ -1523,7 +1523,7 @@ Specifies the total amount of runtime in microseconds (represented by <code clas
                         cpu.cfs_quota_us = 400000;
                         cpu.cfs_period_us = 100000;
                         }
-                 }  
+                 }
 </code></pre></div></div>
 
 <p>In the configuration example above, the <code class="language-plaintext highlighter-rouge">cpu.shares</code> parameter sets the soft limit. The other two parameters, <code class="language-plaintext highlighter-rouge">cpu.cfs_quota_us</code> and <code class="language-plaintext highlighter-rouge">cpu.cfs_period_us</code>, set the hard limit. If you prefer to set only one type of limit, remove the parameters that do not apply.</p>
@@ -1548,7 +1548,7 @@ Specifies the total amount of runtime in microseconds (represented by <code clas
 
 <p>3-(Optional) If you want the cgconfig service to automatically restart upon system reboots, run the following command:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   chkconfig cgconfig on  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   chkconfig cgconfig on
 </code></pre></div></div>
 
 <hr />

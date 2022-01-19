@@ -1500,7 +1500,7 @@ analysis extremely easy.</p>
 
 <h4 id="total-reviews-in-the-data-set">Total reviews in the data set</h4>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select sum(review_count) as totalreviews 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select sum(review_count) as totalreviews
 from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json`;
 
 |--------------|
@@ -1512,8 +1512,8 @@ from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json
 
 <h4 id="top-states-and-cities-in-total-number-of-reviews">Top states and cities in total number of reviews</h4>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select state, city, count(*) totalreviews 
-from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json` 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select state, city, count(*) totalreviews
+from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json`
 group by state, city order by count(*) desc limit 10;
 
 |------------|------------|--------------|
@@ -1534,7 +1534,7 @@ group by state, city order by count(*) desc limit 10;
 
 <h4 id="average-number-of-reviews-per-business-star-rating">Average number of reviews per business star rating</h4>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select stars,trunc(avg(review_count)) reviewsavg 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select stars,trunc(avg(review_count)) reviewsavg
 from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json`
 group by stars order by stars desc;
 
@@ -1578,7 +1578,7 @@ where review_count &gt; 1000 order by `review_count` desc limit 10;
 <h4 id="saturday-open-and-close-times-for-a-few-businesses">Saturday open and close times for a few businesses</h4>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select b.name, b.hours.Saturday.`open`,
-b.hours.Saturday.`close`  
+b.hours.Saturday.`close`
 from
 dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json`
 b limit 10;
@@ -1714,9 +1714,9 @@ on data.</p>
 
 <h4 id="top-first-categories-in-number-of-review-counts">Top first categories in number of review counts</h4>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select categories[0], count(categories[0]) as categorycount 
-from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp_academic_dataset_business.json` 
-group by categories[0] 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select categories[0], count(categories[0]) as categorycount
+from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp_academic_dataset_business.json`
+group by categories[0]
 order by count(categories[0]) desc limit 10;
 
 |----------------------|---------------|
@@ -1739,7 +1739,7 @@ order by count(categories[0]) desc limit 10;
 
 <h4 id="take-a-look-at-the-contents-of-the-yelp-reviews-dataset">Take a look at the contents of the Yelp reviews dataset.</h4>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select * 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select *
 from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_review.json` limit 1;
 |---------------------------------|------------------------|------------------------|-------|------------|----------------------------------------------------------------------|--------|------------------------|
 | votes                           | user_id                | review_id              | stars | date       | text                                                                 | type   | business_id            |
@@ -1754,11 +1754,11 @@ from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_review.json` 
 review_count to the Yelp review data, which holds additional details on each
 of the reviews themselves.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; Select b.name 
-from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json` b 
-where b.business_id in (SELECT r.business_id 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; Select b.name
+from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json` b
+where b.business_id in (SELECT r.business_id
 FROM dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_review.json` r
-GROUP BY r.business_id having sum(r.votes.cool) &gt; 2000 
+GROUP BY r.business_id having sum(r.votes.cool) &gt; 2000
 order by sum(r.votes.cool)  desc);
 |-------------------------------|
 |             name              |
@@ -1778,9 +1778,9 @@ can use to create views (or you can can define your own workspaces on a local
 or distributed file system). If you want to persist the data physically
 instead of in a logical view, you can use CREATE TABLE AS syntax.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; create or replace view dfs.tmp.businessreviews as 
-Select b.name,b.stars,b.state,b.city,r.votes.funny,r.votes.useful,r.votes.cool, r.`date` 
-from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json` b, dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_review.json` r 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; create or replace view dfs.tmp.businessreviews as
+Select b.name,b.stars,b.state,b.city,r.votes.funny,r.votes.useful,r.votes.cool, r.`date`
+from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json` b, dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_review.json` r
 where r.business_id=b.business_id
 |------------|-----------------------------------------------------------------|
 |     ok     |                           summary                               |
@@ -1815,7 +1815,7 @@ data so you can apply even deeper SQL functionality. Here is a sample query:</p>
 
 <h4 id="get-a-flattened-list-of-categories-for-each-business">Get a flattened list of categories for each business</h4>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select name, flatten(categories) as category 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select name, flatten(categories) as category
 from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json`  limit 20;
 |-----------------------------|---------------------------------|
 | name                        | category                        |
@@ -1845,9 +1845,9 @@ from dfs.`/&lt;path-to-yelp-dataset&gt;/yelp/yelp_academic_dataset_business.json
 
 <h4 id="top-categories-used-in-business-reviews">Top categories used in business reviews</h4>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select celltbl.catl, count(celltbl.catl) categorycnt 
-from (select flatten(categories) catl from dfs.`/yelp_academic_dataset_business.json` ) celltbl 
-group by celltbl.catl 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:zk=local&gt; select celltbl.catl, count(celltbl.catl) categorycnt
+from (select flatten(categories) catl from dfs.`/yelp_academic_dataset_business.json` ) celltbl
+group by celltbl.catl
 order by count(celltbl.catl) desc limit 10 ;
 |------------------|-------------|
 | catl             | categorycnt |

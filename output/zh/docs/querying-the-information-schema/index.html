@@ -1498,7 +1498,7 @@ and description.</p>
 <p>The TABLES table returns the table name and type for each table or view in
 your databases. (Type means TABLE or VIEW.) Starting in Drill 1.15, Drill returns
 files available for querying in file-based data sources. You no longer have to use the SHOW
-FILES command to explore these data sources. You can query the FILES table for directory and 
+FILES command to explore these data sources. You can query the FILES table for directory and
 file information.</p>
 
 <h2 id="columns">COLUMNS</h2>
@@ -1526,31 +1526,31 @@ partition keys, etc. for each table.</p>
 <p>The FILES table stores the following information about directories and files in workspaces:</p>
 
 <ul>
-  <li><strong>SCHEMA_NAME</strong><br />
+  <li><strong>SCHEMA_NAME</strong>
 The file system storage plugin name with the schema name. For example, dfs.tmp.</li>
-  <li><strong>ROOT_SCHEMA_NAME</strong><br />
+  <li><strong>ROOT_SCHEMA_NAME</strong>
 The file system storage plugin name. For example, dfs.</li>
-  <li><strong>WORKSPACE_NAME</strong><br />
+  <li><strong>WORKSPACE_NAME</strong>
 The workspace name. For example, tmp.</li>
-  <li><strong>FILE_NAME</strong><br />
+  <li><strong>FILE_NAME</strong>
 The name of the directories and files. For example, sample.txt. Drill lists directories and files based on the permissions set for the current or impersonated user.</li>
-  <li><strong>RELATIVE_PATH</strong><br />
+  <li><strong>RELATIVE_PATH</strong>
 The relative path to a file. For example, <code class="language-plaintext highlighter-rouge">sample_folder/sample.txt</code>; assuming that the full file path is <code class="language-plaintext highlighter-rouge">/tmp/sample_folder/sample.txt</code>, and the workspace path is <code class="language-plaintext highlighter-rouge">/tmp</code>.</li>
-  <li><strong>IS_DIRECTORY</strong><br />
+  <li><strong>IS_DIRECTORY</strong>
 Lists true if the object is a directory. Lists false if the object is a file.</li>
-  <li><strong>IS_FILE</strong> <br />
+  <li><strong>IS_FILE</strong>
 Lists true if the object is a file. Lists false if the object is a directory.</li>
-  <li><strong>LENGTH</strong><br />
+  <li><strong>LENGTH</strong>
 Size of the directory or file in bytes. For example, 1210.</li>
-  <li><strong>OWNER</strong><br />
+  <li><strong>OWNER</strong>
 File or directory owner. For example, root.</li>
-  <li><strong>GROUP</strong><br />
+  <li><strong>GROUP</strong>
 Group to which the file or directory belongs. For example, root.</li>
-  <li><strong>PERMISSION</strong><br />
+  <li><strong>PERMISSION</strong>
 Permission that the current or impersonated user has on the file. For example, rw-rw-rw.</li>
-  <li><strong>ACCESS_TIME</strong><br />
+  <li><strong>ACCESS_TIME</strong>
 Timestamp denoting the last time the file or directory was accessed.</li>
-  <li><strong>MODIFICATION_TIME</strong><br />
+  <li><strong>MODIFICATION_TIME</strong>
 Timestamp denoting the last time the file or directory was changed.</li>
 </ul>
 
@@ -1558,7 +1558,7 @@ Timestamp denoting the last time the file or directory was changed.</li>
 
 <p>The FILES table can list files recursively; however, listing files recursively can negatively impact performance. When you enable the <code class="language-plaintext highlighter-rouge">storage.list_files_recursively</code> option, the FILES table lists all the directories and files nested under the current workspace directory. The <code class="language-plaintext highlighter-rouge">storage.list_files_recursively</code> option is disabled (set to false) by default. Issue the SET command to enable recursive listing, as shown:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SET `storage.list_files_recursively` = true;      
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SET `storage.list_files_recursively` = true;
 </code></pre></div></div>
 
 <h2 id="useful-queries">Useful Queries</h2>
@@ -1580,7 +1580,7 @@ Timestamp denoting the last time the file or directory was changed.</li>
 | DRILL         | s3_work_bucket.root      | &lt;owner&gt;       | file  | NO          |
 | DRILL         | s3_years_bucket.default  | &lt;owner&gt;       | file  | NO          |
 | DRILL         | s3_years_bucket.root     | &lt;owner&gt;       | file  | NO          |
-|---------------|--------------------------|---------------|-------|-------------|  
+|---------------|--------------------------|---------------|-------|-------------|
 </code></pre></div></div>
 
 <p>Querying the FILES table and filtering on the SCHEMA_NAME provides information about the files
@@ -1596,7 +1596,7 @@ within a workspace:</p>
 | s3_home_bucket.root  | s3_home_bucket    | root            | household_demographics.txt  | household_demographics.txt  | false         | true     | 0       | root   | root   | rw-r--r--   | 1969-12-31 16:00:00.0  | 2018-11-06 16:38:28.0  |
 | s3_home_bucket.root  | s3_home_bucket    | root            | promotion.txt               | promotion.txt               | false         | true     | 0       | root   | root   | rw-r--r--   | 1969-12-31 16:00:00.0  | 2018-11-06 16:38:35.0  |
 | s3_home_bucket.root  | s3_home_bucket    | root            | time_dim.txt                | time_dim.txt                | false         | true     | 0       | root   | root   | rw-r--r--   | 1969-12-31 16:00:00.0  | 2018-11-06 16:38:43.0  |
-|----------------------|-------------------|-----------------|-----------------------------|-----------------------------|---------------|----------|---------|--------|--------|-------------|------------------------|------------------------|  
+|----------------------|-------------------|-----------------|-----------------------------|-----------------------------|---------------|----------|---------|--------|--------|-------------|------------------------|------------------------|
 
 0: jdbc:drill:zk=local&gt; select * from information_schema.`files` where schema_name = 's3_work_bucket.root';
 |----------------------|-------------------|-----------------|-----------------------------|-----------------------------|---------------|----------|---------|--------|--------|-------------|------------------------|------------------------|
@@ -1629,7 +1629,7 @@ within a workspace:</p>
 | household_demographics.txt  |
 | item.txt                    |
 | promotion.txt               |
-|-----------------------------|  
+|-----------------------------|
 </code></pre></div></div>
 
 <p>Issuing a slightly more complex query on the FILES table reveals the duplicate files across the two schemas:</p>
@@ -1640,7 +1640,7 @@ within a workspace:</p>
 |-----------------------------|
 | household_demographics.txt  |
 | promotion.txt               |
-|-----------------------------|  
+|-----------------------------|
 </code></pre></div></div>
 
 <p>By default, the FILES table does not list the files recursively. Another schema named <code class="language-plaintext highlighter-rouge">s3_years_bucket.root</code> contains three folders with files in it, as shown:</p>
@@ -1652,7 +1652,7 @@ within a workspace:</p>
 | 2016       | true          |
 | 2017       | true          |
 | 2018       | true          |
-|------------|---------------|  
+|------------|---------------|
 </code></pre></div></div>
 
 <p>Though the folders contain files, the FILES table does not list the files nested inside the folders unless we enable the <code class="language-plaintext highlighter-rouge">storage.list_files_recursively</code> option, as shown:</p>
@@ -1662,7 +1662,7 @@ within a workspace:</p>
 |  ok   |                 summary                  |
 |-------|------------------------------------------|
 | true  | storage.list_files_recursively updated.  |
-|-------|------------------------------------------|  
+|-------|------------------------------------------|
 </code></pre></div></div>
 
 <p>With recursive listing enabled, you can see that the same query run against the schema reveals the nested files in the folders:</p>
@@ -1711,14 +1711,14 @@ dfs.default              CustomerSocialProfile VIEW
 <p>You can run a similar query to identify columns in tables and the data types
 of those columns:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT COLUMN_NAME, DATA_TYPE 
-FROM INFORMATION_SCHEMA.COLUMNS 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT COLUMN_NAME, DATA_TYPE
+FROM INFORMATION_SCHEMA.COLUMNS
 WHERE TABLE_NAME = 'Orders' AND TABLE_SCHEMA = 'HiveTest.SalesDB' AND COLUMN_NAME LIKE '%Total';
 |-------------|------------|
 | COLUMN_NAME | DATA_TYPE  |
 |-------------|------------|
 | OrderTotal  | Decimal    |
-|-------------|------------|  
+|-------------|------------|
 </code></pre></div></div>
 
 

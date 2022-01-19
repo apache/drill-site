@@ -1471,7 +1471,7 @@ statement.</p>
 |-------|-------------------------------------------|
 | true  | Default schema changed to [hive.default]  |
 |-------|-------------------------------------------|
-1 row selected 
+1 row selected
 </code></pre></div></div>
 
 <h3 id="return-sales-totals-by-month">Return sales totals by month:</h3>
@@ -1492,7 +1492,7 @@ from orders group by `month` order by 2 desc;
 | September  | 373100  |
 | January    | 346536  |
 |------------|---------|
-10 rows selected 
+10 rows selected
 </code></pre></div></div>
 
 <p>Drill supports SQL aggregate functions such as SUM, MAX, AVG, and MIN.
@@ -1530,7 +1530,7 @@ order by 3 desc limit 20;
 | March     | fl     | 54867   |
 | March     | ny     | 52101   |
 |-----------|--------|---------|
-20 rows selected 
+20 rows selected
 </code></pre></div></div>
 
 <p>Note the alias for the result of the SUM function. Drill supports column
@@ -1553,7 +1553,7 @@ aliases and table aliases.</p>
 
 <h3 id="return-total-number-of-clicks-for-devices-that-indicate-high-click-throughs">Return total number of clicks for devices that indicate high click-throughs:</h3>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; select t.user_info.device, count(*) from `clicks/clicks.json` t 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; select t.user_info.device, count(*) from `clicks/clicks.json` t
 group by t.user_info.device
 having count(*) &gt; 1000;
 |---------|---------|
@@ -1579,8 +1579,8 @@ than 1000 transactions qualify for the result set.</p>
 
 <h3 id="combine-clicks-activity-from-before-and-after-the-marketing-campaign">Combine clicks activity from before and after the marketing campaign</h3>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; select t.trans_id transaction, t.user_info.cust_id customer from `clicks/clicks.campaign.json` t 
-union all 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; select t.trans_id transaction, t.user_info.cust_id customer from `clicks/clicks.campaign.json` t
+union all
 select u.trans_id, u.user_info.cust_id  from `clicks/clicks.json` u limit 5;
 |-------------|------------|
 | transaction |  customer  |
@@ -1662,9 +1662,9 @@ limit 20;
 
 <h3 id="return-customer-data-with-appropriate-data-types">Return customer data with appropriate data types</h3>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; select cast(row_key as int) as cust_id, cast(t.personal.name as varchar(20)) as name, 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; select cast(row_key as int) as cust_id, cast(t.personal.name as varchar(20)) as name,
 cast(t.personal.gender as varchar(10)) as gender, cast(t.personal.age as varchar(10)) as age,
-cast(t.address.state as varchar(4)) as state, cast(t.loyalty.agg_rev as dec(7,2)) as agg_rev, 
+cast(t.address.state as varchar(4)) as state, cast(t.loyalty.agg_rev as dec(7,2)) as agg_rev,
 cast(t.loyalty.membership as varchar(20)) as membership
 from customers t limit 5;
 |----------|----------------------|-----------|-----------|--------|----------|-------------|
@@ -1722,9 +1722,9 @@ can create Drill views and tables in mutable workspaces.</p>
 <h3 id="create-a-view-on-a-mapr-db-table">Create a view on a MapR-DB table</h3>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; create or replace view custview as select cast(row_key as int) as cust_id,
-cast(t.personal.name as varchar(20)) as name, 
-cast(t.personal.gender as varchar(10)) as gender, 
-cast(t.personal.age as varchar(10)) as age, 
+cast(t.personal.name as varchar(20)) as name,
+cast(t.personal.gender as varchar(10)) as gender,
+cast(t.personal.age as varchar(10)) as age,
 cast(t.address.state as varchar(4)) as state,
 cast(t.loyalty.agg_rev as dec(7,2)) as agg_rev,
 cast(t.loyalty.membership as varchar(20)) as membership
@@ -1802,8 +1802,8 @@ rows are wide, set the maximum width of the display to 10000:</p>
 <h3 id="join-the-customers-orders-and-clickstream-data">Join the customers, orders, and clickstream data:</h3>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:drill:&gt; select custview.membership, sum(orders.order_total) as sales from hive.orders, custview,
-dfs.`/mapr/demo.mapr.com/data/nested/clicks/clicks.json` c 
-where orders.cust_id=custview.cust_id and orders.cust_id=c.user_info.cust_id 
+dfs.`/mapr/demo.mapr.com/data/nested/clicks/clicks.json` c
+where orders.cust_id=custview.cust_id and orders.cust_id=c.user_info.cust_id
 group by custview.membership order by 2;
 |------------|------------|
 | membership |   sales    |

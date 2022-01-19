@@ -1473,13 +1473,13 @@
 <p>The following sections provide the steps that an administrator can follow to configure SPNEGO on the web server (Drillbit). An administrator or a user can follow the steps for configuring the web browser or client tool, such as curl.</p>
 
 <h3 id="configuring-spnego-on-the-drillbit-web-server">Configuring SPNEGO on the Drillbit (Web Server)</h3>
-<p>To configure SPNEGO on the web server, complete the following steps:<br />
+<p>To configure SPNEGO on the web server, complete the following steps:
 1-Generate a Kerberos principal on each web server that will receive inbound SPNEGO traffic. Each principal must have a corresponding keytab. The principal must have the following form:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   “HTTP/&lt;client-known-server-hostname@realm&gt;”
-   
-   Example: “HTTP/example.QA.LAB@QA.LAB” 
-   //In this example, the client known server hostname is example.QA.LAB.  
+
+   Example: “HTTP/example.QA.LAB@QA.LAB”
+   //In this example, the client known server hostname is example.QA.LAB.
 </code></pre></div></div>
 
 <p>2-Update the <code class="language-plaintext highlighter-rouge">&lt;DRILL_HOME&gt;/conf/drill-override.conf</code> file on each Drillbit with the following server-side SPNEGO configurations:</p>
@@ -1491,10 +1491,10 @@
     <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        drill.exec.http: {
         				auth.spnego.principal:"HTTP/hostname@realm",
         				auth.spnego.keytab:"path/to/keytab",
-        				auth.mechanisms: [“SPNEGO”]    
- 					 }   
-          
-        //The default authentication mechanism is “FORM”.   
+        				auth.mechanisms: [“SPNEGO”]
+ 					 }
+
+        //The default authentication mechanism is “FORM”.
 </code></pre></div>    </div>
   </li>
   <li>
@@ -1515,7 +1515,7 @@
                        spnego.auth.keytab:"path/to/keytab",
                        auth.mechanisms: [“SPNEGO”, “FORM”]
               }
-        }  
+        }
 </code></pre></div>    </div>
   </li>
 </ul>
@@ -1535,15 +1535,15 @@
 <h3 id="firefox">Firefox</h3>
 <p>To configure Firefox to use a negotiation dialog, such as SPNEGO to authenticate, complete the following steps:</p>
 
-<p>1-Go to About &gt; Config, and accept the warnings.<br />
-2-Navigate to the network settings.<br />
-3-Set network.negotiate-auth.delegation-uris to “http://,https://”.<br />
+<p>1-Go to About &gt; Config, and accept the warnings.
+2-Navigate to the network settings.
+3-Set network.negotiate-auth.delegation-uris to “http://,https://”.
 4-Set network.negotiate-auth.trusted-uris to “http://,https://”.</p>
 
 <h3 id="chrome">Chrome</h3>
 <p>For Linux, add the <code class="language-plaintext highlighter-rouge">--auth-server-whitelist</code> parameter to the <code class="language-plaintext highlighter-rouge">google-chrome</code> command. For example, to run Chrome from a Linux prompt, run the <code class="language-plaintext highlighter-rouge">google-chrome</code> command, as follows:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>google-chrome --auth-server-whitelist="domain"  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>google-chrome --auth-server-whitelist="domain"
 
 example: google-chrome --auth-server-whitelist="machine.example.com"
 example: google-chrome --auth-server-whitelist="*.example.com"
@@ -1552,7 +1552,7 @@ example: google-chrome --auth-server-whitelist="*.example.com"
 <p>For MacOS, use the following directories:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /Applications/Google Chrome.app/Contents/MacOS
-./"Google Chrome" --auth-server-whitelist="*.example.com"  
+./"Google Chrome" --auth-server-whitelist="*.example.com"
 </code></pre></div></div>
 
 <p><strong>Note:</strong> The URL given to Chrome to access the Web UI should match the domain specified in <code class="language-plaintext highlighter-rouge">auth-server-whitelist</code>. If the domain is used in <code class="language-plaintext highlighter-rouge">auth-server-whitelist</code>, use the domain with Chrome. If the IP address is used in <code class="language-plaintext highlighter-rouge">auth-server-whitelist</code>, use the IP address with Chrome.</p>
@@ -1569,7 +1569,7 @@ example: google-chrome --auth-server-whitelist="*.example.com"
 <p>2-Select Advanced, and add one or both of the following URLs to server:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   http://
-   https://  
+   https://
 </code></pre></div></div>
 
 <p><strong>Note:</strong> Make sure you use the hostname of the Drillbit in the URL.</p>
@@ -1592,8 +1592,8 @@ example: google-chrome --auth-server-whitelist="*.example.com"
 
 <p>Use the authenticated session cookie stored in the file, for example <code class="language-plaintext highlighter-rouge">cookie.txt</code>, to access the Drill Web UI pages, as shown in the following example:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   curl -v --negotiate -b cookie.txt -u : http://&lt;hostname&gt;:8047/query       
-   Example: curl -v --negotiate -b cookie.txt -u : http://example.QA.LAB:8047/query  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   curl -v --negotiate -b cookie.txt -u : http://&lt;hostname&gt;:8047/query
+   Example: curl -v --negotiate -b cookie.txt -u : http://example.QA.LAB:8047/query
 </code></pre></div></div>
 
 <h2 id="logging-in-to-the-drill-web-ui">Logging in to the Drill Web UI</h2>

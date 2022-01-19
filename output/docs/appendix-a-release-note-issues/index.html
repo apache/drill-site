@@ -1454,13 +1454,13 @@ your existing drill-env.sh file as follows. (If you are installing Drill fresh, 
 <p>Find the two lines that look like this:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   DRILL_MAX_DIRECT_MEMORY="8G"
-   DRILL_HEAP="4G"  
+   DRILL_HEAP="4G"
 </code></pre></div></div>
 
 <p>Replace them with the following two lines:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   export DRILL_MAX_DIRECT_MEMORY=${DRILL_MAX_DIRECT_MEMORY:" 8G"}
-   export DRILL_HEAP=${DRILL_HEAP:" 4G"}  
+   export DRILL_HEAP=${DRILL_HEAP:" 4G"}
 </code></pre></div></div>
 
 <p>Copy the actual values from the old lines to the new ones (e.g. the “8G” and “4G” values.)
@@ -1508,17 +1508,17 @@ Mac OS.</p>
 </ul>
 
 <p>You may encounter this problem if you use a Mac to try out the YARN integration for Drill. The
-symptom is that you:<br />
-● Start Drill as described below<br />
-● Attempt to stop the Drill cluster as described below<br />
+symptom is that you:
+● Start Drill as described below
+● Attempt to stop the Drill cluster as described below
 ● Afterwards use jps to list Java processes and find that Drillbit is still running.</p>
 
 <p>The problem is that the setsid command is not available under MacOS. The workaround is to
 use the open source equivalent:</p>
 
-<p>● Install the <a href="https://developer.apple.com/library/content/technotes/tn2339/_index.html">XCode command line tools</a>.<br />
+<p>● Install the <a href="https://developer.apple.com/library/content/technotes/tn2339/_index.html">XCode command line tools</a>.
 ● Using git, clone ersatz-ssid from https://github.com/jerrykuch/ersatz-setsid
-● Cd into the ersatz-ssid directory and type: <code class="language-plaintext highlighter-rouge">make</code><br />
+● Cd into the ersatz-ssid directory and type: <code class="language-plaintext highlighter-rouge">make</code>
 ● Copy the resulting executable into <code class="language-plaintext highlighter-rouge">/usr/bin : sudo cp setsid /usr/bin</code></p>
 
 <h2 id="apache-yarn-node-labels-and-labeled-queues">Apache YARN Node Labels and Labeled Queues</h2>
@@ -1534,8 +1534,8 @@ currently aware of this restart capability. Existing Drillbits will continue to 
 
 <h2 id="configuring-user-authentication">Configuring User Authentication</h2>
 <p>The Drill Documentation describes how to configure user authentication using PAM. Two
-revisions are needed for Drill-on-YARN:<br />
-● Configure user authentication for Drill using a site directory<br />
+revisions are needed for Drill-on-YARN:
+● Configure user authentication for Drill using a site directory
 ● Configure Drill-on-YARN authentication</p>
 
 <p>The existing instructions explain how to configure PAM authentication by changing Drill config
@@ -1553,7 +1553,7 @@ Hadoop components.</p>
 
 <p>Create the following directory:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_SITE/lib 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_SITE/lib
 </code></pre></div></div>
 
 <p>Untar the file and copy libjpam.so into $DRILL_SITE/lib.</p>
@@ -1562,12 +1562,12 @@ Hadoop components.</p>
 directory where the libjpam.so file is located:</DRILL_HOME></p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   export DRILLBIT_JAVA_OPTS="-Djava.library.path=&lt;directory&gt;"
-   Example: export DRILLBIT_JAVA_OPTS="-Djava.library.path=/opt/pam/"  
+   Example: export DRILLBIT_JAVA_OPTS="-Djava.library.path=/opt/pam/"
 </code></pre></div></div>
 
 <p>Revised instructions: If you are not using Drill-on-YARN, set a new environment variable in drill-env.sh:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   export DRILL_JAVA_LIB_PATH=”&lt;directory&gt;”  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   export DRILL_JAVA_LIB_PATH=”&lt;directory&gt;”
 </code></pre></div></div>
 
 <p>If you install the library yourself, either set DRILL_JAVA_LIB_PATH as above, or set the
@@ -1575,7 +1575,7 @@ following in drill-on-yarn.conf:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   drill.yarn.files: {
           librarypath: "&lt;directory&gt;"
-   } 
+   }
 </code></pre></div></div>
 
 <p><strong>Note:</strong> Do not explicitly set DRILLBIT_JAVA_OPTS as you may have done in previous releases; Drill will not know how to add your $DRILL_SITE/lib directory or how to interpret the librarypath item above.</p>
@@ -1588,24 +1588,24 @@ does the necessary configuration; there is nothing more for you to do.</p>
 
 <p>Current text: Add the JAR file that you built to the following directory on each Drill node:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   &lt;DRILLINSTALL_HOME&gt;/jars  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   &lt;DRILLINSTALL_HOME&gt;/jars
 </code></pre></div></div>
 
 <p>Revised text: Add the JAR file that you built to the following directory on each Drill node:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_SITE/jars  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_SITE/jars
 </code></pre></div></div>
 
 <p>If running under YARN, you only need to add the jar to the site directory on the node from which you start Drill-on-YARN (which we’ve referred to as $MASTER_DIR.)</p>
 
 <p>Also, step 5: Restart the Drillbit process on each Drill node.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   &lt;DRILLINSTALL_HOME&gt;/bin/drillbit.sh restart  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   &lt;DRILLINSTALL_HOME&gt;/bin/drillbit.sh restart
 </code></pre></div></div>
 
 <p>Under YARN, restart the YARN cluster:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_HOME/bin/drill-on-yarn.sh --site $DRILL_SITE restart  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   $DRILL_HOME/bin/drill-on-yarn.sh --site $DRILL_SITE restart
 </code></pre></div></div>
 
 <h3 id="configuring-user-authentication-for-the-application-master">Configuring User Authentication for the Application Master</h3>

@@ -1445,24 +1445,24 @@
 
 <p>The SELECT list supports the following syntax:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT  [ DISTINCT ] COLUMNS[n] | * | expression [ AS column_alias ] [, ...]  
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT  [ DISTINCT ] COLUMNS[n] | * | expression [ AS column_alias ] [, ...]
 </code></pre></div></div>
 
 <h2 id="parameters">Parameters</h2>
-<p>COLUMNS[<em>n</em>]<br />
+<p>COLUMNS[<em>n</em>]
 Array columns are used for reading data from text files. Use the columns[<em>n</em>] syntax in the SELECT list to return rows from text files in a columnar format. This syntax uses a zero-based index, so the first column is column 0.</p>
 
-<p>DISTINCT<br />
+<p>DISTINCT
 An option that eliminates duplicate rows from the result set, based on matching values in one or more columns.</p>
 <ul>
   <li>(asterisk)
 Returns the entire contents of the table or file.</li>
 </ul>
 
-<p><em>expression</em><br />
+<p><em>expression</em>
 An expression formed from one or more columns that exist in the tables, files, or directories referenced by the query. An expression can contain functions and aliases that define select list entries. You can also use a scalar aggregate subquery as the expression in the SELECT list.</p>
 
-<p><em>scalar aggregate subquery</em><br />
+<p><em>scalar aggregate subquery</em>
 A scalar aggregate subquery is a regular SELECT query in parentheses that returns exactly one column value from one row. The returned value is used in the outer query. The scalar aggregate subquery must include an aggregate function, such as MAX(), AVG(), or COUNT(). If the subquery returns zero rows, the value of the subquery expression is null. If it returns more than one row, Drill returns an error.  Scalar subqueries are not valid expressions in the following cases:</p>
 
 <ul>
@@ -1470,13 +1470,13 @@ A scalar aggregate subquery is a regular SELECT query in parentheses that return
   <li>In GROUP BY and HAVING clauses</li>
 </ul>
 
-<p>AS <em>column_alias</em><br />
+<p>AS <em>column_alias</em>
 A temporary name for a column in the final result set. The AS keyword is optional.</p>
 
 <h2 id="examples">Examples</h2>
 <p>The following example shows a query with a scalar subquery expression:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT a1, (SELECT MAX(a2) FROM t2) AS max_a2 FROM t1;       
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT a1, (SELECT MAX(a2) FROM t2) AS max_a2 FROM t1;
    |------|--------|
    | a1   | max_a2 |
    |------|--------|
@@ -1496,7 +1496,7 @@ A temporary name for a column in the final result set. The AS keyword is optiona
 
 <p>The following example shows a query with array columns that return rows in column format for easier readability:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT COLUMNS[0], COLUMNS[1] FROM dfs.`/Users/brumsby/drill/plays.csv`;       
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT COLUMNS[0], COLUMNS[1] FROM dfs.`/Users/brumsby/drill/plays.csv`;
    |------------|------------------------|
    |   EXPR$0   |         EXPR$1         |
    |------------|------------------------|

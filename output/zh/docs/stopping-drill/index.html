@@ -1442,7 +1442,7 @@
 <h3 id="stopping-the-drill-process">Stopping the Drill Process</h3>
 <p>To stop the Drill process on the node, issue the <code class="language-plaintext highlighter-rouge">drillbit.sh stop</code> command, as shown:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   bin/drillbit.sh stop   
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   bin/drillbit.sh stop
 </code></pre></div></div>
 
 <h3 id="gracefully-shutting-down-the-drill-process">Gracefully Shutting Down the Drill Process</h3>
@@ -1451,7 +1451,7 @@
 
 <p>You can only use the Graceful Shutdown option in the Drill Web UI to shut down the Drillbit from which you accessed the Drill Web UI. For example, if you accessed the Drill Web UI at <code class="language-plaintext highlighter-rouge">http://drillbit1:8047</code>, you can only use the Graceful Shutdown option to shut down drillbit1. When you initiate graceful shutdown from the Drill Web UI, the console posts an alert stating that a graceful shutdown was triggered. You can see the progress of the shut down as the Drillbit completes queries and transitions through the quiescent state.</p>
 
-<p><strong>Note:</strong> If security (<a href="/zh/docs/configuring-web-console-and-rest-api-security/">https</a>) is enabled, only and administrator can perform a graceful shutdown.</p>
+<p><strong>Note:</strong> If security (<a href="/zh/docs/configuring-web-ui-and-rest-api-security/">https</a>) is enabled, only and administrator can perform a graceful shutdown.</p>
 
 <p><strong>How A Drillbit Shuts Down Gracefully</strong></p>
 
@@ -1462,14 +1462,14 @@
 <ul>
   <li><strong>Start</strong>: The Drillbit is initializing. For example, when you issue the <code class="language-plaintext highlighter-rouge">drillbit.sh start</code> or <code class="language-plaintext highlighter-rouge">drillbit.sh restart</code> command.</li>
   <li><strong>Online</strong>: The Drillbit has started and registered with the cluster coordinator, such as ZooKeeper. ZooKeeper then shares the state of the Drillbit with other Drillbits in the cluster. Drillbits in the online state can all accept and process queries.</li>
-  <li><strong>Quiescent</strong>: When a Drillbit receives a graceful shutdown request, the Drillbit transitions into the quiescent state and shares its status change with the ZooKeeper. The ZooKeeper notifies the other Drillbits in the cluster of the Drillbit’s status change. Once the other Drillbits get the status update, they do not assign work to the Drillbit. However, if the Foreman assigns work to the Drillbit as the status update occurs, the Drillbit waits to complete work before shutting down. The quiescent state has three phases: grace, draining, and offline.<br />
-     - <strong>Grace</strong>: A period in which a Drillbit can accept new queries from the Foreman. You can configure (at the system level) the amount of time a Drillbit can remain in this phase using the <code class="language-plaintext highlighter-rouge">drill.exe.grace_period_ms</code> option. Set this value in milliseconds. The default value is 0. There is no maximum limit. Ideally, you should give as little time as possible or no longer than twice the default heartbeat time of the ZooKeeper. For example, if the heartbeat is 5 seconds, set the value to the equivalent of 10 seconds in milliseconds (10000). <br />
-     - <strong>Draining</strong>:  When the grace period ends, the Drillbit enters the draining phase of the quiescent state. In this phase, the Drillbit cannot accept new queries, but waits for the running queries to complete. You can view the draining queries in the Drill Web UI. The Index page in the Web UI shows the queries and fragments currently running on the node.<br />
+  <li><strong>Quiescent</strong>: When a Drillbit receives a graceful shutdown request, the Drillbit transitions into the quiescent state and shares its status change with the ZooKeeper. The ZooKeeper notifies the other Drillbits in the cluster of the Drillbit’s status change. Once the other Drillbits get the status update, they do not assign work to the Drillbit. However, if the Foreman assigns work to the Drillbit as the status update occurs, the Drillbit waits to complete work before shutting down. The quiescent state has three phases: grace, draining, and offline.
+     - <strong>Grace</strong>: A period in which a Drillbit can accept new queries from the Foreman. You can configure (at the system level) the amount of time a Drillbit can remain in this phase using the <code class="language-plaintext highlighter-rouge">drill.exe.grace_period_ms</code> option. Set this value in milliseconds. The default value is 0. There is no maximum limit. Ideally, you should give as little time as possible or no longer than twice the default heartbeat time of the ZooKeeper. For example, if the heartbeat is 5 seconds, set the value to the equivalent of 10 seconds in milliseconds (10000).
+     - <strong>Draining</strong>:  When the grace period ends, the Drillbit enters the draining phase of the quiescent state. In this phase, the Drillbit cannot accept new queries, but waits for the running queries to complete. You can view the draining queries in the Drill Web UI. The Index page in the Web UI shows the queries and fragments currently running on the node.
      - <strong>Offline</strong>: The phase the Drillbit enters after completing all queries.</li>
   <li><strong>Shutdown</strong>: The final state in which a Drillbit removes itself from the ZooKeeper registry.</li>
 </ul>
 
-<p><strong>Shutting Down a Drillbit Gracefully</strong><br />
+<p><strong>Shutting Down a Drillbit Gracefully</strong>
 You can gracefully shut down a Drillbit from the command line or the Drill Web UI.</p>
 
 <p>From the command line, run the following command on the node you want to shut down:</p>
