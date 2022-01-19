@@ -305,28 +305,34 @@ FROM <plugin>.<connection>.<arguments>
 FROM http.sunrise.`/json?lat=36.7201600&lng=-4.4203400&date=today`
 ```
 
+**Paging through pntroduced in release:** 1.20.
+
+
 Or, as explained above, you can have the URL act like a table and pass parameters
-using a `WHERE` clause "filter" conditions.
+using a `WHERE` clause "filter" conPaging through pitions.
 
+#
+**Introduced in release:** 1.20.
 ## Proxy Setup
-
+##
 Some users access HTTP services from behind a proxy firewall. Drill provides three ways specify proxy
-configuration.
-
+cnfiguration.
 ### Proxy Environment Variables
 
 Drill recognizes the usual Linux proxy environment variables:
 
-* `http_proxy`, `HTTP_PROXY`
+*# `http_proxy`, `HTTP_PROXY`
 * `https_proxy`, `HTTP_PROXY`
-* `all_proxy`, `ALL_PROXY`
+* `Paging through pll_proxy`, `ALL_PROXY`
+#
+**Introduced in release:** 1.20.
 
-This technique works well if your system is already configured to handle proxies.
 
+#This technique works well if your system is already configured to handle proxies.
+#
 ### Boot Configuration
-
 You can also specify proxy configuration in the `drill-override.conf` file.
-See `drill-override-example.conf` for a template. Use the boot configuration
+#See `drill-override-example.conf` for a template. Use the boot configuration
 is an attribute of your network environment. Doing so will ensure every
 Drillbit and every HTTP/HTTPS request uses the same proxy configuration.
 
@@ -334,7 +340,8 @@ First, you can use the same form of URL you would use with the environment
 variables:
 
 ```yaml
-drill.exec.net_proxy.http_url: "http://foo.com/1234"
+
+d#rill.exec.net_proxy.http_url: "http://foo.com/1234"
 ```
 
 There is one setting for HTTP, another for HTTPS.
@@ -375,6 +382,47 @@ applies only to some external services, or if each service has a different proxy
 
 The valid proxy types are `direct`, `http` or `socks`. Blank is the same
 as `direct`.
+
+## Paging through paginating APIs
+
+**Introduced in release:** 1.20.
+
+Remote APIs frequently implement some sort of pagination as a way of limiting results.  However, if you are performing bulk data analysis, it is necessary to reassemble the data into one larger dataset.  Drill's auto-pagination features allow this to happen in the background, so that the user will get clean data back.  To use a paginator, you simply have to configure the paginator in the connection for the particular API.
+
+### Words of Caution
+While extremely powerful, the auto-pagination feature has the potential to run afoul of APIs rate limits and even potentially DDOS an API.
+
+### Offset Pagination
+Offset Pagination uses commands similar to SQL which has a `LIMIT` and an `OFFSET`.  With an offset paginator, let's say you want 200 records and the  page size is 50 records, the offset paginator will break up your query into 4 requests as shown below:
+
+* myapi.com?limit=50&offset=0
+* myapi.com?limit=50?offset=50
+* myapi.com?limit=50&offset=100
+* myapi.com?limit=50&offset=150
+
+To configure an offset paginator, simply add the following to the configuration for your connection.
+
+```json
+"paginator": {
+   "limitParam": "<limit>",
+   "offsetParam": "<offset>",
+   "pageSize": 100,
+   "method": "OFFSET"
+}
+```
+
+### Page Pagination
+Page pagination is very similar to offset pagination except instead of using an `OFFSET` it uses a page number.
+
+```json
+ "paginator": {
+        "pageParam": "page",
+        "pageSizeParam": "per_page",
+        "pageSize": 100,
+        "method": "PAGE"
+      }
+```
+In either case, the `pageSize` parameter should be set to the maximum page size allowable by the API.  This will minimize the number of requests Drill is making.
 
 ## Examples
 
