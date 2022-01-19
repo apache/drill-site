@@ -41,15 +41,21 @@ Build Apache Drill:
 
     mvn clean install -DskipTests
 
+### Compiling for MapR environments
+
 If you want to deploy Apache Drill on the MapR platform, include the `-Pmapr` option to build Drill under the MapR profile.
 
     mvn clean install -DskipTests -Pmapr
+
+### Compiling for Hadoop 2 environments
 
 **Introduced in release: 1.20**
 
 Drill updated its Hadoop client libraries to Hadoop 3 in release 1.17 leaving Hadoop 2 users unable to upgrade beyond Drill 1.16.  As of Drill 1.20 it once again becomes possible to build Drill for deployment in an Hadoop 2 environment, by including the `-Phadoop-2` option to select the Hadoop 2 profile.
 
     mvn clean install -DskipTests -Phadoop-2
+
+### Build outputs
 
 A tarball is built and appears in the distribution/target directory. Move the tarball to another directory for unpacking. Unpack the tarball and then connect to Drill and query sample data, or connect Drill to your data sources.
 
