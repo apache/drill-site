@@ -492,7 +492,7 @@ Get the status of threads.
         . . .
 
 ## Options
-This method gets and sets system options.
+This method gets system options.
 
 ----------
 
