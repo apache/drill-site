@@ -193,18 +193,27 @@ Get the profiles of running and completed queries.
 
 **Response Body**
 
-        {
-          "runningQueries" : [ ],
-          "finishedQueries" : [ {
-            "queryId" : "29b2e988-35e7-4c85-3151-32c7d3347f15",
-            "time" : "11/18/2015 16:23:19",
-            "location" : "http://localhost:8047/profile/29b2e988-35e7-4c85-3151-32c7d3347f15.json",
-            "foreman" : "10.250.50.31",
-            "query" : "select * from dfs.`/Users/joe-user/apache-drill-1.4.0/sample-data/donuts.json` where name= 'Cake'",
-            "state" : "COMPLETED",
-            "user" : "anonymous"
-          },
-          . . .
+```json
+{
+  "runningQueries" : [ ],
+  "finishedQueries" : [ {
+    "queryId" : "29b2e988-35e7-4c85-3151-32c7d3347f15",
+    "time" : "11/18/2015 16:23:19",
+    "location" : "http://localhost:8047/profile/29b2e988-35e7-4c85-3151-32c7d3347f15.json",
+    "foreman" : "10.250.50.31",
+    "query" : "select * from dfs.`/Users/joe-user/apache-drill-1.4.0/sample-data/donuts.json` where name= 'Cake'",
+    "state" : "COMPLETED",
+    "user" : "anonymous"
+  },
+  . . .
+}
+```
+
+#### Supported variations
+```
+GET /profiles/[running|completed]
+GET /profiles/json?status=[all|running|completed]
+```
 
 ----------
 
