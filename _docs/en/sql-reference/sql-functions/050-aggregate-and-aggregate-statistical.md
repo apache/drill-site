@@ -26,11 +26,11 @@ queries.
 - AVG, COUNT, MIN, MAX, and SUM accept ALL and DISTINCT keywords. The default is
   ALL.
 - The aggregate function examples use the `cp` storage plugin to access the
-  [`employee.json`](%7B%7Bsite.baseurl%7D%7D/docs/querying-json-files/) file
+  [`employee.json`]({{site.baseurl}}/docs/querying-json-files/) file
   installed with Drill. By default, JSON reads numbers as double-precision
   floating point numbers. These examples assume that you are using the default
   option
-  [all_text_mode](%7B%7Bsite.baseurl%7D%7D/docs/json-data-model/#handling-type-differences)
+  [all_text_mode]({{site.baseurl}}/docs/json-data-model/#handling-type-differences)
   set to false.
 
 ## ANY_VALUE
