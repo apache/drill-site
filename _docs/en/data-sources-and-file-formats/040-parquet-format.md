@@ -73,12 +73,12 @@ Optionally, set the Parquet format version.  Parquet v2 introduced new data enco
 
 ``ALTER SYSTEM|SESSION SET `store.parquet.writer.format_version` = 'v2';``
 
-Also new in Drill 1.20 is an expanded set of compression codec choices as listed in the config option description.  These can also have a significant impact on file size and read/write performance.  If interoperability is a concern, Snappy and gzip codecs have the widest support at the time of writing.
+Also new in Drill 1.20 is an expanded set of compression codec choices as listed in the config option description.  These can also have a significant impact on file size and read/write performance.  If interoperability is a concern, the Snappy and gzip codecs have the widest support at the time of writing.
 
 ``ALTER SYSTEM|SESSION SET `store.parquet.compression` = 'zstd';``
 
 {% include startnote.html %}
-Because of a mismatch between Drill's set of target platforms and those for which a suitable open source Brotli library is available, a Brotli codec is not bundled and must be separately installed into the jars/3rdparty subdirectory if you want to work with Parquet files that use Brotli.  On Linux and macOS on amd64, the [com.github.rdblue:brotli-codec](https://github.com/rdblue/brotli-codec/) is supported.
+Because of a mismatch between Drill's set of target platforms and those for which a suitable open source Brotli library is available, a Brotli codec is not bundled and must be separately installed into the jars/3rdparty subdirectory if you want to work with Parquet files that use Brotli.  On Linux and macOS on amd64, the <a href='https://github.com/rdblue/brotli-codec/'>com.github.rdblue:brotli-codec</a> is supported.
 {% include endnote.html %}
 
 ### Configuring the Size of Parquet Files
