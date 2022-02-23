@@ -67,6 +67,20 @@ Use the ALTER command to set the `store.format` option.
 
 ``ALTER SYSTEM|SESSION SET `store.format` = 'parquet';``
 
+**Introduced in release:** 1.20.
+
+Optionally, set the Parquet format version.  Parquet v2 introduced new data encodings which may affect file size and read/write performance.  Run benchmarks with your own data to establish which works best in your environment and, if you require interoperable Parquet files, be aware that at the time of writing Parquet v1 has much wider support than does v2.
+
+``ALTER SYSTEM|SESSION SET `store.parquet.writer.format_version` = 'v2';``
+
+Also new in Drill 1.20 is an expanded set of compression codec choices as listed in the config option description.  These can also have a significant impact on file size and read/write performance.  If interoperability is a concern, Snappy and gzip codecs have the widest support at the time of writing.
+
+``ALTER SYSTEM|SESSION SET `store.parquet.compression` = 'zstd';``
+
+{% include startnote.html %}
+Because of a mismatch between Drill's set of target platforms and those for which a suitable open source Brotli library is available, a Brotli codec is not bundled and must be separately installed into the jars/3rdparty subdirectory if you want to work with Parquet files that use Brotli.  On Linux and macOS on amd64, the [com.github.rdblue:brotli-codec](https://github.com/rdblue/brotli-codec/) is supported.
+{% include endnote.html %}
+
 ### Configuring the Size of Parquet Files
 Configuring the size of Parquet files by setting the `store.parquet.block-size` can improve write performance. The block size is the size of MFS, HDFS, or the file system.
 
