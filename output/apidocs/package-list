@@ -11,6 +11,7 @@ org.apache.calcite.adapter.elasticsearch
 org.apache.calcite.jdbc
 org.apache.commons.logging.impl
 org.apache.drill
+org.apache.drill.alias
 org.apache.drill.categories
 org.apache.drill.common
 org.apache.drill.common.collections
@@ -19,7 +20,6 @@ org.apache.drill.common.config
 org.apache.drill.common.exceptions
 org.apache.drill.common.expression
 org.apache.drill.common.expression.fn
-org.apache.drill.common.expression.parser
 org.apache.drill.common.expression.types
 org.apache.drill.common.expression.visitors
 org.apache.drill.common.graph
@@ -35,6 +35,7 @@ org.apache.drill.common.types
 org.apache.drill.common.util
 org.apache.drill.common.util.function
 org.apache.drill.exec
+org.apache.drill.exec.alias
 org.apache.drill.exec.cache
 org.apache.drill.exec.client
 org.apache.drill.exec.compile
@@ -73,6 +74,7 @@ org.apache.drill.exec.metastore.store
 org.apache.drill.exec.metastore.store.parquet
 org.apache.drill.exec.metrics
 org.apache.drill.exec.nested
+org.apache.drill.exec.oauth
 org.apache.drill.exec.ops
 org.apache.drill.exec.opt
 org.apache.drill.exec.persistent.store.pcap
@@ -236,6 +238,7 @@ org.apache.drill.exec.store.hdf5
 org.apache.drill.exec.store.hdf5.writers
 org.apache.drill.exec.store.hive
 org.apache.drill.exec.store.hive.client
+org.apache.drill.exec.store.hive.data
 org.apache.drill.exec.store.hive.inspectors
 org.apache.drill.exec.store.hive.readers
 org.apache.drill.exec.store.hive.readers.inspectors
@@ -244,11 +247,22 @@ org.apache.drill.exec.store.hive.writers
 org.apache.drill.exec.store.hive.writers.complex
 org.apache.drill.exec.store.hive.writers.primitive
 org.apache.drill.exec.store.http
+org.apache.drill.exec.store.http.oauth
+org.apache.drill.exec.store.http.paginator
 org.apache.drill.exec.store.http.util
 org.apache.drill.exec.store.httpd
+org.apache.drill.exec.store.iceberg
+org.apache.drill.exec.store.iceberg.format
+org.apache.drill.exec.store.iceberg.plan
+org.apache.drill.exec.store.iceberg.read
+org.apache.drill.exec.store.iceberg.snapshot
 org.apache.drill.exec.store.image
 org.apache.drill.exec.store.ischema
 org.apache.drill.exec.store.jdbc
+org.apache.drill.exec.store.jdbc.clickhouse
+org.apache.drill.exec.store.jdbc.rules
+org.apache.drill.exec.store.jdbc.utils
+org.apache.drill.exec.store.jdbc.writers
 org.apache.drill.exec.store.json
 org.apache.drill.exec.store.kafka
 org.apache.drill.exec.store.kafka.cluster
@@ -267,6 +281,7 @@ org.apache.drill.exec.store.mock
 org.apache.drill.exec.store.mongo
 org.apache.drill.exec.store.mongo.common
 org.apache.drill.exec.store.mongo.config
+org.apache.drill.exec.store.mongo.plan
 org.apache.drill.exec.store.mongo.schema
 org.apache.drill.exec.store.openTSDB
 org.apache.drill.exec.store.openTSDB.client
@@ -277,6 +292,7 @@ org.apache.drill.exec.store.openTSDB.schema
 org.apache.drill.exec.store.parquet
 org.apache.drill.exec.store.parquet.columnreaders
 org.apache.drill.exec.store.parquet.columnreaders.batchsizing
+org.apache.drill.exec.store.parquet.compression
 org.apache.drill.exec.store.parquet.decimal
 org.apache.drill.exec.store.parquet.metadata
 org.apache.drill.exec.store.parquet2
@@ -286,9 +302,18 @@ org.apache.drill.exec.store.pcap.dto
 org.apache.drill.exec.store.pcap.plugin
 org.apache.drill.exec.store.pcap.schema
 org.apache.drill.exec.store.pcapng
+org.apache.drill.exec.store.pdf
+org.apache.drill.exec.store.phoenix
+org.apache.drill.exec.store.phoenix.rules
+org.apache.drill.exec.store.phoenix.secured
+org.apache.drill.exec.store.plan
+org.apache.drill.exec.store.plan.rel
+org.apache.drill.exec.store.plan.rule
 org.apache.drill.exec.store.pojo
+org.apache.drill.exec.store.sas
 org.apache.drill.exec.store.schedule
 org.apache.drill.exec.store.security
+org.apache.drill.exec.store.security.oauth
 org.apache.drill.exec.store.security.vault
 org.apache.drill.exec.store.sequencefile
 org.apache.drill.exec.store.splunk
@@ -355,6 +380,12 @@ org.apache.drill.metastore.iceberg.schema
 org.apache.drill.metastore.iceberg.transform
 org.apache.drill.metastore.iceberg.write
 org.apache.drill.metastore.metadata
+org.apache.drill.metastore.mongo
+org.apache.drill.metastore.mongo.components.tables
+org.apache.drill.metastore.mongo.config
+org.apache.drill.metastore.mongo.exception
+org.apache.drill.metastore.mongo.operate
+org.apache.drill.metastore.mongo.transform
 org.apache.drill.metastore.operate
 org.apache.drill.metastore.rdbms
 org.apache.drill.metastore.rdbms.components.tables
@@ -381,5 +412,6 @@ org.apache.drill.yarn.core
 org.apache.drill.yarn.scripts
 org.apache.drill.yarn.zk
 org.apache.hadoop.security
+org.apache.iceberg.data
 org.apache.logging.log4j.util
 org.apache.parquet.hadoop
