@@ -61,10 +61,13 @@ Submit a query and return results.
 
 **Parameters**
 
-* `queryType`--SQL, PHYSICAL, or LOGICAL are valid types. Use only "SQL". Other types are for internal use only.
-* `query`--A SQL query that runs in Drill.
-* `autoLimit`--Limits the number of rows returned from the result set. (Drill 1.16+)
-* `defaultSchema`--Sets the default schema for the query.  Equavalent to executing a `USE <schema>` prior to the query. (Drill 1.18+)
+| Parameter     | Type    | Description                                                                                                        |
+| ------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
+| queryType     | string  | SQL, PHYSICAL, or LOGICAL are valid types. Use only "SQL". Other types are for internal use only.                  |
+| query         | string  | A SQL query that runs in Drill.                                                                                    |
+| autoLimit     | integer | Limits the number of rows returned from the result set. (Drill 1.16+)                                              |
+| defaultSchema | string  | Sets the default schema for the query.  Equivalent to executing a `USE <schema>` prior to the query. (Drill 1.18+) |
+| userName      | string  | Sets the username of the user that will be impersonated during the execution of this query.                        |
 
 In Drill 1.19+ Drill switched to a streaming HTTP connection for REST queries
 with the result that query result sets are no longer buffered in their entirety
