@@ -139,6 +139,18 @@ docker run -it --name drill \
 
 See the linked Docker documentation for more details.
 
+## The /data volume
+
+The Drill Dockerfile includes a declaration of
+```
+VOLUME /data
+```
+where /data inside the container has been chowned to the Drill process user.  This means that Drill will have read and write access to whatever volume you mount here making it a suitable place for persistent, mutable storage.  For example, by adding
+```
+   	sys.store.provider.local.path="/data"
+```
+to drill-override.conf and mounting a Docker volume at that location at container launch time you can have embedded Drill's "local persistent storage", which keeps system option values and storage configurations, presist across container launches.
+
 ## Drill Web UI
 
 You can access the Drill web UI at `http://localhost:8047` when the Drill Docker container is running.  On Windows, you may need to specify the IP address of your system instead of using "localhost".
