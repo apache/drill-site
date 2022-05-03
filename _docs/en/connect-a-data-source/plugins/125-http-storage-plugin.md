@@ -305,7 +305,7 @@ FROM <plugin>.<connection>.<arguments>
 FROM http.sunrise.`/json?lat=36.7201600&lng=-4.4203400&date=today`
 ```
 
-**Paging through pntroduced in release:** 1.20.
+**Paging through introduced in release:** 1.20.
 
 
 Or, as explained above, you can have the URL act like a table and pass parameters
