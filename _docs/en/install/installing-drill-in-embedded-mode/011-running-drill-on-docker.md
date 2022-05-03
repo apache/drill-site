@@ -149,7 +149,7 @@ where /data inside the container has been chowned to the Drill process user.  Th
 ```
    	sys.store.provider.local.path="/data"
 ```
-to drill-override.conf and mounting a Docker volume at that location at container launch time you can have embedded Drill's "local persistent storage", which keeps system option values and storage configurations, presist across container launches.
+to drill-override.conf and mounting a Docker volume at that location at container launch time you can have embedded Drill's "local persistent storage", which keeps system option values and storage configurations, persist across container launches.
 
 ## Drill Web UI
 
