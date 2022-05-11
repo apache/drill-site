@@ -1479,6 +1479,10 @@
       <td>VARCHAR</td>
     </tr>
     <tr>
+      <td><a href="/docs/string-manipulation/#concat_delim">CONCAT_DELIM</a></td>
+      <td>VARCHAR</td>
+    </tr>
+    <tr>
       <td><a href="/docs/string-manipulation/#ilike">ILIKE</a></td>
       <td>BOOLEAN</td>
     </tr>
@@ -1655,6 +1659,28 @@ SELECT CONVERT_FROM(BYTE_SUBSTR(row_key,6,length(row_key)),'UTF8') FROM root.`my
 | EXPR$0            |
 |-------------------|
 | Drill 1.0 release |
+|-------------------|
+1 row selected (0.134 seconds)
+</code></pre></div></div>
+
+<p>Alternatively, you can use the <a href="/docs/operators/#string-concatenate-operator">string concatenation operation</a> to concatenate strings.</p>
+
+<h2 id="concat_delim">CONCAT_DELIM</h2>
+<p>Concatenates arguments inserting the provided delimiter between each pair. Null arguments are eliminated.</p>
+
+<h3 id="concat_delim-syntax">CONCAT_DELIM Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CONCAT_DELIM(delimiter [, string [, ...] )
+</code></pre></div></div>
+
+<h3 id="concat_delim-example">CONCAT_DELIM Example</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CONCAT_DELIM('&amp;', 'cat', null, 'mat') FROM (VALUES(1));
+
+|-------------------|
+| EXPR$0            |
+|-------------------|
+| cat&amp;mat           |
 |-------------------|
 1 row selected (0.134 seconds)
 </code></pre></div></div>
