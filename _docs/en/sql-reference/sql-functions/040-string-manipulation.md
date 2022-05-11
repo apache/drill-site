@@ -11,7 +11,6 @@ You can use the following string functions in Drill queries:
 | [BYTE_SUBSTR]({{ site.baseurl }}/docs/string-manipulation/#byte_substr)       | BINARY or VARCHAR |
 | [CHAR_LENGTH]({{ site.baseurl }}/docs/string-manipulation/#char_length)       | INTEGER           |
 | [CONCAT]({{ site.baseurl }}/docs/string-manipulation/#concat)                 | VARCHAR           |
-| [CONCAT_DELIM]({{ site.baseurl }}/docs/string-manipulation/#concat_delim)     | VARCHAR           |
 | [ILIKE]({{ site.baseurl }}/docs/string-manipulation/#ilike)                   | BOOLEAN           |
 | [INITCAP]({{ site.baseurl }}/docs/string-manipulation/#initcap)               | VARCHAR           |
 | [LENGTH]({{ site.baseurl }}/docs/string-manipulation/#length)                 | INTEGER           |
@@ -111,26 +110,6 @@ Concatenates arguments.
     | EXPR$0            |
     |-------------------|
     | Drill 1.0 release |
-    |-------------------|
-    1 row selected (0.134 seconds)
-
-Alternatively, you can use the [string concatenation operation]({{ site.baseurl }}/docs/operators/#string-concatenate-operator) to concatenate strings.
-
-## CONCAT_DELIM
-Concatenates arguments inserting the provided delimiter between each pair. Null arguments are eliminated.
-
-### CONCAT_DELIM Syntax
-
-    CONCAT_DELIM(delimiter [, string [, ...] )
-
-### CONCAT_DELIM Example
-
-    SELECT CONCAT_DELIM('&', 'cat', null, 'mat') FROM (VALUES(1));
-
-    |-------------------|
-    | EXPR$0            |
-    |-------------------|
-    | cat&mat           |
     |-------------------|
     1 row selected (0.134 seconds)
 
