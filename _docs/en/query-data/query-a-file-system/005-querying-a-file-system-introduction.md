@@ -11,9 +11,23 @@ followed by an optional workspace name, for example <storage
 plugin>.<workspace> or hdfs.logs.
 
 The following example shows a query on a file system database in a Hadoop
-distributed file system:
+distributed file system.
 
-       SELECT * FROM hdfs.logs.`AppServerLogs/20104/Jan/01/part0001.txt`;
+```sql
+SELECT * FROM hdfs.logs.`AppServerLogs/20104/Jan/01/part0001.txt`;
+```
+
+The path component in backticks is parsed by Drill as a Java string which
+means that the backslash `\` is the escape character that can be used to
+include special characters in the path. The next example shows another query
+against a filesystem storage plugin, but now one which is configured to
+access the local filesystem on an MS Windows machine (which may, of course,
+included mounted network drives). Note the doubled backslashes needed due
+to its status as the escape character.
+
+```sql
+SELECT * FROM dfs.`C:\\Users\\Alice\\Downloads\\sample-dataset.csv`;
+```
 
 The default `dfs` storage plugin configuration registered with Drill has a
 `default` workspace. If you query data in the `default` workspace, you do not
