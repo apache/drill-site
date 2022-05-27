@@ -1466,9 +1466,20 @@ databases. In Drill, a file system database consists of a storage plugin name
 followed by an optional workspace name, for example <storage plugin="">.<workspace> or hdfs.logs.</workspace></storage></p>
 
 <p>The following example shows a query on a file system database in a Hadoop
-distributed file system:</p>
+distributed file system.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   SELECT * FROM hdfs.logs.`AppServerLogs/20104/Jan/01/part0001.txt`;
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">hdfs</span><span class="p">.</span><span class="n">logs</span><span class="p">.</span><span class="nv">`AppServerLogs/20104/Jan/01/part0001.txt`</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>The path component in backticks is parsed by Drill as a Java string which
+means that the backslash <code class="language-plaintext highlighter-rouge">\</code> is the escape character that can be used to
+include special characters in the path. The next example shows another query
+against a filesystem storage plugin, but now one which is configured to
+access the local filesystem on an MS Windows machine (which may, of course,
+included mounted network drives). Note the doubled backslashes needed due
+to its status as the escape character.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">dfs</span><span class="p">.</span><span class="nv">`C:</span><span class="se">\\</span><span class="nv">Users</span><span class="se">\\</span><span class="nv">Alice</span><span class="se">\\</span><span class="nv">Downloads</span><span class="se">\\</span><span class="nv">sample-dataset.csv`</span><span class="p">;</span>
 </code></pre></div></div>
 
 <p>The default <code class="language-plaintext highlighter-rouge">dfs</code> storage plugin configuration registered with Drill has a
