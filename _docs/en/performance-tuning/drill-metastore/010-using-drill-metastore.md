@@ -312,10 +312,9 @@ Examples throughout this topic use the files and directories described in the fo
 The following examples are written for local file system, but Drill Metastore supports collecting metadata for tables
  placed in any any of Drill's supported file systems. The examples work for both embedded and distributed Drill modes.
 
-Download [TPC-H sf1 tables](https://s3-us-west-1.amazonaws.com/drill-public/tpch/sf1/tpch_sf1_parquet.tar.gz) and
- unpack archive to desired file system.
-
-Set up storage plugin for desired file system, as described here:
+Obtain an SF=1 TPC-H dataset, either by running a TPC-H data generator locally or by downloading generated TPC-H
+data from some trusted source and place the dataset in a filesystem visible to Drill. Set up storage plugin for
+desired file system, as described here:
  [Connecting Drill to a File System]({{site.baseurl}}/docs/file-system-storage-plugin/#connecting-drill-to-a-file-system).
 
 Create lineitem directory in `/tmp/` and two subdirectories under `/tmp/lineitem` named `s1` and `s2` and copy there table data:
