@@ -1497,6 +1497,38 @@ A timer measures the rate that a particular piece of code is called and the dist
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   export DRILLBIT_JAVA_OPTS="$DRILLBIT_JAVA_OPTS -Ddrill.metrics.jmx.enabled=false"
 </code></pre></div></div>
 
+<h2 id="metrics-with-prefix">Metrics with Prefix</h2>
+<p>Starting with Drill 2.0.0, all metrics are grouped into the following 6 categories.</p>
+
+<ul>
+  <li>drill</li>
+  <li>jvm</li>
+  <li>memory</li>
+  <li>threads</li>
+  <li>cached-threads</li>
+  <li>class</li>
+</ul>
+
+<p>These categories are prepended to the Drill metric names for easier maintenance.</p>
+
+<p>For example, the metric names</p>
+
+<ul>
+  <li>count</li>
+  <li>direct.count</li>
+  <li>blocked.count</li>
+  <li>new.count</li>
+</ul>
+
+<p>now have the following, more easily recognised names.</p>
+
+<ul>
+  <li>cached-threads.count</li>
+  <li>jvm.direct.count</li>
+  <li>threads.blocked.count</li>
+  <li>threads.new.count</li>
+</ul>
+
 <h2 id="gauges">Gauges</h2>
 
 <p>The following table lists the Drill-specific metrics in the Gauges section of the Metrics page:</p>
@@ -1510,7 +1542,7 @@ A timer measures the rate that a particular piece of code is called and the dist
   </thead>
   <tbody>
     <tr>
-      <td>blocked.count</td>
+      <td>cached-threads.blocked.count</td>
       <td>The number of threads   that are blocked because they are waiting on a monitor lock. This metric is   useful for debugging Drill issues.</td>
     </tr>
     <tr>
@@ -1566,15 +1598,15 @@ A timer measures the rate that a particular piece of code is called and the dist
       <td>Total size in bytes of   normal (less than and equal to 16MB) direct buffers currently allocated. This   counter is only updated in debug environment when asserts are enabled to   avoid overhead for each allocation during normal execution.</td>
     </tr>
     <tr>
-      <td>count</td>
+      <td>cached-threads.count</td>
       <td>The number of live   threads, including daemon and non-daemon threads.</td>
     </tr>
     <tr>
-      <td>heap.used</td>
+      <td>memory.heap.used</td>
       <td>The amount of heap   memory (in bytes) used by the JVM.</td>
     </tr>
     <tr>
-      <td>non-heap.used</td>
+      <td>memory.non-heap.used</td>
       <td>The amount of non-heap   memory (in bytes) used by the JVM.</td>
     </tr>
     <tr>
@@ -1582,23 +1614,23 @@ A timer measures the rate that a particular piece of code is called and the dist
       <td>The ratio of used file   descriptors to total file descriptors on *nix systems.</td>
     </tr>
     <tr>
-      <td>direct.used</td>
+      <td>jvm.direct.used</td>
       <td>The amount of direct   memory (in bytes) used by the JVM. This metric is useful for debugging Drill   issues.</td>
     </tr>
     <tr>
-      <td>runnable.count</td>
+      <td>cached-threads.runnable.count</td>
       <td>The number of threads   executing an action in the JVM. This metric is useful for debugging Drill   issues.</td>
     </tr>
     <tr>
-      <td>waiting.count</td>
+      <td>threads.waiting.count</td>
       <td>The number of threads   waiting to execute. Typically, threads waiting on other threads to perform an   action. This metric is useful for debugging Drill issues.</td>
     </tr>
     <tr>
-      <td>load.avg</td>
+      <td>drillbit.load.avg</td>
       <td>Returns the   “recent cpu usage” for the Drillbit process. This value is a double   in the [0.0,1.0] interval. A value of 0.0 means that none of the CPUs were   running threads from the Drillbit process during the recent period of time   observed, while a value of 1.0 means that all CPUs were actively running   threads from the Drillbit process 100% of the time during the recent period   being observed. Threads from the Drillbit process includes the application   threads as well as the JVM internal threads. All values betweens 0.0 and 1.0   are possible depending of the activities going on in the Drillbit process and   the whole system. If the recent CPU usage is not available, the method   returns a negative value. See <a href="https://docs.oracle.com/javase/7/docs/jre/api/management/extension/com/sun/management/OperatingSystemMXBean.html#getProcessCpuLoad()">getProcesCpuLoad()</a>.</td>
     </tr>
     <tr>
-      <td>uptime</td>
+      <td>drillbit.uptime</td>
       <td>Total uptime of   Drillbit JVM in miliseconds. See <a href="https://docs.oracle.com/javase/7/docs/api/java/lang/management/RuntimeMXBean.html#getUptime()">getUptime()</a>.</td>
     </tr>
   </tbody>
