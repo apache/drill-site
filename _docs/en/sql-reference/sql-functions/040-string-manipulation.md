@@ -13,6 +13,7 @@ You can use the following string functions in Drill queries:
 | [CONCAT]({{ site.baseurl }}/docs/string-manipulation/#concat)                 | VARCHAR           |
 | [ILIKE]({{ site.baseurl }}/docs/string-manipulation/#ilike)                   | BOOLEAN           |
 | [INITCAP]({{ site.baseurl }}/docs/string-manipulation/#initcap)               | VARCHAR           |
+| [ISNUMERIC]({{ site.baseurl }}/docs/string-manipulation/#isnumeric)           | INTEGER           |
 | [LENGTH]({{ site.baseurl }}/docs/string-manipulation/#length)                 | INTEGER           |
 | [LIKE]({{ site.baseurl }}/docs/string-manipulation/#like)                     | BOOLEAN           |
 | [LOWER]({{ site.baseurl }}/docs/string-manipulation/#lower)                   | VARCHAR           |
@@ -165,6 +166,23 @@ Returns the string using initial caps.
     | Apache Drill Release 1.0 |
     |--------------------------|
     1 row selected (0.106 seconds)
+
+## ISNUMERIC
+Returns a 1 if the string argument matches the regular expression `[-+]?\d+(\.\d+)?` otherwise a 0.
+
+### ISNUMERIC Syntax
+
+    ISNUMERIC(string)
+
+### ISNUMERIC Examples
+
+    SELECT ISNUMERIC('3.1415926');
+    |--------|
+    | EXPR$0 |
+    |--------|
+    | 1      |
+    |--------|
+    1 row selected (0.185 seconds)
 
 ## LENGTH
 Returns the number of characters in the string.

@@ -8,18 +8,18 @@ parent: "SQL Functions"
 
 Drill supports the following functions that return data type information:
 
-**sqlTypeOf()**  
-Returns the data type of a column (using the SQL names) whether the column is NULL or not. You can use the SQL name in a CAST statement, for example:  
+**sqlTypeOf()**
+Returns the data type of a column (using the SQL names) whether the column is NULL or not. You can use the SQL name in a CAST statement, for example:
 
-              sqlTypeOf( CAST(x AS <data type> ))  
-              //Returns <data type> as the type name.  
-If the type is DECIMAL, the type also includes precision and scale, for example:  
- 
-              DECIMAL(6, 3)  
-**modeOf()**  
-Returns the cardinality (mode) of the column as "NOT NULL", "NULLABLE", or "ARRAY". Drill data types include a cardinality, for example `Optional Int` or `Required VarChar`.  
- 
-**drillTypeOf()**  
+              sqlTypeOf( CAST(x AS <data type> ))
+              //Returns <data type> as the type name.
+If the type is DECIMAL, the type also includes precision and scale, for example:
+
+              DECIMAL(6, 3)
+**modeOf()**
+Returns the cardinality (mode) of the column as "NOT NULL", "NULLABLE", or "ARRAY". Drill data types include a cardinality, for example `Optional Int` or `Required VarChar`.
+
+**drillTypeOf()**
 Similar to typeOf(), but returns the internal Drill names even if the value is NULL.
 _____
 
