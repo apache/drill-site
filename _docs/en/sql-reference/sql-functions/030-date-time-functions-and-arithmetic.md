@@ -19,6 +19,7 @@ This section covers the Drill [time zone limitation]({{site.baseurl}}/docs/data-
 | [DATE_DIFF]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#date_diff)                             | DATE, TIMESTAMP                |
 | [DATE_PART]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#date_part)                             | DOUBLE                         |
 | [DATE_SUB]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#date_sub)                               | DATE, TIMESTAMP                |
+| [ISDATE]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#isdate)                                     | BOOLEAN                        |
 | [LOCALTIME]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)         | TIME                           |
 | [LOCALTIMESTAMP]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)    | TIMESTAMP                      |
 | [NOW]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)               | TIMESTAMP                      |
@@ -454,6 +455,34 @@ The `employee.json` file, which Drill includes in the installation, lists the hi
     | 1997-12-31 14:00:00.0  |
     |------------------------|
     2 rows selected (0.161 seconds)
+
+## ISDATE
+Tests whether a character string represents a valid date. The test applied is equivalent
+to asking whether an attempt to cast the string to date would succeed or fail.
+
+### ISDATE Syntax
+
+`isdate(date_string)`
+
+*date_string* is a character string possibly representing a valid date.
+
+### ISDATE Examples
+
+    SELECT ISDATE('1970-01-01');
+    |------------|
+    |   EXPR$0   |
+    |------------|
+    | true       |
+    |------------|
+    1 row selected (0.098 seconds)
+
+    SELECT ISDATE('foobar');
+    |------------|
+    |   EXPR$0   |
+    |------------|
+    | false      |
+    |------------|
+    1 row selected (0.088 seconds)
 
 ## Other Date and Time Functions
 
