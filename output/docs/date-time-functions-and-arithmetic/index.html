@@ -1513,6 +1513,10 @@
       <td>DATE, TIMESTAMP</td>
     </tr>
     <tr>
+      <td><a href="/docs/date-time-functions-and-arithmetic/#isdate">ISDATE</a></td>
+      <td>BOOLEAN</td>
+    </tr>
+    <tr>
       <td><a href="/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">LOCALTIME</a></td>
       <td>TIME</td>
     </tr>
@@ -2013,6 +2017,35 @@ SELECT DATE_PART('hour', '23:14:30.076') FROM (VALUES(1));
 | 1997-12-31 14:00:00.0  |
 |------------------------|
 2 rows selected (0.161 seconds)
+</code></pre></div></div>
+
+<h2 id="isdate">ISDATE</h2>
+<p>Tests whether a character string represents a valid date. The test applied is equivalent
+to asking whether an attempt to cast the string to date would succeed or fail.</p>
+
+<h3 id="isdate-syntax">ISDATE Syntax</h3>
+
+<p><code class="language-plaintext highlighter-rouge">isdate(date_string)</code></p>
+
+<p><em>date_string</em> is a character string possibly representing a valid date.</p>
+
+<h3 id="isdate-examples">ISDATE Examples</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT ISDATE('1970-01-01');
+|------------|
+|   EXPR$0   |
+|------------|
+| true       |
+|------------|
+1 row selected (0.098 seconds)
+
+SELECT ISDATE('foobar');
+|------------|
+|   EXPR$0   |
+|------------|
+| false      |
+|------------|
+1 row selected (0.088 seconds)
 </code></pre></div></div>
 
 <h2 id="other-date-and-time-functions">Other Date and Time Functions</h2>
