@@ -20,13 +20,6 @@ Drill reads from and writes to data sources having a wide variety of types.
 | TIME                                               | 24-hour based time before or after January 1, 2001 in hours, minutes, seconds format: HH:mm:ss                       | 22:55:55.23                                                                    |
 | TIMESTAMP                                          | JDBC timestamp in year, month, date hour, minute, second, and optional milliseconds format: yyyy-MM-dd HH:mm:ss.SSS  | 2015-12-30 22:55:55.23                                                         |
 | CHARACTER VARYING, CHARACTER, CHAR[^4] or VARCHAR | UTF8-encoded variable-length string. The default limit is 1 character. The maximum character limit is 2,147,483,647. | CHAR(30) casts data to a 30-character string maximum.                          |
-
-
-[^1]: Starting in Drill 1.14, the DECIMAL data type is enabled by default.
-[^2]: Internally, INTERVAL is represented as INTERVALDAY or INTERVALYEAR.
-[^3]: SMALLINT is not currently supported.
-[^4]: The CHAR data type is internally represented as VARCHAR by Drill.
-
 ## DECIMAL Data Type
 
 Starting in Drill 1.14, DECIMAL data type support is enabled by default. Drill uses the vardecimal data type to store decimal and numeric data types in a compressed format that optimizes storage space. The vardecimal data type stores decimal and numeric values as variable length columns that can represent any decimal precision.
@@ -141,7 +134,7 @@ As shown in the table, Drill can cast a NULL value, which has the lowest precede
 | Precedence | Data Type              | Precedence | Data Type     |
 |------------|------------------------|------------|---------------|
 | 1          | INTERVALYEAR (highest) | 12         | UINT2         |
-| 2          | INTERVALDAY            | 13         | SMALLINT*     |
+| 2          | INTERVALDAY            | 13         | SMALLINT[^5]  |
 | 3          | TIMESTAMP              | 14         | UINT1         |
 | 4          | DATE                   | 15         | VAR16CHAR     |
 | 5          | TIME                   | 16         | FIXED16CHAR   |
@@ -151,8 +144,6 @@ As shown in the table, Drill can cast a NULL value, which has the lowest precede
 | 9          | BIGINT                 | 20         | FIXEDBINARY   |
 | 10         | UINT4                  | 21         | NULL (lowest) |
 | 11         | INT                    |            |               |
-
-\* Not supported in this release.
 
 ## Explicit Casting
 
@@ -179,45 +170,36 @@ The following tables show data types that Drill can cast to/from other data type
 
 ### Numerical and Character Data Types
 
-| To            | SMALLINT | INT | BIGINT | DECIMAL | FLOAT | CHAR | FIXEDBINARY | VARCHAR | VARBINARY |
-|---------------|----------|-----|--------|---------|-------|------|-------------|---------|-----------|
-| **From:**     |          |     |        |         |       |      |             |         |           |
-| SMALLINT*     | yes      | yes | yes    | yes     | yes   | yes  | yes         | yes     | yes       |
-| INT           | yes      | yes | yes    | yes     | yes   | yes  | yes         | yes     | yes       |
-| BIGINT        | yes      | yes | yes    | yes     | yes   | yes  | yes         | yes     | yes       |
-| DECIMAL       | yes      | yes | yes    | yes     | yes   | yes  | yes         | yes     | yes       |
-| DOUBLE        | yes      | yes | yes    | yes     | yes   | yes  | no          | yes     | no        |
-| FLOAT         | yes      | yes | yes    | yes     | yes   | yes  | no          | yes     | no        |
-| CHAR          | yes      | yes | yes    | yes     | yes   | no   | yes         | yes     | yes       |
-| FIXEDBINARY** | yes      | yes | yes    | yes     | yes   | no   | no          | yes     | yes       |
-| VARCHAR***    | yes      | yes | yes    | yes     | yes   | yes  | yes         | no      | yes       |
-| VARBINARY**   | yes      | yes | yes    | yes     | yes   | no   | yes         | yes     | no        |
+| To              | SMALLINT | INT | BIGINT | DECIMAL | FLOAT | CHAR | FIXEDBINARY | VARCHAR | VARBINARY |
+|-----------------|----------|-----|--------|---------|-------|------|-------------|---------|-----------|
+| **From:**       |          |     |        |         |       |      |             |         |           |
+| SMALLINT[^6]    | yes      | yes | yes    | yes     | yes   | yes  | yes         | yes     | yes       |
+| INT             | yes      | yes | yes    | yes     | yes   | yes  | yes         | yes     | yes       |
+| BIGINT          | yes      | yes | yes    | yes     | yes   | yes  | yes         | yes     | yes       |
+| DECIMAL         | yes      | yes | yes    | yes     | yes   | yes  | yes         | yes     | yes       |
+| DOUBLE          | yes      | yes | yes    | yes     | yes   | yes  | no          | yes     | no        |
+| FLOAT           | yes      | yes | yes    | yes     | yes   | yes  | no          | yes     | no        |
+| CHAR            | yes      | yes | yes    | yes     | yes   | no   | yes         | yes     | yes       |
+| FIXEDBINARY[^7] | yes      | yes | yes    | yes     | yes   | no   | no          | yes     | yes       |
+| VARCHAR[^8]     | yes      | yes | yes    | yes     | yes   | yes  | yes         | no      | yes       |
+| VARBINARY[^7]   | yes      | yes | yes    | yes     | yes   | no   | yes         | yes     | no        |
 
-
-\* Not supported in this release.
-\*\* Used to cast binary UTF-8 data coming to/from sources such as HBase.
-\*\*\* You cannot convert a character string having a decimal point to an INT or BIGINT.
-
-{% include startnote.html %}The CAST function does not support all representations of FIXEDBINARY and VARBINARY. Only the UTF-8 format is supported. {% include endnote.html %}
-
-If your FIXEDBINARY or VARBINARY data is in a format other than UTF-8, or big-endian encoded, use the CONVERT_TO/FROM functions instead of CAST.
 
 ### Date and Time Data Types
 
-| To:          | DATE | TIME | TIMESTAMP | INTERVALYEAR | INTERVALDAY |
-|--------------|------|------|-----------|--------------|-------------|
-| From:        |      |      |           |              |             |
-| CHAR         | Yes  | Yes  | Yes       | Yes          | Yes         |
-| FIXEDBINARY* | No   | No   | No        | No           | No          |
-| VARCHAR      | Yes  | Yes  | Yes       | Yes          | Yes         |
-| VARBINARY*   | No   | No   | Yes       | No           | No          |
-| DATE         | No   | No   | Yes       | No           | No          |
-| TIME         | No   | Yes  | Yes       | No           | No          |
-| TIMESTAMP    | Yes  | Yes  | Yes       | No           | No          |
-| INTERVALYEAR | Yes  | No   | Yes       | No           | Yes         |
-| INTERVALDAY  | Yes  | No   | Yes       | Yes          | No          |
+| To:             | DATE | TIME | TIMESTAMP | INTERVALYEAR | INTERVALDAY |
+|-----------------|------|------|-----------|--------------|-------------|
+| From:           |      |      |           |              |             |
+| CHAR            | Yes  | Yes  | Yes       | Yes          | Yes         |
+| FIXEDBINARY[^7] | No   | No   | No        | No           | No          |
+| VARCHAR         | Yes  | Yes  | Yes       | Yes          | Yes         |
+| VARBINARY[^7]   | No   | No   | Yes       | No           | No          |
+| DATE            | No   | No   | Yes       | No           | No          |
+| TIME            | No   | Yes  | Yes       | No           | No          |
+| TIMESTAMP       | Yes  | Yes  | Yes       | No           | No          |
+| INTERVALYEAR    | Yes  | No   | Yes       | No           | Yes         |
+| INTERVALDAY     | Yes  | No   | Yes       | Yes          | No          |
 
-\* Used to cast binary UTF-8 data coming to/from sources such as HBase. The CAST function does not support all representations of FIXEDBINARY and VARBINARY. Only the UTF-8 format is supported.
 
 ## Data Types for CONVERT_TO and CONVERT_FROM Functions
 
@@ -260,5 +242,15 @@ and CONVERT_FROM functions:
 This table includes types such as INT, for converting little endian-encoded data and types such as INT_BE for converting big endian-encoded data to Drill internal types. You need to convert binary representations, such as data in HBase, to a Drill internal format as you query the data. If you are unsure that the size of the source and destination INT or BIGINT you are converting is the same, use CAST to convert these data types to/from binary.
 
 \*\_HADOOPV in the data type name denotes the variable length integer as defined by Hadoop libraries. Use a \*\_HADOOPV type if user data is encoded in this format by a Hadoop tool outside MapR.
+
+### Footnotes
+[^1]: Starting in Drill 1.14, the DECIMAL data type is enabled by default.
+[^2]: Internally, INTERVAL is represented as INTERVALDAY or INTERVALYEAR.
+[^3]: SMALLINT is not currently supported.
+[^4]: The CHAR data type is internally represented as VARCHAR by Drill.
+[^5]: Not supported in this release.
+[^6]: Not supported in this release.
+[^7]: Used to cast binary UTF-8 data coming to/from sources such as HBase. The CAST function does not support all representations of FIXEDBINARY and VARBINARY. Only the UTF-8 format is supported. If your FIXEDBINARY or VARBINARY data is in a format other than UTF-8, or big-endian encoded, use the CONVERT_TO/FROM functions instead of CAST.
+[^8]: You cannot convert a character string having a decimal point to an INT or BIGINT.
 
 
