@@ -11,21 +11,21 @@ Drill reads from and writes to data sources having a wide variety of types.
 | BINARY                                             | Variable-length byte string                                                                                          | B@e6d9eb7                                                                      |
 | BOOLEAN                                            | True or false                                                                                                        | true                                                                           |
 | DATE                                               | Years, months, and days in YYYY-MM-DD format since 4713 BC                                                           | 2015-12-30                                                                     |
-| DECIMAL(p,s), or DEC(p,s), NUMERIC(p,s)*           | 38-digit precision number, precision is p, and scale is s                                                            | DECIMAL(6,2) is 1234.56,  4 digits before and 2 digits after the decimal point |
+| DECIMAL(p,s), or DEC(p,s), NUMERIC(p,s)[^1]        | 38-digit precision number, precision is p, and scale is s                                                            | DECIMAL(6,2) is 1234.56,  4 digits before and 2 digits after the decimal point |
 | FLOAT                                              | 4-byte floating point number                                                                                         | 0.456                                                                          |
 | DOUBLE, DOUBLE PRECISION                           | 8-byte floating point number, precision-scalable                                                                     | 0.456                                                                          |
 | INTEGER or INT                                     | 4-byte signed integer in the range -2,147,483,648 to 2,147,483,647                                                   | 2147483646                                                                     |
-| INTERVAL**                                         | A day-time or year-month interval                                                                                    | '1 10:20:30.123' (day-time) or '1-2' year to month (year-month)                |
-| SMALLINT***                                        | 2-byte signed integer in the range -32,768 to 32,767                                                                 | 32000                                                                          |
+| INTERVAL[^2]                                       | A day-time or year-month interval                                                                                    | '1 10:20:30.123' (day-time) or '1-2' year to month (year-month)                |
+| SMALLINT[^3]                                       | 2-byte signed integer in the range -32,768 to 32,767                                                                 | 32000                                                                          |
 | TIME                                               | 24-hour based time before or after January 1, 2001 in hours, minutes, seconds format: HH:mm:ss                       | 22:55:55.23                                                                    |
 | TIMESTAMP                                          | JDBC timestamp in year, month, date hour, minute, second, and optional milliseconds format: yyyy-MM-dd HH:mm:ss.SSS  | 2015-12-30 22:55:55.23                                                         |
-| CHARACTER VARYING, CHARACTER, CHAR,**** or VARCHAR | UTF8-encoded variable-length string. The default limit is 1 character. The maximum character limit is 2,147,483,647. | CHAR(30) casts data to a 30-character string maximum.                          |
+| CHARACTER VARYING, CHARACTER, CHAR[^4] or VARCHAR | UTF8-encoded variable-length string. The default limit is 1 character. The maximum character limit is 2,147,483,647. | CHAR(30) casts data to a 30-character string maximum.                          |
 
 
-\* Starting in Drill 1.14, the DECIMAL data type is enabled by default.
-\*\* Internally, INTERVAL is represented as INTERVALDAY or INTERVALYEAR.
-\*\*\* SMALLINT is not currently supported.
-\*\*\*\* The CHAR data type is internally represented as VARCHAR by Drill.
+[^1]: Starting in Drill 1.14, the DECIMAL data type is enabled by default.
+[^2]: Internally, INTERVAL is represented as INTERVALDAY or INTERVALYEAR.
+[^3]: SMALLINT is not currently supported.
+[^4]: The CHAR data type is internally represented as VARCHAR by Drill.
 
 ## DECIMAL Data Type
 
