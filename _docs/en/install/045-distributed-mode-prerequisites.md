@@ -9,7 +9,7 @@ You can install Apache Drill on one or more nodes to run it in a clustered envir
 
 Before you install Drill on nodes in a cluster, ensure that the cluster meets the following prerequisites:
 
-  * (Required) Running Oracle or OpenJDK 8
+  * (Required) Running Oracle or OpenJDK 8 or newer.
   * (Required) Running a [ZooKeeper quorum](https://zookeeper.apache.org/doc/r3.1.2/zookeeperStarted.html#sc_RunningReplicatedZooKeeper)
   * (Recommended) Running a Hadoop cluster
   * (Recommended) Using DNS
