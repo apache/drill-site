@@ -42,6 +42,8 @@ To change the `dfs` storage plugin configuration to point to a different local o
   }
   ```
 
+Note that a local file system configuration can be based on the mount point of a network file system that has been mounted at the same location in the local file systems of each Drillbit.
+
 * Distributed file system example:
 
   ```
@@ -98,3 +100,15 @@ If the `json_files` workspace did not exist, the query would have to include the
 full file path name to the `donuts.json` file:
 
     SELECT * FROM dfs.`/users/max/drill/json/donuts.json` WHERE type='frosted';
+
+## Configuration options in core-site.xml
+
+### drill.exec.recursive_file_listing_max_size
+
+Use this property to set a limit on the numer of files that Drill
+will list by recursing into a DFS directory tree. When the limit is
+encountered the initiating operation will fail with an error. The
+intended application of this limit is to allow admins to protect their
+Drillbits from an errant or malicious SELECT * FROM dfs.huge_workspace
+LIMIT 10 query, which will cause an OOM given a big enough workspace of
+files. Defaults to 0 which means no limit.

@@ -122,7 +122,7 @@ true in the case of a match.
 
 ### ILIKE Syntax
 
-Note that it necessary quote ILIKE function calls using backticks because ILIKE
+Note that it is necessary to quote ILIKE function calls using backticks because ILIKE
 is also a SQL keyword.
 
 ```
