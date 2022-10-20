@@ -122,14 +122,17 @@ true in the case of a match.
 
 ### ILIKE Syntax
 
+Note that it necessary quote ILIKE function calls using backticks because ILIKE
+is also a SQL keyword.
+
 ```
-ILIKE(string, pattern)
+`ILIKE`(string, pattern)
 ```
 
 ### ILIKE Examples
 
 ```
-SELECT ILIKE('abcde', 'ABC%') FROM (VALUES(1));
+SELECT `ILIKE`('abcde', 'ABC%') FROM (VALUES(1));
 |--------|
 | EXPR$0 |
 |--------|
@@ -138,7 +141,7 @@ SELECT ILIKE('abcde', 'ABC%') FROM (VALUES(1));
 1 row selected (0.185 seconds)
 ```
 ```
-SELECT ILIKE(last_name, 'Spence') FROM cp.`employee.json` limit 3;
+SELECT `ILIKE`(last_name, 'Spence') FROM cp.`employee.json` limit 3;
 |--------|
 | EXPR$0 |
 |--------|
