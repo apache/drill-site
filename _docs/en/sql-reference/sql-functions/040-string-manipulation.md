@@ -338,13 +338,20 @@ Returns the location of the first occurrence of a substring of the input string,
 
 Matches a regexp pattern to a target string. Returns a boolean value: true if the value matches the regexp, false if the value does not match the regexp.
 
+
 ### REGEXP_MATCHES Syntax
 
 REGEXP_MATCHES(string_expression, pattern)
 
 *string_expression* is the string to be matched.
 
-*pattern* is the regular expression.
+*pattern* is the [Java regular expression pattern](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html).
+
+{% include startnote.html %}
+The regular expression . matches any character except a line terminator unless the [DOTALL flag](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html#DOTALL) is specified.  
+By default, the regular expressions ^ and $ ignore line terminators and only match at the beginning and the end, respectively, of the entire input sequence. If [MULTILINE mode](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html#MULTILINE) is activated then ^ matches at the beginning of input and after any line terminator except at the end of input. When in [MULTILINE mode](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html#MULTILINE) $ matches just before a line terminator or the end of the input sequence. 
+{% include endnote.html %}
+
 
 ### REGEXP_MATCHES Examples
 
@@ -373,6 +380,30 @@ Shows case-sensitivity:
 	|--------|
 	| true   |
 	|--------|
+	
+Shows how to turn on different pattern flags to enable case-insensitive matching, to permit whitespace and comments in pattern, etc. Complete list of flags you can find in [Java Doc](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html#field.summary)):
+
+	select regexp_matches('String with newline character
+        ', '(?s).*');
+        +--------+
+        | EXPR$0 |
+        +--------+
+        | true   |
+        +--------+
+
+        select regexp_matches('ABC', '(?i)abc');
+        +--------+
+        | EXPR$0 |
+        +--------+
+        | true   |
+        +--------+
+	
+	select regexp_matches('abc', '(?x)a    b    c');
+        +--------+
+        | EXPR$0 |
+        +--------+
+        | true   |
+        +--------+
 
 
 
