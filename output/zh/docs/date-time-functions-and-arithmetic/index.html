@@ -1513,6 +1513,14 @@
       <td>DATE, TIMESTAMP</td>
     </tr>
     <tr>
+      <td><a href="/zh/docs/date-time-functions-and-arithmetic/#day">DAY</a></td>
+      <td>BIGINT</td>
+    </tr>
+    <tr>
+      <td><a href="/zh/docs/date-time-functions-and-arithmetic/#hour">HOUR</a></td>
+      <td>BIGINT</td>
+    </tr>
+    <tr>
       <td><a href="/zh/docs/date-time-functions-and-arithmetic/#isdate">ISDATE</a></td>
       <td>BOOLEAN</td>
     </tr>
@@ -1525,8 +1533,20 @@
       <td>TIMESTAMP</td>
     </tr>
     <tr>
+      <td><a href="/zh/docs/date-time-functions-and-arithmetic/#minute">MINUTE</a></td>
+      <td>BIGINT</td>
+    </tr>
+    <tr>
+      <td><a href="/zh/docs/date-time-functions-and-arithmetic/#month">MONTH</a></td>
+      <td>BIGINT</td>
+    </tr>
+    <tr>
       <td><a href="/zh/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">NOW</a></td>
       <td>TIMESTAMP</td>
+    </tr>
+    <tr>
+      <td><a href="/zh/docs/date-time-functions-and-arithmetic/#second">SECOND</a></td>
+      <td>DOUBLE</td>
     </tr>
     <tr>
       <td><a href="/zh/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions">TIMEOFDAY</a></td>
@@ -1547,6 +1567,14 @@
     <tr>
       <td><a href="/zh/docs/date-time-functions-and-arithmetic/#timestampdiff">TIMESTAMPDIFF</a>*</td>
       <td>Inferred based on unit of time</td>
+    </tr>
+    <tr>
+      <td><a href="/zh/docs/date-time-functions-and-arithmetic/#week">WEEK</a></td>
+      <td>BIGINT</td>
+    </tr>
+    <tr>
+      <td><a href="/zh/docs/date-time-functions-and-arithmetic/#year">YEAR</a></td>
+      <td>BIGINT</td>
     </tr>
   </tbody>
 </table>
@@ -2019,6 +2047,28 @@ SELECT DATE_PART('hour', '23:14:30.076') FROM (VALUES(1));
 2 rows selected (0.161 seconds)
 </code></pre></div></div>
 
+<h2 id="day">DAY</h2>
+<p>Returns the day portion of a date/time.  Also accepts a string as input.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT day('2022-01-01') AS m1, day(CAST('1978-02-02' AS DATE)) AS d2;
++----+----+
+| m1 | d2 |
++----+----+
+| 1  | 2  |
++----+----+
+</code></pre></div></div>
+
+<h2 id="hour">HOUR</h2>
+<p>Returns the hour portion of a time or timestamp.  Accepts strings as input as well.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT hour('2022-01-01 12:05:12') AS h1, hour(CAST('13:01:01' AS TIME)) AS h2;
++----+----+
+| h1 | h2 |
++----+----+
+| 12 | 13 |
++----+----+
+</code></pre></div></div>
+
 <h2 id="isdate">ISDATE</h2>
 <p>Tests whether a character string represents a valid date. The test applied is equivalent
 to asking whether an attempt to cast the string to date would succeed or fail.</p>
@@ -2288,6 +2338,28 @@ SELECT UNIX_TIMESTAMP('2015-05-29 08:18:53.0', 'yyyy-MM-dd HH:mm:ss.SSS') FROM (
 1 row selected (0.171 seconds)
 </code></pre></div></div>
 
+<h2 id="minute">MINUTE</h2>
+<p>Returns the minute portion of a time or timestamp.  Also accepts a string as input.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT minute('2022-01-01 12:05:12') AS m1, minute(CAST('13:01:01' AS TIME)) AS m2;
++----+----+
+| m1 | m2 |
++----+----+
+| 5  | 1  |
++----+----+
+</code></pre></div></div>
+
+<h2 id="month">MONTH</h2>
+<p>Returns the month portion of a date/time.  Also accepts a string as input.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT month('2022-01-01') AS m1, month(CAST('1978-02-02' AS DATE)) AS n2;
++----+----+
+| m1 | n2 |
++----+----+
+| 1  | 2  |
++----+----+
+</code></pre></div></div>
+
 <h2 id="nearestdate">NEARESTDATE</h2>
 <p>Quickly and easily aggregates timestamp data by various units of time.</p>
 
@@ -2360,6 +2432,17 @@ SELECT UNIX_TIMESTAMP('2015-05-29 08:18:53.0', 'yyyy-MM-dd HH:mm:ss.SSS') FROM (
 |-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|
 | 2019-01-01 00:00:00.0 | 2019-01-01 00:00:00.0 | 2019-02-01 00:00:00.0 | 2019-02-15 00:00:00.0 | 2019-02-10 00:00:00.0 | 2019-02-11 00:00:00.0 | 2019-02-15 07:00:00.0 | 2019-02-15 07:30:00.0 | 2019-02-15 07:45:00.0 | 2019-02-15 07:22:00.0 | 2019-02-15 07:22:00.0 | 2019-02-15 07:22:15.0 | 2019-02-15 07:22:31.0 |
 |-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|
+</code></pre></div></div>
+
+<h2 id="second">SECOND</h2>
+<p>Returns the second portion of a time or timestamp.  Also accepts a string as input.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT second('2022-01-01 12:05:12') AS s1, second(CAST('13:01:01' AS TIME)) AS s2;
++------+-----+
+|  s1  | s2  |
++------+-----+
+| 12.0 | 1.0 |
++------+-----+
 </code></pre></div></div>
 
 <h2 id="timestampadd">TIMESTAMPADD</h2>
@@ -2486,6 +2569,28 @@ SELECT UNIX_TIMESTAMP('2015-05-29 08:18:53.0', 'yyyy-MM-dd HH:mm:ss.SSS') FROM (
 | 0          |
 | -92016000  |
 |------------|
+</code></pre></div></div>
+
+<h2 id="week">WEEK</h2>
+<p>Returns the week number of a date or timestamp.  Input can be either a string or date/time.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT week('2022-01-01') AS w1, week(CAST('1978-02-02' AS DATE)) AS w2;
++----+----+
+| w1 | w2 |
++----+----+
+| 52 | 5  |
++----+----+
+</code></pre></div></div>
+
+<h2 id="year">YEAR</h2>
+<p>Returns the year portion of a date or timestamp.  Input can be either a string or a date/time.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT year('2022-01-01') AS y1, year(CAST('1978-02-02' AS DATE)) AS y2;
++------+------+
+|  y1  |  y2  |
++------+------+
+| 2022 | 1978 |
++------+------+
 </code></pre></div></div>
 
     
