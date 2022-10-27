@@ -19,15 +19,22 @@ This section covers the Drill [time zone limitation]({{site.baseurl}}/docs/data-
 | [DATE_DIFF]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#date_diff)                             | DATE, TIMESTAMP                |
 | [DATE_PART]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#date_part)                             | DOUBLE                         |
 | [DATE_SUB]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#date_sub)                               | DATE, TIMESTAMP                |
+| [DAY]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#day)                                           | BIGINT                        |
+| [HOUR]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#hour)                                         | BIGINT                        |
 | [ISDATE]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#isdate)                                     | BOOLEAN                        |
 | [LOCALTIME]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)         | TIME                           |
 | [LOCALTIMESTAMP]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)    | TIMESTAMP                      |
-| [NOW]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)               | TIMESTAMP                      |
+| [MINUTE]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#minute)                                     | BIGINT                         |
+| [MONTH]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#month)                                       | BIGINT                         |
+| [NOW]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)               | TIMESTAMP  
+| [SECOND]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#second)                                     | DOUBLE                         |
 | [TIMEOFDAY]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)         | VARCHAR                        |
 | [UNIX_TIMESTAMP]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#unix_timestamp)                   | BIGINT                         |
 | [NEARESTDATE]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#nearestdate)\*\*                     | TIMESTAMP                      |
 | [TIMESTAMPADD]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#timestampadd)\*                       | Inferred based on unit of time |
 | [TIMESTAMPDIFF]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#timestampdiff)\*                     | Inferred based on unit of time |
+| [WEEK]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#week)                                         | BIGINT                         |
+| [YEAR]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#year)                                         | BIGINT                         |
 
 *Supported in Drill 1.15 and later.
 **Supported in Drill 1.16 and later.
@@ -456,6 +463,27 @@ The `employee.json` file, which Drill includes in the installation, lists the hi
     |------------------------|
     2 rows selected (0.161 seconds)
 
+## DAY
+Returns the day portion of a date/time.  Also accepts a string as input.
+
+    SELECT day('2022-01-01') AS m1, day(CAST('1978-02-02' AS DATE)) AS d2;
+    +----+----+
+    | m1 | d2 |
+    +----+----+
+    | 1  | 2  |
+    +----+----+
+
+## HOUR
+Returns the hour portion of a time or timestamp.  Accepts strings as input as well.
+
+    SELECT hour('2022-01-01 12:05:12') AS h1, hour(CAST('13:01:01' AS TIME)) AS h2;
+    +----+----+
+    | h1 | h2 |
+    +----+----+
+    | 12 | 13 |
+    +----+----+
+
+
 ## ISDATE
 Tests whether a character string represents a valid date. The test applied is equivalent
 to asking whether an attempt to cast the string to date would succeed or fail.
@@ -709,6 +737,28 @@ SELECT UNIX_TIMESTAMP('2015-05-29 08:18:53.0', 'yyyy-MM-dd HH:mm:ss.SSS') FROM (
 1 row selected (0.171 seconds)
 ```
 
+## MINUTE
+Returns the minute portion of a time or timestamp.  Also accepts a string as input.
+
+    SELECT minute('2022-01-01 12:05:12') AS m1, minute(CAST('13:01:01' AS TIME)) AS m2;
+    +----+----+
+    | m1 | m2 |
+    +----+----+
+    | 5  | 1  |
+    +----+----+
+
+
+## MONTH
+Returns the month portion of a date/time.  Also accepts a string as input.
+
+    SELECT month('2022-01-01') AS m1, month(CAST('1978-02-02' AS DATE)) AS n2;
+    +----+----+
+    | m1 | n2 |
+    +----+----+
+    | 1  | 2  |
+    +----+----+
+
+
 ## NEARESTDATE
 Quickly and easily aggregates timestamp data by various units of time.
 
@@ -778,6 +828,17 @@ SELECT
 	|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|
 	| 2019-01-01 00:00:00.0 | 2019-01-01 00:00:00.0 | 2019-02-01 00:00:00.0 | 2019-02-15 00:00:00.0 | 2019-02-10 00:00:00.0 | 2019-02-11 00:00:00.0 | 2019-02-15 07:00:00.0 | 2019-02-15 07:30:00.0 | 2019-02-15 07:45:00.0 | 2019-02-15 07:22:00.0 | 2019-02-15 07:22:00.0 | 2019-02-15 07:22:15.0 | 2019-02-15 07:22:31.0 |
 	|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|-----------------------|
+
+
+## SECOND
+Returns the second portion of a time or timestamp.  Also accepts a string as input.
+
+    SELECT second('2022-01-01 12:05:12') AS s1, second(CAST('13:01:01' AS TIME)) AS s2;
+    +------+-----+
+    |  s1  | s2  |
+    +------+-----+
+    | 12.0 | 1.0 |
+    +------+-----+
 
 
 ## TIMESTAMPADD
@@ -892,3 +953,24 @@ Subtracts the date in the third column from the date in the first column (column
 	| 0          |
 	| -92016000  |
 	|------------|
+
+## WEEK
+Returns the week number of a date or timestamp.  Input can be either a string or date/time.
+
+    SELECT week('2022-01-01') AS w1, week(CAST('1978-02-02' AS DATE)) AS w2;
+    +----+----+
+    | w1 | w2 |
+    +----+----+
+    | 52 | 5  |
+    +----+----+
+
+
+## YEAR
+Returns the year portion of a date or timestamp.  Input can be either a string or a date/time.
+
+    SELECT year('2022-01-01') AS y1, year(CAST('1978-02-02' AS DATE)) AS y2;
+    +------+------+
+    |  y1  |  y2  |
+    +------+------+
+    | 2022 | 1978 |
+    +------+------+
