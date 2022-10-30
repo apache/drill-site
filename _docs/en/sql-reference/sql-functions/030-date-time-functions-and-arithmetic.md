@@ -22,6 +22,7 @@ This section covers the Drill [time zone limitation]({{site.baseurl}}/docs/data-
 | [DAY]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#day)                                           | BIGINT                        |
 | [HOUR]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#hour)                                         | BIGINT                        |
 | [ISDATE]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#isdate)                                     | BOOLEAN                        |
+| [LAST_DAY]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#last_day)                                 | DATE                         |
 | [LOCALTIME]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)         | TIME                           |
 | [LOCALTIMESTAMP]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#other-date-and-time-functions)    | TIMESTAMP                      |
 | [MINUTE]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#minute)                                     | BIGINT                         |
@@ -653,6 +654,16 @@ What is the seconds component of this timestamp: 2001-02-16 20:38:40
     | 40.0       |
     |------------|
     1 row selected (0.062 seconds)
+
+## LAST_DAY
+Returns the last day of the month of the supplied date/time.  
+
+	SELECT LAST_DAY('2022-04-03');
+	+------------+
+	|   EXPR$0   |
+	+------------+
+	| 2022-04-30 |
+	+------------+
 
 
 ## Date, Time, and Interval Arithmetic Functions
