@@ -19,6 +19,7 @@ This section covers the Drill [time zone limitation]({{site.baseurl}}/docs/data-
 | [DATE_DIFF]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#date_diff)                             | DATE, TIMESTAMP                |
 | [DATE_PART]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#date_part)                             | DOUBLE                         |
 | [DATE_SUB]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#date_sub)                               | DATE, TIMESTAMP                |
+| [DATE_TRUNC]({{ site.baseurl }}/docs/date-time-functions-and-arithmetic/#date_trunc)                           | DATE, TIMESTAMP                |
 | [DAY]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#day)                                           | BIGINT                        |
 | [HOUR]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#hour)                                         | BIGINT                        |
 | [ISDATE]({{site.baseurl}}/docs/date-time-functions-and-arithmetic/#isdate)                                     | BOOLEAN                        |
@@ -463,6 +464,69 @@ The `employee.json` file, which Drill includes in the installation, lists the hi
     | 1997-12-31 14:00:00.0  |
     |------------------------|
     2 rows selected (0.161 seconds)
+
+## DATE_TRUNC
+Rounds or truncates a date or timestamp to the interval you need. When used to aggregate data, it allows you to find time-based trends like daily purchases or messages per second.
+
+The `DATE_TRUNC` function can return either a `date`, `timestamp`, `time` or `interval`. 
+
+### DATE_TRUNC Syntax
+
+`DATE_TRUNC(time_increment, expr)`
+`DATE_TRUNC(time_increment, keyword expr)`
+`DATE_TRUNC(time_increment, interval interval_expr TO time_increment)`
+
+*time_increment* is the time increment to which you would like to round the datetime. It must be one of the options listed below and enclosed by single quotes.
+*keyword* is the word `date`, `time`, or `timestamp`.  This corresponds to the desired return type.
+*interval* is the word `interval`
+*interval_expr* is an interval expression
+*column* is date, time, or timestamp data in the data source.
+*expr* is an time expression, such as the name of a data source column containing temporal data, or a string.
+
+
+* Second
+* Minute
+* Hour
+* Day
+* Month
+* Quarter
+* Year
+* Decade
+* Century
+* Millennium
+
+### DATE_TRUNC Examples
+`DATE_TRUNC` returning dates truncated to specific increments:
+
+	SELECT date_trunc('DECADE', 
+	date '1983-05-18') AS decade, 
+	date_trunc('YEAR', date '1983-05-18') AS `year`, 
+	date_trunc('QUARTER', date '1983-05-18') AS quarter, date_trunc('WEEK', date '1983-05-18') AS week;
+	+------------+------------+------------+------------+
+	|   decade   |    year    |  quarter   |    week    |
+	+------------+------------+------------+------------+
+	| 1980-01-01 | 1983-01-01 | 1983-04-01 | 1983-05-16 |
+	+------------+------------+------------+------------+
+
+`DATE_TRUNC` returning timestamps truncated to specific increments:
+
+	SELECT date_trunc('HOUR', timestamp '1983-05-18 10:14:00') AS HOUR;
+	+-----------------------+
+	|         HOUR          |
+	+-----------------------+
+	| 1983-05-18 10:00:00.0 |
+	+-----------------------+
+
+`DATE_TRUNC` example using an interval.
+
+ 	SELECT date_trunc('YEAR', interval '217-7' year(3) to month) as `year`, 
+	date_trunc('DECADE', interval '217-7' year(3) to month) AS `decade`;
+	+--------------------+--------------------+
+	|        year        |       decade       |
+	+--------------------+--------------------+
+	| 217 years 0 months | 210 years 0 months |
+	+--------------------+--------------------+
+
 
 ## DAY
 Returns the day portion of a date/time.  Also accepts a string as input.
