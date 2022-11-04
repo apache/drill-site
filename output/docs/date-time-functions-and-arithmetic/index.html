@@ -1513,6 +1513,10 @@
       <td>DATE, TIMESTAMP</td>
     </tr>
     <tr>
+      <td><a href="/docs/date-time-functions-and-arithmetic/#date_trunc">DATE_TRUNC</a></td>
+      <td>DATE, TIMESTAMP</td>
+    </tr>
+    <tr>
       <td><a href="/docs/date-time-functions-and-arithmetic/#day">DAY</a></td>
       <td>BIGINT</td>
     </tr>
@@ -2049,6 +2053,72 @@ SELECT DATE_PART('hour', '23:14:30.076') FROM (VALUES(1));
 | 1997-12-31 14:00:00.0  |
 |------------------------|
 2 rows selected (0.161 seconds)
+</code></pre></div></div>
+
+<h2 id="date_trunc">DATE_TRUNC</h2>
+<p>Rounds or truncates a date or timestamp to the interval you need. When used to aggregate data, it allows you to find time-based trends like daily purchases or messages per second.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">DATE_TRUNC</code> function can return either a <code class="language-plaintext highlighter-rouge">date</code>, <code class="language-plaintext highlighter-rouge">timestamp</code>, <code class="language-plaintext highlighter-rouge">time</code> or <code class="language-plaintext highlighter-rouge">interval</code>.</p>
+
+<h3 id="date_trunc-syntax">DATE_TRUNC Syntax</h3>
+
+<p><code class="language-plaintext highlighter-rouge">DATE_TRUNC(time_increment, expr)</code>
+<code class="language-plaintext highlighter-rouge">DATE_TRUNC(time_increment, keyword expr)</code>
+<code class="language-plaintext highlighter-rouge">DATE_TRUNC(time_increment, interval interval_expr TO time_increment)</code></p>
+
+<p><em>time_increment</em> is the time increment to which you would like to round the datetime. It must be one of the options listed below and enclosed by single quotes.
+<em>keyword</em> is the word <code class="language-plaintext highlighter-rouge">date</code>, <code class="language-plaintext highlighter-rouge">time</code>, or <code class="language-plaintext highlighter-rouge">timestamp</code>.  This corresponds to the desired return type.
+<em>interval</em> is the word <code class="language-plaintext highlighter-rouge">interval</code>
+<em>interval_expr</em> is an interval expression
+<em>column</em> is date, time, or timestamp data in the data source.
+<em>expr</em> is an time expression, such as the name of a data source column containing temporal data, or a string.</p>
+
+<ul>
+  <li>Second</li>
+  <li>Minute</li>
+  <li>Hour</li>
+  <li>Day</li>
+  <li>Month</li>
+  <li>Quarter</li>
+  <li>Year</li>
+  <li>Decade</li>
+  <li>Century</li>
+  <li>Millennium</li>
+</ul>
+
+<h3 id="date_trunc-examples">DATE_TRUNC Examples</h3>
+<p><code class="language-plaintext highlighter-rouge">DATE_TRUNC</code> returning dates truncated to specific increments:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT date_trunc('DECADE', 
+date '1983-05-18') AS decade, 
+date_trunc('YEAR', date '1983-05-18') AS `year`, 
+date_trunc('QUARTER', date '1983-05-18') AS quarter, date_trunc('WEEK', date '1983-05-18') AS week;
++------------+------------+------------+------------+
+|   decade   |    year    |  quarter   |    week    |
++------------+------------+------------+------------+
+| 1980-01-01 | 1983-01-01 | 1983-04-01 | 1983-05-16 |
++------------+------------+------------+------------+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">DATE_TRUNC</code> returning timestamps truncated to specific increments:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT date_trunc('HOUR', timestamp '1983-05-18 10:14:00') AS HOUR;
++-----------------------+
+|         HOUR          |
++-----------------------+
+| 1983-05-18 10:00:00.0 |
++-----------------------+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">DATE_TRUNC</code> example using an interval.</p>
+
+ 	SELECT date_trunc(‘YEAR’, interval ‘217-7’ year(3) to month) as <code class="language-plaintext highlighter-rouge">year</code>, 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>date_trunc('DECADE', interval '217-7' year(3) to month) AS `decade`;
++--------------------+--------------------+
+|        year        |       decade       |
++--------------------+--------------------+
+| 217 years 0 months | 210 years 0 months |
++--------------------+--------------------+
 </code></pre></div></div>
 
 <h2 id="day">DAY</h2>
