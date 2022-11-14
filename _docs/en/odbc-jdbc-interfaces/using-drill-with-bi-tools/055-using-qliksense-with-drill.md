@@ -72,7 +72,7 @@ Notice that the metadata information that comes with each table is also accessib
 Click **Insert Script** to add a new table as part of the associative data model that the Qlik Sense application creates. There are two of ways in which you can make a new table part of the data model.
 
 1. Load the data from the table into the memory of the Qlik Sense Server.
-2. Keep the data at the source and only capture the new table as part of the data model (this is called Direct Discovery). In order to learn more about Direct Discovery, see [http://www.qlik.com/us/explore/resources/whitepapers/qlikview-and-big-data](http://www.qlik.com/us/explore/resources/whitepapers/qlikview-and-big-data).
+2. Keep the data at the source and only capture the new table as part of the data model (this is called Direct Discovery). In order to learn more about Direct Discovery, see [the Qlik Sense website](https://www.qlik.com/us/products/qlik-sense).
 
 {% include startnote.html %}After you select the tables that you want to include, verify that the top part of the script is set to the following, otherwise the load fails:{% include endnote.html %}
 
