@@ -16,10 +16,15 @@ queries.
 | AVG(expression)                                              | SMALLINT,   INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL, INTERVAL                                                                             | DECIMAL for DECIMAL argument,   DOUBLE for all other arguments                                                                       |
 | BOOL_AND(expression), BOOL_OR(expression)                    | BIT                                                                                                                                       | BIT                                                                                                                                  |
 | BIT_AND(expression), BIT_OR(expression), BIT_XOR(expression) | INT, BIGINT                                                                                                                               | Same as argument type                                                                                                                |
+| CORR(x,y)                                                    | Numeric                                                               | Double                                                                                                                               |
+| COVAR_POP(x,y)                                               | Numeric                                                               | Double
+| COVAR_SAMP(x,y)                                              | Numeric                                                               | Double
 | COUNT(\*)                                                    | -                                                                                                                                         | BIGINT                                                                                                                               |
 | COUNT(\[DISTINCT\] expression)                               | any                                                                                                                                       | BIGINT                                                                                                                               |
 | MAX(expression), MIN(expression)                             | BINARY, DECIMAL, VARCHAR, DATE, TIME, or TIMESTAMP                                                                                        | Same   as argument type                                                                                                              |
+| STDDEV, STDDEV_POP, STDDEV_SAMP                              | Numeric                                                               | Double
 | SUM(expression)                                              | SMALLINT, INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL, INTERVAL                                                                               | DECIMAL for DECIMAL   argument,     BIGINT for any integer-type argument (including BIGINT), DOUBLE for   floating-point arguments   |
+| VARIANCE, VAR_POP, VAR_SAMP                                  | Numeric                                                               | Numeric 
 
 - Drill 1.14 and later supports the ANY_VALUE function.
 - Starting in Drill 1.14, the DECIMAL data type is enabled by default.
@@ -235,6 +240,42 @@ SELECT BIT_XOR(position_id) FROM cp.`employee.json`;
 |--------|
 | 4      |
 |--------|
+```
+
+## CORR
+Returns the [Pearson Correlation Coefficient](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient) for a given x, y. 
+
+```
+SELECT CORR (department_id, salary) as correlation FROM cp.`employee.json`;
++---------------------+
+|     correlation     |
++---------------------+
+| -0.6699481585713246 |
++---------------------+
+```
+
+## COVAR_POP
+Returns the population covariance for a data set.
+
+```
+SELECT covar_pop (department_id, salary) AS covariance FROM cp.`employee.json`;
++--------------------+
+|     covariance     |
++--------------------+
+| -9988.315451359776 |
++--------------------+
+```
+
+## COVAR_SAMP
+Returns the sample covariance for a data set.
+
+```
+select covar_samp (department_id, salary) as covariance from cp.`employee.json`;
++--------------------+
+|     covariance     |
++--------------------+
+| -9996.970837366154 |
++--------------------+
 ```
 
 ## COUNT
