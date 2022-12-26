@@ -1499,6 +1499,21 @@ queries.</p>
       <td>Same as argument type</td>
     </tr>
     <tr>
+      <td>CORR(x,y)</td>
+      <td>Numeric</td>
+      <td>Double</td>
+    </tr>
+    <tr>
+      <td>COVAR_POP(x,y)</td>
+      <td>Numeric</td>
+      <td>Double</td>
+    </tr>
+    <tr>
+      <td>COVAR_SAMP(x,y)</td>
+      <td>Numeric</td>
+      <td>Double</td>
+    </tr>
+    <tr>
       <td>COUNT(*)</td>
       <td>-</td>
       <td>BIGINT</td>
@@ -1514,9 +1529,19 @@ queries.</p>
       <td>Same   as argument type</td>
     </tr>
     <tr>
+      <td>STDDEV, STDDEV_POP, STDDEV_SAMP</td>
+      <td>Numeric</td>
+      <td>Double</td>
+    </tr>
+    <tr>
       <td>SUM(expression)</td>
       <td>SMALLINT, INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL, INTERVAL</td>
       <td>DECIMAL for DECIMAL   argument,     BIGINT for any integer-type argument (including BIGINT), DOUBLE for   floating-point arguments</td>
+    </tr>
+    <tr>
+      <td>VARIANCE, VAR_POP, VAR_SAMP</td>
+      <td>Numeric</td>
+      <td>Numeric</td>
     </tr>
   </tbody>
 </table>
@@ -1730,6 +1755,39 @@ SELECT BIT_XOR(position_id) FROM cp.`employee.json`;
 |--------|
 | 4      |
 |--------|
+</code></pre></div></div>
+
+<h2 id="corr">CORR</h2>
+<p>Returns the <a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">Pearson Correlation Coefficient</a> for a given x, y.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT CORR (department_id, salary) as correlation FROM cp.`employee.json`;
++---------------------+
+|     correlation     |
++---------------------+
+| -0.6699481585713246 |
++---------------------+
+</code></pre></div></div>
+
+<h2 id="covar_pop">COVAR_POP</h2>
+<p>Returns the population covariance for a data set.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT covar_pop (department_id, salary) AS covariance FROM cp.`employee.json`;
++--------------------+
+|     covariance     |
++--------------------+
+| -9988.315451359776 |
++--------------------+
+</code></pre></div></div>
+
+<h2 id="covar_samp">COVAR_SAMP</h2>
+<p>Returns the sample covariance for a data set.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select covar_samp (department_id, salary) as covariance from cp.`employee.json`;
++--------------------+
+|     covariance     |
++--------------------+
+| -9996.970837366154 |
++--------------------+
 </code></pre></div></div>
 
 <h2 id="count">COUNT</h2>
