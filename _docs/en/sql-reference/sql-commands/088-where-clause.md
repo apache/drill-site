@@ -19,6 +19,7 @@ A boolean expression can include one or more of the following operators:
   * IS NULL
   * IS NOT NULL
   * LIKE
+  * SIMILAR TO
   * BETWEEN
   * IN
   * EXISTS
