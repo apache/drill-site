@@ -47,8 +47,7 @@ containing the following properties.
 | validateCertificates | true      | Whether the Splunk client will validates the server's SSL cert  | 2.0   |
 
 [^1]: See [this Splunk documentation](https://docs.splunk.com/Documentation/Splunk/latest/Admin/Apparchitectureandobjectownership) for more information.
-[^2]: See [this Splunk documentation](https://docs.splunk.com/Documentation/Splunk/latest/Security/CreateAuthTokens)
-for more information.
+[^2]: See [this Splunk documentation](https://docs.splunk.com/Documentation/Splunk/latest/Security/CreateAuthTokens) for more information.
 
 ## Understanding Splunk's Data Model
 
