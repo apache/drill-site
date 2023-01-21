@@ -139,18 +139,18 @@ ResultSet ctasResults = ctasStatement.executeQuery(ctasQueryText);
 ctasResults.close();
 ctasStatement.close();
 ```
-then it may be that the CTAS statement is still executing, and that is unintentionally cancelled before completing depending on good or bad luck with respect to timing.
+then it may be that the CTAS statement is still executing, and that it is unintentionally cancelled before completing depending on luck with respect to timing.
 
-The cancellation of the CTAS statement is usually benign if it spawned only one writer fragment, but if it spawned more than one then the chances increase that at least one writer will be interrupted before it has finished writing, resulting in incomplete or even corrupted output. Even in the benign case, such queries conclude in the CANCELLED state rather than the COMPLETED state resulting in misleading query logs and profiles.
+This unintended cancellation of the CTAS statement is usually benign if it spawned only one writer fragment, but if it spawned more than one then the chances increase that at least one writer will be interrupted before it has finished writing, resulting in incomplete or even corrupted output. Even the benign cases of such queries conclude in the CANCELLED state rather than the COMPLETED state resulting in misleading query logs and profiles.
 
-To have CTAS queries reliably run to completion the JDBC client should wait for all of the writer fragments to complete before it closes its JDBC resources by scrolling through the ResultSet before closing it. Using try-with-resources syntax,
+To have CTAS queries reliably run to completion the JDBC client should wait for all of the writer fragments to complete by scrolling through the returned ResultSet before closing it or the Statement that created it. Using try-with-resources syntax,
 
 ```java
 try (
   Statement ctasStatement = conn.createStatement();
   ResultSet ctasResults = ctasStatement.executeQuery(ctasQueryText);
 ) {
-  while (ctasResults.next()); // scroll through results to ensure that we wait for query completion
+  while (ctasResults.next()); // scroll through results to ensure that we wait for CTAS completion
 }
 ```
       
