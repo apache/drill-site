@@ -87,7 +87,7 @@ where
 
 `drillbit=<node name>` specifies one or more host names or IP addresses of cluster nodes running Drill.
 
-###`tries` Parameter
+### `tries` Parameter
 
 As of Drill 1.10, you can include the optional `tries=<value>` parameter in the connection string, as shown in the following URL:
 
@@ -115,9 +115,6 @@ Starting in Drill 1.16, the DrillStatement interface supports the setMaxRows met
 
 Starting in 1.13, the DrillStatement interface supports the setQueryTimeout method. The setQueryTimeout method limits the amount of time that the JDBC driver allows a query to run before canceling the query. The setQueryTimeout method sets the number of seconds that the JDBC driver waits for a Statement object to execute before canceling it. By default, there is no limit on the amount of time allowed for a running statement to complete. When you configure a limit, an SQLTimeoutException is thrown if a statement exceeds the limit. A JDBC driver must apply this limit to the execute, executeQuery, and executeUpdate methods.
 
-
-
-
 ## Example of Connecting to Drill Programmatically
 
 The following sample code shows you how to use the class name in a snippet to connect to Drill using the Drill-Jdbc-all driver:
@@ -132,3 +129,28 @@ while(rs.next()){
 System.out.println(rs.getString(1));
 }
 ```
+
+## Ensuring the completion of CTAS queries
+
+When a JDBC client issues a CTAS (CREATE TABLE AS SELECT ...) statement then Drill will return a record for each completed writer fragment containing the number of records that fragment wrote. These records are returned in the usual streaming fashion as writer fragments complete, their order being unknowable in advance. If the client application immediately closes its clientside JDBC resources after its call to Statement.executeQuery has returned as follows
+```java
+Statement ctasStatement = conn.createStatement();
+ResultSet ctasResults = ctasStatement.executeQuery(ctasQueryText);
+ctasResults.close();
+ctasStatement.close();
+```
+then it may be that the CTAS statement is still executing, and that is unintentionally cancelled before completing depending on good or bad luck with respect to timing.
+
+The cancellation of the CTAS statement is usually benign if it spawned only one writer fragment, but if it spawned more than one then the chances increase that at least one writer will be interrupted before it has finished writing, resulting in incomplete or even corrupted output. Even in the benign case, such queries conclude in the CANCELLED state rather than the COMPLETED state resulting in misleading query logs and profiles.
+
+To have CTAS queries reliably run to completion the JDBC client should wait for all of the writer fragments to complete before it closes its JDBC resources by scrolling through the ResultSet before closing it. Using try-with-resources syntax,
+
+```java
+try (
+  Statement ctasStatement = conn.createStatement();
+  ResultSet ctasResults = ctasStatement.executeQuery(ctasQueryText);
+) {
+  while (ctasResults.next()); // scroll through results to ensure that we wait for query completion
+}
+```
+      
