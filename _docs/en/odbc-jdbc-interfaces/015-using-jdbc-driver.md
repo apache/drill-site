@@ -87,7 +87,7 @@ where
 
 `drillbit=<node name>` specifies one or more host names or IP addresses of cluster nodes running Drill.
 
-### `tries` Parameter
+### The `tries` Parameter
 
 As of Drill 1.10, you can include the optional `tries=<value>` parameter in the connection string, as shown in the following URL:
 
@@ -153,4 +153,5 @@ try (
   while (ctasResults.next()); // scroll through results to ensure that we wait for CTAS completion
 }
 ```
-      
+
+See also: the `exec.query.return_result_set_for_ddl` config option.

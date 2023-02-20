@@ -49,7 +49,10 @@ You set the input format for data coming from data sources to Drill in the works
 You change one of the `store` properties in the [sys.options table]({{ site.baseurl }}/docs/configuration-options-introduction/) to set the output format of Drill data. The default storage format for Drill CREATE TABLE AS (CTAS) statements is Parquet.
 
 ## Schemaless Tables
-As of Drill 1.13, Drill supports queries on empty directories. Empty directories are directories that exist, but do not contain files. Currently, an empty directory in Drill is a Drill table without a schema, or a “schemaless” table. An empty directory with Parquet metadata cache files is also a schemaless table in Drill.
+
+**Introduced in release: 1.13**
+
+Drill supports queries on empty directories i.e. directories that exist but do not contain files.  In Drill 1.21 the constraint that the enclosing workspace must have a default format set for a query against an empty directory to be considered valid was added. Currently, an empty directory in Drill is a Drill table without a schema, or a “schemaless” table. An empty directory with Parquet metadata cache files is also a schemaless table in Drill.
 
 Drill supports queries with JOIN and UNION [ALL] operators on empty directories. For example, if you issue the following queries with the UNION ALL operator, Drill queries the empty directory (empty_DIR) as a schemaless table and returns results for the query on the right side of the operator:
 
@@ -57,6 +60,7 @@ Drill supports queries with JOIN and UNION [ALL] operators on empty directories.
 
 ### Usage Notes
 
+- Drill 1.21 and later: if the workspace configuration specifies no default format, i.e. `"defaultInputFormat": null`, then queries on an empty directory fail with a `VALIDATION ERROR`.
 - Queries with stars (*) on an empty directory return an empty result set.
 - Fields indicated in the SELECT statement are returned as INT-OPTIONAL types.
 - The empty directory in a query with the UNION operator does not change the results; Drill returns results as if the query does not contain the UNION operator.
