@@ -7,7 +7,7 @@
 <meta name=viewport content="width=device-width, initial-scale=1">
 
 
-<title>UNION Set Operator - Apache Drill</title>
+<title>Set Operators - Apache Drill</title>
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href="/css/site.css" rel="stylesheet" type="text/css"/>
@@ -43,11 +43,11 @@
 	<ul>
 		
 		<li>
-			<a style="font-weight: bold;" href="/docs/union-set-operator/" >en</a>
+			<a style="font-weight: bold;" href="/docs/set-operators/" >en</a>
 		</li>
 		
 		<li>
-			<a  href="/zh/docs/union-set-operator/" >zh</a>
+			<a  href="/zh/docs/set-operators/" >zh</a>
 		</li>
 		
 	</ul>
@@ -1040,7 +1040,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/order-by-clause/">ORDER BY Clause</a></li>
               
-                <li class="toctree-l3 current"><a class="reference internal" href="/docs/union-set-operator/">UNION Set Operator</a></li>
+                <li class="toctree-l3 current"><a class="reference internal" href="/docs/set-operators/">Set Operators</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/where-clause/">WHERE Clause</a></li>
               
@@ -1446,7 +1446,7 @@
   
     <li><a href="/docs/sql-commands/">SQL Commands</a></li>
   
-  <li>UNION Set Operator</li>
+  <li>Set Operators</li>
 </nav>
 
 
@@ -1454,11 +1454,11 @@
   <div class="main-content">
 
     
-      <a class="edit-link" href="https://github.com/apache/drill-site/blob/master/_docs/en/sql-reference/sql-commands/087-union-set-operator.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
+      <a class="edit-link" href="https://github.com/apache/drill-site/blob/master/_docs/en/sql-reference/sql-commands/087-set-operators.md" target="_blank"><i class="fa fa-pencil-square-o"></i></a>
     
 
     <div class="int_title left">
-      <h1>UNION Set Operator</h1>
+      <h1>Set Operators</h1>
 
     </div>
 
@@ -1468,29 +1468,24 @@
 
     <div class="int_text" align="left">
       
-        <p>The UNION set operator combines the result sets of two separate query expressions. The result set of each query must have the same number of columns and compatible data types. UNION automatically removes duplicate records from the result set. UNION ALL returns all duplicate records.</p>
+        <p>The UNION, INTERSECT and EXCEPT set operators combine the result sets of two separate query expressions. The result set of each query must have the same number of columns and compatible data types.</p>
+
+<h1 id="union">UNION</h1>
+
+<p>The UNION operator computes the set union of its two arguments, automatically removing duplicate records from the result set. UNION ALL returns all duplicate records.</p>
 
 <h2 id="syntax">Syntax</h2>
-<p>The UNION set operator supports the following syntax:</p>
+<p>The UNION operator supports the following syntax:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   query
    { UNION [ ALL ] }
-   query
+   another_query
 </code></pre></div></div>
 
 <h2 id="parameters">Parameters</h2>
-<p><em>query</em></p>
+<p><em>query</em>, <em>another_query</em></p>
 
 <p>Any SELECT query that Drill supports. See <a href="/docs/select/">SELECT</a>.</p>
-
-<h2 id="usage-notes">Usage Notes</h2>
-<ul>
-  <li>The two SELECT query expressions that represent the direct operands of the UNION must produce the same number of columns. Corresponding columns must contain compatible data types. See <a href="/docs/supported-data-types/">Supported Data Types</a>.</li>
-  <li>Multiple UNION operators in the same SELECT statement are evaluated left to right, unless otherwise indicated by parentheses.</li>
-  <li>You can only use * on either side of UNION when the data source has a defined schema, such as data in Hive or views.</li>
-  <li>You must explicitly specify columns.</li>
-  <li>Drill 1.13 and later supports queries on empty directories. An empty directory in a query does not change the results; Drill returns results as if the query does not contain the UNION operator. See <a href="/docs/data-sources-and-file-formats-introduction/#schemaless-tables">Schemaless Tables</a> for more information.</li>
-</ul>
 
 <h2 id="examples">Examples</h2>
 <p>The following example uses the UNION ALL set operator to combine click activity data before and after a marketing campaign. The data in the example exists in the <code class="language-plaintext highlighter-rouge">dfs.clicks workspace</code>.</p>
@@ -1518,6 +1513,65 @@
 </code></pre></div></div>
 
 <p>Drill treats the empty directory as a schemaless table and returns results as if the UNION operator is not included in the query.</p>
+
+<h1 id="intersect-and-except">INTERSECT and EXCEPT</h1>
+
+<p><strong>Introduced in release: 1.21</strong>
+The INTERSECT and EXCEPT operators respectively compute the set intersection and the set difference of their two arguments. As with the UNION operator, duplicate records are auotmatically removed from the result set.</p>
+
+<h2 id="syntax-1">Syntax</h2>
+
+<p>These set operators support the following syntax:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>query
+{ INTERSECT | EXCEPT }
+another_query
+</code></pre></div></div>
+
+<h2 id="parameters-1">Parameters</h2>
+<p><em>query</em>, <em>another_query</em></p>
+
+<p>Any SELECT query that Drill supports. See <a href="/docs/select/">SELECT</a>.</p>
+
+<h2 id="examples-1">Examples</h2>
+
+<h3 id="compute--1-2-4----4-5-6-">Compute { 1, 2, 4 } ∩ { 4, 5, 6 }.</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apache drill&gt; WITH
+	X AS (SELECT employee_id AS col FROM cp.`employee.json` LIMIT 3 OFFSET 0),
+	Y AS (SELECT employee_id AS col FROM cp.`employee.json` LIMIT 3 OFFSET 2)
+SELECT COL FROM X
+INTERSECT
+SELECT col FROM Y;
+
+col  4
+
+1 row selected (0.449 seconds)
+</code></pre></div></div>
+
+<h3 id="compute--1-2-4----4-5-6--1">Compute { 1, 2, 4 } ∖ { 4, 5, 6 }</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apache drill&gt; WITH
+	X AS (SELECT employee_id AS col FROM cp.`employee.json` LIMIT 3 OFFSET 0),
+	Y AS (SELECT employee_id AS col FROM cp.`employee.json` LIMIT 3 OFFSET 2)
+SELECT COL FROM X
+EXCEPT
+SELECT col FROM Y;
+
+col  1
+
+col  2
+
+2 rows selected (0.41 seconds)
+</code></pre></div></div>
+
+<h1 id="set-operator-usage-notes">Set operator usage notes</h1>
+<ul>
+  <li>The two SELECT query expressions that represent the direct operands of the set operator must produce the same number of columns. Corresponding columns must contain compatible data types. See <a href="/docs/supported-data-types/">Supported Data Types</a>.</li>
+  <li>Multiple set operators in the same SELECT statement are evaluated left to right, unless otherwise indicated by parentheses.</li>
+  <li>You can only use * on either side of a set operator when the data source has a defined schema, such as data in Hive or views.</li>
+  <li>You must explicitly specify columns.</li>
+  <li>Drill 1.13 and later supports queries on empty directories. An empty directory in a query interacts with set operators in the same way is if it is the empty set. See <a href="/docs/data-sources-and-file-formats-introduction/#schemaless-tables">Schemaless Tables</a> for more information.</li>
+</ul>
 
 
     

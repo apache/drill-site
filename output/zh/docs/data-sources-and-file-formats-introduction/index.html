@@ -1040,7 +1040,7 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/zh/docs/order-by-clause/">ORDER BY Clause</a></li>
               
-                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/union-set-operator/">UNION Set Operator</a></li>
+                <li class="toctree-l3"><a class="reference internal" href="/zh/docs/set-operators/">Set Operators</a></li>
               
                 <li class="toctree-l3"><a class="reference internal" href="/zh/docs/where-clause/">WHERE Clause</a></li>
               
@@ -1542,7 +1542,10 @@ sources associated with each:</p>
 <p>You change one of the <code class="language-plaintext highlighter-rouge">store</code> properties in the <a href="/zh/docs/configuration-options-introduction/">sys.options table</a> to set the output format of Drill data. The default storage format for Drill CREATE TABLE AS (CTAS) statements is Parquet.</p>
 
 <h2 id="schemaless-tables">Schemaless Tables</h2>
-<p>As of Drill 1.13, Drill supports queries on empty directories. Empty directories are directories that exist, but do not contain files. Currently, an empty directory in Drill is a Drill table without a schema, or a “schemaless” table. An empty directory with Parquet metadata cache files is also a schemaless table in Drill.</p>
+
+<p><strong>Introduced in release: 1.13</strong></p>
+
+<p>Drill supports queries on empty directories i.e. directories that exist but do not contain files.  In Drill 1.21 the constraint that the enclosing workspace must have a default format set for a query against an empty directory to be considered valid was added. Currently, an empty directory in Drill is a Drill table without a schema, or a “schemaless” table. An empty directory with Parquet metadata cache files is also a schemaless table in Drill.</p>
 
 <p>Drill supports queries with JOIN and UNION [ALL] operators on empty directories. For example, if you issue the following queries with the UNION ALL operator, Drill queries the empty directory (empty_DIR) as a schemaless table and returns results for the query on the right side of the operator:</p>
 
@@ -1552,6 +1555,7 @@ sources associated with each:</p>
 <h3 id="usage-notes">Usage Notes</h3>
 
 <ul>
+  <li>Drill 1.21 and later: if the workspace configuration specifies no default format, i.e. <code class="language-plaintext highlighter-rouge">"defaultInputFormat": null</code>, then queries on an empty directory fail with a <code class="language-plaintext highlighter-rouge">VALIDATION ERROR</code>.</li>
   <li>Queries with stars (*) on an empty directory return an empty result set.</li>
   <li>Fields indicated in the SELECT statement are returned as INT-OPTIONAL types.</li>
   <li>The empty directory in a query with the UNION operator does not change the results; Drill returns results as if the query does not contain the UNION operator.</li>
