@@ -98,6 +98,35 @@ SELECT ANY_VALUE(employee_id) as anyemp FROM cp.`employee.json` GROUP BY salary 
 ...
 ```
 
+## Filtered Aggregates
+**Introduced in release: 1.21**
+
+Starting in Drill 1.21 it is possible to follow an aggregate function invocation with a boolean expression that will filter the values procesed by the aggregate using the following syntax.
+```
+agg_func( column ) FILTER(WHERE boolean_expression)
+```
+
+For example
+``` sql
+SELECT
+  count(n_name) FILTER(WHERE n_regionkey = 1) AS nations_count_in_1_region,
+  count(n_name) FILTER(WHERE n_regionkey = 2) AS nations_count_in_2_region,
+  count(n_name) FILTER(WHERE n_regionkey = 3) AS nations_count_in_3_region,
+  count(n_name) FILTER(WHERE n_regionkey = 4) AS nations_count_in_4_region,
+  count(n_name) FILTER(WHERE n_regionkey = 0) AS nations_count_in_0_region
+FROM cp.`tpch/nation.parquet`
+```
+will return
+```
++---------------------------+---------------------------+---------------------------+---------------------------+---------------------------+
+| nations_count_in_1_region | nations_count_in_2_region | nations_count_in_3_region | nations_count_in_4_region | nations_count_in_0_region |
++---------------------------+---------------------------+---------------------------+---------------------------+---------------------------+
+| 5                         | 5                         | 5                         | 5                         | 5                         |
++---------------------------+---------------------------+---------------------------+---------------------------+---------------------------+
+```
+
+**N.B.** Some versions of Drill prior to 1.21 do not fail if FILTER expressions are included with aggregate function calls, but silently do no filtering yielding incorrect results. Filtered aggregates are only supported from version 1.21 onward.
+
 ## AVG
 
 Returns the average of a numerical expression.
