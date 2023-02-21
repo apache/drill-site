@@ -561,6 +561,10 @@
               <li class="toctree-l2"><a class="reference internal" href="/docs/google-sheets-storage-plugin/">Google Sheets Storage Plugin</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/docs/ms-access-storage-plugin/">MS Access Storage Plugin</a></li>
+            
+          
           </ul>
         
       
@@ -1629,6 +1633,32 @@ SELECT ANY_VALUE(employee_id) as anyemp FROM cp.`employee.json` GROUP BY salary 
 | 13     |
 ...
 </code></pre></div></div>
+
+<h2 id="filtered-aggregates">Filtered Aggregates</h2>
+<p><strong>Introduced in release: 1.21</strong></p>
+
+<p>Starting in Drill 1.21 it is possible to follow an aggregate function invocation with a boolean expression that will filter the values procesed by the aggregate using the following syntax.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>agg_func( column ) FILTER(WHERE boolean_expression)
+</code></pre></div></div>
+
+<p>For example</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span>
+  <span class="k">count</span><span class="p">(</span><span class="n">n_name</span><span class="p">)</span> <span class="n">FILTER</span><span class="p">(</span><span class="k">WHERE</span> <span class="n">n_regionkey</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="k">AS</span> <span class="n">nations_count_in_1_region</span><span class="p">,</span>
+  <span class="k">count</span><span class="p">(</span><span class="n">n_name</span><span class="p">)</span> <span class="n">FILTER</span><span class="p">(</span><span class="k">WHERE</span> <span class="n">n_regionkey</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="k">AS</span> <span class="n">nations_count_in_2_region</span><span class="p">,</span>
+  <span class="k">count</span><span class="p">(</span><span class="n">n_name</span><span class="p">)</span> <span class="n">FILTER</span><span class="p">(</span><span class="k">WHERE</span> <span class="n">n_regionkey</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="k">AS</span> <span class="n">nations_count_in_3_region</span><span class="p">,</span>
+  <span class="k">count</span><span class="p">(</span><span class="n">n_name</span><span class="p">)</span> <span class="n">FILTER</span><span class="p">(</span><span class="k">WHERE</span> <span class="n">n_regionkey</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span> <span class="k">AS</span> <span class="n">nations_count_in_4_region</span><span class="p">,</span>
+  <span class="k">count</span><span class="p">(</span><span class="n">n_name</span><span class="p">)</span> <span class="n">FILTER</span><span class="p">(</span><span class="k">WHERE</span> <span class="n">n_regionkey</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">AS</span> <span class="n">nations_count_in_0_region</span>
+<span class="k">FROM</span> <span class="n">cp</span><span class="p">.</span><span class="nv">`tpch/nation.parquet`</span>
+</code></pre></div></div>
+<p>will return</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+---------------------------+---------------------------+---------------------------+---------------------------+---------------------------+
+| nations_count_in_1_region | nations_count_in_2_region | nations_count_in_3_region | nations_count_in_4_region | nations_count_in_0_region |
++---------------------------+---------------------------+---------------------------+---------------------------+---------------------------+
+| 5                         | 5                         | 5                         | 5                         | 5                         |
++---------------------------+---------------------------+---------------------------+---------------------------+---------------------------+
+</code></pre></div></div>
+
+<p><strong>N.B.</strong> Some versions of Drill prior to 1.21 do not fail if FILTER expressions are included with aggregate function calls, but silently do no filtering yielding incorrect results. Filtered aggregates are only supported from version 1.21 onward.</p>
 
 <h2 id="avg">AVG</h2>
 
