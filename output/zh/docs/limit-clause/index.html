@@ -557,6 +557,10 @@
               <li class="toctree-l2"><a class="reference internal" href="/zh/docs/dropbox-storage-plugin/">Dropbox Storage Plugin</a></li>
             
           
+            
+              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/google-sheets-storage-plugin/">Google Sheets Storage Plugin</a></li>
+            
+          
           </ul>
         
       
@@ -1554,6 +1558,11 @@ LIMIT 0 optimizations do not work for queries with the UNION [ALL] set operator 
   <li>CONVERT_TOEXTENDEDJSON</li>
   <li>AVG (window function)</li>
 </ul>
+
+<p><strong>Recursive file listing in Drill 1.21+</strong>
+Since version 1.21, Drill will exit early from recursive file listing during the planning of a query against filesystem storage if has detected a LIMIT 0 in the outermost SELECT. This optimization is aimed at queries of the following form.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT * FROM dfs.`huge_directory` LIMIT 0;
+</code></pre></div></div>
 
 <h2 id="examples">Examples</h2>
 <p>The following example query includes the ORDER BY and LIMIT clauses and returns the top 20 sales totals by month and state:</p>
