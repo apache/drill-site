@@ -3,7 +3,9 @@ title: "CREATE TEMPORARY TABLE AS (CTTAS)"
 slug: "CREATE TEMPORARY TABLE AS (CTTAS)"
 parent: "SQL Commands"
 ---
-As of Drill 1.10, you can use the CREATE TEMPORARY TABLE AS (CTTAS) command to store the results of a query in a temporary table. You can reference the temporary table in subsequent queries within the same session, thereby improving query performance. Data written to the temporary table is not permanently stored on the filesystem. Drill automatically drops the temporary table once the session ends or the Drillbit process fails. Therefore, you do not have to manually drop the table.
+
+**Introduced in release: 1.10**
+You can use the CREATE TEMPORARY TABLE AS (CTTAS) command to store the results of a query in a temporary table. You can reference the temporary table in subsequent queries within the same session, thereby improving query performance. Data written to the temporary table is not permanently stored on the filesystem. Drill automatically drops the temporary table once the session ends or the Drillbit process fails. Therefore, you do not have to manually drop the table.
 
 {% include startnote.html %}You cannot create a view over a temporary table.{% include endnote.html %}
 
@@ -49,6 +51,7 @@ To override the default temporary workspace, define `drill.exec.default_temporar
 To change the default temporary workspace connection or directory path, update the dfs storage plugin on the Storage page in the Drill Web UI. For example, dfs connection attribute can be `file:///` or `maprfs:///` and the `dfs.tmp` location attribute can be `/tmp` or `/tmp2`. For more information, see [Plugin Configuration Basics]({{site.baseurl}}/docs/plugin-configuration-basics).
 
 Note: When you run Drill in distributed mode, verify that the default temporary workspace connection points to a distributed filesystem. If temporary tables are created on the local filesystem, they can only be accessed by the local Drillbit that created the temporary table.
+
 ### Setting the Storage Format
 The default storage format for temporary tables is parquet. However, you can create temporary tables in one of the following formats:
 
@@ -61,7 +64,6 @@ To change the storage format, set the `store.format` option before you create th
 		ALTER SESSION SET `store.format`='json';
 
 ### Creation of Temporary Tables and User Access
-
 In general, the user that creates a temporary table can run queries against the table, as long as the session in which the table was created is active. Although temporary tables are actually directories, you query the temporary table directory as you would query a table.
 
 When you create a temporary table, Drill creates a temporary location named after the session ID to store temporary tables associated with the session. Drill writes temporary table files with masked filenames, such as 0_0_0.parquet, to temporary table directories within the session’s temporary location. Internally, Drill masks each temporary table directory name. Therefore, when you submit a query with the temporary table name, Drill resolves the temporary table name to the internal, masked directory name.
@@ -72,24 +74,24 @@ Drill creates the session and temporary table directories and files with the fol
 * Only the owner can create and read the files within the folders.
 
 ### Authorization
-
 When authorization is enabled, the user that started the Drillbit will own the temporary tables created within that session. However, the user that created the table will have the ability to query the data. For example, the *mapr* user starts the Drillbit and *Sally* starts the Drill shell. When authorization is enabled, *Sally* can submit a query to create a temporary table and she can query the temporary table data. However, the *mapr* user is the owner of the temporary table directory and files. In this case, *Tom* can access the temporary table if he knows the full path to the temporary table directory and the session is still active.
 
 ### Impersonation
-
 When impersonation is enabled, only the user that created the temporary table can query the temporary table. For example, if the Drillbit was started by the *mapr* user and user *Tom* starts the Drill shell and creates a temporary table, *Tom* will have permission to query the temporary table. *Tom* can also access temporary tables that he created in a different session as long as he has the full path to the temporary table directory and the session is still active. However, *Sally* cannot query the temporary table even if she has the full path to the temporary table directory and the session is active.
 
 ### Selection of Tables
 
-When you mention a table name in a SELECT statement, any temporary table with that name takes priority over a table with the same name in the current workspace.
+Prior to Drill 1.21 when you mentioned a table name in a SELECT statement, any temporary table with that name would take priority over a table with the same name in the current workspace. Starting in Drill 1.21, temporary tables behave the same way that conventional table names do.
 
-For example, when you issue a SELECT statement on a table name that is common among the default temporary tables workspace and the current workspace, the temporary table is returned:
+For example, when you issue a SELECT statement on a table name that is common among the default temporary tables workspace and the current workspace, the current workspace's table is returned:
 
-       USE dfs.json;
+```sql
+USE dfs.json;
 
-       SELECT * FROM donuts; //returns table from dfs.tmp
+SELECT * FROM donuts; // returns table from dfs.json
 
-       SELECT* FROM dfs.json.donuts; //returns table from dfs.json
+SELECT* FROM dfs.tmp.donuts; //returns temporary table from dfs.tmp
+```
 
 ### Drop a Temporary Table
 
