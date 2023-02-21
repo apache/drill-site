@@ -86,6 +86,12 @@ LIMIT 0 optimizations do not work for queries with the UNION [ALL] set operator 
 - CONVERT_TOEXTENDEDJSON
 - AVG (window function)
 
+**Recursive file listing in Drill 1.21+**
+Since version 1.21, Drill will exit early from recursive file listing during the planning of a query against filesystem storage if has detected a LIMIT 0 in the outermost SELECT. This optimization is aimed at queries of the following form.
+```
+SELECT * FROM dfs.`huge_directory` LIMIT 0;
+```
+
 ## Examples
 The following example query includes the ORDER BY and LIMIT clauses and returns the top 20 sales totals by month and state:
 
