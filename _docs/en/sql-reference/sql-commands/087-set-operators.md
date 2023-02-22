@@ -50,7 +50,7 @@ Drill treats the empty directory as a schemaless table and returns results as if
 # INTERSECT and EXCEPT
 
 **Introduced in release: 1.21**
-The INTERSECT and EXCEPT operators respectively compute the set intersection and the set difference of their two arguments. As with the UNION operator, duplicate records are auotmatically removed from the result set.
+The INTERSECT and EXCEPT operators respectively compute the set intersection and the set difference of their two arguments. As with the UNION operator, duplicate records are automatically removed from the result set.
 
 ## Syntax
 
