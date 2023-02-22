@@ -1064,6 +1064,8 @@
               
                 <li class="toctree-l3"><a class="reference internal" href="/docs/use/">USE</a></li>
               
+                <li class="toctree-l3"><a class="reference internal" href="/docs/pivot-operators/">Pivot Operators</a></li>
+              
             </ul>
             
           
@@ -1487,12 +1489,12 @@
 <p>Drill 1.21 brings with it the ability to configure storage authentication modes on a per-plugin basis. Three authentication modes are provided but note that not every plugin need support every mode. Consult the respective plugin documentation page for information about the authentication modes that it supports.</p>
 
 <h2 id="shared_user">SHARED_USER</h2>
-<p>This is the default authentication mode for storage plugins and matches the authentication behaviour of storage plugins in previous versions of Drill. Drill connects to the storage using a single set of shared credentials stored in some credential provider. If no credentials are present, the plugin may connect with no credentials or make implicit use of the Drillbit’s identity (e.g. OS process user). Authentication to the storage is unaffected by the Drill query user’s identity.</p>
+<p>This is the default authentication mode for storage plugins and matches the authentication behaviour of storage plugins in previous versions of Drill. Drill connects to the storage using a single set of shared credentials stored in a credential provider. If no credentials are present, the plugin may connect with no credentials or make implicit use of the Drillbit’s identity (e.g. OS process user). Authentication to the storage is unaffected by the Drill query user’s identity.</p>
 
 <h2 id="user_translation">USER_TRANSLATION</h2>
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
-  <p class="last">At the present time, to use the USER_TRANSLATION authentication mode the global option `drill.exec.impersonation` must be set to true.  </p>
+  <p class="last">At the present time, to use the USER_TRANSLATION authentication mode the global option drill.exec.impersonation must be set to true.  </p>
 </div>
 
 <p>Drill connects to the storage using credentials looked up (“translated”) for the Drill query user.  Authentication to the storage is a function of the Drill query user’s identity (and that function may be 1-1 or *-1).</p>
@@ -1501,7 +1503,7 @@
 <p>This authentication mode is not yet implemented but is planned to replace the global option <code class="language-plaintext highlighter-rouge">drill.exec.impersonation</code>.</p>
 
 <h2 id="syntax">Syntax</h2>
-<p>The authentication mode for a storage plugin is specified in its storage configuration usign the <code class="language-plaintext highlighter-rouge">authMode</code> property.</p>
+<p>The authentication mode for a storage plugin is specified in its storage configuration using the <code class="language-plaintext highlighter-rouge">authMode</code> property.</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"authMode" : "SHARED_USER" | "USER_TRANSLATION" | "USER_IMPERSONATION"
 </code></pre></div></div>
 
@@ -1510,7 +1512,7 @@
 
 <ol>
   <li>the Plain credentials provider which stores a table of credentials alongside other storage configuration (with credentials configurable in the Drill web UI)</li>
-  <li>the Hashicorp Vault credentials provider which stores credentials at paths that can be looked up dynamically in Vault.</li>
+  <li>the HashiCorp Vault credentials provider which stores credentials at paths that can be addressed dynamically by having Drill substitute in the query user’s username.</li>
 </ol>
 
 <h2 id="shared_user-mode-examples">SHARED_USER mode examples</h2>
@@ -1564,7 +1566,7 @@
 
 <h2 id="user_translation-example">USER_TRANSLATION Example</h2>
 
-<h3 id="using-the-vault-crendentials-provider">Using the Vault crendentials provider</h3>
+<h3 id="using-the-vault-credentials-provider-1">Using the Vault credentials provider</h3>
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
   </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"driver"</span><span class="p">:</span><span class="w"> </span><span class="s2">"com.mysql.jdbc.Driver"</span><span class="p">,</span><span class="w">
