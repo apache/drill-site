@@ -899,6 +899,17 @@ Convert a UTC date to a timestamp offset from the UTC time zone code.
     |------------------------|---------|
     1 row selected (0.148 seconds)
 
+Convert an ISO-8601 timestamp string to a timestamp. The ISO-8601 format differs from the ANSI SQL timestamp format and must be explicitly parsed. Note the escaped single quotes ('') required to place the separator character 'T' into the format string.
+
+```sql
+select to_timestamp('2023-02-24T11:21:55', 'YYYY-MM-dd''T''HH:mm:ss');
+```
+```
+EXPR$0  2023-02-24 11:21:55.0
+
+1 row selected (0.163 seconds)
+```
+
 ## Enabling Time Zone Offset
 
 Starting in Drill 1.16, the `store.hive.maprdb_json.read_timestamp_with_timezone_offset` option enables Drill to read timestamp values with a timezone offset when using the hive plugin with the Drill native MaprDB JSON reader enabled through the  `store.hive.maprdb_json.optimize_scan_with_native_reader option`. The `store.hive.maprdb_json.read_timestamp_with_timezone_offset` option is disabled (set to 'false') by default. You can enable this option from the Options page in the Drill Web UI or from the command line using the SET or ALTER SYSTEM commands.
