@@ -1,0 +1,65 @@
+<h1 id="announcing-drill-121-new-connectors-functions-and-much-better-stability">Announcing Drill 1.21: New Connectors, Functions and Much Better Stability</h1>
+<p>The Apache Drill PMC is pleased to announce a milestone release of Apache Drill. Since the last release of Drill the team has been hard at work quashing bugs and making overall functionality improvements. The TL;DR includes the following:</p>
+
+<ul>
+  <li>New connectors including Apache Iceberg, Delta Lake, Microsoft Access, GoogleSheets, and Box</li>
+  <li>Efficient cross-cloud query capability</li>
+  <li>Greatly improved access controls to include user translation support for all storage plugins</li>
+  <li>Greatly improved query planning and implicit casting.</li>
+  <li>New BI-focused SQL operators including <code class="language-plaintext highlighter-rouge">PIVOT</code>, <code class="language-plaintext highlighter-rouge">UNPIVOT</code>, <code class="language-plaintext highlighter-rouge">EXCEPT</code> and <code class="language-plaintext highlighter-rouge">INTERSECT</code></li>
+  <li>New functions for computing regression lines and trends.</li>
+  <li>New and updated date manipulation functions.</li>
+</ul>
+
+<p>Overall, Drill 1.21 is much more capable and stable than previous versions.</p>
+
+<h2 id="calcite-were-back">Calcite, We’re Back!</h2>
+<p>Drill relies on another open source project, Apache Calcite for its query planning. The query planning process is a huge part of the overall functionality of Drill. Unfortunately, about three years ago, there were some issues in Calcite which forced Drill to fork it and rely on that fork. As a result, Drill was essentially stuck with a three year old query planner, but more importantly, bugs that were fixed in Calcite, as well as new capabilities were not finding their way into Drill.</p>
+
+<p>That is no longer the case. Drill 1.21 is now running on the latest stable version of Calcite, version 1.33. As a result, we’ve been able to close countless JIRA tickets of various queries failing and other random bugs that were the result of query planning bugs.</p>
+
+<p>What this means for you as a user is that you’ll see much fewer queries failing and better overall performance in terms of speed and stability. You’ll see better optimizations being pushed down to JDBC data sources as well as support for BigQuery, Athena and other JDBC data sources. We hope to keep Drill away from Calcite forks so I hope that we will work with the Calcite community to keep our tools in sync.</p>
+
+<h2 id="improved-implicit-casting-rules-reduce-schema-change-failures">Improved Implicit Casting Rules Reduce Schema Change Failures</h2>
+<p>From this author’s perspective, one of the biggest improvements in Drill is one of the least noticeable and that is the result of improved implicit casting. One of Drill’s unique features is its ability to infer the structure, or schema of your data. However, this can be problematic when the schema changes. When I used to teach Drill, I used to have spend a considerable amount of time teaching students how to cast data from one data type to another to ensure that the queries would succeed.</p>
+
+<p>When using latest version of Drill, you’ll find that queries will work without the need for much if any casting. In short, they’ll do what you expect them to do. It’s really a high on magic functionality.</p>
+
+<h2 id="integrations-with-the-modern-and-not-so-modern-data-stack">Integrations with the Modern and Not-so-Modern Data Stack</h2>
+<p>The new version of Drill features several new connectors and readers that will enable users to connect to the “modern data stack”, specifically support for Apache Iceberg and Delta Lake.</p>
+
+<h3 id="breaking-the-iceberg">Breaking the Iceberg</h3>
+<p>Iceberg is a high-performance format for huge analytic tables. Iceberg brings the reliability and simplicity of SQL tables to big data, while making it possible for engines like Drill to safely work with the same tables, at the same time. In addition to being able to query data directly from Iceberg tables, Drill also allows users to query the Iceberg table metadata as well as snapshots.  <a href="https://drill.apache.org/docs/iceberg-format-plugin/">Complete documentation is available here</a>.</p>
+
+<h3 id="querying-delta-lake">Querying Delta Lake</h3>
+<p>Lest we offend someone, we’re not going to get into the debate between Iceberg and Delta lake (after all, let’s not argue about who killed whom), but Delta Lake, if you aren’t familiar with it, is another modern table format which allows ACID transactions, versioning etc. In version 1.21, Drill adds support for Delta Lake tables, so users can query Delta Lake tables as well as associated metadata. You can also query specific versions of files in delta lake.  <a href="https://drill.apache.org/docs/delta-lake-format-plugin/">Complete documentation is available here</a>.</p>
+
+<h3 id="accessing-access">Accessing Access</h3>
+<p>A surprising number of people use Microsoft Access as a database for their business data. With version 1.21, Apache Drill can now natively query Microsoft Access database files using Drill. This can be a major benefit for those looking to migrate data from Access into more modern formats such as parquet or even other relational databases. Drill will support Access files from version 1997 and up.</p>
+
+<h3 id="oh-sheets">Oh Sheets!</h3>
+<p>In addition to all of the above, Drill can now query data directly from GoogleSheets. In addition to being able to query this data source, Drill can read, write, delete and append to GoogleSheets. Google doesn’t make it easy, so if this is a feature you are interested in, you’ll definitely want to <a href="https://drill.apache.org/docs/google-sheets-storage-plugin/">read the documentation here</a>.</p>
+
+<h3 id="remote-data">Remote Data</h3>
+<p>As you can see, Drill has significantly expanded the number of data sources and types that it can query. A part of this work has also been to improve the implementation behind filesystems. As a result, Drill can now query data stored on Dropbox, and Box. We added support for filesystems which use OAuth 2.0 for authorization so this means that more extended file systems are likely coming your way for the next release.</p>
+
+<h2 id="greatly-improved-access-controls">Greatly Improved Access Controls</h2>
+<p>Managing access controls and credentials on a federated query engine is a complicated task. Drill has supported a concept called user impersonation which basically means that Drill can execute queries using the credentials of the logged in user. This concept works well for querying file systems such as Hadoop, and other data sources that have the same concepts, however it does not work at all with data sources that have different concepts of users, or in the case of OAuth enabled plugins, a completely different set of credentials.</p>
+
+<p>To answer this challenge, Drill 1.21 introduces the concept of user translation. The idea of user translation is that, when enabled, every user will have their own unique credentials for specific data sources. Thus, when that user queries a specific data source, that user’s credentials are used to execute the query. This is configurable on an individual data source basis. Ultimately, what this means is that you no longer have to create service accounts to access data via Drill.</p>
+
+<h2 id="drilling-across-the-clouds">Drilling Across the Clouds</h2>
+<p>While we’re on the subject of clouds, as you may be aware, Drill can query data stored in cloud-based file systems such as S3, Azure, GCP etc. One of the challenges however, is that if you have data stored in multiple clouds, it can become very inefficient to query this data, especially from the perspective of network IO. As of Drill 1.21, Drill adds a storage plugin which we are calling Drill on Drill.</p>
+
+<p>Let’s say that you had a Drill cluster in S3, but you had data in both S3 and Azure. With the new Drill on Drill capability, you could install an additional Drill cluster in Azure, then query both from either Drill cluster. The advantage is that the queries would be pushed down to the Drill cluster where the data resides. So if you query Azure from S3, you aren’t sending tons of data back and forth.</p>
+
+<h2 id="drill-now-supports-more-bi-operators">Drill Now Supports More BI Operators</h2>
+<p>While Drill held more or less to the SQL standard, it was missing some BI operators that had become commonplace among SQL platforms. Drill 1.21 introduces the <code class="language-plaintext highlighter-rouge">PIVOT</code>, and <code class="language-plaintext highlighter-rouge">UNPIVOT</code> operators which covert rows to columns or vice versa, much in the same way a pivot table works in Excel. Additionally, we added set operators <code class="language-plaintext highlighter-rouge">INTERSECT</code> and <code class="language-plaintext highlighter-rouge">EXCEPT</code> which have become part of the SQL standard.</p>
+
+<h2 id="new-statistical-functions">New Statistical Functions</h2>
+<p>Drill 1.21 adds new SQL functions for statistical summaries including <code class="language-plaintext highlighter-rouge">kendall_correlation</code> for calculating correlation coefficients, <code class="language-plaintext highlighter-rouge">width_bucket</code> which is a SQL function for computing histograms and distributions, and two other functions for computing regression lines.</p>
+
+<p>Lastly, we’ve also added additional date/time manipulation functions which will make working with dates significantly easier.</p>
+
+<h2 id="whats-next">What’s Next?</h2>
+<p>The big question is where do we go from here? We’ve already started working on adding support for additional BI operators such as <code class="language-plaintext highlighter-rouge">CUBE</code>, <code class="language-plaintext highlighter-rouge">GROUPING SETS</code> and <code class="language-plaintext highlighter-rouge">ROLLUP</code>, as well as <code class="language-plaintext highlighter-rouge">REGEXP_EXTRACT</code>. Since the new version of Calcite has support for numerous optimizations around materialized views this is also something which is being discussed. If you like what you are seeing, please download Drill and try it out. Feedback is always welcome on the Drill slack channel or on our mailing lists. Happy Drilling!</p>
