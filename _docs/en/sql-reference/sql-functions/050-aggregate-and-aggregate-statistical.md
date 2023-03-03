@@ -9,25 +9,24 @@ parent: "SQL Functions"
 The following table lists the aggregate functions that you can use in Drill
 queries.
 
-
-| **Function**                                                 | **Argument Type**                                                                                                                       | **Return Type**                                                                                                                    |
-| ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| ANY_VALUE(expression)                                        | BIT, INT, BIGINT, FLOAT4, FLOAT8, DATE, TIMESTAMP, TIME, VARCHAR, VARBINARY, LIST, MAP, INTERVAL, INTERVALDAY, INTERVALYEAR, VARDECIMAL | Same as argument type                                                                                                              |
-| AVG(expression)                                              | SMALLINT,   INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL, INTERVAL                                                                           | DECIMAL for DECIMAL argument,   DOUBLE for all other arguments                                                                     |
-| BOOL_AND(expression), BOOL_OR(expression)                    | BIT                                                                                                                                     | BIT                                                                                                                                |
-| BIT_AND(expression), BIT_OR(expression), BIT_XOR(expression) | INT, BIGINT                                                                                                                             | Same as argument type                                                                                                              |
-| CORR(x,y)                                                    | Numeric                                                                                                                                 | Double                                                                                                                             |
-| COVAR_POP(x,y)                                               | Numeric                                                                                                                                 | Double                                                                                                                             |
-| COVAR_SAMP(x,y)                                              | Numeric                                                                                                                                 | Double                                                                                                                             |
-| COUNT(\*)                                                    | -                                                                                                                                       | BIGINT                                                                                                                             |
-| COUNT(\[DISTINCT\] expression)                               | any                                                                                                                                     | BIGINT                                                                                                                             |
-| KENDALL_CORRELATION                                          | Numeric                                                                                                                                 | Double                                                                                                                             |
-| MAX(expression), MIN(expression)                             | BINARY, DECIMAL, VARCHAR, DATE, TIME, or TIMESTAMP                                                                                      | Same   as argument type                                                                                                            |
-| REGR_INTERCEPT                                               | Numeric                                                                                                                                 | Double                                                                                                                             |
-| REGR_SLOPE                                                   | Numeric                                                                                                                                 | Double                                                                                                                             |
-| STDDEV, STDDEV_POP, STDDEV_SAMP                              | Numeric                                                                                                                                 | Double                                                                                                                             |
-| SUM(expression)                                              | SMALLINT, INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL, INTERVAL                                                                             | DECIMAL for DECIMAL   argument,     BIGINT for any integer-type argument (including BIGINT), DOUBLE for   floating-point arguments |
-| VARIANCE, VAR_POP, VAR_SAMP                                  | Numeric                                                                                                                                 | Numeric                                                                                                                            |
+| **Function**                      | **Argument Type**                                                                                                                       | **Return Type**                                                                                                                    |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| ANY_VALUE(x)                      | BIT, INT, BIGINT, FLOAT4, FLOAT8, DATE, TIMESTAMP, TIME, VARCHAR, VARBINARY, LIST, MAP, INTERVAL, INTERVALDAY, INTERVALYEAR, VARDECIMAL | Same as argument type                                                                                                              |
+| AVG(x)                            | SMALLINT,   INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL, INTERVAL                                                                           | DECIMAL for DECIMAL argument,   DOUBLE for all other arguments                                                                     |
+| BOOL_AND(x), BOOL_OR(x)           | BIT                                                                                                                                     | BIT                                                                                                                                |
+| BIT_AND(x), BIT_OR(x), BIT_XOR(x) | INT, BIGINT                                                                                                                             | Same as argument type                                                                                                              |
+| CORR(x,y)                         | Numeric                                                                                                                                 | DOUBLE                                                                                                                             |
+| COVAR_POP(x,y)                    | Numeric                                                                                                                                 | DOUBLE                                                                                                                             |
+| COVAR_SAMP(x,y)                   | Numeric                                                                                                                                 | DOUBLE                                                                                                                             |
+| COUNT(\*)                         | -                                                                                                                                       | BIGINT                                                                                                                             |
+| COUNT(\[DISTINCT\] expression)    | any                                                                                                                                     | BIGINT                                                                                                                             |
+| KENDALL_CORRELATION(x, y)         | Numeric                                                                                                                                 | DOUBLE                                                                                                                             |
+| MAX(expression), MIN(expression)  | BINARY, DECIMAL, VARCHAR, DATE, TIME, or TIMESTAMP                                                                                      | Same   as argument type                                                                                                            |
+| REGR_INTERCEPT(x, y)              | Numeric                                                                                                                                 | DOUBLE                                                                                                                             |
+| REGR_SLOPE(x, y)                  | Numeric                                                                                                                                 | DOUBLE                                                                                                                             |
+| STDDEV, STDDEV_POP, STDDEV_SAMP   | Numeric                                                                                                                                 | DOUBLE                                                                                                                             |
+| SUM(expression)                   | SMALLINT, INTEGER, BIGINT, FLOAT, DOUBLE, DECIMAL, INTERVAL                                                                             | DECIMAL for DECIMAL   argument,     BIGINT for any integer-type argument (including BIGINT), DOUBLE for   floating-point arguments |
+| VARIANCE, VAR_POP, VAR_SAMP       | Numeric                                                                                                                                 | Numeric                                                                                                                            |
 
 - Drill 1.14 and later supports the ANY_VALUE function.
 - Starting in Drill 1.14, the DECIMAL data type is enabled by default.
@@ -107,12 +106,14 @@ SELECT ANY_VALUE(employee_id) as anyemp FROM cp.`employee.json` GROUP BY salary 
 **Introduced in release: 1.21**
 
 Starting in Drill 1.21 it is possible to follow an aggregate function invocation with a boolean expression that will filter the values procesed by the aggregate using the following syntax.
+
 ```
 agg_func( column ) FILTER(WHERE boolean_expression)
 ```
 
 For example
-``` sql
+
+```sql
 SELECT
   count(n_name) FILTER(WHERE n_regionkey = 1) AS nations_count_in_1_region,
   count(n_name) FILTER(WHERE n_regionkey = 2) AS nations_count_in_2_region,
@@ -121,7 +122,9 @@ SELECT
   count(n_name) FILTER(WHERE n_regionkey = 0) AS nations_count_in_0_region
 FROM cp.`tpch/nation.parquet`
 ```
+
 will return
+
 ```
 +---------------------------+---------------------------+---------------------------+---------------------------+---------------------------+
 | nations_count_in_1_region | nations_count_in_2_region | nations_count_in_3_region | nations_count_in_4_region | nations_count_in_0_region |
@@ -130,7 +133,7 @@ will return
 +---------------------------+---------------------------+---------------------------+---------------------------+---------------------------+
 ```
 
-**N.B.** Some versions of Drill prior to 1.21 do not fail if FILTER expressions are included with aggregate function calls, but silently do no filtering yielding incorrect results. Filtered aggregates are only supported from version 1.21 onward.
+{% include startnote.html %}Some versions of Drill prior to 1.21 do not fail if FILTER expressions are included with aggregate function calls, but silently do no filtering yielding incorrect results. Filtered aggregates are only supported from version 1.21 onward.{% include endnote.html %}
 
 ## AVG
 
@@ -277,7 +280,8 @@ SELECT BIT_XOR(position_id) FROM cp.`employee.json`;
 ```
 
 ## CORR
-Returns the [Pearson Correlation Coefficient](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient) for a given x, y. 
+
+Returns the [Pearson Correlation Coefficient](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient) for a given x, y.
 
 ```
 SELECT CORR (department_id, salary) as correlation FROM cp.`employee.json`;
@@ -289,6 +293,7 @@ SELECT CORR (department_id, salary) as correlation FROM cp.`employee.json`;
 ```
 
 ## COVAR_POP
+
 Returns the population covariance for a data set.
 
 ```
@@ -301,6 +306,7 @@ SELECT covar_pop (department_id, salary) AS covariance FROM cp.`employee.json`;
 ```
 
 ## COVAR_SAMP
+
 Returns the sample covariance for a data set.
 
 ```
@@ -330,7 +336,7 @@ SELECT COUNT(*) FROM . . .
 - ALL expression\
   Returns the number of values of the specified expression.
 - \* (asterisk)\
--  Returns the number of records in the table.
+  Returns the number of records in the table.
 
 ### COUNT Examples
 
@@ -386,6 +392,7 @@ with seq as (
 )
 select kendall_correlation(x+random(), x+random()+5) from seq;
 ```
+
 ```
 EXPR$0  0.2
 
@@ -568,6 +575,7 @@ with seq as (
 )
 select regr_intercept(x+random(), x+random()+5) from seq;
 ```
+
 ```
 EXPR$0  4.9715020855109255
 
@@ -592,6 +600,7 @@ with seq as (
 )
 select regr_slope(x+random(), x+random()+5) from seq;
 ```
+
 ```
 EXPR$0  0.9719696129009783
 
