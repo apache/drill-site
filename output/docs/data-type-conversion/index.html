@@ -2115,7 +2115,7 @@ use in your Drill queries as described in this section:</p>
       <td>DECIMAL</td>
     </tr>
     <tr>
-      <td><a href="/docs/data-type-conversion/#to_timestamp">TO_TIMESTAMP</a>(VARCHAR, format)</td>
+      <td><a href="/docs/data-type-conversion/#to_timestamp">TO_TIMESTAMP</a>(VARCHAR [, format])</td>
       <td>TIMESTAMP</td>
     </tr>
     <tr>
@@ -2620,7 +2620,7 @@ SELECT TO_NUMBER('12345', '##0.##E0') FROM (VALUES(1));
 
 <p><em>expression</em> is a character string enclosed in single quotation marks or a UNIX epoch timestamp, not enclosed in single quotation marks.</p>
 
-<p><em>‘format’</em> is a character string that specifies the format of <em>expression</em>. Only use this option when the <em>expression</em> is a character string, not a UNIX epoch timestamp.</p>
+<p><em>‘format’</em> is an optional character string that specifies the format of <em>expression</em>. Only use this option when the <em>expression</em> is a character string, not a UNIX epoch timestamp. If <em>expression</em> is a character string and <em>format</em> is not provided then the function will use a set of heuristics to try to detect the date format automatically. If that attempt fails then null is returned.</p>
 
 <h3 id="to_timestamp-usage-notes">TO_TIMESTAMP Usage Notes</h3>
 <p>Specify a format using patterns defined in <a href="http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html">Joda DateTimeFormat class</a>. The TO_TIMESTAMP function takes a Unix epoch timestamp. The TO_DATE function takes a UNIX epoch timestamp in milliseconds.</p>
@@ -2663,13 +2663,22 @@ FROM (VALUES(1));
 1 row selected (0.148 seconds)
 </code></pre></div></div>
 
-<p>Convert an ISO-8601 timestamp string to a timestamp. The ISO-8601 format differs from the ANSI SQL timestamp format and must be explicitly parsed. Note the escaped single quotes (‘’) required to place the separator character ‘T’ into the format string.</p>
+<p>Convert an ISO-8601 timestamp string to a timestamp. The ISO-8601 format differs from the ANSI SQL timestamp format and cannot be cast but must be explicitly parsed. Note the escaped single quotes (‘’) required to place the separator character ‘T’ into the format string.</p>
 
 <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">select</span> <span class="n">to_timestamp</span><span class="p">(</span><span class="s1">'2023-02-24T11:21:55'</span><span class="p">,</span> <span class="s1">'YYYY-MM-dd</span><span class="se">''</span><span class="s1">T</span><span class="se">''</span><span class="s1">HH:mm:ss'</span><span class="p">);</span>
 </code></pre></div></div>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>EXPR$0  2023-02-24 11:21:55.0
 
 1 row selected (0.163 seconds)
+</code></pre></div></div>
+
+<p>Use TO_TIMESTAMP with automatic format detection to parse an IS0-8601 timestamp.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">select</span> <span class="n">to_timestamp</span><span class="p">(</span><span class="s1">'2023-02-24T11:21:55'</span><span class="p">);</span>
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>EXPR$0  2023-02-24 11:21:55.0
+
+1 row selected (0.151 seconds)
 </code></pre></div></div>
 
 <h2 id="enabling-time-zone-offset">Enabling Time Zone Offset</h2>
