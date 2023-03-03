@@ -1548,9 +1548,24 @@ queries.</p>
       <td>BIGINT</td>
     </tr>
     <tr>
+      <td>KENDALL_CORRELATION</td>
+      <td>Numeric</td>
+      <td>Double</td>
+    </tr>
+    <tr>
       <td>MAX(expression), MIN(expression)</td>
       <td>BINARY, DECIMAL, VARCHAR, DATE, TIME, or TIMESTAMP</td>
       <td>Same   as argument type</td>
+    </tr>
+    <tr>
+      <td>REGR_INTERCEPT</td>
+      <td>Numeric</td>
+      <td>Double</td>
+    </tr>
+    <tr>
+      <td>REGR_SLOPE</td>
+      <td>Numeric</td>
+      <td>Double</td>
     </tr>
     <tr>
       <td>STDDEV, STDDEV_POP, STDDEV_SAMP</td>
@@ -1586,8 +1601,9 @@ set to false.</li>
 
 <h2 id="any_value">ANY_VALUE</h2>
 
-<p>Supported in Drill 1.14 and later. Returns one of the values of value across all
-input values. This function is NOT specified in the SQL standard.</p>
+<p><strong>Introdcued in release: 1.14</strong></p>
+
+<p>Returns one of the values of value across all input values. This function is NOT specified in the SQL standard.</p>
 
 <h3 id="any_value-syntax">ANY_VALUE Syntax</h3>
 
@@ -1643,6 +1659,7 @@ SELECT ANY_VALUE(employee_id) as anyemp FROM cp.`employee.json` GROUP BY salary 
 </code></pre></div></div>
 
 <h2 id="filtered-aggregates">Filtered Aggregates</h2>
+
 <p><strong>Introduced in release: 1.21</strong></p>
 
 <p>Starting in Drill 1.21 it is possible to follow an aggregate function invocation with a boolean expression that will filter the values procesed by the aggregate using the following syntax.</p>
@@ -1896,6 +1913,27 @@ SELECT COUNT(*) FROM cp.`employee.json`;
 1 row selected (0.174 seconds)
 </code></pre></div></div>
 
+<h2 id="kendall_correlation">KENDALL_CORRELATION</h2>
+
+<p>Returns the Kendall correlation coefficient.</p>
+
+<h3 id="kendall_correlation-syntax">KENDALL_CORRELATION Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>KENDALL_CORRELATION( expression1, expression2 )
+</code></pre></div></div>
+
+<h3 id="kendall_correlation-examples">KENDALL_CORRELATION Examples</h3>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="n">seq</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="k">select</span> <span class="n">row_number</span><span class="p">()</span> <span class="n">over</span> <span class="p">(</span><span class="k">order</span> <span class="k">by</span> <span class="mi">1</span><span class="p">)</span> <span class="n">x</span> <span class="k">from</span> <span class="n">cp</span><span class="p">.</span><span class="nv">`employee.json`</span> <span class="k">limit</span> <span class="mi">10</span>
+<span class="p">)</span>
+<span class="k">select</span> <span class="n">kendall_correlation</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">random</span><span class="p">(),</span> <span class="n">x</span><span class="o">+</span><span class="n">random</span><span class="p">()</span><span class="o">+</span><span class="mi">5</span><span class="p">)</span> <span class="k">from</span> <span class="n">seq</span><span class="p">;</span>
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>EXPR$0  0.2
+
+1 row selected (0.213 seconds)
+</code></pre></div></div>
+
 <h2 id="min-and-max">MIN and MAX</h2>
 
 <p>These functions return the smallest and largest values of the selected
@@ -2079,6 +2117,48 @@ computation of table statistics accordingly.   </p>
   <li>exec.statistics.ndv_extrapolation_bf_elements</li>
   <li>exec.statistics.ndv_extrapolation_bf_fpprobability</li>
 </ul>
+
+<h2 id="regr_intercept">REGR_INTERCEPT</h2>
+
+<p>Returns the intercept of the least squares linear regression fit.</p>
+
+<h3 id="regr_intercept-syntax">REGR_INTERCEPT Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>REGR_INTERCEPT( expression1, expression2 )
+</code></pre></div></div>
+
+<h3 id="regr_intercept-examples">REGR_INTERCEPT Examples</h3>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="n">seq</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="k">select</span> <span class="n">row_number</span><span class="p">()</span> <span class="n">over</span> <span class="p">(</span><span class="k">order</span> <span class="k">by</span> <span class="mi">1</span><span class="p">)</span> <span class="n">x</span> <span class="k">from</span> <span class="n">cp</span><span class="p">.</span><span class="nv">`employee.json`</span> <span class="k">limit</span> <span class="mi">10</span>
+<span class="p">)</span>
+<span class="k">select</span> <span class="n">regr_intercept</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">random</span><span class="p">(),</span> <span class="n">x</span><span class="o">+</span><span class="n">random</span><span class="p">()</span><span class="o">+</span><span class="mi">5</span><span class="p">)</span> <span class="k">from</span> <span class="n">seq</span><span class="p">;</span>
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>EXPR$0  4.9715020855109255
+
+1 row selected (0.221 seconds)
+</code></pre></div></div>
+
+<h2 id="regr_slope">REGR_SLOPE</h2>
+
+<p>Returns the slope of the least squares linear regression fit.</p>
+
+<h3 id="regr_intercept-syntax-1">REGR_INTERCEPT Syntax</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>REGR_INTERCEPT( expression1, expression2 )
+</code></pre></div></div>
+
+<h3 id="regr_intercept-examples-1">REGR_INTERCEPT Examples</h3>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="n">seq</span> <span class="k">as</span> <span class="p">(</span>
+  <span class="k">select</span> <span class="n">row_number</span><span class="p">()</span> <span class="n">over</span> <span class="p">(</span><span class="k">order</span> <span class="k">by</span> <span class="mi">1</span><span class="p">)</span> <span class="n">x</span> <span class="k">from</span> <span class="n">cp</span><span class="p">.</span><span class="nv">`employee.json`</span> <span class="k">limit</span> <span class="mi">10</span>
+<span class="p">)</span>
+<span class="k">select</span> <span class="n">regr_slope</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">random</span><span class="p">(),</span> <span class="n">x</span><span class="o">+</span><span class="n">random</span><span class="p">()</span><span class="o">+</span><span class="mi">5</span><span class="p">)</span> <span class="k">from</span> <span class="n">seq</span><span class="p">;</span>
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>EXPR$0  0.9719696129009783
+
+1 row selected (0.283 seconds)
+</code></pre></div></div>
 
 <h2 id="stddev">STDDEV</h2>
 

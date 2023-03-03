@@ -1490,11 +1490,11 @@
       
         <p>The UNION, INTERSECT and EXCEPT set operators combine the result sets of two separate query expressions. The result set of each query must have the same number of columns and compatible data types.</p>
 
-<h1 id="union">UNION</h1>
+<h2 id="union">UNION</h2>
 
 <p>The UNION operator computes the set union of its two arguments, automatically removing duplicate records from the result set. UNION ALL returns all duplicate records.</p>
 
-<h2 id="syntax">Syntax</h2>
+<h3 id="syntax">Syntax</h3>
 <p>The UNION operator supports the following syntax:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   query
@@ -1502,12 +1502,12 @@
    another_query
 </code></pre></div></div>
 
-<h2 id="parameters">Parameters</h2>
+<h3 id="parameters">Parameters</h3>
 <p><em>query</em>, <em>another_query</em></p>
 
 <p>Any SELECT query that Drill supports. See <a href="/zh/docs/select/">SELECT</a>.</p>
 
-<h2 id="examples">Examples</h2>
+<h3 id="examples">Examples</h3>
 <p>The following example uses the UNION ALL set operator to combine click activity data before and after a marketing campaign. The data in the example exists in the <code class="language-plaintext highlighter-rouge">dfs.clicks workspace</code>.</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   0: jdbc:drill:&gt; SELECT t.trans_id transaction, t.user_info.cust_id customer
@@ -1534,12 +1534,13 @@
 
 <p>Drill treats the empty directory as a schemaless table and returns results as if the UNION operator is not included in the query.</p>
 
-<h1 id="intersect-and-except">INTERSECT and EXCEPT</h1>
+<h2 id="intersect-and-except">INTERSECT and EXCEPT</h2>
 
-<p><strong>Introduced in release: 1.21</strong>
-The INTERSECT and EXCEPT operators respectively compute the set intersection and the set difference of their two arguments. As with the UNION operator, duplicate records are automatically removed from the result set.</p>
+<p><strong>Introduced in release: 1.21</strong></p>
 
-<h2 id="syntax-1">Syntax</h2>
+<p>The INTERSECT and EXCEPT operators respectively compute the set intersection and the set difference of their two arguments. As with the UNION operator, duplicate records are automatically removed from the result set.</p>
+
+<h3 id="syntax-1">Syntax</h3>
 
 <p>These set operators support the following syntax:</p>
 
@@ -1548,14 +1549,14 @@ The INTERSECT and EXCEPT operators respectively compute the set intersection and
 another_query
 </code></pre></div></div>
 
-<h2 id="parameters-1">Parameters</h2>
+<h3 id="parameters-1">Parameters</h3>
 <p><em>query</em>, <em>another_query</em></p>
 
 <p>Any SELECT query that Drill supports. See <a href="/zh/docs/select/">SELECT</a>.</p>
 
-<h2 id="examples-1">Examples</h2>
+<h3 id="examples-1">Examples</h3>
 
-<h3 id="compute--1-2-4----4-5-6-">Compute { 1, 2, 4 } ∩ { 4, 5, 6 }.</h3>
+<h4 id="compute--1-2-4----4-5-6-">Compute { 1, 2, 4 } ∩ { 4, 5, 6 }.</h4>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apache drill&gt; WITH
 	X AS (SELECT employee_id AS col FROM cp.`employee.json` LIMIT 3 OFFSET 0),
 	Y AS (SELECT employee_id AS col FROM cp.`employee.json` LIMIT 3 OFFSET 2)
@@ -1568,7 +1569,7 @@ col  4
 1 row selected (0.449 seconds)
 </code></pre></div></div>
 
-<h3 id="compute--1-2-4----4-5-6--1">Compute { 1, 2, 4 } ∖ { 4, 5, 6 }</h3>
+<h4 id="compute--1-2-4----4-5-6--1">Compute { 1, 2, 4 } ∖ { 4, 5, 6 }</h4>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apache drill&gt; WITH
 	X AS (SELECT employee_id AS col FROM cp.`employee.json` LIMIT 3 OFFSET 0),
@@ -1584,7 +1585,7 @@ col  2
 2 rows selected (0.41 seconds)
 </code></pre></div></div>
 
-<h1 id="set-operator-usage-notes">Set operator usage notes</h1>
+<h2 id="set-operator-usage-notes">Set operator usage notes</h2>
 <ul>
   <li>The two SELECT query expressions that represent the direct operands of the set operator must produce the same number of columns. Corresponding columns must contain compatible data types. See <a href="/zh/docs/supported-data-types/">Supported Data Types</a>.</li>
   <li>Multiple set operators in the same SELECT statement are evaluated left to right, unless otherwise indicated by parentheses.</li>
