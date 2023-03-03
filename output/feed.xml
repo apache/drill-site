@@ -6,114 +6,9 @@
 </description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 03 Mar 2023 11:18:00 +0000</pubDate>
-    <lastBuildDate>Fri, 03 Mar 2023 11:18:00 +0000</lastBuildDate>
+    <pubDate>Fri, 03 Mar 2023 11:26:27 +0000</pubDate>
+    <lastBuildDate>Fri, 03 Mar 2023 11:26:27 +0000</lastBuildDate>
     <generator>Jekyll v3.9.1</generator>
-    
-      <item>
-        <title>Announcing Drill 1.21!</title>
-        <description>&lt;h1 id=&quot;announcing-drill-121-new-connectors-functions-and-much-better-stability&quot;&gt;Announcing Drill 1.21: New Connectors, Functions and Much Better Stability&lt;/h1&gt;
-&lt;p&gt;The Apache Drill PMC is pleased to announce a milestone release of Apache Drill. Since the last release of Drill the team has been hard at work quashing bugs and making overall functionality improvements. The TL;DR includes the following:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;New connectors including Apache Iceberg, Delta Lake, Microsoft Access, GoogleSheets, and Box&lt;/li&gt;
-  &lt;li&gt;Efficient cross-cloud query capability&lt;/li&gt;
-  &lt;li&gt;Greatly improved access controls to include user translation support for all storage plugins&lt;/li&gt;
-  &lt;li&gt;Greatly improved query planning and implicit casting.&lt;/li&gt;
-  &lt;li&gt;New BI-focused SQL operators including &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PIVOT&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UNPIVOT&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;EXCEPT&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;INTERSECT&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;New functions for computing regression lines and trends.&lt;/li&gt;
-  &lt;li&gt;New and updated date manipulation functions.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Overall, Drill 1.21 is much more capable and stable than previous versions.&lt;/p&gt;
-
-&lt;h2 id=&quot;calcite-were-back&quot;&gt;Calcite, We’re Back!&lt;/h2&gt;
-&lt;p&gt;Drill relies on another open source project, Apache Calcite for its query planning. The query planning process is a huge part of the overall functionality of Drill. Unfortunately, about three years ago, there were some issues in Calcite which forced Drill to fork it and rely on that fork. As a result, Drill was essentially stuck with a three year old query planner, but more importantly, bugs that were fixed in Calcite, as well as new capabilities were not finding their way into Drill.&lt;/p&gt;
-
-&lt;p&gt;That is no longer the case. Drill 1.21 is now running on the latest stable version of Calcite, version 1.33. As a result, we’ve been able to close countless JIRA tickets of various queries failing and other random bugs that were the result of query planning bugs.&lt;/p&gt;
-
-&lt;p&gt;What this means for you as a user is that you’ll see much fewer queries failing and better overall performance in terms of speed and stability. You’ll see better optimizations being pushed down to JDBC data sources as well as support for BigQuery, Athena and other JDBC data sources. We hope to keep Drill away from Calcite forks so I hope that we will work with the Calcite community to keep our tools in sync.&lt;/p&gt;
-
-&lt;h2 id=&quot;improved-implicit-casting-rules-reduce-schema-change-failures&quot;&gt;Improved Implicit Casting Rules Reduce Schema Change Failures&lt;/h2&gt;
-&lt;p&gt;From this author’s perspective, one of the biggest improvements in Drill is one of the least noticeable and that is the result of improved implicit casting. One of Drill’s unique features is its ability to infer the structure, or schema of your data. However, this can be problematic when the schema changes. When I used to teach Drill, I used to have spend a considerable amount of time teaching students how to cast data from one data type to another to ensure that the queries would succeed.&lt;/p&gt;
-
-&lt;p&gt;When using latest version of Drill, you’ll find that queries will work without the need for much if any casting. In short, they’ll do what you expect them to do. It’s really a high on magic functionality.&lt;/p&gt;
-
-&lt;h2 id=&quot;integrations-with-the-modern-and-not-so-modern-data-stack&quot;&gt;Integrations with the Modern and Not-so-Modern Data Stack&lt;/h2&gt;
-&lt;p&gt;The new version of Drill features several new connectors and readers that will enable users to connect to the “modern data stack”, specifically support for Apache Iceberg and Delta Lake.&lt;/p&gt;
-
-&lt;h3 id=&quot;breaking-the-iceberg&quot;&gt;Breaking the Iceberg&lt;/h3&gt;
-&lt;p&gt;Iceberg is a high-performance format for huge analytic tables. Iceberg brings the reliability and simplicity of SQL tables to big data, while making it possible for engines like Drill to safely work with the same tables, at the same time. In addition to being able to query data directly from Iceberg tables, Drill also allows users to query the Iceberg table metadata as well as snapshots.  &lt;a href=&quot;https://drill.apache.org/docs/iceberg-format-plugin/&quot;&gt;Complete documentation is available here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;querying-delta-lake&quot;&gt;Querying Delta Lake&lt;/h3&gt;
-&lt;p&gt;Lest we offend someone, we’re not going to get into the debate between Iceberg and Delta lake (after all, let’s not argue about who killed whom), but Delta Lake, if you aren’t familiar with it, is another modern table format which allows ACID transactions, versioning etc. In version 1.21, Drill adds support for Delta Lake tables, so users can query Delta Lake tables as well as associated metadata. You can also query specific versions of files in delta lake.  &lt;a href=&quot;https://drill.apache.org/docs/delta-lake-format-plugin/&quot;&gt;Complete documentation is available here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;accessing-access&quot;&gt;Accessing Access&lt;/h3&gt;
-&lt;p&gt;A surprising number of people use Microsoft Access as a database for their business data. With version 1.21, Apache Drill can now natively query Microsoft Access database files using Drill. This can be a major benefit for those looking to migrate data from Access into more modern formats such as parquet or even other relational databases. Drill will support Access files from version 1997 and up.&lt;/p&gt;
-
-&lt;h3 id=&quot;oh-sheets&quot;&gt;Oh Sheets!&lt;/h3&gt;
-&lt;p&gt;In addition to all of the above, Drill can now query data directly from GoogleSheets. In addition to being able to query this data source, Drill can read, write, delete and append to GoogleSheets. Google doesn’t make it easy, so if this is a feature you are interested in, you’ll definitely want to &lt;a href=&quot;https://drill.apache.org/docs/google-sheets-storage-plugin/&quot;&gt;read the documentation here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;remote-data&quot;&gt;Remote Data&lt;/h3&gt;
-&lt;p&gt;As you can see, Drill has significantly expanded the number of data sources and types that it can query. A part of this work has also been to improve the implementation behind filesystems. As a result, Drill can now query data stored on Dropbox, and Box. We added support for filesystems which use OAuth 2.0 for authorization so this means that more extended file systems are likely coming your way for the next release.&lt;/p&gt;
-
-&lt;h2 id=&quot;greatly-improved-access-controls&quot;&gt;Greatly Improved Access Controls&lt;/h2&gt;
-&lt;p&gt;Managing access controls and credentials on a federated query engine is a complicated task. Drill has supported a concept called user impersonation which basically means that Drill can execute queries using the credentials of the logged in user. This concept works well for querying file systems such as Hadoop, and other data sources that have the same concepts, however it does not work at all with data sources that have different concepts of users, or in the case of OAuth enabled plugins, a completely different set of credentials.&lt;/p&gt;
-
-&lt;p&gt;To answer this challenge, Drill 1.21 introduces the concept of user translation. The idea of user translation is that, when enabled, every user will have their own unique credentials for specific data sources. Thus, when that user queries a specific data source, that user’s credentials are used to execute the query. This is configurable on an individual data source basis. Ultimately, what this means is that you no longer have to create service accounts to access data via Drill.&lt;/p&gt;
-
-&lt;h2 id=&quot;drilling-across-the-clouds&quot;&gt;Drilling Across the Clouds&lt;/h2&gt;
-&lt;p&gt;While we’re on the subject of clouds, as you may be aware, Drill can query data stored in cloud-based file systems such as S3, Azure, GCP etc. One of the challenges however, is that if you have data stored in multiple clouds, it can become very inefficient to query this data, especially from the perspective of network IO. As of Drill 1.21, Drill adds a storage plugin which we are calling Drill on Drill.&lt;/p&gt;
-
-&lt;p&gt;Let’s say that you had a Drill cluster in S3, but you had data in both S3 and Azure. With the new Drill on Drill capability, you could install an additional Drill cluster in Azure, then query both from either Drill cluster. The advantage is that the queries would be pushed down to the Drill cluster where the data resides. So if you query Azure from S3, you aren’t sending tons of data back and forth.&lt;/p&gt;
-
-&lt;h2 id=&quot;drill-now-supports-more-bi-operators&quot;&gt;Drill Now Supports More BI Operators&lt;/h2&gt;
-&lt;p&gt;While Drill held more or less to the SQL standard, it was missing some BI operators that had become commonplace among SQL platforms. Drill 1.21 introduces the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PIVOT&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UNPIVOT&lt;/code&gt; operators which covert rows to columns or vice versa, much in the same way a pivot table works in Excel. Additionally, we added set operators &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;INTERSECT&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;EXCEPT&lt;/code&gt; which have become part of the SQL standard.&lt;/p&gt;
-
-&lt;h2 id=&quot;new-statistical-functions&quot;&gt;New Statistical Functions&lt;/h2&gt;
-&lt;p&gt;Drill 1.21 adds new SQL functions for statistical summaries including &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kendall_correlation&lt;/code&gt; for calculating correlation coefficients, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;width_bucket&lt;/code&gt; which is a SQL function for computing histograms and distributions, and two other functions for computing regression lines.&lt;/p&gt;
-
-&lt;p&gt;Lastly, we’ve also added additional date/time manipulation functions which will make working with dates significantly easier.&lt;/p&gt;
-
-&lt;h2 id=&quot;whats-next&quot;&gt;What’s Next?&lt;/h2&gt;
-&lt;p&gt;The big question is where do we go from here? We’ve already started working on adding support for additional BI operators such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CUBE&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GROUPING SETS&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ROLLUP&lt;/code&gt;, as well as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;REGEXP_EXTRACT&lt;/code&gt;. Since the new version of Calcite has support for numerous optimizations around materialized views this is also something which is being discussed. If you like what you are seeing, please download Drill and try it out. Feedback is always welcome on the Drill slack channel or on our mailing lists. Happy Drilling!&lt;/p&gt;
-</description>
-        <pubDate>Thu, 02 Mar 2023 00:00:00 +0000</pubDate>
-        <link>/blog/2023/03/02/drill-1.21-announcement/</link>
-        <guid isPermaLink="true">/blog/2023/03/02/drill-1.21-announcement/</guid>
-        
-        
-        <category>blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Drill 1.21.0 Released</title>
-        <description>&lt;p&gt;Today, we’re happy to announce the availability of Drill 1.21.0. You can download it &lt;a href=&quot;https://drill.apache.org/download/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;this-release-provides-the-following-new-features&quot;&gt;This release provides the following new features:&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;A major upgrade of the parsing and planning library Calcite from 1.21 to 1.33 enabled by the elimination of Drill’s fork of Calcite.&lt;/li&gt;
-  &lt;li&gt;Upgrades of most format plugins to the internal EVF2 reader framework included support for provided schemas.&lt;/li&gt;
-  &lt;li&gt;A new native Drill storage plugin enabling “Drill-on-Drill” federated deployments.&lt;/li&gt;
-  &lt;li&gt;INSERT support, currently in the JDBC, Splunk and Google Sheets plugins.&lt;/li&gt;
-  &lt;li&gt;New SQL syntax including filtered aggregates, PIVOT, UNPIVOT, INTERSECT and EXCEPT.&lt;/li&gt;
-  &lt;li&gt;Support for new authentication modes in storage plugins including user translation for using different external credentials for different Drill users.&lt;/li&gt;
-  &lt;li&gt;An overhaul of the implicit type casting logic for a more consistent user experience.&lt;/li&gt;
-  &lt;li&gt;New functions and storage plugins including Delta Lake, Google Sheets, MS Access, threat hunting functions and statistical distribution functions.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;You can find a complete list of improvements and JIRAs resolved in the 1.21.0 release &lt;a href=&quot;/docs/apache-drill-1-21-0-release-notes/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 21 Feb 2023 00:00:00 +0000</pubDate>
-        <link>/blog/2023/02/21/drill-1.21.0-released/</link>
-        <guid isPermaLink="true">/blog/2023/02/21/drill-1.21.0-released/</guid>
-        
-        
-        <category>blog</category>
-        
-      </item>
     
       <item>
         <title>Drill 1.20.3 Released</title>
@@ -310,6 +205,68 @@ In [7]: while True:
         <pubDate>Fri, 09 Jul 2021 00:00:00 +0000</pubDate>
         <link>/blog/2021/07/09/streaming-data-from-the-rest-api/</link>
         <guid isPermaLink="true">/blog/2021/07/09/streaming-data-from-the-rest-api/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Drill 1.19 Released</title>
+        <description>&lt;p&gt;Today, we’re happy to announce the availability of Drill 1.19.0. You can download it &lt;a href=&quot;https://drill.apache.org/download/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;this-release-provides-the-following-new-features&quot;&gt;This release provides the following new Features:&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-92&quot;&gt;DRILL-92&lt;/a&gt; - Cassandra Storage Plugin&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-3637&quot;&gt;DRILL-3637&lt;/a&gt; - Elasticsearch Storage Plugin&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7823&quot;&gt;DRILL-7823&lt;/a&gt; - XML Storage Plugin&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7751&quot;&gt;DRILL-7751&lt;/a&gt; - Splunk Storage Plugin&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-5940&quot;&gt;DRILL-5940&lt;/a&gt; - Avro with schema registry support for Kafka&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7855&quot;&gt;DRILL-7855&lt;/a&gt; - Secure mechanism for specifying storage plugin credentials&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7921&quot;&gt;DRILL-7921&lt;/a&gt; - Linux ARM64 based system support&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-6953&quot;&gt;DRILL-6953&lt;/a&gt; - Rowset based JSON reader&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7733&quot;&gt;DRILL-7733&lt;/a&gt; - Use streaming for REST JSON queries&lt;/li&gt;
+  &lt;li&gt;Several plugins have been converted to the Enhanced Vector Framework (EVF)
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7525&quot;&gt;DRILL-7525&lt;/a&gt; - Convert SequenceFiles to EVF&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7532&quot;&gt;DRILL-7532&lt;/a&gt; - Convert SysLog to EVF&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7533&quot;&gt;DRILL-7533&lt;/a&gt; - Convert Pcapng to EVF&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7534&quot;&gt;DRILL-7534&lt;/a&gt; - Convert HTTPD format plugin to EVF&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7536&quot;&gt;DRILL-7533&lt;/a&gt; - Convert Image Format to EVF&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You can find a complete list of improvements and JIRAs resolved in the 1.19.0 release &lt;a href=&quot;/docs/apache-drill-1-19-0-release-notes/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 10 Jun 2021 00:00:00 +0000</pubDate>
+        <link>/blog/2021/06/10/drill-1.19-released/</link>
+        <guid isPermaLink="true">/blog/2021/06/10/drill-1.19-released/</guid>
+        
+        
+        <category>blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Drill 1.18 Released</title>
+        <description>&lt;p&gt;Today, we’re happy to announce the availability of Drill 1.18.0. You can download it &lt;a href=&quot;https://drill.apache.org/download/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;this-release-provides-the-following-new-features&quot;&gt;This release provides the following new Features:&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-6835&quot;&gt;DRILL-6835&lt;/a&gt; - Schema Provision using File / Table Function&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7326&quot;&gt;DRILL-7326&lt;/a&gt; - Support repeated lists for CTAS parquet format&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7343&quot;&gt;DRILL-7343&lt;/a&gt; - Add User-Agent UDFs to Drill&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://issues.apache.org/jira/browse/DRILL-7374&quot;&gt;DRILL-7374&lt;/a&gt; - Support for IPV6 address&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You can find a complete list of improvements and JIRAs resolved in the 1.18.0 release &lt;a href=&quot;/docs/apache-drill-1-18-0-release-notes/&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 05 Sep 2020 00:00:00 +0000</pubDate>
+        <link>/blog/2020/09/05/drill-1.18-released/</link>
+        <guid isPermaLink="true">/blog/2020/09/05/drill-1.18-released/</guid>
         
         
         <category>blog</category>
