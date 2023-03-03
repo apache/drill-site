@@ -557,13 +557,13 @@ If you have dates and times in other formats, use a data type conversion functio
 The following table lists data type formatting functions that you can
 use in your Drill queries as described in this section:
 
-| Function                                                                                         | Return Type |
-|--------------------------------------------------------------------------------------------------|-------------|
-| [TO_CHAR]({{site.baseurl}}/docs/data-type-conversion/#to_char)(expression, format)               | VARCHAR     |
-| [TO_DATE]({{site.baseurl}}/docs/data-type-conversion/#to_date)(expression, format)               | DATE        |
-| [TO_NUMBER]({{site.baseurl}}/docs/data-type-conversion/#to_number)(VARCHAR, format)              | DECIMAL     |
-| [TO_TIMESTAMP]({{site.baseurl}}/docs/data-type-conversion/#to_timestamp)(VARCHAR, format)        | TIMESTAMP   |
-| [TO_TIMESTAMP]({{site.baseurl}}/docs/data-type-conversion/#to_timestamp)(DOUBLE)                 | TIMESTAMP   |
+| Function                                                                                       | Return Type |
+| ---------------------------------------------------------------------------------------------- | ----------- |
+| [TO_CHAR]({{site.baseurl}}/docs/data-type-conversion/#to_char)(expression, format)             | VARCHAR     |
+| [TO_DATE]({{site.baseurl}}/docs/data-type-conversion/#to_date)(expression, format)             | DATE        |
+| [TO_NUMBER]({{site.baseurl}}/docs/data-type-conversion/#to_number)(VARCHAR, format)            | DECIMAL     |
+| [TO_TIMESTAMP]({{site.baseurl}}/docs/data-type-conversion/#to_timestamp)(VARCHAR \[, format\]) | TIMESTAMP   |
+| [TO_TIMESTAMP]({{site.baseurl}}/docs/data-type-conversion/#to_timestamp)(DOUBLE)               | TIMESTAMP   |
 
 ### Format Specifiers for Numerical Conversions
 Use the following Java format specifiers for converting numbers:
@@ -859,7 +859,7 @@ Convert 828550000 milliseconds (23 hours 55 seconds) to the time.
 
 *expression* is a character string enclosed in single quotation marks or a UNIX epoch timestamp, not enclosed in single quotation marks.
 
-*'format'* is a character string that specifies the format of *expression*. Only use this option when the *expression* is a character string, not a UNIX epoch timestamp.
+*'format'* is an optional character string that specifies the format of *expression*. Only use this option when the *expression* is a character string, not a UNIX epoch timestamp. If *expression* is a character string and *format* is not provided then the function will use a set of heuristics to try to detect the date format automatically. If that attempt fails then null is returned.
 
 ### TO_TIMESTAMP Usage Notes
 Specify a format using patterns defined in [Joda DateTimeFormat class](http://joda-time.sourceforge.net/apidocs/org/joda/time/format/DateTimeFormat.html). The TO_TIMESTAMP function takes a Unix epoch timestamp. The TO_DATE function takes a UNIX epoch timestamp in milliseconds.
@@ -899,7 +899,7 @@ Convert a UTC date to a timestamp offset from the UTC time zone code.
     |------------------------|---------|
     1 row selected (0.148 seconds)
 
-Convert an ISO-8601 timestamp string to a timestamp. The ISO-8601 format differs from the ANSI SQL timestamp format and must be explicitly parsed. Note the escaped single quotes ('') required to place the separator character 'T' into the format string.
+Convert an ISO-8601 timestamp string to a timestamp. The ISO-8601 format differs from the ANSI SQL timestamp format and cannot be cast but must be explicitly parsed. Note the escaped single quotes ('') required to place the separator character 'T' into the format string.
 
 ```sql
 select to_timestamp('2023-02-24T11:21:55', 'YYYY-MM-dd''T''HH:mm:ss');
@@ -908,6 +908,17 @@ select to_timestamp('2023-02-24T11:21:55', 'YYYY-MM-dd''T''HH:mm:ss');
 EXPR$0  2023-02-24 11:21:55.0
 
 1 row selected (0.163 seconds)
+```
+
+Use TO_TIMESTAMP with automatic format detection to parse an IS0-8601 timestamp.
+
+```sql
+select to_timestamp('2023-02-24T11:21:55');
+```
+```
+EXPR$0  2023-02-24 11:21:55.0
+
+1 row selected (0.151 seconds)
 ```
 
 ## Enabling Time Zone Offset

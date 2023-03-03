@@ -671,11 +671,11 @@ Returns a component of a timestamp, time, date, or interval.
 
     component FROM (timestamp | time | date | interval)
 
-*component* is one of the following time units: year, month, day, hour, minute, second.
+*component* is one of the following time units: year, quarter, month, week, day, dayofweek, dayofyear, epoch, hour, minute, second.
 
 ### EXTRACT Usage Notes
 
-The extract function supports the following time units: YEAR, MONTH, DAY, HOUR, MINUTE, SECOND.
+The extract function supports the following time units: YEAR, QUARTER, MONTH, WEEK, DAY, DAYOFWEEK, DAYOFYEAR, EPOCH, HOUR, MINUTE, SECOND.
 
 ### EXTRACT Examples
 

@@ -101,14 +101,14 @@ full file path name to the `donuts.json` file:
 
     SELECT * FROM dfs.`/users/max/drill/json/donuts.json` WHERE type='frosted';
 
+## Mount and unmount commands
+
+**Introduced in release: 1.21**
+
+drill.exec.storage.file.enable_mount_commands
+
 ## Configuration options in core-site.xml
 
 ### drill.exec.recursive_file_listing_max_size
 
-Use this property to set a limit on the numer of files that Drill
-will list by recursing into a DFS directory tree. When the limit is
-encountered the initiating operation will fail with an error. The
-intended application of this limit is to allow admins to protect their
-Drillbits from an errant or malicious SELECT * FROM dfs.huge_workspace
-LIMIT 10 query, which will cause an OOM given a big enough workspace of
-files. Defaults to 0 which means no limit.
+Use this property to set a limit on the numer of files that Drill will list by recursing into a DFS directory tree. When the limit is encountered the initiating operation will fail with an error. The intended application of this limit is to allow admins to protect their Drillbits from an errant or malicious `SELECT * FROM dfs.huge_workspace LIMIT 10` query, which will cause an OOM given a big enough workspace of files. Defaults to 0 which means no limit.
