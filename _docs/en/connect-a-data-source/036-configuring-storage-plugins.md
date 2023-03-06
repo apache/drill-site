@@ -101,6 +101,22 @@ Starting in Drill 1.16, you can export all storage plugin configurations at once
 
 When you need to configure the storage plugin, copy and paste the contents of the JSON file into the Configuration field. You can access the Configuration field for a storage plugin by selecting Update next to the storage plugin.
 
+## Automatic retry and disable
 
+**Introduced in release: 1.21**
 
+Three system options, shown below along with their default values, control the actions Drill takes when its attempt to access a participating storage plugin during the planning of a query fail.
 
+```
+storage.plugin_retry_attempts: 1,
+storage.plugin_retry_attempt_delay: 2000,
+storage.plugin_auto_disable: false,
+```
+
+Usually the reason that Drill is unable to request metadata from a storage plugin is that it is no longer able to connect to a remote system e.g. a storage plugin named `pg` has started failing because the remote PostgreSQL server was moved to a new IP address. Such a broken storage plugin clearly cannot be queried directly but it will generally also knock out unfiltered info schema queries which try to collect metadata from every storage plugin e.g.
+
+```sql
+SELECT * FROM information_schema.tables;
+```
+
+By default Drill will make two attempts to access a storage plugin (one initial attempt and one retry attempt) but this can be adjusted using `storage.plugin_retry_attempts`. The delay between retry attempts in milliseconds can be set using `storage.plugin_retry_attempt_delay`. Lastly, Drill can be set to automatically disable a plugin that has failed all retry attempts using `storage.plugin_auto_disable`.
