@@ -1689,93 +1689,33 @@ Implicitly casts all textual data to VARCHAR.</li>
 
 <h2 id="implicit-casting-precedence-of-data-types">Implicit Casting Precedence of Data Types</h2>
 
-<p>The following list includes data types Drill uses in descending order of precedence. Casting precedence shown in the following table applies to the implicit casting that Drill performs. For example, Drill might implicitly cast data when a query includes a function or filter on mismatched data types:</p>
+<p>Drill’s implicit casting logic was overhauled in version 1.21, changing internally from a linear ranking of the SQL data types by “precedence” to a directed graph over the SQL data types which encodes the cost<sup id="fnref:1:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> of casting between them in a transitive way. Without detailing the cost of every cast, the following principles give a good idea of what implicit cast Drill will attempt to insert, if any.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT myBigInt FROM mytable WHERE myBigInt = 2.5;
+<ol>
+  <li>The cost of casting from type A to type B is the path of least cost over the data type DAG.</li>
+  <li>The NULL type is castable to any type with VARCHAR being the cheapest.</li>
+  <li>It is cheaper to cast a NULL argument to any non-NULL type than to cast a non-NULL to another non-NULL.</li>
+  <li>One expensive cast is generally cheaper than multiple cheap casts.</li>
+  <li>Where type widenings naturally occur, e.g. INT4 → INT8, these casts are cheap.</li>
+</ol>
+
+<p>Here are three examples of implcit casting at work.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select sqrt('2');
+EXPR$0  1.4142135623730951
+
+1 row selected (0.24 seconds)
+
+select current_date &gt; '1970-01-01';
+EXPR$0  true
+
+1 row selected (0.262 seconds)
+
+select 'False' = false;
+EXPR$0  true
+
+1 row selected (0.133 seconds)
 </code></pre></div></div>
-
-<p>As shown in the table, Drill can cast a NULL value, which has the lowest precedence, to any other type; you can cast a SMALLINT (not supported in this release) value to INT. Drill might deviate from these precedence rules for performance reasons. Under certain circumstances, such as queries involving SUBSTR and CONCAT functions, Drill reverses the order of precedence and allows a cast to VARCHAR from a type of higher precedence than VARCHAR, such as BIGINT. The INTERVALDAY and INTERVALYEAR types are internal types.</p>
-
-<h3 id="casting-precedence">Casting Precedence</h3>
-
-<table>
-  <thead>
-    <tr>
-      <th>Precedence</th>
-      <th>Data Type</th>
-      <th>Precedence</th>
-      <th>Data Type</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>INTERVALYEAR (highest)</td>
-      <td>12</td>
-      <td>UINT2</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>INTERVALDAY</td>
-      <td>13</td>
-      <td>SMALLINT<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">5</a></sup></td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>TIMESTAMP</td>
-      <td>14</td>
-      <td>UINT1</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>DATE</td>
-      <td>15</td>
-      <td>VAR16CHAR</td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td>TIME</td>
-      <td>16</td>
-      <td>FIXED16CHAR</td>
-    </tr>
-    <tr>
-      <td>6</td>
-      <td>DOUBLE</td>
-      <td>17</td>
-      <td>VARCHAR</td>
-    </tr>
-    <tr>
-      <td>7</td>
-      <td>DECIMAL</td>
-      <td>18</td>
-      <td>CHAR</td>
-    </tr>
-    <tr>
-      <td>8</td>
-      <td>UINT8</td>
-      <td>19</td>
-      <td>VARBINARY</td>
-    </tr>
-    <tr>
-      <td>9</td>
-      <td>BIGINT</td>
-      <td>20</td>
-      <td>FIXEDBINARY</td>
-    </tr>
-    <tr>
-      <td>10</td>
-      <td>UINT4</td>
-      <td>21</td>
-      <td>NULL (lowest)</td>
-    </tr>
-    <tr>
-      <td>11</td>
-      <td>INT</td>
-      <td> </td>
-      <td> </td>
-    </tr>
-  </tbody>
-</table>
 
 <h2 id="explicit-casting">Explicit Casting</h2>
 
@@ -1833,7 +1773,7 @@ Converts a string to TIMESTAMP.</li>
       <td> </td>
     </tr>
     <tr>
-      <td>SMALLINT<sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">6</a></sup></td>
+      <td>SMALLINT<sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">5</a></sup></td>
       <td>yes</td>
       <td>yes</td>
       <td>yes</td>
@@ -1917,7 +1857,7 @@ Converts a string to TIMESTAMP.</li>
       <td>yes</td>
     </tr>
     <tr>
-      <td>FIXEDBINARY<sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">7</a></sup></td>
+      <td>FIXEDBINARY<sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">6</a></sup></td>
       <td>yes</td>
       <td>yes</td>
       <td>yes</td>
@@ -1929,7 +1869,7 @@ Converts a string to TIMESTAMP.</li>
       <td>yes</td>
     </tr>
     <tr>
-      <td>VARCHAR<sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">8</a></sup></td>
+      <td>VARCHAR<sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">7</a></sup></td>
       <td>yes</td>
       <td>yes</td>
       <td>yes</td>
@@ -1941,7 +1881,7 @@ Converts a string to TIMESTAMP.</li>
       <td>yes</td>
     </tr>
     <tr>
-      <td>VARBINARY<sup id="fnref:7:1" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">7</a></sup></td>
+      <td>VARBINARY<sup id="fnref:7:1" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">6</a></sup></td>
       <td>yes</td>
       <td>yes</td>
       <td>yes</td>
@@ -1986,7 +1926,7 @@ Converts a string to TIMESTAMP.</li>
       <td>Yes</td>
     </tr>
     <tr>
-      <td>FIXEDBINARY<sup id="fnref:7:2" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">7</a></sup></td>
+      <td>FIXEDBINARY<sup id="fnref:7:2" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">6</a></sup></td>
       <td>No</td>
       <td>No</td>
       <td>No</td>
@@ -2002,7 +1942,7 @@ Converts a string to TIMESTAMP.</li>
       <td>Yes</td>
     </tr>
     <tr>
-      <td>VARBINARY<sup id="fnref:7:3" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">7</a></sup></td>
+      <td>VARBINARY<sup id="fnref:7:3" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">6</a></sup></td>
       <td>No</td>
       <td>No</td>
       <td>Yes</td>
@@ -2205,7 +2145,7 @@ and CONVERT_FROM functions:</p>
 <div class="footnotes" role="doc-endnotes">
   <ol>
     <li id="fn:1" role="doc-endnote">
-      <p>Starting in Drill 1.14, the DECIMAL data type is enabled by default. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+      <p>Starting in Drill 1.14, the DECIMAL data type is enabled by default. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a> <a href="#fnref:1:1" class="reversefootnote" role="doc-backlink">&#8617;<sup>2</sup></a></p>
     </li>
     <li id="fn:2" role="doc-endnote">
       <p>Internally, INTERVAL is represented as INTERVALDAY or INTERVALYEAR. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
@@ -2215,9 +2155,6 @@ and CONVERT_FROM functions:</p>
     </li>
     <li id="fn:4" role="doc-endnote">
       <p>The CHAR data type is internally represented as VARCHAR by Drill. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
-    </li>
-    <li id="fn:5" role="doc-endnote">
-      <p>Not supported in this release. <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
     <li id="fn:6" role="doc-endnote">
       <p>Not supported in this release. <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
