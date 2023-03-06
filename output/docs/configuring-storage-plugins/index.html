@@ -1600,6 +1600,23 @@ The file is removed after Drill uses the file for the first time.</li>
 
 <p>When you need to configure the storage plugin, copy and paste the contents of the JSON file into the Configuration field. You can access the Configuration field for a storage plugin by selecting Update next to the storage plugin.</p>
 
+<h2 id="automatic-retry-and-disable">Automatic retry and disable</h2>
+
+<p><strong>Introduced in release: 1.21</strong></p>
+
+<p>Three system options, shown below along with their default values, control the actions Drill takes when its attempt to access a participating storage plugin during the planning of a query fail.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>storage.plugin_retry_attempts: 1,
+storage.plugin_retry_attempt_delay: 2000,
+storage.plugin_auto_disable: false,
+</code></pre></div></div>
+
+<p>Usually the reason that Drill is unable to request metadata from a storage plugin is that it is no longer able to connect to a remote system e.g. a storage plugin named <code class="language-plaintext highlighter-rouge">pg</code> has started failing because the remote PostgreSQL server was moved to a new IP address. Such a broken storage plugin clearly cannot be queried directly but it will generally also knock out unfiltered info schema queries which try to collect metadata from every storage plugin e.g.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>By default Drill will make two attempts to access a storage plugin (one initial attempt and one retry attempt) but this can be adjusted using <code class="language-plaintext highlighter-rouge">storage.plugin_retry_attempts</code>. The delay between retry attempts in milliseconds can be set using <code class="language-plaintext highlighter-rouge">storage.plugin_retry_attempt_delay</code>. Lastly, Drill can be set to automatically disable a plugin that has failed all retry attempts using <code class="language-plaintext highlighter-rouge">storage.plugin_auto_disable</code>.</p>
 
     
       
