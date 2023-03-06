@@ -124,27 +124,34 @@ In some cases, Drill converts schema-less data to correctly-typed data implicitl
 
 ## Implicit Casting Precedence of Data Types
 
-The following list includes data types Drill uses in descending order of precedence. Casting precedence shown in the following table applies to the implicit casting that Drill performs. For example, Drill might implicitly cast data when a query includes a function or filter on mismatched data types:
+Drill's implicit casting logic was overhauled in version 1.21, changing internally from a linear ranking of the SQL data types by "precedence" to a directed graph over the SQL data types which encodes the cost[^1] of casting between them in a transitive way. Without detailing the cost of every cast, the following principles give a good idea of what implicit cast Drill will attempt to insert, if any.
 
-    SELECT myBigInt FROM mytable WHERE myBigInt = 2.5;
+[^1]: Casting costs in Drill are set so as to achieve a target set of query behaviours, as measured by the test suite. They are not the computational cost nor are do they derive from any similar single principle.
 
-As shown in the table, Drill can cast a NULL value, which has the lowest precedence, to any other type; you can cast a SMALLINT (not supported in this release) value to INT. Drill might deviate from these precedence rules for performance reasons. Under certain circumstances, such as queries involving SUBSTR and CONCAT functions, Drill reverses the order of precedence and allows a cast to VARCHAR from a type of higher precedence than VARCHAR, such as BIGINT. The INTERVALDAY and INTERVALYEAR types are internal types.
+1. The cost of casting from type A to type B is the path of least cost over the data type DAG.
+2. The NULL type is castable to any type with VARCHAR being the cheapest.
+3. It is cheaper to cast a NULL argument to any non-NULL type than to cast a non-NULL to another non-NULL.
+4. One expensive cast is generally cheaper than multiple cheap casts.
+5. Where type widenings naturally occur, e.g. INT4 → INT8, these casts are cheap.
 
-### Casting Precedence
+Here are three examples of implcit casting at work.
 
-| Precedence | Data Type              | Precedence | Data Type     |
-|------------|------------------------|------------|---------------|
-| 1          | INTERVALYEAR (highest) | 12         | UINT2         |
-| 2          | INTERVALDAY            | 13         | SMALLINT[^5]  |
-| 3          | TIMESTAMP              | 14         | UINT1         |
-| 4          | DATE                   | 15         | VAR16CHAR     |
-| 5          | TIME                   | 16         | FIXED16CHAR   |
-| 6          | DOUBLE                 | 17         | VARCHAR       |
-| 7          | DECIMAL                | 18         | CHAR          |
-| 8          | UINT8                  | 19         | VARBINARY     |
-| 9          | BIGINT                 | 20         | FIXEDBINARY   |
-| 10         | UINT4                  | 21         | NULL (lowest) |
-| 11         | INT                    |            |               |
+```
+select sqrt('2');
+EXPR$0  1.4142135623730951
+
+1 row selected (0.24 seconds)
+
+select current_date > '1970-01-01';
+EXPR$0  true
+
+1 row selected (0.262 seconds)
+
+select 'False' = false;
+EXPR$0  true
+
+1 row selected (0.133 seconds)
+```
 
 ## Explicit Casting
 
