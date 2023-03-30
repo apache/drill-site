@@ -124,9 +124,7 @@ In some cases, Drill converts schema-less data to correctly-typed data implicitl
 
 ## Implicit Casting Precedence of Data Types
 
-Drill's implicit casting logic was overhauled in version 1.21, changing internally from a linear ranking of the SQL data types by "precedence" to a directed graph over the SQL data types which encodes the cost[^1] of casting between them in a transitive way. Without detailing the cost of every cast, the following principles give a good idea of what implicit cast Drill will attempt to insert, if any.
-
-[^1]: Casting costs in Drill are set so as to achieve a target set of query behaviours, as measured by the test suite. They are not the computational cost nor are do they derive from any similar single principle.
+Drill's implicit casting logic was overhauled in version 1.21, changing internally from a linear ranking of the SQL data types by "precedence" to a directed graph over the SQL data types which encodes the cost[^5] of casting between them in a transitive way. Without detailing the cost of every cast, the following principles give a good idea of what implicit cast Drill will attempt to insert, if any.
 
 1. The cost of casting from type A to type B is the path of least cost over the data type DAG.
 2. The NULL type is castable to any type with VARCHAR being the cheapest.
@@ -181,16 +179,16 @@ The following tables show data types that Drill can cast to/from other data type
 | To              | SMALLINT | INT | BIGINT | DECIMAL | FLOAT | CHAR | FIXEDBINARY | VARCHAR | VARBINARY |
 |-----------------|----------|-----|--------|---------|-------|------|-------------|---------|-----------|
 | **From:**       |          |     |        |         |       |      |             |         |           |
-| SMALLINT[^6]    | yes      | yes | yes    | yes     | yes   | yes  | yes         | yes     | yes       |
+| SMALLINT[^7]    | yes      | yes | yes    | yes     | yes   | yes  | yes         | yes     | yes       |
 | INT             | yes      | yes | yes    | yes     | yes   | yes  | yes         | yes     | yes       |
 | BIGINT          | yes      | yes | yes    | yes     | yes   | yes  | yes         | yes     | yes       |
 | DECIMAL         | yes      | yes | yes    | yes     | yes   | yes  | yes         | yes     | yes       |
 | DOUBLE          | yes      | yes | yes    | yes     | yes   | yes  | no          | yes     | no        |
 | FLOAT           | yes      | yes | yes    | yes     | yes   | yes  | no          | yes     | no        |
 | CHAR            | yes      | yes | yes    | yes     | yes   | no   | yes         | yes     | yes       |
-| FIXEDBINARY[^7] | yes      | yes | yes    | yes     | yes   | no   | no          | yes     | yes       |
-| VARCHAR[^8]     | yes      | yes | yes    | yes     | yes   | yes  | yes         | no      | yes       |
-| VARBINARY[^7]   | yes      | yes | yes    | yes     | yes   | no   | yes         | yes     | no        |
+| FIXEDBINARY[^8] | yes      | yes | yes    | yes     | yes   | no   | no          | yes     | yes       |
+| VARCHAR[^9]     | yes      | yes | yes    | yes     | yes   | yes  | yes         | no      | yes       |
+| VARBINARY[^8]   | yes      | yes | yes    | yes     | yes   | no   | yes         | yes     | no        |
 
 
 ### Date and Time Data Types
@@ -199,9 +197,9 @@ The following tables show data types that Drill can cast to/from other data type
 |-----------------|------|------|-----------|--------------|-------------|
 | From:           |      |      |           |              |             |
 | CHAR            | Yes  | Yes  | Yes       | Yes          | Yes         |
-| FIXEDBINARY[^7] | No   | No   | No        | No           | No          |
+| FIXEDBINARY[^8] | No   | No   | No        | No           | No          |
 | VARCHAR         | Yes  | Yes  | Yes       | Yes          | Yes         |
-| VARBINARY[^7]   | No   | No   | Yes       | No           | No          |
+| VARBINARY[^8]   | No   | No   | Yes       | No           | No          |
 | DATE            | No   | No   | Yes       | No           | No          |
 | TIME            | No   | Yes  | Yes       | No           | No          |
 | TIMESTAMP       | Yes  | Yes  | Yes       | No           | No          |
@@ -256,9 +254,10 @@ This table includes types such as INT, for converting little endian-encoded data
 [^2]: Internally, INTERVAL is represented as INTERVALDAY or INTERVALYEAR.
 [^3]: SMALLINT is not currently supported.
 [^4]: The CHAR data type is internally represented as VARCHAR by Drill.
-[^5]: Not supported in this release.
+[^5]: Casting costs in Drill are set so as to achieve a target set of query behaviours, as measured by the test suite. They are not the computational cost nor are do they derive from any similar single principle.
 [^6]: Not supported in this release.
-[^7]: Used to cast binary UTF-8 data coming to/from sources such as HBase. The CAST function does not support all representations of FIXEDBINARY and VARBINARY. Only the UTF-8 format is supported. If your FIXEDBINARY or VARBINARY data is in a format other than UTF-8, or big-endian encoded, use the CONVERT_TO/FROM functions instead of CAST.
-[^8]: You cannot convert a character string having a decimal point to an INT or BIGINT.
+[^7]: Not supported in this release.
+[^8]: Used to cast binary UTF-8 data coming to/from sources such as HBase. The CAST function does not support all representations of FIXEDBINARY and VARBINARY. Only the UTF-8 format is supported. If your FIXEDBINARY or VARBINARY data is in a format other than UTF-8, or big-endian encoded, use the CONVERT_TO/FROM functions instead of CAST.
+[^9]: You cannot convert a character string having a decimal point to an INT or BIGINT.
 
 
