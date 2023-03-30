@@ -448,10 +448,6 @@
             
           
             
-              <li class="toctree-l2"><a class="reference internal" href="/zh/docs/ports-used-by-drill/">Ports Used by Drill</a></li>
-            
-          
-            
               <li class="toctree-l2"><a class="reference internal" href="/zh/docs/configuring-the-drill-shell/">Configuring the Drill Shell</a></li>
             
           
@@ -1691,7 +1687,7 @@ Implicitly casts all textual data to VARCHAR.</li>
 
 <h2 id="implicit-casting-precedence-of-data-types">Implicit Casting Precedence of Data Types</h2>
 
-<p>Drill’s implicit casting logic was overhauled in version 1.21, changing internally from a linear ranking of the SQL data types by “precedence” to a directed graph over the SQL data types which encodes the cost<sup id="fnref:1:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> of casting between them in a transitive way. Without detailing the cost of every cast, the following principles give a good idea of what implicit cast Drill will attempt to insert, if any.</p>
+<p>Drill’s implicit casting logic was overhauled in version 1.21, changing internally from a linear ranking of the SQL data types by “precedence” to a directed graph over the SQL data types which encodes the cost<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">5</a></sup> of casting between them in a transitive way. Without detailing the cost of every cast, the following principles give a good idea of what implicit cast Drill will attempt to insert, if any.</p>
 
 <ol>
   <li>The cost of casting from type A to type B is the path of least cost over the data type DAG.</li>
@@ -1775,7 +1771,7 @@ Converts a string to TIMESTAMP.</li>
       <td> </td>
     </tr>
     <tr>
-      <td>SMALLINT<sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">5</a></sup></td>
+      <td>SMALLINT<sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">6</a></sup></td>
       <td>yes</td>
       <td>yes</td>
       <td>yes</td>
@@ -1859,7 +1855,7 @@ Converts a string to TIMESTAMP.</li>
       <td>yes</td>
     </tr>
     <tr>
-      <td>FIXEDBINARY<sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">6</a></sup></td>
+      <td>FIXEDBINARY<sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">7</a></sup></td>
       <td>yes</td>
       <td>yes</td>
       <td>yes</td>
@@ -1871,7 +1867,7 @@ Converts a string to TIMESTAMP.</li>
       <td>yes</td>
     </tr>
     <tr>
-      <td>VARCHAR<sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">7</a></sup></td>
+      <td>VARCHAR<sup id="fnref:9" role="doc-noteref"><a href="#fn:9" class="footnote" rel="footnote">8</a></sup></td>
       <td>yes</td>
       <td>yes</td>
       <td>yes</td>
@@ -1883,7 +1879,7 @@ Converts a string to TIMESTAMP.</li>
       <td>yes</td>
     </tr>
     <tr>
-      <td>VARBINARY<sup id="fnref:7:1" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">6</a></sup></td>
+      <td>VARBINARY<sup id="fnref:8:1" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">7</a></sup></td>
       <td>yes</td>
       <td>yes</td>
       <td>yes</td>
@@ -1928,7 +1924,7 @@ Converts a string to TIMESTAMP.</li>
       <td>Yes</td>
     </tr>
     <tr>
-      <td>FIXEDBINARY<sup id="fnref:7:2" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">6</a></sup></td>
+      <td>FIXEDBINARY<sup id="fnref:8:2" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">7</a></sup></td>
       <td>No</td>
       <td>No</td>
       <td>No</td>
@@ -1944,7 +1940,7 @@ Converts a string to TIMESTAMP.</li>
       <td>Yes</td>
     </tr>
     <tr>
-      <td>VARBINARY<sup id="fnref:7:3" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">6</a></sup></td>
+      <td>VARBINARY<sup id="fnref:8:3" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">7</a></sup></td>
       <td>No</td>
       <td>No</td>
       <td>Yes</td>
@@ -2147,7 +2143,7 @@ and CONVERT_FROM functions:</p>
 <div class="footnotes" role="doc-endnotes">
   <ol>
     <li id="fn:1" role="doc-endnote">
-      <p>Starting in Drill 1.14, the DECIMAL data type is enabled by default. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a> <a href="#fnref:1:1" class="reversefootnote" role="doc-backlink">&#8617;<sup>2</sup></a></p>
+      <p>Starting in Drill 1.14, the DECIMAL data type is enabled by default. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
     <li id="fn:2" role="doc-endnote">
       <p>Internally, INTERVAL is represented as INTERVALDAY or INTERVALYEAR. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
@@ -2158,14 +2154,17 @@ and CONVERT_FROM functions:</p>
     <li id="fn:4" role="doc-endnote">
       <p>The CHAR data type is internally represented as VARCHAR by Drill. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:6" role="doc-endnote">
-      <p>Not supported in this release. <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    <li id="fn:5" role="doc-endnote">
+      <p>Casting costs in Drill are set so as to achieve a target set of query behaviours, as measured by the test suite. They are not the computational cost nor are do they derive from any similar single principle. <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
     <li id="fn:7" role="doc-endnote">
-      <p>Used to cast binary UTF-8 data coming to/from sources such as HBase. The CAST function does not support all representations of FIXEDBINARY and VARBINARY. Only the UTF-8 format is supported. If your FIXEDBINARY or VARBINARY data is in a format other than UTF-8, or big-endian encoded, use the CONVERT_TO/FROM functions instead of CAST. <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a> <a href="#fnref:7:1" class="reversefootnote" role="doc-backlink">&#8617;<sup>2</sup></a> <a href="#fnref:7:2" class="reversefootnote" role="doc-backlink">&#8617;<sup>3</sup></a> <a href="#fnref:7:3" class="reversefootnote" role="doc-backlink">&#8617;<sup>4</sup></a></p>
+      <p>Not supported in this release. <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
     <li id="fn:8" role="doc-endnote">
-      <p>You cannot convert a character string having a decimal point to an INT or BIGINT. <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+      <p>Used to cast binary UTF-8 data coming to/from sources such as HBase. The CAST function does not support all representations of FIXEDBINARY and VARBINARY. Only the UTF-8 format is supported. If your FIXEDBINARY or VARBINARY data is in a format other than UTF-8, or big-endian encoded, use the CONVERT_TO/FROM functions instead of CAST. <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a> <a href="#fnref:8:1" class="reversefootnote" role="doc-backlink">&#8617;<sup>2</sup></a> <a href="#fnref:8:2" class="reversefootnote" role="doc-backlink">&#8617;<sup>3</sup></a> <a href="#fnref:8:3" class="reversefootnote" role="doc-backlink">&#8617;<sup>4</sup></a></p>
+    </li>
+    <li id="fn:9" role="doc-endnote">
+      <p>You cannot convert a character string having a decimal point to an INT or BIGINT. <a href="#fnref:9" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>
