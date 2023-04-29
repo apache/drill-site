@@ -1,9 +1,10 @@
 ---
-title: "Bind Addresses and Ports Used by Drill"
-slug: "Bind Addresses and Ports Used by Drill"
+title: "Ports and Bind Addresses Used by Drill"
+slug: "Ports and Bind Addresses Used by Drill"
 parent: "Configure Drill"
 ---
 
+## Ports
 The table below lists the default ports that Drill uses and provides descriptions for each, as well as the corresponding configuration options. You can modify the configuration options in `<drill_home>/conf/drill-override.conf` to change the ports that Drill uses. See [Start-Up Options]({{site.baseurl}}/docs/start-up-options/) for more information.
 
 
@@ -14,7 +15,7 @@ The table below lists the default ports that Drill uses and provides description
 | 31011        | TCP  | drill.exec.rpc.bit.server.port     | Control port address. Used between nodes in a Drill cluster. Needed for multi-node installation of Apache Drill.                                                                    |
 | 31012        | TCP  | drill.exec.rpc.bit.server.port + 1 | Data port address. Used between nodes in a Drill cluster. Needed for multi-node installation of Apache Drill.                                                                       |
 
-### Bind addresses
+## Bind addresses
 
 **Introduced in release: 1.21.1**
 
