@@ -36,8 +36,13 @@ Following is the default registration configuration.
   "hosts": [
     "http://localhost:9200"
   ],
-  "username": null,
-  "password": null,
+  "credentialsProvider": {
+    "credentialsProviderType": "PlainCredentialsProvider",
+    "credentials": {
+      "username": "elastic",
+      "password": "password"
+    }
+  },
   "enabled": false
 }
 ```
