@@ -307,9 +307,9 @@ To access a map field in an array, use dot notation to drill down through the hi
       },
     . . .
 
-This example shows how to drill down using array notation plus dot notation in features[0].properties.MAPBLKLOT to get the MAPBLKLOT property value in the San Francisco city lots data:
+This example shows how to drill down using array notation plus dot notation in features[0].`properties`.MAPBLKLOT to get the MAPBLKLOT property value in the San Francisco city lots data. Note that the word 'properties' is a Drill SQL keyword, so must be surrounded by back-ticks:
 
-    SELECT features[0].properties.MAPBLKLOT, FROM dfs.`/Users/drilluser/citylots.json`;
+    SELECT features[0].`properties`.MAPBLKLOT, FROM dfs.`/Users/drilluser/citylots.json`;
 
     |------------|
     |   EXPR$0   |
