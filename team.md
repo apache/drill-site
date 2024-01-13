@@ -24,6 +24,7 @@ We welcome contributions to the project. If you're interested in contributing, t
 | Chunhui Shi             | cshi                                |
 | Chris Wensel            | cwensel                             |
 | Chris Westin            | cwestin                             |
+| Cong Luo                | luoc                                |
 | Ellen Friedman          | ellenf                              |
 | German Shegalov         | gera                                |
 | Gautam Parai            | gparai                              |
@@ -55,6 +56,7 @@ We welcome contributions to the project. If you're interested in contributing, t
 | Srivas                  | srivas                              |
 | Sudheesh Katkam         | sudheesh                            |
 | Ted Dunning             | tdunning                            |
+| Tengfei Wang            | leon                                |
 | Timothy Farkas          | timothyfarkas                       |
 | Timothy Chen            | tnachen                             |
 | Tomer Shiran            | tshiran                             |
