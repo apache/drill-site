@@ -8,9 +8,7 @@ You install Drill on nodes in the cluster, configure a cluster ID, and add Zooke
 
 ### Install
 
-1. Download the latest version of Apache Drill [here](http://apache.mirrors.hoobly.com/drill/drill-1.19.0/apache-drill-1.19.0.tar.gz) or from the [Apache Drill mirror site](http://www.apache.org/dyn/closer.cgi/drill/drill-1.19.0/apache-drill-1.19.0.tar.gz) with the command appropriate for your system:
-   - `wget http://apache.mirrors.hoobly.com/drill/drill-1.19.0/apache-drill-1.19.0.tar.gz`
-   - `curl -o apache-drill-1.19.0.tar.gz http://apache.mirrors.hoobly.com/drill/drill-1.19.0/apache-drill-1.19.0.tar.gz`
+1. [Download the latest version of Apache Drill](https://drill.apache.org/download/)
 2. Extract the tarball to the directory of your choice, such as `/opt`:
    `tar -xf apache-drill-<version>.tar.gz`
 
