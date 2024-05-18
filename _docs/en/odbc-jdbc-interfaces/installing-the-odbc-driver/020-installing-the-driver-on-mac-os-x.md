@@ -27,8 +27,13 @@ To install the driver, you need Administrator privileges on the computer.
 
 ## Step 1: Download the Drill ODBC Driver
 
-To download ODBC drivers that support both 32- and 64-bit client applications, click
-[Drill ODBC Driver for Mac](http://package.mapr.com/tools/MapR-ODBC/MapR_Drill/).
+{% startnote.html}
+Post the acquisition of MapR by HPE, the MapR ODBC driver's licensing and distribution have changed.
+{% startnote.html}
+
+The latest advice shared with the open source project by HPE follows.
+
+> You must create a HPE passport account with your email, then you must obtain a token: [https://docs.ezmeral.hpe.com/datafabric-customer-managed/75/AdvancedInstallation/Obtaining_a_Token.html](https://docs.ezmeral.hpe.com/datafabric-customer-managed/75/AdvancedInstallation/Obtaining_a_Token.html). With your token and your passport email then you can connect to [https://package.ezmeral.hpe.com/tools/MapR-ODBC/MapR_Drill/MapRDrill_odbc_v1.5.1.1002/](https://package.ezmeral.hpe.com/tools/MapR-ODBC/MapR_Drill/MapRDrill_odbc_v1.5.1.1002/).
 
 
 ## Step 2: Install the Drill ODBC Driver
