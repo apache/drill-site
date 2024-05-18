@@ -38,9 +38,9 @@ To install the driver, you need Administrator privileges on the computer.
 
 ## Step 1: Download the Drill ODBC Driver
 
-{% startnote.html}
+{% startnote.html %}
 Post the acquisition of MapR by HPE, the MapR ODBC driver's licensing and distribution have changed.
-{% startnote.html}
+{% endnote.html %}
 
 The latest advice shared with the open source project by HPE follows.
 
