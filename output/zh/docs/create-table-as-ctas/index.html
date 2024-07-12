@@ -1500,7 +1500,12 @@
 
     <div class="int_text" align="left">
       
-        <p>Use the CREATE TABLE AS (CTAS) command to create tables in Drill.</p>
+        <p>Use the CREATE TABLE AS (CTAS) command to create tables in Drill.  In addition to file systems, other plugins support writing and insert. Specifically:</p>
+<ul>
+  <li>Googlesheets</li>
+  <li>JDBC</li>
+  <li>Splunk</li>
+</ul>
 
 <h2 id="syntax">Syntax</h2>
 
@@ -1690,6 +1695,82 @@ administorsmbp7:donuts_csv brumsby$ more 0_0_0.csv
 id,type,name,ppu
 0001,donut,Cake,0.55
 </code></pre></div></div>
+
+<h1 id="writing-to-jdbc-data-sources">Writing to JDBC Data Sources</h1>
+<p>It is now possible to write to databases via Drill’s JDBC Storage Plugin.  At present Drill supports the following query formats for writing:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">CREATE TABLE AS</code></li>
+  <li><code class="language-plaintext highlighter-rouge">CREATE TABLE IF NOT EXISTS</code></li>
+  <li><code class="language-plaintext highlighter-rouge">DROP TABLE</code></li>
+  <li><code class="language-plaintext highlighter-rouge">DROP TABLE IF NOT EXISTS</code></li>
+</ul>
+
+<p>For further information about Drill’s support for CTAS queries please refer to the documentation page here: https://drill.apache.org/docs/create-table-as-ctas/. The syntax is 
+exactly the same as writing to a file.  As with writing to files, it is a best practice to avoid <code class="language-plaintext highlighter-rouge">SELECT *</code> queries in the CTAS query.</p>
+
+<p>Not all JDBC sources will support writing. In order for the connector to successfully write, the source system must support <code class="language-plaintext highlighter-rouge">CREATE TABLE AS</code> as well as <code class="language-plaintext highlighter-rouge">INSERT</code> queries.<br />
+At present, Writing has been tested with MySQL, Postgres and H2.</p>
+
+<h4 id="note-about-apache-phoenix">Note about Apache Phoenix</h4>
+<p>Apache Phoenix uses slightly non-standard syntax for INSERTs.  The JDBC writer should support writes to Apache Phoenix though this has not been tested and should be regarded as 
+an experimental feature.</p>
+
+<h2 id="configuring-the-connection-for-writing">Configuring the Connection for Writing</h2>
+<p>Firstly, it should go without saying that the Database to which you are writing should have a user permissions which allow writing.  Next, you will need to set the <code class="language-plaintext highlighter-rouge">writable</code> 
+parameter to <code class="language-plaintext highlighter-rouge">true</code> as shown below:</p>
+
+<h3 id="setting-the-batch-size">Setting the Batch Size</h3>
+<p>Drill after creating the table, Drill will execute a series of <code class="language-plaintext highlighter-rouge">INSERT</code> queries with the data you are adding to the new table.  How many records can be inserted into the 
+database at once is a function of your specific database.  Larger numbers will result in fewer insert queries, and more likely faster overall performance, but may also overload 
+your database connection.  You can configure the batch size by setting the <code class="language-plaintext highlighter-rouge">writerBatchSize</code> variable in the configuration as shown below.  The default is 10000 records per batch.</p>
+
+<h3 id="sample-writable-mysql-connection">Sample Writable MySQL Connection</h3>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"driver"</span><span class="p">:</span><span class="w"> </span><span class="s2">"com.mysql.cj.jdbc.Driver"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc:mysql://localhost:3306/?useJDBCCompliantTimezoneShift=true&amp;serverTimezone=EST5EDT"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;username&gt;"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;password&gt;"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"writable"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"writerBatchSize"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<h3 id="sample-writable-postgres-connection">Sample Writable Postgres Connection</h3>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"driver"</span><span class="p">:</span><span class="w"> </span><span class="s2">"org.postgresql.Driver"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jdbc:postgresql://localhost:5432/sakila?defaultRowFetchSize=2"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"postgres"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"sourceParameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"minimumIdle"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"autoCommit"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"connectionTestQuery"</span><span class="p">:</span><span class="w"> </span><span class="s2">"select version() as postgresql_version"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"dataSource.cachePrepStmts"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"dataSource.prepStmtCacheSize"</span><span class="p">:</span><span class="w"> </span><span class="mi">250</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"writable"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="limitations">Limitations</h2>
+
+<h3 id="row-limits">Row Limits</h3>
+<p>The first issue to be aware of is that most relational databases have some sort of limit on how many rows can be inserted at once and how many columns a table may contain.  It 
+is important to be aware of these limits and make sure that your database is configured to receive the amount of data you are trying to write.  For example, you can configure 
+MySQL by setting the <code class="language-plaintext highlighter-rouge">max_packet_size</code> variable to accept very large inserts.</p>
+
+<h3 id="data-types">Data Types</h3>
+<p>While JDBC is a standard for interface, different databases handle datatypes in different manners.  The JDBC writer tries to map data types to the most generic way possible so 
+that it will work in as many cases as possible.</p>
+
+<h4 id="compound-data-types">Compound Data Types</h4>
+<p>Most relational databases do not support compound fields of any sort.  As a result, attempting to write a compound type to a JDBC data source, will result in an exception. 
+Future functionality may include the possibility of converting complex types to strings and inserting those strings into the target database.</p>
+
+<h4 id="varbinary-data">VarBinary Data</h4>
+<p>It is not currently possible to insert a VarBinary field into a JDBC database.</p>
 
 
     
