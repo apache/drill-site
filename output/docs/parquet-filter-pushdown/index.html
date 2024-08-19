@@ -1521,6 +1521,42 @@
 
 <p>The query planner looks at the minimum and maximum values in each row group for an intersection. If no intersection exists, the planner can prune the row group in the table. If the minimum and maximum value range is too large, Drill does not apply Parquet filter pushdown. The query planner can typically prune more data when the tables in the Parquet file are sorted by row groups.</p>
 
+<h3 id="filter-pushdown-threshold">Filter Pushdown Threshold</h3>
+
+<p>There is a limit on the number of row groups the planner will examine for pruning. This limit is controlled by the option <code class="language-plaintext highlighter-rouge">planner.store.parquet.rowgroup.filter.pushdown.threshold</code>, which has a default value of 10,000.</p>
+
+<p>A query on many and/or large Parquet files that takes a long time to execute could benefit from increasing this threshold. The planning will take longer time, but the overall execution time may still be shorter.</p>
+
+<p>Use the <a href="/docs/explain/">EXPLAIN PLAN command</a> command to check whether filter pushdown is used to prune row groups in a specific query.</p>
+
+<p>Example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>EXPLAIN PLAN FOR SELECT col1 from dfs.`dir/subdir` WHERE col2 &gt;= 100 AND col2 &lt; 200
+</code></pre></div></div>
+
+<p>If filter pushdown is applied to the query, the command will produce a plan similar to</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>00-00    Screen
+00-01      Project(col1=[$0])
+00-02        UnionExchange
+01-01          Scan(table=[[dfs, dir/subdir]], groupscan=[ParquetGroupScan [entries=...
+</code></pre></div></div>
+
+<p>where <code class="language-plaintext highlighter-rouge">entries</code> will contain the paths to the Parquet files in <code class="language-plaintext highlighter-rouge">dir/subdir</code> for which the metadata indicates that <code class="language-plaintext highlighter-rouge">col2</code> has values in the specified range.</p>
+
+<p>Should however filter pushdown <em>not</em> be applied to the query, the plan will look like</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>00-00    Screen
+00-01      Project(col1=[$0])
+00-02        UnionExchange
+01-01          Project(col1=[$1])
+01-02            SelectionVectorRemover
+01-03              Filter(condition=[SEARCH($0, Sarg[(100..200)])])
+01-04                Scan(table=[[dfs, dir/subdir]], groupscan=[[ParquetGroupScan [entries=...
+</code></pre></div></div>
+
+<p>where <code class="language-plaintext highlighter-rouge">entries</code> will contain the paths to all Parquet files in <code class="language-plaintext highlighter-rouge">dir/subdir</code>.</p>
+
 <h2 id="parquet-filter-pushdown-for-varchar-and-decimal-data-types">Parquet Filter Pushdown for VARCHAR and DECIMAL Data Types</h2>
 <p>Starting in Drill 1.15, Drill supports Parquet filter pushdown for the VARCHAR and DECIMAL data types. Drill uses binary statistics in the Parquet file or Drill metadata file to push filters on VARCHAR and DECIMAL data types down to the data source.</p>
 
