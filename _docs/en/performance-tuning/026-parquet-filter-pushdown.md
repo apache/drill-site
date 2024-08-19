@@ -25,6 +25,39 @@ Parquet filter pushdown is similar to partition pruning in that it reduces the a
 
 The query planner looks at the minimum and maximum values in each row group for an intersection. If no intersection exists, the planner can prune the row group in the table. If the minimum and maximum value range is too large, Drill does not apply Parquet filter pushdown. The query planner can typically prune more data when the tables in the Parquet file are sorted by row groups.
 
+### Filter Pushdown Threshold
+
+There is a limit on the number of row groups the planner will examine for pruning. This limit is controlled by the option `planner.store.parquet.rowgroup.filter.pushdown.threshold`, which has a default value of 10,000.
+
+A query on many and/or large Parquet files that takes a long time to execute could benefit from increasing this threshold. The planning will take longer time, but the overall execution time may still be shorter.
+
+Use the [EXPLAIN PLAN command]({{site.baseurl}}/docs/explain/) command to check whether filter pushdown is used to prune row groups in a specific query.
+
+Example:
+
+    EXPLAIN PLAN FOR SELECT col1 from dfs.`dir/subdir` WHERE col2 >= 100 AND col2 < 200
+
+If filter pushdown is applied to the query, the command will produce a plan similar to
+
+    00-00    Screen
+    00-01      Project(col1=[$0])
+    00-02        UnionExchange
+    01-01          Scan(table=[[dfs, dir/subdir]], groupscan=[ParquetGroupScan [entries=...
+
+where `entries` will contain the paths to the Parquet files in `dir/subdir` for which the metadata indicates that `col2` has values in the specified range.
+
+Should however filter pushdown *not* be applied to the query, the plan will look like 
+
+    00-00    Screen
+    00-01      Project(col1=[$0])
+    00-02        UnionExchange
+    01-01          Project(col1=[$1])
+    01-02            SelectionVectorRemover
+    01-03              Filter(condition=[SEARCH($0, Sarg[(100..200)])])
+    01-04                Scan(table=[[dfs, dir/subdir]], groupscan=[[ParquetGroupScan [entries=...
+
+where `entries` will contain the paths to all Parquet files in `dir/subdir`.
+
 ## Parquet Filter Pushdown for VARCHAR and DECIMAL Data Types
 Starting in Drill 1.15, Drill supports Parquet filter pushdown for the VARCHAR and DECIMAL data types. Drill uses binary statistics in the Parquet file or Drill metadata file to push filters on VARCHAR and DECIMAL data types down to the data source.
 
