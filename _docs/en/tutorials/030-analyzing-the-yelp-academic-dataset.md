@@ -14,7 +14,7 @@ value from your data in just a few minutes.
 
 Let’s quickly walk through the steps required to install Drill and run it
 against the Yelp data set. The publicly available data set used for this
-example is downloadable from [Yelp](http://www.yelp.com/dataset_challenge)
+example is downloadable from [Yelp](http://www.yelp.com/dataset/download)
 (business reviews) and is in JSON format.
 
 ----------
