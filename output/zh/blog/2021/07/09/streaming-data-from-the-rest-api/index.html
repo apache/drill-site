@@ -10,6 +10,11 @@
 <title>Streaming data from the Drill REST API - Apache Drill</title>
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+
+<!-- Inter: the site typeface (2026 redesign) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="/css/site.css" rel="stylesheet" type="text/css"/>
 
 <link rel="shortcut icon" href="/zh/favicon.ico" type="image/x-icon"/>
@@ -115,9 +120,10 @@
   </li>
   <li class='nav'><a href="/zh/faq/">FAQ</a></li>
   <li class='nav'><a href="/zh/blog/">Blog</a></li>
-  <li class="social-menu-item"><a href="https://twitter.com/apachedrill" title="apachedrill on twitter" target="_blank"><img src="/images/twitter_32_26_white.png" alt="twitter logo" align="center"></a> </li>
+  <li class="social-menu-item"><a href="https://twitter.com/apachedrill" title="apachedrill on X" target="_blank"><img src="/images/x-logo.svg" alt="X logo" align="center"></a> </li>
   <li class="social-menu-item"><a href="https://join.slack.com/t/apache-drill/shared_invite/enQtNTQ4MjM1MDA3MzQ2LTJlYmUxMTRkMmUwYmQ2NTllYmFmMjU4MDk0NjYwZjBmYjg0MDZmOTE2ZDg0ZjBlYmI3Yjc4Y2I2NTQyNGVlZTc" title="Apache Drill Slack channels"
       target="_blank"><img src="/images/slack-logo.svg" alt="Slack logo" align="center"></a> </li>
+  <li class="social-menu-item"><a href="https://github.com/apache/drill" title="Apache Drill on GitHub" target="_blank"><img src="/images/github-logo.svg" alt="GitHub logo" align="center"></a> </li>
   <li class='search-bar'>
     <form id="drill-search-form">
       <input type="text" placeholder="Search Apache Drill" id="drill-search-term" />
@@ -155,7 +161,7 @@
   <article class="post-content">
     <p>Anyone who’s used a UNIX pipe, or even just watched something on Netflix, is at least a little familiar with the idea of processing data in a streaming fashion.  While your data are small in size compared to available memory and I/O speeds, streaming is something you can afford to dispense with.  But when you cannot fit an entire dataset in RAM, or when you have to download an entire 4K movie before you can start playing it, then streaming data processing can make a game changing difference.</p>
 
-<p>With the release of version 1.19, Drill will stream JSON query result data over an HTTP response to the client that initiated the query using the REST API.  And if anything can easily get big compared to your available RAM or network speed, it’s query results coming back from Drill.  It’s important to note here that JSON over HTTP is never going to be the most <em>efficient</em> way to move big data around<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>.  JDBC, ODBC and <a href="https://uwekorn.com/2019/11/17/fast-jdbc-access-in-python-using-pyarrow-jvm.html">innovations around them</a> will always win a speed race over JSON/HTTP, and simply network mounting or copying Parquet files out of your big data storage pool (be that HDFS, S3, or something else) is probably going to beat everything else you try once you’ve got really big data volumes.</p>
+<p>With the release of version 1.19, Drill will stream JSON query result data over an HTTP response to the client that initiated the query using the REST API.  And if anything can easily get big compared to your available RAM or network speed, it’s query results coming back from Drill.  It’s important to note here that JSON over HTTP is never going to be the most <em>efficient</em> way to move big data around<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup>.  JDBC, ODBC and <a href="https://uwekorn.com/2019/11/17/fast-jdbc-access-in-python-using-pyarrow-jvm.html">innovations around them</a> will always win a speed race over JSON/HTTP, and simply network mounting or copying Parquet files out of your big data storage pool (be that HDFS, S3, or something else) is probably going to beat everything else you try once you’ve got really big data volumes.</p>
 
 <p>Where JSON and HTTP <em>do</em> win is universality: today it’s hard to imagine a client hardware and software stack that doesn’t provide JSON and HTTP out of the box with minimal effort.  So it’s important that they work as well as is possible, in spite of the alternatives that exist.  The new streaming query results delivery on the server side means that Drill’s heap memory isn’t pressurised by having to buffer entire result sets before it starts to transmit them over the network.  Even existing REST API clients that do no stream processing of their own will benefit from better reliability because of this.</p>
 
@@ -187,7 +193,7 @@ In [7]: while True:
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1" role="doc-endnote">
+    <li id="fn:1">
       <p>Some mitigation is possible.  JSON representations of tabular big data are typically extremely compressible and you can reduce the bytes sent over the network by 10-20x by enabling HTTP response compression on a web server like Apache placed in front of the Drill REST API. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
@@ -212,13 +218,51 @@ In [7]: while True:
 <script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-548b2caa33765e8d" async="async"></script>
 
   </div>
-  <p class="push"></p>
-<div id="footer" class="mw">
+  <div id="footer">
 <div class="wrapper">
-Copyright © 2012-2025 The Apache Software Foundation, licensed under the Apache License, Version 2.0.<br>
-Apache and the Apache feather logo are trademarks of The Apache Software Foundation. Other names appearing on the site may be trademarks of their respective owners.<br/><br/>
+  <div class="ft-cols">
+    <div class="ft-brand">
+      <img src="/images/drill-logo.svg" alt="Apache Drill" width="150" height="32">
+      <p>A distributed SQL query engine for files, object storage and NoSQL databases.
+         A top-level project of The Apache Software Foundation.</p>
+    </div>
+    <div>
+      <h4>Documentation</h4>
+      <a href="/zh/docs/getting-started/">Getting started</a>
+      <a href="/zh/docs/sql-reference/">SQL reference</a>
+      <a href="/zh/docs/connect-a-data-source/">Storage plugins</a>
+      <a href="/zh/docs/configure-drill/">Configuration</a>
+    </div>
+    <div>
+      <h4>Project</h4>
+      <a href="/zh/download/">Download</a>
+      <a href="/zh/blog/">Blog</a>
+      <a href="https://github.com/apache/drill">GitHub</a>
+      <a href="https://issues.apache.org/jira/browse/DRILL">Issue tracker</a>
+    </div>
+    <div>
+      <h4>Community</h4>
+      <a href="/zh/mailinglists/">Mailing lists</a>
+      <a href="/zh/community-resources/">Resources</a>
+      <a href="/zh/team/">Team</a>
+      <a href="/zh/poweredBy/">Powered by Drill</a>
+    </div>
+    <div>
+      <h4>Apache</h4>
+      <a href="https://www.apache.org/">Foundation</a>
+      <a href="https://www.apache.org/licenses/">License</a>
+      <a href="https://www.apache.org/security/">Security</a>
+      <a href="https://privacy.apache.org/policies/privacy-policy-public.html">Privacy</a>
+      <a href="https://www.apache.org/events/current-event.html">Events</a>
+    </div>
+  </div>
+  <p class="ft-legal">Copyright &copy; 2012-2026 The Apache Software Foundation, licensed under the
+    <a href="https://www.apache.org/licenses/">Apache License, Version 2.0</a>.
+    Apache Drill, Drill, Apache, the Apache feather logo, and the Apache Drill project logo are either
+    registered trademarks or trademarks of The Apache Software Foundation in the United States and other countries.</p>
 </div>
 </div>
+<div class="bui"></div>
 
   <script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-548b2caa33765e8d" async="async"></script>
 
