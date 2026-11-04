@@ -7,7 +7,7 @@ permalink: /community-resources/
 ## User Resources
 
 * [Documentation]({{ site.baseurl }}/docs/)
-* [Slack channels for users and developers](https://join.slack.com/t/apache-drill/shared_invite/enQtNTQ4MjM1MDA3MzQ2LTJlYmUxMTRkMmUwYmQ2NTllYmFmMjU4MDk0NjYwZjBmYjg0MDZmOTE2ZDg0ZjBlYmI3Yjc4Y2I2NTQyNGVlZTc)
+* [Slack channels for users and developers](https://join.slack.com/t/apache-drill/shared_invite/zt-4c307g2mc-icwfKEdET7zalTmjVyNc4w)
 * Twitter: [@ApacheDrill](https://twitter.com/ApacheDrill)
 * Presentations: [SlideShare](http://www.slideshare.net/ApacheDrill/)
 
